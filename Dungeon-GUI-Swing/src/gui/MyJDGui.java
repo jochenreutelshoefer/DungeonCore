@@ -6,41 +6,14 @@
  */
 package gui;
 
-import item.ItemInfo;
-
-import java.applet.Applet;
-import java.awt.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-import java.awt.event.*;
-
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
-import control.ActionAssembler;
-import spell.Fireball;
-import spell.Spell;
-import spell.SpellInfo;
-import dungeon.JDPoint;
-import dungeon.Position;
-import dungeon.Room;
-import dungeon.RoomInfo;
-import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.EndRoundAction;
 import figure.action.LearnSpellAction;
 import figure.action.TakeItemAction;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.memory.Memory;
-import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.AttackPercept;
@@ -66,19 +39,37 @@ import figure.percept.TextPercept;
 import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
-import game.JDEnv;
 import game.JDGUI;
 import gui.audio.AudioEffectsManager;
 import gui.engine2D.GraphBoard;
 import gui.engine2D.animation.Animation;
-import gui.engine2D.animation.AnimationFake;
 import gui.engine2D.animation.AnimationReal;
 import gui.engine2D.animation.AnimationSet;
 import gui.engine2D.animation.AnimationTask;
 import gui.engine2D.animation.MasterAnimation;
-import gui.engine2D.animation.ThreadPool;
 import gui.mainframe.MainFrame;
 import gui.mainframe.component.BoardView;
+import item.ItemInfo;
+
+import java.applet.Applet;
+import java.awt.Graphics;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import javax.swing.JComboBox;
+
+import spell.Spell;
+import spell.SpellInfo;
+import statement.Statement;
+import statement.StatementManager;
+import control.ActionAssembler;
+import dungeon.JDPoint;
+import dungeon.RoomInfo;
 
 /**
  * @author Jochen
@@ -448,13 +439,13 @@ public class MyJDGui implements JDGUI {
 
 	public void newStatement(Statement s) {
 		if (s != null) {
-			newStatement(s.getText(), s.format);
+			newStatement(s.getText(), s.getFormat());
 		}
 	}
 
-	public void newStatements(List l) {
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			Statement element = (Statement) iter.next();
+	public void newStatements(List<Statement> l) {
+		for (Iterator<Statement> iter = l.iterator(); iter.hasNext();) {
+			Statement element = iter.next();
 			newStatement(element);
 
 		}

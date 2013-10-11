@@ -672,7 +672,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int xsize = roomSize / 3;
 					int ysize = (int) (roomSize / 2.5);
 					GraphicObject ob = new JDGraphicObject(
-							new JDImage(ImageManager.questionmark, xpos, ypos,
+							new JDImageAWT(ImageManager.questionmark, xpos, ypos,
 									xsize, ysize), null, new Rectangle(
 									new Point(xpos, ypos), new Dimension(xsize,
 											ysize)), Color.yellow);
@@ -716,14 +716,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			JDGraphicObject door0;
 			if (!doors[0].hasLock().booleanValue()) {
 				Rectangle rect = getNorthDoorRect(xcoord, ycoord);
-				door0 = new JDGraphicObject(new JDImage(
+				door0 = new JDGraphicObject(new JDImageAWT(
 						ImageManager.door_north, xcoord, ycoord
 								- getDoorDimension(true).width, roomSize,
 						roomSize), doors[0], rect, new Color(180, 150, 80),
 						false);
 			} else {
 				Rectangle rect = getNorthDoorRect(xcoord, ycoord);
-				door0 = new JDGraphicObject(new JDImage(
+				door0 = new JDGraphicObject(new JDImageAWT(
 						ImageManager.door_north_lock, xcoord, ycoord
 								- getDoorDimension(true).width, roomSize,
 						roomSize), doors[0], rect, new Color(180, 150, 80),
@@ -733,7 +733,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		} else {
 			Rectangle rect = getNorthDoorRect(xcoord, ycoord);
 			JDGraphicObject door0 = new JDGraphicObject(
-					new JDImage(ImageManager.door_north_none, xcoord, ycoord
+					new JDImageAWT(ImageManager.door_north_none, xcoord, ycoord
 							- getDoorDimension(true).width, roomSize, roomSize),
 					doors[0], null, new Color(180, 150, 80), false);
 			roomDoors.add(door0);
@@ -742,12 +742,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			Rectangle rect = getEastDoorRect(xcoord, ycoord);
 			JDGraphicObject door1;
 			if (!doors[1].hasLock().booleanValue()) {
-				door1 = new JDGraphicObject(new JDImage(ImageManager.door_east,
+				door1 = new JDGraphicObject(new JDImageAWT(ImageManager.door_east,
 						xcoord, ycoord - getDoorDimension(true).width,
 						roomSize, roomSize), doors[1], rect, new Color(180,
 						150, 80), false);
 			} else {
-				door1 = new JDGraphicObject(new JDImage(
+				door1 = new JDGraphicObject(new JDImageAWT(
 						ImageManager.door_east_lock, xcoord, ycoord
 								- getDoorDimension(true).width, roomSize,
 						roomSize), doors[1], rect, new Color(180, 150, 80),
@@ -757,7 +757,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		} else {
 			Rectangle rect = getNorthDoorRect(xcoord, ycoord);
 			JDGraphicObject door1 = new JDGraphicObject(
-					new JDImage(ImageManager.door_east_none, xcoord, ycoord
+					new JDImageAWT(ImageManager.door_east_none, xcoord, ycoord
 							- getDoorDimension(true).width, roomSize, roomSize),
 					doors[1], null, new Color(180, 150, 80), false);
 			roomDoors.add(door1);
@@ -785,12 +785,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			JDGraphicObject door3;
 
 			if (!doors[3].hasLock().booleanValue()) {
-				door3 = new JDGraphicObject(new JDImage(ImageManager.door_west,
+				door3 = new JDGraphicObject(new JDImageAWT(ImageManager.door_west,
 						xcoord, ycoord - getDoorDimension(true).width,
 						roomSize, roomSize), doors[3], rect, new Color(180,
 						150, 80), false);
 			} else {
-				door3 = new JDGraphicObject(new JDImage(
+				door3 = new JDGraphicObject(new JDImageAWT(
 						ImageManager.door_west_lock, xcoord, ycoord
 								- getDoorDimension(true).width, roomSize,
 						roomSize), doors[3], rect, new Color(180, 150, 80),
@@ -799,7 +799,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			roomDoors.add(door3);
 		} else {
 			JDGraphicObject door0 = new JDGraphicObject(
-					new JDImage(ImageManager.door_west_none, xcoord, ycoord
+					new JDImageAWT(ImageManager.door_west_none, xcoord, ycoord
 							- getDoorDimension(true).width, roomSize, roomSize),
 					doors[3], null, new Color(180, 150, 80), false);
 			roomDoors.add(door0);
@@ -832,14 +832,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				if (doorArray[2] != null) {
 					// Rectangle clickRect = new Rectangle(xcoord)
 					if (doorArray[2].hasLock().booleanValue()) {
-						doors.add(new JDGraphicObject(new JDImage(
+						doors.add(new JDGraphicObject(new JDImageAWT(
 								ImageManager.door_south_lock, xcoord, ycoord
 										+ roomSize
 										- getDoorDimension(true).width,
 								roomSize, roomSize), doorArray[2], rect,
 								new Color(180, 150, 80), false));
 					} else {
-						doors.add(new JDGraphicObject(new JDImage(
+						doors.add(new JDGraphicObject(new JDImageAWT(
 								ImageManager.door_south, xcoord, ycoord
 										+ roomSize
 										- getDoorDimension(true).width,
@@ -847,7 +847,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 								new Color(180, 150, 80), false));
 					}
 				} else {
-					doors.add(new JDGraphicObject(new JDImage(
+					doors.add(new JDGraphicObject(new JDImageAWT(
 							ImageManager.door_south_none, xcoord, ycoord
 									+ roomSize - getDoorDimension(true).width,
 							roomSize, roomSize), doorArray[2], rect, new Color(
@@ -1041,7 +1041,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	private GraphicObject drawAMonster(MonsterInfo m, Point p, Graphics g) {
-		JDImage ob = null;
+		JDImageAWT ob = null;
 		int mClass = m.getMonsterClass();
 		int sizeX = (int) (getMonsterSize(m).width);
 		int sizeY = (int) (getMonsterSize(m).height);
@@ -1054,54 +1054,54 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			if (m.getLevel() == 2) {
 				wolf = ImageManager.wolfImage[dir - 1];
 			}
-			ob = new JDImage(wolf, rect);
+			ob = new JDImageAWT(wolf, rect);
 		} else if (mClass == Monster.ORC) {
 			Image orc = ImageManager.orcImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				orc = ImageManager.orcImage[dir - 1];
 			}
-			ob = new JDImage(orc, rect);
+			ob = new JDImageAWT(orc, rect);
 		} else if (mClass == Monster.SKELETON) {
 			Image skel = ImageManager.skelImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				skel = ImageManager.skelImage[dir - 1];
 			}
-			ob = new JDImage(skel, rect);
+			ob = new JDImageAWT(skel, rect);
 		} else if (mClass == Monster.GHUL) {
 			Image ghul = ImageManager.ghulImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				ghul = ImageManager.ghulImage[dir - 1];
 			}
-			ob = new JDImage(ghul, rect);
+			ob = new JDImageAWT(ghul, rect);
 		} else if (mClass == Monster.OGRE) {
 			Image ogre = ImageManager.ogreImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				ogre = ImageManager.ogreImage[dir - 1];
 			}
-			ob = new JDImage(ogre, rect);
+			ob = new JDImageAWT(ogre, rect);
 		} else if (mClass == Monster.BEAR) {
 			Image bear = ImageManager.bearImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				bear = ImageManager.bearImage[dir - 1];
 			}
-			ob = new JDImage(bear, rect);
+			ob = new JDImageAWT(bear, rect);
 
 		} else if (mClass == Monster.DARKMASTER) {
-			ob = new JDImage(ImageManager.darkMasterImage, rect);
+			ob = new JDImageAWT(ImageManager.darkMasterImage, rect);
 
 		} else if (mClass == Monster.DWARF) {
-			ob = new JDImage(ImageManager.dark_dwarfImage, rect);
+			ob = new JDImageAWT(ImageManager.dark_dwarfImage, rect);
 
 		} else if (mClass == Monster.FIR) {
-			ob = new JDImage(ImageManager.finImage, rect);
+			ob = new JDImageAWT(ImageManager.finImage, rect);
 
 		} else {
-			ob = new JDImage(ImageManager.engelImage, rect);
+			ob = new JDImageAWT(ImageManager.engelImage, rect);
 		}
 
 		if (m.isDead() != null && m.isDead().booleanValue()) {
@@ -1109,7 +1109,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			AnimationSet set = this.getFigure_tipping_over(m);
 			if (set != null && set.getLength() > 0) {
 				Image i = set.getImagesNr(set.getLength() - 1);
-				ob = new JDImage(i, rect);
+				ob = new JDImageAWT(i, rect);
 			}
 		}
 
@@ -1151,14 +1151,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						.getItemClass())) {
 
 					if (((itemArray[i]).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
-						itemObs[i] = new JDGraphicObject(new JDImage(
+						itemObs[i] = new JDGraphicObject(new JDImageAWT(
 								ImageManager.potion_redImage, q.x, q.y,
 								12 * (roomSize / 100), 15 * (roomSize / 100)),
 								itemArray[i], new Rectangle(q, new Dimension(
 										12 * (roomSize / 100),
 										15 * (roomSize / 100))), Color.yellow);
 					} else {
-						itemObs[i] = new JDGraphicObject(new JDImage(
+						itemObs[i] = new JDGraphicObject(new JDImageAWT(
 								ImageManager.potion_blueImage, q.x, q.y,
 								12 * (roomSize / 100), 15 * (roomSize / 100)),
 								itemArray[i], new Rectangle(q, new Dimension(
@@ -1167,7 +1167,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					}
 
 				} else if (itemArray[i].getItemClass().equals(DustItem.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.dustImage, q.x, q.y,
 							10 * (roomSize / 100), 8 * (roomSize / 100)),
 							itemArray[i], new Rectangle(q,
@@ -1175,35 +1175,35 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 											8 * (roomSize / 100))),
 							Color.yellow);
 				} else if (itemArray[i].getItemClass().equals(Sword.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.swordImage, q.x, q.y,
 							30 * (roomSize / 100), 20 * (roomSize / 100)),
 							itemArray[i], new Rectangle(q, new Dimension(
 									30 * (roomSize / 100),
 									20 * (roomSize / 100))), Color.yellow);
 				} else if (itemArray[i].getItemClass().equals(Axe.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.axeImage, q.x, q.y,
 							30 * (roomSize / 100), 20 * (roomSize / 100)),
 							itemArray[i], new Rectangle(q, new Dimension(
 									30 * (roomSize / 100),
 									20 * (roomSize / 100))), Color.yellow);
 				} else if (itemArray[i].getItemClass().equals(Club.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.clubImage, q.x, q.y,
 							30 * (roomSize / 100), 20 * (roomSize / 100)),
 							itemArray[i], new Rectangle(q, new Dimension(
 									30 * (roomSize / 100),
 									20 * (roomSize / 100))), Color.yellow);
 				} else if (itemArray[i].getItemClass().equals(Lance.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.lanceImage, q.x, q.y,
 							50 * (roomSize / 100), 40 * (roomSize / 100)),
 							itemArray[i], new Rectangle(q, new Dimension(
 									50 * (roomSize / 100),
 									40 * (roomSize / 100))), Color.yellow);
 				} else if (itemArray[i].getItemClass().equals(Wolfknife.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.wolfknifeImage, q.x, q.y,
 							20 * (roomSize / 100), 15 * (roomSize / 100)),
 							itemArray[i], new Rectangle(q, new Dimension(
@@ -1213,7 +1213,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 30 * (roomSize / 100);
 					int sizeY = 20 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.armorImage, q.x, q.y, sizeX, sizeY),
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
 									sizeY)), Color.yellow);
@@ -1221,7 +1221,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 20 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.shieldImage, q.x, q.y, sizeX, sizeY),
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
 									sizeY)), Color.yellow);
@@ -1229,7 +1229,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 24 * (roomSize / 100);
 					int sizeY = 22 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.helmetImage, q.x, q.y, sizeX, sizeY),
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
 									sizeY)), Color.yellow);
@@ -1238,7 +1238,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.scrollImage, q.x, q.y, sizeX, sizeY),
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
 									sizeY)), Color.yellow);
@@ -1247,7 +1247,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeY = 15 * (roomSize / 100);
 
 					itemObs[i] = new JDGraphicObject(
-							new JDImage(ImageManager.documentImage, q.x, q.y,
+							new JDImageAWT(ImageManager.documentImage, q.x, q.y,
 									sizeX, sizeY), itemArray[i], new Rectangle(
 									q, new Dimension(sizeX, sizeY)),
 							Color.yellow);
@@ -1255,7 +1255,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.featherImage, q.x, q.y, sizeX, sizeY),
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
 									sizeY)), Color.yellow);
@@ -1263,7 +1263,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.potion_greenImage, q.x, q.y, sizeX,
 							sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
@@ -1271,7 +1271,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeX = 16 * (roomSize / 100);
 					int sizeY = 22 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImage(
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(
 							ImageManager.keyImage, q.x, q.y, sizeX, sizeY),
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
 									sizeY)), Color.yellow);
@@ -1288,7 +1288,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						im = ImageManager.rune_redImage;
 					}
 
-					itemObs[i] = new JDGraphicObject(new JDImage(im, q.x, q.y,
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
 				} else if (itemArray[i].getItemClass().equals(
@@ -1297,7 +1297,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeY = 12 * (roomSize / 100);
 					Image im = ImageManager.cristall_redImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImage(im, q.x, q.y,
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
 				} else if (itemArray[i].getClass().equals(LuziasBall.class)) {
@@ -1305,7 +1305,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeY = 15 * (roomSize / 100);
 					Image im = ImageManager.kugelImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImage(im, q.x, q.y,
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
 				} else if (itemArray[i].getClass().equals(Book.class)) {
@@ -1313,7 +1313,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int sizeY = 15 * (roomSize / 100);
 					Image im = ImageManager.bookImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImage(im, q.x, q.y,
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
 
@@ -1327,7 +1327,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 					im = ImageManager.amulettImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImage(im, q.x, q.y,
+					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
 				} else {
@@ -1476,7 +1476,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	// }
 
 	public void drawHero(Graphics g, int x, int y, HeroInfo info) {
-		JDImage im = null;
+		JDImageAWT im = null;
 		if (info == null) {
 			return;
 		}
@@ -1517,38 +1517,38 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (code == Hero.HEROCODE_WARRIOR) {
 			if (info.isDead().booleanValue()
 					&& !gui.currentThreadRunning(info.getRoomInfo())) {
-				im = new JDImage(ImageManager.warrior_tipping_over.get(dir - 1)
+				im = new JDImageAWT(ImageManager.warrior_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.warrior_tipping_over.get(
 						dir - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImage(ImageManager.warriorImage[dir - 1], rect);
+				im = new JDImageAWT(ImageManager.warriorImage[dir - 1], rect);
 			}
 		} else if (code == Hero.HEROCODE_HUNTER) {
 			if (info.isDead().booleanValue()
 					&& !gui.currentThreadRunning(info.getRoomInfo())) {
-				im = new JDImage(ImageManager.thief_tipping_over.get(dir - 1)
+				im = new JDImageAWT(ImageManager.thief_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.thief_tipping_over.get(
 						dir - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImage(ImageManager.thiefImage[dir - 1], rect);
+				im = new JDImageAWT(ImageManager.thiefImage[dir - 1], rect);
 			}
 		} else if (code == Hero.HEROCODE_DRUID) {
 			if (info.isDead().booleanValue()
 					&& !gui.currentThreadRunning(info.getRoomInfo())) {
-				im = new JDImage(ImageManager.druid_tipping_over.get(dir - 1)
+				im = new JDImageAWT(ImageManager.druid_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.druid_tipping_over.get(
 						dir - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImage(ImageManager.druidImage[dir - 1], rect);
+				im = new JDImageAWT(ImageManager.druidImage[dir - 1], rect);
 			}
 		} else if (code == Hero.HEROCODE_MAGE) {
 			if (info.isDead().booleanValue()
 					&& !gui.currentThreadRunning(info.getRoomInfo())) {
-				im = new JDImage(ImageManager.mage_tipping_over.get(dir - 1)
+				im = new JDImageAWT(ImageManager.mage_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.mage_tipping_over
 						.get(dir - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImage(ImageManager.mageImage[dir - 1], rect);
+				im = new JDImageAWT(ImageManager.mageImage[dir - 1], rect);
 			}
 		}
 		hero = new JDGraphicObject(im, info, rect, Color.white,
@@ -2385,7 +2385,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (1 * ROOMSIZE_BY_16);
 			int xsize = ROOMSIZE_BY_3;
 			int ysize = (int) (roomSize / 3.5);
-			ob = new JDGraphicObject(new JDImage(ImageManager.fountainImage,
+			ob = new JDGraphicObject(new JDImageAWT(ImageManager.fountainImage,
 					xpos, ypos, xsize, ysize), s,
 					getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_REPAIR) {
@@ -2393,7 +2393,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (1 * ROOMSIZE_BY_16);
 			int xsize = ROOMSIZE_BY_3;
 			int ysize = (int) (roomSize / 3.5);
-			ob = new JDGraphicObject(new JDImage(ImageManager.repairImage,
+			ob = new JDGraphicObject(new JDImageAWT(ImageManager.repairImage,
 					xpos, ypos, xsize, ysize), s,
 					getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_STATUE) {
@@ -2401,7 +2401,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (0 * ROOMSIZE_BY_36);
 			int xsize = ROOMSIZE_BY_3;
 			int ysize = (int) (roomSize / 2.5);
-			ob = new JDGraphicObject(new JDImage(ImageManager.statueImage,
+			ob = new JDGraphicObject(new JDImageAWT(ImageManager.statueImage,
 					xpos, ypos, xsize, ysize), s,
 					getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_ANGEL) {
@@ -2413,7 +2413,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				xsize = 0;
 				ysize = 0;
 			}
-			ob = new JDGraphicObject(new JDImage(ImageManager.engelImage, xpos,
+			ob = new JDGraphicObject(new JDImageAWT(ImageManager.engelImage, xpos,
 					ypos, xsize, ysize), s, getShrineRect(xcoord, ycoord),
 					Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_SORCER_LAB) {
@@ -2421,7 +2421,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord - (1 * ROOMSIZE_BY_12);
 			int xsize = (int) (roomSize / 1.65);
 			int ysize = (int) (roomSize / 1.65);
-			ob = new JDGraphicObject(new JDImage(ImageManager.sorcLabImage,
+			ob = new JDGraphicObject(new JDImageAWT(ImageManager.sorcLabImage,
 					xpos, ypos, xsize, ysize), s,
 					getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_BROOD) {
@@ -2430,7 +2430,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				int ypos = ycoord + (1 * ROOMSIZE_BY_12);
 				int xsize = (int) (roomSize / 1.5);
 				int ysize = (int) (ROOMSIZE_BY_2);
-				ob = new JDGraphicObject(new JDImage(ImageManager.caveImage,
+				ob = new JDGraphicObject(new JDImageAWT(ImageManager.caveImage,
 						xpos, ypos, xsize, ysize), s, getShrineRect(xcoord,
 						ycoord), Color.yellow);
 			} else if ((s).getType() == Brood.BROOD_CREATURE) {
@@ -2438,7 +2438,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				int ypos = ycoord + (1 * ROOMSIZE_BY_6);
 				int xsize = roomSize / 4;
 				int ysize = (int) (ROOMSIZE_BY_6);
-				ob = new JDGraphicObject(new JDImage(
+				ob = new JDGraphicObject(new JDImageAWT(
 						ImageManager.falltuerImage, xpos, ypos, xsize, ysize),
 						s, getShrineRect(xcoord, ycoord), Color.yellow);
 			} else if ((s).getType() == Brood.BROOD_UNDEAD) {
@@ -2446,7 +2446,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				int ypos = ycoord + (1 * ROOMSIZE_BY_16);
 				int xsize = (int) (roomSize / 2.9);
 				int ysize = (int) (roomSize / 2.2);
-				ob = new JDGraphicObject(new JDImage(ImageManager.graveImage,
+				ob = new JDGraphicObject(new JDImageAWT(ImageManager.graveImage,
 						xpos, ypos, xsize, ysize), s, getShrineRect(xcoord,
 						ycoord), Color.yellow);
 			}
@@ -2455,7 +2455,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (1 * roomSize / 24);
 			int xsize = (int) (roomSize / 2.8);
 			int ysize = (int) (roomSize / 2.0);
-			ob = new JDGraphicObject(new JDImage(ImageManager.traderImage,
+			ob = new JDGraphicObject(new JDImageAWT(ImageManager.traderImage,
 					xpos, ypos, xsize, ysize), s,
 					getShrineRect(xcoord, ycoord), Color.yellow);
 
@@ -2472,7 +2472,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			} else if (s.getType() == 3) {
 				im = ImageManager.shrine_redImage;
 			}
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_CORPSE) {
 			int xpos = xcoord + (13 * roomSize / 20);
@@ -2492,7 +2492,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			} else if ((s).getType() == 4) {
 				im = ImageManager.dead_mageImage;
 			}
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_QUEST) {
 			int xpos = xcoord + (13 * roomSize / 20);
@@ -2501,7 +2501,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ysize = (int) (roomSize / 2.2);
 			Image im = ImageManager.shrine_blackImage;
 
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_XMAS) {
 			int xpos = xcoord + (27 * roomSize / 60);
@@ -2510,7 +2510,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ysize = (int) (roomSize / 1.7);
 			Image im = ImageManager.xmasImage;
 
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 
 		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNEFINDER) {
@@ -2526,7 +2526,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			} else if ((s).getType() == 3) {
 				im = ImageManager.shrine_small_redImage;
 			}
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 
 		} else if (s.getShrineIndex() == Shrine.SHRINE_DARK_MASTER) {
@@ -2535,7 +2535,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int xsize = (int) (roomSize / 3.6);
 			int ysize = (int) (roomSize / 3.7);
 			Image im = ImageManager.pentagrammImage;
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
 			int xpos = xcoord + (7 * ROOMSIZE_BY_10);
@@ -2552,7 +2552,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				im = ImageManager.luzia_hutImage;
 			}
 
-			ob = new JDGraphicObject(new JDImage(im, xpos, ypos, xsize, ysize),
+			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 		} else {
 			// ob =

@@ -5,19 +5,14 @@
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package gui.engine2D.animation;
-import figure.FigureInfo;
-import game.JDEnv;
-import gui.MyJDGui;
-import gui.audio.AudioSet;
-import gui.engine2D.GraphBoard;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
-import dungeon.JDPoint;
-import dungeon.Room;
 import dungeon.RoomInfo;
+import figure.FigureInfo;
+import game.JDGUI;
+import gui.engine2D.GraphBoard;
 
 /**
  * @author Jochen
@@ -39,42 +34,31 @@ public abstract class Animation /*extends JDEnv*/ implements Runnable{
 	protected FigureInfo o;
 
 	public int time;
-	Graphics g2;
+	protected Graphics g2;
 	
 	protected double sizeModifier = 1;
 
-	Image offscreenImage;
+	protected Image offscreenImage;
 
-	Graphics g;
-
-
-	int aniType;
+	protected Graphics g;
 
 
-	int roomSize;
-	int counter = 0;
+	protected int aniType;
+
+
+	protected int roomSize;
+	protected int counter = 0;
 	
 	public boolean deathAnimation = false;
 	
-	GraphBoard bild;
+	protected GraphBoard bild;
 
 
-	RoomInfo r;
+	protected RoomInfo r;
 
 	
-	MyJDGui f;
+	protected JDGUI f;
 	
-//private AudioSet finishingSound;
-//	
-//	public AudioSet getFinishingSound() {
-//		return finishingSound;
-//	}
-//
-//
-//	public void setFinishingSound(AudioSet finishingSound) {
-//		this.finishingSound = finishingSound;
-//	}
-
 
 	public Animation(RoomInfo r) {
 		this.r = r;

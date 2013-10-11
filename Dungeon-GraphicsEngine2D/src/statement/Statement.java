@@ -4,12 +4,12 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package gui;
+package statement;
 
 public class Statement {
 	
-	String text;
-	int format;
+	private String text;
+	private int format;
 	
 	public Statement(String t, int i) {
 		text = t;

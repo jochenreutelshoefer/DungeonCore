@@ -13,31 +13,31 @@ import java.awt.*;
 public class JDGraphicObject extends GraphicObject {
 
 	
-	JDImage image;
+	JDImageAWT image;
 
 	
 	boolean toPaint = true;
 
 	
-	public JDGraphicObject(JDImage i,Object ob, Rectangle o, Color c) {
+	public JDGraphicObject(JDImageAWT i,Object ob, Rectangle o, Color c) {
 		super(ob,o,c,null);
 		image = i;
 		
 	}
 	
-	public JDGraphicObject(JDImage i,Object ob, Rectangle o, Color c, Rectangle clickRect) {
+	public JDGraphicObject(JDImageAWT i,Object ob, Rectangle o, Color c, Rectangle clickRect) {
 		super(ob,o,c,null,clickRect);
 		image = i;
 		
 	}
-	public JDGraphicObject(JDImage i,Object ob, Rectangle o, Color c,boolean paint) {
+	public JDGraphicObject(JDImageAWT i,Object ob, Rectangle o, Color c,boolean paint) {
 		super(ob,o,c,null);
 		toPaint = paint;
 		image = i;
 		
 	}
 	
-	public JDGraphicObject(JDImage i,Object ob, Rectangle o, Color c,boolean paint, Rectangle clickRect) {
+	public JDGraphicObject(JDImageAWT i,Object ob, Rectangle o, Color c,boolean paint, Rectangle clickRect) {
 		super(ob,o,c,null,clickRect);
 		toPaint = paint;
 		image = i;
@@ -72,7 +72,7 @@ public void setToPaint(boolean b) {
 				
 			//Component c = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
 			//System.out.println("drawing image: "+image.getImage().toString());
-				g2D.drawImage(image.getImage(),image.posX,image.posY,image.getWidth(),image.getHeight(),null);
+				g2D.drawImage(image.getImage(),image.getPosX(),image.getPosY(),image.getWidth(),image.getHeight(),null);
 			//}
 				if(this.clickedObject != null) {
 					//System.out.println("male :" +this.clickedObject.toString());

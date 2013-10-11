@@ -12,20 +12,15 @@ import java.awt.image.ImageProducer;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class JDImage {
+public class JDImageAWT {
 
 	
-	Image image;
-
-
-	int sizeX;
-
+	private Image image;
+	private int sizeX;
+	private int sizeY;
+	private int posY;
 	
-	int sizeY;
-
-	int posX;
-	int posY;
-	public JDImage(Image i, int posX, int posY,int sizeX, int sizeY) {
+	public JDImageAWT(Image i, int posX, int posY,int sizeX, int sizeY) {
 		image = i;		
 		this.posX = posX;
 		this.posY = posY;
@@ -33,7 +28,7 @@ public class JDImage {
 		this.sizeY = sizeY;
 	
 	}
-	public JDImage(Image i, Rectangle r) {
+	public JDImageAWT(Image i, Rectangle r) {
 		image = i;		
 		this.posX = r.x;
 		this.posY = r.y;
@@ -41,13 +36,16 @@ public class JDImage {
 		this.sizeY = r.height;
 	
 	}
-
-	/**
-	 * @see java.awt.Image#getWidth(ImageObserver)
-	 */
-	public int getWidth(ImageObserver observer) {
-		return 0;
+	public int getPosX() {
+		return posX;
 	}
+	public int getPosY() {
+		return posY;
+	}
+	
+	private int posX;
+
+
 
 	/**
 	 * 
@@ -63,41 +61,6 @@ public class JDImage {
 	 */
 	public int getHeight() {
 		return sizeY;
-	}
-
-
-	/**
-	 * @see java.awt.Image#getHeight(ImageObserver)
-	 */
-	public int getHeight(ImageObserver observer) {
-		return 0;
-	}
-
-	/**
-	 * @see java.awt.Image#getSource()
-	 */
-	public ImageProducer getSource() {
-		return null;
-	}
-
-	/**
-	 * @see java.awt.Image#getGraphics()
-	 */
-	public Graphics getGraphics() {
-		return null;
-	}
-
-	/**
-	 * @see java.awt.Image#getProperty(String, ImageObserver)
-	 */
-	public Object getProperty(String name, ImageObserver observer) {
-		return null;
-	}
-
-	/**
-	 * @see java.awt.Image#flush()
-	 */
-	public void flush() {
 	}
 
 	/**

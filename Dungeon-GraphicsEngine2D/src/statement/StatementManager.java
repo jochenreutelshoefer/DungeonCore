@@ -4,7 +4,7 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package gui;
+package statement;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +30,7 @@ import figure.percept.SpellPercept;
 import figure.percept.TakePercept;
 import figure.percept.TumblingPercept;
 import game.JDEnv;
+import gui.Texts;
 
 public class StatementManager {
 
