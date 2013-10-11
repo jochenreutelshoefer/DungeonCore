@@ -70,9 +70,6 @@ public class JDImageAWT {
 	 * @uml.property name="image"
 	 */
 	public Image getImage() {
-		if (image == null) {
-			////System.out.println("image ist null !");
-		}
 		return image;
 	}
 
