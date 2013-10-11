@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action
+END
+LearnSpellAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/LearnSpellAction.java
+END
+TakeItemAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/TakeItemAction.java
+END
+MoveAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/MoveAction.java
+END
+AttackAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/AttackAction.java
+END
+ActionFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/ActionFactory.java
+END
+FleeAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/FleeAction.java
+END
+StepAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/StepAction.java
+END
+UseItemAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/UseItemAction.java
+END
+EquipmentChangeAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/EquipmentChangeAction.java
+END
+EndRoundAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/EndRoundAction.java
+END
+Action.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/Action.java
+END
+SpellAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/SpellAction.java
+END
+SkillUpAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/SkillUpAction.java
+END
+UseChestAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/UseChestAction.java
+END
+ShrineAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/ShrineAction.java
+END
+LockAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/LockAction.java
+END
+DoNothingAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/DoNothingAction.java
+END
+LayDownItemAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/LayDownItemAction.java
+END
+ScoutAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/ScoutAction.java
+END
+ExpCodeChangeAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/dev54/Jochen/!svn/ver/65/Dungeon-Core/src/figure/action/ExpCodeChangeAction.java
+END

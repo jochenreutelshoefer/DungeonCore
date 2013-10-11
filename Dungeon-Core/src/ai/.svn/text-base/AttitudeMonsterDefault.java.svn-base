@@ -1,0 +1,21 @@
+package ai;
+
+import figure.FigureInfo;
+import figure.monster.MonsterInfo;
+import figure.percept.Percept;
+
+public class AttitudeMonsterDefault extends Attitude {
+
+	@Override
+	public boolean isHostile(FigureInfo other) {
+		if(other instanceof MonsterInfo) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void tellPercept(Percept p) {
+		
+	}
+
+}

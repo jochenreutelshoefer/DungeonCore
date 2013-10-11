@@ -1,0 +1,59 @@
+/**
+ * Zauberbuch des Helden. Enthaelt eine Liste von Zauberspruechen, die der Held
+ * beherrscht. Durch das erlernen neuer Zaubersprueche koennen einzeln welche hinzukommen.
+ */
+
+package figure;
+import java.util.*;
+
+import spell.*;
+
+
+
+public class Spellbook {
+
+	
+	LinkedList spells = new LinkedList();
+
+	
+	public Spellbook() {
+	}
+	
+	public Spellbook(LinkedList l) {
+		spells.add(l);
+	}
+	
+	public void addSpell(Spell s) {
+		spells.add(s);
+	}
+	
+	public Spell getSpell(int i) {
+		if(i>= 0 && i < spells.size()) {
+			return (Spell)spells.get(i);
+		}
+		return null;
+	}
+
+	
+	public LinkedList getSpells() {
+		return spells;
+	}
+
+	
+	public Spell getSpell(String s) {
+		//System.out.println("Anzahl Spells: "+spells.size());
+		for(int i = 0; i < spells.size(); i++) {
+			//System.out.println(i);
+			String t = ((Spell)spells.get(i)).getName();
+			//System.out.println(t);
+			if(t.equals(s)){
+				//System.out.println("passt");
+				return (Spell)spells.get(i);
+			}
+			
+		}
+		//System.out.println("Spell not found");
+		return null;
+	}
+
+}
