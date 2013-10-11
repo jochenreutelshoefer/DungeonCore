@@ -1,0 +1,110 @@
+package gui.audio;
+
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class AudioSet {
+
+	public static boolean soundEnabled = true;
+	
+	public static void setSoundEnable(boolean b) {
+		soundEnabled = b;
+	}
+
+	
+	public static final String SOUNDS_FOLDER = "sounds/";
+
+	private List<AudioClip> audioClips = new ArrayList<AudioClip>();
+	private List<Clip> clips = new ArrayList<Clip>();
+
+	Applet applet;
+
+	public AudioSet(Applet a) {
+		applet = a;
+	}
+
+	public void playRandomSound() {
+		if(!soundEnabled) return;
+		
+		if (applet != null) {
+			System.out.println("wanna play applet audio");
+			if(audioClips.size() == 0) return;
+			int k = (int) (Math.random() * audioClips.size());
+			audioClips.get(k).play();
+			System.out.println("played applet audio");
+			
+		} else {
+			if(clips.size() == 0) return;
+			int k = (int) (Math.random() * clips.size());
+			Clip clip = clips.get(k);
+			clip.setFramePosition(0); // Must always rewind!
+			clip.loop(0);
+			clip.start();
+		}
+		return;
+	}
+
+	public void addClip(String filename) {
+		try {
+			if (applet != null) {
+				URL url = new URL(applet.getCodeBase().toExternalForm()
+						+ SOUNDS_FOLDER);
+				AudioClip audioClip = applet.getAudioClip(url, filename);
+				System.out.println("adding applet audioClip: "+filename);
+				audioClips.add(audioClip);
+			} else {
+				File file = new File("resources/sounds/" + filename);
+				if (file.exists()) {
+					Clip myClip = AudioSystem.getClip();
+					AudioInputStream ais = AudioSystem.getAudioInputStream(file
+							.toURI().toURL());
+					try {
+						myClip.open(ais);
+						this.clips.add(myClip);
+					} catch (Exception e) {
+						System.out.println("failed to init sound: "+filename);
+						e.printStackTrace();
+					}
+				} else {
+					throw new RuntimeException("Sound: file not found: " + file);
+				}
+			}
+		} catch (MalformedURLException e) {
+			System.out.println("Sound: Malformed URL: " + e);
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			System.out.println("Sound: Unsupported Audio File: "+filename+"  " + e);
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Sound: Input/Output Error: " + e);
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			System.out.println("Sound: Line Unavailable: " + e);
+			e.printStackTrace();
+		}
+	}
+
+	public static AudioSet createAudioSet(Applet applet, String[] filenames) {
+		if (filenames.length == 0) {
+			return null;
+		}
+		AudioSet set = new AudioSet(applet);
+		for (int i = 0; i < filenames.length; i++) {
+			System.out.println("adding clip: "+filenames[i]);
+			set.addClip(filenames[i]);
+		}
+		return set;
+	}
+}

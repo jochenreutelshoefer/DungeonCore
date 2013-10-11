@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component
+END
+TextView.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/TextView.java
+END
+HealthView.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/HealthView.java
+END
+ShowPanel.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/ShowPanel.java
+END
+BoardView.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/BoardView.java
+END
+InfoView.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/InfoView.java
+END
+SkillExpView.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/SkillExpView.java
+END
+CharacterView.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/CharacterView.java
+END
+Corner.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/Corner.java
+END
+HealthPot.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/HealthPot.java
+END
+InventoryView.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/InventoryView.java
+END
+DustView.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/DustView.java
+END
+ControlView.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/ControlView.java
+END
+SpellsView.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/component/SpellsView.java
+END

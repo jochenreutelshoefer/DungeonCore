@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui
+END
+StatementManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/StatementManager.java
+END
+NewHeroView.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/NewHeroView.java
+END
+ThreadManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/ThreadManager.java
+END
+JDJButton.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDJButton.java
+END
+Statement.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/Statement.java
+END
+JDJViewport.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDJViewport.java
+END
+JDJLabel.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDJLabel.java
+END
+MyJDGui.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/MyJDGui.java
+END
+JDJTitledBorder.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDJTitledBorder.java
+END
+ActionAssembler.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/ActionAssembler.java
+END
+JDBackgroundPanel.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDBackgroundPanel.java
+END
+JDJRadioButton.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDJRadioButton.java
+END
+JDJPanel.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JDJPanel.java
+END
+StartView.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/StartView.java
+END
+JPanelNoRepaint.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/JPanelNoRepaint.java
+END
+MyComboRenderer.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/MyComboRenderer.java
+END

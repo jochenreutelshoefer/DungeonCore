@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="default diagram_beschr1" size="3046,3856" id="." metadata="nsuml-1.4" initialized="true" zoom="0.75" scrolledY="663" tag="10" key="3230303431313235206A6176615F64756E67656F6E">
+  <children xsi:type="editmodel:PackageEditModel" name="dungeon" location="827,411" size="329,835" id="dungeon">
+    <children xsi:type="editmodel:PackageEditModel" name="dungeon.quest" location="23,530" size="238,256" id="dungeon.quest">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Quest" location="26,62" size="46,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="RoomQuest_1x1_1" location="26,106" size="146,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="RoomQuest_2x2_1" location="26,127" size="146,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="RoomQuest_3x3_1" location="26,148" size="146,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="RoomQuest_XxY_1" location="26,172" size="149,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="RoomQuest_trader_1x2" location="26,195" size="182,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="RoomQuest" location="26,84" size="92,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Encompass_quest" location="26,219" size="144,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="dungeon.generate" location="21,246" size="259,267" id="dungeon.generate">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Dungeonfiller" location="29,63" size="104,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Dungeonfiller2" location="29,87" size="113,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Sector" location="29,110" size="51,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Sector1" location="29,130" size="60,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Sector2" location="29,153" size="60,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Sector_dungeonfiller" location="29,173" size="161,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Level1_first" location="29,192" size="89,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Hall" location="29,211" size="30,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Chest" location="30,42" size="46,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="DirectionReceiver" location="30,65" size="137,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Door" location="30,89" size="39,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Dungeon" location="30,112" size="72,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="RouteInstruction" location="30,186" size="129,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDPoint" location="30,163" size="62,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Hidden_spot" location="30,138" size="99,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Way" location="30,214" size="34,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="gui" location="6,25" size="796,934" id="gui">
+    <children xsi:type="editmodel:PackageEditModel" name="gui.engine2D" location="245,340" size="228,532" id="gui.engine2D">
+      <children xsi:type="editmodel:PackageEditModel" name="gui.engine2D.animation" location="10,262" size="195,221" id="gui.engine2D.animation">
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Animation" location="30,72" size="78,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="AnimationFake" location="30,111" size="115,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="AnimationReal" location="30,147" size="112,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="AnimationSet" location="30,181" size="103,19" fontInfo="Arial-12-1"/>
+        <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+      </children>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="GraphBoard" location="31,75" size="95,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="GraphicObject" location="31,111" size="110,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="GraphicShrine" location="31,150" size="111,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="JD_GraphicObject" location="31,186" size="140,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="JD_image" location="31,222" size="77,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="gui.mainframe" location="490,49" size="278,836" id="gui.mainframe">
+      <children xsi:type="editmodel:PackageEditModel" name="gui.mainframe.component" location="25,74" size="223,426" id="gui.mainframe.component">
+        <children xsi:type="editmodel:LabelObjectEditModel" name="BoardView" location="25,62" size="85,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="CharacterView" location="25,94" size="113,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="ControlView" location="25,124" size="95,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Corner" location="25,154" size="54,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="DustView" location="25,184" size="74,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="HealtPot" location="25,214" size="66,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="HealthView" location="25,242" size="87,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="InfoView" location="25,272" size="67,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="InventoryView" location="25,299" size="110,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="SkillExpView" location="25,331" size="100,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="SpellsView" location="25,361" size="85,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="TextView" location="25,391" size="71,19" fontInfo="Arial-12-1"/>
+        <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+      </children>
+      <children xsi:type="editmodel:PackageEditModel" name="gui.mainframe.dialog" location="25,514" size="224,273" id="gui.mainframe.dialog">
+        <children xsi:type="editmodel:LabelObjectEditModel" name="DirectionChoiceView" location="28,66" size="161,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="FtpSendView" location="28,96" size="103,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="ItemChoiceSpotView" location="28,126" size="160,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="ItemChoiceView" location="28,156" size="124,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Quit" location="28,183" size="32,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Trader_window" location="28,210" size="120,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="WaitView" location="28,237" size="71,19" fontInfo="Arial-12-1"/>
+        <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+      </children>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="MainFrame" location="25,45" size="85,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" name="GuiFacade" location="30,221" size="198,625" id="gui/GuiFacade" runTimeClassModel="fightEnded(),BUTTON_GO_WEST,heroSlaysAnimation(),resetViewPoint(),monsterSlaysAnimation(Lfigure.monster.Monster;),currentThread,heroDiesAnimation(),repaintSpielfeldBild(),heroUsingAnimation(),updateGUI(I),animationDone(),setRoomViewPoint(Ldungeon.Room;),heroWalkingAnimation(),GuiFacade(Lgui.mainframe.MainFrame;),stopAllAnimation(),repaintHeroRoom(),gameOver(),suspendAnimation(),repaintRoom(Ldungeon.Room;),monsterTippingOverAnimation(Lfigure.monster.Monster;),heroBeen_hitAnimation(),BUTTON_SLAP,BUTTON_GO_EAST,resumeAnimation(),newStatement(Ljava.lang.String;II),newStatement(Ljava.lang.String;I),getGraphics(),heroPauseAnimation(),disableControl(),monsterBeenHitAnimation(Lfigure.monster.Monster;),causeActionEvent(ILjava.lang.String;),getChoosenEnemy(),onlyTipOver(Lfigure.monster.Monster;),heroRunningAnimation(),heroSorceringAnimation(),BUTTON_GO_NORTH,BUTTON_GO_SOUTH,fightBegins()">
+      <children xsi:type="editmodel:CompartmentEditModel" size="144,108"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="175,576">
+        <children xsi:type="editmodel:MethodEditModel" name="GuiFacade" id="gui/GuiFacade#GuiFacade(Lgui.mainframe.MainFrame;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="animationDone" id="gui/GuiFacade#animationDone()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="causeActionEvent" id="gui/GuiFacade#causeActionEvent(ILjava.lang.String;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="disableControl" id="gui/GuiFacade#disableControl()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="fightBegins" id="gui/GuiFacade#fightBegins()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="fightEnded" id="gui/GuiFacade#fightEnded()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="gameOver" id="gui/GuiFacade#gameOver()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="getChoosenEnemy" id="gui/GuiFacade#getChoosenEnemy()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="getGraphics" id="gui/GuiFacade#getGraphics()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroBeen_hitAnimation" id="gui/GuiFacade#heroBeen_hitAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroDiesAnimation" id="gui/GuiFacade#heroDiesAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroPauseAnimation" id="gui/GuiFacade#heroPauseAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroRunningAnimation" id="gui/GuiFacade#heroRunningAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroSlaysAnimation" id="gui/GuiFacade#heroSlaysAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroSorceringAnimation" id="gui/GuiFacade#heroSorceringAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroUsingAnimation" id="gui/GuiFacade#heroUsingAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="heroWalkingAnimation" id="gui/GuiFacade#heroWalkingAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="monsterBeenHitAnimation" id="gui/GuiFacade#monsterBeenHitAnimation(Lfigure.monster.Monster;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="monsterSlaysAnimation" id="gui/GuiFacade#monsterSlaysAnimation(Lfigure.monster.Monster;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="monsterTippingOverAnimation" id="gui/GuiFacade#monsterTippingOverAnimation(Lfigure.monster.Monster;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="newStatement" id="gui/GuiFacade#newStatement(Ljava.lang.String;II)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="newStatement" id="gui/GuiFacade#newStatement(Ljava.lang.String;I)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="onlyTipOver" id="gui/GuiFacade#onlyTipOver(Lfigure.monster.Monster;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="repaintHeroRoom" id="gui/GuiFacade#repaintHeroRoom()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="repaintRoom" id="gui/GuiFacade#repaintRoom(Ldungeon.Room;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="repaintSpielfeldBild" id="gui/GuiFacade#repaintSpielfeldBild()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="resetViewPoint" id="gui/GuiFacade#resetViewPoint()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="resumeAnimation" id="gui/GuiFacade#resumeAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="setRoomViewPoint" id="gui/GuiFacade#setRoomViewPoint(Ldungeon.Room;)"/>
+        <children xsi:type="editmodel:MethodEditModel" name="stopAllAnimation" id="gui/GuiFacade#stopAllAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="suspendAnimation" id="gui/GuiFacade#suspendAnimation()"/>
+        <children xsi:type="editmodel:MethodEditModel" name="updateGUI" id="gui/GuiFacade#updateGUI(I)"/>
+      </children>
+      <children xsi:type="editmodel:CompartmentEditModel"/>
+      <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true"/>
+    </children>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDJButton" location="37,59" size="83,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDJPanel" location="37,95" size="74,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDBackGroundPanel" location="37,135" size="162,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDJLabel" location="37,167" size="73,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDJRadioButton" location="260,55" size="128,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDJTitledBorder" location="260,95" size="126,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="NewHeroView" location="260,131" size="109,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Paragraph" location="260,167" size="81,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Paragraphable" location="260,211" size="111,18" fontInfo="Arial-12-3"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="StartView" location="260,247" size="74,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Texts" location="260,287" size="43,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="item" location="6,961" size="620,513" id="item">
+    <children xsi:type="editmodel:PackageEditModel" name="item.equipment" location="191,34" size="247,420" id="item.equipment">
+      <children xsi:type="editmodel:PackageEditModel" name="item.equipment.weapon" location="15,173" size="212,198" id="item.equipment.weapon">
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Axe" location="27,54" size="30,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Club" location="27,78" size="37,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Lance" location="27,100" size="48,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Sword" location="27,124" size="51,19" fontInfo="Arial-12-1"/>
+        <children xsi:type="editmodel:LabelObjectEditModel" name="Wolfknife" location="29,148" size="72,19" fontInfo="Arial-12-1"/>
+        <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+      </children>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Armor" location="40,60" size="48,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="ArmorItem" location="40,85" size="80,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Helmet" location="40,111" size="54,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Shield" location="40,138" size="49,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="item.quest" location="25,274" size="156,147" id="item.quest">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Dark_master_key" location="11,49" size="134,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Luzia_ball" location="11,76" size="79,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Rune" location="11,107" size="42,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="item.paper" location="446,34" size="141,196" id="item.paper">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Book" location="18,49" size="42,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Book_attr" location="18,73" size="76,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Book_spell" location="18,96" size="87,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Info_scroll" location="18,117" size="81,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Scroll" location="18,141" size="45,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Scroll_magic" location="18,164" size="100,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="item.interfaces" location="448,237" size="152,178" id="item.interfaces">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="ItemOwner" location="31,56" size="84,18" fontInfo="Arial-12-3"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="ItemReceiver" location="31,83" size="100,18" fontInfo="Arial-12-3"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="OwnerKnower" location="31,110" size="111,18" fontInfo="Arial-12-3"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Usable" location="31,136" size="54,18" fontInfo="Arial-12-3"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="AttrPotion" location="21,39" size="78,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Bunch" location="21,63" size="52,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Dust_item" location="21,87" size="78,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="HealPotion" location="21,114" size="85,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Item" location="21,141" size="33,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ItemPool" location="21,163" size="68,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ItemValueComparator" location="21,187" size="167,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Key" location="21,213" size="31,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Thing" location="21,241" size="45,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="game" location="944,1495" size="206,137" id="game">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Game" location="26,64" size="45,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDEnv" location="26,100" size="52,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="fight" location="650,928" size="146,222" id="fight">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Fight" location="31,70" size="40,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Poisoning" location="31,101" size="79,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Slap" location="31,128" size="35,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="SlapResult" location="31,155" size="84,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Threat" location="31,187" size="50,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="test" location="1184,1245" size="161,221" id="test">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="DevModeView" location="20,64" size="110,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ItemPool_test" location="20,97" size="105,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Logger" location="20,128" size="56,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ScoutTest" location="20,161" size="79,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="TestTracker" location="20,194" size="92,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="shrine" location="1161,1478" size="184,409" id="shrine">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Brood" location="21,56" size="49,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Corpse" location="21,79" size="57,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Dark_master_shrine" location="21,101" size="155,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Health_fountain" location="21,124" size="122,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Info_shrine" location="21,146" size="87,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Luzia" location="21,168" size="43,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Quest_shrine" location="21,190" size="103,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Repair_shrine" location="21,214" size="108,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="RuneFinder" location="21,237" size="91,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="RuneShrine" location="21,260" size="92,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Shrine" location="21,282" size="51,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Sorcer_lab" location="21,306" size="84,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Statue" location="21,328" size="50,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Trader" location="21,351" size="51,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Xmas" location="21,373" size="44,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="applet" location="1174,670" size="171,286" id="applet">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="DungeonMaster" location="24,65" size="123,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JDApplet" location="24,102" size="71,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="MyTableModel" location="24,141" size="111,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ScoreTable" location="24,186" size="88,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="SortableArray" location="24,231" size="106,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="io" location="1173,970" size="172,258" id="io">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ImageLoader" location="25,65" size="101,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JarResources" location="25,101" size="108,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="JD_imageLoader" location="25,137" size="131,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Linlyn" location="25,176" size="48,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="ResourceLoader" location="25,212" size="129,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="figure" location="6,1476" size="506,549" id="figure">
+    <children xsi:type="editmodel:PackageEditModel" name="figure.monster" location="26,62" size="225,477" id="figure.monster">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Bear" location="36,68" size="37,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Creature_monster" location="36,98" size="139,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Dark_master" location="36,131" size="98,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Ghul" location="36,203" size="37,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Monster" location="36,239" size="63,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Nature_monster" location="36,269" size="124,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Ogre" location="36,299" size="38,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Orc" location="36,335" size="28,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Skeleton" location="36,368" size="68,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Undead_monster" location="36,407" size="133,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="wolf" location="36,440" size="33,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Dwarf" location="36,167" size="46,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="figure.attribute" location="297,280" size="185,262" id="figure.attribute">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="AttHelp" location="28,61" size="57,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Attribute" location="28,95" size="66,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="DerivedAtribute" location="28,128" size="120,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Modification" location="28,194" size="94,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="ModifierI" location="28,227" size="67,18" fontInfo="Arial-12-3"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="ModHelp" location="28,160" size="69,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:PackageEditModel" name="figure.hero" location="298,31" size="178,242" id="figure.hero">
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Character" location="31,72" size="76,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Hero" location="31,108" size="38,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Inventory" location="31,144" size="73,19" fontInfo="Arial-12-1"/>
+      <children xsi:type="editmodel:LabelObjectEditModel" name="Spellbook" location="31,184" size="78,19" fontInfo="Arial-12-1"/>
+      <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+    </children>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Fighter" location="33,38" size="55,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="FighterI" location="161,38" size="59,18" fontInfo="Arial-12-3"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="util" location="654,1170" size="138,158" id="util">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Arith" location="21,54" size="37,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Split" location="21,84" size="35,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="TurnArray" location="21,114" size="78,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" name="spell" location="1187,33" size="158,611" id="spell">
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Bonebreaker" location="27,67" size="100,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Convince" location="27,96" size="74,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Discover" location="27,126" size="69,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Escape" location="27,156" size="58,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Fireball" location="27,186" size="57,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Golden_hit" location="27,216" size="84,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Golden_throw" location="27,246" size="109,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Heal" location="27,273" size="35,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Key_locator" location="27,303" size="93,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Light" location="27,336" size="40,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Raid" location="27,369" size="36,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Repair" location="27,395" size="51,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Search" location="27,422" size="55,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Spell" location="27,452" size="39,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Spy" location="27,488" size="31,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Steal" location="27,521" size="39,19" fontInfo="Arial-12-1"/>
+    <children xsi:type="editmodel:LabelObjectEditModel" name="Thunderstorm" location="27,557" size="110,19" fontInfo="Arial-12-1"/>
+    <packagePreferences xsi:type="editmodel:UMLClassDiagramPackagePreference"/>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="1105,1889" size="240,74" fontInfo="Arial-10-0" note="shrine package:&#xD;&#xA;Abstrakte Klasse Shrine stellt die &#xD;&#xA;Schnittstellen für eine Örtlichkeit dar.&#xD;&#xA;Paket enthält 14 implementierungen."/>
+  <children xsi:type="editmodel:NotepadEditModel" location="941,1639" size="212,202" fontInfo="Arial-10-0" note="game package:&#xD;&#xA;Klasse Game: &#xD;&#xA;-Kernstück der &#xD;&#xA;&#x9;Programmarchitektur&#xD;&#xA;-verwaltet Dungeon und GUI &#xD;&#xA;  und deren Kommunikation&#xD;&#xA;-regelt Spielablauf&#xD;&#xA;&#xD;&#xA;Klasse JDEnv:&#xD;&#xA;-vererbt an alle anderen Klassen&#xD;&#xA;eine statische Referenz auf das &#xD;&#xA;aktuelle Game-Objekt"/>
+  <children xsi:type="editmodel:NotepadEditModel" location="518,1387" size="390,474" fontInfo="Arial-10-0" note="figure package:&#xD;&#xA;&#xD;&#xA;Klasse Fighter:&#xD;&#xA;&#x9;Abstrakte Klasse für eine kämpfende Figur.&#xD;&#xA;&#x9;Erweitert durch Klasse Monster und Klasse Hero.&#xD;&#xA;&#xD;&#xA;subpackage figure.hero:&#xD;&#xA;&#x9;Klasse Hero:&#xD;&#xA;&#x9;&#x9;-der Held des Spiels&#xD;&#xA;&#x9;&#x9;-erbt von Fighter&#xD;&#xA;&#x9;Klasse Inventory:&#xD;&#xA;&#x9;&#x9;-Inventar des Helden&#xD;&#xA;&#x9;Klasse Character:&#xD;&#xA;&#x9;&#x9;-kapselt die Characterwerte des Helden&#xD;&#xA;&#x9;Klasse Spellbook:&#xD;&#xA;&#x9;&#x9;-verwaltet die Zaubersprüche des Helden&#xD;&#xA;&#xD;&#xA;subpackage figure.monster&#xD;&#xA;&#x9;Klasse Monster:&#xD;&#xA;&#x9;&#x9;-erbt von Fighter&#xD;&#xA;&#x9;&#x9;-enthält allgemeine Eigenschaften der Monster&#xD;&#xA;&#x9; Alle anderen Klassen erben  von Monster&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;subpackage figure.attribute&#xD;&#xA;&#x9;Klassen zur Verwaltung von Attributwerten, und&#xD;&#xA;&#x9;deren Modifikation&#xD;&#xA;&#x9;&#xD;&#xA;&#xD;&#xA;&#x9;"/>
+  <children xsi:type="editmodel:NotepadEditModel" location="832,1217" size="329,154" fontInfo="Arial-10-0" note="package dungeon&#xD;&#xA;Klasse Dungeon:&#xD;&#xA;Beschreibt einen Dungeon in Form &#xD;&#xA;eines 2D-Arrays von Räumen&#xD;&#xA;subpackage dungeon.quest:&#xD;&#xA;-Enthält &quot;Schablonen&quot; um Dungeonteile zu gestalten&#xD;&#xA;subpackage dungeon.generate:&#xD;&#xA;Alle Hilfsmittel zum generieren des Dungeons&#xD;&#xA;"/>
+  <children xsi:type="editmodel:NotepadEditModel" location="803,59" size="365,346" fontInfo="Arial-10-0" note="gui package&#xD;&#xA;&#xD;&#xA;Enthält alle Klassen der Benutzungsoberfläche des Spiels.&#xD;&#xA;Die Klassse GuiFacade stellt die Fassade der GUI für das &#xD;&#xA;eigentliche Spiel (Game-Object) dar. Alle Nachrichten vom&#xD;&#xA;Spiel an die GUI laufen über diese Klasse.&#xD;&#xA;&#xD;&#xA;Klasse StartView:&#xD;&#xA;Enthält die Main-Methode zum starten der Applikation&#xD;&#xA;&#xD;&#xA;subpackage gui.mainframe:&#xD;&#xA;Hauptfenster des Spiels (1024x740 pixel)&#xD;&#xA;Die Unterpakete enthalten alle Komponenten und&#xD;&#xA;Dialogfenster zur Darstellung und Steuerung des&#xD;&#xA;Spiels. Die Klasse BordView stellt das Spielfeld dar&#xD;&#xA;und benutzt dazu das Paket gui.engine2D&#xD;&#xA;&#xD;&#xA;subpackage gui.engine2D&#xD;&#xA;Enthält alle Klassen zum darstellen des Spielfeldes.&#xD;&#xA;&#xD;&#xA;"/>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=4"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler>
+      <guides position="562"/>
+    </topRuler>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showInterfaceStereotype="true" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

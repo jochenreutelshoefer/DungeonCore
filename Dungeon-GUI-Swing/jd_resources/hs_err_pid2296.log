@@ -1,0 +1,142 @@
+#
+# An unexpected error has been detected by HotSpot Virtual Machine:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x6d641e26, pid=2296, tid=2560
+#
+# Java VM: Java HotSpot(TM) Client VM (1.5.0-b64 mixed mode)
+# Problematic frame:
+# V  [jvm.dll+0x1e26]
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00a12ae8):  VMThread [id=2560]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0xc2b300a8
+
+Registers:
+EAX=0xc2b30078, EBX=0x009cd9d8, ECX=0x072681e0, EDX=0xc2b30078
+ESP=0x0aa9f89c, EBP=0x0aa9f8ec, ESI=0x072681e0, EDI=0x072681e0
+EIP=0x6d641e26, EFLAGS=0x00010286
+
+Top of Stack: (sp=0x0aa9f89c)
+0x0aa9f89c:   072681e0 6d72c311 c2b30078 6d64bf03
+0x0aa9f8ac:   072681e0 0aa9f8fc 0aa9f8fc 009d7790
+0x0aa9f8bc:   6d694050 072682cf 6d6b0bb6 072682cf
+0x0aa9f8cc:   009cd7c0 6d6b120e 009cd9a0 6d693cb5
+0x0aa9f8dc:   0aa9f8fc 00000000 00000002 009d7740
+0x0aa9f8ec:   0aa9f908 6d6b0b8f 0aa9f8fc 00000000
+0x0aa9f8fc:   6d762b94 072682cf 00000000 072682cf
+0x0aa9f90c:   6d6acfff 072682cf 0aa9fa2c 00000000 
+
+Instructions: (pc=0x6d641e26)
+0x6d641e16:   e8 14 19 06 00 5f 5e c9 c3 8b 54 24 04 56 8b f1
+0x6d641e26:   8b 42 30 85 c0 7f 25 7d 1b 83 c9 ff 2b c8 8b 46 
+
+
+Stack: [0x0aa60000,0x0aaa0000),  sp=0x0aa9f89c,  free space=254k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x1e26]
+V  [jvm.dll+0x70b8f]
+
+VM_Operation (0x0b52f3e4): full generation collection, mode: safepoint, requested by thread 0x0ae1d440
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0aebb778 JavaThread "
+[error occurred during error reporting, step 170, id 0xc0000005]
+
+VM state:at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00355a60/0x00001728] Threads_lock - owner thread: 0x00a12ae8
+[0x00355be0/0x000016ec] Heap_lock - owner thread: 0x0ae1d440
+
+Heap
+ def new generation   total 576K, used 255K [0x02a60000, 0x02b00000, 0x02f40000)
+  eden space 512K,  39% used [0x02a60000, 0x02a92500, 0x02ae0000)
+  from space 64K,  84% used [0x02af0000, 0x02afd818, 0x02b00000)
+  to   space 64K,   0% used [0x02ae0000, 0x02ae0000, 0x02af0000)
+ tenured generation   total 4212K, used 2569K [0x02f40000, 0x0335d000, 0x06a60000)
+   the space 4212K,  61% used [0x02f40000, 0x031c2768, 0x031b4000, 0x0335d000)
+ compacting perm gen  total 8448K, used 8283K [0x06a60000, 0x072a0000, 0x0aa60000)
+   the space 8448K,  98% used [0x06a60000, 0x07276eb8, 0x0726f600, 0x072a0000)
+No shared spaces configured.
+
+Dynamic libraries:
+0x00400000 - 0x0040c000 	C:\Programme\Java\jdk1.5.0\bin\javaw.exe
+0x77f40000 - 0x77fee000 	C:\WINDOWS\System32\ntdll.dll
+0x77e40000 - 0x77f38000 	C:\WINDOWS\system32\kernel32.dll
+0x77da0000 - 0x77e3c000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x78000000 - 0x78086000 	C:\WINDOWS\system32\RPCRT4.dll
+0x77d10000 - 0x77d9c000 	C:\WINDOWS\system32\USER32.dll
+0x77c40000 - 0x77c80000 	C:\WINDOWS\system32\GDI32.dll
+0x77be0000 - 0x77c33000 	C:\WINDOWS\system32\MSVCRT.dll
+0x6d640000 - 0x6d7c5000 	C:\Programme\Java\jdk1.5.0\jre\bin\client\jvm.dll
+0x76af0000 - 0x76b1d000 	C:\WINDOWS\System32\WINMM.dll
+0x6d280000 - 0x6d288000 	C:\Programme\Java\jdk1.5.0\jre\bin\hpi.dll
+0x76bb0000 - 0x76bbb000 	C:\WINDOWS\System32\PSAPI.DLL
+0x6d380000 - 0x6d3b5000 	C:\Programme\Java\jdk1.5.0\jre\bin\jdwp.dll
+0x6d610000 - 0x6d61c000 	C:\Programme\Java\jdk1.5.0\jre\bin\verify.dll
+0x6d300000 - 0x6d31d000 	C:\Programme\Java\jdk1.5.0\jre\bin\java.dll
+0x6d630000 - 0x6d63f000 	C:\Programme\Java\jdk1.5.0\jre\bin\zip.dll
+0x6d220000 - 0x6d227000 	C:\Programme\Java\jdk1.5.0\jre\bin\dt_socket.dll
+0x71a10000 - 0x71a25000 	C:\WINDOWS\System32\WS2_32.dll
+0x71a00000 - 0x71a08000 	C:\WINDOWS\System32\WS2HELP.dll
+0x76f70000 - 0x76f77000 	C:\WINDOWS\System32\winrnr.dll
+0x76f20000 - 0x76f4d000 	C:\WINDOWS\system32\WLDAP32.dll
+0x76ee0000 - 0x76f05000 	C:\WINDOWS\System32\DNSAPI.dll
+0x719b0000 - 0x719ec000 	C:\WINDOWS\System32\mswsock.dll
+0x10000000 - 0x10009000 	C:\Programme\FRITZ!DSL\sarah.dll
+0x0ab20000 - 0x0ab27000 	C:\Programme\FRITZ!DSL\block.dll
+0x0ab30000 - 0x0aba2000 	C:\Programme\FRITZ!DSL\avmcsock.dll
+0x71a30000 - 0x71a39000 	C:\WINDOWS\System32\WSOCK32.dll
+0x0abb0000 - 0x0abb9000 	C:\Programme\FRITZ!DSL\avmufc.dll
+0x73d30000 - 0x73e22000 	C:\WINDOWS\System32\MFC42.DLL
+0x77310000 - 0x7739b000 	C:\WINDOWS\system32\COMCTL32.dll
+0x61dc0000 - 0x61dce000 	C:\WINDOWS\System32\MFC42LOC.DLL
+0x76f80000 - 0x76f85000 	C:\WINDOWS\System32\rasadhlp.dll
+0x719f0000 - 0x719f8000 	C:\WINDOWS\System32\wshtcpip.dll
+0x6d000000 - 0x6d166000 	C:\Programme\Java\jdk1.5.0\jre\bin\awt.dll
+0x72f70000 - 0x72f93000 	C:\WINDOWS\System32\WINSPOOL.DRV
+0x76330000 - 0x7634c000 	C:\WINDOWS\System32\IMM32.dll
+0x7ccc0000 - 0x7cde1000 	C:\WINDOWS\system32\ole32.dll
+0x51000000 - 0x5104d000 	C:\WINDOWS\System32\ddraw.dll
+0x73b30000 - 0x73b36000 	C:\WINDOWS\System32\DCIMAN32.dll
+0x5c000000 - 0x5c0c8000 	C:\WINDOWS\System32\D3DIM700.DLL
+0x746a0000 - 0x746e4000 	C:\WINDOWS\System32\MSCTF.dll
+0x63000000 - 0x63014000 	C:\WINDOWS\System32\SynTPFcs.dll
+0x77bd0000 - 0x77bd7000 	C:\WINDOWS\system32\VERSION.dll
+0x773a0000 - 0x77ba1000 	C:\WINDOWS\system32\shell32.dll
+0x772a0000 - 0x77304000 	C:\WINDOWS\system32\SHLWAPI.dll
+0x78090000 - 0x78174000 	C:\WINDOWS\WinSxS\x86_Microsoft.Windows.Common-Controls_6595b64144ccf1df_6.0.10.0_x-ww_f7fb5805\comctl32.dll
+0x6d240000 - 0x6d27d000 	C:\Programme\Java\jdk1.5.0\jre\bin\fontmanager.dll
+0x6d4c0000 - 0x6d4d3000 	C:\Programme\Java\jdk1.5.0\jre\bin\net.dll
+0x6d4e0000 - 0x6d4e9000 	C:\Programme\Java\jdk1.5.0\jre\bin\nio.dll
+0x770f0000 - 0x7717b000 	C:\WINDOWS\system32\OLEAUT32.DLL
+0x0b650000 - 0x0b663000 	C:\Programme\Dell\QuickSet\dadkeyb.dll
+0x0b670000 - 0x0b680000 	C:\PROGRA~1\Dell\ACCESS~1\Dadkeyb.dll
+
+VM Arguments:
+jvm_args: -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,suspend=y,address=localhost:4218
+java_command: gui.StartView
+
+Environment Variables:
+PATH=c:\Perl\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\lcc\bin;c:\lcc\include\;c:\j2sdk1.4.2_05\bin;
+USERNAME=Jochen
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 15 Model 2 Stepping 9, GenuineIntel
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows XP Build 2600 Service Pack 1
+
+CPU:total 1 family 15, cmov, cx8, fxsr, mmx, sse, sse2, ht
+
+Memory: 4k page, physical 523628k(142808k free), swap 1280248k(951596k free)
+
+vm_info: Java HotSpot(TM) Client VM (1.5.0-b64) for windows-x86, built on Sep 15 2004 03:00:31 by "java_re" with MS VC++ 6.0
+

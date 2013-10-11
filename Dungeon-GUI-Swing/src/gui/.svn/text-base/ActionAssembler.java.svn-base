@@ -1,0 +1,501 @@
+/*
+ * Created on 12.11.2005
+ *
+ * To change the template for this generated file go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+package gui;
+
+import figure.Figure;
+import figure.FigureInfo;
+import figure.action.Action;
+import figure.action.EndRoundAction;
+import figure.action.EquipmentChangeAction;
+import figure.action.ExpCodeChangeAction;
+import figure.action.LayDownItemAction;
+import figure.action.LearnSpellAction;
+import figure.action.LockAction;
+import figure.action.ScoutAction;
+import figure.action.ShrineAction;
+import figure.action.SkillUpAction;
+
+import figure.action.SpellAction;
+import figure.action.StepAction;
+import figure.action.TakeItemAction;
+import figure.action.UseChestAction;
+import figure.action.UseItemAction;
+import figure.hero.HeroInfo;
+import game.JDGUI;
+import item.ItemInfo;
+import item.quest.LuziasBall;
+
+import java.awt.Point;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+import shrine.ShrineInfo;
+import spell.Spell;
+import spell.SpellInfo;
+import dungeon.Chest;
+import dungeon.ChestInfo;
+import dungeon.Dir;
+import dungeon.DoorInfo;
+import dungeon.Position;
+import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
+
+public class ActionAssembler {
+
+	private MyJDGui gui;
+
+	public void wannaAttack(int index) {
+		wannaAttack(((FigureInfo) getFigure().getRoomInfo().getFigureInfos()
+				.get(index)).getFighterID());
+	}
+
+	public void setGui(MyJDGui gui) {
+		this.gui = gui;
+	}
+
+	public void wannaAttack(FigureInfo o) {
+
+		Action a = Action.makeActionAttack(/* f.getFighterID(), */o
+				.getFighterID());
+		plugAction(a);
+
+	}
+
+	private FigureInfo getFigure() {
+		return gui.getFigure();
+	}
+
+	public void wannaFlee() {
+
+		Action a = Action.makeActionFlee();
+
+		plugAction(a);
+
+	}
+
+	public void wannaFleePanic(int dir) {
+
+		Action a = Action.makeActionFlee(true);
+		plugAction(a);
+
+	}
+
+	public void wannaLernSpell(SpellInfo spell) {
+
+		Action a = new LearnSpellAction(spell);
+		plugAction(a);
+
+	}
+
+	public void wannaLockDoor(DoorInfo d) {
+		FigureInfo f = getFigure();
+
+		int dir = d.getDir(f.getRoomNumber());
+		if (dir != -1) {
+
+			Action a = new LockAction(dir);
+			plugAction(a);
+
+		}
+
+	}
+
+	private int getDoorPos(int dir) {
+		if (dir == Dir.NORTH) {
+			return 1;
+		}
+		if (dir == Dir.EAST) {
+			return 3;
+		}
+		if (dir == Dir.SOUTH) {
+			return 5;
+		}
+		if (dir == Dir.WEST) {
+			return 7;
+		}
+		return -1;
+	}
+
+	public void wannaScout(int direction) {
+		Action a = new ScoutAction(direction);
+		int index = Figure.getDirPos(direction);
+		if (gui.getFigure().getPositionInRoomIndex() != index) {
+			doStepTo(index);
+		}
+		if (gui.getFigure().getActionPoints() < 1) {
+			plugAction(new EndRoundAction());
+		}
+		this.plugAction(a);
+
+	}
+
+	private boolean spellMeta = false;
+
+	public void sorcButtonClicked(SpellInfo sp) {
+		if (gui.getFigure() instanceof HeroInfo) {
+
+			if (sp.needsTarget()) {
+				spellMeta = true;
+				gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+						.setSpellMetaDown(true);
+			} else {
+				wannaSpell(sp, null);
+			}
+		}
+
+	}
+
+	public void useButtonClicked(ItemInfo it, boolean right) {
+		if (gui.getFigure() instanceof HeroInfo) {
+
+			if (it.needsTarget()) {
+				useMeta = true;
+				gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+						.setUseMetaDown(true);
+			} else {
+				wannaUseItem(it, null, right);
+			}
+		}
+	}
+
+	public void wannaSpell(SpellInfo sp, Object target) {
+		// SpecialAction a = Action.makeActionSpecial(SpecialAction.ID1_SPELL,
+		// index);
+		Action a = new SpellAction(sp, target);
+
+		plugAction(a);
+
+	}
+
+	private boolean useMeta = false;
+
+	public void wannaUseItem(ItemInfo it, Object target, boolean meta) {
+
+		Action a = new UseItemAction(it, target, meta);
+		plugAction(a);
+
+	}
+
+	public void wannaUseShrine(Object target, boolean right) {
+
+		Action a = new ShrineAction(target, right);
+		plugAction(a);
+
+	}
+
+	public void wannaSwitchEquipmentItem(int type, int index) {
+
+		Action a = new EquipmentChangeAction(/*
+												 * f .getFighterID(),
+												 */
+		type, index);
+		plugAction(a);
+	}
+
+	public void wannaLayDownEquipmentItem(int type) {
+
+		Action a = new LayDownItemAction(/*
+											 * f .getFighterID(),
+											 */true, type);
+		plugAction(a);
+
+	}
+
+	public void wannaLayDownItem(int index) {
+
+		Action a = new LayDownItemAction(/*
+											 * f .getFighterID(),
+											 */false, index);
+		plugAction(a);
+
+	}
+
+	public void wannaUseChest(boolean right) {
+
+		Action a = new UseChestAction(right);
+		plugAction(a);
+
+	}
+
+	public void wannaWalk(int dir) {
+
+		FigureInfo f = getFigure();
+		int index = Figure.getDirPos(dir);
+		if (f.getPositionInRoomIndex() != index) {
+			doStepTo(index);
+		}
+		if (f.getActionPoints() < 1) {
+			plugAction(new EndRoundAction());
+		}
+		Action a = Action.makeActionMove(f.getFighterID(), dir);
+		plugAction(a);
+
+	}
+
+	private void doStepTo(int i) {
+		if (getFigure().getActionPoints() >= 1) {
+
+			plugAction(new StepAction(i));
+			if (getFigure().getActionPoints() == 1) {
+				plugAction(new EndRoundAction());
+			}
+
+		} else {
+			plugAction(new EndRoundAction());
+			plugAction(new StepAction(i));
+		}
+	}
+
+	public void monsterClicked(FigureInfo o, boolean right) {
+		SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub().getSorcCombo()
+				.getSelectedItem();
+		if (spellMeta) {
+
+			spellMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setSpellMetaDown(false);
+
+			if (!right) {
+				wannaSpell(sp, o);
+			}
+		} else if (useMeta) {
+			useMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setUseMetaDown(false);
+			if (!right) {
+				int index = gui.getMainFrame().getGesundheit()
+						.getSelectedItemIndex();
+				HeroInfo hero = (HeroInfo) gui.getFigure();
+				ItemInfo it = (ItemInfo) hero.getAllItems().get(index);
+				wannaUseItem(it, o, right);
+			}
+		} else {
+
+			if (right) {
+				wannaSpell(sp, o);
+
+			} else {
+
+				wannaAttack(((FigureInfo) o));
+
+			}
+		}
+	}
+
+	public void itemClicked(ItemInfo o, boolean right) {
+		SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub().getSorcCombo()
+				.getSelectedItem();
+		if (spellMeta) {
+			spellMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setSpellMetaDown(false);
+			if (!right) {
+				wannaSpell(sp, o);
+			}
+		} else if (useMeta) {
+			useMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setUseMetaDown(false);
+
+			ItemInfo it = (ItemInfo) gui.getMainFrame().getGesundheit()
+					.getItemCombo().getSelectedItem();
+			if (!right) {
+				wannaUseItem(it, o, right);
+			}
+		} else {
+
+			if (right) {
+
+				wannaSpell(sp, o);
+			} else {
+
+				Action a = new TakeItemAction(o);
+				plugAction(a);
+			}
+		}
+	}
+
+	public void heroClicked() {
+
+		wannaEndRound();
+
+	}
+
+	public void roomClicked(Object o, boolean right) {
+		FigureInfo f = getFigure();
+
+		int dir = -1;
+		if (o instanceof RoomInfo) {
+			dir = Dir.getDirFromToIfNeighbour(f.getRoomNumber(), ((RoomInfo) o)
+					.getNumber());
+		}
+		if (o instanceof Point) {
+			dir = Dir.getDirFromToIfNeighbour(f.getRoomNumber(), (Point) o);
+		}
+		if (dir == -1) {
+			return;
+		}
+		if (right) {
+			if (f.getRoomInfo().fightRunning().booleanValue()) {
+
+				wannaFleePanic(dir);
+			} else {
+				wannaScout(dir);
+			}
+		} else {
+			if (dir == -1) {
+
+			} else {
+
+				if (f.getRoomInfo().fightRunning().booleanValue()) {
+					int pos = getFigure().getPositionInRoomIndex();
+					if ((dir == 1 & pos == 1) || (dir == 2 && pos == 3)
+							|| (dir == 3 && pos == 5) || (dir == 4 && pos == 7)) {
+						this.wannaFlee();
+					}
+				} else {
+					this.wannaWalk(dir);
+				}
+			}
+		}
+	}
+
+	public void spotClicked(Object o) {
+
+	}
+
+	public void shrineClicked(boolean right) {
+		ShrineInfo sh = gui.getFigure().getRoomInfo().getShrine();
+		if (spellMeta) {
+			SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub()
+					.getSorcCombo().getSelectedItem();
+			spellMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setSpellMetaDown(false);
+			if (!right) {
+				wannaSpell(sp, sh);
+			}
+		} else if (useMeta) {
+			useMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setUseMetaDown(false);
+			if (!right) {
+				ItemInfo it = (ItemInfo) gui.getMainFrame().getGesundheit()
+						.getItemCombo().getSelectedItem();
+				wannaUseItem(it, sh, right);
+			}
+		} else {
+			wannaUseShrine(null, right);
+		}
+
+	}
+
+	public void chestClicked(Object o, boolean right) {
+		FigureInfo f = getFigure();
+		if (o instanceof ChestInfo) {
+			ChestInfo chest = ((ChestInfo) o);
+			if (chest.getLocation().equals(f.getRoomNumber())) {
+				wannaUseChest(right);
+
+			}
+		}
+	}
+
+	public void positionClicked(PositionInRoomInfo pos, boolean right) {
+		wannaStepToPosition(pos);
+	}
+
+	public void wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
+
+		FigureInfo f = getFigure();
+		Action a = null;
+
+		a = new StepAction(pos.getIndex());
+		if (unanimated)
+			a.setUnanimated();
+		if (f.getActionPoints() < 1) {
+			plugAction(new EndRoundAction());
+		}
+		plugAction(a);
+
+	}
+
+	public void wannaSkillUp(int key) {
+		plugAction(new SkillUpAction(key));
+	}
+
+	public void wannaStepToPosition(PositionInRoomInfo pos) {
+		wannaStepToPosition(pos, false);
+	}
+
+	public void doorClicked(Object o, boolean right) {
+		DoorInfo d = ((DoorInfo) o);
+		if (spellMeta) {
+			SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub()
+					.getSorcCombo().getSelectedItem();
+			spellMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setSpellMetaDown(false);
+			if (!right) {
+				wannaSpell(sp, d);
+			}
+		} else if (useMeta) {
+			useMeta = false;
+			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
+					.setUseMetaDown(false);
+			if (!right) {
+				ItemInfo it = (ItemInfo) gui.getMainFrame().getGesundheit()
+						.getItemCombo().getSelectedItem();
+				wannaUseItem(it, d, right);
+			}
+		} else {
+
+			if (right) {
+				SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub()
+						.getSorcCombo().getSelectedItem();
+				wannaSpell(sp, o);
+			} else {
+				if (d.hasLock().booleanValue()) {
+					wannaLockDoor(d);
+				}
+			}
+
+		}
+
+	}
+
+	public void wannaEndRound() {
+
+		plugAction(new EndRoundAction());
+
+	}
+
+	public void wannaChangeExpCode(int i) {
+		Action a = new ExpCodeChangeAction(i);
+		plugAction(a);
+
+	}
+
+	private void plugAction(Action a) {
+
+		gui.plugAction(a);
+	}
+
+	public void wannaUseLuziaBall() {
+		FigureInfo f = this.getFigure();
+		List items = f.getAllItems();
+		for (Iterator iter = items.iterator(); iter.hasNext();) {
+			ItemInfo element = (ItemInfo) iter.next();
+			if (element.getClass().equals(LuziasBall.class)) {
+				this.wannaUseItem(element, null, false);
+			}
+
+		}
+	}
+}

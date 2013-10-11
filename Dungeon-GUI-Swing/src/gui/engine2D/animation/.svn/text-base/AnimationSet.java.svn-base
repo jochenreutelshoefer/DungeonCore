@@ -1,0 +1,138 @@
+/*
+ * Created on 09.02.2005
+ *
+ * To change the template for this generated file go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+package gui.engine2D.animation;
+
+import game.JDEnv;
+import gui.MyJDGui;
+import gui.audio.AudioSet;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author Jochen
+ * 
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+public class AnimationSet /*extends JDEnv*/ {
+
+	
+	Image[] images;
+
+	
+	Image defaultImage = null;
+
+
+	int[] times;
+
+	
+	int length;
+	MyJDGui gui;
+	boolean loaded = false;
+	
+	private Map<Integer, Set<AudioSet>> sounds = new HashMap<Integer, Set<AudioSet>>();
+
+	/**
+	 * @return Returns the images.
+	 * 
+	 */
+	public Image[] getImages() {
+		return images;
+	}
+	
+
+	public Set<AudioSet> getSound(int round) {
+		return sounds.get(round);
+	}
+
+	public void addAudio(AudioSet set, int k) {
+		if(sounds.containsKey(k)) {
+			sounds.get(k).add(set);
+		} else {
+			Set<AudioSet> bag = new HashSet<AudioSet>();
+			bag.add(set);
+			sounds.put(k, bag);
+		}
+	}
+	
+	public AnimationSet(Image[] ims, int[] t) {
+		images = ims;
+		//this.gui = gui;
+		if(ims != null) {
+			this.length = ims.length;
+		}
+		else {
+			this.length = 0;
+		}
+		if (t.length < length) {
+			times = new int[length];
+			for (int i = 0; i < t.length; i++) {
+				times[i] = t[i];
+			}
+			for (int i = t.length; i < times.length; i++) {
+				times[i] = 40;
+			}
+		} else {
+			times = t;
+		}
+	}
+	
+
+
+	public Image getImagesNr(int k) {
+		if(images != null && images.length > k) {
+			
+		return images[k];
+		}
+		else {
+			return null;
+		}
+	}
+	
+//	public void preLoad() {
+//		if(!loaded) {
+//			Graphics g = gui.getGraphics();
+//			for(int i = 0; i < length; i++) {
+//				g.drawImage(images[i],0,0,100,100,null);
+//				
+//			}
+//			loaded = true;
+//		}
+//	}
+
+	public int getTimeNr(int k) {
+		return times[k];
+	}
+
+/**
+ * @return Returns the length.
+ * 
+  */
+public int getLength() {
+	return length;
+}
+
+	/**
+	 * @return Returns the defaultImage.
+	 */
+	public Image getDefaultImage() {
+		return defaultImage;
+	}
+
+	/**
+	 * @param defaultImage The defaultImage to set.
+	 * 
+	 */
+	public void setDefaultImage(Image defaultImage) {
+		this.defaultImage = defaultImage;
+	}
+
+}

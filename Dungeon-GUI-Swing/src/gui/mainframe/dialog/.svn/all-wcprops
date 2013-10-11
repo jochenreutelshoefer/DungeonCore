@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog
+END
+WaitView.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/WaitView.java
+END
+Quit.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/Quit.java
+END
+ItemChoiceView.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/ItemChoiceView.java
+END
+Trader_window.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/Trader_window.java
+END
+ItemChoiceSpotView.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/ItemChoiceSpotView.java
+END
+ItemChoiceChestView.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/ItemChoiceChestView.java
+END
+FtpSendView.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/dev54/Jochen/!svn/ver/67/Dungeon-GUI-Swing/src/gui/mainframe/dialog/FtpSendView.java
+END
