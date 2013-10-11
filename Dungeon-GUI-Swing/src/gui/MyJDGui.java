@@ -6,6 +6,8 @@
  */
 package gui;
 
+import item.ItemInfo;
+
 import java.applet.Applet;
 import java.awt.*;
 import java.util.Collection;
@@ -20,9 +22,10 @@ import java.awt.event.*;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
+import control.ActionAssembler;
 import spell.Fireball;
 import spell.Spell;
-
+import spell.SpellInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.Room;
@@ -982,6 +985,36 @@ public class MyJDGui implements JDGUI {
 			runAnimation(ani, 0);
 		}
 
+	}
+
+	@Override
+	public void setUseWithTarget(boolean b) {
+		getMainFrame().getSpielfeld().getSpielfeldBild().setUseWithTarget(b);
+		
+	}
+
+	@Override
+	public void setSpellMetaDown(boolean b) {
+		getMainFrame().getSpielfeld().getSpielfeldBild().setSpellMetaDown(b);
+		
+	}
+
+	@Override
+	public SpellInfo getSelectedSpellInfo() {
+		return (SpellInfo) getMainFrame().getStaub().getSorcCombo()
+				.getSelectedItem();
+	}
+
+	@Override
+	public int getSelectedItemIndex() {
+		return getMainFrame().getGesundheit()
+				.getSelectedItemIndex();
+	}
+	
+	@Override
+	public ItemInfo getSelectedItem() {
+		return (ItemInfo)getMainFrame().getGesundheit()
+				.getItemCombo().getSelectedItem();
 	}
 
 }

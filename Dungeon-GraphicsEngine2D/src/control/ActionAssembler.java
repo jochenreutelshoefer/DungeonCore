@@ -4,13 +4,11 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package gui;
+package control;
 
-import item.Item;
 import item.ItemInfo;
 import item.quest.LuziasBall;
 
-import java.awt.Point;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +17,7 @@ import spell.SpellInfo;
 import dungeon.ChestInfo;
 import dungeon.Dir;
 import dungeon.DoorInfo;
+import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import figure.Figure;
@@ -39,10 +38,11 @@ import figure.action.TakeItemAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.hero.HeroInfo;
+import game.JDGUI;
 
 public class ActionAssembler {
 
-	private MyJDGui gui;
+	private JDGUI gui;
 	private boolean useWithTarget = false;
 	private boolean spellMeta = false;
 
@@ -51,7 +51,7 @@ public class ActionAssembler {
 				.get(index)).getFighterID());
 	}
 
-	public void setGui(MyJDGui gui) {
+	public void setGui(JDGUI gui) {
 		this.gui = gui;
 	}
 
@@ -106,8 +106,7 @@ public class ActionAssembler {
 		if (gui.getFigure() instanceof HeroInfo) {
 			if (sp.needsTarget()) {
 				spellMeta = true;
-				gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-						.setSpellMetaDown(true);
+				gui.setSpellMetaDown(true);
 			} else {
 				wannaSpell(sp, null);
 			}
@@ -119,11 +118,9 @@ public class ActionAssembler {
 
 			if (it.needsTarget()) {
 				useWithTarget = true;
-				gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-						.setUseWithTarget(true);
+				gui.setUseWithTarget(true);
 			} else {
-				gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-				.setUseWithTarget(false);
+				gui.setUseWithTarget(false);
 				wannaUseItem(it, null, right);
 			}
 		}
@@ -213,23 +210,19 @@ public class ActionAssembler {
 	}
 
 	public void monsterClicked(FigureInfo o, boolean right) {
-		SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub().getSorcCombo()
-				.getSelectedItem();
+		SpellInfo sp = gui.getSelectedSpellInfo();
 		if (spellMeta) {
 			spellMeta = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setSpellMetaDown(false);
+			gui.setSpellMetaDown(false);
 
 			if (!right) {
 				wannaSpell(sp, o);
 			}
 		} else if (useWithTarget) {
 			useWithTarget = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setUseWithTarget(false);
+			gui.setUseWithTarget(false);
 			if (!right) {
-				int index = gui.getMainFrame().getGesundheit()
-						.getSelectedItemIndex();
+				int index = gui.getSelectedItemIndex();
 				HeroInfo hero = (HeroInfo) gui.getFigure();
 				ItemInfo it = (ItemInfo) hero.getAllItems().get(index);
 				wannaUseItem(it, o, right);
@@ -248,22 +241,18 @@ public class ActionAssembler {
 	}
 
 	public void itemClicked(ItemInfo o, boolean right) {
-		SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub().getSorcCombo()
-				.getSelectedItem();
+		SpellInfo sp = gui.getSelectedSpellInfo();
 		if (spellMeta) {
 			spellMeta = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setSpellMetaDown(false);
+			gui.setSpellMetaDown(false);
 			if (!right) {
 				wannaSpell(sp, o);
 			}
 		} else if (useWithTarget) {
 			useWithTarget = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setUseWithTarget(false);
+			gui.setUseWithTarget(false);
 
-			ItemInfo it = (ItemInfo) gui.getMainFrame().getGesundheit()
-					.getItemCombo().getSelectedItem();
+			ItemInfo it = (ItemInfo) gui.getSelectedItem();
 			if (!right) {
 				wannaUseItem(it, o, right);
 			}
@@ -294,8 +283,8 @@ public class ActionAssembler {
 			dir = Dir.getDirFromToIfNeighbour(f.getRoomNumber(), ((RoomInfo) o)
 					.getNumber());
 		}
-		if (o instanceof Point) {
-			dir = Dir.getDirFromToIfNeighbour(f.getRoomNumber(), (Point) o);
+		if (o instanceof JDPoint) {
+			dir = Dir.getDirFromToIfNeighbour(f.getRoomNumber(), (JDPoint) o);
 		}
 		if (dir == -1) {
 			return;
@@ -332,21 +321,17 @@ public class ActionAssembler {
 	public void shrineClicked(boolean right) {
 		ShrineInfo sh = gui.getFigure().getRoomInfo().getShrine();
 		if (spellMeta) {
-			SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub()
-					.getSorcCombo().getSelectedItem();
+			SpellInfo sp = gui.getSelectedSpellInfo();
 			spellMeta = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setSpellMetaDown(false);
+			gui.setSpellMetaDown(false);
 			if (!right) {
 				wannaSpell(sp, sh);
 			}
 		} else if (useWithTarget) {
 			useWithTarget = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setUseWithTarget(false);
+			gui.setUseWithTarget(false);
 			if (!right) {
-				ItemInfo it = (ItemInfo) gui.getMainFrame().getGesundheit()
-						.getItemCombo().getSelectedItem();
+				ItemInfo it =  gui.getSelectedItem();
 				wannaUseItem(it, sh, right);
 			}
 		} else {
@@ -368,14 +353,12 @@ public class ActionAssembler {
 
 	public void positionClicked(PositionInRoomInfo pos, boolean right) {
 		if(useWithTarget) {
-			ItemInfo sp = (ItemInfo) gui.getMainFrame().getGesundheit().getItemCombo().getSelectedItem();
+			ItemInfo sp = gui.getSelectedItem();
 			useWithTarget = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setSpellMetaDown(false);
+			gui.setSpellMetaDown(false);
 			if (!right) {
 				wannaUseItem(sp, pos, right);
-				gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-				.setUseWithTarget(false);
+				gui.setUseWithTarget(false);
 			}
 		} else {
 			// assume want to move normally
@@ -409,28 +392,23 @@ public class ActionAssembler {
 	public void doorClicked(Object o, boolean right) {
 		DoorInfo d = ((DoorInfo) o);
 		if (spellMeta) {
-			SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub()
-					.getSorcCombo().getSelectedItem();
+			SpellInfo sp = gui.getSelectedSpellInfo();
 			spellMeta = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setSpellMetaDown(false);
+			gui.setSpellMetaDown(false);
 			if (!right) {
 				wannaSpell(sp, d);
 			}
 		} else if (useWithTarget) {
 			useWithTarget = false;
-			gui.getMainFrame().getSpielfeld().getSpielfeldBild()
-					.setUseWithTarget(false);
+			gui.setUseWithTarget(false);
 			if (!right) {
-				ItemInfo it = (ItemInfo) gui.getMainFrame().getGesundheit()
-						.getItemCombo().getSelectedItem();
+				ItemInfo it = gui.getSelectedItem();
 				wannaUseItem(it, d, right);
 			}
 		} else {
 
 			if (right) {
-				SpellInfo sp = (SpellInfo) gui.getMainFrame().getStaub()
-						.getSorcCombo().getSelectedItem();
+				SpellInfo sp = (SpellInfo) gui.getSelectedSpellInfo();
 				wannaSpell(sp, o);
 			} else {
 				if (d.hasLock().booleanValue()) {
@@ -460,7 +438,7 @@ public class ActionAssembler {
 
 	public void wannaUseLuziaBall() {
 		FigureInfo f = this.getFigure();
-		List items = f.getAllItems();
+		List<ItemInfo> items = f.getAllItems();
 		for (Iterator iter = items.iterator(); iter.hasNext();) {
 			ItemInfo element = (ItemInfo) iter.next();
 			if (element.getClass().equals(LuziasBall.class)) {

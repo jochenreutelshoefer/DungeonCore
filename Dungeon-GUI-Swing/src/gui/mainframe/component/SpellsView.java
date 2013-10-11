@@ -9,7 +9,6 @@ package gui.mainframe.component;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.JDEnv;
-import gui.ActionAssembler;
 import gui.MyJDGui;
 import gui.JDJLabel;
 import gui.JDJPanel;
@@ -25,6 +24,7 @@ import java.util.LinkedList;
 
 import javax.swing.JButton;
 
+import control.ActionAssembler;
 import spell.SpellInfo;
 
 /**

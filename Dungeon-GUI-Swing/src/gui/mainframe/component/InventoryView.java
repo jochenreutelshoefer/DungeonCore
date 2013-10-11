@@ -7,16 +7,13 @@ package gui.mainframe.component;
 import figure.FigureInfo;
 import figure.action.EquipmentChangeAction;
 import figure.hero.HeroInfo;
-
 import game.JDEnv;
-import gui.ActionAssembler;
 import gui.MyJDGui;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
 import gui.Paragraph;
 import gui.mainframe.MainFrame;
-
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 
@@ -47,6 +44,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import control.ActionAssembler;
 
 /**
  * @author Duke1

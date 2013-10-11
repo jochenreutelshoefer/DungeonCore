@@ -6,7 +6,6 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
-import gui.ActionAssembler;
 import gui.MyJDGui;
 import gui.JDJPanel;
 import gui.Paragraph;
@@ -60,6 +59,8 @@ import java.util.Vector;
 
 import javax.swing.Scrollable;
 
+
+import control.ActionAssembler;
 //import shrine.Brood;
 import shrine.Angel;
 import shrine.Brood;
@@ -77,7 +78,6 @@ import shrine.Statue;
 import shrine.Trader;
 import shrine.ShrineInfo;
 import shrine.Xmas;
-
 import dungeon.ChestInfo;
 import dungeon.Dir;
 import dungeon.DoorInfo;
@@ -1645,7 +1645,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			right = true;
 		}
 		if (o instanceof Point) {
-			gui.getControl().roomClicked((Point) o, right);
+			Point point = (Point) o;
+			gui.getControl().roomClicked(new JDPoint(point.x, point.y), right);
 			// gui.updateGui();
 			return;
 		}

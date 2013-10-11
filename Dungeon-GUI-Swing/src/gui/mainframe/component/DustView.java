@@ -7,7 +7,6 @@ import figure.attribute.Attribute;
 import figure.hero.Character;
 import figure.hero.HeroInfo;
 import game.JDEnv;
-import gui.ActionAssembler;
 import gui.MyJDGui;
 import gui.JDJButton;
 import gui.JDJPanel;
@@ -44,6 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
+import control.ActionAssembler;
 import spell.SpellInfo;
 
 /**

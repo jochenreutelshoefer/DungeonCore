@@ -4,7 +4,6 @@ import figure.FigureInfo;
 import figure.attribute.Attribute;
 import figure.hero.Character;
 import figure.hero.HeroInfo;
-import gui.ActionAssembler;
 import gui.MyJDGui;
 import gui.JDJLabel;
 import gui.JDJPanel;
@@ -20,6 +19,8 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import control.ActionAssembler;
 
 /**
  * @author Duke1
