@@ -6,12 +6,11 @@ import figure.Figure;
 import figure.hero.Hero;
 import game.Game;
 import game.JDEnv;
+import graphics.ImageManager;
 import gui.audio.AppletAudioLoader;
-import gui.audio.AudioEffectsManager;
 import gui.audio.AudioSet;
 import gui.audio.DefaultSwingAudioLoader;
 import gui.engine2D.AWTImageLoader;
-import gui.engine2D.ImageManager;
 import gui.mainframe.MainFrame;
 
 import java.applet.Applet;
@@ -47,6 +46,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import audio.AudioEffectsManager;
 import audio.AudioLoader;
 import control.ActionAssembler;
 
@@ -457,7 +457,8 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 				AWTImageLoader.setTracker(tracker);
 				
 				ImageManager imageManager = ImageManager.getInstance(new AWTImageLoader(applet));
-				imageManager.loadImages(view);
+				imageManager.loadImages();
+				view.imagesLoaded();
 				waitDialog.setVisible(false);
 				waitDialog.dispose();
 			}

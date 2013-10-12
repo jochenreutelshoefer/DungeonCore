@@ -40,7 +40,6 @@ import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 import game.JDGUI;
-import gui.audio.AudioEffectsManager;
 import gui.engine2D.GraphBoard;
 import gui.engine2D.animation.Animation;
 import gui.engine2D.animation.AnimationReal;
@@ -63,6 +62,7 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 
 import animation.AnimationSet;
+import audio.AudioEffectsManager;
 import spell.Spell;
 import spell.SpellInfo;
 import statement.Statement;

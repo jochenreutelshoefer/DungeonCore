@@ -4,44 +4,37 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package gui.engine2D;
+package graphics;
 
-
-import graphics.AbstractImageLoader;
-import graphics.JDImageProxy;
-import gui.StartView;
-import gui.audio.AudioEffectsManager;
-
-//import gui.audio.AudioEffectsManager;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import animation.AnimationSet;
 import animation.AnimationSetDirections;
+import audio.AudioEffectsManager;
 import dungeon.Dir;
 
 public class ImageManager {
-	
+
 	private static ImageManager instance;
 	private AbstractImageLoader loader;
-	
+
 	public ImageManager(AbstractImageLoader loader2) {
 		this.loader = loader2;
 	}
+
 	public static ImageManager getInstance(AbstractImageLoader loader) {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new ImageManager(loader);
 		}
 		return instance;
 	}
 
-
-	
 	public static JDImageProxy woodTextureImage;
 
 	public static JDImageProxy fieldImage;
-	
+
 	public static JDImageProxy amulettImage;
 
 	public static JDImageProxy armorImage;
@@ -50,7 +43,7 @@ public class ImageManager {
 
 	public static JDImageProxy bear2Image;
 
-	public static JDImageProxy [] bearImage;
+	public static JDImageProxy[] bearImage;
 
 	public static JDImageProxy bookImage;
 
@@ -75,7 +68,7 @@ public class ImageManager {
 	public static JDImageProxy cursor_key_Image;
 
 	public static JDImageProxy cursor_key_not_Image;
-	
+
 	public static JDImageProxy cursor_go_not_Image;
 	public static JDImageProxy cursor_wand;
 	public static JDImageProxy cursor_use_Image;
@@ -85,7 +78,7 @@ public class ImageManager {
 	public static JDImageProxy cursor_sword;
 
 	public static JDImageProxy dark_dwarfImage;
-	
+
 	public static JDImageProxy finImage;
 
 	public static JDImageProxy darkMasterImage;
@@ -144,7 +137,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections druid_walking;
 
-	public static JDImageProxy  [] druidImage;
+	public static JDImageProxy[] druidImage;
 
 	public static JDImageProxy dummieImage;
 
@@ -220,7 +213,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections ghul1_walking = null;
 
-	public static JDImageProxy  [] ghulImage;
+	public static JDImageProxy[] ghulImage;
 
 	public static JDImageProxy graveImage;
 
@@ -229,7 +222,7 @@ public class ImageManager {
 	public static JDImageProxy hand_zeigt1_Image;
 
 	public static JDImageProxy cursor_go_Image;
-	
+
 	public static JDImageProxy helmetImage;
 
 	public static JDImageProxy keyImage;
@@ -262,7 +255,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections mage_walking;
 
-	public static JDImageProxy []  mageImage;
+	public static JDImageProxy[] mageImage;
 
 	public static AnimationSetDirections ogre1_been_hit;
 
@@ -312,18 +305,18 @@ public class ImageManager {
 
 	public static AnimationSetDirections orc1_walking = null;
 
-	public static JDImageProxy  [] ogreImage;
+	public static JDImageProxy[] ogreImage;
 
-	public static JDImageProxy  [] orcImage;
+	public static JDImageProxy[] orcImage;
 
 	public static JDImageProxy pentagrammImage;
 
 	public static JDImageProxy potion_blueImage;
 
 	public static JDImageProxy potion_redImage;
-	
+
 	public static JDImageProxy potion_greenImage;
-	
+
 	public static JDImageProxy featherImage;
 
 	public static AnimationSet puff;
@@ -386,7 +379,7 @@ public class ImageManager {
 
 	public static JDImageProxy skel2Image;
 
-	public static JDImageProxy []  skelImage;
+	public static JDImageProxy[] skelImage;
 
 	public static JDImageProxy sorcLabImage;
 
@@ -412,17 +405,17 @@ public class ImageManager {
 
 	public static AnimationSetDirections thief_walking;
 
-	public static JDImageProxy  [] thiefImage;
+	public static JDImageProxy[] thiefImage;
 
 	public static JDImageProxy traderImage;
 
 	public static JDImageProxy wall_southImage;
 
-	//public static JDImageProxy wallImage;
+	// public static JDImageProxy wallImage;
 
 	public static JDImageProxy wall_sidesImage;
 	public static JDImageProxy wall_northImage;
-	
+
 	public static AnimationSetDirections warrior_been_hit;
 
 	public static AnimationSetDirections warrior_pause;
@@ -459,14 +452,14 @@ public class ImageManager {
 
 	public static JDImageProxy wolf2Image;
 
-	public static JDImageProxy  [] wolfImage;
+	public static JDImageProxy[] wolfImage;
 
 	public static JDImageProxy wolfknifeImage;
 
 	public static JDImageProxy xmasImage;
 
-	private static AnimationSetDirections load4Animations(AbstractImageLoader a, String path,
-			String pattern, int cnt) {
+	private static AnimationSetDirections load4Animations(
+			AbstractImageLoader a, String path, String pattern, int cnt) {
 		System.gc();
 		AnimationSet[] set = new AnimationSet[4];
 		for (int i = 0; i < 4; i++) {
@@ -477,451 +470,464 @@ public class ImageManager {
 	}
 
 	public static boolean imagesLoaded = false;
-	
-	public void loadImages(final StartView board) {
-		
-		if(!imagesLoaded) {
-		
-		   
-		
-		AbstractImageLoader a = this.loader;
 
-		puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
+	public void loadImages() {
 
-		warrior_slays = load4Animations(a, "animation/warrior/", "warrior_attack_",
-				13);
-		thief_slays = load4Animations(a, "animation/thief/", "thief_attack_", 13);
-		druid_slays = load4Animations(a, "animation/druid/", "druid_attack_", 13);
-		mage_slays = load4Animations(a, "animation/mage/", "mage_attack_", 8);
+		if (!imagesLoaded) {
 
-		warrior_been_hit = load4Animations(a, "animation/warrior/","warrior_swordstan_treffer_", 7);
-		warrior_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
-		warrior_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		thief_been_hit = load4Animations(a, "animation/thief/", "thief_treffer_", 7);
-		thief_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
-		thief_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		druid_been_hit = load4Animations(a, "animation/druid/", "druid_been_hit_",9);
-		druid_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
-		druid_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		mage_been_hit = load4Animations(a, "animation/mage/", "mage_treffer_", 9);
-		mage_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
-		mage_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		warrior_tipping_over = load4Animations(a, "animation/warrior/",
-				"warrior_swordstan_kippt_um_", 9);
-		thief_tipping_over = load4Animations(a, "animation/thief/",
-				"thief_kippt_um_", 11);
-		druid_tipping_over = load4Animations(a, "animation/druid/",
-				"druid_tipping_over_", 13);
-		mage_tipping_over = load4Animations(a, "animation/mage/",
-				"mage_magier_45_kippt_um_", 10);
+			AbstractImageLoader a = this.loader;
 
-		warrior_walking = load4Animations(a, "animation/warrior/",
-				"warrior_swordstan_laeuft_", 9);
-		thief_walking = load4Animations(a, "animation/thief/", "thief_laeuft_", 9);
-		druid_walking = load4Animations(a, "animation/druid/", "druid_walking_", 8);
-		mage_walking = load4Animations(a, "animation/mage/", "mage_laeuft_", 8);
+			puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
-		warrior_using = load4Animations(a, "animation/warrior/",
-				"warrior_swordstan_spricht_", 7);
-		thief_using = load4Animations(a, "animation/thief/", "thief_laeuft_", 9);
-		
-		druid_using = load4Animations(a, "animation/druid/", "druid_talking_", 8);
-		mage_using = load4Animations(a, "animation/mage/", "mage_talking_", 9);
+			warrior_slays = load4Animations(a, "animation/warrior/",
+					"warrior_attack_", 13);
+			thief_slays = load4Animations(a, "animation/thief/",
+					"thief_attack_", 13);
+			druid_slays = load4Animations(a, "animation/druid/",
+					"druid_attack_", 13);
+			mage_slays = load4Animations(a, "animation/mage/", "mage_attack_",
+					8);
 
-		warrior_pause = load4Animations(a, "animation/warrior/",
-				"warrior_stan_strickt_", 7);
-		thief_pause = load4Animations(a, "animation/thief/", "thief_laeuft_", 9);
-		
-		druid_pause = load4Animations(a, "animation/druid/", "druid_paused_", 8);
-		mage_pause = load4Animations(a, "animation/mage/", "mage_liest_", 9);
+			warrior_been_hit = load4Animations(a, "animation/warrior/",
+					"warrior_swordstan_treffer_", 7);
+			warrior_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
+			warrior_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		warrior_sorcering = load4Animations(a, "animation/warrior/",
-				"warrior_swordstan_spricht_", 7);
-		thief_sorcering = load4Animations(a, "animation/thief/", "thief_laeuft_", 9);
-		
-		druid_sorcering = load4Animations(a, "animation/druid/",
-				"druid_magic_spelling_", 13);
-		mage_sorcering = load4Animations(a, "animation/mage/",
-				"mage_magieattack_", 9);
+			thief_been_hit = load4Animations(a, "animation/thief/",
+					"thief_treffer_", 7);
+			thief_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
+			thief_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		warrior_running = load4Animations(a, "animation/" + "warrior/",
-				"warrior_swordstan_rennt_", 8);
-		thief_running = load4Animations(a, "animation/thief/", "thief_rennt_", 9);
-		druid_running = load4Animations(a, "animation/" + "druid/",
-				"druid_running_", 8);
-		mage_running = load4Animations(a, "animation/" + "mage/",
-				"mage_magieattack_", 8);
+			druid_been_hit = load4Animations(a, "animation/druid/",
+					"druid_been_hit_", 9);
+			druid_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
+			druid_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
+			mage_been_hit = load4Animations(a, "animation/mage/",
+					"mage_treffer_", 9);
+			mage_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
+			mage_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		wolf1_been_hit = load4Animations(a, "animation/" + "wolf/",
-				"wolf_been_hit_", 9);
-		wolf1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
-		wolf1_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		wolf1_tipping_over = load4Animations(a, "animation/" + "wolf/",
-				"wolf_tipping_over_", 9);
-		wolf1_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES,1);
-		
-		wolf1_slays = load4Animations(a, "animation/" + "wolf/",
-				"wolf_wolf_attack_", 10);
-		wolf1_slays.addAudioClip(AudioEffectsManager.WOLF_ATTACKS,1);
-		
-		wolf1_walking = load4Animations(a, "animation/" + "wolf/",
-				"wolf_rennt_", 10);
-		wolf1_running = load4Animations(a, "animation/" + "wolf/",
-				"wolf_laeuft_", 10);
-		
-		wolf1_pause = wolf1_walking;
+			warrior_tipping_over = load4Animations(a, "animation/warrior/",
+					"warrior_swordstan_kippt_um_", 9);
+			thief_tipping_over = load4Animations(a, "animation/thief/",
+					"thief_kippt_um_", 11);
+			druid_tipping_over = load4Animations(a, "animation/druid/",
+					"druid_tipping_over_", 13);
+			mage_tipping_over = load4Animations(a, "animation/mage/",
+					"mage_magier_45_kippt_um_", 10);
 
-		skel1_been_hit = load4Animations(a, "animation/" + "skel/",
-				"skel_swordskel_treffer_", 7);
-		skel1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
-		skel1_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		skel1_tipping_over = load4Animations(a, "animation/" + "skel/",
-				"skel_zerfaellt_", 9);
-		skel1_slays = load4Animations(a, "animation/" + "skel/",
-				"skel_swordskel_attack_", 11);
-		skel1_walking = load4Animations(a, "animation/" + "skel/",
-		"skel_swordskel_laeuft_", 11);
-		skel1_running = load4Animations(a, "animation/" + "skel/",
-		"skel_swordskel_rennt_", 11);
-		
-		skel1_pause = skel1_walking;
+			warrior_walking = load4Animations(a, "animation/warrior/",
+					"warrior_swordstan_laeuft_", 9);
+			thief_walking = load4Animations(a, "animation/thief/",
+					"thief_laeuft_", 9);
+			druid_walking = load4Animations(a, "animation/druid/",
+					"druid_walking_", 8);
+			mage_walking = load4Animations(a, "animation/mage/",
+					"mage_laeuft_", 8);
 
+			warrior_using = load4Animations(a, "animation/warrior/",
+					"warrior_swordstan_spricht_", 7);
+			thief_using = load4Animations(a, "animation/thief/",
+					"thief_laeuft_", 9);
 
-		ghul1_been_hit = load4Animations(a, "animation/" + "ghul/",
-				"ghul_treffer_", 7);
-		ghul1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
-		ghul1_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		
-		ghul1_tipping_over = load4Animations(a, "animation/" + "ghul/",
-				"ghul_mumie_zerfaellt_", 9);
-		ghul1_slays = load4Animations(a, "animation/" + "ghul/",
-				"ghul_mummy_45_attack_", 10);
-		
-		ghul1_running = load4Animations(a, "animation/" + "ghul/",
-				"ghul_mummy_rennt_", 10);
-		ghul1_walking = load4Animations(a, "animation/" + "ghul/",
-				"ghul_mummy_45_laeuft_", 10);
-		ghul1_pause = ghul1_walking;
+			druid_using = load4Animations(a, "animation/druid/",
+					"druid_talking_", 8);
+			mage_using = load4Animations(a, "animation/mage/", "mage_talking_",
+					9);
 
-		ogre1_been_hit = load4Animations(a, "animation/" + "ogre/",
-				"ogre_been_hit_", 7);
-		ogre1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
-		ogre1_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		ogre1_tipping_over = load4Animations(a, "animation/" + "ogre/",
-				"ogre_tipping_over_", 9);
-		ogre1_slays = load4Animations(a, "animation/" + "ogre/", "ogre_attack_",
-				11);
-		ogre1_running = load4Animations(a, "animation/" + "ogre/", "ogre_running_",
-				11);
-		ogre1_walking = load4Animations(a, "animation/" + "ogre/", "ogre_walking_",
-				11);
-		ogre1_pause = ogre1_walking;
+			warrior_pause = load4Animations(a, "animation/warrior/",
+					"warrior_stan_strickt_", 7);
+			thief_pause = load4Animations(a, "animation/thief/",
+					"thief_laeuft_", 9);
 
-		orc1_been_hit = load4Animations(a, "animation/" + "orc/",
-				"orc_been_hit_", 7);
-		orc1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
-		orc1_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		orc1_tipping_over = load4Animations(a, "animation/" + "orc/",
-				"orc_tipping_over_", 9);
-		orc1_slays = load4Animations(a, "animation/" + "orc/", "orc_attack_", 11);
-		orc1_walking = load4Animations(a, "animation/" + "orc/", "orc_walking_", 11);
-		orc1_running = load4Animations(a, "animation/" + "orc/", "orc_running_", 11);
-		orc1_pause = orc1_walking;
+			druid_pause = load4Animations(a, "animation/druid/",
+					"druid_paused_", 8);
+			mage_pause = load4Animations(a, "animation/mage/", "mage_liest_", 9);
 
-		spider1_been_hit = load4Animations(a, "animation/" + "spider/",
-				"spider_been_hit_", 7);
-		spider1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
-		spider1_been_hit.addAudioClip(AudioEffectsManager.SMASH,1);
-		
-		
-		spider1_tipping_over = load4Animations(a, "animation/" + "spider/",
-				"spider_tipping_over_", 9);
-		spider1_tipping_over.addAudioClip(AudioEffectsManager.SPIDER_DIES,0);
-		
-		spider1_slays = load4Animations(a, "animation/" + "spider/",
-				"spider_attack_", 11);
-		spider1_slays.addAudioClip(AudioEffectsManager.SPIDER_ATTACKS,0);
-		
-		
-		spider1_walking = load4Animations(a, "animation/" + "spider/",
-				"spider_walking_", 11);
-		spider1_running = spider1_walking;
-		spider1_pause = spider1_walking;
-		
-		
-		warriorImage = makePics(warrior_walking);
-		thiefImage = makePics(thief_walking);
-		druidImage = makePics(druid_walking);
-		mageImage = makePics(mage_walking);
-		wolfImage = makePics(wolf1_walking);
-		orcImage = makePics(orc1_walking);
-		ghulImage = makePics(ghul1_walking);
-		skelImage = makePics(skel1_walking);
-		ogreImage = makePics(ogre1_walking);
-		bearImage = makePics(spider1_walking);
-		
-		
-		dead_dwarfImage = new JDImageProxy(a, "dead_dwarf.gif");
-		dead_warriorImage = new JDImageProxy(a, "dead_stan.gif");
-		dead_thiefImage = new JDImageProxy(a, "dead_blue_pirate.gif");
-		dead_druidImage = new JDImageProxy(a, "dead_white_mage.gif");
-		dead_mageImage = new JDImageProxy(a, "dead_black_mage.gif");
+			warrior_sorcering = load4Animations(a, "animation/warrior/",
+					"warrior_swordstan_spricht_", 7);
+			thief_sorcering = load4Animations(a, "animation/thief/",
+					"thief_laeuft_", 9);
 
-		chestImage = new JDImageProxy(a, "chest_cut_trans.gif");
-		floorImage = new JDImageProxy(a, "boden5.gif");
-		floor_darkImage = new JDImageProxy(a, "boden5_dark.gif");
-		floor_mediumImage = new JDImageProxy(a, "boden5_dark1.gif");
+			druid_sorcering = load4Animations(a, "animation/druid/",
+					"druid_magic_spelling_", 13);
+			mage_sorcering = load4Animations(a, "animation/mage/",
+					"mage_magieattack_", 9);
 
-		floorImage2 = new JDImageProxy(a, "boden3.gif");
-		floor_darkImage2 = new JDImageProxy(a, "boden3_dark.gif");
-		floor_mediumImage2 = new JDImageProxy(a, "boden3_dark1.gif");
+			warrior_running = load4Animations(a, "animation/" + "warrior/",
+					"warrior_swordstan_rennt_", 8);
+			thief_running = load4Animations(a, "animation/thief/",
+					"thief_rennt_", 9);
+			druid_running = load4Animations(a, "animation/" + "druid/",
+					"druid_running_", 8);
+			mage_running = load4Animations(a, "animation/" + "mage/",
+					"mage_magieattack_", 8);
 
-		floorImage3 = new JDImageProxy(a, "boden4.gif");
-		floor_darkImage3 = new JDImageProxy(a, "boden4_dark.gif");
-		floor_mediumImage3 = new JDImageProxy(a, "boden4_dark1.gif");
+			wolf1_been_hit = load4Animations(a, "animation/" + "wolf/",
+					"wolf_been_hit_", 9);
+			wolf1_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			wolf1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		floorImage4 = new JDImageProxy(a, "boden6.gif");
-		floor_darkImage4 = new JDImageProxy(a, "boden6_dark.gif");
-		floor_mediumImage4 = new JDImageProxy(a, "boden6_dark1.gif");
+			wolf1_tipping_over = load4Animations(a, "animation/" + "wolf/",
+					"wolf_tipping_over_", 9);
+			wolf1_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES, 1);
 
-		floorImage5 = new JDImageProxy(a, "boden7.gif");
-		floor_darkImage5 = new JDImageProxy(a, "boden7_dark.gif");
-		floor_mediumImage5 = new JDImageProxy(a, "boden7_dark1.gif");
+			wolf1_slays = load4Animations(a, "animation/" + "wolf/",
+					"wolf_wolf_attack_", 10);
+			wolf1_slays.addAudioClip(AudioEffectsManager.WOLF_ATTACKS, 1);
 
-		floorImage6 = new JDImageProxy(a, "boden8.gif");
-		floor_darkImage6 = new JDImageProxy(a, "boden8_dark.gif");
-		floor_mediumImage6 = new JDImageProxy(a, "boden8_dark1.gif");
+			wolf1_walking = load4Animations(a, "animation/" + "wolf/",
+					"wolf_rennt_", 10);
+			wolf1_running = load4Animations(a, "animation/" + "wolf/",
+					"wolf_laeuft_", 10);
 
-		floorImage7 = new JDImageProxy(a, "boden9.gif");
-		floor_darkImage7 = new JDImageProxy(a, "boden9_dark.gif");
-		floor_mediumImage7 = new JDImageProxy(a, "boden9_dark1.gif");
+			wolf1_pause = wolf1_walking;
 
-		makeFloorArrays();
+			skel1_been_hit = load4Animations(a, "animation/" + "skel/",
+					"skel_swordskel_treffer_", 7);
+			skel1_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			skel1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		wall_sidesImage = new JDImageProxy(a, "wand_seiten.gif");
-		wall_northImage = new JDImageProxy(a, "wand_nord.gif");
-		wall_southImage = new JDImageProxy(a, "wall_south.gif");
+			skel1_tipping_over = load4Animations(a, "animation/" + "skel/",
+					"skel_zerfaellt_", 9);
+			skel1_slays = load4Animations(a, "animation/" + "skel/",
+					"skel_swordskel_attack_", 11);
+			skel1_walking = load4Animations(a, "animation/" + "skel/",
+					"skel_swordskel_laeuft_", 11);
+			skel1_running = load4Animations(a, "animation/" + "skel/",
+					"skel_swordskel_rennt_", 11);
 
-		door_north = new JDImageProxy(a, "tuer_nord.gif");
+			skel1_pause = skel1_walking;
 
-		door_north_none = new JDImageProxy(a, "tuer_nord_keine.gif");
+			ghul1_been_hit = load4Animations(a, "animation/" + "ghul/",
+					"ghul_treffer_", 7);
+			ghul1_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			ghul1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		door_east = new JDImageProxy(a, "tuer_ost.gif");
+			ghul1_tipping_over = load4Animations(a, "animation/" + "ghul/",
+					"ghul_mumie_zerfaellt_", 9);
+			ghul1_slays = load4Animations(a, "animation/" + "ghul/",
+					"ghul_mummy_45_attack_", 10);
 
-		door_east_none = new JDImageProxy(a, "tuer_ost_keine.gif");
+			ghul1_running = load4Animations(a, "animation/" + "ghul/",
+					"ghul_mummy_rennt_", 10);
+			ghul1_walking = load4Animations(a, "animation/" + "ghul/",
+					"ghul_mummy_45_laeuft_", 10);
+			ghul1_pause = ghul1_walking;
 
-		door_west = new JDImageProxy(a, "tuer_west.gif");
+			ogre1_been_hit = load4Animations(a, "animation/" + "ogre/",
+					"ogre_been_hit_", 7);
+			ogre1_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			ogre1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		door_west_none = new JDImageProxy(a, "tuer_west_keine.gif");
-		door_south_none = new JDImageProxy(a, "tuer_sued_keine.gif");
-		door_south = new JDImageProxy(a, "tuer_sued.gif");
-		door_south_lock = new JDImageProxy(a, "tuer_sued_schloss.gif");
+			ogre1_tipping_over = load4Animations(a, "animation/" + "ogre/",
+					"ogre_tipping_over_", 9);
+			ogre1_slays = load4Animations(a, "animation/" + "ogre/",
+					"ogre_attack_", 11);
+			ogre1_running = load4Animations(a, "animation/" + "ogre/",
+					"ogre_running_", 11);
+			ogre1_walking = load4Animations(a, "animation/" + "ogre/",
+					"ogre_walking_", 11);
+			ogre1_pause = ogre1_walking;
 
-		axeImage = new JDImageProxy(a, "axt.gif");
-		swordImage = new JDImageProxy(a, "schwert.gif");
-		lanceImage = new JDImageProxy(a, "lanze.gif");
-		wolfknifeImage = new JDImageProxy(a, "wolfsmesser.gif");
-		clubImage = new JDImageProxy(a, "knueppel.gif");
-		scrollImage = new JDImageProxy(a, "scroll_blue.gif");
-		documentImage = new JDImageProxy(a, "scroll_white.gif");
-		potion_redImage = new JDImageProxy(a, "potion_rot.gif");
-		potion_blueImage = new JDImageProxy(a, "potion_blue.gif");
-		dustImage = new JDImageProxy(a, "dust.gif");
-		armorImage = new JDImageProxy(a, "ruestung.gif");
-		shieldImage = new JDImageProxy(a, "shield2.gif");
-		helmetImage = new JDImageProxy(a, "helm.gif");
-		bookImage = new JDImageProxy(a, "book_yellow.gif");
-		keyImage = new JDImageProxy(a, "key.gif");
-		falltuerImage = new JDImageProxy(a, "falltuer.gif");
-		engelImage = new JDImageProxy(a, "engel2.gif");
-		shrine_blueImage = new JDImageProxy(a, "shrine_blue.gif");
-		shrine_redImage = new JDImageProxy(a, "shrine_red.gif");
-		shrine_greenImage = new JDImageProxy(a, "shrine_green.gif");
-		shrine_yellowImage = new JDImageProxy(a, "shrine_yellow.gif");
-		shrine_whiteImage = new JDImageProxy(a, "shrine_white.gif");
-		shrine_blackImage = new JDImageProxy(a, "shrine_black.gif");
-		shrine_lilaImage = new JDImageProxy(a, "shrine_lila.gif");
-		shrine_turkisImage = new JDImageProxy(a, "shrine_tuerkis.gif");
-		shrine_small_redImage = new JDImageProxy(a,
-				"shrine_small_red.gif");
-		shrine_small_blueImage = new JDImageProxy(a,
-				"shrine_small_blue.gif");
-		shrine_small_yellowImage = new JDImageProxy(a,
-				"shrine_small_yellow.gif");
-		shrine_small_greenImage = new JDImageProxy(a,
-				"shrine_small_green.gif");
-		sorcLabImage = new JDImageProxy(a, "zauberlabor1.gif");
-		amulettImage = new JDImageProxy(a, "amulett.gif");
+			orc1_been_hit = load4Animations(a, "animation/" + "orc/",
+					"orc_been_hit_", 7);
+			orc1_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			orc1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		repairImage = new JDImageProxy(a, "amboss.gif");
-		fountainImage = new JDImageProxy(a, "fountain.gif");
-		statueImage = new JDImageProxy(a, "statue.gif");
-		chest_lockImage = new JDImageProxy(a, "chest_schloss.gif");
-		door_north_lock = new JDImageProxy(a, "tuer_nord_schloss.gif");
-		door_east_lock = new JDImageProxy(a, "tuer_ost_schloss.gif");
-		door_west_lock = new JDImageProxy(a, "tuer_west_schloss.gif");
-		graveImage = new JDImageProxy(a, "grave.gif");
-		caveImage = new JDImageProxy(a, "cave.gif");
-		traderImage = new JDImageProxy(a, "haendler2.gif");
-		rune_redImage = new JDImageProxy(a, "rune_red.gif");
-		rune_greenImage = new JDImageProxy(a, "rune_green.gif");
-		rune_blueImage = new JDImageProxy(a, "rune_blue.gif");
-		rune_yellowImage = new JDImageProxy(a, "rune_yellow.gif");
-		cristall_redImage = new JDImageProxy(a, "kristall_rot.gif");
-		cristall_greenImage = new JDImageProxy(a, "kristall_gruen.gif");
-		cristall_blueImage = new JDImageProxy(a, "kristall_blau.gif");
-		cristall_yellowImage = new JDImageProxy(a, "kristall_gelb.gif");
-		spotImage = new JDImageProxy(a, "versteck.gif");
-		hand_zeigt1_Image = new JDImageProxy(a, "zeigerhand-zeigt1.gif");
-		cursor_go_Image = new JDImageProxy(a, "zeigerhand_go.gif");
-		hand_greift1_Image = new JDImageProxy(a,
-				"zeigerhand-greift1.gif");
-		cursor_key_Image = new JDImageProxy(a, "zeiger_key.gif");
-		cursor_key_not_Image = new JDImageProxy(a,
-				"zeiger_key_nicht.gif");
-		cursor_sword = new JDImageProxy(a, "zeigerhand-schwert.gif");
-		cursor_clock = new JDImageProxy(a, "zeigerhand-sanduhr.gif");
-		cursor_scout = new JDImageProxy(a, "zeigerhand-go_scout.gif");
-		cursor_go_not_Image =  new JDImageProxy(a, "zeigerhand_go_not.gif");
-		cursor_wand =  new JDImageProxy(a, "zeiger_zauberstab.gif");
-		cursor_use_Image = new JDImageProxy(a, "zeigerhand_faust.gif");
+			orc1_tipping_over = load4Animations(a, "animation/" + "orc/",
+					"orc_tipping_over_", 9);
+			orc1_slays = load4Animations(a, "animation/" + "orc/",
+					"orc_attack_", 11);
+			orc1_walking = load4Animations(a, "animation/" + "orc/",
+					"orc_walking_", 11);
+			orc1_running = load4Animations(a, "animation/" + "orc/",
+					"orc_running_", 11);
+			orc1_pause = orc1_walking;
 
-		pentagrammImage = new JDImageProxy(a, "pentagramm.gif");
-		darkMasterImage = new JDImageProxy(a, "mister_death.gif");
-		luziaImage = new JDImageProxy(a, "luzia.gif");
-		luzia_hutImage = new JDImageProxy(a, "luzia_hut.gif");
-		kugelImage = new JDImageProxy(a, "kugel.gif");
-		questionmark = new JDImageProxy(a, "fragezeichen.gif");
-		xmasImage = new JDImageProxy(a, "xmas.gif");
-		dark_dwarfImage = new JDImageProxy(a, "dark_dwarf.gif");
-		finImage = new JDImageProxy(a, "growing n0007c.gif");
-		luzia_ball_greyImage = new JDImageProxy(a, "kugel_grau.gif");
+			spider1_been_hit = load4Animations(a, "animation/" + "spider/",
+					"spider_been_hit_", 7);
+			spider1_been_hit
+					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			spider1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-		luzia_ball_redImage = new JDImageProxy(a, "kugel_rot.gif");
+			spider1_tipping_over = load4Animations(a, "animation/" + "spider/",
+					"spider_tipping_over_", 9);
+			spider1_tipping_over.addAudioClip(AudioEffectsManager.SPIDER_DIES,
+					0);
 
-		fieldImage  = new JDImageProxy(a, "field3.gif");
-		woodTextureImage =  new JDImageProxy(a, "theWood3.gif");
-		
-		featherImage = new JDImageProxy(a, "feder.gif");
-		potion_greenImage = new JDImageProxy(a, "potion_green.gif");
+			spider1_slays = load4Animations(a, "animation/" + "spider/",
+					"spider_attack_", 11);
+			spider1_slays.addAudioClip(AudioEffectsManager.SPIDER_ATTACKS, 0);
+
+			spider1_walking = load4Animations(a, "animation/" + "spider/",
+					"spider_walking_", 11);
+			spider1_running = spider1_walking;
+			spider1_pause = spider1_walking;
+
+			warriorImage = makePics(warrior_walking);
+			thiefImage = makePics(thief_walking);
+			druidImage = makePics(druid_walking);
+			mageImage = makePics(mage_walking);
+			wolfImage = makePics(wolf1_walking);
+			orcImage = makePics(orc1_walking);
+			ghulImage = makePics(ghul1_walking);
+			skelImage = makePics(skel1_walking);
+			ogreImage = makePics(ogre1_walking);
+			bearImage = makePics(spider1_walking);
+
+			dead_dwarfImage = new JDImageProxy(a, "dead_dwarf.gif");
+			dead_warriorImage = new JDImageProxy(a, "dead_stan.gif");
+			dead_thiefImage = new JDImageProxy(a, "dead_blue_pirate.gif");
+			dead_druidImage = new JDImageProxy(a, "dead_white_mage.gif");
+			dead_mageImage = new JDImageProxy(a, "dead_black_mage.gif");
+
+			chestImage = new JDImageProxy(a, "chest_cut_trans.gif");
+			floorImage = new JDImageProxy(a, "boden5.gif");
+			floor_darkImage = new JDImageProxy(a, "boden5_dark.gif");
+			floor_mediumImage = new JDImageProxy(a, "boden5_dark1.gif");
+
+			floorImage2 = new JDImageProxy(a, "boden3.gif");
+			floor_darkImage2 = new JDImageProxy(a, "boden3_dark.gif");
+			floor_mediumImage2 = new JDImageProxy(a, "boden3_dark1.gif");
+
+			floorImage3 = new JDImageProxy(a, "boden4.gif");
+			floor_darkImage3 = new JDImageProxy(a, "boden4_dark.gif");
+			floor_mediumImage3 = new JDImageProxy(a, "boden4_dark1.gif");
+
+			floorImage4 = new JDImageProxy(a, "boden6.gif");
+			floor_darkImage4 = new JDImageProxy(a, "boden6_dark.gif");
+			floor_mediumImage4 = new JDImageProxy(a, "boden6_dark1.gif");
+
+			floorImage5 = new JDImageProxy(a, "boden7.gif");
+			floor_darkImage5 = new JDImageProxy(a, "boden7_dark.gif");
+			floor_mediumImage5 = new JDImageProxy(a, "boden7_dark1.gif");
+
+			floorImage6 = new JDImageProxy(a, "boden8.gif");
+			floor_darkImage6 = new JDImageProxy(a, "boden8_dark.gif");
+			floor_mediumImage6 = new JDImageProxy(a, "boden8_dark1.gif");
+
+			floorImage7 = new JDImageProxy(a, "boden9.gif");
+			floor_darkImage7 = new JDImageProxy(a, "boden9_dark.gif");
+			floor_mediumImage7 = new JDImageProxy(a, "boden9_dark1.gif");
+
+			makeFloorArrays();
+
+			wall_sidesImage = new JDImageProxy(a, "wand_seiten.gif");
+			wall_northImage = new JDImageProxy(a, "wand_nord.gif");
+			wall_southImage = new JDImageProxy(a, "wall_south.gif");
+
+			door_north = new JDImageProxy(a, "tuer_nord.gif");
+
+			door_north_none = new JDImageProxy(a, "tuer_nord_keine.gif");
+
+			door_east = new JDImageProxy(a, "tuer_ost.gif");
+
+			door_east_none = new JDImageProxy(a, "tuer_ost_keine.gif");
+
+			door_west = new JDImageProxy(a, "tuer_west.gif");
+
+			door_west_none = new JDImageProxy(a, "tuer_west_keine.gif");
+			door_south_none = new JDImageProxy(a, "tuer_sued_keine.gif");
+			door_south = new JDImageProxy(a, "tuer_sued.gif");
+			door_south_lock = new JDImageProxy(a, "tuer_sued_schloss.gif");
+
+			axeImage = new JDImageProxy(a, "axt.gif");
+			swordImage = new JDImageProxy(a, "schwert.gif");
+			lanceImage = new JDImageProxy(a, "lanze.gif");
+			wolfknifeImage = new JDImageProxy(a, "wolfsmesser.gif");
+			clubImage = new JDImageProxy(a, "knueppel.gif");
+			scrollImage = new JDImageProxy(a, "scroll_blue.gif");
+			documentImage = new JDImageProxy(a, "scroll_white.gif");
+			potion_redImage = new JDImageProxy(a, "potion_rot.gif");
+			potion_blueImage = new JDImageProxy(a, "potion_blue.gif");
+			dustImage = new JDImageProxy(a, "dust.gif");
+			armorImage = new JDImageProxy(a, "ruestung.gif");
+			shieldImage = new JDImageProxy(a, "shield2.gif");
+			helmetImage = new JDImageProxy(a, "helm.gif");
+			bookImage = new JDImageProxy(a, "book_yellow.gif");
+			keyImage = new JDImageProxy(a, "key.gif");
+			falltuerImage = new JDImageProxy(a, "falltuer.gif");
+			engelImage = new JDImageProxy(a, "engel2.gif");
+			shrine_blueImage = new JDImageProxy(a, "shrine_blue.gif");
+			shrine_redImage = new JDImageProxy(a, "shrine_red.gif");
+			shrine_greenImage = new JDImageProxy(a, "shrine_green.gif");
+			shrine_yellowImage = new JDImageProxy(a, "shrine_yellow.gif");
+			shrine_whiteImage = new JDImageProxy(a, "shrine_white.gif");
+			shrine_blackImage = new JDImageProxy(a, "shrine_black.gif");
+			shrine_lilaImage = new JDImageProxy(a, "shrine_lila.gif");
+			shrine_turkisImage = new JDImageProxy(a, "shrine_tuerkis.gif");
+			shrine_small_redImage = new JDImageProxy(a, "shrine_small_red.gif");
+			shrine_small_blueImage = new JDImageProxy(a,
+					"shrine_small_blue.gif");
+			shrine_small_yellowImage = new JDImageProxy(a,
+					"shrine_small_yellow.gif");
+			shrine_small_greenImage = new JDImageProxy(a,
+					"shrine_small_green.gif");
+			sorcLabImage = new JDImageProxy(a, "zauberlabor1.gif");
+			amulettImage = new JDImageProxy(a, "amulett.gif");
+
+			repairImage = new JDImageProxy(a, "amboss.gif");
+			fountainImage = new JDImageProxy(a, "fountain.gif");
+			statueImage = new JDImageProxy(a, "statue.gif");
+			chest_lockImage = new JDImageProxy(a, "chest_schloss.gif");
+			door_north_lock = new JDImageProxy(a, "tuer_nord_schloss.gif");
+			door_east_lock = new JDImageProxy(a, "tuer_ost_schloss.gif");
+			door_west_lock = new JDImageProxy(a, "tuer_west_schloss.gif");
+			graveImage = new JDImageProxy(a, "grave.gif");
+			caveImage = new JDImageProxy(a, "cave.gif");
+			traderImage = new JDImageProxy(a, "haendler2.gif");
+			rune_redImage = new JDImageProxy(a, "rune_red.gif");
+			rune_greenImage = new JDImageProxy(a, "rune_green.gif");
+			rune_blueImage = new JDImageProxy(a, "rune_blue.gif");
+			rune_yellowImage = new JDImageProxy(a, "rune_yellow.gif");
+			cristall_redImage = new JDImageProxy(a, "kristall_rot.gif");
+			cristall_greenImage = new JDImageProxy(a, "kristall_gruen.gif");
+			cristall_blueImage = new JDImageProxy(a, "kristall_blau.gif");
+			cristall_yellowImage = new JDImageProxy(a, "kristall_gelb.gif");
+			spotImage = new JDImageProxy(a, "versteck.gif");
+			hand_zeigt1_Image = new JDImageProxy(a, "zeigerhand-zeigt1.gif");
+			cursor_go_Image = new JDImageProxy(a, "zeigerhand_go.gif");
+			hand_greift1_Image = new JDImageProxy(a, "zeigerhand-greift1.gif");
+			cursor_key_Image = new JDImageProxy(a, "zeiger_key.gif");
+			cursor_key_not_Image = new JDImageProxy(a, "zeiger_key_nicht.gif");
+			cursor_sword = new JDImageProxy(a, "zeigerhand-schwert.gif");
+			cursor_clock = new JDImageProxy(a, "zeigerhand-sanduhr.gif");
+			cursor_scout = new JDImageProxy(a, "zeigerhand-go_scout.gif");
+			cursor_go_not_Image = new JDImageProxy(a, "zeigerhand_go_not.gif");
+			cursor_wand = new JDImageProxy(a, "zeiger_zauberstab.gif");
+			cursor_use_Image = new JDImageProxy(a, "zeigerhand_faust.gif");
+
+			pentagrammImage = new JDImageProxy(a, "pentagramm.gif");
+			darkMasterImage = new JDImageProxy(a, "mister_death.gif");
+			luziaImage = new JDImageProxy(a, "luzia.gif");
+			luzia_hutImage = new JDImageProxy(a, "luzia_hut.gif");
+			kugelImage = new JDImageProxy(a, "kugel.gif");
+			questionmark = new JDImageProxy(a, "fragezeichen.gif");
+			xmasImage = new JDImageProxy(a, "xmas.gif");
+			dark_dwarfImage = new JDImageProxy(a, "dark_dwarf.gif");
+			finImage = new JDImageProxy(a, "growing n0007c.gif");
+			luzia_ball_greyImage = new JDImageProxy(a, "kugel_grau.gif");
+
+			luzia_ball_redImage = new JDImageProxy(a, "kugel_rot.gif");
+
+			fieldImage = new JDImageProxy(a, "field3.gif");
+			woodTextureImage = new JDImageProxy(a, "theWood3.gif");
+
+			featherImage = new JDImageProxy(a, "feder.gif");
+			potion_greenImage = new JDImageProxy(a, "potion_green.gif");
 
 		}
-		
-		board.imagesLoaded();
+
 		imagesLoaded = true;
 	}
-	
+
 	private static JDImageProxy[] makePics(AnimationSetDirections a) {
 		AnimationSet[] sets = a.getAnimations();
-		JDImageProxy ims [] = new JDImageProxy[sets.length];
+		JDImageProxy ims[] = new JDImageProxy[sets.length];
 		for (int i = 0; i < sets.length; i++) {
 			ims[i] = sets[i].getImagesNr(0);
 		}
 		return ims;
 	}
 
-	
-	//static int[][] bgGIF = { {4, 2, 4}};
-	//static BufferedImageOp opGIF = new LookupOp(new MyLookUpTable(bgGIF,4), null);
-	//static Graphics g2;
-	
-//	private static Image performCutOperationsGIF(Image element,String fileName) {
-//
-//		
-//		
-//		BufferedImage mBufferedImage = new BufferedImage(
-//		element.getWidth(null), element.getHeight(null),
-//		BufferedImage.TYPE_INT_ARGB);
-//		g2 = mBufferedImage.createGraphics();
-//		g2.drawImage(element, 0, 0, null);
-//
-//		//Image im = bild.createImage(mBufferedImage.getWidth(), mBufferedImage.getHeight());
-//		opGIF.filter(mBufferedImage, mBufferedImage);
-//		OutputStream output = null;
-//		//D:\workspaces\workspaceJD\java_dungeon\pics
-//		String dest  = JDImageLoader.LOCAL_PICTURE_PATH+fileName+".gif";
-//		System.out.println("writing out : "+dest);
-//		try {
-//			output = new BufferedOutputStream(
-//					new FileOutputStream(dest
-//							));
-//			
-//		} catch (Exception e) {
-//			System.out.println("filenotfound!");
-//		}
-//		BMP_Writer bmpwriter = new BMP_Writer();
-//	
-//		Gif89Encoder encode  = null;
-//		try {
-//			
-//			encode = new Gif89Encoder(mBufferedImage);
-//			
-//			encode.encode(output);
-//			output.close();
-//			System.out.println("ready!");
-//		} catch (Exception e) {
-//			System.out.println("encode error :");
-//			e.printStackTrace();
-//			System.out.println(e.toString());
-//		}
-//		//System.exit(0);
-//		return mBufferedImage;
-//
-//	}
-//	//static int[][] bgPNG = { {97, 68, 43}};
-//	//static int[][] bgPNG = { {111, 79, 51}};
-//	//static int[][] bgPNG = { {106, 76 ,48}};
-//	static int[][] bgPNG = { {105, 74, 46}};
-//	//static int[][] bgPNG = { {110 ,80, 52}};
-//	static BufferedImageOp opPNG = new LookupOp(new MyLookUpTable(bgPNG,0), null);
-//	
-//	
-//	private static void performCutOperationsPNG(Image element,String fileName) {
-//
-//		BufferedImage mBufferedImage = new BufferedImage(
-//		element.getWidth(null), element.getHeight(null),
-//		BufferedImage.TYPE_INT_ARGB);
-//		g2 = mBufferedImage.createGraphics();
-//		g2.drawImage(element, 0, 0, null);
-//
-//		opPNG.filter(mBufferedImage, mBufferedImage);
-//		String dest  = JDImageLoader.LOCAL_PICTURE_PATH+fileName+"_trans.PNG";
-//		System.out.println("writing out : "+dest);
-//			
-//		try {
-//				ImageIO.write(mBufferedImage, "png", new File(dest));
-//			System.out.println("ready!");
-//		} catch (Exception e) {
-//			System.out.println("encode error :");
-//			e.printStackTrace();
-//			System.out.println(e.toString());
-//		}
-//
-//	}
-	
+	// static int[][] bgGIF = { {4, 2, 4}};
+	// static BufferedImageOp opGIF = new LookupOp(new MyLookUpTable(bgGIF,4),
+	// null);
+	// static Graphics g2;
 
-	private static JDImageProxy[] loadArray(AbstractImageLoader a, String path, int cnt) {
+	// private static Image performCutOperationsGIF(Image element,String
+	// fileName) {
+	//
+	//
+	//
+	// BufferedImage mBufferedImage = new BufferedImage(
+	// element.getWidth(null), element.getHeight(null),
+	// BufferedImage.TYPE_INT_ARGB);
+	// g2 = mBufferedImage.createGraphics();
+	// g2.drawImage(element, 0, 0, null);
+	//
+	// //Image im = bild.createImage(mBufferedImage.getWidth(),
+	// mBufferedImage.getHeight());
+	// opGIF.filter(mBufferedImage, mBufferedImage);
+	// OutputStream output = null;
+	// //D:\workspaces\workspaceJD\java_dungeon\pics
+	// String dest = JDImageLoader.LOCAL_PICTURE_PATH+fileName+".gif";
+	// System.out.println("writing out : "+dest);
+	// try {
+	// output = new BufferedOutputStream(
+	// new FileOutputStream(dest
+	// ));
+	//
+	// } catch (Exception e) {
+	// System.out.println("filenotfound!");
+	// }
+	// BMP_Writer bmpwriter = new BMP_Writer();
+	//
+	// Gif89Encoder encode = null;
+	// try {
+	//
+	// encode = new Gif89Encoder(mBufferedImage);
+	//
+	// encode.encode(output);
+	// output.close();
+	// System.out.println("ready!");
+	// } catch (Exception e) {
+	// System.out.println("encode error :");
+	// e.printStackTrace();
+	// System.out.println(e.toString());
+	// }
+	// //System.exit(0);
+	// return mBufferedImage;
+	//
+	// }
+	// //static int[][] bgPNG = { {97, 68, 43}};
+	// //static int[][] bgPNG = { {111, 79, 51}};
+	// //static int[][] bgPNG = { {106, 76 ,48}};
+	// static int[][] bgPNG = { {105, 74, 46}};
+	// //static int[][] bgPNG = { {110 ,80, 52}};
+	// static BufferedImageOp opPNG = new LookupOp(new MyLookUpTable(bgPNG,0),
+	// null);
+	//
+	//
+	// private static void performCutOperationsPNG(Image element,String
+	// fileName) {
+	//
+	// BufferedImage mBufferedImage = new BufferedImage(
+	// element.getWidth(null), element.getHeight(null),
+	// BufferedImage.TYPE_INT_ARGB);
+	// g2 = mBufferedImage.createGraphics();
+	// g2.drawImage(element, 0, 0, null);
+	//
+	// opPNG.filter(mBufferedImage, mBufferedImage);
+	// String dest = JDImageLoader.LOCAL_PICTURE_PATH+fileName+"_trans.PNG";
+	// System.out.println("writing out : "+dest);
+	//
+	// try {
+	// ImageIO.write(mBufferedImage, "png", new File(dest));
+	// System.out.println("ready!");
+	// } catch (Exception e) {
+	// System.out.println("encode error :");
+	// e.printStackTrace();
+	// System.out.println(e.toString());
+	// }
+	//
+	// }
+
+	private static JDImageProxy[] loadArray(AbstractImageLoader a, String path,
+			int cnt) {
 		JDImageProxy[] ims = new JDImageProxy[cnt];
 		for (int i = 0; i < cnt; i++) {
 
-			JDImageProxy im = new JDImageProxy(path + Integer.toString(i)+ ".GIF",a);
+			JDImageProxy im = new JDImageProxy(path + Integer.toString(i)
+					+ ".GIF", a);
 
 			ims[i] = im;
 			if (ims[i] == null) {
@@ -960,12 +966,13 @@ public class ImageManager {
 			suffix += "0";
 		}
 		suffix += numberStr;
-		
+
 		while (i < 15) {
-			
-			JDImageProxy im = new JDImageProxy(path + fileNamePrefix + dirChar + suffix+"_trans.GIF",a);
-			if(im.fileExists()) {
-				imageList.add(im);			
+
+			JDImageProxy im = new JDImageProxy(path + fileNamePrefix + dirChar
+					+ suffix + "_trans.GIF", a);
+			if (im.fileExists()) {
+				imageList.add(im);
 			}
 			i++;
 
@@ -976,7 +983,6 @@ public class ImageManager {
 			}
 			suffix += numberStr;
 		}
-		
 
 		JDImageProxy[] ims = new JDImageProxy[imageList.size()];
 		int k = 0;
@@ -988,9 +994,6 @@ public class ImageManager {
 
 		return ims;
 	}
-
-
-
 
 	public static int[] getArray(int value, int cnt) {
 		int[] a = new int[cnt];

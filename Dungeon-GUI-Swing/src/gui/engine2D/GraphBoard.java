@@ -6,6 +6,7 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
+import graphics.ImageManager;
 import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.JDJPanel;
@@ -58,6 +59,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Scrollable;
+
 
 
 

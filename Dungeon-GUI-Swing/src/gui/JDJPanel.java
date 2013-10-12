@@ -1,6 +1,6 @@
 package gui;
 
-import gui.engine2D.ImageManager;
+import graphics.ImageManager;
 
 import java.awt.Graphics;
 import java.awt.LayoutManager;
