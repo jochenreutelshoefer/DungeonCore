@@ -44,7 +44,6 @@ import gui.audio.AudioEffectsManager;
 import gui.engine2D.GraphBoard;
 import gui.engine2D.animation.Animation;
 import gui.engine2D.animation.AnimationReal;
-import gui.engine2D.animation.AnimationSet;
 import gui.engine2D.animation.AnimationTask;
 import gui.engine2D.animation.MasterAnimation;
 import gui.mainframe.MainFrame;
@@ -63,6 +62,7 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 
+import animation.AnimationSet;
 import spell.Spell;
 import spell.SpellInfo;
 import statement.Statement;

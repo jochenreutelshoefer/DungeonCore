@@ -11,7 +11,6 @@ import gui.MyJDGui;
 import gui.JDJPanel;
 import gui.Paragraph;
 import gui.Paragraphable;
-import gui.engine2D.animation.AnimationSet;
 import gui.mainframe.MainFrame;
 import gui.mainframe.component.BoardView;
 import io.ResourceLoader;
@@ -64,6 +63,8 @@ import javax.swing.Scrollable;
 
 
 
+
+import animation.AnimationSet;
 import control.ActionAssembler;
 //import shrine.Brood;
 import shrine.Angel;

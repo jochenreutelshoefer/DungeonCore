@@ -15,7 +15,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class AudioSet {
+import audio.AbstractAudioSet;
+import audio.AudioLoader;
+
+public class AudioSet implements AbstractAudioSet {
 
 	public static boolean soundEnabled = true;
 	
@@ -96,15 +99,10 @@ public class AudioSet {
 		}
 	}
 
-	public static AudioSet createAudioSet(Applet applet, String[] filenames) {
+	public static AbstractAudioSet createAudioSet(AudioLoader loader, String[] filenames) {
 		if (filenames.length == 0) {
 			return null;
 		}
-		AudioSet set = new AudioSet(applet);
-		for (int i = 0; i < filenames.length; i++) {
-			System.out.println("adding clip: "+filenames[i]);
-			set.addClip(filenames[i]);
-		}
-		return set;
+		return loader.createAudioSet(filenames);
 	}
 }

@@ -2,30 +2,33 @@ package gui.audio;
 
 import java.applet.Applet;
 
+import audio.AbstractAudioSet;
+import audio.AudioLoader;
+
 public class AudioEffectsManager {
 
 	private static boolean initialized = false;
 
-	public static AudioSet SMASH;
-	public static AudioSet MONSTER_HURT;
-	public static AudioSet HERO_HURT;
+	public static AbstractAudioSet SMASH;
+	public static AbstractAudioSet MONSTER_HURT;
+	public static AbstractAudioSet HERO_HURT;
 
-	public static AudioSet SKEL_HURT;
-	public static AudioSet DOOR_CLOSE;
-	public static AudioSet DOOR_LOCK;
+	public static AbstractAudioSet SKEL_HURT;
+	public static AbstractAudioSet DOOR_CLOSE;
+	public static AbstractAudioSet DOOR_LOCK;
 
-	public static AudioSet MAGIC_FIREBALL;
-	public static AudioSet SPIDER_DIES;
-	public static AudioSet WOLF_DIES;
-	public static AudioSet WOLF_ATTACKS;
-	public static AudioSet SPIDER_ATTACKS;
-	public static AudioSet MAGIC_SOUND;
-	public static AudioSet MAGIC_BLING;
+	public static AbstractAudioSet MAGIC_FIREBALL;
+	public static AbstractAudioSet SPIDER_DIES;
+	public static AbstractAudioSet WOLF_DIES;
+	public static AbstractAudioSet WOLF_ATTACKS;
+	public static AbstractAudioSet SPIDER_ATTACKS;
+	public static AbstractAudioSet MAGIC_SOUND;
+	public static AbstractAudioSet MAGIC_BLING;
 
 	// unused
-	public static AudioSet HIT;
+	public static AbstractAudioSet HIT;
 
-	public static void init(Applet a) {
+	public static void init(AudioLoader a) {
 
 		if (!initialized) {
 			initialized = true;
@@ -65,7 +68,7 @@ public class AudioEffectsManager {
 		}
 	}
 	
-	public static void playSound(AudioSet set) {
+	public static void playSound(AbstractAudioSet set) {
 		if(set != null) {
 			set.playRandomSound();
 		}

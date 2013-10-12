@@ -1,6 +1,6 @@
-package gui.engine2D.animation;
+package animation;
 
-import gui.audio.AudioSet;
+import audio.AbstractAudioSet;
 
 public class AnimationSetDirections {
 
@@ -14,13 +14,13 @@ public class AnimationSetDirections {
 		this.animations = anis;
 	}
 	
-	public void addAudioClip(AudioSet sound, int beginNr) {
+	public void addAudioClip(AbstractAudioSet sound, int beginNr) {
 		for (AnimationSet ani : animations) {
 			ani.addAudio(sound, beginNr);
 		}
 	}
 	
-	public void addAudioClipHalfTime(AudioSet sound) {
+	public void addAudioClipHalfTime(AbstractAudioSet sound) {
 		for (AnimationSet ani : animations) {
 			ani.addAudio(sound, animations[0].getLength()/2);
 		}

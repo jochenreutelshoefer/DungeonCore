@@ -24,6 +24,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 
+import animation.AnimationSet;
+import audio.AbstractAudioSet;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 
@@ -109,9 +111,9 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		/*
 		 * play sound during animation
 		 */
-		Set<AudioSet> sounds = set.getSound(num);
+		Set<AbstractAudioSet> sounds = set.getSound(num);
 		if (sounds != null) {
-			for (AudioSet audioSet : sounds) {
+			for (AbstractAudioSet audioSet : sounds) {
 				if(audioSet != null) {
 					audioSet.playRandomSound();
 				}

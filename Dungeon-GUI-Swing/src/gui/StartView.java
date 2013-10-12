@@ -6,8 +6,10 @@ import figure.Figure;
 import figure.hero.Hero;
 import game.Game;
 import game.JDEnv;
+import gui.audio.AppletAudioLoader;
 import gui.audio.AudioEffectsManager;
 import gui.audio.AudioSet;
+import gui.audio.DefaultSwingAudioLoader;
 import gui.engine2D.AWTImageLoader;
 import gui.engine2D.ImageManager;
 import gui.mainframe.MainFrame;
@@ -18,6 +20,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -44,6 +47,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import audio.AudioLoader;
 import control.ActionAssembler;
 
 
@@ -442,8 +446,15 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 				waitDialog.setVisible(true);
 				
 				if(soundEffects()) {
-					AudioEffectsManager.init(applet);
+					AudioLoader audioLoader = new DefaultSwingAudioLoader();
+					if(applet != null) {
+						audioLoader = new AppletAudioLoader(applet);
+					}
+					AudioEffectsManager.init(audioLoader);
 				}
+				
+				MediaTracker tracker = new MediaTracker(view);
+				AWTImageLoader.setTracker(tracker);
 				
 				ImageManager imageManager = ImageManager.getInstance(new AWTImageLoader(applet));
 				imageManager.loadImages(view);

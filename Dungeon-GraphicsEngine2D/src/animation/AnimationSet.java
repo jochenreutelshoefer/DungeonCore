@@ -4,31 +4,31 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package gui.engine2D.animation;
+package animation;
 
 import graphics.JDImageProxy;
-import gui.audio.AudioSet;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import audio.AbstractAudioSet;
+
 /**
  * @author Jochen
  * 
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ *         To change the template for this generated type comment go to
+ *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class AnimationSet {
 
-	
-	private JDImageProxy [] images;
+	private JDImageProxy[] images;
 	private JDImageProxy defaultImage = null;
 	private int[] times;
 	private int length;
-	
-	private Map<Integer, Set<AudioSet>> sounds = new HashMap<Integer, Set<AudioSet>>();
+
+	private Map<Integer, Set<AbstractAudioSet>> sounds = new HashMap<Integer, Set<AbstractAudioSet>>();
 
 	/**
 	 * @return Returns the images.
@@ -37,29 +37,27 @@ public class AnimationSet {
 	public JDImageProxy[] getImages() {
 		return images;
 	}
-	
 
-	public Set<AudioSet> getSound(int round) {
+	public Set<AbstractAudioSet> getSound(int round) {
 		return sounds.get(round);
 	}
 
-	public void addAudio(AudioSet set, int k) {
-		if(sounds.containsKey(k)) {
+	public void addAudio(AbstractAudioSet set, int k) {
+		if (sounds.containsKey(k)) {
 			sounds.get(k).add(set);
 		} else {
-			Set<AudioSet> bag = new HashSet<AudioSet>();
+			Set<AbstractAudioSet> bag = new HashSet<AbstractAudioSet>();
 			bag.add(set);
 			sounds.put(k, bag);
 		}
 	}
-	
+
 	public AnimationSet(JDImageProxy[] ims, int[] t) {
 		images = ims;
-		//this.gui = gui;
-		if(ims != null) {
+		// this.gui = gui;
+		if (ims != null) {
 			this.length = ims.length;
-		}
-		else {
+		} else {
 			this.length = 0;
 		}
 		if (t.length < length) {
@@ -74,41 +72,38 @@ public class AnimationSet {
 			times = t;
 		}
 	}
-	
-
 
 	public JDImageProxy getImagesNr(int k) {
-		if(images != null && images.length > k) {
-			
-		return images[k];
-		}
-		else {
+		if (images != null && images.length > k) {
+
+			return images[k];
+		} else {
 			return null;
 		}
 	}
-	
-//	public void preLoad() {
-//		if(!loaded) {
-//			Graphics g = gui.getGraphics();
-//			for(int i = 0; i < length; i++) {
-//				g.drawImage(images[i],0,0,100,100,null);
-//				
-//			}
-//			loaded = true;
-//		}
-//	}
+
+	// public void preLoad() {
+	// if(!loaded) {
+	// Graphics g = gui.getGraphics();
+	// for(int i = 0; i < length; i++) {
+	// g.drawImage(images[i],0,0,100,100,null);
+	//
+	// }
+	// loaded = true;
+	// }
+	// }
 
 	public int getTimeNr(int k) {
 		return times[k];
 	}
 
-/**
- * @return Returns the length.
- * 
-  */
-public int getLength() {
-	return length;
-}
+	/**
+	 * @return Returns the length.
+	 * 
+	 */
+	public int getLength() {
+		return length;
+	}
 
 	/**
 	 * @return Returns the defaultImage.
@@ -118,7 +113,8 @@ public int getLength() {
 	}
 
 	/**
-	 * @param defaultImage The defaultImage to set.
+	 * @param defaultImage
+	 *            The defaultImage to set.
 	 * 
 	 */
 	public void setDefaultImage(JDImageProxy defaultImage) {

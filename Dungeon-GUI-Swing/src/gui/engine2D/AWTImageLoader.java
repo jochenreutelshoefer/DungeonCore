@@ -45,7 +45,6 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 
 	public Image loadImage(String filename) {
 		return AWTImageLoader.loadImage(applet, filename);
-
 	}
 
 	public static PictureLoadDialog dialog;

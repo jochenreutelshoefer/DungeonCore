@@ -11,18 +11,14 @@ import graphics.AbstractImageLoader;
 import graphics.JDImageProxy;
 import gui.StartView;
 import gui.audio.AudioEffectsManager;
-import gui.engine2D.animation.AnimationSet;
-import gui.engine2D.animation.AnimationSetDirections;
-import io.PictureLoadDialog;
 
-
-
-
-import java.awt.MediaTracker;
+//import gui.audio.AudioEffectsManager;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import animation.AnimationSet;
+import animation.AnimationSetDirections;
 import dungeon.Dir;
 
 public class ImageManager {
@@ -40,7 +36,6 @@ public class ImageManager {
 		return instance;
 	}
 
-	private static MediaTracker tracker;
 
 	
 	public static JDImageProxy woodTextureImage;
@@ -481,7 +476,6 @@ public class ImageManager {
 		return new AnimationSetDirections(set);
 	}
 
-	private static PictureLoadDialog loadDialog;
 	public static boolean imagesLoaded = false;
 	
 	public void loadImages(final StartView board) {
@@ -489,9 +483,6 @@ public class ImageManager {
 		if(!imagesLoaded) {
 		
 		   
-		AWTImageLoader.dialog = loadDialog;
-		tracker = new MediaTracker(board);
-		AWTImageLoader.setTracker(tracker);
 		
 		AbstractImageLoader a = this.loader;
 
@@ -832,17 +823,7 @@ public class ImageManager {
 		potion_greenImage = new JDImageProxy(a, "potion_green.gif");
 
 		}
-		try {
-			tracker.waitForAll();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		if(loadDialog!= null) {
-		loadDialog.setVisible(false);
-		loadDialog.dispose();
-		}
 		board.imagesLoaded();
 		imagesLoaded = true;
 	}
