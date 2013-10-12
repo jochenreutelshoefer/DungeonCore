@@ -6,7 +6,6 @@
  */
 package gui.engine2D.animation;
 import java.awt.Color;
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -16,12 +15,13 @@ import java.awt.Rectangle;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RoomInfo;
-
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
+import game.JDGUI;
+import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.engine2D.GraphBoard;
 import gui.engine2D.GraphicObject;
@@ -34,14 +34,14 @@ import gui.engine2D.GraphicObject;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class AnimationFake extends Animation implements Runnable {
-	Image im;
+	JDImageProxy im;
 	
 	
 	
 	int [] pointsModsY;
-	MyJDGui gui;
+	JDGUI gui;
 	
-	public AnimationFake(Image i, FigureInfo o,int type, RoomInfo r,MyJDGui gui) {
+	public AnimationFake(JDImageProxy i, FigureInfo o,int type, RoomInfo r,MyJDGui gui) {
 		super(r);
 		im = i;
 		aniType = type;

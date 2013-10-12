@@ -11,6 +11,7 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import game.JDGUI;
+import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.audio.AudioSet;
 import gui.engine2D.GraphicObject;
@@ -86,7 +87,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (o.isDead() != null && o.isDead().booleanValue()
 				&& !this.deathAnimation)
 			return;
-		Image im = set.getImagesNr(num);
+		JDImageProxy im = set.getImagesNr(num);
 		Dimension d = getSize();
 		// Dimension d2 = new Dimension((int)(d.width *
 		// sizeModifier),(int)(d.height * sizeModifier));

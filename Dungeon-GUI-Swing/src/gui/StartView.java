@@ -8,6 +8,7 @@ import game.Game;
 import game.JDEnv;
 import gui.audio.AudioEffectsManager;
 import gui.audio.AudioSet;
+import gui.engine2D.AWTImageLoader;
 import gui.engine2D.ImageManager;
 import gui.mainframe.MainFrame;
 
@@ -444,7 +445,8 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 					AudioEffectsManager.init(applet);
 				}
 				
-				ImageManager.loadImages(applet, view);
+				ImageManager imageManager = ImageManager.getInstance(new AWTImageLoader(applet));
+				imageManager.loadImages(view);
 				waitDialog.setVisible(false);
 				waitDialog.dispose();
 			}

@@ -1,6 +1,7 @@
 package gui.engine2D;
+import graphics.JDImageProxy;
+
 import java.awt.*;
-import java.awt.Image;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 
@@ -15,12 +16,12 @@ import java.awt.image.ImageProducer;
 public class JDImageAWT {
 
 	
-	private Image image;
+	private JDImageProxy image;
 	private int sizeX;
 	private int sizeY;
 	private int posY;
 	
-	public JDImageAWT(Image i, int posX, int posY,int sizeX, int sizeY) {
+	public JDImageAWT(JDImageProxy i, int posX, int posY,int sizeX, int sizeY) {
 		image = i;		
 		this.posX = posX;
 		this.posY = posY;
@@ -28,7 +29,7 @@ public class JDImageAWT {
 		this.sizeY = sizeY;
 	
 	}
-	public JDImageAWT(Image i, Rectangle r) {
+	public JDImageAWT(JDImageProxy i, Rectangle r) {
 		image = i;		
 		this.posX = r.x;
 		this.posY = r.y;
@@ -70,7 +71,7 @@ public class JDImageAWT {
 	 * @uml.property name="image"
 	 */
 	public Image getImage() {
-		return image;
+		return (Image)image.getImage();
 	}
 
 }

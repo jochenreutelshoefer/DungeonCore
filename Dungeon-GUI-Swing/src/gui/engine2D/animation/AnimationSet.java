@@ -6,11 +6,9 @@
  */
 package gui.engine2D.animation;
 
-import game.JDEnv;
-import gui.MyJDGui;
+import graphics.JDImageProxy;
 import gui.audio.AudioSet;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,21 +20,13 @@ import java.util.Set;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class AnimationSet /*extends JDEnv*/ {
+public class AnimationSet {
 
 	
-	Image[] images;
-
-	
-	Image defaultImage = null;
-
-
-	int[] times;
-
-	
-	int length;
-	MyJDGui gui;
-	boolean loaded = false;
+	private JDImageProxy [] images;
+	private JDImageProxy defaultImage = null;
+	private int[] times;
+	private int length;
 	
 	private Map<Integer, Set<AudioSet>> sounds = new HashMap<Integer, Set<AudioSet>>();
 
@@ -44,7 +34,7 @@ public class AnimationSet /*extends JDEnv*/ {
 	 * @return Returns the images.
 	 * 
 	 */
-	public Image[] getImages() {
+	public JDImageProxy[] getImages() {
 		return images;
 	}
 	
@@ -63,7 +53,7 @@ public class AnimationSet /*extends JDEnv*/ {
 		}
 	}
 	
-	public AnimationSet(Image[] ims, int[] t) {
+	public AnimationSet(JDImageProxy[] ims, int[] t) {
 		images = ims;
 		//this.gui = gui;
 		if(ims != null) {
@@ -87,7 +77,7 @@ public class AnimationSet /*extends JDEnv*/ {
 	
 
 
-	public Image getImagesNr(int k) {
+	public JDImageProxy getImagesNr(int k) {
 		if(images != null && images.length > k) {
 			
 		return images[k];
@@ -123,7 +113,7 @@ public int getLength() {
 	/**
 	 * @return Returns the defaultImage.
 	 */
-	public Image getDefaultImage() {
+	public JDImageProxy getDefaultImage() {
 		return defaultImage;
 	}
 
@@ -131,7 +121,7 @@ public int getLength() {
 	 * @param defaultImage The defaultImage to set.
 	 * 
 	 */
-	public void setDefaultImage(Image defaultImage) {
+	public void setDefaultImage(JDImageProxy defaultImage) {
 		this.defaultImage = defaultImage;
 	}
 

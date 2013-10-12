@@ -13,6 +13,7 @@
  */
 package gui.engine2D;
 
+import graphics.AbstractImageLoader;
 import io.ImageLoader;
 import io.PictureLoadDialog;
 import io.ResourceLoader;
@@ -27,7 +28,7 @@ import java.applet.*;
 import java.io.File;
 import java.net.*;
 
-public class AWTImageLoader {
+public class AWTImageLoader implements AbstractImageLoader<Image> {
 
 	public static final String LOCAL_PICTURE_PATH = "resources/pics/";
 
@@ -49,7 +50,7 @@ public class AWTImageLoader {
 
 	public static PictureLoadDialog dialog;
 
-	public static Image loadImage(Applet a, String filename) {
+	protected static Image loadImage(Applet a, String filename) {
 		Image im = null;
 		String path = new String();
 

@@ -8,13 +8,6 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 import javax.swing.border.*;
 
-/*
- * Created on 06.08.2004
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-
 /**
  * @author Jochen
  *
@@ -66,7 +59,7 @@ public class JDJPanel extends JPanel {
 //	}
 	
 	public static Image getBackGroundImage() {
-		return ImageManager.woodTextureImage;
+		return (Image)ImageManager.woodTextureImage.getImage();
 	}
 	
 	public static final int texSizeX = 96;

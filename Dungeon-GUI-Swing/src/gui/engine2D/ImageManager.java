@@ -8,14 +8,16 @@ package gui.engine2D;
 
 
 import graphics.AbstractImageLoader;
+import graphics.JDImageProxy;
 import gui.StartView;
 import gui.audio.AudioEffectsManager;
 import gui.engine2D.animation.AnimationSet;
 import gui.engine2D.animation.AnimationSetDirections;
 import io.PictureLoadDialog;
 
-import java.applet.Applet;
-import java.awt.Image;
+
+
+
 import java.awt.MediaTracker;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -41,95 +43,95 @@ public class ImageManager {
 	private static MediaTracker tracker;
 
 	
-	public static Image woodTextureImage;
+	public static JDImageProxy woodTextureImage;
 
-	public static Image fieldImage;
+	public static JDImageProxy fieldImage;
 	
-	public static Image amulettImage;
+	public static JDImageProxy amulettImage;
 
-	public static Image armorImage;
+	public static JDImageProxy armorImage;
 
-	public static Image axeImage;
+	public static JDImageProxy axeImage;
 
-	public static Image bear2Image;
+	public static JDImageProxy bear2Image;
 
-	public static Image [] bearImage;
+	public static JDImageProxy [] bearImage;
 
-	public static Image bookImage;
+	public static JDImageProxy bookImage;
 
-	public static Image caveImage;
+	public static JDImageProxy caveImage;
 
-	public static Image chest_lockImage;
+	public static JDImageProxy chest_lockImage;
 
-	public static Image chestImage;
+	public static JDImageProxy chestImage;
 
-	public static Image clubImage;
+	public static JDImageProxy clubImage;
 
-	public static Image cristall_blueImage;
+	public static JDImageProxy cristall_blueImage;
 
-	public static Image cristall_greenImage;
+	public static JDImageProxy cristall_greenImage;
 
-	public static Image cristall_redImage;
+	public static JDImageProxy cristall_redImage;
 
-	public static Image cristall_yellowImage;
+	public static JDImageProxy cristall_yellowImage;
 
-	public static Image cursor_clock;
+	public static JDImageProxy cursor_clock;
 
-	public static Image cursor_key_Image;
+	public static JDImageProxy cursor_key_Image;
 
-	public static Image cursor_key_not_Image;
+	public static JDImageProxy cursor_key_not_Image;
 	
-	public static Image cursor_go_not_Image;
-	public static Image cursor_wand;
-	public static Image cursor_use_Image;
+	public static JDImageProxy cursor_go_not_Image;
+	public static JDImageProxy cursor_wand;
+	public static JDImageProxy cursor_use_Image;
 
-	public static Image cursor_scout;
+	public static JDImageProxy cursor_scout;
 
-	public static Image cursor_sword;
+	public static JDImageProxy cursor_sword;
 
-	public static Image dark_dwarfImage;
+	public static JDImageProxy dark_dwarfImage;
 	
-	public static Image finImage;
+	public static JDImageProxy finImage;
 
-	public static Image darkMasterImage;
+	public static JDImageProxy darkMasterImage;
 
-	public static Image dead_druidImage;
+	public static JDImageProxy dead_druidImage;
 
-	public static Image dead_dwarfImage;
+	public static JDImageProxy dead_dwarfImage;
 
-	public static Image dead_mageImage;
+	public static JDImageProxy dead_mageImage;
 
-	public static Image dead_thiefImage;
+	public static JDImageProxy dead_thiefImage;
 
-	public static Image dead_warriorImage;
+	public static JDImageProxy dead_warriorImage;
 
-	public static Image deathImage;
+	public static JDImageProxy deathImage;
 
-	public static Image documentImage;
+	public static JDImageProxy documentImage;
 
-	public static Image door_east;
+	public static JDImageProxy door_east;
 
-	public static Image door_east_lock;
+	public static JDImageProxy door_east_lock;
 
-	public static Image door_east_none;
+	public static JDImageProxy door_east_none;
 
-	public static Image door_north;
+	public static JDImageProxy door_north;
 
-	public static Image door_north_lock;
+	public static JDImageProxy door_north_lock;
 
-	public static Image door_north_none;
+	public static JDImageProxy door_north_none;
 
-	public static Image door_south;
+	public static JDImageProxy door_south;
 
-	public static Image door_south_lock;
+	public static JDImageProxy door_south_lock;
 
-	public static Image door_south_none;
+	public static JDImageProxy door_south_none;
 
-	public static Image door_west;
+	public static JDImageProxy door_west;
 
-	public static Image door_west_lock;
+	public static JDImageProxy door_west_lock;
 
-	public static Image door_west_none;
+	public static JDImageProxy door_west_none;
 
 	public static AnimationSetDirections druid_been_hit;
 
@@ -147,65 +149,65 @@ public class ImageManager {
 
 	public static AnimationSetDirections druid_walking;
 
-	public static Image  [] druidImage;
+	public static JDImageProxy  [] druidImage;
 
-	public static Image dummieImage;
+	public static JDImageProxy dummieImage;
 
-	public static Image dustImage;
+	public static JDImageProxy dustImage;
 
-	public static Image engelImage;
+	public static JDImageProxy engelImage;
 
-	public static Image falltuerImage;
+	public static JDImageProxy falltuerImage;
 
-	public static Image floor_darkImage;
+	public static JDImageProxy floor_darkImage;
 
-	public static Image floor_darkImage2;
+	public static JDImageProxy floor_darkImage2;
 
-	public static Image floor_darkImage3;
+	public static JDImageProxy floor_darkImage3;
 
-	public static Image floor_darkImage4;
+	public static JDImageProxy floor_darkImage4;
 
-	public static Image floor_darkImage5;
+	public static JDImageProxy floor_darkImage5;
 
-	public static Image floor_darkImage6;
+	public static JDImageProxy floor_darkImage6;
 
-	public static Image floor_darkImage7;
+	public static JDImageProxy floor_darkImage7;
 
-	public static Image floor_mediumImage;
+	public static JDImageProxy floor_mediumImage;
 
-	public static Image floor_mediumImage2;
+	public static JDImageProxy floor_mediumImage2;
 
-	public static Image floor_mediumImage3;
+	public static JDImageProxy floor_mediumImage3;
 
-	public static Image floor_mediumImage4;
+	public static JDImageProxy floor_mediumImage4;
 
-	public static Image floor_mediumImage5;
+	public static JDImageProxy floor_mediumImage5;
 
-	public static Image floor_mediumImage6;
+	public static JDImageProxy floor_mediumImage6;
 
-	public static Image floor_mediumImage7;
+	public static JDImageProxy floor_mediumImage7;
 
-	public static Image floorImage;
+	public static JDImageProxy floorImage;
 
-	public static Image[] floorImage_darkArray = new Image[8];
+	public static JDImageProxy[] floorImage_darkArray = new JDImageProxy[8];
 
-	public static Image[] floorImage_mediumArray = new Image[8];
+	public static JDImageProxy[] floorImage_mediumArray = new JDImageProxy[8];
 
-	public static Image floorImage2;
+	public static JDImageProxy floorImage2;
 
-	public static Image floorImage3;
+	public static JDImageProxy floorImage3;
 
-	public static Image floorImage4;
+	public static JDImageProxy floorImage4;
 
-	public static Image floorImage5;
+	public static JDImageProxy floorImage5;
 
-	public static Image floorImage6;
+	public static JDImageProxy floorImage6;
 
-	public static Image floorImage7;
+	public static JDImageProxy floorImage7;
 
-	public static Image[] floorImageArray = new Image[8];
+	public static JDImageProxy[] floorImageArray = new JDImageProxy[8];
 
-	public static Image fountainImage;
+	public static JDImageProxy fountainImage;
 
 	public static AnimationSetDirections ghul1_been_hit;
 
@@ -223,31 +225,31 @@ public class ImageManager {
 
 	public static AnimationSetDirections ghul1_walking = null;
 
-	public static Image  [] ghulImage;
+	public static JDImageProxy  [] ghulImage;
 
-	public static Image graveImage;
+	public static JDImageProxy graveImage;
 
-	public static Image hand_greift1_Image;
+	public static JDImageProxy hand_greift1_Image;
 
-	public static Image hand_zeigt1_Image;
+	public static JDImageProxy hand_zeigt1_Image;
 
-	public static Image cursor_go_Image;
+	public static JDImageProxy cursor_go_Image;
 	
-	public static Image helmetImage;
+	public static JDImageProxy helmetImage;
 
-	public static Image keyImage;
+	public static JDImageProxy keyImage;
 
-	public static Image kugelImage;
+	public static JDImageProxy kugelImage;
 
-	public static Image lanceImage;
+	public static JDImageProxy lanceImage;
 
-	public static Image luzia_ball_greyImage;
+	public static JDImageProxy luzia_ball_greyImage;
 
-	public static Image luzia_ball_redImage;
+	public static JDImageProxy luzia_ball_redImage;
 
-	public static Image luzia_hutImage;
+	public static JDImageProxy luzia_hutImage;
 
-	public static Image luziaImage;
+	public static JDImageProxy luziaImage;
 
 	public static AnimationSetDirections mage_been_hit;
 
@@ -265,7 +267,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections mage_walking;
 
-	public static Image []  mageImage;
+	public static JDImageProxy []  mageImage;
 
 	public static AnimationSetDirections ogre1_been_hit;
 
@@ -315,61 +317,61 @@ public class ImageManager {
 
 	public static AnimationSetDirections orc1_walking = null;
 
-	public static Image  [] ogreImage;
+	public static JDImageProxy  [] ogreImage;
 
-	public static Image  [] orcImage;
+	public static JDImageProxy  [] orcImage;
 
-	public static Image pentagrammImage;
+	public static JDImageProxy pentagrammImage;
 
-	public static Image potion_blueImage;
+	public static JDImageProxy potion_blueImage;
 
-	public static Image potion_redImage;
+	public static JDImageProxy potion_redImage;
 	
-	public static Image potion_greenImage;
+	public static JDImageProxy potion_greenImage;
 	
-	public static Image featherImage;
+	public static JDImageProxy featherImage;
 
 	public static AnimationSet puff;
 
-	public static Image questionmark;
+	public static JDImageProxy questionmark;
 
-	public static Image repairImage;
+	public static JDImageProxy repairImage;
 
-	public static Image rune_blueImage;
+	public static JDImageProxy rune_blueImage;
 
-	public static Image rune_greenImage;
+	public static JDImageProxy rune_greenImage;
 
-	public static Image rune_redImage;
+	public static JDImageProxy rune_redImage;
 
-	public static Image rune_yellowImage;
+	public static JDImageProxy rune_yellowImage;
 
-	public static Image scrollImage;
+	public static JDImageProxy scrollImage;
 
-	public static Image shieldImage;
+	public static JDImageProxy shieldImage;
 
-	public static Image shrine_blackImage;
+	public static JDImageProxy shrine_blackImage;
 
-	public static Image shrine_blueImage;
+	public static JDImageProxy shrine_blueImage;
 
-	public static Image shrine_greenImage;
+	public static JDImageProxy shrine_greenImage;
 
-	public static Image shrine_lilaImage;
+	public static JDImageProxy shrine_lilaImage;
 
-	public static Image shrine_redImage;
+	public static JDImageProxy shrine_redImage;
 
-	public static Image shrine_small_blueImage;
+	public static JDImageProxy shrine_small_blueImage;
 
-	public static Image shrine_small_greenImage;
+	public static JDImageProxy shrine_small_greenImage;
 
-	public static Image shrine_small_redImage;
+	public static JDImageProxy shrine_small_redImage;
 
-	public static Image shrine_small_yellowImage;
+	public static JDImageProxy shrine_small_yellowImage;
 
-	public static Image shrine_turkisImage;
+	public static JDImageProxy shrine_turkisImage;
 
-	public static Image shrine_whiteImage;
+	public static JDImageProxy shrine_whiteImage;
 
-	public static Image shrine_yellowImage;
+	public static JDImageProxy shrine_yellowImage;
 
 	public static AnimationSetDirections skel1_been_hit;
 
@@ -387,17 +389,17 @@ public class ImageManager {
 
 	public static AnimationSetDirections skel1_walking = null;
 
-	public static Image skel2Image;
+	public static JDImageProxy skel2Image;
 
-	public static Image []  skelImage;
+	public static JDImageProxy []  skelImage;
 
-	public static Image sorcLabImage;
+	public static JDImageProxy sorcLabImage;
 
-	public static Image spotImage;
+	public static JDImageProxy spotImage;
 
-	public static Image statueImage;
+	public static JDImageProxy statueImage;
 
-	public static Image swordImage;
+	public static JDImageProxy swordImage;
 
 	public static AnimationSetDirections thief_been_hit;
 
@@ -415,16 +417,16 @@ public class ImageManager {
 
 	public static AnimationSetDirections thief_walking;
 
-	public static Image  [] thiefImage;
+	public static JDImageProxy  [] thiefImage;
 
-	public static Image traderImage;
+	public static JDImageProxy traderImage;
 
-	public static Image wall_southImage;
+	public static JDImageProxy wall_southImage;
 
-	//public static Image wallImage;
+	//public static JDImageProxy wallImage;
 
-	public static Image wall_sidesImage;
-	public static Image wall_northImage;
+	public static JDImageProxy wall_sidesImage;
+	public static JDImageProxy wall_northImage;
 	
 	public static AnimationSetDirections warrior_been_hit;
 
@@ -442,7 +444,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections warrior_walking;
 
-	public static Image[] warriorImage;
+	public static JDImageProxy[] warriorImage;
 
 	public static AnimationSetDirections wolf1_been_hit;
 
@@ -460,15 +462,15 @@ public class ImageManager {
 
 	public static AnimationSetDirections wolf1_walking = null;
 
-	public static Image wolf2Image;
+	public static JDImageProxy wolf2Image;
 
-	public static Image  [] wolfImage;
+	public static JDImageProxy  [] wolfImage;
 
-	public static Image wolfknifeImage;
+	public static JDImageProxy wolfknifeImage;
 
-	public static Image xmasImage;
+	public static JDImageProxy xmasImage;
 
-	private static AnimationSetDirections load4Animations(Applet a, String path,
+	private static AnimationSetDirections load4Animations(AbstractImageLoader a, String path,
 			String pattern, int cnt) {
 		System.gc();
 		AnimationSet[] set = new AnimationSet[4];
@@ -482,7 +484,7 @@ public class ImageManager {
 	private static PictureLoadDialog loadDialog;
 	public static boolean imagesLoaded = false;
 	
-	public static void loadImages(Applet a, final StartView board) {
+	public void loadImages(final StartView board) {
 		
 		if(!imagesLoaded) {
 		
@@ -490,6 +492,8 @@ public class ImageManager {
 		AWTImageLoader.dialog = loadDialog;
 		tracker = new MediaTracker(board);
 		AWTImageLoader.setTracker(tracker);
+		
+		AbstractImageLoader a = this.loader;
 
 		puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
@@ -683,148 +687,149 @@ public class ImageManager {
 		bearImage = makePics(spider1_walking);
 		
 		
-		dead_dwarfImage = AWTImageLoader.loadImage(a, "dead_dwarf.gif");
-		dead_warriorImage = AWTImageLoader.loadImage(a, "dead_stan.gif");
-		dead_thiefImage = AWTImageLoader.loadImage(a, "dead_blue_pirate.gif");
-		dead_druidImage = AWTImageLoader.loadImage(a, "dead_white_mage.gif");
-		dead_mageImage = AWTImageLoader.loadImage(a, "dead_black_mage.gif");
+		dead_dwarfImage = new JDImageProxy(a, "dead_dwarf.gif");
+		dead_warriorImage = new JDImageProxy(a, "dead_stan.gif");
+		dead_thiefImage = new JDImageProxy(a, "dead_blue_pirate.gif");
+		dead_druidImage = new JDImageProxy(a, "dead_white_mage.gif");
+		dead_mageImage = new JDImageProxy(a, "dead_black_mage.gif");
 
-		chestImage = AWTImageLoader.loadImage(a, "chest_cut_trans.gif");
-		floorImage = AWTImageLoader.loadImage(a, "boden5.gif");
-		floor_darkImage = AWTImageLoader.loadImage(a, "boden5_dark.gif");
-		floor_mediumImage = AWTImageLoader.loadImage(a, "boden5_dark1.gif");
+		chestImage = new JDImageProxy(a, "chest_cut_trans.gif");
+		floorImage = new JDImageProxy(a, "boden5.gif");
+		floor_darkImage = new JDImageProxy(a, "boden5_dark.gif");
+		floor_mediumImage = new JDImageProxy(a, "boden5_dark1.gif");
 
-		floorImage2 = AWTImageLoader.loadImage(a, "boden3.gif");
-		floor_darkImage2 = AWTImageLoader.loadImage(a, "boden3_dark.gif");
-		floor_mediumImage2 = AWTImageLoader.loadImage(a, "boden3_dark1.gif");
+		floorImage2 = new JDImageProxy(a, "boden3.gif");
+		floor_darkImage2 = new JDImageProxy(a, "boden3_dark.gif");
+		floor_mediumImage2 = new JDImageProxy(a, "boden3_dark1.gif");
 
-		floorImage3 = AWTImageLoader.loadImage(a, "boden4.gif");
-		floor_darkImage3 = AWTImageLoader.loadImage(a, "boden4_dark.gif");
-		floor_mediumImage3 = AWTImageLoader.loadImage(a, "boden4_dark1.gif");
+		floorImage3 = new JDImageProxy(a, "boden4.gif");
+		floor_darkImage3 = new JDImageProxy(a, "boden4_dark.gif");
+		floor_mediumImage3 = new JDImageProxy(a, "boden4_dark1.gif");
 
-		floorImage4 = AWTImageLoader.loadImage(a, "boden6.gif");
-		floor_darkImage4 = AWTImageLoader.loadImage(a, "boden6_dark.gif");
-		floor_mediumImage4 = AWTImageLoader.loadImage(a, "boden6_dark1.gif");
+		floorImage4 = new JDImageProxy(a, "boden6.gif");
+		floor_darkImage4 = new JDImageProxy(a, "boden6_dark.gif");
+		floor_mediumImage4 = new JDImageProxy(a, "boden6_dark1.gif");
 
-		floorImage5 = AWTImageLoader.loadImage(a, "boden7.gif");
-		floor_darkImage5 = AWTImageLoader.loadImage(a, "boden7_dark.gif");
-		floor_mediumImage5 = AWTImageLoader.loadImage(a, "boden7_dark1.gif");
+		floorImage5 = new JDImageProxy(a, "boden7.gif");
+		floor_darkImage5 = new JDImageProxy(a, "boden7_dark.gif");
+		floor_mediumImage5 = new JDImageProxy(a, "boden7_dark1.gif");
 
-		floorImage6 = AWTImageLoader.loadImage(a, "boden8.gif");
-		floor_darkImage6 = AWTImageLoader.loadImage(a, "boden8_dark.gif");
-		floor_mediumImage6 = AWTImageLoader.loadImage(a, "boden8_dark1.gif");
+		floorImage6 = new JDImageProxy(a, "boden8.gif");
+		floor_darkImage6 = new JDImageProxy(a, "boden8_dark.gif");
+		floor_mediumImage6 = new JDImageProxy(a, "boden8_dark1.gif");
 
-		floorImage7 = AWTImageLoader.loadImage(a, "boden9.gif");
-		floor_darkImage7 = AWTImageLoader.loadImage(a, "boden9_dark.gif");
-		floor_mediumImage7 = AWTImageLoader.loadImage(a, "boden9_dark1.gif");
+		floorImage7 = new JDImageProxy(a, "boden9.gif");
+		floor_darkImage7 = new JDImageProxy(a, "boden9_dark.gif");
+		floor_mediumImage7 = new JDImageProxy(a, "boden9_dark1.gif");
 
 		makeFloorArrays();
 
-		wall_sidesImage = AWTImageLoader.loadImage(a, "wand_seiten.gif");
-		wall_northImage = AWTImageLoader.loadImage(a, "wand_nord.gif");
-		wall_southImage = AWTImageLoader.loadImage(a, "wall_south.gif");
+		wall_sidesImage = new JDImageProxy(a, "wand_seiten.gif");
+		wall_northImage = new JDImageProxy(a, "wand_nord.gif");
+		wall_southImage = new JDImageProxy(a, "wall_south.gif");
 
-		door_north = AWTImageLoader.loadImage(a, "tuer_nord.gif");
+		door_north = new JDImageProxy(a, "tuer_nord.gif");
 
-		door_north_none = AWTImageLoader.loadImage(a, "tuer_nord_keine.gif");
+		door_north_none = new JDImageProxy(a, "tuer_nord_keine.gif");
 
-		door_east = AWTImageLoader.loadImage(a, "tuer_ost.gif");
+		door_east = new JDImageProxy(a, "tuer_ost.gif");
 
-		door_east_none = AWTImageLoader.loadImage(a, "tuer_ost_keine.gif");
+		door_east_none = new JDImageProxy(a, "tuer_ost_keine.gif");
 
-		door_west = AWTImageLoader.loadImage(a, "tuer_west.gif");
+		door_west = new JDImageProxy(a, "tuer_west.gif");
 
-		door_west_none = AWTImageLoader.loadImage(a, "tuer_west_keine.gif");
-		door_south_none = AWTImageLoader.loadImage(a, "tuer_sued_keine.gif");
-		door_south = AWTImageLoader.loadImage(a, "tuer_sued.gif");
-		door_south_lock = AWTImageLoader.loadImage(a, "tuer_sued_schloss.gif");
+		door_west_none = new JDImageProxy(a, "tuer_west_keine.gif");
+		door_south_none = new JDImageProxy(a, "tuer_sued_keine.gif");
+		door_south = new JDImageProxy(a, "tuer_sued.gif");
+		door_south_lock = new JDImageProxy(a, "tuer_sued_schloss.gif");
 
-		axeImage = AWTImageLoader.loadImage(a, "axt.gif");
-		swordImage = AWTImageLoader.loadImage(a, "schwert.gif");
-		lanceImage = AWTImageLoader.loadImage(a, "lanze.gif");
-		wolfknifeImage = AWTImageLoader.loadImage(a, "wolfsmesser.gif");
-		clubImage = AWTImageLoader.loadImage(a, "knueppel.gif");
-		scrollImage = AWTImageLoader.loadImage(a, "scroll_blue.gif");
-		documentImage = AWTImageLoader.loadImage(a, "scroll_white.gif");
-		potion_redImage = AWTImageLoader.loadImage(a, "potion_rot.gif");
-		potion_blueImage = AWTImageLoader.loadImage(a, "potion_blue.gif");
-		dustImage = AWTImageLoader.loadImage(a, "dust.gif");
-		armorImage = AWTImageLoader.loadImage(a, "ruestung.gif");
-		shieldImage = AWTImageLoader.loadImage(a, "shield2.gif");
-		helmetImage = AWTImageLoader.loadImage(a, "helm.gif");
-		bookImage = AWTImageLoader.loadImage(a, "book_yellow.gif");
-		keyImage = AWTImageLoader.loadImage(a, "key.gif");
-		falltuerImage = AWTImageLoader.loadImage(a, "falltuer.gif");
-		engelImage = AWTImageLoader.loadImage(a, "engel2.gif");
-		shrine_blueImage = AWTImageLoader.loadImage(a, "shrine_blue.gif");
-		shrine_redImage = AWTImageLoader.loadImage(a, "shrine_red.gif");
-		shrine_greenImage = AWTImageLoader.loadImage(a, "shrine_green.gif");
-		shrine_yellowImage = AWTImageLoader.loadImage(a, "shrine_yellow.gif");
-		shrine_whiteImage = AWTImageLoader.loadImage(a, "shrine_white.gif");
-		shrine_blackImage = AWTImageLoader.loadImage(a, "shrine_black.gif");
-		shrine_lilaImage = AWTImageLoader.loadImage(a, "shrine_lila.gif");
-		shrine_turkisImage = AWTImageLoader.loadImage(a, "shrine_tuerkis.gif");
-		shrine_small_redImage = AWTImageLoader.loadImage(a,
+		axeImage = new JDImageProxy(a, "axt.gif");
+		swordImage = new JDImageProxy(a, "schwert.gif");
+		lanceImage = new JDImageProxy(a, "lanze.gif");
+		wolfknifeImage = new JDImageProxy(a, "wolfsmesser.gif");
+		clubImage = new JDImageProxy(a, "knueppel.gif");
+		scrollImage = new JDImageProxy(a, "scroll_blue.gif");
+		documentImage = new JDImageProxy(a, "scroll_white.gif");
+		potion_redImage = new JDImageProxy(a, "potion_rot.gif");
+		potion_blueImage = new JDImageProxy(a, "potion_blue.gif");
+		dustImage = new JDImageProxy(a, "dust.gif");
+		armorImage = new JDImageProxy(a, "ruestung.gif");
+		shieldImage = new JDImageProxy(a, "shield2.gif");
+		helmetImage = new JDImageProxy(a, "helm.gif");
+		bookImage = new JDImageProxy(a, "book_yellow.gif");
+		keyImage = new JDImageProxy(a, "key.gif");
+		falltuerImage = new JDImageProxy(a, "falltuer.gif");
+		engelImage = new JDImageProxy(a, "engel2.gif");
+		shrine_blueImage = new JDImageProxy(a, "shrine_blue.gif");
+		shrine_redImage = new JDImageProxy(a, "shrine_red.gif");
+		shrine_greenImage = new JDImageProxy(a, "shrine_green.gif");
+		shrine_yellowImage = new JDImageProxy(a, "shrine_yellow.gif");
+		shrine_whiteImage = new JDImageProxy(a, "shrine_white.gif");
+		shrine_blackImage = new JDImageProxy(a, "shrine_black.gif");
+		shrine_lilaImage = new JDImageProxy(a, "shrine_lila.gif");
+		shrine_turkisImage = new JDImageProxy(a, "shrine_tuerkis.gif");
+		shrine_small_redImage = new JDImageProxy(a,
 				"shrine_small_red.gif");
-		shrine_small_blueImage = AWTImageLoader.loadImage(a,
+		shrine_small_blueImage = new JDImageProxy(a,
 				"shrine_small_blue.gif");
-		shrine_small_yellowImage = AWTImageLoader.loadImage(a,
+		shrine_small_yellowImage = new JDImageProxy(a,
 				"shrine_small_yellow.gif");
-		shrine_small_greenImage = AWTImageLoader.loadImage(a,
+		shrine_small_greenImage = new JDImageProxy(a,
 				"shrine_small_green.gif");
-		sorcLabImage = AWTImageLoader.loadImage(a, "zauberlabor1.gif");
-		amulettImage = AWTImageLoader.loadImage(a, "amulett.gif");
+		sorcLabImage = new JDImageProxy(a, "zauberlabor1.gif");
+		amulettImage = new JDImageProxy(a, "amulett.gif");
 
-		repairImage = AWTImageLoader.loadImage(a, "amboss.gif");
-		fountainImage = AWTImageLoader.loadImage(a, "fountain.gif");
-		statueImage = AWTImageLoader.loadImage(a, "statue.gif");
-		chest_lockImage = AWTImageLoader.loadImage(a, "chest_schloss.gif");
-		door_north_lock = AWTImageLoader.loadImage(a, "tuer_nord_schloss.gif");
-		door_east_lock = AWTImageLoader.loadImage(a, "tuer_ost_schloss.gif");
-		door_west_lock = AWTImageLoader.loadImage(a, "tuer_west_schloss.gif");
-		graveImage = AWTImageLoader.loadImage(a, "grave.gif");
-		caveImage = AWTImageLoader.loadImage(a, "cave.gif");
-		traderImage = AWTImageLoader.loadImage(a, "haendler2.gif");
-		rune_redImage = AWTImageLoader.loadImage(a, "rune_red.gif");
-		rune_greenImage = AWTImageLoader.loadImage(a, "rune_green.gif");
-		rune_blueImage = AWTImageLoader.loadImage(a, "rune_blue.gif");
-		rune_yellowImage = AWTImageLoader.loadImage(a, "rune_yellow.gif");
-		cristall_redImage = AWTImageLoader.loadImage(a, "kristall_rot.gif");
-		cristall_greenImage = AWTImageLoader.loadImage(a, "kristall_gruen.gif");
-		cristall_blueImage = AWTImageLoader.loadImage(a, "kristall_blau.gif");
-		cristall_yellowImage = AWTImageLoader.loadImage(a, "kristall_gelb.gif");
-		spotImage = AWTImageLoader.loadImage(a, "versteck.gif");
-		hand_zeigt1_Image = AWTImageLoader.loadImage(a, "zeigerhand-zeigt1.gif");
-		cursor_go_Image = AWTImageLoader.loadImage(a, "zeigerhand_go.gif");
-		hand_greift1_Image = AWTImageLoader.loadImage(a,
+		repairImage = new JDImageProxy(a, "amboss.gif");
+		fountainImage = new JDImageProxy(a, "fountain.gif");
+		statueImage = new JDImageProxy(a, "statue.gif");
+		chest_lockImage = new JDImageProxy(a, "chest_schloss.gif");
+		door_north_lock = new JDImageProxy(a, "tuer_nord_schloss.gif");
+		door_east_lock = new JDImageProxy(a, "tuer_ost_schloss.gif");
+		door_west_lock = new JDImageProxy(a, "tuer_west_schloss.gif");
+		graveImage = new JDImageProxy(a, "grave.gif");
+		caveImage = new JDImageProxy(a, "cave.gif");
+		traderImage = new JDImageProxy(a, "haendler2.gif");
+		rune_redImage = new JDImageProxy(a, "rune_red.gif");
+		rune_greenImage = new JDImageProxy(a, "rune_green.gif");
+		rune_blueImage = new JDImageProxy(a, "rune_blue.gif");
+		rune_yellowImage = new JDImageProxy(a, "rune_yellow.gif");
+		cristall_redImage = new JDImageProxy(a, "kristall_rot.gif");
+		cristall_greenImage = new JDImageProxy(a, "kristall_gruen.gif");
+		cristall_blueImage = new JDImageProxy(a, "kristall_blau.gif");
+		cristall_yellowImage = new JDImageProxy(a, "kristall_gelb.gif");
+		spotImage = new JDImageProxy(a, "versteck.gif");
+		hand_zeigt1_Image = new JDImageProxy(a, "zeigerhand-zeigt1.gif");
+		cursor_go_Image = new JDImageProxy(a, "zeigerhand_go.gif");
+		hand_greift1_Image = new JDImageProxy(a,
 				"zeigerhand-greift1.gif");
-		cursor_key_Image = AWTImageLoader.loadImage(a, "zeiger_key.gif");
-		cursor_key_not_Image = AWTImageLoader.loadImage(a,
+		cursor_key_Image = new JDImageProxy(a, "zeiger_key.gif");
+		cursor_key_not_Image = new JDImageProxy(a,
 				"zeiger_key_nicht.gif");
-		cursor_sword = AWTImageLoader.loadImage(a, "zeigerhand-schwert.gif");
-		cursor_clock = AWTImageLoader.loadImage(a, "zeigerhand-sanduhr.gif");
-		cursor_scout = AWTImageLoader.loadImage(a, "zeigerhand-go_scout.gif");
-		pentagrammImage = AWTImageLoader.loadImage(a, "pentagramm.gif");
-		darkMasterImage = AWTImageLoader.loadImage(a, "mister_death.gif");
-		luziaImage = AWTImageLoader.loadImage(a, "luzia.gif");
-		luzia_hutImage = AWTImageLoader.loadImage(a, "luzia_hut.gif");
-		kugelImage = AWTImageLoader.loadImage(a, "kugel.gif");
-		questionmark = AWTImageLoader.loadImage(a, "fragezeichen.gif");
-		xmasImage = AWTImageLoader.loadImage(a, "xmas.gif");
-		dark_dwarfImage = AWTImageLoader.loadImage(a, "dark_dwarf.gif");
-		finImage = AWTImageLoader.loadImage(a, "growing n0007c.gif");
-		luzia_ball_greyImage = AWTImageLoader.loadImage(a, "kugel_grau.gif");
+		cursor_sword = new JDImageProxy(a, "zeigerhand-schwert.gif");
+		cursor_clock = new JDImageProxy(a, "zeigerhand-sanduhr.gif");
+		cursor_scout = new JDImageProxy(a, "zeigerhand-go_scout.gif");
+		cursor_go_not_Image =  new JDImageProxy(a, "zeigerhand_go_not.gif");
+		cursor_wand =  new JDImageProxy(a, "zeiger_zauberstab.gif");
+		cursor_use_Image = new JDImageProxy(a, "zeigerhand_faust.gif");
 
-		luzia_ball_redImage = AWTImageLoader.loadImage(a, "kugel_rot.gif");
+		pentagrammImage = new JDImageProxy(a, "pentagramm.gif");
+		darkMasterImage = new JDImageProxy(a, "mister_death.gif");
+		luziaImage = new JDImageProxy(a, "luzia.gif");
+		luzia_hutImage = new JDImageProxy(a, "luzia_hut.gif");
+		kugelImage = new JDImageProxy(a, "kugel.gif");
+		questionmark = new JDImageProxy(a, "fragezeichen.gif");
+		xmasImage = new JDImageProxy(a, "xmas.gif");
+		dark_dwarfImage = new JDImageProxy(a, "dark_dwarf.gif");
+		finImage = new JDImageProxy(a, "growing n0007c.gif");
+		luzia_ball_greyImage = new JDImageProxy(a, "kugel_grau.gif");
 
-		fieldImage  = AWTImageLoader.loadImage(a, "field3.gif");
-		woodTextureImage =  AWTImageLoader.loadImage(a, "theWood3.gif");
+		luzia_ball_redImage = new JDImageProxy(a, "kugel_rot.gif");
+
+		fieldImage  = new JDImageProxy(a, "field3.gif");
+		woodTextureImage =  new JDImageProxy(a, "theWood3.gif");
 		
-		cursor_go_not_Image =  AWTImageLoader.loadImage(a, "zeigerhand_go_not.gif");
-		cursor_wand =  AWTImageLoader.loadImage(a, "zeiger_zauberstab.gif");
-		cursor_use_Image = AWTImageLoader.loadImage(a, "zeigerhand_faust.gif");
-		featherImage = AWTImageLoader.loadImage(a, "feder.gif");
-		potion_greenImage = AWTImageLoader.loadImage(a, "potion_green.gif");
+		featherImage = new JDImageProxy(a, "feder.gif");
+		potion_greenImage = new JDImageProxy(a, "potion_green.gif");
 
 		}
 		try {
@@ -842,9 +847,9 @@ public class ImageManager {
 		imagesLoaded = true;
 	}
 	
-	private static Image[] makePics(AnimationSetDirections a) {
+	private static JDImageProxy[] makePics(AnimationSetDirections a) {
 		AnimationSet[] sets = a.getAnimations();
-		Image ims [] = new Image[sets.length];
+		JDImageProxy ims [] = new JDImageProxy[sets.length];
 		for (int i = 0; i < sets.length; i++) {
 			ims[i] = sets[i].getImagesNr(0);
 		}
@@ -931,12 +936,11 @@ public class ImageManager {
 //	}
 	
 
-	private static Image[] loadArray(Applet a, String path, int cnt) {
-		Image[] ims = new Image[cnt];
+	private static JDImageProxy[] loadArray(AbstractImageLoader a, String path, int cnt) {
+		JDImageProxy[] ims = new JDImageProxy[cnt];
 		for (int i = 0; i < cnt; i++) {
 
-			Image im = (AWTImageLoader.loadImage(a, path + Integer.toString(i)
-					+ ".GIF"));
+			JDImageProxy im = new JDImageProxy(path + Integer.toString(i)+ ".GIF",a);
 
 			ims[i] = im;
 			if (ims[i] == null) {
@@ -950,10 +954,10 @@ public class ImageManager {
 		return ims;
 	}
 
-	private static Image[] loadArray(Applet a, String path,
+	private static JDImageProxy[] loadArray(AbstractImageLoader a, String path,
 			String fileNamePrefix, int dir, int cnt) {
 
-		List<Image> imageList = new LinkedList<Image>();
+		List<JDImageProxy> imageList = new LinkedList<JDImageProxy>();
 		String dirChar = "";
 		if (dir == Dir.EAST) {
 			dirChar = "e";
@@ -978,34 +982,10 @@ public class ImageManager {
 		
 		while (i < 15) {
 			
-			Image im = (AWTImageLoader.loadImage(a,  path + fileNamePrefix + dirChar + suffix+"_trans.GIF"));
-			if(im == null || im.getHeight(null) == -1) {
-				//System.out.println("breaking loadAni bei: "+i +" - "+f);
-				break;
+			JDImageProxy im = new JDImageProxy(path + fileNamePrefix + dirChar + suffix+"_trans.GIF",a);
+			if(im.fileExists()) {
+				imageList.add(im);			
 			}
-			//loadDialog.setPicName(fileNamePrefix+dirChar+suffix);
-			//tracker.addImage(im, 1);
-			
-			//System.out.println("lade: "+f.toString());
-//			Image im = null;
-//			try {
-//				im = ImageIO.read(f);
-//			} catch (Exception e) {
-//				System.out.println("laden gescheiter: "+f.toString());
-//				// TODO: handle exception
-//			}
-			
-			imageList.add(im);
-			
-			
-//			tracker.addImage(im, 1);
-//			try {
-//				tracker.waitForAll();
-//			} catch (Exception e) {
-//				System.out.println("tracker ERROR!");
-//			}
-			//performCutOperationsGIF(im,fileName.substring(0,fileName.length()-4));
-			
 			i++;
 
 			numberStr = Integer.toString(i);
@@ -1017,11 +997,10 @@ public class ImageManager {
 		}
 		
 
-		//System.out.println("Bild nicht gefunden: " + f.toString());
-		Image[] ims = new Image[imageList.size()];
+		JDImageProxy[] ims = new JDImageProxy[imageList.size()];
 		int k = 0;
-		for (Iterator<Image> iter = imageList.iterator(); iter.hasNext();) {
-			Image element = iter.next();
+		for (Iterator<JDImageProxy> iter = imageList.iterator(); iter.hasNext();) {
+			JDImageProxy element = iter.next();
 			ims[k] = element;
 			k++;
 		}

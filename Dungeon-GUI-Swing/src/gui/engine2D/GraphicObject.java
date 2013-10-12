@@ -8,6 +8,8 @@
  */
 package gui.engine2D;
 
+import graphics.JDImageProxy;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -31,13 +33,13 @@ public class GraphicObject {
 	protected Object clickedObject;
 
 	protected boolean rim = false;
-	protected Image image;
+	protected JDImageProxy image;
 
 	public GraphicObject(
 		Object ob,
 		Rectangle o,
 		Color c,
-		Image i) {
+		JDImageProxy i) {
 		
 		this.o = o;
 		this.c = c;
@@ -49,7 +51,7 @@ public class GraphicObject {
 			Object ob,
 			Rectangle o,
 			Color c,
-			Image i,Rectangle clickRect) {
+			JDImageProxy i,Rectangle clickRect) {
 			
 			this.o = o;
 			this.c = c;
@@ -58,7 +60,7 @@ public class GraphicObject {
 			image = i;
 		}
 
-	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,Image i) {
+	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,JDImageProxy i) {
 		this.rim = rim;
 		this.o = o;
 		this.c = c;
@@ -112,7 +114,7 @@ public class GraphicObject {
 			if(g == null ) {
 				System.out.println("g ist null!");
 			}
-			g.drawImage(image,o.x,o.y,o.width,o.height,null);
+			g.drawImage((Image)image.getImage(),o.x,o.y,o.width,o.height,null);
 		}
 	}
 	

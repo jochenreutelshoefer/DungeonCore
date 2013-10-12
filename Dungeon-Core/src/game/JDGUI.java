@@ -39,5 +39,5 @@ public interface JDGUI extends ControlUnit{
 	
 	public abstract void setFigure(FigureInfo info);
 
-
+	public void animationDone();
 }

@@ -6,6 +6,7 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
+import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.JDJPanel;
 import gui.Paragraph;
@@ -58,6 +59,9 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Scrollable;
+
+
+
 
 
 import control.ActionAssembler;
@@ -179,6 +183,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	int[] slowAnimTimes9 = { 80, 80, 80, 80, 80, 80, 80, 80, 80 };
 
 	ActionAssembler control;
+	
+	private Cursor createCustomCursor(JDImageProxy image, Point p, String label) {
+		 Toolkit toolkit = this.getToolkit();
+		return toolkit.createCustomCursor((Image)image.getImage(),p,label);
+	}
 
 	public GraphBoard(Applet a, MyJDGui gui) {
 		super(gui);
@@ -186,29 +195,29 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		cursor1 = this.getToolkit().createCustomCursor(
+		cursor1 = createCustomCursor(
 				ImageManager.hand_zeigt1_Image, new Point(1, 6), "hand1");
-		cursor2 = this.getToolkit().createCustomCursor(
+		cursor2 = createCustomCursor(
 				ImageManager.hand_greift1_Image, new Point(1, 8), "hand2");
-		cursor3 = this.getToolkit().createCustomCursor(
+		cursor3 = createCustomCursor(
 				ImageManager.cursor_key_Image, new Point(1, 8), "key");
-		cursor4 = this.getToolkit().createCustomCursor(
+		cursor4 = createCustomCursor(
 				ImageManager.cursor_key_not_Image, new Point(1, 8), "key_not");
 
-		cursor5 = this.getToolkit().createCustomCursor(
+		cursor5 = createCustomCursor(
 				ImageManager.cursor_sword, new Point(1, 8), "sword");
-		cursor6 = this.getToolkit().createCustomCursor(
+		cursor6 = createCustomCursor(
 				ImageManager.cursor_clock, new Point(4, 8), "clock");
-		cursor7 = this.getToolkit().createCustomCursor(
+		cursor7 = createCustomCursor(
 				ImageManager.cursor_scout, new Point(4, 8), "scout");
-		cursor_boots = this.getToolkit().createCustomCursor(
+		cursor_boots = createCustomCursor(
 				ImageManager.cursor_go_Image, new Point(4, 8), "go");
 
-		cursor_boots_not = this.getToolkit().createCustomCursor(
+		cursor_boots_not = createCustomCursor(
 				ImageManager.cursor_go_not_Image, new Point(4, 8), "go_not");
-		cursor_wand = this.getToolkit().createCustomCursor(
+		cursor_wand = createCustomCursor(
 				ImageManager.cursor_wand, new Point(1, 6), "wand");
-		cursor_use = this.getToolkit().createCustomCursor(
+		cursor_use = createCustomCursor(
 				ImageManager.cursor_use_Image, new Point(4, 8), "go_not");
 		sizeChanged();
 		this.setPreferredSize(new Dimension(screenSize, screenSize));
@@ -333,12 +342,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
 
-					Image im = ImageManager.fieldImage;
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(
 									getPositionCoord(i).x,
 									getPositionCoord(i).y, posSize, posSize),
-							Color.BLACK, im);
+							Color.BLACK, ImageManager.fieldImage);
 
 					graphObs.add(ob);
 
@@ -422,7 +430,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
 					new Rectangle(getSpotPoint(xcoord, ycoord),
 							getSpotDimension()), new Color(0, 0, 0),
-					ImageManager.spotImage);
+							ImageManager.spotImage);
 			graphObs.add(spotOb);
 		}
 
@@ -455,6 +463,10 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				hero.fill(g);
 			}
 		}
+	}
+
+	private Image getImage(JDImageProxy im) {
+		return (Image)im.getImage();
 	}
 
 	private boolean contains(LinkedList l, FigureInfo f) {
@@ -650,7 +662,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		Color bg = null;
 
 		int status = r.getVisibilityStatus();
-		Image im = ImageManager.floorImageArray[r.getFloorIndex()];
+		JDImageProxy im = ImageManager.floorImageArray[r.getFloorIndex()];
 		if (memory) {
 			LinkedList roomDoors = drawDoors(r, xcoord, ycoord, g);
 			im = ImageManager.floorImage_darkArray[r.getFloorIndex()];
@@ -662,7 +674,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				this.doors.addAll(roomDoors);
 
 			} else if (status == RoomObservationStatus.VISIBILITY_SHRINE) {
-				LinkedList roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List roomDoors = drawDoors(r, xcoord, ycoord, g);
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
 				this.doors.addAll(roomDoors);
 				if (r.isPart_scouted()) {
@@ -1050,41 +1062,41 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		int dir = m.getLookDir();
 		if (mClass == Monster.WOLF) {
 
-			Image wolf = ImageManager.wolfImage[dir - 1];
+			JDImageProxy wolf = ImageManager.wolfImage[dir - 1];
 			if (m.getLevel() == 2) {
 				wolf = ImageManager.wolfImage[dir - 1];
 			}
 			ob = new JDImageAWT(wolf, rect);
 		} else if (mClass == Monster.ORC) {
-			Image orc = ImageManager.orcImage[dir - 1];
+			JDImageProxy orc = ImageManager.orcImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				orc = ImageManager.orcImage[dir - 1];
 			}
 			ob = new JDImageAWT(orc, rect);
 		} else if (mClass == Monster.SKELETON) {
-			Image skel = ImageManager.skelImage[dir - 1];
+			JDImageProxy skel = ImageManager.skelImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				skel = ImageManager.skelImage[dir - 1];
 			}
 			ob = new JDImageAWT(skel, rect);
 		} else if (mClass == Monster.GHUL) {
-			Image ghul = ImageManager.ghulImage[dir - 1];
+			JDImageProxy ghul = ImageManager.ghulImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				ghul = ImageManager.ghulImage[dir - 1];
 			}
 			ob = new JDImageAWT(ghul, rect);
 		} else if (mClass == Monster.OGRE) {
-			Image ogre = ImageManager.ogreImage[dir - 1];
+			JDImageProxy ogre = ImageManager.ogreImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				ogre = ImageManager.ogreImage[dir - 1];
 			}
 			ob = new JDImageAWT(ogre, rect);
 		} else if (mClass == Monster.BEAR) {
-			Image bear = ImageManager.bearImage[dir - 1];
+			JDImageProxy bear = ImageManager.bearImage[dir - 1];
 
 			if (m.getLevel() == 2) {
 				bear = ImageManager.bearImage[dir - 1];
@@ -1108,7 +1120,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			// System.out.println("will totes Monster malen!");
 			AnimationSet set = this.getFigure_tipping_over(m);
 			if (set != null && set.getLength() > 0) {
-				Image i = set.getImagesNr(set.getLength() - 1);
+				JDImageProxy i = set.getImagesNr(set.getLength() - 1);
 				ob = new JDImageAWT(i, rect);
 			}
 		}
@@ -1279,7 +1291,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				} else if (itemArray[i].getItemClass().equals(Rune.class)) {
 					int sizeX = 12 * (roomSize / 100);
 					int sizeY = 12 * (roomSize / 100);
-					Image im = null;
+					JDImageProxy im = null;
 					if ((itemArray[i]).toString().indexOf('J') != -1) {
 						im = ImageManager.rune_yellowImage;
 					} else if ((itemArray[i]).toString().indexOf('A') != -1) {
@@ -1295,7 +1307,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						DarkMasterKey.class)) {
 					int sizeX = 12 * (roomSize / 100);
 					int sizeY = 12 * (roomSize / 100);
-					Image im = ImageManager.cristall_redImage;
+					JDImageProxy im = ImageManager.cristall_redImage;
 
 					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
@@ -1303,7 +1315,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				} else if (itemArray[i].getClass().equals(LuziasBall.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
-					Image im = ImageManager.kugelImage;
+					JDImageProxy im = ImageManager.kugelImage;
 
 					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
@@ -1311,7 +1323,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				} else if (itemArray[i].getClass().equals(Book.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
-					Image im = ImageManager.bookImage;
+					JDImageProxy im = ImageManager.bookImage;
 
 					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
@@ -1323,7 +1335,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						.getItemClass())) {
 					int sizeX = 12 * (roomSize / 100);
 					int sizeY = 12 * (roomSize / 100);
-					Image im = null;
+					JDImageProxy im = null;
 
 					im = ImageManager.amulettImage;
 
@@ -1405,7 +1417,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
 
-					Image im = ImageManager.fieldImage;
+					JDImageProxy im = ImageManager.fieldImage;
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(xcoord
 									+ getPositionCoord(i).x, ycoord
@@ -2464,7 +2476,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (1 * roomSize / 36);
 			int xsize = (int) (roomSize / 2.9);
 			int ysize = (int) (roomSize / 2.2);
-			Image im = null;
+			JDImageProxy im = null;
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_yellowImage;
 			} else if ((s).getType() == 2) {
@@ -2479,7 +2491,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (6 * roomSize / 36);
 			int xsize = (int) (roomSize / 3.2);
 			int ysize = (int) (roomSize / 3.8);
-			Image im = null;
+			JDImageProxy im = null;
 			if ((s).getType() == 0) {
 				im = ImageManager.dead_dwarfImage;
 			} else if ((s).getType() == 1) {
@@ -2499,7 +2511,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (1 * roomSize / 36);
 			int xsize = (int) (roomSize / 2.9);
 			int ysize = (int) (roomSize / 2.2);
-			Image im = ImageManager.shrine_blackImage;
+			JDImageProxy im = ImageManager.shrine_blackImage;
 
 			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
@@ -2508,7 +2520,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord - (1 * ROOMSIZE_BY_10);
 			int xsize = (int) (roomSize / 1.7);
 			int ysize = (int) (roomSize / 1.7);
-			Image im = ImageManager.xmasImage;
+			JDImageProxy im = ImageManager.xmasImage;
 
 			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
@@ -2518,7 +2530,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (1 * roomSize / 24);
 			int xsize = (int) (roomSize / 3.4);
 			int ysize = (int) (roomSize / 2.7);
-			Image im = null;
+			JDImageProxy im = null;
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_small_yellowImage;
 			} else if ((s).getType() == 2) {
@@ -2534,7 +2546,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int ypos = ycoord + (3 * ROOMSIZE_BY_16);
 			int xsize = (int) (roomSize / 3.6);
 			int ysize = (int) (roomSize / 3.7);
-			Image im = ImageManager.pentagrammImage;
+			JDImageProxy im = ImageManager.pentagrammImage;
 			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
 		} else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
@@ -2543,7 +2555,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int xsize = (int) (roomSize / 3.6);
 			int ysize = (int) (roomSize / 2.5);
 
-			Image im = ImageManager.luziaImage;
+			JDImageProxy im = ImageManager.luziaImage;
 			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
 				xpos = xcoord + (8 * ROOMSIZE_BY_10);
 				ypos = ycoord + (5 * ROOMSIZE_BY_36);
@@ -3017,14 +3029,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	/**
 	 * @return Returns the luzia_ball_greyImage.
 	 */
-	public Image getLuzia_ball_greyImage() {
+	public JDImageProxy getLuzia_ball_greyImage() {
 		return ImageManager.luzia_ball_greyImage;
 	}
 
 	/**
 	 * @return Returns the luzia_ball_redImage.
 	 */
-	public Image getLuzia_ball_redImage() {
+	public JDImageProxy getLuzia_ball_redImage() {
 		return ImageManager.luzia_ball_redImage;
 	}
 

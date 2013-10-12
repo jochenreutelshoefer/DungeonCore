@@ -24,8 +24,8 @@ import gui.JDJPanel;
  */
 public class ShowPanel extends JDJPanel implements MouseListener{
 
-	MainFrame frame;
-	Rectangle rect = new Rectangle(40,5,40,40);
+	private MainFrame frame;
+	private Rectangle rect = new Rectangle(40,5,40,40);
 
 	public ShowPanel(MainFrame f, MyJDGui gui) {
 		super(gui);
@@ -36,7 +36,6 @@ public class ShowPanel extends JDJPanel implements MouseListener{
 	public void paint(Graphics g) {
 
 		
-			//if (frame.getGame().getHero() != null) {
 		FigureInfo f = gui.getFigure();
 		if(f instanceof HeroInfo) {
 			HeroInfo info = ((HeroInfo)f);
@@ -44,19 +43,18 @@ public class ShowPanel extends JDJPanel implements MouseListener{
 				if (info.hasLuziaBall().booleanValue()) {
 					Image im = null;
 					if (info.LuziaBallSeesEnemy().booleanValue()) {
-						im = gui.getMainFrame()
+						im = (Image)gui.getMainFrame()
 								.getSpielfeld().getSpielfeldBild()
-								.getLuzia_ball_redImage();
+								.getLuzia_ball_redImage().getImage();
 					} else {
-						im = gui.getMainFrame()
+						im = (Image)gui.getMainFrame()
 								.getSpielfeld().getSpielfeldBild()
-								.getLuzia_ball_greyImage();
+								.getLuzia_ball_greyImage().getImage();
 
 					}
 
 					g.drawImage(im, rect.x, rect.y, rect.width, rect.height, null);
 				}
-			//}
 	}
 		
 }
