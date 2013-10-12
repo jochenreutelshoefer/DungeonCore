@@ -69,6 +69,7 @@ import javax.swing.Scrollable;
 
 
 
+
 import animation.AnimationSet;
 import animation.AnimationUtils;
 import control.ActionAssembler;
@@ -91,6 +92,7 @@ import shrine.ShrineInfo;
 import shrine.Xmas;
 import dungeon.ChestInfo;
 import dungeon.Dir;
+import dungeon.Door;
 import dungeon.DoorInfo;
 import dungeon.HiddenSpot;
 import dungeon.JDPoint;
@@ -425,10 +427,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		}
 
-		// if(question_mark && (status == room.SHRINE)) {
-
-		// }
-
 		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
 					new Rectangle(getSpotPoint(xcoord, ycoord),
@@ -438,9 +436,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (r.getHeroInfo() != null) {
-			// System.out.println("drawHero2");
 			drawHero(g, xcoord, ycoord, r.getHeroInfo());
-
 		}
 
 		graphObs.add(new GraphicObject(r, new Rectangle(new Point(xcoord,
@@ -450,8 +446,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		for (int i = 0; i < graphObs.size(); i++) {
 			GraphicObject o = ((GraphicObject) graphObs.get(i));
 			if (o != null) {
-
-				o.fill(g);
+				DrawUtils.fillGraphicObject(o,g);
 			}
 
 		}
@@ -463,7 +458,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (paint && inRoom) {
 
 			if (hero != null && !hInfo.equals(obj)) {
-				hero.fill(g);
+				DrawUtils.fillGraphicObject(hero,g);
 			}
 		}
 	}
@@ -563,50 +558,46 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		for (int i = 0; i < rooms.size(); i++) {
-			((GraphicObject) rooms.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) rooms.get(i)),g2);
 		}
 		for (int i = 0; i < walls.size(); i++) {
-
-			((GraphicObject) walls.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) walls.get(i)),g2);
 		}
 		for (int i = 0; i < doors.size(); i++) {
 			Object o = doors.get(i);
-
-			((GraphicObject) o).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) o),g2);
 		}
 
 		for (int i = 0; i < positions.size(); i++) {
-			((GraphicObject) positions.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) positions.get(i)),g2);
 		}
 		for (int i = 0; i < spots.size(); i++) {
-			((GraphicObject) spots.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) spots.get(i)),g2);
 		}
 		for (int i = 0; i < shrines.size(); i++) {
-			((GraphicObject) shrines.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) shrines.get(i)),g2);
 		}
 
 		for (int i = 0; i < items.size(); i++) {
 			ItemInfo a = (ItemInfo) ((GraphicObject) items.get(i))
 					.getClickedObject();
 			// game.newStatement("filling: "+a.toString(),1);
-			((GraphicObject) items.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) items.get(i)),g2);
 
 		}
 		for (int i = 0; i < chests.size(); i++) {
-			// game.newStatement("drawing chest!", 2);
-			((GraphicObject) chests.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) chests.get(i)),g2);
 		}
 		for (int i = 0; i < monster.size(); i++) {
 			GraphicObject o = ((GraphicObject) monster.get(i));
 			if (o != null) {
-				o.fill(g2);
+				DrawUtils.fillGraphicObject(o,g2);
 			}
 
 		}
 
 		for (int i = 0; i < lastWalls.size(); i++) {
-
-			((GraphicObject) lastWalls.get(i)).fill(g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) lastWalls.get(i)),g2);
 		}
 
 		boolean animationRunning = gui.currentThreadRunning(gui.getFigure()
@@ -615,13 +606,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (!animationRunning) {
 			if (hero != null) {
 				// System.out.println("fill hero");
-				hero.fill(g2);
+				DrawUtils.fillGraphicObject(hero, g2);
 
 			}
 		}
 
 	}
-
+	
+	
 	// private void drawTestTracker(Graphics g) {
 	//
 	// LinkedList way = game.getTracker().getWay();
@@ -1101,130 +1093,94 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						.getItemClass())) {
 
 					if (((itemArray[i]).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
-						itemObs[i] = new JDGraphicObject(new JDImageAWT(
-								ImageManager.potion_redImage, q.x, q.y,
-								12 * (roomSize / 100), 15 * (roomSize / 100)),
-								itemArray[i], new Rectangle(q, new Dimension(
+						itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(
 										12 * (roomSize / 100),
-										15 * (roomSize / 100))), Color.yellow);
+										15 * (roomSize / 100))), Color.yellow,ImageManager.potion_redImage);
 					} else {
-						itemObs[i] = new JDGraphicObject(new JDImageAWT(
-								ImageManager.potion_blueImage, q.x, q.y,
-								12 * (roomSize / 100), 15 * (roomSize / 100)),
+						itemObs[i] = new GraphicObject(
 								itemArray[i], new Rectangle(q, new Dimension(
 										12 * (roomSize / 100),
-										15 * (roomSize / 100))), Color.yellow);
+										15 * (roomSize / 100))), Color.yellow,ImageManager.potion_blueImage);
 					}
 
 				} else if (itemArray[i].getItemClass().equals(DustItem.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.dustImage, q.x, q.y,
-							10 * (roomSize / 100), 8 * (roomSize / 100)),
-							itemArray[i], new Rectangle(q,
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
 									new Dimension(10 * (roomSize / 100),
-											8 * (roomSize / 100))),
-							Color.yellow);
+											8 * (roomSize / 100))),Color.yellow,ImageManager.dustImage);
 				} else if (itemArray[i].getItemClass().equals(Sword.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.swordImage, q.x, q.y,
-							30 * (roomSize / 100), 20 * (roomSize / 100)),
-							itemArray[i], new Rectangle(q, new Dimension(
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(
 									30 * (roomSize / 100),
-									20 * (roomSize / 100))), Color.yellow);
+									20 * (roomSize / 100))), Color.yellow,ImageManager.swordImage);
 				} else if (itemArray[i].getItemClass().equals(Axe.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.axeImage, q.x, q.y,
-							30 * (roomSize / 100), 20 * (roomSize / 100)),
-							itemArray[i], new Rectangle(q, new Dimension(
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(
 									30 * (roomSize / 100),
-									20 * (roomSize / 100))), Color.yellow);
+									20 * (roomSize / 100))), Color.yellow,ImageManager.axeImage);
 				} else if (itemArray[i].getItemClass().equals(Club.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.clubImage, q.x, q.y,
-							30 * (roomSize / 100), 20 * (roomSize / 100)),
+					itemObs[i] = new GraphicObject(
 							itemArray[i], new Rectangle(q, new Dimension(
 									30 * (roomSize / 100),
-									20 * (roomSize / 100))), Color.yellow);
+									20 * (roomSize / 100))), Color.yellow,ImageManager.clubImage);
 				} else if (itemArray[i].getItemClass().equals(Lance.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.lanceImage, q.x, q.y,
-							50 * (roomSize / 100), 40 * (roomSize / 100)),
-							itemArray[i], new Rectangle(q, new Dimension(
+					itemObs[i] = new GraphicObject( itemArray[i], new Rectangle(q, new Dimension(
 									50 * (roomSize / 100),
-									40 * (roomSize / 100))), Color.yellow);
+									40 * (roomSize / 100))), Color.yellow,ImageManager.lanceImage);
 				} else if (itemArray[i].getItemClass().equals(Wolfknife.class)) {
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.wolfknifeImage, q.x, q.y,
-							20 * (roomSize / 100), 15 * (roomSize / 100)),
-							itemArray[i], new Rectangle(q, new Dimension(
+					itemObs[i] = new GraphicObject(	itemArray[i], new Rectangle(q, new Dimension(
 									20 * (roomSize / 100),
-									15 * (roomSize / 100))), Color.yellow);
+									15 * (roomSize / 100))), Color.yellow,ImageManager.wolfknifeImage);
 				} else if (itemArray[i].getItemClass().equals(Armor.class)) {
 					int sizeX = 30 * (roomSize / 100);
 					int sizeY = 20 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.armorImage, q.x, q.y, sizeX, sizeY),
+					itemObs[i] = new GraphicObject(
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow);
+									sizeY)), Color.yellow,ImageManager.armorImage);
 				} else if (itemArray[i].getItemClass().equals(Shield.class)) {
 					int sizeX = 20 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.shieldImage, q.x, q.y, sizeX, sizeY),
+					itemObs[i] = new GraphicObject(
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow);
+									sizeY)), Color.yellow, ImageManager.shieldImage);
 				} else if (itemArray[i].getItemClass().equals(Helmet.class)) {
 					int sizeX = 24 * (roomSize / 100);
 					int sizeY = 22 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.helmetImage, q.x, q.y, sizeX, sizeY),
+					itemObs[i] = new GraphicObject(
 							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow);
+									sizeY)), Color.yellow, ImageManager.helmetImage);
 				} else if (Scroll.class.isAssignableFrom(itemArray[i]
 						.getItemClass())) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.scrollImage, q.x, q.y, sizeX, sizeY),
-							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(sizeX,
+									sizeY)), Color.yellow,ImageManager.scrollImage);
 				} else if (itemArray[i].getItemClass().equals(InfoScroll.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(
-							new JDImageAWT(ImageManager.documentImage, q.x, q.y,
-									sizeX, sizeY), itemArray[i], new Rectangle(
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(
 									q, new Dimension(sizeX, sizeY)),
-							Color.yellow);
+							Color.yellow,ImageManager.documentImage);
 				} else if (itemArray[i].getItemClass().equals(Feather.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.featherImage, q.x, q.y, sizeX, sizeY),
-							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(	itemArray[i], new Rectangle(q, new Dimension(sizeX,
+									sizeY)), Color.yellow,ImageManager.featherImage);
 				} else if (itemArray[i].getItemClass().equals(Incense.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.potion_greenImage, q.x, q.y, sizeX,
-							sizeY), itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(	 itemArray[i], new Rectangle(q,
+							new Dimension(sizeX, sizeY)), Color.yellow,ImageManager.potion_greenImage);
 				} else if (itemArray[i].getItemClass().equals(Key.class)) {
 					int sizeX = 16 * (roomSize / 100);
 					int sizeY = 22 * (roomSize / 100);
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(
-							ImageManager.keyImage, q.x, q.y, sizeX, sizeY),
-							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(	itemArray[i], new Rectangle(q, new Dimension(sizeX,
+									sizeY)), Color.yellow,ImageManager.keyImage);
 
 				} else if (itemArray[i].getItemClass().equals(Rune.class)) {
 					int sizeX = 12 * (roomSize / 100);
@@ -1238,34 +1194,30 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						im = ImageManager.rune_redImage;
 					}
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
-							sizeX, sizeY), itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
+							new Dimension(sizeX, sizeY)), Color.yellow,im);
 				} else if (itemArray[i].getItemClass().equals(
 						DarkMasterKey.class)) {
 					int sizeX = 12 * (roomSize / 100);
 					int sizeY = 12 * (roomSize / 100);
 					JDImageProxy im = ImageManager.cristall_redImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
-							sizeX, sizeY), itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
+							new Dimension(sizeX, sizeY)), Color.yellow,im);
 				} else if (itemArray[i].getClass().equals(LuziasBall.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 					JDImageProxy im = ImageManager.kugelImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
-							sizeX, sizeY), itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
+							new Dimension(sizeX, sizeY)), Color.yellow,im);
 				} else if (itemArray[i].getClass().equals(Book.class)) {
 					int sizeX = 15 * (roomSize / 100);
 					int sizeY = 15 * (roomSize / 100);
 					JDImageProxy im = ImageManager.bookImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
-							sizeX, sizeY), itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject( itemArray[i], new Rectangle(q,
+							new Dimension(sizeX, sizeY)), Color.yellow,im);
 
 				} else if (Thing.class.isAssignableFrom(itemArray[i]
 						.getItemClass())) {
@@ -1275,9 +1227,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 					im = ImageManager.amulettImage;
 
-					itemObs[i] = new JDGraphicObject(new JDImageAWT(im, q.x, q.y,
-							sizeX, sizeY), itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow);
+					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
+							new Dimension(sizeX, sizeY)), Color.yellow,im);
 				} else {
 
 					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(

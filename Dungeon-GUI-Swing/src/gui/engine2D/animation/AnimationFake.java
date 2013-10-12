@@ -23,6 +23,7 @@ import figure.monster.MonsterInfo;
 import game.JDGUI;
 import graphics.JDImageProxy;
 import gui.MyJDGui;
+import gui.engine2D.DrawUtils;
 import gui.engine2D.GraphBoard;
 import gui.engine2D.GraphicObject;
 
@@ -107,13 +108,13 @@ public class AnimationFake extends Animation implements Runnable {
 	}
 	
 	public void paintPic(int num, Graphics g) {
-		new GraphicObject(
+		DrawUtils.fillGraphicObject(new GraphicObject(
 				new String("hero"),
 				new Rectangle(
 					getPointInRoom(),
 					getSize()),
 				Color.white,
-				im).fill(g);
+				im),g);
 	}
 	
 	private Dimension getSize() {

@@ -14,6 +14,7 @@ import game.JDGUI;
 import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.audio.AudioSet;
+import gui.engine2D.DrawUtils;
 import gui.engine2D.GraphicObject;
 
 import java.awt.Color;
@@ -124,8 +125,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 				(int) (y - (d.getHeight() / 2)));
 		GraphicObject c = new GraphicObject(null, new Rectangle(p, getSize()),
 				Color.white, im);
-		// c.setFlipped(true);
-		c.fill(g);
+		DrawUtils.fillGraphicObject(c, g);
 	}
 
 	private int getMoveModX(int num) {

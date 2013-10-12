@@ -8,6 +8,8 @@
  */
 package gui.engine2D;
 
+import graphics.JDImageProxy;
+
 import java.awt.*;
 
 public class JDGraphicObject extends GraphicObject {
@@ -18,6 +20,10 @@ public class JDGraphicObject extends GraphicObject {
 		super(ob, o, c, null);
 		image = i;
 
+	}
+
+	public JDImageAWT getAWTImage() {
+		return image;
 	}
 
 	public JDGraphicObject(JDImageAWT i, Object ob, Rectangle o, Color c,
@@ -34,18 +40,5 @@ public class JDGraphicObject extends GraphicObject {
 
 	}
 
-	public JDGraphicObject(JDImageAWT i, Object ob, Rectangle o, Color c,
-			boolean paint, Rectangle clickRect) {
-		super(ob, o, c, null, clickRect);
-		image = i;
 
-	}
-
-
-	public void fill(Graphics g) {
-		Graphics2D g2D = (Graphics2D) g;
-		g2D.drawImage(image.getImage(), image.getPosX(), image.getPosY(),
-				image.getWidth(), image.getHeight(), null);
-
-	}
 }
