@@ -56,6 +56,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.Scrollable;
@@ -66,7 +67,10 @@ import javax.swing.Scrollable;
 
 
 
+
+
 import animation.AnimationSet;
+import animation.AnimationUtils;
 import control.ActionAssembler;
 //import shrine.Brood;
 import shrine.Angel;
@@ -113,7 +117,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	Point[] positionCoord = new Point[8];
 
-	HashMap roomObjectMap = new HashMap();
+	Map roomObjectMap = new HashMap();
 
 	int screenSize = 14000;
 
@@ -132,25 +136,25 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	boolean writeOut = false;
 
-	Vector rooms = new Vector();
+	Vector<GraphicObject> rooms = new Vector<GraphicObject>();
 
-	Vector shrines = new Vector();
+	Vector<GraphicObject> shrines = new Vector<GraphicObject>();
 
-	Vector positions = new Vector();
+	Vector<GraphicObject> positions = new Vector<GraphicObject>();
 
-	Vector monster = new Vector();
+	Vector<GraphicObject> monster = new Vector<GraphicObject>();
 
-	Vector items = new Vector();
+	Vector<GraphicObject> items = new Vector<GraphicObject>();
 
-	Vector doors = new Vector();
+	Vector<GraphicObject> doors = new Vector<GraphicObject>();
 
-	Vector chests = new Vector();
+	Vector<GraphicObject> chests = new Vector<GraphicObject>();
 
-	Vector spots = new Vector();
+	Vector<GraphicObject> spots = new Vector<GraphicObject>();
 
-	Vector walls = new Vector();
+	Vector<GraphicObject> walls = new Vector<GraphicObject>();
 
-	Vector lastWalls = new Vector();
+	Vector<GraphicObject> lastWalls = new Vector<GraphicObject>();
 
 	GraphicObject hero;
 
@@ -293,8 +297,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			int posX = positionCoord[index].x;
 			int posY = positionCoord[index].y;
 			return new Point(posX + ROOMSIZE_BY_20, posY);
-		} else {
-			// System.out.println("verdammt falscher PosIndex!");
 		}
 		return null;
 	}
@@ -309,13 +311,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
 
-		// System.out.println("repaintRoomSmall()");
 
 		int xcoord = 0;
 		int ycoord = 0;
-		// drawRoom(xcoord, ycoord, r, g);
 
-		LinkedList aniObs = new LinkedList();
+		List aniObs = new LinkedList();
 		if (obj instanceof LinkedList) {
 			aniObs = (LinkedList) obj;
 			if (aniObs.size() > 1) {
@@ -323,7 +323,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				i++;
 			}
 		}
-		LinkedList graphObs = new LinkedList();
+		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, g);
 
@@ -667,17 +667,17 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		int status = r.getVisibilityStatus();
 		JDImageProxy im = ImageManager.floorImageArray[r.getFloorIndex()];
 		if (memory) {
-			LinkedList roomDoors = drawDoors(r, xcoord, ycoord, g);
+			List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
 			im = ImageManager.floorImage_darkArray[r.getFloorIndex()];
 			this.doors.addAll(roomDoors);
 		} else {
 			if (status == RoomObservationStatus.VISIBILITY_FOUND) {
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
-				LinkedList roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
 				this.doors.addAll(roomDoors);
 
 			} else if (status == RoomObservationStatus.VISIBILITY_SHRINE) {
-				List roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
 				this.doors.addAll(roomDoors);
 				if (r.isPart_scouted()) {
@@ -696,7 +696,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				//
 			} else if (status > RoomObservationStatus.VISIBILITY_SHRINE) {
 
-				LinkedList roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
 				this.doors.addAll(roomDoors);
 
 				// im = floorImageArray[r.getFloorIndex()];
@@ -721,12 +721,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						* getDoorDimension(true).width)), bg, false, im);
 	}
 
-	private LinkedList drawDoors(RoomInfo r, int xcoord, int ycoord, Graphics g) {
+	private List<GraphicObject> drawDoors(RoomInfo r, int xcoord, int ycoord, Graphics g) {
 		DoorInfo[] doors = r.getDoors();
 		if (doors == null) {
-			return new LinkedList();
+			return new LinkedList<GraphicObject>();
 		}
-		LinkedList roomDoors = new LinkedList();
+		List<GraphicObject> roomDoors = new LinkedList<GraphicObject>();
 		if (doors[0] != null) {
 			JDGraphicObject door0;
 			if (!doors[0].hasLock().booleanValue()) {
@@ -828,13 +828,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		Color bg = null;
 
 		GraphicObject ob = null;
-		boolean southWall = false;
 		RoomInfo southRoom = r.getNeighbourRoom(RouteInstruction.SOUTH);
 		if (southRoom != null) {
 			if (r.getVisibilityStatus() >= 2
 					&& southRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FOUND
 					&& r.isClaimed()) {
-				southWall = true;
 				lastWalls
 						.add(new GraphicObject(null, new Rectangle(new Point(
 								xcoord, ycoord + roomSize
@@ -953,41 +951,18 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				(int) (y + (roomSize / 2) - (d.getHeight() / 2))), d);
 	}
 
-	// private void drawShrine(int xcoord, int ycoord, Room r, Graphics g) {
-	// Color col = r.getShrine().getColor();
-	// Polygon base = getShrineBasePolygon(xcoord, ycoord);
-	// Polygon shrine = getShrinePolygon(xcoord, ycoord);
-	// g.setColor(shrineBase);
-	// g.fillPolygon(base);
-	//
-	// g.setColor(col);
-	// g.fillPolygon(shrine);
-	//
-	// g.setColor(Color.black);
-	// g.drawPolygon(base);
-	// g.drawPolygon(shrine);
-	//
-	// }
 
 	private GraphicObject[] drawMonster(int xcoord, int ycoord,
-			java.util.List monsterList, Graphics g) {
+			List<MonsterInfo> monsterList, Graphics g) {
 		int k = monsterList.size();
 		GraphicObject obs[] = new GraphicObject[k];
 		if (monsterList.size() > 8) {
 			obs = new GraphicObject[8];
 		}
-		// Point[] p = getMonsterPoints(xcoord, ycoord);
 		for (int i = 0; i < monsterList.size(); i++) {
 
 			MonsterInfo m = ((MonsterInfo) monsterList.get(i));
-			// int num = m.getInRoomIndex();
 			int position = m.getPositionInRoomIndex();
-			// System.out.println("index : "+ num);
-			// if (num < 4 && i < 4) {
-			if (position == -1) {
-				int lskdfj = 4;
-
-			}
 
 			GraphicObject gr = drawAMonster(m, new Point(
 					getPositionCoordModified(position).x + xcoord,
@@ -996,42 +971,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				break;
 			}
 			obs[i] = gr;
-
-			// }
 		}
 
 		return obs;
 	}
 
-	// private GraphicObject[] drawMonster(int xcoord, int ycoord,
-	// Monster[] monsters, Graphics g) {
-	//
-	// GraphicObject[] obs = new GraphicObject[4];
-	//
-	// Point[] p = getMonsterPoints(xcoord, ycoord);
-	// for (int i = 0; i < monsters.length; i++) {
-	//
-	// Monster m = monsters[i];
-	// if (m != null) {
-	// //writeOut("drawMonster: " + m.toString() + " index: " + i);
-	// GraphicObject gr = drawAMonster(m, p[i], g);
-	// obs[i] = gr;
-	// } else {
-	// //writeOut("drawMonster: kein Monster im Array: " + i);
-	// obs[i] = null;
-	// }
-	// //if (gr == null) {
-	// //////System.out.println("Monster graphicObject ist null !");
-	// //}
-	//
-	// }
-	//
-	// return obs;
-	// }
 
 	public Dimension getMonsterSize(MonsterInfo m) {
 		int mClass = m.getMonsterClass();
-		// return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
 		if (mClass == Monster.WOLF) {
 			return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
 		}
@@ -1121,7 +1068,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		if (m.isDead() != null && m.isDead().booleanValue()) {
 			// System.out.println("will totes Monster malen!");
-			AnimationSet set = this.getFigure_tipping_over(m);
+			AnimationSet set = AnimationUtils.getFigure_tipping_over(m);
 			if (set != null && set.getLength() > 0) {
 				JDImageProxy i = set.getImagesNr(set.getLength() - 1);
 				ob = new JDImageAWT(i, rect);
@@ -1139,19 +1086,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (itemArray == null) {
 			return new GraphicObject[0];
 		}
-		for (int i = 0; i < itemArray.length; i++) {
-			if (itemArray[i] != null) {
-				// ////System.out.println(itemArray[i].toString());
-			} else {
-				// ////System.out.println("null");
-			}
-		}
-
-		// Point p[] = getMonsterPoints(xcoord, ycoord);
 		Point p2[] = getItemPoints(xcoord, ycoord);
-		// for (int i = 0; i < 4; i++) {
-		// p2[i] = new Point(p[i].x, p[i].y - 40);
-		// }
 
 		GraphicObject[] itemObs = new GraphicObject[4];
 
@@ -1332,8 +1267,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 							sizeX, sizeY), itemArray[i], new Rectangle(q,
 							new Dimension(sizeX, sizeY)), Color.yellow);
 
-					// } else if
-					// (itemArray[i].getItemClass().equals(Thing.class)) {
 				} else if (Thing.class.isAssignableFrom(itemArray[i]
 						.getItemClass())) {
 					int sizeX = 12 * (roomSize / 100);
@@ -1358,12 +1291,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return itemObs;
 	}
 
-	private void writeOut(String s) {
-
-		if (writeOut) {
-			// //System.out.println(s);
-		}
-	}
 
 	boolean visCheat = false;
 
@@ -1394,7 +1321,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 
 			if (r.getChest() != null) {
-				// game.newStatement("chest vorhanden!", 1);
 				GraphicObject chestOb;
 				if (r.getChest().hasLock()) {
 					chestOb = new GraphicObject(r.getChest(),
@@ -1410,11 +1336,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				}
 				chests.add(chestOb);
 			}
-			// question_mark = true;
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)
 				|| (gui.getVisibility())) {
-			// question_mark = false;
 
 			if (r.equals(gui.getFigure().getRoomInfo())) {
 				for (int i = 0; i < positionCoord.length; i++) {
@@ -1431,9 +1355,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 				}
 			}
-			List monsters = r.getMonsterInfos();
+			List<MonsterInfo> monsters = r.getMonsterInfos();
 			if (monsters != null && monsters.size() > 0) {
-				writeOut("Monster im Raum: " + r.getMonsterInfos().size());
 				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
 						r.getMonsterInfos(), g);
 				for (int i = 0; i < monsterObs.length; i++) {
@@ -1450,16 +1373,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
 				if (o != null) {
-					// ////System.out.println("adding graph-Ob");
 					items.add(o);
 				}
 			}
 
 		}
-
-		// if(question_mark && (status == room.SHRINE)) {
-
-		// }
 
 		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
@@ -1470,48 +1388,25 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (r.getHeroInfo() != null) {
-			// System.out.println("drawHero1");
 			drawHero(g, xcoord, ycoord, r.getHeroInfo());
 		}
-		// if (r.getHero() != null) {
-		//
-		// // checkViewPos(xcoord,ycoord); //Scheiss langsam!!
-		// }
-		// }
 	}
-
-	// private void checkViewPos(int xcoord, int ycoord) {
-	// BoardView view = gui.getMainFrame().getSpielfeld();
-	// Point p = view.getViewport().getViewPosition();
-	// Dimension d = view.getViewport().getSize();
-	// Rectangle rect = new Rectangle(p, d);
-	// if (!rect.contains(new Point(xcoord, ycoord))) {
-	// view.resetViewPoint();
-	// }
-	// }
 
 	public void drawHero(Graphics g, int x, int y, HeroInfo info) {
 		JDImageAWT im = null;
 		if (info == null) {
 			return;
 		}
-		// System.out.println("frage pos ab");
 		int index = info.getPositionInRoomIndex();
 		if (index == -1) {
 			int dkls = 4;
 		}
 
-		// Hero held = game.getHero();
 		int pos = info.getPositionInRoomIndex();
 		if (pos == -1) {
 			System.out.println("drawHero nicht m�glich, weil PosIndex auf -1!");
 		}
-		// System.out.println("Position in Room: "+pos);
 		Point p = getPositionCoordModified(info.getPositionInRoomIndex());
-		// System.out.println("Point in Room: "+p);
-		if (p == null) {
-			int oi = 2;
-		}
 		int xpos = (int) p.getX();
 		int ypos = (int) p.getY();
 		int xSize = (int) (roomSize / HERO_SIZE_QUOTIENT_X);
@@ -1520,10 +1415,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		Rectangle rect = new Rectangle(new Point(x + xpos - (xSize / 2), y
 				+ ypos - (ySize / 2)), new Dimension(xSize, ySize));
 
-		// g.drawRect(rect.x, rect.y, rect.width, rect.height);
 
 		int code = info.getHeroCode();
-		// int dir = held.getPositionInRoom();
 		int dir = info.getLookDir();
 		if (dir == 0) {
 			dir = Dir.NORTH;
@@ -1576,13 +1469,10 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		int sizey = r.height;
 		int newSizex = sizex / 2;
 		int newSizey = sizey / 2;
-		int pointx = r.x;
-		int pointy = r.y;
 		int newPointx = r.x + newSizex / 2;
 		int newPointy = r.y + newSizey / 2;
 		return new Rectangle(new Point(newPointx, newPointy), new Dimension(
 				newSizex, newSizey));
-
 	}
 
 	public static final double HERO_POINT_QUOTIENT_X = 2.2;
@@ -1608,10 +1498,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				(int) (roomSize / HERO_SIZE_QUOTIENT_Y));
 	}
 
-	// public void setGame(Game game) {
-	// this.game = game;
-	// }
-
 	public void decSize() {
 		if (roomSize >= 50) {
 			roomSize -= 10;
@@ -1619,7 +1505,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			gui.updateGui();
 			gui.repaintPicture();
 		}
-
 	}
 
 	public void incSize() {
@@ -1629,7 +1514,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			gui.updateGui();
 			gui.repaintPicture();
 		}
-
 	}
 
 	public void incSize(int inc) {
@@ -1637,14 +1521,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		sizeChanged();
 		gui.updateGui();
 		gui.repaintPicture();
-	}
-
-	private boolean isNear(Point p1, Point p2, int threshold) {
-		if (p1.x - p2.x > threshold)
-			return false;
-		if (p1.y - p2.y > threshold)
-			return false;
-		return true;
 	}
 
 	public void mousePressed(MouseEvent me) {
@@ -1662,15 +1538,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (o instanceof Point) {
 			Point point = (Point) o;
 			gui.getControl().roomClicked(new JDPoint(point.x, point.y), right);
-			// gui.updateGui();
 			return;
 		}
 		if (r == null) {
 			return;
 		}
-
-		int roomXcoord = offset + (r.getPoint().getX() * roomSize);
-		int roomYcoord = offset + (r.getPoint().getY() * roomSize);
 
 		mouse_x = (int) p.getX();
 		mouse_y = (int) p.getY();
@@ -1725,16 +1597,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (!found) {
 			for (int i = 0; i < positions.size(); i++) {
 				GraphicObject ob = (GraphicObject) positions.get(i);
-				// Point relPoint = new Point(p.x-roomXcoord,p.y-roomYcoord);
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						gui.getControl().positionClicked(
 								(PositionInRoomInfo) ob.getClickedObject(),
 								right);
-					// gui.getMainFrame().getText().setText(
-					// ((Paragraphable) (((GraphicObject) ob)
-					// .getClickedObject())).getParagraphs());
-
 					found = true;
 					break;
 				}
@@ -1784,8 +1651,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				GraphicObject ob = ((GraphicObject) spots.get(i));
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
-						// game.newStatement("gefunden!", 1);
-
 						gui.getControl().spotClicked(ob.getClickedObject());
 					gui.getMainFrame()
 							.getText()
@@ -1829,11 +1694,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				found = true;
 
 			}
-			// if (isHeroArea(p)) {
-			// gui.getControl().heroClicked();
-			// found = true;
-			// }
-
 		}
 		if (!found) {
 			for (int i = 0; i < rooms.size(); i++) {
@@ -1845,34 +1705,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				}
 			}
 		}
-
-		// gui.updateGui();
-		// gui.getMainFrame().repaint();
-
 	}
-
-	// private boolean isHeroArea(Point p) {
-	// // Rectangle rect = new Rectangle(new
-	// // Point(getHeroRoomPos().getX(),getHeroRoomPos().getY()),new
-	// //
-	// Dimension((int)(getHeroSize().getWidth()*2),(int)(getHeroSize().getHeight()*2)));
-	// Rectangle rect = new Rectangle(new Point(this.getHeroRoomPos().getX()
-	// + ((int) (roomSize / HERO_POINT_QUOTIENT_X))
-	// - HERO_POINT_OFFSET_X, this.getHeroRoomPos().getY()
-	// + ((int) (roomSize / HERO_POINT_QUOTIENT_Y))
-	// - HERO_POINT_OFFSET_Y), new Dimension(
-	// (int) (0.8 * (roomSize / HERO_SIZE_QUOTIENT_X)),
-	// (int) ((0.8) * ((roomSize / HERO_SIZE_QUOTIENT_Y)))));
-	// // System.out.println("Click: "+p.toString());
-	// // System.out.println("Rect: "+rect.toString());
-	// if (rect.contains(p)) {
-	// // System.out.println("found in Rect!");
-	//
-	// return true;
-	// }
-	// return false;
-	//
-	// }
 
 	public void mouseClicked(MouseEvent me) {
 
@@ -1902,28 +1735,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (p == null) {
 			return;
 		}
-		// Rectangle rect =
-		// this.gui.getMainFrame().getSpielfeld().getViewport().getVisibleRect();
-		//
-		// if(rect == null) {
-		// return;
-		// }
-		// if(!rect.contains(p)) {
-		//
-		// return;
-		// }
 
 		boolean found = false;
 
 		this.setCursor(cursor1);
 		Object o = getRoom(p);
-		RoomInfo r = null;
 		if (o == null) {
 			gui.getMainFrame().getText().setText(new Paragraph[0]);
 			return;
-		}
-		if (o instanceof RoomInfo) {
-			r = (RoomInfo) o;
 		}
 
 		if (o instanceof Point) {
@@ -1931,22 +1750,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			return;
 		}
 
-		int roomXcoord = offset + (r.getPoint().getX() * roomSize);
-		int roomYcoord = offset + (r.getPoint().getY() * roomSize);
-
-		// RoomInfo heroRoom =
-		// RoomInfo.makeRoomInfo(game.getHero().getRoom(),
-		// gui.getFigure().getObservationStatusObject(
-		// game.getHero().getLocation()));
-
 		for (int i = 0; i < items.size(); i++) {
 			GraphicObject ob = ((GraphicObject) items.get(i));
 			if ((ob != null) && ob.hasPoint(p)) {
 				itemCrossed(ob.getClickedObject());
 				found = true;
 				break;
-			} else {
-
 			}
 		}
 
@@ -1964,8 +1773,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (!found) {
 			for (int i = 0; i < positions.size(); i++) {
 				GraphicObject ob = (GraphicObject) positions.get(i);
-				// Point relPoint = new
-				// Point(p.x-roomXcoord,p.y-roomYcoord);
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						positionCrossed(((GraphicObject) ob).getClickedObject());
@@ -1985,23 +1792,18 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			// System.out.println("Schreine: "+shrines.size());
 			for (int i = 0; i < shrines.size(); i++) {
 				GraphicObject ob = ((GraphicObject) shrines.get(i));
 				if (ob.hasPoint(p)) {
 					shrineCrossed(ob.getClickedObject());
-					// System.out.println("Schrein found! ");
 					found = true;
 					break;
 				}
 			}
 		}
 		if (!found) {
-			// System.out.println("Punkt: "+p.toString());
 			for (int i = 0; i < doors.size(); i++) {
 				GraphicObject ob = ((GraphicObject) doors.get(i));
-				// System.out.println("checking: "+ob.getClickedObject()+" :
-				// "+ob.o.toString());
 				if (ob.hasPoint(p)) {
 					doorCrossed((DoorInfo) ob.getClickedObject());
 					found = true;
@@ -2025,14 +1827,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					heroCrossed();
 					found = true;
 				}
-			} else {
-				System.out.println("hero nicht vorhanden!");
 			}
-
-			// if (isHeroArea(p)) {
-			// heroCrossed();
-			// found = true;
-			// }
 		}
 
 		if (!found) {
@@ -2073,7 +1868,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (!found) {
 			return null;
 		}
-		// System.out.println("returning: "+ob.getClickedObject().toString());
 		return ob.getClickedObject();
 	}
 
@@ -2093,7 +1887,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void chestCrossed(Object o) {
 		if (o instanceof ChestInfo) {
-			// System.out.println("Chest crossed! "+Math.random());
 			gui.getMainFrame().getText()
 					.setText(((ChestInfo) o).getParagraphs());
 		}
@@ -2162,8 +1955,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (o instanceof ShrineInfo) {
 			gui.getMainFrame().getText()
 					.setText(((ShrineInfo) o).getParagraphs());
-		} else {
-			// //System.out.println("Fehler bei Mauszeigererkenneung! Item!?");
 		}
 
 	}
@@ -2203,9 +1994,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						this.setCursor(cursor7);
 					}
 				}
-			} else {
-				// //System.out.println("Fehler bei Mauszeigererkenneung!
-				// Room!?");
 			}
 		}
 
@@ -2241,23 +2029,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return offset;
 	}
 
-	private Polygon getShrineBasePolygon(int xcoord, int ycoord) {
-		int[] arx = { xcoord + roomSize - 20, xcoord + roomSize - 35,
-				xcoord + roomSize - 20, xcoord + roomSize - 5 };
-		int[] ary = { ycoord + roomSize - 5, ycoord + roomSize - 20,
-				ycoord + roomSize - 35, ycoord + roomSize - 20 };
-
-		return new Polygon(arx, ary, 4);
-	}
-
-	private Polygon getShrinePolygon(int xcoord, int ycoord) {
-		int[] arx = { xcoord + roomSize - 22, xcoord + roomSize - 22,
-				xcoord + roomSize - 17, xcoord + roomSize - 9 };
-		int[] ary = { ycoord + roomSize - 9, ycoord + roomSize - 17,
-				ycoord + roomSize - 22, ycoord + roomSize - 22 };
-
-		return new Polygon(arx, ary, 4);
-	}
 
 	public Point getMonsterPos(int k) {
 		return getMonsterPoints(0, 0)[k];
@@ -2569,465 +2340,15 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
 					s, getShrineRect(xcoord, ycoord), Color.yellow);
-		} else {
-			// ob =
-			// new graphicShrine(
-			// r.getShrine(),
-			// xcoord,
-			// ycoord,
-			// roomSize);
-
-		}
+		} 
 		return ob;
 
 	}
 
-	public AnimationSet getFigure_slays(FigureInfo info) {
-		// int pos = info.getPositionInRoomInRoom();
-		// int dir = (pos-1+2)%4;
-		int dir = info.getLookDir();
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_slays.get(dir - 1);
-				}
-			}
 
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_slays.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_slays.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_slays.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_slays.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_slays.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_slays(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_slays(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_slays(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_slays(dir);
-			}
-		}
-		return null;
 
-	}
 
-	public AnimationSet getFigure_using(FigureInfo info) {
-		int dir = info.getLookDir();
-
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_using.get(dir - 1);
-				}
-			}
-
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_using.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_using.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_using.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_using.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_using.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_using(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_using(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_using(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_using(dir);
-			}
-		}
-		return null;
-
-	}
-
-	public AnimationSet getFigure_sorcering(FigureInfo info) {
-		int dir = info.getLookDir();
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_sorcering.get(dir - 1);
-				}
-			}
-
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_sorcering.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_sorcering.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_sorcering.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_sorcering.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_sorcering.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_sorcering(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_sorcering(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_sorcering(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_sorcering(dir);
-			}
-		}
-		return null;
-
-	}
-
-	public AnimationSet getFigure_tipping_over(FigureInfo info) {
-		int dir = info.getLookDir();
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				// if (info.getLevel() == 1) {
-				return ImageManager.wolf1_tipping_over.get(dir - 1);
-				// }
-			}
-
-			if (mClass == Monster.SKELETON) {
-				// if (info.getLevel() == 1) {
-				return ImageManager.skel1_tipping_over.get(dir - 1);
-				// }
-			}
-			if (mClass == Monster.GHUL) {
-				// if (info.getLevel() == 1) {
-				return ImageManager.ghul1_tipping_over.get(dir - 1);
-				// }
-			}
-			if (mClass == Monster.OGRE) {
-				// if (info.getLevel() == 1) {
-				return ImageManager.ogre1_tipping_over.get(dir - 1);
-				// }
-			}
-			if (mClass == Monster.BEAR) {
-				// if (info.getLevel() == 1) {
-				return ImageManager.spider1_tipping_over.get(dir - 1);
-				// }
-			}
-			if (mClass == Monster.ORC) {
-				// if (info.getLevel() == 1) {
-				return ImageManager.orc1_tipping_over.get(dir - 1);
-				// }
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_tipping_over(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_tipping_over(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_tipping_over(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_tipping_over(dir);
-			}
-		}
-		return null;
-
-	}
-
-	public AnimationSet getFigure_running(FigureInfo info) {
-		int dir = info.getLookDir();
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_running.get(dir - 1);
-				}
-			}
-
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_running.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_running.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_running.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_running.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_running.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_running(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_running(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_running(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_running(dir);
-			}
-		}
-		return null;
-
-	}
-
-	public AnimationSet getFigure_walking(FigureInfo info) {
-		int dir = info.getLookDir();
-
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_walking.get(dir - 1);
-				}
-			}
-
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_walking.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_walking.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_walking.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_walking.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_walking.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_walking(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_walking(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_walking(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_walking(dir);
-			}
-
-		}
-		return null;
-
-	}
-
-	public AnimationSet getFigure_been_hit(FigureInfo info) {
-		int dir = info.getLookDir();
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_been_hit.get(dir - 1);
-				}
-			}
-
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_been_hit.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_been_hit.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_been_hit.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_been_hit.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_been_hit.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_been_hit(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_been_hit(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_been_hit(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_been_hit(dir);
-			}
-		}
-		return null;
-
-	}
-
-	public AnimationSet getFigure_pause(FigureInfo info) {
-		int dir = info.getLookDir();
-
-		if (info instanceof MonsterInfo) {
-			int mClass = ((MonsterInfo) info).getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				if (info.getLevel() == 1) {
-
-					return ImageManager.wolf1_pause.get(dir - 1);
-				}
-			}
-
-			if (mClass == Monster.SKELETON) {
-				if (info.getLevel() == 1) {
-					return ImageManager.skel1_pause.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.GHUL) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_pause.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.OGRE) {
-				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_pause.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.BEAR) {
-				if (info.getLevel() == 1) {
-					return ImageManager.spider1_pause.get(dir - 1);
-				}
-			}
-			if (mClass == Monster.ORC) {
-				if (info.getLevel() == 1) {
-					return ImageManager.orc1_pause.get(dir - 1);
-				}
-			}
-		}
-		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_pause(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_pause(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_pause(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_pause(dir);
-			}
-		}
-		return null;
-
-	}
+	
 
 	/**
 	 * @return Returns the luzia_ball_greyImage.

@@ -188,14 +188,14 @@ public class RoomInfo extends InfoEntity  {
 		return null;
 	}
 
-	public List getMonsterInfos() {
+	public List<MonsterInfo> getMonsterInfos() {
 		
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
-			List l = r.getRoomFigures();
-			List res = new LinkedList();
-			for (Iterator iter = l.iterator(); iter.hasNext();) {
-				Figure element = (Figure) iter.next();
+			List<Figure> l = r.getRoomFigures();
+			List<MonsterInfo> res = new LinkedList<MonsterInfo>();
+			for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
+				Figure element = iter.next();
 				if (element instanceof Monster) {
 					res.add(MonsterInfo.makeMonsterInfo((Monster) element,
 									map));

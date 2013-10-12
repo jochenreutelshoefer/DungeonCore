@@ -62,6 +62,7 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 
 import animation.AnimationSet;
+import animation.AnimationUtils;
 import audio.AudioEffectsManager;
 import spell.Spell;
 import spell.SpellInfo;
@@ -612,8 +613,7 @@ public class MyJDGui implements JDGUI {
 		// RoomInfo.makeRoomInfo(game.getDungeon().getRoom(figure.getRoomNumber()),
 		// figure.getObservationStatusObject(figure.getRoomNumber()));
 		RoomInfo info = fig.getRoomInfo();
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_slays(fig);
+		AnimationSet set = AnimationUtils.getFigure_slays(fig);
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig,
 					AnimationReal.SLAYS, info, this);
@@ -628,8 +628,7 @@ public class MyJDGui implements JDGUI {
 
 		RoomInfo info = fig.getRoomInfo();
 		// int code = game.getHero().getHeroCode();
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_walking(fig);
+		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig,
@@ -641,8 +640,7 @@ public class MyJDGui implements JDGUI {
 	public void figureSorceringAnimation(FigureInfo fig) {
 
 		RoomInfo info = fig.getRoomInfo();
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_sorcering(fig);
+		AnimationSet set = AnimationUtils.getFigure_sorcering(fig);
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig,
 					Animation.SORCERING, info, this);
@@ -653,8 +651,7 @@ public class MyJDGui implements JDGUI {
 	public void figureUsingAnimation(FigureInfo fig) {
 
 		RoomInfo info = fig.getRoomInfo();
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_using(fig);
+		AnimationSet set = AnimationUtils.getFigure_using(fig);
 
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig, Animation.USING,
@@ -670,8 +667,7 @@ public class MyJDGui implements JDGUI {
 	public void figurePauseAnimation(FigureInfo fig, int offset) {
 
 		RoomInfo info = fig.getRoomInfo();
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_pause(fig);
+		AnimationSet set = AnimationUtils.getFigure_pause(fig);
 
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig, Animation.PAUSE,
@@ -685,8 +681,7 @@ public class MyJDGui implements JDGUI {
 
 		RoomInfo info = fig.getRoomInfo();
 
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_running(fig);
+		AnimationSet set = AnimationUtils.getFigure_running(fig);
 
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig, Animation.RUNNING,
@@ -712,8 +707,7 @@ public class MyJDGui implements JDGUI {
 
 		RoomInfo info = fig.getRoomInfo();
 
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_been_hit(fig);
+		AnimationSet set = AnimationUtils.getFigure_been_hit(fig);
 
 		if (set != null) {
 			Animation ani = new AnimationReal(set, fig, AnimationReal.BEEN_HIT,
@@ -727,8 +721,7 @@ public class MyJDGui implements JDGUI {
 
 		RoomInfo info = fig.getRoomInfo();
 
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_tipping_over(fig);
+		AnimationSet set = AnimationUtils.getFigure_tipping_over(fig);
 		Animation ani = new AnimationReal(set, fig, AnimationReal.SLAYS, info,
 				this);
 		ani.deathAnimation = true;
@@ -965,8 +958,7 @@ public class MyJDGui implements JDGUI {
 			int toPos) {
 		RoomInfo info = fig.getRoomInfo();
 		// int code = game.getHero().getHeroCode();
-		AnimationSet set = frame.getSpielfeld().getSpielfeldBild()
-				.getFigure_walking(fig);
+		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig,
