@@ -21,18 +21,18 @@ import java.awt.image.BufferedImageOp;
 
 import dungeon.Door;
 
-public class GraphicObject /*extends JDEnv*/{
+public class GraphicObject {
 
-	Rectangle o;
-	Rectangle clickRect;
-	Color c;
+	protected Rectangle o;
+	protected Rectangle clickRect;
+	protected Color c;
 
-boolean flipped = false;
-	Object clickedObject;
+	protected boolean flipped = false;
+	protected Object clickedObject;
 
-	boolean rim = false;
-	Image image;
-	//Game game;
+	protected boolean rim = false;
+	protected Image image;
+
 	public GraphicObject(
 		Object ob,
 		Rectangle o,
@@ -43,7 +43,6 @@ boolean flipped = false;
 		this.c = c;
 		clickedObject = ob;
 		image = i;
-		//this.game = game;
 	}
 	
 	public GraphicObject(
@@ -57,8 +56,8 @@ boolean flipped = false;
 			this.clickRect = clickRect;
 			clickedObject = ob;
 			image = i;
-			//this.game = game;
 		}
+
 	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,Image i) {
 		this.rim = rim;
 		this.o = o;
@@ -113,9 +112,7 @@ boolean flipped = false;
 			if(g == null ) {
 				System.out.println("g ist null!");
 			}
-			//Component c = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
 			g.drawImage(image,o.x,o.y,o.width,o.height,null);
-//			}
 		}
 	}
 	

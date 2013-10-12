@@ -13,10 +13,10 @@ import java.awt.*;
 public class JDGraphicObject extends GraphicObject {
 
 	
-	JDImageAWT image;
+	private JDImageAWT image;
 
 	
-	boolean toPaint = true;
+	private boolean toPaint = true;
 
 	
 	public JDGraphicObject(JDImageAWT i,Object ob, Rectangle o, Color c) {
