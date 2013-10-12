@@ -7,39 +7,39 @@
 package gui.engine2D;
 
 
+import graphics.AbstractImageLoader;
 import gui.StartView;
 import gui.audio.AudioEffectsManager;
 import gui.engine2D.animation.AnimationSet;
 import gui.engine2D.animation.AnimationSetDirections;
-import io.JDImageLoader;
-import io.MyLookUpTable;
 import io.PictureLoadDialog;
 
 import java.applet.Applet;
-import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.LookupOp;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import dungeon.Dir;
 
 public class ImageManager {
+	
+	private static ImageManager instance;
+	private AbstractImageLoader loader;
+	
+	public ImageManager(AbstractImageLoader loader2) {
+		this.loader = loader2;
+	}
+	public static ImageManager getInstance(AbstractImageLoader loader) {
+		if(instance == null) {
+			instance = new ImageManager(loader);
+		}
+		return instance;
+	}
 
 	private static MediaTracker tracker;
 
-	private static Component bild;
 	
 	public static Image woodTextureImage;
 
@@ -487,10 +487,9 @@ public class ImageManager {
 		if(!imagesLoaded) {
 		
 		   
-		JDImageLoader.dialog = loadDialog;
-		bild = board;
+		AWTImageLoader.dialog = loadDialog;
 		tracker = new MediaTracker(board);
-		JDImageLoader.setTracker(tracker);
+		AWTImageLoader.setTracker(tracker);
 
 		puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
@@ -684,211 +683,148 @@ public class ImageManager {
 		bearImage = makePics(spider1_walking);
 		
 		
-		dead_dwarfImage = JDImageLoader.loadImage(a, "dead_dwarf.gif");
-		dead_warriorImage = JDImageLoader.loadImage(a, "dead_stan.gif");
-		dead_thiefImage = JDImageLoader.loadImage(a, "dead_blue_pirate.gif");
-		dead_druidImage = JDImageLoader.loadImage(a, "dead_white_mage.gif");
-		dead_mageImage = JDImageLoader.loadImage(a, "dead_black_mage.gif");
+		dead_dwarfImage = AWTImageLoader.loadImage(a, "dead_dwarf.gif");
+		dead_warriorImage = AWTImageLoader.loadImage(a, "dead_stan.gif");
+		dead_thiefImage = AWTImageLoader.loadImage(a, "dead_blue_pirate.gif");
+		dead_druidImage = AWTImageLoader.loadImage(a, "dead_white_mage.gif");
+		dead_mageImage = AWTImageLoader.loadImage(a, "dead_black_mage.gif");
 
-		chestImage = JDImageLoader.loadImage(a, "chest_cut_trans.gif");
-		floorImage = JDImageLoader.loadImage(a, "boden5.gif");
-		floor_darkImage = JDImageLoader.loadImage(a, "boden5_dark.gif");
-		floor_mediumImage = JDImageLoader.loadImage(a, "boden5_dark1.gif");
+		chestImage = AWTImageLoader.loadImage(a, "chest_cut_trans.gif");
+		floorImage = AWTImageLoader.loadImage(a, "boden5.gif");
+		floor_darkImage = AWTImageLoader.loadImage(a, "boden5_dark.gif");
+		floor_mediumImage = AWTImageLoader.loadImage(a, "boden5_dark1.gif");
 
-		floorImage2 = JDImageLoader.loadImage(a, "boden3.gif");
-		floor_darkImage2 = JDImageLoader.loadImage(a, "boden3_dark.gif");
-		floor_mediumImage2 = JDImageLoader.loadImage(a, "boden3_dark1.gif");
+		floorImage2 = AWTImageLoader.loadImage(a, "boden3.gif");
+		floor_darkImage2 = AWTImageLoader.loadImage(a, "boden3_dark.gif");
+		floor_mediumImage2 = AWTImageLoader.loadImage(a, "boden3_dark1.gif");
 
-		floorImage3 = JDImageLoader.loadImage(a, "boden4.gif");
-		floor_darkImage3 = JDImageLoader.loadImage(a, "boden4_dark.gif");
-		floor_mediumImage3 = JDImageLoader.loadImage(a, "boden4_dark1.gif");
+		floorImage3 = AWTImageLoader.loadImage(a, "boden4.gif");
+		floor_darkImage3 = AWTImageLoader.loadImage(a, "boden4_dark.gif");
+		floor_mediumImage3 = AWTImageLoader.loadImage(a, "boden4_dark1.gif");
 
-		floorImage4 = JDImageLoader.loadImage(a, "boden6.gif");
-		floor_darkImage4 = JDImageLoader.loadImage(a, "boden6_dark.gif");
-		floor_mediumImage4 = JDImageLoader.loadImage(a, "boden6_dark1.gif");
+		floorImage4 = AWTImageLoader.loadImage(a, "boden6.gif");
+		floor_darkImage4 = AWTImageLoader.loadImage(a, "boden6_dark.gif");
+		floor_mediumImage4 = AWTImageLoader.loadImage(a, "boden6_dark1.gif");
 
-		floorImage5 = JDImageLoader.loadImage(a, "boden7.gif");
-		floor_darkImage5 = JDImageLoader.loadImage(a, "boden7_dark.gif");
-		floor_mediumImage5 = JDImageLoader.loadImage(a, "boden7_dark1.gif");
+		floorImage5 = AWTImageLoader.loadImage(a, "boden7.gif");
+		floor_darkImage5 = AWTImageLoader.loadImage(a, "boden7_dark.gif");
+		floor_mediumImage5 = AWTImageLoader.loadImage(a, "boden7_dark1.gif");
 
-		floorImage6 = JDImageLoader.loadImage(a, "boden8.gif");
-		floor_darkImage6 = JDImageLoader.loadImage(a, "boden8_dark.gif");
-		floor_mediumImage6 = JDImageLoader.loadImage(a, "boden8_dark1.gif");
+		floorImage6 = AWTImageLoader.loadImage(a, "boden8.gif");
+		floor_darkImage6 = AWTImageLoader.loadImage(a, "boden8_dark.gif");
+		floor_mediumImage6 = AWTImageLoader.loadImage(a, "boden8_dark1.gif");
 
-		floorImage7 = JDImageLoader.loadImage(a, "boden9.gif");
-		floor_darkImage7 = JDImageLoader.loadImage(a, "boden9_dark.gif");
-		floor_mediumImage7 = JDImageLoader.loadImage(a, "boden9_dark1.gif");
+		floorImage7 = AWTImageLoader.loadImage(a, "boden9.gif");
+		floor_darkImage7 = AWTImageLoader.loadImage(a, "boden9_dark.gif");
+		floor_mediumImage7 = AWTImageLoader.loadImage(a, "boden9_dark1.gif");
 
 		makeFloorArrays();
 
-		wall_sidesImage = JDImageLoader.loadImage(a, "wand_seiten.gif");
-		wall_northImage = JDImageLoader.loadImage(a, "wand_nord.gif");
-		wall_southImage = JDImageLoader.loadImage(a, "wall_south.gif");
+		wall_sidesImage = AWTImageLoader.loadImage(a, "wand_seiten.gif");
+		wall_northImage = AWTImageLoader.loadImage(a, "wand_nord.gif");
+		wall_southImage = AWTImageLoader.loadImage(a, "wall_south.gif");
 
-		door_north = JDImageLoader.loadImage(a, "tuer_nord.gif");
-		// door_north = jd_imageLoader.loadImage(a, "hand_zeigt1_Image.gif");
+		door_north = AWTImageLoader.loadImage(a, "tuer_nord.gif");
 
-		door_north_none = JDImageLoader.loadImage(a, "tuer_nord_keine.gif");
+		door_north_none = AWTImageLoader.loadImage(a, "tuer_nord_keine.gif");
 
-		door_east = JDImageLoader.loadImage(a, "tuer_ost.gif");
+		door_east = AWTImageLoader.loadImage(a, "tuer_ost.gif");
 
-		door_east_none = JDImageLoader.loadImage(a, "tuer_ost_keine.gif");
+		door_east_none = AWTImageLoader.loadImage(a, "tuer_ost_keine.gif");
 
-		door_west = JDImageLoader.loadImage(a, "tuer_west.gif");
+		door_west = AWTImageLoader.loadImage(a, "tuer_west.gif");
 
-		door_west_none = JDImageLoader.loadImage(a, "tuer_west_keine.gif");
-		door_south_none = JDImageLoader.loadImage(a, "tuer_sued_keine.gif");
-		door_south = JDImageLoader.loadImage(a, "tuer_sued.gif");
-		door_south_lock = JDImageLoader.loadImage(a, "tuer_sued_schloss.gif");
+		door_west_none = AWTImageLoader.loadImage(a, "tuer_west_keine.gif");
+		door_south_none = AWTImageLoader.loadImage(a, "tuer_sued_keine.gif");
+		door_south = AWTImageLoader.loadImage(a, "tuer_sued.gif");
+		door_south_lock = AWTImageLoader.loadImage(a, "tuer_sued_schloss.gif");
 
-		axeImage = JDImageLoader.loadImage(a, "axt.gif");
-		;
-		swordImage = JDImageLoader.loadImage(a, "schwert.gif");
-		;
-		lanceImage = JDImageLoader.loadImage(a, "lanze.gif");
-		;
-		wolfknifeImage = JDImageLoader.loadImage(a, "wolfsmesser.gif");
-		;
-		clubImage = JDImageLoader.loadImage(a, "knueppel.gif");
-		;
-		scrollImage = JDImageLoader.loadImage(a, "scroll_blue.gif");
-		documentImage = JDImageLoader.loadImage(a, "scroll_white.gif");
-		;
-		potion_redImage = JDImageLoader.loadImage(a, "potion_rot.gif");
-		;
-		potion_blueImage = JDImageLoader.loadImage(a, "potion_blue.gif");
-		;
-		dustImage = JDImageLoader.loadImage(a, "dust.gif");
-		;
-		armorImage = JDImageLoader.loadImage(a, "ruestung.gif");
-		;
-		shieldImage = JDImageLoader.loadImage(a, "shield2.gif");
-		;
-		// //System.out.println("schild noch ok!");
-		helmetImage = JDImageLoader.loadImage(a, "helm.gif");
-		;
-		// //System.out.println("helm noch ok!");
-		bookImage = JDImageLoader.loadImage(a, "book_yellow.gif");
-		;
-		// //System.out.println("buch noch ok!");
-		keyImage = JDImageLoader.loadImage(a, "key.gif");
-		;
-		// //System.out.println("schluessel noch ok!");
-		falltuerImage = JDImageLoader.loadImage(a, "falltuer.gif");
-		;
-		// //System.out.println("falltuer noch ok!");
-		engelImage = JDImageLoader.loadImage(a, "engel2.gif");
-		;
-		// //System.out.println("engel noch ok!");
-		shrine_blueImage = JDImageLoader.loadImage(a, "shrine_blue.gif");
-		;
-		// //System.out.println("shrine_blue noch ok!");
-		shrine_redImage = JDImageLoader.loadImage(a, "shrine_red.gif");
-		;
-		shrine_greenImage = JDImageLoader.loadImage(a, "shrine_green.gif");
-		;
-		shrine_yellowImage = JDImageLoader.loadImage(a, "shrine_yellow.gif");
-		;
-		shrine_whiteImage = JDImageLoader.loadImage(a, "shrine_white.gif");
-		;
-		shrine_blackImage = JDImageLoader.loadImage(a, "shrine_black.gif");
-		;
-		shrine_lilaImage = JDImageLoader.loadImage(a, "shrine_lila.gif");
-		;
-		shrine_turkisImage = JDImageLoader.loadImage(a, "shrine_tuerkis.gif");
-		;
-		shrine_small_redImage = JDImageLoader.loadImage(a,
+		axeImage = AWTImageLoader.loadImage(a, "axt.gif");
+		swordImage = AWTImageLoader.loadImage(a, "schwert.gif");
+		lanceImage = AWTImageLoader.loadImage(a, "lanze.gif");
+		wolfknifeImage = AWTImageLoader.loadImage(a, "wolfsmesser.gif");
+		clubImage = AWTImageLoader.loadImage(a, "knueppel.gif");
+		scrollImage = AWTImageLoader.loadImage(a, "scroll_blue.gif");
+		documentImage = AWTImageLoader.loadImage(a, "scroll_white.gif");
+		potion_redImage = AWTImageLoader.loadImage(a, "potion_rot.gif");
+		potion_blueImage = AWTImageLoader.loadImage(a, "potion_blue.gif");
+		dustImage = AWTImageLoader.loadImage(a, "dust.gif");
+		armorImage = AWTImageLoader.loadImage(a, "ruestung.gif");
+		shieldImage = AWTImageLoader.loadImage(a, "shield2.gif");
+		helmetImage = AWTImageLoader.loadImage(a, "helm.gif");
+		bookImage = AWTImageLoader.loadImage(a, "book_yellow.gif");
+		keyImage = AWTImageLoader.loadImage(a, "key.gif");
+		falltuerImage = AWTImageLoader.loadImage(a, "falltuer.gif");
+		engelImage = AWTImageLoader.loadImage(a, "engel2.gif");
+		shrine_blueImage = AWTImageLoader.loadImage(a, "shrine_blue.gif");
+		shrine_redImage = AWTImageLoader.loadImage(a, "shrine_red.gif");
+		shrine_greenImage = AWTImageLoader.loadImage(a, "shrine_green.gif");
+		shrine_yellowImage = AWTImageLoader.loadImage(a, "shrine_yellow.gif");
+		shrine_whiteImage = AWTImageLoader.loadImage(a, "shrine_white.gif");
+		shrine_blackImage = AWTImageLoader.loadImage(a, "shrine_black.gif");
+		shrine_lilaImage = AWTImageLoader.loadImage(a, "shrine_lila.gif");
+		shrine_turkisImage = AWTImageLoader.loadImage(a, "shrine_tuerkis.gif");
+		shrine_small_redImage = AWTImageLoader.loadImage(a,
 				"shrine_small_red.gif");
-		;
-		shrine_small_blueImage = JDImageLoader.loadImage(a,
+		shrine_small_blueImage = AWTImageLoader.loadImage(a,
 				"shrine_small_blue.gif");
-		;
-		shrine_small_yellowImage = JDImageLoader.loadImage(a,
+		shrine_small_yellowImage = AWTImageLoader.loadImage(a,
 				"shrine_small_yellow.gif");
-		;
-		shrine_small_greenImage = JDImageLoader.loadImage(a,
+		shrine_small_greenImage = AWTImageLoader.loadImage(a,
 				"shrine_small_green.gif");
-		;
-		sorcLabImage = JDImageLoader.loadImage(a, "zauberlabor1.gif");
-		;
-		amulettImage = JDImageLoader.loadImage(a, "amulett.gif");
-		;
+		sorcLabImage = AWTImageLoader.loadImage(a, "zauberlabor1.gif");
+		amulettImage = AWTImageLoader.loadImage(a, "amulett.gif");
 
-		repairImage = JDImageLoader.loadImage(a, "amboss.gif");
-		// System.out.print("repair noch ok!");
-		;
-		fountainImage = JDImageLoader.loadImage(a, "fountain.gif");
-		;
-		// System.out.print("fountain noch ok!");
-		statueImage = JDImageLoader.loadImage(a, "statue.gif");
-		;
-		chest_lockImage = JDImageLoader.loadImage(a, "chest_schloss.gif");
-		;
-		door_north_lock = JDImageLoader.loadImage(a, "tuer_nord_schloss.gif");
-		;
-		door_east_lock = JDImageLoader.loadImage(a, "tuer_ost_schloss.gif");
-		;
-		door_west_lock = JDImageLoader.loadImage(a, "tuer_west_schloss.gif");
-		;
-		graveImage = JDImageLoader.loadImage(a, "grave.gif");
-		;
-		caveImage = JDImageLoader.loadImage(a, "cave.gif");
-		;
-		traderImage = JDImageLoader.loadImage(a, "haendler2.gif");
-		;
-		rune_redImage = JDImageLoader.loadImage(a, "rune_red.gif");
-		;
-		rune_greenImage = JDImageLoader.loadImage(a, "rune_green.gif");
-		;
-		rune_blueImage = JDImageLoader.loadImage(a, "rune_blue.gif");
-		;
-		rune_yellowImage = JDImageLoader.loadImage(a, "rune_yellow.gif");
-		;
-		cristall_redImage = JDImageLoader.loadImage(a, "kristall_rot.gif");
-		;
-		cristall_greenImage = JDImageLoader.loadImage(a, "kristall_gruen.gif");
-		;
-		cristall_blueImage = JDImageLoader.loadImage(a, "kristall_blau.gif");
-		;
-		cristall_yellowImage = JDImageLoader.loadImage(a, "kristall_gelb.gif");
-		;
-		spotImage = JDImageLoader.loadImage(a, "versteck.gif");
-		;
-		hand_zeigt1_Image = JDImageLoader.loadImage(a, "zeigerhand-zeigt1.gif");
-		cursor_go_Image = JDImageLoader.loadImage(a, "zeigerhand_go.gif");
-		hand_greift1_Image = JDImageLoader.loadImage(a,
+		repairImage = AWTImageLoader.loadImage(a, "amboss.gif");
+		fountainImage = AWTImageLoader.loadImage(a, "fountain.gif");
+		statueImage = AWTImageLoader.loadImage(a, "statue.gif");
+		chest_lockImage = AWTImageLoader.loadImage(a, "chest_schloss.gif");
+		door_north_lock = AWTImageLoader.loadImage(a, "tuer_nord_schloss.gif");
+		door_east_lock = AWTImageLoader.loadImage(a, "tuer_ost_schloss.gif");
+		door_west_lock = AWTImageLoader.loadImage(a, "tuer_west_schloss.gif");
+		graveImage = AWTImageLoader.loadImage(a, "grave.gif");
+		caveImage = AWTImageLoader.loadImage(a, "cave.gif");
+		traderImage = AWTImageLoader.loadImage(a, "haendler2.gif");
+		rune_redImage = AWTImageLoader.loadImage(a, "rune_red.gif");
+		rune_greenImage = AWTImageLoader.loadImage(a, "rune_green.gif");
+		rune_blueImage = AWTImageLoader.loadImage(a, "rune_blue.gif");
+		rune_yellowImage = AWTImageLoader.loadImage(a, "rune_yellow.gif");
+		cristall_redImage = AWTImageLoader.loadImage(a, "kristall_rot.gif");
+		cristall_greenImage = AWTImageLoader.loadImage(a, "kristall_gruen.gif");
+		cristall_blueImage = AWTImageLoader.loadImage(a, "kristall_blau.gif");
+		cristall_yellowImage = AWTImageLoader.loadImage(a, "kristall_gelb.gif");
+		spotImage = AWTImageLoader.loadImage(a, "versteck.gif");
+		hand_zeigt1_Image = AWTImageLoader.loadImage(a, "zeigerhand-zeigt1.gif");
+		cursor_go_Image = AWTImageLoader.loadImage(a, "zeigerhand_go.gif");
+		hand_greift1_Image = AWTImageLoader.loadImage(a,
 				"zeigerhand-greift1.gif");
-		cursor_key_Image = JDImageLoader.loadImage(a, "zeiger_key.gif");
-		cursor_key_not_Image = JDImageLoader.loadImage(a,
+		cursor_key_Image = AWTImageLoader.loadImage(a, "zeiger_key.gif");
+		cursor_key_not_Image = AWTImageLoader.loadImage(a,
 				"zeiger_key_nicht.gif");
-		;
-		cursor_sword = JDImageLoader.loadImage(a, "zeigerhand-schwert.gif");
-		;
-		cursor_clock = JDImageLoader.loadImage(a, "zeigerhand-sanduhr.gif");
-		;
-		cursor_scout = JDImageLoader.loadImage(a, "zeigerhand-go_scout.gif");
-		;
-		pentagrammImage = JDImageLoader.loadImage(a, "pentagramm.gif");
-		darkMasterImage = JDImageLoader.loadImage(a, "mister_death.gif");
-		luziaImage = JDImageLoader.loadImage(a, "luzia.gif");
-		luzia_hutImage = JDImageLoader.loadImage(a, "luzia_hut.gif");
-		kugelImage = JDImageLoader.loadImage(a, "kugel.gif");
-		questionmark = JDImageLoader.loadImage(a, "fragezeichen.gif");
-		xmasImage = JDImageLoader.loadImage(a, "xmas.gif");
-		dark_dwarfImage = JDImageLoader.loadImage(a, "dark_dwarf.gif");
-		finImage = JDImageLoader.loadImage(a, "growing n0007c.gif");
-		luzia_ball_greyImage = JDImageLoader.loadImage(a, "kugel_grau.gif");
+		cursor_sword = AWTImageLoader.loadImage(a, "zeigerhand-schwert.gif");
+		cursor_clock = AWTImageLoader.loadImage(a, "zeigerhand-sanduhr.gif");
+		cursor_scout = AWTImageLoader.loadImage(a, "zeigerhand-go_scout.gif");
+		pentagrammImage = AWTImageLoader.loadImage(a, "pentagramm.gif");
+		darkMasterImage = AWTImageLoader.loadImage(a, "mister_death.gif");
+		luziaImage = AWTImageLoader.loadImage(a, "luzia.gif");
+		luzia_hutImage = AWTImageLoader.loadImage(a, "luzia_hut.gif");
+		kugelImage = AWTImageLoader.loadImage(a, "kugel.gif");
+		questionmark = AWTImageLoader.loadImage(a, "fragezeichen.gif");
+		xmasImage = AWTImageLoader.loadImage(a, "xmas.gif");
+		dark_dwarfImage = AWTImageLoader.loadImage(a, "dark_dwarf.gif");
+		finImage = AWTImageLoader.loadImage(a, "growing n0007c.gif");
+		luzia_ball_greyImage = AWTImageLoader.loadImage(a, "kugel_grau.gif");
 
-		luzia_ball_redImage = JDImageLoader.loadImage(a, "kugel_rot.gif");
+		luzia_ball_redImage = AWTImageLoader.loadImage(a, "kugel_rot.gif");
 
-		fieldImage  = JDImageLoader.loadImage(a, "field3.gif");
-		woodTextureImage =  JDImageLoader.loadImage(a, "theWood3.gif");
+		fieldImage  = AWTImageLoader.loadImage(a, "field3.gif");
+		woodTextureImage =  AWTImageLoader.loadImage(a, "theWood3.gif");
 		
-		cursor_go_not_Image =  JDImageLoader.loadImage(a, "zeigerhand_go_not.gif");
-		cursor_wand =  JDImageLoader.loadImage(a, "zeiger_zauberstab.gif");
-		cursor_use_Image = JDImageLoader.loadImage(a, "zeigerhand_faust.gif");
-		featherImage = JDImageLoader.loadImage(a, "feder.gif");
-		potion_greenImage = JDImageLoader.loadImage(a, "potion_green.gif");
+		cursor_go_not_Image =  AWTImageLoader.loadImage(a, "zeigerhand_go_not.gif");
+		cursor_wand =  AWTImageLoader.loadImage(a, "zeiger_zauberstab.gif");
+		cursor_use_Image = AWTImageLoader.loadImage(a, "zeigerhand_faust.gif");
+		featherImage = AWTImageLoader.loadImage(a, "feder.gif");
+		potion_greenImage = AWTImageLoader.loadImage(a, "potion_green.gif");
 
 		}
 		try {
@@ -916,9 +852,9 @@ public class ImageManager {
 	}
 
 	
-	static int[][] bgGIF = { {4, 2, 4}};
-	static BufferedImageOp opGIF = new LookupOp(new MyLookUpTable(bgGIF,4), null);
-	static Graphics g2;
+	//static int[][] bgGIF = { {4, 2, 4}};
+	//static BufferedImageOp opGIF = new LookupOp(new MyLookUpTable(bgGIF,4), null);
+	//static Graphics g2;
 	
 //	private static Image performCutOperationsGIF(Image element,String fileName) {
 //
@@ -999,7 +935,7 @@ public class ImageManager {
 		Image[] ims = new Image[cnt];
 		for (int i = 0; i < cnt; i++) {
 
-			Image im = (JDImageLoader.loadImage(a, path + Integer.toString(i)
+			Image im = (AWTImageLoader.loadImage(a, path + Integer.toString(i)
 					+ ".GIF"));
 
 			ims[i] = im;
@@ -1017,7 +953,7 @@ public class ImageManager {
 	private static Image[] loadArray(Applet a, String path,
 			String fileNamePrefix, int dir, int cnt) {
 
-		List imageList = new LinkedList();
+		List<Image> imageList = new LinkedList<Image>();
 		String dirChar = "";
 		if (dir == Dir.EAST) {
 			dirChar = "e";
@@ -1039,12 +975,10 @@ public class ImageManager {
 			suffix += "0";
 		}
 		suffix += numberStr;
-		String fileName = path + fileNamePrefix + dirChar + suffix + "_trans.GIF";
-		File f = new File(JDImageLoader.LOCAL_PICTURE_PATH + fileName);
 		
 		while (i < 15) {
 			
-			Image im = (JDImageLoader.loadImage(a,  path + fileNamePrefix + dirChar + suffix+"_trans.GIF"));
+			Image im = (AWTImageLoader.loadImage(a,  path + fileNamePrefix + dirChar + suffix+"_trans.GIF"));
 			if(im == null || im.getHeight(null) == -1) {
 				//System.out.println("breaking loadAni bei: "+i +" - "+f);
 				break;
@@ -1073,11 +1007,6 @@ public class ImageManager {
 			//performCutOperationsGIF(im,fileName.substring(0,fileName.length()-4));
 			
 			i++;
-			if (im == null) {
-
-				break;
-				
-			}
 
 			numberStr = Integer.toString(i);
 			suffix = "";
@@ -1085,16 +1014,14 @@ public class ImageManager {
 				suffix += "0";
 			}
 			suffix += numberStr;
-			fileName = path + fileNamePrefix + dirChar + suffix + "_trans.GIF";
-			f = new File(JDImageLoader.LOCAL_PICTURE_PATH + fileName);
 		}
 		
 
 		//System.out.println("Bild nicht gefunden: " + f.toString());
 		Image[] ims = new Image[imageList.size()];
 		int k = 0;
-		for (Iterator iter = imageList.iterator(); iter.hasNext();) {
-			Image element = (Image) iter.next();
+		for (Iterator<Image> iter = imageList.iterator(); iter.hasNext();) {
+			Image element = iter.next();
 			ims[k] = element;
 			k++;
 		}
@@ -1102,89 +1029,8 @@ public class ImageManager {
 		return ims;
 	}
 
-	public static Image flipImage(Image offscreenImage) {
-		Image off2 = bild.createImage(offscreenImage.getWidth(null),
-				offscreenImage.getHeight(null));
-		Graphics off2G = off2.getGraphics();
 
-		off2G.drawImage(offscreenImage, offscreenImage.getWidth(null), 0, 0,
-				offscreenImage.getHeight(null), 0, 0, offscreenImage
-						.getWidth(null), offscreenImage.getHeight(null), null);
 
-		return off2;
-	}
-
-//	private static Image[] loadFleeArray(Applet a, String path, int cnt) {
-//		Image[] ims = new Image[2 * cnt + 1];
-//		// Image testIm = game.getGui().getMainFrame().createImage(100,100);
-//		// //Graphics g =
-//		// game.getGui().getMainFrame().getSpielfeld().getGraphics();
-//		// if(g == null) {
-//		// System.out.println("g ist null");
-//		// }
-//		// String name = "warrior_slays\\warrior_slays";
-//		for (int i = 0; i < 2 * cnt; i++) {
-//
-//			ims[i] = JDImageLoader.loadImage(a, path
-//					+ Integer.toString(i % cnt) + ".gif");
-//			// g.drawImage(ims[i],0,0,100,100,null);
-//			// ims[i].flush();
-//			if (ims[i] == null) {
-//
-//				System.out.println("Bild nicht geladen: " + path
-//						+ Integer.toString(i) + ".gif");
-//				return null;
-//			}
-//		}
-//		ims[2 * cnt] = getHeroImage(path.charAt(0));
-//
-//		return ims;
-//	}
-
-	private static Image[] loadWarrior_slays(Applet a) {
-		// Image[] ims = new Image[13];
-		String name = "warrior\\warrior_slays\\warrior_slays";
-
-		return loadArray(a, name, 13);
-	}
-
-	private static Image getHeroImage(char c,int dir) {
-		// int k = game.getHero().getHeroCode();
-		Image im = null;
-		if (c == 'w') {
-			im = warriorImage[dir-1];
-		}
-		if (c == 't') {
-			im = thiefImage[dir-1];
-		}
-		if (c == 'd') {
-			im = druidImage[dir-1];
-		}
-		if (c == 'm') {
-			im = mageImage[dir-1];
-		}
-
-		return im;
-
-	}
-
-	// public static Image flipImage(Image im) {
-	//		
-	// BufferedImage mBufferedImage = new BufferedImage(im.getWidth(null), im
-	// .getHeight(null), BufferedImage.TYPE_INT_ARGB);
-	// Graphics2D g2 = mBufferedImage.createGraphics();
-	// g2.drawImage(im, null, null);
-	//
-	// BufferedImage mBufferedImage2 = new BufferedImage(im.getWidth(null), im
-	// .getHeight(null), BufferedImage.TYPE_INT_ARGB);
-	// AffineTransform trans = new AffineTransform();
-	// trans.setToScale(-1, 1);
-	// trans.translate((-1)*im.getWidth(null), 0);
-	// BufferedImageOp op = new AffineTransformOp(trans,
-	// AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-	// Image resIm = op.filter(mBufferedImage, mBufferedImage2);
-	// return resIm;
-	// }
 
 	public static int[] getArray(int value, int cnt) {
 		int[] a = new int[cnt];
@@ -1232,8 +1078,6 @@ public class ImageManager {
 		floorImage_darkArray[7] = null;
 
 	}
-
-	private static int[] deathTimes9 = { 40, 40, 40, 40, 40, 40, 40, 40, 40 };
 
 	/**
 	 * @return Returns the druid_been_hit.
@@ -1482,9 +1326,6 @@ public class ImageManager {
 	 * 
 	 */
 	public static AnimationSet getWarrior_walking(int dir) {
-		if(dir < 1) {
-			int k = 4 ;
-		}
 		return ImageManager.warrior_walking.get(dir - 1);
 	}
 

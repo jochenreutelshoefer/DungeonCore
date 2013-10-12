@@ -12,6 +12,7 @@ import gui.MyJDGui;
 import gui.Paragraph;
 import gui.StartView;
 import gui.Texts;
+import gui.engine2D.AWTImageLoader;
 import gui.mainframe.component.BoardView;
 import gui.mainframe.component.CharacterView;
 import gui.mainframe.component.DustView;
@@ -23,7 +24,6 @@ import gui.mainframe.component.SpellsView;
 import gui.mainframe.component.TextView;
 import gui.mainframe.dialog.FtpSendView;
 import gui.mainframe.dialog.WaitView;
-import io.JDImageLoader;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
@@ -180,7 +180,7 @@ public class MainFrame extends JFrame implements ActionListener,
 
 	public static Font ButtonFont;
 
-	public static JDImageLoader imageSource;
+	public static AWTImageLoader imageSource;
 
 	public MainFrame(StartView listenerx, String name,
 			Applet a, MyJDGui gui,String title) {
@@ -199,7 +199,7 @@ public class MainFrame extends JFrame implements ActionListener,
 		playerName = name;
 		this.appletRunning = a != null;
 		applet = a;
-		imageSource = new JDImageLoader(a);
+		imageSource = new AWTImageLoader(a);
 		final StartView listener = listenerx;
 		for (int i = 0; i < 4; i++) {
 			Benemy[i] = new JDJRadioButton("Kein Feind");

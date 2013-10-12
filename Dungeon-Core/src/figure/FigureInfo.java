@@ -80,7 +80,7 @@ public abstract class FigureInfo extends InfoEntity {
 //		}
 //	}
 	
-	public abstract List getAllItems();
+	public abstract List<ItemInfo> getAllItems();
 	
 	public FigureMemory getMemoryObject(FigureInfo info) {
 		return (FigureMemory)f.getMemoryObject(info);

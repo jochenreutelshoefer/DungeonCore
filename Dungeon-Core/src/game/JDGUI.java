@@ -7,21 +7,30 @@
 package game;
 
 
-import java.applet.Applet;
-
-import javax.swing.JFrame;
-
-import dungeon.Room;
-import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.monster.Monster;
-import figure.monster.MonsterInfo;
-import figure.percept.Percept;
 import gui.AbstractStartWindow;
+import item.ItemInfo;
+
+import java.applet.Applet;
+
+import spell.SpellInfo;
 
 public interface JDGUI extends ControlUnit{
 	
+	public void plugAction(Action a);
+	
+	public int getSelectedItemIndex();
+	
+	public ItemInfo getSelectedItem();
+	
+	public SpellInfo getSelectedSpellInfo();
+	
+	public void setSpellMetaDown(boolean b);
+	
+	public FigureInfo getFigure();
+	
+	public void setUseWithTarget(boolean b);
 	
 	public void gameRoundEnded();
 	

@@ -11,7 +11,11 @@
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package io;
+package gui.engine2D;
+
+import io.ImageLoader;
+import io.PictureLoadDialog;
+import io.ResourceLoader;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -23,16 +27,14 @@ import java.applet.*;
 import java.io.File;
 import java.net.*;
 
-public class JDImageLoader {
+public class AWTImageLoader {
 
-	// public static final String LOCAL_PICTURE_PATH =
-	// "file:///c://workspace//java_dungeon//pics//";
 	public static final String LOCAL_PICTURE_PATH = "resources/pics/";
 
 	Applet applet;
 	static MediaTracker tracker = null;
 
-	public JDImageLoader(Applet a) {
+	public AWTImageLoader(Applet a) {
 		applet = a;
 	}
 
@@ -41,7 +43,7 @@ public class JDImageLoader {
 	}
 
 	public Image loadImage(String filename) {
-		return JDImageLoader.loadImage(applet, filename);
+		return AWTImageLoader.loadImage(applet, filename);
 
 	}
 
