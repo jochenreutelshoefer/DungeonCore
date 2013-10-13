@@ -313,7 +313,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			GraphicObject ob = null;
 			if (r.getShrine() != null) {
 				ShrineInfo s = r.getShrine();
-				ob = this.getShrineGraphicObject(s, xcoord, ycoord);
+				ob = renderer.getShrineGraphicObject(s, xcoord, ycoord);
 				graphObs.add(ob);
 			}
 
@@ -725,7 +725,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			GraphicObject ob = null;
 			if (r.getShrine() != null) {
 				ShrineInfo s = r.getShrine();
-				ob = this.getShrineGraphicObject(s, xcoord, ycoord);
+				ob = renderer.getShrineGraphicObject(s, xcoord, ycoord);
 
 				shrines.add(ob);
 			}
@@ -1521,13 +1521,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return new Dimension(500, 500);
 	}
 
-	private JDRectangle getShrineRect(int xcoord, int ycoord) {
-		int xpos = xcoord + (13 * roomSize / 20);
-		int ypos = ycoord + (1 * roomSize / 36);
-		int xsize = (int) (roomSize / 2.9);
-		int ysize = (int) (roomSize / 2.2);
-		return new JDRectangle(new JDPoint(xpos, ypos), xsize, ysize);
-	}
+
 
 	public static int ROOMSIZE_BY_2;
 
@@ -1552,191 +1546,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	public static int ROOMSIZE_BY_36;
 
 	public static int ROOMSIZE_BY_20;
-
-	private JDGraphicObject getShrineGraphicObject(ShrineInfo s, int xcoord,
-			int ycoord) {
-		JDGraphicObject ob = null;
-		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
-			int xpos = xcoord + (2 * ROOMSIZE_BY_3);
-			int ypos = ycoord + (1 * ROOMSIZE_BY_16);
-			int xsize = ROOMSIZE_BY_3;
-			int ysize = (int) (roomSize / 3.5);
-			ob = new JDGraphicObject(new JDImageAWT(ImageManager.fountainImage,
-					xpos, ypos, xsize, ysize), s,
-					getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_REPAIR) {
-			int xpos = xcoord + (2 * ROOMSIZE_BY_3);
-			int ypos = ycoord + (1 * ROOMSIZE_BY_16);
-			int xsize = ROOMSIZE_BY_3;
-			int ysize = (int) (roomSize / 3.5);
-			ob = new JDGraphicObject(new JDImageAWT(ImageManager.repairImage,
-					xpos, ypos, xsize, ysize), s,
-					getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_STATUE) {
-			int xpos = xcoord + (16 * ROOMSIZE_BY_24);
-			int ypos = ycoord + (0 * ROOMSIZE_BY_36);
-			int xsize = ROOMSIZE_BY_3;
-			int ysize = (int) (roomSize / 2.5);
-			ob = new JDGraphicObject(new JDImageAWT(ImageManager.statueImage,
-					xpos, ypos, xsize, ysize), s,
-					getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_ANGEL) {
-			int xpos = xcoord + (16 * ROOMSIZE_BY_24);
-			int ypos = ycoord - (1 * ROOMSIZE_BY_36);
-			int xsize = ROOMSIZE_BY_3;
-			int ysize = (int) (roomSize / 2.5);
-			if (s.getType() == Angel.SOLVED) {
-				xsize = 0;
-				ysize = 0;
-			}
-			ob = new JDGraphicObject(new JDImageAWT(ImageManager.engelImage, xpos,
-					ypos, xsize, ysize), s, getShrineRect(xcoord, ycoord),
-					Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_SORCER_LAB) {
-			int xpos = xcoord + (25 * roomSize / 60);
-			int ypos = ycoord - (1 * ROOMSIZE_BY_12);
-			int xsize = (int) (roomSize / 1.65);
-			int ysize = (int) (roomSize / 1.65);
-			ob = new JDGraphicObject(new JDImageAWT(ImageManager.sorcLabImage,
-					xpos, ypos, xsize, ysize), s,
-					getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_BROOD) {
-			if ((s).getType() == Brood.BROOD_NATURE) {
-				int xpos = xcoord + (7 * roomSize / 18);
-				int ypos = ycoord + (1 * ROOMSIZE_BY_12);
-				int xsize = (int) (roomSize / 1.5);
-				int ysize = (int) (ROOMSIZE_BY_2);
-				ob = new JDGraphicObject(new JDImageAWT(ImageManager.caveImage,
-						xpos, ypos, xsize, ysize), s, getShrineRect(xcoord,
-						ycoord), Color.yellow);
-			} else if ((s).getType() == Brood.BROOD_CREATURE) {
-				int xpos = xcoord + (2 * ROOMSIZE_BY_3);
-				int ypos = ycoord + (1 * ROOMSIZE_BY_6);
-				int xsize = roomSize / 4;
-				int ysize = (int) (ROOMSIZE_BY_6);
-				ob = new JDGraphicObject(new JDImageAWT(
-						ImageManager.falltuerImage, xpos, ypos, xsize, ysize),
-						s, getShrineRect(xcoord, ycoord), Color.yellow);
-			} else if ((s).getType() == Brood.BROOD_UNDEAD) {
-				int xpos = xcoord + (3 * ROOMSIZE_BY_5);
-				int ypos = ycoord + (1 * ROOMSIZE_BY_16);
-				int xsize = (int) (roomSize / 2.9);
-				int ysize = (int) (roomSize / 2.2);
-				ob = new JDGraphicObject(new JDImageAWT(ImageManager.graveImage,
-						xpos, ypos, xsize, ysize), s, getShrineRect(xcoord,
-						ycoord), Color.yellow);
-			}
-		} else if (s.getShrineIndex() == Shrine.SHRINE_TRADER) {
-			int xpos = xcoord + (19 * roomSize / 30);
-			int ypos = ycoord + (1 * roomSize / 24);
-			int xsize = (int) (roomSize / 2.8);
-			int ysize = (int) (roomSize / 2.0);
-			ob = new JDGraphicObject(new JDImageAWT(ImageManager.traderImage,
-					xpos, ypos, xsize, ysize), s,
-					getShrineRect(xcoord, ycoord), Color.yellow);
-
-		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNE) {
-			int xpos = xcoord + (13 * roomSize / 20);
-			int ypos = ycoord + (1 * roomSize / 36);
-			int xsize = (int) (roomSize / 2.9);
-			int ysize = (int) (roomSize / 2.2);
-			JDImageProxy im = null;
-			if ((s).getType() == 1) {
-				im = ImageManager.shrine_yellowImage;
-			} else if ((s).getType() == 2) {
-				im = ImageManager.shrine_greenImage;
-			} else if (s.getType() == 3) {
-				im = ImageManager.shrine_redImage;
-			}
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_CORPSE) {
-			int xpos = xcoord + (13 * roomSize / 20);
-			int ypos = ycoord + (6 * roomSize / 36);
-			int xsize = (int) (roomSize / 3.2);
-			int ysize = (int) (roomSize / 3.8);
-			JDImageProxy im = null;
-			if ((s).getType() == 0) {
-				im = ImageManager.dead_dwarfImage;
-			} else if ((s).getType() == 1) {
-				im = ImageManager.dead_warriorImage;
-			} else if ((s).getType() == 2) {
-				im = ImageManager.dead_thiefImage;
-
-			} else if ((s).getType() == 3) {
-				im = ImageManager.dead_druidImage;
-			} else if ((s).getType() == 4) {
-				im = ImageManager.dead_mageImage;
-			}
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_QUEST) {
-			int xpos = xcoord + (13 * roomSize / 20);
-			int ypos = ycoord + (1 * roomSize / 36);
-			int xsize = (int) (roomSize / 2.9);
-			int ysize = (int) (roomSize / 2.2);
-			JDImageProxy im = ImageManager.shrine_blackImage;
-
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_XMAS) {
-			int xpos = xcoord + (27 * roomSize / 60);
-			int ypos = ycoord - (1 * ROOMSIZE_BY_10);
-			int xsize = (int) (roomSize / 1.7);
-			int ysize = (int) (roomSize / 1.7);
-			JDImageProxy im = ImageManager.xmasImage;
-
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-
-		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNEFINDER) {
-			int xpos = xcoord + (7 * ROOMSIZE_BY_10);
-			int ypos = ycoord + (1 * roomSize / 24);
-			int xsize = (int) (roomSize / 3.4);
-			int ysize = (int) (roomSize / 2.7);
-			JDImageProxy im = null;
-			if ((s).getType() == 1) {
-				im = ImageManager.shrine_small_yellowImage;
-			} else if ((s).getType() == 2) {
-				im = ImageManager.shrine_small_greenImage;
-			} else if ((s).getType() == 3) {
-				im = ImageManager.shrine_small_redImage;
-			}
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-
-		} else if (s.getShrineIndex() == Shrine.SHRINE_DARK_MASTER) {
-			int xpos = xcoord + (7 * ROOMSIZE_BY_10);
-			int ypos = ycoord + (3 * ROOMSIZE_BY_16);
-			int xsize = (int) (roomSize / 3.6);
-			int ysize = (int) (roomSize / 3.7);
-			JDImageProxy im = ImageManager.pentagrammImage;
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-		} else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
-			int xpos = xcoord + (7 * ROOMSIZE_BY_10);
-			int ypos = ycoord + (0 * ROOMSIZE_BY_36);
-			int xsize = (int) (roomSize / 3.6);
-			int ysize = (int) (roomSize / 2.5);
-
-			JDImageProxy im = ImageManager.luziaImage;
-			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
-				xpos = xcoord + (8 * ROOMSIZE_BY_10);
-				ypos = ycoord + (5 * ROOMSIZE_BY_36);
-				xsize = (int) (roomSize / 4.5);
-				ysize = (int) (roomSize / 3.5);
-				im = ImageManager.luzia_hutImage;
-			}
-
-			ob = new JDGraphicObject(new JDImageAWT(im, xpos, ypos, xsize, ysize),
-					s, getShrineRect(xcoord, ycoord), Color.yellow);
-		} 
-		return ob;
-
-	}
-
-
-
 
 	
 
