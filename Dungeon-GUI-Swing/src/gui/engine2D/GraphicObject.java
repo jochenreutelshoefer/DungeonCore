@@ -9,28 +9,27 @@
 package gui.engine2D;
 
 import graphics.JDImageProxy;
+import graphics.JDRectangle;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
 import java.awt.Rectangle;
 
-import dungeon.Door;
+import dungeon.JDPoint;
+
 
 public class GraphicObject {
 
 
 
-	public Rectangle getRectangle() {
+	public JDRectangle getRectangle() {
 		return rect;
 	}
 
 	public JDImageProxy getImage() {
 		return image;
 	}
-	protected Rectangle rect;
-	protected Rectangle clickRect;
+	protected JDRectangle rect;
+	protected JDRectangle clickRect;
 	protected Color c;
 
 	protected boolean flipped = false;
@@ -41,7 +40,7 @@ public class GraphicObject {
 
 	public GraphicObject(
 		Object ob,
-		Rectangle o,
+		JDRectangle o,
 		Color c,
 		JDImageProxy i) {
 		
@@ -55,7 +54,15 @@ public class GraphicObject {
 			Object ob,
 			Rectangle o,
 			Color c,
-			JDImageProxy i,Rectangle clickRect) {
+			JDImageProxy i) {			
+			this(ob, new JDRectangle(o.x, o.y, o.width, o.height), c, i);
+		}
+	
+	public GraphicObject(
+			Object ob,
+			JDRectangle o,
+			Color c,
+			JDImageProxy i, JDRectangle clickRect) {
 			
 			this.rect = o;
 			this.c = c;
@@ -63,13 +70,27 @@ public class GraphicObject {
 			clickedObject = ob;
 			image = i;
 		}
+	
+	public GraphicObject(
+			Object ob,
+			Rectangle o,
+			Color c,
+			JDImageProxy i, Rectangle clickRect) {
+			
+			this(ob, new JDRectangle(o.x, o.y, o.width, o.height), c, i,new JDRectangle(clickRect.x, clickRect.y, clickRect.width, clickRect.height));
+		}
 
-	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,JDImageProxy i) {
+	public GraphicObject(Object ob,	JDRectangle o,Color c,boolean rim,JDImageProxy i) {
 		this.rim = rim;
 		this.rect = o;
 		this.c = c;
 		clickedObject = ob;
 		image = i;
+	}
+	
+	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,JDImageProxy i) {
+		this(ob, new JDRectangle(o.x, o.y, o.width, o.height), c,rim, i);
+		
 	}
 
 	public boolean getRim() {
@@ -91,12 +112,12 @@ public class GraphicObject {
 	
 	
 
-	public boolean hasPoint(Point p) {
+	public boolean hasPoint(JDPoint p) {
 		if(clickRect != null) {
-			return clickRect.contains(p);
+			return clickRect.containsPoint(p);
 		}
 		if (rect != null) {
-			return rect.contains(p);
+			return rect.containsPoint(p);
 		} else {
 			return false;
 		}

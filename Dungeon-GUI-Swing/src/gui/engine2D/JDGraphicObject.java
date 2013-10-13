@@ -9,6 +9,7 @@
 package gui.engine2D;
 
 import graphics.JDImageProxy;
+import graphics.JDRectangle;
 
 import java.awt.*;
 
@@ -16,7 +17,7 @@ public class JDGraphicObject extends GraphicObject {
 
 	private JDImageAWT image;
 
-	public JDGraphicObject(JDImageAWT i, Object ob, Rectangle o, Color c) {
+	public JDGraphicObject(JDImageAWT i, Object ob, JDRectangle o, Color c) {
 		super(ob, o, c, null);
 		image = i;
 
@@ -26,14 +27,14 @@ public class JDGraphicObject extends GraphicObject {
 		return image;
 	}
 
-	public JDGraphicObject(JDImageAWT i, Object ob, Rectangle o, Color c,
-			Rectangle clickRect) {
+	public JDGraphicObject(JDImageAWT i, Object ob, JDRectangle o, Color c,
+			JDRectangle clickRect) {
 		super(ob, o, c, null, clickRect);
 		image = i;
 
 	}
 
-	public JDGraphicObject(JDImageAWT i, Object ob, Rectangle o, Color c,
+	public JDGraphicObject(JDImageAWT i, Object ob, JDRectangle o, Color c,
 			boolean paint) {
 		super(ob, o, c, null);
 		image = i;

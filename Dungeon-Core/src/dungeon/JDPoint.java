@@ -28,6 +28,11 @@ public class JDPoint{
     	this.x = x;
     	this.y = y;
     }
+    
+    public JDPoint(double x, double y){
+    	this.x = (int)x;
+    	this.y = (int)y;
+    }
 
     public boolean equals(JDPoint p){
 	if((p.getX() == this.x) && (p.getY() == this.y)) return true;

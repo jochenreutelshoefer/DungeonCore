@@ -1,6 +1,7 @@
 package gui.engine2D;
 
 import graphics.JDImageProxy;
+import graphics.JDRectangle;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -49,28 +50,29 @@ public class DrawUtils {
 			return;
 		}
 		JDImageProxy image = o.getImage();
-		Rectangle rect = o.getRectangle();
+		JDRectangle rect = o.getRectangle();
 		Object clickedObject = o.getClickedObject();
 		Color c = o.getColor();
 		if (image == null) {
 			g.setColor(c);
-			g.fillRect(rect.x, rect.y, rect.width, rect.height);
+			g.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 			if (o.getRim()
 				|| ((clickedObject instanceof Door)
 					&& (((Door) clickedObject).hasLock()))) {
 				g.setColor(Color.black);
-				g.drawRect(rect.x, rect.y, rect.width, rect.height);
+				g.drawRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 			}
 		} else {
 			g.setColor(Color.RED);
-			g.drawImage((Image)image.getImage(),rect.x,rect.y,rect.width,rect.height,null);
+			g.drawImage((Image)image.getImage(),rect.getX(),rect.getY(),rect.getWidth(),rect.getHeight(),null);
 		}
 	}
 
 	private static void fillJDGraphicObject(JDGraphicObject o, Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		JDImageAWT image = o.getAWTImage();
-		g2D.drawImage(image.getImage(), image.getPosX(), image.getPosY(),
+		
+		g2D.drawImage((Image)image.getImage().getImage(), image.getPosX(), image.getPosY(),
 				image.getWidth(), image.getHeight(), null);
 		
 	}

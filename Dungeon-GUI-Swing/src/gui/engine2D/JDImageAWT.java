@@ -1,5 +1,6 @@
 package gui.engine2D;
 import graphics.JDImageProxy;
+import graphics.JDRectangle;
 
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -37,6 +38,16 @@ public class JDImageAWT {
 		this.sizeY = r.height;
 	
 	}
+	
+	public JDImageAWT(JDImageProxy i, JDRectangle r) {
+		image = i;		
+		this.posX = r.getX();
+		this.posY = r.getY();
+		this.sizeX = r.getWidth();
+		this.sizeY = r.getHeight();
+	
+	}
+	
 	public int getPosX() {
 		return posX;
 	}
@@ -70,8 +81,8 @@ public class JDImageAWT {
 	 * 
 	 * @uml.property name="image"
 	 */
-	public Image getImage() {
-		return (Image)image.getImage();
+	public JDImageProxy getImage() {
+		return image;
 	}
 
 }

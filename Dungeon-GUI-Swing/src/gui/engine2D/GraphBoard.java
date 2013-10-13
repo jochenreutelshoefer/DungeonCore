@@ -8,6 +8,7 @@ import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
+import graphics.JDRectangle;
 import gui.MyJDGui;
 import gui.JDJPanel;
 import gui.Paragraph;
@@ -70,6 +71,7 @@ import javax.swing.Scrollable;
 
 
 
+
 import animation.AnimationSet;
 import animation.AnimationUtils;
 import control.ActionAssembler;
@@ -113,7 +115,7 @@ import dungeon.RouteInstruction;
  *         Window>Preferences>Java>Code Generation.
  */
 public class GraphBoard extends JDJPanel implements MouseListener,
-		MouseMotionListener, Scrollable, Runnable {
+		MouseMotionListener, Scrollable {
 
 	Graphics g2;
 
@@ -268,15 +270,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	}
 
-	public void update(Graphics g) {
-		System.out.println("leeres update!!!");
-		// paint(g);
-	}
-
-	public void run() {
-
-	}
-
 
 
 	public void repaintRoom(Graphics g, RoomInfo r, boolean heroToo) {
@@ -284,15 +277,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		repaintRoomSmall(g, r, new LinkedList());
 	}
 
-	public static void printList(LinkedList l) {
-		System.out.println("List: ");
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			Object element = (Object) iter.next();
-			System.out.println(element.toString());
-
-		}
-		System.out.println();
-	}
 
 	public Point getPositionCoordModified(int index) {
 		if (index >= 0 && index < 8) {
@@ -680,9 +664,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int ysize = (int) (roomSize / 2.5);
 					GraphicObject ob = new JDGraphicObject(
 							new JDImageAWT(ImageManager.questionmark, xpos, ypos,
-									xsize, ysize), null, new Rectangle(
-									new Point(xpos, ypos), new Dimension(xsize,
-											ysize)), Color.yellow);
+									xsize, ysize), null, new JDRectangle(
+									new JDPoint(xpos, ypos), xsize,
+											ysize), Color.yellow);
 					items.add(ob);
 				}
 				//
@@ -706,10 +690,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		return new GraphicObject(r, new Rectangle(
 
-		new Point(xcoord /* + getDoorDimension(true).width */, ycoord
-		/* + getDoorDimension(true).width */), new Dimension(
-				roomSize /*- 1
-							 * getDoorDimension(true).width*/, roomSize - 1
+		new Point(xcoord, ycoord), new Dimension(
+				roomSize, roomSize - 1
 						* getDoorDimension(true).width)), bg, false, im);
 	}
 
@@ -722,14 +704,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (doors[0] != null) {
 			JDGraphicObject door0;
 			if (!doors[0].hasLock().booleanValue()) {
-				Rectangle rect = getNorthDoorRect(xcoord, ycoord);
+				JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
 				door0 = new JDGraphicObject(new JDImageAWT(
 						ImageManager.door_north, xcoord, ycoord
 								- getDoorDimension(true).width, roomSize,
 						roomSize), doors[0], rect, new Color(180, 150, 80),
 						false);
 			} else {
-				Rectangle rect = getNorthDoorRect(xcoord, ycoord);
+				JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
 				door0 = new JDGraphicObject(new JDImageAWT(
 						ImageManager.door_north_lock, xcoord, ycoord
 								- getDoorDimension(true).width, roomSize,
@@ -738,7 +720,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 			roomDoors.add(door0);
 		} else {
-			Rectangle rect = getNorthDoorRect(xcoord, ycoord);
+			JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
 			JDGraphicObject door0 = new JDGraphicObject(
 					new JDImageAWT(ImageManager.door_north_none, xcoord, ycoord
 							- getDoorDimension(true).width, roomSize, roomSize),
@@ -746,7 +728,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			roomDoors.add(door0);
 		}
 		if (doors[1] != null) {
-			Rectangle rect = getEastDoorRect(xcoord, ycoord);
+			JDRectangle rect = getEastDoorRect(xcoord, ycoord);
 			JDGraphicObject door1;
 			if (!doors[1].hasLock().booleanValue()) {
 				door1 = new JDGraphicObject(new JDImageAWT(ImageManager.door_east,
@@ -762,7 +744,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 			roomDoors.add(door1);
 		} else {
-			Rectangle rect = getNorthDoorRect(xcoord, ycoord);
+			JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
 			JDGraphicObject door1 = new JDGraphicObject(
 					new JDImageAWT(ImageManager.door_east_none, xcoord, ycoord
 							- getDoorDimension(true).width, roomSize, roomSize),
@@ -784,7 +766,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			// this.doors.add(door2);
 		}
 		if (doors[3] != null) {
-			Rectangle rect = getWestDoorRect(xcoord, ycoord);
+			JDRectangle rect = getWestDoorRect(xcoord, ycoord);
 			if (rect == null) {
 				System.out.println("rect ist null");
 				System.exit(0);
@@ -833,7 +815,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 								ImageManager.wall_southImage));
 
 				DoorInfo[] doorArray = r.getDoors();
-				Rectangle rect = getSouthDoorRect(xcoord, ycoord);
+				JDRectangle rect = getSouthDoorRect(xcoord, ycoord);
 				if (doorArray[2] != null) {
 					// Rectangle clickRect = new Rectangle(xcoord)
 					if (doorArray[2].hasLock().booleanValue()) {
@@ -914,33 +896,33 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	}
 
-	private Rectangle getNorthDoorRect(int x, int y) {
+	private JDRectangle getNorthDoorRect(int x, int y) {
 
 		Dimension d = getDoorDimension(false);
-		return new Rectangle(new Point(
-				(int) (x + (roomSize / 2) - (d.getWidth() / 2)), y), d);
+		return new JDRectangle(new JDPoint(
+				(int) (x + (roomSize / 2) - (d.getWidth() / 2)), y), d.width, d.height);
 	}
 
-	private Rectangle getEastDoorRect(int x, int y) {
+	private JDRectangle getEastDoorRect(int x, int y) {
 
 		Dimension d = getDoorDimension(true);
-		return new Rectangle(new Point((int) (x + (roomSize) - (d.getWidth())),
-				(int) (y + (roomSize / 2) - (d.getHeight() / 2))), d);
+		return new JDRectangle(new JDPoint((int) (x + (roomSize) - (d.getWidth())),
+				(int) (y + (roomSize / 2) - (d.getHeight() / 2))),  d.width, d.height);
 	}
 
-	private Rectangle getSouthDoorRect(int x, int y) {
+	private JDRectangle getSouthDoorRect(int x, int y) {
 
 		Dimension d = getDoorDimension(false);
-		return new Rectangle(new Point(
+		return new JDRectangle(new JDPoint(
 				(int) (x + (roomSize / 2) - (d.getWidth() / 2)), (int) (y
-						+ roomSize - (d.getHeight()))), d);
+						+ roomSize - (d.getHeight()))), d.width, d.height);
 	}
 
-	private Rectangle getWestDoorRect(int x, int y) {
+	private JDRectangle getWestDoorRect(int x, int y) {
 
 		Dimension d = getDoorDimension(true);
-		return new Rectangle(new Point((int) (x),
-				(int) (y + (roomSize / 2) - (d.getHeight() / 2))), d);
+		return new JDRectangle(new JDPoint((int) (x),
+				(int) (y + (roomSize / 2) - (d.getHeight() / 2))),  d.width, d.height);
 	}
 
 
@@ -999,8 +981,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		int mClass = m.getMonsterClass();
 		int sizeX = (int) (getMonsterSize(m).width);
 		int sizeY = (int) (getMonsterSize(m).height);
-		Rectangle rect = new Rectangle(new Point(p.x - (sizeX / 2), p.y
-				- (sizeY / 2)), new Dimension(sizeX, sizeY));
+		JDRectangle rect = new JDRectangle(new JDPoint(p.x - (sizeX / 2), p.y
+				- (sizeY / 2)), sizeX, sizeY);
 		int dir = m.getLookDir();
 		if (mClass == Monster.WOLF) {
 
@@ -1068,9 +1050,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		int mouseSize = this.ROOMSIZE_BY_5;
-		return new JDGraphicObject(ob, m, rect, Color.white, new Rectangle(
-				new Point(p.x - mouseSize / 2, p.y - mouseSize / 2),
-				new Dimension(mouseSize, mouseSize)));
+		return new JDGraphicObject(ob, m, rect, Color.white, new JDRectangle(p.x - mouseSize / 2, p.y - mouseSize / 2,
+				mouseSize, mouseSize));
 	}
 
 	private GraphicObject[] drawItems(int xcoord, int ycoord,
@@ -1344,27 +1325,23 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	public void drawHero(Graphics g, int x, int y, HeroInfo info) {
-		JDImageAWT im = null;
 		if (info == null) {
 			return;
 		}
-		int index = info.getPositionInRoomIndex();
-		if (index == -1) {
-			int dkls = 4;
-		}
 
-		int pos = info.getPositionInRoomIndex();
-		if (pos == -1) {
-			System.out.println("drawHero nicht m�glich, weil PosIndex auf -1!");
-		}
+		getHeroGraphicObject(x, y, info);
+
+	}
+
+	private void getHeroGraphicObject(int x, int y, HeroInfo info) {
 		Point p = getPositionCoordModified(info.getPositionInRoomIndex());
 		int xpos = (int) p.getX();
 		int ypos = (int) p.getY();
 		int xSize = (int) (roomSize / HERO_SIZE_QUOTIENT_X);
 		int ySize = (int) (roomSize / HERO_SIZE_QUOTIENT_Y);
 
-		Rectangle rect = new Rectangle(new Point(x + xpos - (xSize / 2), y
-				+ ypos - (ySize / 2)), new Dimension(xSize, ySize));
+		JDRectangle rect = new JDRectangle(x + xpos - (xSize / 2), y
+				+ ypos - (ySize / 2), xSize, ySize);
 
 
 		int code = info.getHeroCode();
@@ -1372,7 +1349,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (dir == 0) {
 			dir = Dir.NORTH;
 		}
-
+		JDImageAWT im = null;
 		if (code == Hero.HEROCODE_WARRIOR) {
 			if (info.isDead().booleanValue()
 					&& !gui.currentThreadRunning(info.getRoomInfo())) {
@@ -1412,18 +1389,16 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		hero = new JDGraphicObject(im, info, rect, Color.white,
 				getHalfSizeRect(rect));
-
 	}
 
-	private Rectangle getHalfSizeRect(Rectangle r) {
-		int sizex = r.width;
-		int sizey = r.height;
+	private JDRectangle getHalfSizeRect(JDRectangle r) {
+		int sizex = r.getWidth();
+		int sizey = r.getHeight();
 		int newSizex = sizex / 2;
 		int newSizey = sizey / 2;
-		int newPointx = r.x + newSizex / 2;
-		int newPointy = r.y + newSizey / 2;
-		return new Rectangle(new Point(newPointx, newPointy), new Dimension(
-				newSizex, newSizey));
+		int newPointx = r.getX() + newSizex / 2;
+		int newPointy = r.getY() + newSizey / 2;
+		return new JDRectangle(newPointx, newPointy, newSizex, newSizey);
 	}
 
 	public static final double HERO_POINT_QUOTIENT_X = 2.2;
@@ -1477,7 +1452,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	public void mousePressed(MouseEvent me) {
 
 		boolean right = false;
-		Point p = me.getPoint();
+		JDPoint p = new JDPoint(me.getPoint().getX(),me.getPoint().getY());
 		Object o = getRoom(p);
 		RoomInfo r = null;
 		if (o instanceof RoomInfo) {
@@ -1498,7 +1473,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		mouse_x = (int) p.getX();
 		mouse_y = (int) p.getY();
 		if (gui.getMainFrame().isNoControl()) {
-			p = new Point(-1, -1);
+			p = new JDPoint(-1, -1);
 		}
 
 		boolean found = false;
@@ -1682,11 +1657,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	public void updateInfoForMouseCursor() {
-		Point p = lastMouseMovePoint;
-		if (p == null) {
+		if (lastMouseMovePoint == null) {
 			return;
 		}
 
+		JDPoint p = new JDPoint(lastMouseMovePoint.x, lastMouseMovePoint.y);
 		boolean found = false;
 
 		this.setCursor(cursor1);
@@ -1806,7 +1781,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	}
 
-	private Object getRoom(Point p) {
+	private Object getRoom(JDPoint p) {
 		GraphicObject ob = null;
 		boolean found = false;
 		for (int i = 0; i < rooms.size(); i++) {
@@ -2082,12 +2057,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return new Dimension(500, 500);
 	}
 
-	private Rectangle getShrineRect(int xcoord, int ycoord) {
+	private JDRectangle getShrineRect(int xcoord, int ycoord) {
 		int xpos = xcoord + (13 * roomSize / 20);
 		int ypos = ycoord + (1 * roomSize / 36);
 		int xsize = (int) (roomSize / 2.9);
 		int ysize = (int) (roomSize / 2.2);
-		return new Rectangle(new Point(xpos, ypos), new Dimension(xsize, ysize));
+		return new JDRectangle(new JDPoint(xpos, ypos), xsize, ysize);
 	}
 
 	public static int ROOMSIZE_BY_2;
