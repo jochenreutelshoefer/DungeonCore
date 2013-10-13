@@ -13,6 +13,7 @@ import graphics.JDGraphicObject;
 import graphics.JDImageAWT;
 import graphics.JDImageProxy;
 import graphics.JDRectangle;
+import graphics.RoomSize;
 import gui.MyJDGui;
 import gui.JDJPanel;
 import gui.Paragraph;
@@ -79,6 +80,7 @@ import javax.swing.Scrollable;
 
 
 
+
 import animation.AnimationSet;
 import animation.AnimationUtils;
 import control.ActionAssembler;
@@ -126,7 +128,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	Graphics g2;
 
-	Point[] positionCoord = new Point[8];
+
 
 	Map roomObjectMap = new HashMap();
 
@@ -244,36 +246,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void sizeChanged() {
 
-		// ROOMSIZE_BY_10 = roomSize / 10;
-		ROOMSIZE_BY_36 = roomSize / 36;
-		ROOMSIZE_BY_24 = roomSize / 24;
-		ROOMSIZE_BY_20 = roomSize / 20;
-		ROOMSIZE_BY_12 = roomSize / 12;
-		ROOMSIZE_BY_10 = roomSize / 10;
-		ROOMSIZE_BY_16 = roomSize / 16;
-		ROOMSIZE_BY_8 = roomSize / 8;
-		ROOMSIZE_BY_6 = roomSize / 6;
-		ROOMSIZE_BY_5 = roomSize / 5;
-		ROOMSIZE_BY_4 = roomSize / 4;
-		ROOMSIZE_BY_3 = roomSize / 3;
-		ROOMSIZE_BY_2 = roomSize / 2;
 
-		positionCoord[0] = new Point(roomSize / 4 - ROOMSIZE_BY_16,
-				(int) (roomSize / 3) - ROOMSIZE_BY_36);
-		positionCoord[1] = new Point(roomSize / 2 - ROOMSIZE_BY_16,
-				(int) (roomSize / 3.5) - ROOMSIZE_BY_36);
-		positionCoord[2] = new Point(roomSize * 3 / 4 - ROOMSIZE_BY_16,
-				(int) (roomSize / 3) - ROOMSIZE_BY_36);
-		positionCoord[3] = new Point(roomSize * 4 / 5 - ROOMSIZE_BY_16,
-				(int) (roomSize / 1.8) - ROOMSIZE_BY_36);
-		positionCoord[4] = new Point(roomSize * 3 / 4 - ROOMSIZE_BY_16,
-				roomSize * 3 / 4 - ROOMSIZE_BY_36);
-		positionCoord[5] = new Point(roomSize / 2 - ROOMSIZE_BY_16, roomSize
-				* 4 / 5 - ROOMSIZE_BY_36);
-		positionCoord[6] = new Point(roomSize / 4 - ROOMSIZE_BY_16, roomSize
-				* 3 / 4 - ROOMSIZE_BY_36);
-		positionCoord[7] = new Point(roomSize / 5 - ROOMSIZE_BY_16,
-				(int) (roomSize / 1.8) - ROOMSIZE_BY_36);
 
 	}
 
@@ -285,25 +258,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 
-	public Point getPositionCoordModified(int index) {
-		if (index >= 0 && index < 8) {
-			int posX = positionCoord[index].x;
-			int posY = positionCoord[index].y;
-			return new Point(posX + ROOMSIZE_BY_20, posY);
-		}
-		return null;
-	}
 
-	public Point getPositionCoord(int index) {
-		if (index >= 0 && index < 8) {
 
-			return positionCoord[index];
-		}
-		return null;
-	}
+
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
-
+		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
 
 		int xcoord = 0;
 		int ycoord = 0;
@@ -335,13 +295,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				|| (gui.getVisibility())) {
 
 			if (r.equals(gui.getFigure().getRoomInfo())) {
+				Point[] positionCoord = renderer.getPositionCoord();
 				for (int i = 0; i < positionCoord.length; i++) {
-					int posSize = ROOMSIZE_BY_8;
+					int posSize = RoomSize.by8(roomSize);
 
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(
-									getPositionCoord(i).x,
-									getPositionCoord(i).y, posSize, posSize),
+									renderer.getPositionCoord(i).x,
+									renderer.getPositionCoord(i).y, posSize, posSize),
 							Color.BLACK, ImageManager.fieldImage);
 
 					graphObs.add(ob);
@@ -381,7 +342,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			// question_mark = false;
 			if (r.getMonsterInfos().size() > 0) {
 				// writeOut("Monster im Raum: " + r.getDieMonster().size());
-				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
+				GraphicObject[] monsterObs = renderer.drawMonster(xcoord, ycoord,
 						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
@@ -426,7 +387,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(g, xcoord, ycoord, r.getHeroInfo());
+			drawHero(g, xcoord, ycoord, r.getHeroInfo(), renderer);
 		}
 
 		graphObs.add(new GraphicObject(r, new Rectangle(new Point(xcoord,
@@ -931,29 +892,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 
-	private GraphicObject[] drawMonster(int xcoord, int ycoord,
-			List<MonsterInfo> monsterList) {
-		int k = monsterList.size();
-		GraphicObject obs[] = new GraphicObject[k];
-		if (monsterList.size() > 8) {
-			obs = new GraphicObject[8];
-		}
-		for (int i = 0; i < monsterList.size(); i++) {
 
-			MonsterInfo m = ((MonsterInfo) monsterList.get(i));
-			int position = m.getPositionInRoomIndex();
-
-			GraphicObject gr = GraphicObjectRenderer.drawAMonster(m, new Point(
-					getPositionCoordModified(position).x + xcoord,
-					getPositionCoordModified(position).y + ycoord), roomSize);
-			if (i >= 8) {
-				break;
-			}
-			obs[i] = gr;
-		}
-
-		return obs;
-	}
 
 
 
@@ -970,6 +909,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void drawRoom(int xcoord, int ycoord, RoomInfo r, Graphics g) {
 
+		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
+		
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r);
 		GraphicObject wallOb = drawWall(xcoord, ycoord, r, g);
 
@@ -1009,16 +950,16 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)
 				|| (gui.getVisibility())) {
-
+			Point[] positionCoord = renderer.getPositionCoord();
 			if (r.equals(gui.getFigure().getRoomInfo())) {
 				for (int i = 0; i < positionCoord.length; i++) {
-					int posSize = ROOMSIZE_BY_8;
+					int posSize = RoomSize.by8(roomSize);
 
 					JDImageProxy im = ImageManager.fieldImage;
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(xcoord
-									+ getPositionCoord(i).x, ycoord
-									+ getPositionCoord(i).y, posSize, posSize),
+									+ renderer.getPositionCoord(i).x, ycoord
+									+ renderer.getPositionCoord(i).y, posSize, posSize),
 							Color.BLACK, im);
 
 					positions.add(ob);
@@ -1027,7 +968,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 			List<MonsterInfo> monsters = r.getMonsterInfos();
 			if (monsters != null && monsters.size() > 0) {
-				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
+				GraphicObject[] monsterObs = renderer.drawMonster(xcoord, ycoord,
 						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
@@ -1057,21 +998,21 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(g, xcoord, ycoord, r.getHeroInfo());
+			drawHero(g, xcoord, ycoord, r.getHeroInfo(), renderer);
 		}
 	}
 
-	public void drawHero(Graphics g, int x, int y, HeroInfo info) {
+	public void drawHero(Graphics g, int x, int y, HeroInfo info, GraphicObjectRenderer renderer) {
 		if (info == null) {
 			return;
 		}
 
-		getHeroGraphicObject(x, y, info);
+		hero = getHeroGraphicObject(x, y, info, renderer);
 
 	}
 
-	private void getHeroGraphicObject(int x, int y, HeroInfo info) {
-		Point p = getPositionCoordModified(info.getPositionInRoomIndex());
+	private JDGraphicObject getHeroGraphicObject(int x, int y, HeroInfo info, GraphicObjectRenderer renderer) {
+		Point p = renderer.getPositionCoordModified(info.getPositionInRoomIndex());
 		int xpos = (int) p.getX();
 		int ypos = (int) p.getY();
 		int xSize = (int) (roomSize / HERO_SIZE_QUOTIENT_X);
@@ -1124,7 +1065,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				im = new JDImageAWT(ImageManager.mageImage[dir - 1], rect);
 			}
 		}
-		hero = new JDGraphicObject(im, info, rect, Color.white,
+		return new JDGraphicObject(im, info, rect, Color.white,
 				getHalfSizeRect(rect));
 	}
 

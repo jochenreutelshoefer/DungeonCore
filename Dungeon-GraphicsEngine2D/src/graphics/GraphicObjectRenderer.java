@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.List;
 
 import animation.AnimationSet;
 import animation.AnimationUtils;
@@ -36,7 +37,58 @@ import dungeon.JDPoint;
 
 public class GraphicObjectRenderer {
 	
+	private int roomSize;
+	private int ROOMSIZE_BY_36;
+	private int ROOMSIZE_BY_24; 
+	private int ROOMSIZE_BY_20;
+	private int ROOMSIZE_BY_12;
+	private int ROOMSIZE_BY_10; 
+	private int ROOMSIZE_BY_16;
+	private int ROOMSIZE_BY_8; 
+	private int ROOMSIZE_BY_6;
+	private int ROOMSIZE_BY_5; 
+	private int ROOMSIZE_BY_4; 
+	private int ROOMSIZE_BY_3; 
+	private int ROOMSIZE_BY_2;
+	private Point[] positionCoord = new Point[8];
+	
+	public Point[] getPositionCoord() {
+		return positionCoord;
+	}
 
+	public GraphicObjectRenderer(int roomSize) {
+		this.roomSize = roomSize;
+		ROOMSIZE_BY_36 = RoomSize.by(36,roomSize);
+		ROOMSIZE_BY_24 = RoomSize.by(24,roomSize);
+		ROOMSIZE_BY_20 = RoomSize.by(20,roomSize);
+		ROOMSIZE_BY_12 = RoomSize.by(12,roomSize);
+		ROOMSIZE_BY_10 = RoomSize.by(10,roomSize);
+		ROOMSIZE_BY_16 = RoomSize.by(16,roomSize);
+		ROOMSIZE_BY_8 = RoomSize.by(8,roomSize);
+		ROOMSIZE_BY_6 = RoomSize.by(6,roomSize);
+		ROOMSIZE_BY_5 = RoomSize.by(5,roomSize);
+		ROOMSIZE_BY_4 = RoomSize.by(4,roomSize);
+		ROOMSIZE_BY_3 = RoomSize.by(3,roomSize);
+		ROOMSIZE_BY_2 = RoomSize.by(2,roomSize);
+
+		positionCoord[0] = new Point(roomSize / 4 - ROOMSIZE_BY_16,
+				(int) (roomSize / 3) - ROOMSIZE_BY_36);
+		positionCoord[1] = new Point(roomSize / 2 - ROOMSIZE_BY_16,
+				(int) (roomSize / 3.5) - ROOMSIZE_BY_36);
+		positionCoord[2] = new Point(roomSize * 3 / 4 - ROOMSIZE_BY_16,
+				(int) (roomSize / 3) - ROOMSIZE_BY_36);
+		positionCoord[3] = new Point(roomSize * 4 / 5 - ROOMSIZE_BY_16,
+				(int) (roomSize / 1.8) - ROOMSIZE_BY_36);
+		positionCoord[4] = new Point(roomSize * 3 / 4 - ROOMSIZE_BY_16,
+				roomSize * 3 / 4 - ROOMSIZE_BY_36);
+		positionCoord[5] = new Point(roomSize / 2 - ROOMSIZE_BY_16, roomSize
+				* 4 / 5 - ROOMSIZE_BY_36);
+		positionCoord[6] = new Point(roomSize / 4 - ROOMSIZE_BY_16, roomSize
+				* 3 / 4 - ROOMSIZE_BY_36);
+		positionCoord[7] = new Point(roomSize / 5 - ROOMSIZE_BY_16,
+				(int) (roomSize / 1.8) - ROOMSIZE_BY_36);
+		
+	}
 
 	public static GraphicObject[] drawItems(int xcoord, int ycoord,
 			ItemInfo[] itemArray, int roomSize) {
@@ -324,6 +376,48 @@ public class GraphicObjectRenderer {
 		return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
 
 	}
+	
+	public GraphicObject[] drawMonster(int xcoord, int ycoord,
+			List<MonsterInfo> monsterList) {
+		int k = monsterList.size();
+		GraphicObject obs[] = new GraphicObject[k];
+		if (monsterList.size() > 8) {
+			obs = new GraphicObject[8];
+		}
+		for (int i = 0; i < monsterList.size(); i++) {
+
+			MonsterInfo m = ((MonsterInfo) monsterList.get(i));
+			int position = m.getPositionInRoomIndex();
+
+			GraphicObject gr = GraphicObjectRenderer.drawAMonster(m, new Point(
+					getPositionCoordModified(position).x + xcoord,
+					getPositionCoordModified(position).y + ycoord), roomSize);
+			if (i >= 8) {
+				break;
+			}
+			obs[i] = gr;
+		}
+
+		return obs;
+	}
+	
+	public Point getPositionCoordModified(int index) {
+		if (index >= 0 && index < 8) {
+			int posX = positionCoord[index].x;
+			int posY = positionCoord[index].y;
+			return new Point(posX + ROOMSIZE_BY_20, posY);
+		}
+		return null;
+	}
+	
+	public Point getPositionCoord(int index) {
+		if (index >= 0 && index < 8) {
+			return positionCoord[index];
+		}
+		return null;
+	}
+	
+	
 
 	
 }

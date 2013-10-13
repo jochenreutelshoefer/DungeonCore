@@ -12,6 +12,7 @@ import java.awt.Point;
 
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import graphics.GraphicObjectRenderer;
 import gui.engine2D.GraphBoard;
 
 /**
@@ -95,9 +96,7 @@ public abstract class Animation implements Runnable {
 	}
 
 	protected Point getPointInRoom() {
-
-		return bild.getPositionCoordModified(o.getPositionInRoomIndex());
-
+		return new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoordModified(o.getPositionInRoomIndex());
 	}
 
 }

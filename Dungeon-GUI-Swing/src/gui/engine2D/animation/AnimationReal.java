@@ -70,7 +70,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		g = gui.getGraphics();
 		bild = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
 
-		startFigurePositionInRoom = bild.getPositionCoordModified(o
+		startFigurePositionInRoom = new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoordModified(o
 				.getPositionInRoomIndex());
 		roomSize = bild.getRoomSize();
 		// r = RoomInfo.makeRoomInfo(game.getHero().getRoom());
@@ -98,7 +98,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 
 		int positionInRoomIndex = o.getPositionInRoomIndex();
 		if(positionInRoomIndex == -1) return;
-		Point point = bild.getPositionCoordModified(positionInRoomIndex);
+		Point point = new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoordModified(positionInRoomIndex);
 		RoomInfo roomInfo = o.getRoomInfo();
 		if (!roomInfo.fightRunning().booleanValue()) {
 			point = this.startFigurePositionInRoom;
@@ -133,8 +133,8 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (toPosIndex == -1 || fromPosIndex == -1) {
 			return 0;
 		}
-		int xFrom = this.bild.getPositionCoord(fromPosIndex).x;
-		int xTo = this.bild.getPositionCoord(toPosIndex).x;
+		int xFrom = new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoord(fromPosIndex).x;
+		int xTo =new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoord(toPosIndex).x;
 		int diff = xTo - xFrom;
 		int setSize = set.getLength();
 		float factor = ((float) num) / setSize;
@@ -146,8 +146,8 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (toPosIndex == -1 || fromPosIndex == -1) {
 			return 0;
 		}
-		int yFrom = this.bild.getPositionCoord(fromPosIndex).y;
-		int yTo = this.bild.getPositionCoord(toPosIndex).y;
+		int yFrom = new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoord(fromPosIndex).y;
+		int yTo = new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoord(toPosIndex).y;
 		int diff = yTo - yFrom;
 		int setSize = set.getLength();
 		float factor = ((float) num) / setSize;

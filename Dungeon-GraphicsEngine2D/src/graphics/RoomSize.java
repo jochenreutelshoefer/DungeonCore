@@ -2,6 +2,10 @@ package graphics;
 
 public class RoomSize {
 	
+	public static int by(int divisor, int roomSize) {
+		return  Math.round(roomSize / divisor);
+	}
+	
 	public static int by2(int roomSize) {
 		return  Math.round(roomSize / 2);
 	}
