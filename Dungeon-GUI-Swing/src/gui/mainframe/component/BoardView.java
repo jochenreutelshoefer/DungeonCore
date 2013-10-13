@@ -132,6 +132,7 @@ public class BoardView extends JDJPanel implements MouseListener,
 	}
 
 
+
 	public void resetViewPoint() {
 		JDPoint p = gui.getFigure().getRoomNumber();
 		int roomNumberX = p.getX();

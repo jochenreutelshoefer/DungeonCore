@@ -122,27 +122,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private boolean memory = false;
 
-	private Vector<GraphicObject> rooms = new Vector<GraphicObject>();
 
-	private Vector<GraphicObject> shrines = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> positions = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> monster = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> items = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> doors = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> chests = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> spots = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> walls = new Vector<GraphicObject>();
-
-	private Vector<GraphicObject> lastWalls = new Vector<GraphicObject>();
-
-	private GraphicObject hero;
 
 	private Cursor cursor1;
 
@@ -179,7 +159,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		initCursors();
-		this.renderer = new GraphicObjectRenderer(roomSize);
+		this.renderer = new GraphicObjectRenderer(roomSize, gui);
 		this.setPreferredSize(new Dimension(screenSize, screenSize));
 
 	}
@@ -212,15 +192,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	private void sizeChanged() {
-		this.renderer = new GraphicObjectRenderer(roomSize);
+		this.renderer = new GraphicObjectRenderer(roomSize, gui);
 	}
 
-	public void repaintRoom(Graphics g, RoomInfo r, boolean heroToo) {
-		repaintRoomSmall(g, r, new LinkedList());
-	}
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
-		// GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
+		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize, gui);
 
 		int xcoord = 0;
 		int ycoord = 0;
@@ -231,9 +208,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 
-		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, renderer);
+		GraphicObject roomOb = renderer.drawBackGround(xcoord, ycoord, r, renderer);
 
-		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
+		GraphicObject wallOb = renderer.drawWall(xcoord, ycoord, r);
 		graphObs.add(roomOb);
 
 		graphObs.addAll(renderer.drawDoors(r, xcoord, ycoord));
@@ -270,20 +247,20 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				ob = renderer.getShrineGraphicObject(s, xcoord, ycoord);
 				graphObs.add(ob);
 			}
-
+			
 			if (r.getChest() != null) {
 				// game.newStatement("chest vorhanden!", 1);
 				GraphicObject chestOb;
 				if (r.getChest().hasLock()) {
 					chestOb = new GraphicObject(r.getChest(),
-							new Rectangle(getChestPoint(xcoord, ycoord),
-									getChestDimension()),
+							new Rectangle(renderer.getChestPoint(xcoord, ycoord),
+									renderer.getChestDimension()),
 							new Color(140, 90, 20),
 							ImageManager.chest_lockImage);
 				} else {
 					chestOb = new GraphicObject(r.getChest(),
-							new Rectangle(getChestPoint(xcoord, ycoord),
-									getChestDimension()),
+							new Rectangle(renderer.getChestPoint(xcoord, ycoord),
+									renderer.getChestDimension()),
 							new Color(140, 90, 20), ImageManager.chestImage);
 				}
 				graphObs.add(chestOb);
@@ -324,14 +301,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
-					new Rectangle(getSpotPoint(xcoord, ycoord),
-							getSpotDimension()), new Color(0, 0, 0),
+					new Rectangle(renderer.getSpotPoint(xcoord, ycoord),
+							renderer.getSpotDimension()), new Color(0, 0, 0),
 					ImageManager.spotImage);
 			graphObs.add(spotOb);
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(xcoord, ycoord, r.getHeroInfo(), renderer);
+			renderer.drawHero(xcoord, ycoord, r.getHeroInfo(), renderer);
 		}
 
 		graphObs.add(new GraphicObject(r, new Rectangle(new Point(xcoord,
@@ -351,25 +328,31 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		boolean paint = !aniObs.contains(hInfo);
 		if (paint && inRoom) {
 
-			if (hero != null && !hInfo.equals(obj)) {
-				DrawUtils.fillGraphicObject(hero, g);
+			if (renderer.hero != null && !hInfo.equals(obj)) {
+				DrawUtils.fillGraphicObject(renderer.hero, g);
 			}
 		}
+	}
+	
+	public Point getPositionCoordModified(int index) {
+		return renderer.getPositionCoordModified(index);
 	}
 
 	public void paint(Graphics g) {
 		Graphics g2 = g;
+		
+		this.renderer = new GraphicObjectRenderer(roomSize, gui);
 
-		rooms.clear();
-		shrines.clear();
-		monster.clear();
-		items.clear();
-		doors.clear();
-		chests.clear();
-		spots.clear();
-		walls.clear();
-		lastWalls.clear();
-		positions.clear();
+//		rooms.clear();
+//		shrines.clear();
+//		monster.clear();
+//		items.clear();
+//		doors.clear();
+//		chests.clear();
+//		spots.clear();
+//		walls.clear();
+//		lastWalls.clear();
+//		positions.clear();
 
 		// blank putzen
 		g2.setColor(Color.black);
@@ -406,10 +389,10 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				g2.fillRect(xcoord, ycoord, roomSize, roomSize);
 				if (r != null) {
 
-					drawRoom(xcoord, ycoord, r);
+					renderer.drawRoom(xcoord, ycoord, r);
 
 				} else {
-					rooms.add(new GraphicObject(new Point(i, j), new Rectangle(
+					renderer.rooms.add(new GraphicObject(new Point(i, j), new Rectangle(
 							new Point(xcoord, ycoord), new Dimension(roomSize,
 									roomSize)), Color.black, false, null));
 				}
@@ -417,193 +400,61 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 
-		for (int i = 0; i < rooms.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) rooms.get(i)), g2);
+		for (int i = 0; i < renderer.rooms.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.rooms.get(i)), g2);
 		}
-		for (int i = 0; i < walls.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) walls.get(i)), g2);
+		for (int i = 0; i < renderer.walls.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.walls.get(i)), g2);
 		}
-		for (int i = 0; i < doors.size(); i++) {
-			Object o = doors.get(i);
+		for (int i = 0; i < renderer.doors.size(); i++) {
+			Object o = renderer.doors.get(i);
 			DrawUtils.fillGraphicObject(((GraphicObject) o), g2);
 		}
-		for (int i = 0; i < positions.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) positions.get(i)), g2);
+		for (int i = 0; i < renderer.positions.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.positions.get(i)), g2);
 		}
-		for (int i = 0; i < spots.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) spots.get(i)), g2);
+		for (int i = 0; i < renderer.spots.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.spots.get(i)), g2);
 		}
-		for (int i = 0; i < shrines.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) shrines.get(i)), g2);
+		for (int i = 0; i < renderer.shrines.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.shrines.get(i)), g2);
 		}
-		for (int i = 0; i < items.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) items.get(i)), g2);
+		for (int i = 0; i < renderer.items.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.items.get(i)), g2);
 		}
-		for (int i = 0; i < chests.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) chests.get(i)), g2);
+		for (int i = 0; i < renderer.chests.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.chests.get(i)), g2);
 		}
-		for (int i = 0; i < monster.size(); i++) {
-			GraphicObject o = ((GraphicObject) monster.get(i));
+		for (int i = 0; i < renderer.monster.size(); i++) {
+			GraphicObject o = ((GraphicObject) renderer.monster.get(i));
 			if (o != null) {
 				DrawUtils.fillGraphicObject(o, g2);
 			}
 
 		}
 
-		for (int i = 0; i < lastWalls.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) lastWalls.get(i)), g2);
+		for (int i = 0; i < renderer.lastWalls.size(); i++) {
+			DrawUtils.fillGraphicObject(((GraphicObject) renderer.lastWalls.get(i)), g2);
 		}
 
 		boolean animationRunning = gui.currentAnimationThreadRunning(gui
 				.getFigure().getRoomInfo());
 
 		if (!animationRunning) {
-			if (hero != null) {
-				DrawUtils.fillGraphicObject(hero, g2);
+			if (renderer.hero != null) {
+				DrawUtils.fillGraphicObject(renderer.hero, g2);
 			}
 		}
 
 	}
 
-	private GraphicObject drawBackGround(int xcoord, int ycoord, RoomInfo r,
-			GraphicObjectRenderer renderer) {
-
-		Color bg = null;
-
-		int status = r.getVisibilityStatus();
-		JDImageProxy im = ImageManager.floorImageArray[r.getFloorIndex()];
-		if (memory) {
-			List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
-					ycoord);
-			im = ImageManager.floorImage_darkArray[r.getFloorIndex()];
-			this.doors.addAll(roomDoors);
-		} else {
-			if (status == RoomObservationStatus.VISIBILITY_FOUND) {
-				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
-				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
-						ycoord);
-				this.doors.addAll(roomDoors);
-
-			} else if (status == RoomObservationStatus.VISIBILITY_SHRINE) {
-				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
-						ycoord);
-				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
-				this.doors.addAll(roomDoors);
-				if (r.isPart_scouted()) {
-
-					int xpos = xcoord + (1 * roomSize / 3);
-					int ypos = ycoord + (1 * roomSize / 2) - (roomSize / 5);
-					int xsize = roomSize / 3;
-					int ysize = (int) (roomSize / 2.5);
-					GraphicObject ob = new JDGraphicObject(
-							new JDImageAWT(ImageManager.questionmark, xpos,
-									ypos, xsize, ysize), null, new JDRectangle(
-									new JDPoint(xpos, ypos), xsize, ysize),
-							Color.yellow);
-					items.add(ob);
-				}
-			} else if (status > RoomObservationStatus.VISIBILITY_SHRINE) {
-
-				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
-						ycoord);
-				this.doors.addAll(roomDoors);
-
-			} else {
-
-				bg = Color.darkGray;
-				return new GraphicObject(r, new Rectangle(new Point(xcoord
-						+ getDoorDimension(true).width, ycoord
-						+ getDoorDimension(true).width), new Dimension(roomSize
-						- 2 * getDoorDimension(true).width, roomSize - 2
-						* getDoorDimension(true).width)), bg, false, null);
-
-			}
-		}
-		return new GraphicObject(r, new Rectangle(new Point(xcoord, ycoord),
-				new Dimension(roomSize, roomSize
-						- 1
-						* GraphicObjectRenderer
-								.getDoorDimension(true, roomSize).width)), bg,
-				false, im);
-	}
+	
 
 	private Dimension getDoorDimension(boolean b) {
 		return GraphicObjectRenderer.getDoorDimension(true, roomSize);
 	}
 
-	private GraphicObject drawWall(int xcoord, int ycoord, RoomInfo r) {
-		Color bg = null;
-
-		GraphicObject ob = null;
-		RoomInfo southRoom = r.getNeighbourRoom(RouteInstruction.SOUTH);
-		if (southRoom != null) {
-			if (r.getVisibilityStatus() >= 2
-					&& southRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FOUND
-					&& r.isClaimed()) {
-				lastWalls
-						.add(new GraphicObject(null, new Rectangle(new Point(
-								xcoord, ycoord
-										+ roomSize
-										- GraphicObjectRenderer
-												.getDoorDimension(true,
-														roomSize).width),
-								new Dimension(roomSize, roomSize)), bg,
-								ImageManager.wall_southImage));
-
-				DoorInfo[] doorArray = r.getDoors();
-				JDRectangle rect = GraphicObjectRenderer.getSouthDoorRect(
-						xcoord, ycoord, roomSize);
-				if (doorArray[2] != null) {
-					if (doorArray[2].hasLock().booleanValue()) {
-						doors.add(new JDGraphicObject(new JDImageAWT(
-								ImageManager.door_south_lock, xcoord, ycoord
-										+ roomSize
-										- getDoorDimension(true).width,
-								roomSize, roomSize), doorArray[2], rect,
-								new Color(180, 150, 80), false));
-					} else {
-						doors.add(new JDGraphicObject(new JDImageAWT(
-								ImageManager.door_south, xcoord, ycoord
-										+ roomSize
-										- getDoorDimension(true).width,
-								roomSize, roomSize), doorArray[2], rect,
-								new Color(180, 150, 80), false));
-					}
-				} else {
-					doors.add(new JDGraphicObject(new JDImageAWT(
-							ImageManager.door_south_none, xcoord, ycoord
-									+ roomSize - getDoorDimension(true).width,
-							roomSize, roomSize), doorArray[2], rect, new Color(
-							180, 150, 80), false));
-				}
-			}
-		}
-
-		int status = r.getVisibilityStatus();
-		if (status >= RoomObservationStatus.VISIBILITY_FOUND) {
-			if (memory) {
-				bg = Color.darkGray;
-				ob = new GraphicObject(r, new Rectangle(new Point(xcoord,
-						ycoord - getDoorDimension(true).width), new Dimension(
-						roomSize, roomSize)), bg, ImageManager.wall_northImage);
-				lastWalls.add(new GraphicObject(r, new Rectangle(new Point(
-						xcoord, ycoord - getDoorDimension(true).width),
-						new Dimension(roomSize, roomSize)), bg,
-						ImageManager.wall_sidesImage));
-			} else {
-				lastWalls.add(new GraphicObject(r, new Rectangle(new Point(
-						xcoord, ycoord - getDoorDimension(true).width),
-						new Dimension(roomSize, roomSize)), bg,
-						ImageManager.wall_sidesImage));
-				ob = new GraphicObject(r, new Rectangle(new Point(xcoord,
-						ycoord - getDoorDimension(true).width), new Dimension(
-						roomSize, roomSize)), bg, ImageManager.wall_northImage);
-			}
-
-		}
-
-		return ob;
-	}
+	
 
 	boolean visCheat = false;
 
@@ -611,111 +462,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		visCheat = b;
 	}
 
-	private void drawRoom(int xcoord, int ycoord, RoomInfo r) {
+	
 
-		//GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
 
-		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, renderer);
-		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
-
-		rooms.add(roomOb);
-		if (wallOb != null) {
-			walls.add(wallOb);
-		}
-
-		int status = r.getVisibilityStatus();
-
-		if ((status >= RoomObservationStatus.VISIBILITY_SHRINE)
-				|| (gui.getVisibility())) {
-			GraphicObject ob = null;
-			if (r.getShrine() != null) {
-				ShrineInfo s = r.getShrine();
-				ob = renderer.getShrineGraphicObject(s, xcoord, ycoord);
-
-				shrines.add(ob);
-			}
-
-			if (r.getChest() != null) {
-				GraphicObject chestOb;
-				if (r.getChest().hasLock()) {
-					chestOb = new GraphicObject(r.getChest(),
-							new Rectangle(getChestPoint(xcoord, ycoord),
-									getChestDimension()),
-							new Color(140, 90, 20),
-							ImageManager.chest_lockImage);
-				} else {
-					chestOb = new GraphicObject(r.getChest(),
-							new Rectangle(getChestPoint(xcoord, ycoord),
-									getChestDimension()),
-							new Color(140, 90, 20), ImageManager.chestImage);
-				}
-				chests.add(chestOb);
-			}
-		}
-		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)
-				|| (gui.getVisibility())) {
-			Point[] positionCoord = renderer.getPositionCoord();
-			if (r.equals(gui.getFigure().getRoomInfo())) {
-				for (int i = 0; i < positionCoord.length; i++) {
-					int posSize = RoomSize.by8(roomSize);
-
-					JDImageProxy im = ImageManager.fieldImage;
-					GraphicObject ob = new GraphicObject(
-							r.getPositionInRoom(i), new Rectangle(xcoord
-									+ renderer.getPositionCoord(i).x, ycoord
-									+ renderer.getPositionCoord(i).y, posSize,
-									posSize), Color.BLACK, im);
-
-					positions.add(ob);
-
-				}
-			}
-			List<MonsterInfo> monsters = r.getMonsterInfos();
-			if (monsters != null && monsters.size() > 0) {
-				GraphicObject[] monsterObs = renderer.drawMonster(xcoord,
-						ycoord, r.getMonsterInfos());
-				for (int i = 0; i < monsterObs.length; i++) {
-					if (monsterObs[i] != null) {
-						monster.add(monsterObs[i]);
-					}
-				}
-			}
-		}
-		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS) || (visCheat)) {
-
-			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord,
-					ycoord, r.getItemArray(), roomSize);
-			for (int i = 0; i < itObs.length; i++) {
-				GraphicObject o = itObs[i];
-				if (o != null) {
-					items.add(o);
-				}
-			}
-
-		}
-
-		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
-			GraphicObject spotOb = new GraphicObject(r.getSpot(),
-					new Rectangle(getSpotPoint(xcoord, ycoord),
-							getSpotDimension()), new Color(0, 0, 0),
-					ImageManager.spotImage);
-			spots.add(spotOb);
-		}
-
-		if (r.getHeroInfo() != null) {
-			drawHero(xcoord, ycoord, r.getHeroInfo(), renderer);
-		}
-	}
-
-	public void drawHero(int x, int y, HeroInfo info,
-			GraphicObjectRenderer renderer) {
-		if (info == null) {
-			return;
-		}
-
-		hero = renderer.getHeroGraphicObject(x, y, info, renderer);
-
-	}
 
 	public Dimension getHeroSize() {
 		return new Dimension(
@@ -777,8 +526,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		boolean found = false;
 
-		for (int i = 0; i < items.size(); i++) {
-			GraphicObject ob = ((GraphicObject) items.get(i));
+		for (int i = 0; i < renderer.items.size(); i++) {
+			GraphicObject ob = ((GraphicObject) renderer.items.get(i));
 
 			if ((ob != null) && ob.hasPoint(p)) {
 				gui.getControl().itemClicked((ItemInfo) ob.getClickedObject(),
@@ -799,8 +548,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < monster.size(); i++) {
-				GraphicObject ob = ((GraphicObject) monster.get(i));
+			for (int i = 0; i < renderer.monster.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.monster.get(i));
 				if (ob.hasPoint(p)) {
 					Object f = ((GraphicObject) ob).getClickedObject();
 					if (f != null && f instanceof FigureInfo) {
@@ -820,8 +569,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < positions.size(); i++) {
-				GraphicObject ob = (GraphicObject) positions.get(i);
+			for (int i = 0; i < renderer.positions.size(); i++) {
+				GraphicObject ob = (GraphicObject) renderer.positions.get(i);
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						gui.getControl().positionClicked(
@@ -834,8 +583,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < shrines.size(); i++) {
-				GraphicObject ob = ((GraphicObject) shrines.get(i));
+			for (int i = 0; i < renderer.shrines.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.shrines.get(i));
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						gui.getControl().shrineClicked(right);
@@ -853,8 +602,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < doors.size(); i++) {
-				GraphicObject ob = ((GraphicObject) doors.get(i));
+			for (int i = 0; i < renderer.doors.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.doors.get(i));
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						gui.getControl().doorClicked(ob.getClickedObject(),
@@ -872,8 +621,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < spots.size(); i++) {
-				GraphicObject ob = ((GraphicObject) spots.get(i));
+			for (int i = 0; i < renderer.spots.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.spots.get(i));
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						gui.getControl().spotClicked(ob.getClickedObject());
@@ -891,8 +640,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < chests.size(); i++) {
-				GraphicObject ob = ((GraphicObject) chests.get(i));
+			for (int i = 0; i < renderer.chests.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.chests.get(i));
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null) {
 
@@ -914,15 +663,15 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		if (!found) {
 
-			if (hero.hasPoint(p)) {
+			if (renderer.hero.hasPoint(p)) {
 				gui.getControl().heroClicked();
 				found = true;
 
 			}
 		}
 		if (!found) {
-			for (int i = 0; i < rooms.size(); i++) {
-				GraphicObject ob = ((GraphicObject) rooms.get(i));
+			for (int i = 0; i < renderer.rooms.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.rooms.get(i));
 				if (ob.hasPoint(p)) {
 					gui.getControl().roomClicked(ob.getClickedObject(), right);
 					found = true;
@@ -975,8 +724,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			return;
 		}
 
-		for (int i = 0; i < items.size(); i++) {
-			GraphicObject ob = ((GraphicObject) items.get(i));
+		for (int i = 0; i < renderer.items.size(); i++) {
+			GraphicObject ob = ((GraphicObject) renderer.items.get(i));
 			if ((ob != null) && ob.hasPoint(p)) {
 				itemCrossed(ob.getClickedObject());
 				found = true;
@@ -986,8 +735,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 		if (!found) {
 
-			for (int i = 0; i < monster.size(); i++) {
-				GraphicObject ob = ((GraphicObject) monster.get(i));
+			for (int i = 0; i < renderer.monster.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.monster.get(i));
 				if ((ob != null) && ob.hasPoint(p)) {
 					monsterCrossed(ob.getClickedObject());
 					found = true;
@@ -996,8 +745,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			for (int i = 0; i < positions.size(); i++) {
-				GraphicObject ob = (GraphicObject) positions.get(i);
+			for (int i = 0; i < renderer.positions.size(); i++) {
+				GraphicObject ob = (GraphicObject) renderer.positions.get(i);
 				if (ob.hasPoint(p)) {
 					if ((((GraphicObject) ob).getClickedObject()) != null)
 						positionCrossed(((GraphicObject) ob).getClickedObject());
@@ -1007,8 +756,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			for (int i = 0; i < spots.size(); i++) {
-				GraphicObject ob = ((GraphicObject) spots.get(i));
+			for (int i = 0; i < renderer.spots.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.spots.get(i));
 				if ((ob != null) && ob.hasPoint(p)) {
 					spotCrossed(ob.getClickedObject());
 					found = true;
@@ -1017,8 +766,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			for (int i = 0; i < shrines.size(); i++) {
-				GraphicObject ob = ((GraphicObject) shrines.get(i));
+			for (int i = 0; i < renderer.shrines.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.shrines.get(i));
 				if (ob.hasPoint(p)) {
 					shrineCrossed(ob.getClickedObject());
 					found = true;
@@ -1027,8 +776,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			for (int i = 0; i < doors.size(); i++) {
-				GraphicObject ob = ((GraphicObject) doors.get(i));
+			for (int i = 0; i < renderer.doors.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.doors.get(i));
 				if (ob.hasPoint(p)) {
 					doorCrossed((DoorInfo) ob.getClickedObject());
 					found = true;
@@ -1037,8 +786,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			for (int i = 0; i < chests.size(); i++) {
-				GraphicObject ob = ((GraphicObject) chests.get(i));
+			for (int i = 0; i < renderer.chests.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.chests.get(i));
 				if (ob.hasPoint(p)) {
 					chestCrossed(ob.getClickedObject());
 					found = true;
@@ -1047,8 +796,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		}
 		if (!found) {
-			if (hero != null) {
-				if (hero.hasPoint(p)) {
+			if (renderer.hero != null) {
+				if (renderer.hero.hasPoint(p)) {
 					heroCrossed();
 					found = true;
 				}
@@ -1056,8 +805,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (!found) {
-			for (int i = 0; i < rooms.size(); i++) {
-				GraphicObject ob = ((GraphicObject) rooms.get(i));
+			for (int i = 0; i < renderer.rooms.size(); i++) {
+				GraphicObject ob = ((GraphicObject) renderer.rooms.get(i));
 				if (ob.hasPoint(p)) {
 					roomCrossed(ob.getClickedObject());
 					found = true;
@@ -1083,8 +832,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	private Object getRoom(JDPoint p) {
 		GraphicObject ob = null;
 		boolean found = false;
-		for (int i = 0; i < rooms.size(); i++) {
-			ob = ((GraphicObject) rooms.get(i));
+		for (int i = 0; i < renderer.rooms.size(); i++) {
+			ob = ((GraphicObject) renderer.rooms.get(i));
 			if (ob.hasPoint(p)) {
 				found = true;
 				break;
@@ -1254,27 +1003,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return offset;
 	}
 
-	private Point getChestPoint(int xcoord, int ycoord) {
-		int x1 = xcoord + (roomSize / 8);
-		int y1 = ycoord + roomSize / 10;
 
-		return new Point(x1, y1);
-	}
 
-	private Point getSpotPoint(int xcoord, int ycoord) {
-		int x1 = xcoord + (1 * roomSize / 8);
-		int y1 = ycoord + (6 * roomSize / 8);
 
-		return new Point(x1, y1);
-	}
-
-	private Dimension getSpotDimension() {
-		return new Dimension(roomSize / 7, roomSize / 7);
-	}
-
-	private Dimension getChestDimension() {
-		return new Dimension(roomSize / 5, roomSize / 5);
-	}
 
 	protected Image getImageFromJAR(String fileName) {
 		if (fileName == null)

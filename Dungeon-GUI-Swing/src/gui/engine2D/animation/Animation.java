@@ -96,7 +96,7 @@ public abstract class Animation implements Runnable {
 	}
 
 	protected Point getPointInRoom() {
-		return new GraphicObjectRenderer(bild.getRoomSize()).getPositionCoordModified(o.getPositionInRoomIndex());
+		return bild.getPositionCoordModified(o.getPositionInRoomIndex());
 	}
 
 }

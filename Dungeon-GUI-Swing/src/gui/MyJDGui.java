@@ -550,10 +550,6 @@ public class MyJDGui implements JDGUI {
 		return frame.getSpielfeld().getSpielfeldBild().getGraphics();
 	}
 
-	public void repaintRoom(RoomInfo wannaGo) {
-		frame.getSpielfeld().getSpielfeldBild()
-				.repaintRoom(getGraphics(), wannaGo, true);
-	}
 
 	// public void setRoomViewPoint(JDPoint wannaGo) {
 	// frame.getSpielfeld().setRoomViewPoint(wannaGo);
