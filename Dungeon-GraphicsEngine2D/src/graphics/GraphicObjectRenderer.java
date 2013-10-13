@@ -29,11 +29,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 import java.util.List;
 
 import animation.AnimationSet;
 import animation.AnimationUtils;
+import dungeon.DoorInfo;
 import dungeon.JDPoint;
+import dungeon.RoomInfo;
 
 public class GraphicObjectRenderer {
 	
@@ -257,6 +260,140 @@ public class GraphicObjectRenderer {
 			i++;
 		}
 		return itemObs;
+	}
+	
+	public List<GraphicObject> drawDoors(RoomInfo r, int xcoord, int ycoord) {
+		DoorInfo[] doors = r.getDoors();
+		if (doors == null) {
+			return new LinkedList<GraphicObject>();
+		}
+		List<GraphicObject> roomDoors = new LinkedList<GraphicObject>();
+		if (doors[0] != null) {
+			JDGraphicObject door0;
+			if (!doors[0].hasLock().booleanValue()) {
+				JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
+				door0 = new JDGraphicObject(new JDImageAWT(
+						ImageManager.door_north, xcoord, ycoord
+								- getDoorDimension(true, roomSize).width, roomSize,
+						roomSize), doors[0], rect, new Color(180, 150, 80),
+						false);
+			} else {
+				JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
+				door0 = new JDGraphicObject(new JDImageAWT(
+						ImageManager.door_north_lock, xcoord, ycoord
+								- getDoorDimension(true, roomSize).width, roomSize,
+						roomSize), doors[0], rect, new Color(180, 150, 80),
+						false);
+			}
+			roomDoors.add(door0);
+		} else {
+			JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
+			JDGraphicObject door0 = new JDGraphicObject(
+					new JDImageAWT(ImageManager.door_north_none, xcoord, ycoord
+							- getDoorDimension(true, roomSize).width, roomSize, roomSize),
+					doors[0], null, new Color(180, 150, 80), false);
+			roomDoors.add(door0);
+		}
+		if (doors[1] != null) {
+			JDRectangle rect = getEastDoorRect(xcoord, ycoord);
+			JDGraphicObject door1;
+			if (!doors[1].hasLock().booleanValue()) {
+				door1 = new JDGraphicObject(new JDImageAWT(ImageManager.door_east,
+						xcoord, ycoord - getDoorDimension(true, roomSize).width,
+						roomSize, roomSize), doors[1], rect, new Color(180,
+						150, 80), false);
+			} else {
+				door1 = new JDGraphicObject(new JDImageAWT(
+						ImageManager.door_east_lock, xcoord, ycoord
+								- getDoorDimension(true, roomSize).width, roomSize,
+						roomSize), doors[1], rect, new Color(180, 150, 80),
+						false);
+			}
+			roomDoors.add(door1);
+		} else {
+			JDRectangle rect = getNorthDoorRect(xcoord, ycoord);
+			JDGraphicObject door1 = new JDGraphicObject(
+					new JDImageAWT(ImageManager.door_east_none, xcoord, ycoord
+							- getDoorDimension(true, roomSize).width, roomSize, roomSize),
+					doors[1], null, new Color(180, 150, 80), false);
+			roomDoors.add(door1);
+		}
+		if (doors[2] != null) {
+			// die suedliche tuer wird immer vom Raum unterhalb gerendert
+		}
+		if (doors[3] != null) {
+			JDRectangle rect = getWestDoorRect(xcoord, ycoord);
+			if (rect == null) {
+				System.out.println("rect ist null");
+				System.exit(0);
+			}
+			JDGraphicObject door3;
+
+			if (!doors[3].hasLock().booleanValue()) {
+				door3 = new JDGraphicObject(new JDImageAWT(ImageManager.door_west,
+						xcoord, ycoord - getDoorDimension(true, roomSize).width,
+						roomSize, roomSize), doors[3], rect, new Color(180,
+						150, 80), false);
+			} else {
+				door3 = new JDGraphicObject(new JDImageAWT(
+						ImageManager.door_west_lock, xcoord, ycoord
+								- getDoorDimension(true, roomSize).width, roomSize,
+						roomSize), doors[3], rect, new Color(180, 150, 80),
+						false);
+			}
+			roomDoors.add(door3);
+		} else {
+			JDGraphicObject door0 = new JDGraphicObject(
+					new JDImageAWT(ImageManager.door_west_none, xcoord, ycoord
+							- getDoorDimension(true, roomSize).width, roomSize, roomSize),
+					doors[3], null, new Color(180, 150, 80), false);
+			roomDoors.add(door0);
+		}
+
+		return roomDoors;
+	}
+	
+	private JDRectangle getNorthDoorRect(int x, int y) {
+
+		Dimension d = getDoorDimension(false, roomSize);
+		return new JDRectangle(new JDPoint(
+				(int) (x + (roomSize / 2) - (d.getWidth() / 2)), y), d.width, d.height);
+	}
+
+	private JDRectangle getEastDoorRect(int x, int y) {
+
+		Dimension d = getDoorDimension(true, roomSize);
+		return new JDRectangle(new JDPoint((int) (x + (roomSize) - (d.getWidth())),
+				(int) (y + (roomSize / 2) - (d.getHeight() / 2))),  d.width, d.height);
+	}
+
+	public static JDRectangle getSouthDoorRect(int x, int y, int roomSize) {
+
+		Dimension d = getDoorDimension(false,roomSize);
+		return new JDRectangle(new JDPoint(
+				(int) (x + (roomSize / 2) - (d.getWidth() / 2)), (int) (y
+						+ roomSize - (d.getHeight()))), d.width, d.height);
+	}
+
+	private JDRectangle getWestDoorRect(int x, int y) {
+
+		Dimension d = getDoorDimension(true, roomSize);
+		return new JDRectangle(new JDPoint((int) (x),
+				(int) (y + (roomSize / 2) - (d.getHeight() / 2))),  d.width, d.height);
+	}
+	
+	public static Dimension getDoorDimension(boolean vertical, int roomSize) {
+		int width;
+		int heigth;
+		if (vertical) {
+			width = roomSize / 15;
+			heigth = roomSize / 4;
+		} else {
+			width = roomSize / 4;
+			heigth = roomSize / 8;
+		}
+		return new Dimension(width, heigth);
+
 	}
 	
 	private static Point[] getItemPoints(int xcoord, int ycoord, int roomSize) {
