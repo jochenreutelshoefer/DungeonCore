@@ -11,11 +11,12 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import game.JDGUI;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
 import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.audio.AudioSet;
 import gui.engine2D.DrawUtils;
-import gui.engine2D.GraphicObject;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -170,7 +171,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
 		} else if (o instanceof MonsterInfo) {
-			return bild.getMonsterSize((MonsterInfo) o);
+			return GraphicObjectRenderer.getMonsterSize((MonsterInfo) o, roomSize);
 		} else {
 			return null;
 		}

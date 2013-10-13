@@ -1,5 +1,8 @@
 package gui.engine2D;
 
+import graphics.GraphicObject;
+import graphics.JDGraphicObject;
+import graphics.JDImageAWT;
 import graphics.JDImageProxy;
 import graphics.JDRectangle;
 

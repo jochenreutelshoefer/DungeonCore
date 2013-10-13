@@ -6,10 +6,7 @@
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-package gui.engine2D;
-
-import graphics.JDImageProxy;
-import graphics.JDRectangle;
+package graphics;
 
 import java.awt.Color;
 import java.awt.Rectangle;

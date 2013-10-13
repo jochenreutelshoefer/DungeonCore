@@ -13,10 +13,11 @@ import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import game.Game;
 import game.JDEnv;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
+import graphics.JDGraphicObject;
 import gui.MyJDGui;
 import gui.engine2D.GraphBoard;
-import gui.engine2D.GraphicObject;
-import gui.engine2D.JDGraphicObject;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -264,7 +265,7 @@ public class MasterAnimation extends Thread implements Runnable {
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
 		} else if (o instanceof MonsterInfo) {
-			return bild.getMonsterSize((MonsterInfo) o);
+			return GraphicObjectRenderer.getMonsterSize((MonsterInfo) o, roomSize);
 		} else {
 			return null;
 		}

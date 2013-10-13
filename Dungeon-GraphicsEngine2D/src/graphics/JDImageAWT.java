@@ -1,10 +1,6 @@
-package gui.engine2D;
-import graphics.JDImageProxy;
-import graphics.JDRectangle;
+package graphics;
+import java.awt.Rectangle;
 
-import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 
 /**
  * @author Duke1

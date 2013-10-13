@@ -21,11 +21,12 @@ import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.JDGUI;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
 import graphics.JDImageProxy;
 import gui.MyJDGui;
 import gui.engine2D.DrawUtils;
 import gui.engine2D.GraphBoard;
-import gui.engine2D.GraphicObject;
 
 
 /**
@@ -41,6 +42,7 @@ public class AnimationFake extends Animation implements Runnable {
 	
 	int [] pointsModsY;
 	JDGUI gui;
+	private int roomSize;
 	
 	public AnimationFake(JDImageProxy i, FigureInfo o,int type, RoomInfo r,MyJDGui gui) {
 		super(r);
@@ -122,7 +124,7 @@ public class AnimationFake extends Animation implements Runnable {
 			return bild.getHeroSize();
 		}
 		else if(o instanceof MonsterInfo) {
-			return bild.getMonsterSize((MonsterInfo)o);
+			return GraphicObjectRenderer.getMonsterSize((MonsterInfo)o, roomSize);
 		}
 		else {
 			return null;

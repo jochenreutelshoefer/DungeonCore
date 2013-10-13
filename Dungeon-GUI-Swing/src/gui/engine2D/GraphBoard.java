@@ -6,7 +6,11 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
+import graphics.JDGraphicObject;
+import graphics.JDImageAWT;
 import graphics.JDImageProxy;
 import graphics.JDRectangle;
 import gui.MyJDGui;
@@ -61,6 +65,9 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.Scrollable;
+
+
+
 
 
 
@@ -311,12 +318,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 
-		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, g);
+		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r);
 
 		GraphicObject wallOb = drawWall(xcoord, ycoord, r, g);
 		graphObs.add(roomOb);
 
-		graphObs.addAll(drawDoors(r, xcoord, ycoord, g));
+		graphObs.addAll(drawDoors(r, xcoord, ycoord));
 
 		if (wallOb != null) {
 			graphObs.add(wallOb);
@@ -375,7 +382,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			if (r.getMonsterInfos().size() > 0) {
 				// writeOut("Monster im Raum: " + r.getDieMonster().size());
 				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
-						r.getMonsterInfos(), g);
+						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						// System.out.println("monster:
@@ -399,8 +406,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)
 				|| (gui.getVisibility())) {
 
-			GraphicObject[] itObs = drawItems(xcoord, ycoord, r.getItemArray(),
-					g);
+			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord, ycoord, r.getItemArray(), roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
 				if (o != null) {
@@ -635,25 +641,24 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return number;
 	}
 
-	private GraphicObject drawBackGround(int xcoord, int ycoord, RoomInfo r,
-			Graphics g) {
+	private GraphicObject drawBackGround(int xcoord, int ycoord, RoomInfo r) {
 
 		Color bg = null;
 
 		int status = r.getVisibilityStatus();
 		JDImageProxy im = ImageManager.floorImageArray[r.getFloorIndex()];
 		if (memory) {
-			List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
+			List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord);
 			im = ImageManager.floorImage_darkArray[r.getFloorIndex()];
 			this.doors.addAll(roomDoors);
 		} else {
 			if (status == RoomObservationStatus.VISIBILITY_FOUND) {
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
-				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord);
 				this.doors.addAll(roomDoors);
 
 			} else if (status == RoomObservationStatus.VISIBILITY_SHRINE) {
-				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord);
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
 				this.doors.addAll(roomDoors);
 				if (r.isPart_scouted()) {
@@ -672,7 +677,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				//
 			} else if (status > RoomObservationStatus.VISIBILITY_SHRINE) {
 
-				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord, g);
+				List<GraphicObject> roomDoors = drawDoors(r, xcoord, ycoord);
 				this.doors.addAll(roomDoors);
 
 				// im = floorImageArray[r.getFloorIndex()];
@@ -695,7 +700,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						* getDoorDimension(true).width)), bg, false, im);
 	}
 
-	private List<GraphicObject> drawDoors(RoomInfo r, int xcoord, int ycoord, Graphics g) {
+	private List<GraphicObject> drawDoors(RoomInfo r, int xcoord, int ycoord) {
 		DoorInfo[] doors = r.getDoors();
 		if (doors == null) {
 			return new LinkedList<GraphicObject>();
@@ -927,7 +932,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 
 	private GraphicObject[] drawMonster(int xcoord, int ycoord,
-			List<MonsterInfo> monsterList, Graphics g) {
+			List<MonsterInfo> monsterList) {
 		int k = monsterList.size();
 		GraphicObject obs[] = new GraphicObject[k];
 		if (monsterList.size() > 8) {
@@ -938,9 +943,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			MonsterInfo m = ((MonsterInfo) monsterList.get(i));
 			int position = m.getPositionInRoomIndex();
 
-			GraphicObject gr = drawAMonster(m, new Point(
+			GraphicObject gr = GraphicObjectRenderer.drawAMonster(m, new Point(
 					getPositionCoordModified(position).x + xcoord,
-					getPositionCoordModified(position).y + ycoord), g);
+					getPositionCoordModified(position).y + ycoord), roomSize);
 			if (i >= 8) {
 				break;
 			}
@@ -951,278 +956,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 
-	public Dimension getMonsterSize(MonsterInfo m) {
-		int mClass = m.getMonsterClass();
-		if (mClass == Monster.WOLF) {
-			return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
-		}
-		if (mClass == Monster.ORC) {
-			return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
-		}
-		if (mClass == Monster.SKELETON) {
-			return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
-		}
-		if (mClass == Monster.GHUL) {
-			return new Dimension((int) (ROOMSIZE_BY_2), (int) (ROOMSIZE_BY_2));
-		}
-		if (mClass == Monster.OGRE) {
-			return new Dimension((int) (ROOMSIZE_BY_2), (int) (ROOMSIZE_BY_2));
-		}
-		if (mClass == Monster.BEAR) {
-			return new Dimension((int) (roomSize / 2.2), (int) (roomSize / 2.2));
-		}
 
-		return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
 
-	}
+	
 
-	private GraphicObject drawAMonster(MonsterInfo m, Point p, Graphics g) {
-		JDImageAWT ob = null;
-		int mClass = m.getMonsterClass();
-		int sizeX = (int) (getMonsterSize(m).width);
-		int sizeY = (int) (getMonsterSize(m).height);
-		JDRectangle rect = new JDRectangle(new JDPoint(p.x - (sizeX / 2), p.y
-				- (sizeY / 2)), sizeX, sizeY);
-		int dir = m.getLookDir();
-		if (mClass == Monster.WOLF) {
-
-			JDImageProxy wolf = ImageManager.wolfImage[dir - 1];
-			if (m.getLevel() == 2) {
-				wolf = ImageManager.wolfImage[dir - 1];
-			}
-			ob = new JDImageAWT(wolf, rect);
-		} else if (mClass == Monster.ORC) {
-			JDImageProxy orc = ImageManager.orcImage[dir - 1];
-
-			if (m.getLevel() == 2) {
-				orc = ImageManager.orcImage[dir - 1];
-			}
-			ob = new JDImageAWT(orc, rect);
-		} else if (mClass == Monster.SKELETON) {
-			JDImageProxy skel = ImageManager.skelImage[dir - 1];
-
-			if (m.getLevel() == 2) {
-				skel = ImageManager.skelImage[dir - 1];
-			}
-			ob = new JDImageAWT(skel, rect);
-		} else if (mClass == Monster.GHUL) {
-			JDImageProxy ghul = ImageManager.ghulImage[dir - 1];
-
-			if (m.getLevel() == 2) {
-				ghul = ImageManager.ghulImage[dir - 1];
-			}
-			ob = new JDImageAWT(ghul, rect);
-		} else if (mClass == Monster.OGRE) {
-			JDImageProxy ogre = ImageManager.ogreImage[dir - 1];
-
-			if (m.getLevel() == 2) {
-				ogre = ImageManager.ogreImage[dir - 1];
-			}
-			ob = new JDImageAWT(ogre, rect);
-		} else if (mClass == Monster.BEAR) {
-			JDImageProxy bear = ImageManager.bearImage[dir - 1];
-
-			if (m.getLevel() == 2) {
-				bear = ImageManager.bearImage[dir - 1];
-			}
-			ob = new JDImageAWT(bear, rect);
-
-		} else if (mClass == Monster.DARKMASTER) {
-			ob = new JDImageAWT(ImageManager.darkMasterImage, rect);
-
-		} else if (mClass == Monster.DWARF) {
-			ob = new JDImageAWT(ImageManager.dark_dwarfImage, rect);
-
-		} else if (mClass == Monster.FIR) {
-			ob = new JDImageAWT(ImageManager.finImage, rect);
-
-		} else {
-			ob = new JDImageAWT(ImageManager.engelImage, rect);
-		}
-
-		if (m.isDead() != null && m.isDead().booleanValue()) {
-			// System.out.println("will totes Monster malen!");
-			AnimationSet set = AnimationUtils.getFigure_tipping_over(m);
-			if (set != null && set.getLength() > 0) {
-				JDImageProxy i = set.getImagesNr(set.getLength() - 1);
-				ob = new JDImageAWT(i, rect);
-			}
-		}
-
-		int mouseSize = this.ROOMSIZE_BY_5;
-		return new JDGraphicObject(ob, m, rect, Color.white, new JDRectangle(p.x - mouseSize / 2, p.y - mouseSize / 2,
-				mouseSize, mouseSize));
-	}
-
-	private GraphicObject[] drawItems(int xcoord, int ycoord,
-			ItemInfo[] itemArray, Graphics g) {
-		if (itemArray == null) {
-			return new GraphicObject[0];
-		}
-		Point p2[] = getItemPoints(xcoord, ycoord);
-
-		GraphicObject[] itemObs = new GraphicObject[4];
-
-		// Schleife bis 4
-		int i = 0;
-		while (i < itemArray.length && i < 4) {
-			Point q = p2[i];
-
-			if (itemArray[i] != null) {
-
-				if (AttrPotion.class.isAssignableFrom(itemArray[i]
-						.getItemClass())) {
-
-					if (((itemArray[i]).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
-						itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(
-										12 * (roomSize / 100),
-										15 * (roomSize / 100))), Color.yellow,ImageManager.potion_redImage);
-					} else {
-						itemObs[i] = new GraphicObject(
-								itemArray[i], new Rectangle(q, new Dimension(
-										12 * (roomSize / 100),
-										15 * (roomSize / 100))), Color.yellow,ImageManager.potion_blueImage);
-					}
-
-				} else if (itemArray[i].getItemClass().equals(DustItem.class)) {
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
-									new Dimension(10 * (roomSize / 100),
-											8 * (roomSize / 100))),Color.yellow,ImageManager.dustImage);
-				} else if (itemArray[i].getItemClass().equals(Sword.class)) {
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(
-									30 * (roomSize / 100),
-									20 * (roomSize / 100))), Color.yellow,ImageManager.swordImage);
-				} else if (itemArray[i].getItemClass().equals(Axe.class)) {
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(
-									30 * (roomSize / 100),
-									20 * (roomSize / 100))), Color.yellow,ImageManager.axeImage);
-				} else if (itemArray[i].getItemClass().equals(Club.class)) {
-					itemObs[i] = new GraphicObject(
-							itemArray[i], new Rectangle(q, new Dimension(
-									30 * (roomSize / 100),
-									20 * (roomSize / 100))), Color.yellow,ImageManager.clubImage);
-				} else if (itemArray[i].getItemClass().equals(Lance.class)) {
-					itemObs[i] = new GraphicObject( itemArray[i], new Rectangle(q, new Dimension(
-									50 * (roomSize / 100),
-									40 * (roomSize / 100))), Color.yellow,ImageManager.lanceImage);
-				} else if (itemArray[i].getItemClass().equals(Wolfknife.class)) {
-					itemObs[i] = new GraphicObject(	itemArray[i], new Rectangle(q, new Dimension(
-									20 * (roomSize / 100),
-									15 * (roomSize / 100))), Color.yellow,ImageManager.wolfknifeImage);
-				} else if (itemArray[i].getItemClass().equals(Armor.class)) {
-					int sizeX = 30 * (roomSize / 100);
-					int sizeY = 20 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(
-							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow,ImageManager.armorImage);
-				} else if (itemArray[i].getItemClass().equals(Shield.class)) {
-					int sizeX = 20 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(
-							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow, ImageManager.shieldImage);
-				} else if (itemArray[i].getItemClass().equals(Helmet.class)) {
-					int sizeX = 24 * (roomSize / 100);
-					int sizeY = 22 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(
-							itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow, ImageManager.helmetImage);
-				} else if (Scroll.class.isAssignableFrom(itemArray[i]
-						.getItemClass())) {
-					int sizeX = 15 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow,ImageManager.scrollImage);
-				} else if (itemArray[i].getItemClass().equals(InfoScroll.class)) {
-					int sizeX = 15 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(
-									q, new Dimension(sizeX, sizeY)),
-							Color.yellow,ImageManager.documentImage);
-				} else if (itemArray[i].getItemClass().equals(Feather.class)) {
-					int sizeX = 15 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(	itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow,ImageManager.featherImage);
-				} else if (itemArray[i].getItemClass().equals(Incense.class)) {
-					int sizeX = 15 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(	 itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow,ImageManager.potion_greenImage);
-				} else if (itemArray[i].getItemClass().equals(Key.class)) {
-					int sizeX = 16 * (roomSize / 100);
-					int sizeY = 22 * (roomSize / 100);
-
-					itemObs[i] = new GraphicObject(	itemArray[i], new Rectangle(q, new Dimension(sizeX,
-									sizeY)), Color.yellow,ImageManager.keyImage);
-
-				} else if (itemArray[i].getItemClass().equals(Rune.class)) {
-					int sizeX = 12 * (roomSize / 100);
-					int sizeY = 12 * (roomSize / 100);
-					JDImageProxy im = null;
-					if ((itemArray[i]).toString().indexOf('J') != -1) {
-						im = ImageManager.rune_yellowImage;
-					} else if ((itemArray[i]).toString().indexOf('A') != -1) {
-						im = ImageManager.rune_greenImage;
-					} else if ((itemArray[i]).toString().indexOf('V') != -1) {
-						im = ImageManager.rune_redImage;
-					}
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow,im);
-				} else if (itemArray[i].getItemClass().equals(
-						DarkMasterKey.class)) {
-					int sizeX = 12 * (roomSize / 100);
-					int sizeY = 12 * (roomSize / 100);
-					JDImageProxy im = ImageManager.cristall_redImage;
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow,im);
-				} else if (itemArray[i].getClass().equals(LuziasBall.class)) {
-					int sizeX = 15 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-					JDImageProxy im = ImageManager.kugelImage;
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow,im);
-				} else if (itemArray[i].getClass().equals(Book.class)) {
-					int sizeX = 15 * (roomSize / 100);
-					int sizeY = 15 * (roomSize / 100);
-					JDImageProxy im = ImageManager.bookImage;
-
-					itemObs[i] = new GraphicObject( itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow,im);
-
-				} else if (Thing.class.isAssignableFrom(itemArray[i]
-						.getItemClass())) {
-					int sizeX = 12 * (roomSize / 100);
-					int sizeY = 12 * (roomSize / 100);
-					JDImageProxy im = null;
-
-					im = ImageManager.amulettImage;
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(q,
-							new Dimension(sizeX, sizeY)), Color.yellow,im);
-				} else {
-
-					itemObs[i] = new GraphicObject(itemArray[i], new Rectangle(
-							q, new Dimension(8, 5)), Color.yellow, null);
-				}
-			} else {
-				itemObs[i] = null;
-			}
-			i++;
-		}
-		return itemObs;
-	}
-
+	
 
 	boolean visCheat = false;
 
@@ -1232,7 +970,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void drawRoom(int xcoord, int ycoord, RoomInfo r, Graphics g) {
 
-		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, g);
+		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r);
 		GraphicObject wallOb = drawWall(xcoord, ycoord, r, g);
 
 		rooms.add(roomOb);
@@ -1290,7 +1028,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			List<MonsterInfo> monsters = r.getMonsterInfos();
 			if (monsters != null && monsters.size() > 0) {
 				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
-						r.getMonsterInfos(), g);
+						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						monster.add(monsterObs[i]);
@@ -1300,8 +1038,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS) || (visCheat)) {
 
-			GraphicObject[] itObs = drawItems(xcoord, ycoord, r.getItemArray(),
-					g);
+			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord, ycoord, r.getItemArray(), roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
 				if (o != null) {
@@ -1975,20 +1712,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return points;
 	}
 
-	private Point[] getItemPoints(int xcoord, int ycoord) {
-		Point[] points = new Point[4];
 
-		points[0] = new Point(xcoord + ROOMSIZE_BY_2 - (int) (ROOMSIZE_BY_8),
-				ycoord + (ROOMSIZE_BY_3));
-		points[1] = new Point(xcoord + ROOMSIZE_BY_2, ycoord + ROOMSIZE_BY_2
-				- (int) (ROOMSIZE_BY_16));
-		points[2] = new Point(xcoord + (ROOMSIZE_BY_3), ycoord
-				+ (3 * ROOMSIZE_BY_5));
-		points[3] = new Point(xcoord + (int) (3 * ROOMSIZE_BY_5), ycoord
-				+ (3 * ROOMSIZE_BY_5));
-
-		return points;
-	}
 
 	private Point getChestPoint(int xcoord, int ycoord) {
 		int x1 = xcoord + (roomSize / 8);

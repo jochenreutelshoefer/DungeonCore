@@ -6,12 +6,9 @@
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-package gui.engine2D;
+package graphics;
 
-import graphics.JDImageProxy;
-import graphics.JDRectangle;
-
-import java.awt.*;
+import java.awt.Color;
 
 public class JDGraphicObject extends GraphicObject {
 
