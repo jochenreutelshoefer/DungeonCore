@@ -1020,6 +1020,118 @@ public class GraphicObjectRenderer {
 		return new Point(x1, y1);
 	}
 	
+	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r,
+			Object obj, int xcoord, int ycoord,
+			List aniObs) {
+		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
+
+		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, this);
+
+		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
+		graphObs.add(roomOb);
+
+		graphObs.addAll(drawDoors(r, xcoord, ycoord));
+
+		if (wallOb != null) {
+			graphObs.add(wallOb);
+		}
+
+		int status = r.getVisibilityStatus();
+
+		if ((status >= RoomObservationStatus.VISIBILITY_SHRINE)
+				) {
+
+			if (r.equals(gui.getFigure().getRoomInfo())) {
+				Point[] positionCoord = getPositionCoord();
+				for (int i = 0; i < positionCoord.length; i++) {
+					int posSize = RoomSize.by8(roomSize);
+
+					GraphicObject ob = new GraphicObject(
+							r.getPositionInRoom(i), new Rectangle(
+									getPositionCoord(i).x,
+									getPositionCoord(i).y, posSize,
+									posSize), Color.BLACK,
+							ImageManager.fieldImage);
+
+					graphObs.add(ob);
+
+				}
+			}
+
+			GraphicObject ob = null;
+			if (r.getShrine() != null) {
+				ShrineInfo s = r.getShrine();
+				ob = getShrineGraphicObject(s, xcoord, ycoord);
+				graphObs.add(ob);
+			}
+			
+			if (r.getChest() != null) {
+				// game.newStatement("chest vorhanden!", 1);
+				GraphicObject chestOb;
+				if (r.getChest().hasLock()) {
+					chestOb = new GraphicObject(r.getChest(),
+							new Rectangle(getChestPoint(xcoord, ycoord),
+									getChestDimension()),
+							new Color(140, 90, 20),
+							ImageManager.chest_lockImage);
+				} else {
+					chestOb = new GraphicObject(r.getChest(),
+							new Rectangle(getChestPoint(xcoord, ycoord),
+									getChestDimension()),
+							new Color(140, 90, 20), ImageManager.chestImage);
+				}
+				graphObs.add(chestOb);
+			}
+		}
+		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
+
+			if (r.getMonsterInfos().size() > 0) {
+				GraphicObject[] monsterObs = drawMonster(xcoord,
+						ycoord, r.getMonsterInfos());
+				for (int i = 0; i < monsterObs.length; i++) {
+					if (monsterObs[i] != null) {
+						boolean contains = aniObs.contains(monsterObs[i]
+								.getClickedObject());
+						if (!contains) {
+							if (!(monsterObs[i].getClickedObject().equals(obj))) {
+								graphObs.add(monsterObs[i]);
+							}
+						}
+					}
+				}
+			}
+		}
+		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
+
+			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord,
+					ycoord, r.getItemArray(), roomSize);
+			for (int i = 0; i < itObs.length; i++) {
+				GraphicObject o = itObs[i];
+				if (o != null) {
+					graphObs.add(o);
+				}
+			}
+
+		}
+
+		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
+			GraphicObject spotOb = new GraphicObject(r.getSpot(),
+					new Rectangle(getSpotPoint(xcoord, ycoord),
+							getSpotDimension()), new Color(0, 0, 0),
+					ImageManager.spotImage);
+			graphObs.add(spotOb);
+		}
+
+		if (r.getHeroInfo() != null) {
+			drawHero(xcoord, ycoord, r.getHeroInfo(), this);
+		}
+
+		graphObs.add(new GraphicObject(r, new Rectangle(new Point(xcoord,
+				ycoord - getDoorDimension(true, roomSize).width), new Dimension(roomSize,
+				roomSize)), Color.darkGray, ImageManager.wall_sidesImage));
+		return graphObs;
+	}
+	
 	public void drawRoom(int xcoord, int ycoord, RoomInfo r) {
 
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, this);
