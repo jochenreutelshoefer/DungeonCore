@@ -525,7 +525,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			DrawUtils.fillGraphicObject(((GraphicObject) lastWalls.get(i)),g2);
 		}
 
-		boolean animationRunning = gui.currentThreadRunning(gui.getFigure()
+		boolean animationRunning = gui.currentAnimationThreadRunning(gui.getFigure()
 				.getRoomInfo());
 
 		if (!animationRunning) {
@@ -829,7 +829,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		JDImageAWT im = null;
 		if (code == Hero.HEROCODE_WARRIOR) {
 			if (info.isDead().booleanValue()
-					&& !gui.currentThreadRunning(info.getRoomInfo())) {
+					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
 				im = new JDImageAWT(ImageManager.warrior_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.warrior_tipping_over.get(
 						dir - 1).getLength() - 1], rect);
@@ -838,7 +838,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		} else if (code == Hero.HEROCODE_HUNTER) {
 			if (info.isDead().booleanValue()
-					&& !gui.currentThreadRunning(info.getRoomInfo())) {
+					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
 				im = new JDImageAWT(ImageManager.thief_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.thief_tipping_over.get(
 						dir - 1).getLength() - 1], rect);
@@ -847,7 +847,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		} else if (code == Hero.HEROCODE_DRUID) {
 			if (info.isDead().booleanValue()
-					&& !gui.currentThreadRunning(info.getRoomInfo())) {
+					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
 				im = new JDImageAWT(ImageManager.druid_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.druid_tipping_over.get(
 						dir - 1).getLength() - 1], rect);
@@ -856,7 +856,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 		} else if (code == Hero.HEROCODE_MAGE) {
 			if (info.isDead().booleanValue()
-					&& !gui.currentThreadRunning(info.getRoomInfo())) {
+					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
 				im = new JDImageAWT(ImageManager.mage_tipping_over.get(dir - 1)
 						.getImages()[ImageManager.mage_tipping_over
 						.get(dir - 1).getLength() - 1], rect);
@@ -890,11 +890,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	public static final double HERO_SIZE_QUOTIENT_Y = 2;
 
-	public Point getHeroPos() {
-		return new Point(((int) (roomSize / HERO_POINT_QUOTIENT_X))
-				- HERO_POINT_OFFSET_X, (int) (roomSize / HERO_POINT_QUOTIENT_Y)
-				- HERO_POINT_OFFSET_Y);
-	}
 
 	public Dimension getHeroSize() {
 		return new Dimension((int) (roomSize / HERO_SIZE_QUOTIENT_X),
@@ -1433,26 +1428,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 
-	public Point getMonsterPos(int k) {
-		return getMonsterPoints(0, 0)[k];
-	}
-
-	private Point[] getMonsterPoints(int xcoord, int ycoord) {
-		Point[] points = new Point[4];
-		int half = (int) ((double) roomSize) / 2;
-		points[2] = new Point(xcoord + half - (int) (roomSize / 1.8), ycoord
-				+ half - ((int) (roomSize / 4)));
-		points[3] = new Point(xcoord + half + (int) (roomSize / 8), ycoord
-				+ half - ((int) (roomSize / 4)));
-		points[0] = new Point(xcoord + half - (roomSize / 3), ycoord + half
-				- ((int) (roomSize / 2.8)));
-		points[1] = new Point(xcoord + half - (roomSize / 16), ycoord + half
-				- ((int) (roomSize / 2.8)));
-
-		return points;
-	}
-
-
 
 	private Point getChestPoint(int xcoord, int ycoord) {
 		int x1 = xcoord + (roomSize / 8);
@@ -1521,33 +1496,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return new Dimension(500, 500);
 	}
 
-
-
-	public static int ROOMSIZE_BY_2;
-
-	public static int ROOMSIZE_BY_3;
-
-	public static int ROOMSIZE_BY_4;
-
-	public static int ROOMSIZE_BY_5;
-
-	public static int ROOMSIZE_BY_6;
-
-	public static int ROOMSIZE_BY_8;
-
-	public static int ROOMSIZE_BY_10;
-
-	public static int ROOMSIZE_BY_16;
-
-	public static int ROOMSIZE_BY_12;
-
-	public static int ROOMSIZE_BY_24;
-
-	public static int ROOMSIZE_BY_36;
-
-	public static int ROOMSIZE_BY_20;
-
-	
 
 	/**
 	 * @return Returns the luzia_ball_greyImage.

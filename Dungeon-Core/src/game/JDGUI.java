@@ -14,9 +14,12 @@ import item.ItemInfo;
 
 import java.applet.Applet;
 
+import dungeon.RoomInfo;
 import spell.SpellInfo;
 
 public interface JDGUI extends ControlUnit{
+	
+	public boolean currentAnimationThreadRunning(RoomInfo r);
 	
 	public void plugAction(Action a);
 	

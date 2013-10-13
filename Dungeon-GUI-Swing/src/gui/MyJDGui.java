@@ -887,7 +887,7 @@ public class MyJDGui implements JDGUI {
 	// }
 	// }
 
-	public boolean currentThreadRunning(RoomInfo r) {
+	public boolean currentAnimationThreadRunning(RoomInfo r) {
 		MasterAnimation ani = (MasterAnimation) masterAnis.get(r);
 
 		if (ani != null) {
