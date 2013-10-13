@@ -233,22 +233,15 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	public Point getPositionCoordModified(int index) {
 		return renderer.getPositionCoordModified(index);
 	}
+	
+	public Point getPositionCoord(int index) {
+		return renderer.getPositionCoord(index);
+	}
 
 	public void paint(Graphics g) {
 		Graphics g2 = g;
 		
-		this.renderer = new GraphicObjectRenderer(roomSize, gui);
-
-//		rooms.clear();
-//		shrines.clear();
-//		monster.clear();
-//		items.clear();
-//		doors.clear();
-//		chests.clear();
-//		spots.clear();
-//		walls.clear();
-//		lastWalls.clear();
-//		positions.clear();
+		this.renderer.clear();
 
 		// blank putzen
 		g2.setColor(Color.black);
@@ -344,23 +337,11 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	}
 
-	
-
-	private Dimension getDoorDimension(boolean b) {
-		return GraphicObjectRenderer.getDoorDimension(true, roomSize);
-	}
-
-	
-
 	boolean visCheat = false;
 
 	public void setVisibility(boolean b) {
 		visCheat = b;
 	}
-
-	
-
-
 
 	public Dimension getHeroSize() {
 		return new Dimension(
@@ -414,8 +395,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			return;
 		}
 
-		int mouse_x = (int) p.getX();
-		int mouse_y = (int) p.getY();
 		if (gui.getMainFrame().isNoControl()) {
 			p = new JDPoint(-1, -1);
 		}

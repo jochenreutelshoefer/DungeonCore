@@ -70,7 +70,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		g = gui.getGraphics();
 		bild = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
 
-		startFigurePositionInRoom = new GraphicObjectRenderer(bild.getRoomSize(), gui).getPositionCoordModified(o
+		startFigurePositionInRoom = bild.getPositionCoordModified(o
 				.getPositionInRoomIndex());
 		roomSize = bild.getRoomSize();
 		// r = RoomInfo.makeRoomInfo(game.getHero().getRoom());
@@ -93,12 +93,10 @@ public class AnimationReal extends Animation /* implements Runnable */{
 			return;
 		JDImageProxy im = set.getImagesNr(num);
 		Dimension d = getSize();
-		// Dimension d2 = new Dimension((int)(d.width *
-		// sizeModifier),(int)(d.height * sizeModifier));
 
 		int positionInRoomIndex = o.getPositionInRoomIndex();
 		if(positionInRoomIndex == -1) return;
-		Point point = new GraphicObjectRenderer(bild.getRoomSize(), gui).getPositionCoordModified(positionInRoomIndex);
+		Point point = bild.getPositionCoordModified(positionInRoomIndex);
 		RoomInfo roomInfo = o.getRoomInfo();
 		if (!roomInfo.fightRunning().booleanValue()) {
 			point = this.startFigurePositionInRoom;
@@ -133,8 +131,8 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (toPosIndex == -1 || fromPosIndex == -1) {
 			return 0;
 		}
-		int xFrom = new GraphicObjectRenderer(bild.getRoomSize(), gui).getPositionCoord(fromPosIndex).x;
-		int xTo =new GraphicObjectRenderer(bild.getRoomSize(), gui).getPositionCoord(toPosIndex).x;
+		int xFrom = bild.getPositionCoord(fromPosIndex).x;
+		int xTo = bild.getPositionCoord(toPosIndex).x;
 		int diff = xTo - xFrom;
 		int setSize = set.getLength();
 		float factor = ((float) num) / setSize;
@@ -146,8 +144,8 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (toPosIndex == -1 || fromPosIndex == -1) {
 			return 0;
 		}
-		int yFrom = new GraphicObjectRenderer(bild.getRoomSize(), gui).getPositionCoord(fromPosIndex).y;
-		int yTo = new GraphicObjectRenderer(bild.getRoomSize(), gui).getPositionCoord(toPosIndex).y;
+		int yFrom = bild.getPositionCoord(fromPosIndex).y;
+		int yTo = bild.getPositionCoord(toPosIndex).y;
 		int diff = yTo - yFrom;
 		int setSize = set.getLength();
 		float factor = ((float) num) / setSize;

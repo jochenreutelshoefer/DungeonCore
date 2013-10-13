@@ -147,6 +147,20 @@ public class GraphicObjectRenderer {
 		
 	}
 
+	public void clear() {
+		rooms.clear();
+		shrines.clear();
+		monster.clear();
+		items.clear();
+		doors.clear();
+		chests.clear();
+		spots.clear();
+		walls.clear();
+		lastWalls.clear();
+		positions.clear();
+
+	}
+	
 	public static GraphicObject[] drawItems(int xcoord, int ycoord,
 			ItemInfo[] itemArray, int roomSize) {
 		if (itemArray == null) {
