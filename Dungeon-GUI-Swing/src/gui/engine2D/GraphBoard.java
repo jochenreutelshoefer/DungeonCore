@@ -67,20 +67,6 @@ import java.util.Vector;
 
 import javax.swing.Scrollable;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import animation.AnimationSet;
 import animation.AnimationUtils;
 import control.ActionAssembler;
@@ -126,144 +112,115 @@ import dungeon.RouteInstruction;
 public class GraphBoard extends JDJPanel implements MouseListener,
 		MouseMotionListener, Scrollable {
 
-	Graphics g2;
-
-
-
-	Map roomObjectMap = new HashMap();
-
-	int screenSize = 14000;
+	public static final int screenSize = 14000;
 
 	public static final int DEFAULT_ROOM_SIZE = 180;
+
 	private int roomSize = 180;
 
-	int offset = 500;
+	private int offset = 500;
 
-	int mouse_x = 0;
+	private boolean memory = false;
 
-	int mouse_y = 0;
+	private Vector<GraphicObject> rooms = new Vector<GraphicObject>();
 
-	Point heroPoint;
+	private Vector<GraphicObject> shrines = new Vector<GraphicObject>();
 
-	boolean memory = false;
+	private Vector<GraphicObject> positions = new Vector<GraphicObject>();
 
-	boolean writeOut = false;
+	private Vector<GraphicObject> monster = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> rooms = new Vector<GraphicObject>();
+	private Vector<GraphicObject> items = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> shrines = new Vector<GraphicObject>();
+	private Vector<GraphicObject> doors = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> positions = new Vector<GraphicObject>();
+	private Vector<GraphicObject> chests = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> monster = new Vector<GraphicObject>();
+	private Vector<GraphicObject> spots = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> items = new Vector<GraphicObject>();
+	private Vector<GraphicObject> walls = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> doors = new Vector<GraphicObject>();
+	private Vector<GraphicObject> lastWalls = new Vector<GraphicObject>();
 
-	Vector<GraphicObject> chests = new Vector<GraphicObject>();
+	private GraphicObject hero;
 
-	Vector<GraphicObject> spots = new Vector<GraphicObject>();
+	private Cursor cursor1;
 
-	Vector<GraphicObject> walls = new Vector<GraphicObject>();
+	private Cursor cursor2;
 
-	Vector<GraphicObject> lastWalls = new Vector<GraphicObject>();
+	private Cursor cursor3;
 
-	GraphicObject hero;
+	private Cursor cursor4;
 
-	Color shrineBase = new Color(190, 190, 190);
+	private Cursor cursor5;
 
-	ResourceLoader rl;
+	private Cursor cursor6;
 
-	Cursor cursor1;
+	private Cursor cursor7;
 
-	Cursor cursor2;
+	private Cursor cursor_boots;
 
-	Cursor cursor3;
+	private Cursor cursor_wand;
 
-	Cursor cursor4;
+	private Cursor cursor_boots_not;
 
-	Cursor cursor5;
+	private Cursor cursor_use;
 
-	Cursor cursor6;
+	private GraphicObjectRenderer renderer;
 
-	Cursor cursor7;
-
-	Cursor cursor_boots;
-
-	Cursor cursor_wand;
-	Cursor cursor_boots_not;
-
-	Cursor cursor_use;
-
-	int[] fastAnimTimes9 = { 45, 45, 45, 45, 45, 45, 45, 45, 45 };
-
-	int[] fastAnimTimes7 = { 45, 45, 45, 45, 45, 45, 45 };
-
-	int[] slowAnimTimes9 = { 80, 80, 80, 80, 80, 80, 80, 80, 80 };
-
-	ActionAssembler control;
-	
 	private Cursor createCustomCursor(JDImageProxy image, Point p, String label) {
-		 Toolkit toolkit = this.getToolkit();
-		return toolkit.createCustomCursor((Image)image.getImage(),p,label);
+		Toolkit toolkit = this.getToolkit();
+		return toolkit.createCustomCursor((Image) image.getImage(), p, label);
 	}
 
 	public GraphBoard(Applet a, MyJDGui gui) {
 		super(gui);
-		this.control = gui.getControl();
 
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		cursor1 = createCustomCursor(
-				ImageManager.hand_zeigt1_Image, new Point(1, 6), "hand1");
-		cursor2 = createCustomCursor(
-				ImageManager.hand_greift1_Image, new Point(1, 8), "hand2");
-		cursor3 = createCustomCursor(
-				ImageManager.cursor_key_Image, new Point(1, 8), "key");
-		cursor4 = createCustomCursor(
-				ImageManager.cursor_key_not_Image, new Point(1, 8), "key_not");
-
-		cursor5 = createCustomCursor(
-				ImageManager.cursor_sword, new Point(1, 8), "sword");
-		cursor6 = createCustomCursor(
-				ImageManager.cursor_clock, new Point(4, 8), "clock");
-		cursor7 = createCustomCursor(
-				ImageManager.cursor_scout, new Point(4, 8), "scout");
-		cursor_boots = createCustomCursor(
-				ImageManager.cursor_go_Image, new Point(4, 8), "go");
-
-		cursor_boots_not = createCustomCursor(
-				ImageManager.cursor_go_not_Image, new Point(4, 8), "go_not");
-		cursor_wand = createCustomCursor(
-				ImageManager.cursor_wand, new Point(1, 6), "wand");
-		cursor_use = createCustomCursor(
-				ImageManager.cursor_use_Image, new Point(4, 8), "go_not");
-		sizeChanged();
+		initCursors();
+		this.renderer = new GraphicObjectRenderer(roomSize);
 		this.setPreferredSize(new Dimension(screenSize, screenSize));
 
 	}
 
-	private void sizeChanged() {
+	private void initCursors() {
+		cursor1 = createCustomCursor(ImageManager.hand_zeigt1_Image, new Point(
+				1, 6), "hand1");
+		cursor2 = createCustomCursor(ImageManager.hand_greift1_Image,
+				new Point(1, 8), "hand2");
+		cursor3 = createCustomCursor(ImageManager.cursor_key_Image, new Point(
+				1, 8), "key");
+		cursor4 = createCustomCursor(ImageManager.cursor_key_not_Image,
+				new Point(1, 8), "key_not");
 
+		cursor5 = createCustomCursor(ImageManager.cursor_sword,
+				new Point(1, 8), "sword");
+		cursor6 = createCustomCursor(ImageManager.cursor_clock,
+				new Point(4, 8), "clock");
+		cursor7 = createCustomCursor(ImageManager.cursor_scout,
+				new Point(4, 8), "scout");
+		cursor_boots = createCustomCursor(ImageManager.cursor_go_Image,
+				new Point(4, 8), "go");
 
-
+		cursor_boots_not = createCustomCursor(ImageManager.cursor_go_not_Image,
+				new Point(4, 8), "go_not");
+		cursor_wand = createCustomCursor(ImageManager.cursor_wand, new Point(1,
+				6), "wand");
+		cursor_use = createCustomCursor(ImageManager.cursor_use_Image,
+				new Point(4, 8), "go_not");
 	}
 
-
+	private void sizeChanged() {
+		this.renderer = new GraphicObjectRenderer(roomSize);
+	}
 
 	public void repaintRoom(Graphics g, RoomInfo r, boolean heroToo) {
-
 		repaintRoomSmall(g, r, new LinkedList());
 	}
 
-
-
-
-
-
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
-		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
+		// GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
 
 		int xcoord = 0;
 		int ycoord = 0;
@@ -271,16 +228,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		List aniObs = new LinkedList();
 		if (obj instanceof LinkedList) {
 			aniObs = (LinkedList) obj;
-			if (aniObs.size() > 1) {
-				int i = 0;
-				i++;
-			}
 		}
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, renderer);
 
-		GraphicObject wallOb = drawWall(xcoord, ycoord, r, g);
+		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
 		graphObs.add(roomOb);
 
 		graphObs.addAll(renderer.drawDoors(r, xcoord, ycoord));
@@ -302,8 +255,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(
 									renderer.getPositionCoord(i).x,
-									renderer.getPositionCoord(i).y, posSize, posSize),
-							Color.BLACK, ImageManager.fieldImage);
+									renderer.getPositionCoord(i).y, posSize,
+									posSize), Color.BLACK,
+							ImageManager.fieldImage);
 
 					graphObs.add(ob);
 
@@ -339,8 +293,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				|| (gui.getVisibility())) {
 
 			if (r.getMonsterInfos().size() > 0) {
-				GraphicObject[] monsterObs = renderer.drawMonster(xcoord, ycoord,
-						r.getMonsterInfos());
+				GraphicObject[] monsterObs = renderer.drawMonster(xcoord,
+						ycoord, r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						boolean contains = aniObs.contains(monsterObs[i]
@@ -357,7 +311,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)
 				|| (gui.getVisibility())) {
 
-			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord, ycoord, r.getItemArray(), roomSize);
+			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord,
+					ycoord, r.getItemArray(), roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
 				if (o != null) {
@@ -371,12 +326,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
 					new Rectangle(getSpotPoint(xcoord, ycoord),
 							getSpotDimension()), new Color(0, 0, 0),
-							ImageManager.spotImage);
+					ImageManager.spotImage);
 			graphObs.add(spotOb);
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(g, xcoord, ycoord, r.getHeroInfo(), renderer);
+			drawHero(xcoord, ycoord, r.getHeroInfo(), renderer);
 		}
 
 		graphObs.add(new GraphicObject(r, new Rectangle(new Point(xcoord,
@@ -386,7 +341,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		for (int i = 0; i < graphObs.size(); i++) {
 			GraphicObject o = ((GraphicObject) graphObs.get(i));
 			if (o != null) {
-				DrawUtils.fillGraphicObject(o,g);
+				DrawUtils.fillGraphicObject(o, g);
 			}
 
 		}
@@ -397,39 +352,24 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (paint && inRoom) {
 
 			if (hero != null && !hInfo.equals(obj)) {
-				DrawUtils.fillGraphicObject(hero,g);
+				DrawUtils.fillGraphicObject(hero, g);
 			}
 		}
-	}
-
-	private Image getImage(JDImageProxy im) {
-		return (Image)im.getImage();
-	}
-
-	private boolean contains(LinkedList l, FigureInfo f) {
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			FigureInfo element = (FigureInfo) iter.next();
-			if (element.equals(f)) {
-				return true;
-			}
-
-		}
-		return false;
 	}
 
 	public void paint(Graphics g) {
-		g2 = g;
+		Graphics g2 = g;
 
-		rooms = new Vector();
-		shrines = new Vector();
-		monster = new Vector();
-		items = new Vector();
-		doors = new Vector();
-		chests = new Vector();
-		spots = new Vector();
-		walls = new Vector();
-		lastWalls = new Vector();
-		positions = new Vector();
+		rooms.clear();
+		shrines.clear();
+		monster.clear();
+		items.clear();
+		doors.clear();
+		chests.clear();
+		spots.clear();
+		walls.clear();
+		lastWalls.clear();
+		positions.clear();
 
 		// blank putzen
 		g2.setColor(Color.black);
@@ -439,7 +379,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		JDPoint p = gui.getFigure().getDungeonSize();
 		int xrooms = p.getX();
 		int yrooms = p.getY();
-		BoardView view = gui.getMainFrame().getSpielfeld();
 
 		for (int i = 0; i < xrooms; i++) {
 			for (int j = 0; j < yrooms; j++) {
@@ -467,66 +406,56 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				g2.fillRect(xcoord, ycoord, roomSize, roomSize);
 				if (r != null) {
 
-					drawRoom(xcoord, ycoord, r, g2);
+					drawRoom(xcoord, ycoord, r);
 
 				} else {
-					rooms.add(new GraphicObject(
-							new Point(i, j),
-							new Rectangle(
-									new Point(xcoord, ycoord),
-									new Dimension(
-											roomSize,
-											roomSize)),
-							Color.black, false, null));
+					rooms.add(new GraphicObject(new Point(i, j), new Rectangle(
+							new Point(xcoord, ycoord), new Dimension(roomSize,
+									roomSize)), Color.black, false, null));
 				}
 
 			}
 		}
 
 		for (int i = 0; i < rooms.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) rooms.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) rooms.get(i)), g2);
 		}
 		for (int i = 0; i < walls.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) walls.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) walls.get(i)), g2);
 		}
 		for (int i = 0; i < doors.size(); i++) {
 			Object o = doors.get(i);
-			DrawUtils.fillGraphicObject(((GraphicObject) o),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) o), g2);
 		}
-
 		for (int i = 0; i < positions.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) positions.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) positions.get(i)), g2);
 		}
 		for (int i = 0; i < spots.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) spots.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) spots.get(i)), g2);
 		}
 		for (int i = 0; i < shrines.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) shrines.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) shrines.get(i)), g2);
 		}
-
 		for (int i = 0; i < items.size(); i++) {
-			ItemInfo a = (ItemInfo) ((GraphicObject) items.get(i))
-					.getClickedObject();
-			DrawUtils.fillGraphicObject(((GraphicObject) items.get(i)),g2);
-
+			DrawUtils.fillGraphicObject(((GraphicObject) items.get(i)), g2);
 		}
 		for (int i = 0; i < chests.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) chests.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) chests.get(i)), g2);
 		}
 		for (int i = 0; i < monster.size(); i++) {
 			GraphicObject o = ((GraphicObject) monster.get(i));
 			if (o != null) {
-				DrawUtils.fillGraphicObject(o,g2);
+				DrawUtils.fillGraphicObject(o, g2);
 			}
 
 		}
 
 		for (int i = 0; i < lastWalls.size(); i++) {
-			DrawUtils.fillGraphicObject(((GraphicObject) lastWalls.get(i)),g2);
+			DrawUtils.fillGraphicObject(((GraphicObject) lastWalls.get(i)), g2);
 		}
 
-		boolean animationRunning = gui.currentAnimationThreadRunning(gui.getFigure()
-				.getRoomInfo());
+		boolean animationRunning = gui.currentAnimationThreadRunning(gui
+				.getFigure().getRoomInfo());
 
 		if (!animationRunning) {
 			if (hero != null) {
@@ -535,26 +464,29 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 	}
-	
 
-	private GraphicObject drawBackGround(int xcoord, int ycoord, RoomInfo r, GraphicObjectRenderer renderer) {
+	private GraphicObject drawBackGround(int xcoord, int ycoord, RoomInfo r,
+			GraphicObjectRenderer renderer) {
 
 		Color bg = null;
 
 		int status = r.getVisibilityStatus();
 		JDImageProxy im = ImageManager.floorImageArray[r.getFloorIndex()];
 		if (memory) {
-			List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord, ycoord);
+			List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
+					ycoord);
 			im = ImageManager.floorImage_darkArray[r.getFloorIndex()];
 			this.doors.addAll(roomDoors);
 		} else {
 			if (status == RoomObservationStatus.VISIBILITY_FOUND) {
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
-				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord, ycoord);
+				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
+						ycoord);
 				this.doors.addAll(roomDoors);
 
 			} else if (status == RoomObservationStatus.VISIBILITY_SHRINE) {
-				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord, ycoord);
+				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
+						ycoord);
 				im = ImageManager.floorImage_mediumArray[r.getFloorIndex()];
 				this.doors.addAll(roomDoors);
 				if (r.isPart_scouted()) {
@@ -564,19 +496,17 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					int xsize = roomSize / 3;
 					int ysize = (int) (roomSize / 2.5);
 					GraphicObject ob = new JDGraphicObject(
-							new JDImageAWT(ImageManager.questionmark, xpos, ypos,
-									xsize, ysize), null, new JDRectangle(
-									new JDPoint(xpos, ypos), xsize,
-											ysize), Color.yellow);
+							new JDImageAWT(ImageManager.questionmark, xpos,
+									ypos, xsize, ysize), null, new JDRectangle(
+									new JDPoint(xpos, ypos), xsize, ysize),
+							Color.yellow);
 					items.add(ob);
 				}
-				//
 			} else if (status > RoomObservationStatus.VISIBILITY_SHRINE) {
 
-				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord, ycoord);
+				List<GraphicObject> roomDoors = renderer.drawDoors(r, xcoord,
+						ycoord);
 				this.doors.addAll(roomDoors);
-
-				// im = floorImageArray[r.getFloorIndex()];
 
 			} else {
 
@@ -589,20 +519,19 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 			}
 		}
-		return new GraphicObject(r, new Rectangle(
-		new Point(xcoord, ycoord), new Dimension(
-				roomSize, roomSize - 1
-						* GraphicObjectRenderer.getDoorDimension(true, roomSize).width)), bg, false, im);
+		return new GraphicObject(r, new Rectangle(new Point(xcoord, ycoord),
+				new Dimension(roomSize, roomSize
+						- 1
+						* GraphicObjectRenderer
+								.getDoorDimension(true, roomSize).width)), bg,
+				false, im);
 	}
 
-	
 	private Dimension getDoorDimension(boolean b) {
 		return GraphicObjectRenderer.getDoorDimension(true, roomSize);
 	}
-	
 
-	private GraphicObject drawWall(int xcoord, int ycoord, RoomInfo r,
-			Graphics g) {
+	private GraphicObject drawWall(int xcoord, int ycoord, RoomInfo r) {
 		Color bg = null;
 
 		GraphicObject ob = null;
@@ -613,15 +542,18 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					&& r.isClaimed()) {
 				lastWalls
 						.add(new GraphicObject(null, new Rectangle(new Point(
-								xcoord, ycoord + roomSize
-										- GraphicObjectRenderer.getDoorDimension(true, roomSize).width),
+								xcoord, ycoord
+										+ roomSize
+										- GraphicObjectRenderer
+												.getDoorDimension(true,
+														roomSize).width),
 								new Dimension(roomSize, roomSize)), bg,
 								ImageManager.wall_southImage));
 
 				DoorInfo[] doorArray = r.getDoors();
-				JDRectangle rect = GraphicObjectRenderer.getSouthDoorRect(xcoord, ycoord, roomSize);
+				JDRectangle rect = GraphicObjectRenderer.getSouthDoorRect(
+						xcoord, ycoord, roomSize);
 				if (doorArray[2] != null) {
-					// Rectangle clickRect = new Rectangle(xcoord)
 					if (doorArray[2].hasLock().booleanValue()) {
 						doors.add(new JDGraphicObject(new JDImageAWT(
 								ImageManager.door_south_lock, xcoord, ycoord
@@ -668,37 +600,10 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						roomSize, roomSize)), bg, ImageManager.wall_northImage);
 			}
 
-		} else {
-			// ob = new graphicObject(
-			// r,
-			// new Rectangle(
-			// new Point(
-			// xcoord + getDoorDimension(true).width,
-			// ycoord + getDoorDimension(true).width),
-			// new Dimension(
-			// roomSize - 2 * getDoorDimension(true).width,
-			// roomSize - 2 * getDoorDimension(true).width)),
-			// bg,
-			// floorImage,
-			// game);
 		}
 
 		return ob;
 	}
-
-
-
-
-
-
-
-
-
-
-
-	
-
-	
 
 	boolean visCheat = false;
 
@@ -706,12 +611,12 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		visCheat = b;
 	}
 
-	private void drawRoom(int xcoord, int ycoord, RoomInfo r, Graphics g) {
+	private void drawRoom(int xcoord, int ycoord, RoomInfo r) {
 
-		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
-		
+		//GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
+
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, renderer);
-		GraphicObject wallOb = drawWall(xcoord, ycoord, r, g);
+		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
 
 		rooms.add(roomOb);
 		if (wallOb != null) {
@@ -758,8 +663,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(xcoord
 									+ renderer.getPositionCoord(i).x, ycoord
-									+ renderer.getPositionCoord(i).y, posSize, posSize),
-							Color.BLACK, im);
+									+ renderer.getPositionCoord(i).y, posSize,
+									posSize), Color.BLACK, im);
 
 					positions.add(ob);
 
@@ -767,8 +672,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			}
 			List<MonsterInfo> monsters = r.getMonsterInfos();
 			if (monsters != null && monsters.size() > 0) {
-				GraphicObject[] monsterObs = renderer.drawMonster(xcoord, ycoord,
-						r.getMonsterInfos());
+				GraphicObject[] monsterObs = renderer.drawMonster(xcoord,
+						ycoord, r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						monster.add(monsterObs[i]);
@@ -778,7 +683,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS) || (visCheat)) {
 
-			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord, ycoord, r.getItemArray(), roomSize);
+			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord,
+					ycoord, r.getItemArray(), roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
 				if (o != null) {
@@ -797,103 +703,24 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(g, xcoord, ycoord, r.getHeroInfo(), renderer);
+			drawHero(xcoord, ycoord, r.getHeroInfo(), renderer);
 		}
 	}
 
-	public void drawHero(Graphics g, int x, int y, HeroInfo info, GraphicObjectRenderer renderer) {
+	public void drawHero(int x, int y, HeroInfo info,
+			GraphicObjectRenderer renderer) {
 		if (info == null) {
 			return;
 		}
 
-		hero = getHeroGraphicObject(x, y, info, renderer);
+		hero = renderer.getHeroGraphicObject(x, y, info, renderer);
 
 	}
-
-	private JDGraphicObject getHeroGraphicObject(int x, int y, HeroInfo info, GraphicObjectRenderer renderer) {
-		Point p = renderer.getPositionCoordModified(info.getPositionInRoomIndex());
-		int xpos = (int) p.getX();
-		int ypos = (int) p.getY();
-		int xSize = (int) (roomSize / HERO_SIZE_QUOTIENT_X);
-		int ySize = (int) (roomSize / HERO_SIZE_QUOTIENT_Y);
-
-		JDRectangle rect = new JDRectangle(x + xpos - (xSize / 2), y
-				+ ypos - (ySize / 2), xSize, ySize);
-
-
-		int code = info.getHeroCode();
-		int dir = info.getLookDir();
-		if (dir == 0) {
-			dir = Dir.NORTH;
-		}
-		JDImageAWT im = null;
-		if (code == Hero.HEROCODE_WARRIOR) {
-			if (info.isDead().booleanValue()
-					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
-				im = new JDImageAWT(ImageManager.warrior_tipping_over.get(dir - 1)
-						.getImages()[ImageManager.warrior_tipping_over.get(
-						dir - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageAWT(ImageManager.warriorImage[dir - 1], rect);
-			}
-		} else if (code == Hero.HEROCODE_HUNTER) {
-			if (info.isDead().booleanValue()
-					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
-				im = new JDImageAWT(ImageManager.thief_tipping_over.get(dir - 1)
-						.getImages()[ImageManager.thief_tipping_over.get(
-						dir - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageAWT(ImageManager.thiefImage[dir - 1], rect);
-			}
-		} else if (code == Hero.HEROCODE_DRUID) {
-			if (info.isDead().booleanValue()
-					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
-				im = new JDImageAWT(ImageManager.druid_tipping_over.get(dir - 1)
-						.getImages()[ImageManager.druid_tipping_over.get(
-						dir - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageAWT(ImageManager.druidImage[dir - 1], rect);
-			}
-		} else if (code == Hero.HEROCODE_MAGE) {
-			if (info.isDead().booleanValue()
-					&& !gui.currentAnimationThreadRunning(info.getRoomInfo())) {
-				im = new JDImageAWT(ImageManager.mage_tipping_over.get(dir - 1)
-						.getImages()[ImageManager.mage_tipping_over
-						.get(dir - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageAWT(ImageManager.mageImage[dir - 1], rect);
-			}
-		}
-		return new JDGraphicObject(im, info, rect, Color.white,
-				getHalfSizeRect(rect));
-	}
-
-	private JDRectangle getHalfSizeRect(JDRectangle r) {
-		int sizex = r.getWidth();
-		int sizey = r.getHeight();
-		int newSizex = sizex / 2;
-		int newSizey = sizey / 2;
-		int newPointx = r.getX() + newSizex / 2;
-		int newPointy = r.getY() + newSizey / 2;
-		return new JDRectangle(newPointx, newPointy, newSizex, newSizey);
-	}
-
-	public static final double HERO_POINT_QUOTIENT_X = 2.2;
-
-	public static final double HERO_POINT_QUOTIENT_Y = 2.2;
-
-	public static final int HERO_POINT_OFFSET_Y = 0;
-
-	public static final int HERO_POINT_OFFSET_X = 15;
-
-	public static final double HERO_SIZE_QUOTIENT_X = 2;
-
-	public static final double HERO_SIZE_QUOTIENT_Y = 2;
-
 
 	public Dimension getHeroSize() {
-		return new Dimension((int) (roomSize / HERO_SIZE_QUOTIENT_X),
-				(int) (roomSize / HERO_SIZE_QUOTIENT_Y));
+		return new Dimension(
+				(int) (roomSize / GraphicObjectRenderer.HERO_SIZE_QUOTIENT_X),
+				(int) (roomSize / GraphicObjectRenderer.HERO_SIZE_QUOTIENT_Y));
 	}
 
 	public void decSize() {
@@ -924,7 +751,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	public void mousePressed(MouseEvent me) {
 
 		boolean right = false;
-		JDPoint p = new JDPoint(me.getPoint().getX(),me.getPoint().getY());
+		JDPoint p = new JDPoint(me.getPoint().getX(), me.getPoint().getY());
 		Object o = getRoom(p);
 		RoomInfo r = null;
 		if (o instanceof RoomInfo) {
@@ -942,8 +769,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			return;
 		}
 
-		mouse_x = (int) p.getX();
-		mouse_y = (int) p.getY();
+		int mouse_x = (int) p.getX();
+		int mouse_y = (int) p.getY();
 		if (gui.getMainFrame().isNoControl()) {
 			p = new JDPoint(-1, -1);
 		}
@@ -1427,8 +1254,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return offset;
 	}
 
-
-
 	private Point getChestPoint(int xcoord, int ycoord) {
 		int x1 = xcoord + (roomSize / 8);
 		int y1 = ycoord + roomSize / 10;
@@ -1495,7 +1320,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	public Dimension getPreferredScrollableViewportSize() {
 		return new Dimension(500, 500);
 	}
-
 
 	/**
 	 * @return Returns the luzia_ball_greyImage.

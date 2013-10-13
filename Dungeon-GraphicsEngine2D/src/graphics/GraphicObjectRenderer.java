@@ -1,5 +1,7 @@
 package graphics;
 
+import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import item.AttrPotion;
@@ -39,6 +41,7 @@ import shrine.Shrine;
 import shrine.ShrineInfo;
 import animation.AnimationSet;
 import animation.AnimationUtils;
+import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -59,6 +62,19 @@ public class GraphicObjectRenderer {
 	private int ROOMSIZE_BY_3; 
 	private int ROOMSIZE_BY_2;
 	private Point[] positionCoord = new Point[8];
+	
+	public static final double HERO_POINT_QUOTIENT_X = 2.2;
+
+	public static final double HERO_POINT_QUOTIENT_Y = 2.2;
+
+	public static final int HERO_POINT_OFFSET_Y = 0;
+
+	public static final int HERO_POINT_OFFSET_X = 15;
+
+	public static final double HERO_SIZE_QUOTIENT_X = 2;
+
+	public static final double HERO_SIZE_QUOTIENT_Y = 2;
+
 	
 	public Point[] getPositionCoord() {
 		return positionCoord;
@@ -749,5 +765,76 @@ public class GraphicObjectRenderer {
 		int ysize = (int) (roomSize / 2.2);
 		return new JDRectangle(new JDPoint(xpos, ypos), xsize, ysize);
 	}
+	
+	public JDGraphicObject getHeroGraphicObject(int x, int y, HeroInfo info, GraphicObjectRenderer renderer) {
+		Point p = renderer.getPositionCoordModified(info.getPositionInRoomIndex());
+		int xpos = (int) p.getX();
+		int ypos = (int) p.getY();
+		int xSize = (int) (roomSize / HERO_SIZE_QUOTIENT_X);
+		int ySize = (int) (roomSize / HERO_SIZE_QUOTIENT_Y);
+
+		JDRectangle rect = new JDRectangle(x + xpos - (xSize / 2), y
+				+ ypos - (ySize / 2), xSize, ySize);
+
+
+		int code = info.getHeroCode();
+		int dir = info.getLookDir();
+		if (dir == 0) {
+			dir = Dir.NORTH;
+		}
+		JDImageAWT im = null;
+		if (code == Hero.HEROCODE_WARRIOR) {
+			if (info.isDead().booleanValue()
+					/*&& !gui.currentAnimationThreadRunning(info.getRoomInfo())*/) {
+				im = new JDImageAWT(ImageManager.warrior_tipping_over.get(dir - 1)
+						.getImages()[ImageManager.warrior_tipping_over.get(
+						dir - 1).getLength() - 1], rect);
+			} else {
+				im = new JDImageAWT(ImageManager.warriorImage[dir - 1], rect);
+			}
+		} else if (code == Hero.HEROCODE_HUNTER) {
+			if (info.isDead().booleanValue()
+					/*&& !gui.currentAnimationThreadRunning(info.getRoomInfo())*/) {
+				im = new JDImageAWT(ImageManager.thief_tipping_over.get(dir - 1)
+						.getImages()[ImageManager.thief_tipping_over.get(
+						dir - 1).getLength() - 1], rect);
+			} else {
+				im = new JDImageAWT(ImageManager.thiefImage[dir - 1], rect);
+			}
+		} else if (code == Hero.HEROCODE_DRUID) {
+			if (info.isDead().booleanValue()
+					/*&& !gui.currentAnimationThreadRunning(info.getRoomInfo())*/) {
+				im = new JDImageAWT(ImageManager.druid_tipping_over.get(dir - 1)
+						.getImages()[ImageManager.druid_tipping_over.get(
+						dir - 1).getLength() - 1], rect);
+			} else {
+				im = new JDImageAWT(ImageManager.druidImage[dir - 1], rect);
+			}
+		} else if (code == Hero.HEROCODE_MAGE) {
+			if (info.isDead().booleanValue()
+					/*&& !gui.currentAnimationThreadRunning(info.getRoomInfo())*/) {
+				im = new JDImageAWT(ImageManager.mage_tipping_over.get(dir - 1)
+						.getImages()[ImageManager.mage_tipping_over
+						.get(dir - 1).getLength() - 1], rect);
+			} else {
+				im = new JDImageAWT(ImageManager.mageImage[dir - 1], rect);
+			}
+		}
+		return new JDGraphicObject(im, info, rect, Color.white,
+				getHalfSizeRect(rect));
+	}	
+	
+	private JDRectangle getHalfSizeRect(JDRectangle r) {
+		int sizex = r.getWidth();
+		int sizey = r.getHeight();
+		int newSizex = sizex / 2;
+		int newSizey = sizey / 2;
+		int newPointx = r.getX() + newSizex / 2;
+		int newPointy = r.getY() + newSizey / 2;
+		return new JDRectangle(newPointx, newPointy, newSizex, newSizey);
+	}
+	
+	
+
 	
 }
