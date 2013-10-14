@@ -7,12 +7,7 @@
  */
 package gui.engine2D.animation;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Set;
 
 import animation.AnimationSet;
@@ -23,7 +18,6 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import graphics.GraphicObject;
-import graphics.GraphicObjectRenderer;
 import graphics.JDImageProxy;
 import graphics.util.JDColor;
 import graphics.util.JDDimension;
@@ -54,7 +48,6 @@ public class AnimationReal extends Animation {
 		time = 35;
 		aniType = type;
 		this.o = o;
-		g = gui.getGraphics();
 		bild = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
 		startFigurePositionInRoom = bild.getPositionCoordModified(o
 				.getPositionInRoomIndex());
@@ -66,10 +59,6 @@ public class AnimationReal extends Animation {
 			return 0;
 		}
 		return set.getLength();
-	}
-
-	public void run() {
-
 	}
 
 	public void paintPic(int num, Graphics g) {
@@ -139,14 +128,6 @@ public class AnimationReal extends Animation {
 		return offset;
 	}
 
-	protected JDPoint getPoint(RoomInfo r) {
-		int x = r.getPoint().getX();
-		int j = r.getPoint().getY();
-		int xcoord = bild.getOffset() + (roomSize * x);
-		int ycoord = bild.getOffset() + (roomSize * j);
-		return new JDPoint(xcoord, ycoord);
-	}
-
 	private JDDimension getSize() {
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
@@ -156,13 +137,6 @@ public class AnimationReal extends Animation {
 			return null;
 		}
 
-	}
-
-	/**
-	 * @return Returns the offscreenImage.
-	 */
-	public Image getOffscreenImage() {
-		return offscreenImage;
 	}
 
 	/**

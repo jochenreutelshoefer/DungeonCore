@@ -7,8 +7,6 @@
 package gui.engine2D.animation;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
 
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -21,7 +19,7 @@ import gui.engine2D.GraphBoard;
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public abstract class Animation implements Runnable {
+public abstract class Animation {
 
 	public static final int SLAYS = 1;
 	public static final int BEEN_HIT = 2;
@@ -36,13 +34,8 @@ public abstract class Animation implements Runnable {
 
 	protected int time;
 
-	protected Graphics g2;
-
 	protected double sizeModifier = 1;
 
-	protected Image offscreenImage;
-
-	protected Graphics g;
 
 	protected int aniType;
 
@@ -72,24 +65,9 @@ public abstract class Animation implements Runnable {
 		return r;
 	}
 
-	public abstract void run();
 
 	public abstract int getLength();
 
-	public int getType() {
-		return aniType;
-	}
-
-	public Image getOffscreenImage() {
-		return offscreenImage;
-	}
-
-	/**
-	 * @return Returns the sizeModifier.
-	 */
-	public double getSizeModifier() {
-		return sizeModifier;
-	}
 
 	public abstract void paintPic(int num, Graphics g);
 
