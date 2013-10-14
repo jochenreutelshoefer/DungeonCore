@@ -7,17 +7,6 @@
  */
 package gui.engine2D.animation;
 
-import figure.FigureInfo;
-import figure.hero.HeroInfo;
-import figure.monster.MonsterInfo;
-import game.JDGUI;
-import graphics.GraphicObject;
-import graphics.GraphicObjectRenderer;
-import graphics.JDImageProxy;
-import gui.MyJDGui;
-import gui.audio.AudioSet;
-import gui.engine2D.DrawUtils;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -30,6 +19,14 @@ import animation.AnimationSet;
 import audio.AbstractAudioSet;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
+import figure.FigureInfo;
+import figure.hero.HeroInfo;
+import figure.monster.MonsterInfo;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
+import graphics.JDImageProxy;
+import gui.MyJDGui;
+import gui.engine2D.DrawUtils;
 
 /**
  * @author Jochen
@@ -37,43 +34,28 @@ import dungeon.RoomInfo;
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class AnimationReal extends Animation /* implements Runnable */{
+public class AnimationReal extends Animation {
 
-	AnimationSet set;
-	int fromPosIndex = -1;
-	int toPosIndex = -1;
-	JDGUI gui;
-	boolean inverted = false;
-	Point startFigurePositionInRoom;
-
-	/**
-	 * @param inverted
-	 *            The inverted to set.
-	 */
-	public void setInverted(boolean inverted) {
-		this.inverted = inverted;
-	}
+	private AnimationSet set;
+	private int fromPosIndex = -1;
+	private int toPosIndex = -1;
+	private Point startFigurePositionInRoom;
 
 	public AnimationReal(AnimationSet set, FigureInfo o, int type, RoomInfo r,
 			MyJDGui gui) {
 		super(r);
-		if(o == null) {
+		if (o == null) {
 			throw new NullPointerException("FigureInfo was null");
 		}
 		this.set = set;
 		time = 35;
 		aniType = type;
-		this.gui = gui;
-		// times = t;
 		this.o = o;
-		// set.preLoad();
 		g = gui.getGraphics();
 		bild = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
-
 		startFigurePositionInRoom = bild.getPositionCoordModified(o
 				.getPositionInRoomIndex());
 		roomSize = bild.getRoomSize();
-		// r = RoomInfo.makeRoomInfo(game.getHero().getRoom());
 	}
 
 	public int getLength() {
@@ -91,11 +73,12 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		if (o.isDead() != null && o.isDead().booleanValue()
 				&& !this.deathAnimation)
 			return;
-		JDImageProxy im = set.getImagesNr(num);
+		JDImageProxy<?> im = set.getImagesNr(num);
 		Dimension d = getSize();
 
 		int positionInRoomIndex = o.getPositionInRoomIndex();
-		if(positionInRoomIndex == -1) return;
+		if (positionInRoomIndex == -1)
+			return;
 		Point point = bild.getPositionCoordModified(positionInRoomIndex);
 		RoomInfo roomInfo = o.getRoomInfo();
 		if (!roomInfo.fightRunning().booleanValue()) {
@@ -114,7 +97,7 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		Set<AbstractAudioSet> sounds = set.getSound(num);
 		if (sounds != null) {
 			for (AbstractAudioSet audioSet : sounds) {
-				if(audioSet != null) {
+				if (audioSet != null) {
 					audioSet.playRandomSound();
 				}
 			}
@@ -161,15 +144,12 @@ public class AnimationReal extends Animation /* implements Runnable */{
 		return new JDPoint(xcoord, ycoord);
 	}
 
-	// private Image getActualImage() {
-	// return images[counter];
-	// }
-
 	private Dimension getSize() {
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
 		} else if (o instanceof MonsterInfo) {
-			return GraphicObjectRenderer.getMonsterSize((MonsterInfo) o, roomSize);
+			return GraphicObjectRenderer.getMonsterSize((MonsterInfo) o,
+					roomSize);
 		} else {
 			return null;
 		}

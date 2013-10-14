@@ -6,58 +6,54 @@
  */
 package gui.engine2D.animation;
 
-import figure.Figure;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
-import figure.hero.HeroInfo;
-import figure.monster.MonsterInfo;
-import game.Game;
-import game.JDEnv;
-import graphics.GraphicObject;
-import graphics.GraphicObjectRenderer;
-import graphics.JDGraphicObject;
 import gui.MyJDGui;
 import gui.engine2D.GraphBoard;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import dungeon.JDPoint;
-import dungeon.Room;
 import dungeon.RoomInfo;
 
 public class MasterAnimation extends Thread implements Runnable {
 
 	public final int TIMESTEP = 50;
 
-	Vector animations = new Vector();
+	private Vector<AnimationTask> animations = new Vector<AnimationTask>();
 
-	int counter = 0;
+	private int counter = 0;
 
-	Graphics g2;
+	private Graphics g2;
 
-	Image offscreenImage;
+	private Image offscreenImage;
 
-	int roomSize;
+	private int roomSize;
 
-	GraphBoard bild;
+	private GraphBoard bild;
 
-	RoomInfo r;
+	private RoomInfo r;
 
-	MyJDGui gui;
+	private MyJDGui gui;
 
-	Graphics g;
+	private Graphics g;
+
+	private Vector<AnimationTask> additionalAnis = new Vector<AnimationTask>();
+
+	private Map<AnimationTask, Integer> toPaint = new HashMap<AnimationTask, Integer>();
+	
+	private List<FigureInfo> paintedObs = new LinkedList<FigureInfo>();
+	
+	private List<AnimationTask> oldAnis = new LinkedList<AnimationTask>();
 
 	public MasterAnimation(int size, GraphBoard bord, RoomInfo r, MyJDGui gui) {
-		//System.out.println("erzeuge MasterAni : "+r.toString());
 		roomSize = size;
 		this.gui = gui;
 		bild = bord;
@@ -65,19 +61,16 @@ public class MasterAnimation extends Thread implements Runnable {
 		this.r = r;
 	}
 
-	Vector additionalAnis = new Vector();
 
 	public void addAnimation(Animation ani) {
 		additionalAnis.add(new AnimationTask(ani, counter));
 	}
 
 	public void addAnimation(Animation ani, int offset) {
-		// System.out.println("adding new ani mit offset:"+offset);
 		additionalAnis.add(new AnimationTask(ani, counter + offset));
 	}
 
 	public void addAnimationAt(Animation ani, int time) {
-		// System.out.println("adding new ani mit offset:"+offset);
 		additionalAnis.add(new AnimationTask(ani, time));
 	}
 
@@ -96,16 +89,16 @@ public class MasterAnimation extends Thread implements Runnable {
 	public void addAnimationAsNext(Animation ani) {
 		int max = -1;
 		AnimationTask maxAni = null;
-		for (Iterator iter = animations.iterator(); iter.hasNext();) {
-			AnimationTask element = (AnimationTask) iter.next();
+		for (Iterator<AnimationTask> iter = animations.iterator(); iter.hasNext();) {
+			AnimationTask element = iter.next();
 			int time = element.getRound();
 			if (time > max) {
 				max = time;
 				maxAni = element;
 			}
 		}
-		for (Iterator iter = additionalAnis.iterator(); iter.hasNext();) {
-			AnimationTask element = (AnimationTask) iter.next();
+		for (Iterator<AnimationTask> iter = additionalAnis.iterator(); iter.hasNext();) {
+			AnimationTask element = iter.next();
 			int time = element.getRound();
 			if (time > max) {
 				max = time;
@@ -120,56 +113,26 @@ public class MasterAnimation extends Thread implements Runnable {
 		}
 	}
 
-	HashMap toPaint = new HashMap();
-
-	LinkedList paintedObs = new LinkedList();
-
-	LinkedList oldAnis = new LinkedList();
 
 	public void run() {
-		
 		work();
-		
 		finished = true;
 		gui.repaintPicture();
-		
-		//waitForFurtherAnis();
 	}
 	
-	private void waitForFurtherAnis() {
-		Thread thisThread = Thread.currentThread();
-		
-		while(animations.size() == 0 && additionalAnis.size() == 0) {
-			try {
-				thisThread.sleep(TIMESTEP);
-
-			} catch (Exception e) {
-				System.out.println("masteranimation cannot sleep"+"\n"+e.toString());
-			}
-		}
-		run();
-	}
 	
 	private void work() {
-		
-		//System.out.println("starte work MasterAni");
-		Thread thisThread = Thread.currentThread();
-		// System.out.println("anis : " + animations.size());
 		while (animations.size() > 0 || additionalAnis.size() > 0) {
-			//System.out.println("ani: " + animations.size() + " - addi: "+ additionalAnis.size());
 			if (stop)
 				break;
-			
 			try {
-				thisThread.sleep(TIMESTEP);
+				Thread.sleep(TIMESTEP);
 
 			} catch (Exception e) {
 				System.out.println("masteranimation cannot sleep");
 			}
 			int visStat = gui.getFigure().getVisStatus(r);
-			// System.out.println("visStat:"+visStat);
 			if (visStat < RoomObservationStatus.VISIBILITY_FIGURES) {
-				// System.out.println("break");
 				break;
 			}
 
@@ -181,9 +144,8 @@ public class MasterAnimation extends Thread implements Runnable {
 			oldAnis.clear();
 			;
 
-			for (Iterator iter = animations.iterator(); iter.hasNext();) {
-
-				AnimationTask actuallAnimation = (AnimationTask) iter.next();
+			for (Iterator<AnimationTask> iter = animations.iterator(); iter.hasNext();) {
+				AnimationTask actuallAnimation = iter.next();
 				boolean death = actuallAnimation.getAni().deathAnimation;
 				FigureInfo f = actuallAnimation.getFigure();
 				if (!death) {
@@ -220,56 +182,32 @@ public class MasterAnimation extends Thread implements Runnable {
 			}
 			g2 = offscreenImage.getGraphics();
 
-			// System.out.println("rufe small auf mit: ");
-			// GraphBoard.printList(paintedObs);
 			if (stop)
 				break;
 			bild.repaintRoomSmall(g2, r, paintedObs);
 
-			for (Iterator iter = toPaint.keySet().iterator(); iter.hasNext();) {
-
+			for (Iterator<AnimationTask> iter = toPaint.keySet().iterator(); iter.hasNext();) {
 				AnimationTask actuallAnimation = (AnimationTask) iter.next();
-
 				actuallAnimation.getAni().paintPic(
 						((Integer) toPaint.get(actuallAnimation)).intValue(),
 						g2);
-
 			}
 
 			JDPoint p = getPoint(r);
-
-			int y2 = roomSize - (roomSize / 15);
-
 			g.drawImage(offscreenImage, p.getX(), p.getY(), roomSize, roomSize
 					- (roomSize / 15), null);
-
-			for (Iterator iter = oldAnis.iterator(); iter.hasNext();) {
-				// System.out.println("removing Ani");
-				Object element = (Object) iter.next();
+			for (Iterator<AnimationTask> iter = oldAnis.iterator(); iter.hasNext();) {
+				Object element = iter.next();
 				animations.remove(element);
-
 			}
 			counter++;
 		}
-//		animations.clear();
-//		additionalAnis.clear();
 	}
 
 	public boolean finished = false;
 
 	public boolean isFinished() {
 		return finished;
-	}
-
-	private Dimension getSize(Object o) {
-		if (o instanceof HeroInfo) {
-			return bild.getHeroSize();
-		} else if (o instanceof MonsterInfo) {
-			return GraphicObjectRenderer.getMonsterSize((MonsterInfo) o, roomSize);
-		} else {
-			return null;
-		}
-
 	}
 
 	protected JDPoint getPoint(RoomInfo r) {
@@ -283,7 +221,7 @@ public class MasterAnimation extends Thread implements Runnable {
 	/**
 	 * @return Returns the animations.
 	 */
-	public Vector getAnimations() {
+	public Vector<AnimationTask> getAnimations() {
 		return animations;
 	}
 	

@@ -720,7 +720,7 @@ public class MyJDGui implements JDGUI {
 		AnimationSet set = AnimationUtils.getFigure_tipping_over(fig);
 		Animation ani = new AnimationReal(set, fig, AnimationReal.SLAYS, info,
 				this);
-		ani.deathAnimation = true;
+		ani.setDeathAnimation(true);
 
 		runNewAnimation(ani);
 	}
@@ -733,7 +733,6 @@ public class MyJDGui implements JDGUI {
 		Animation ani = null;
 		if (set != null) {
 			ani = new AnimationReal(set, m, AnimationReal.SLAYS, info, this);
-			((AnimationReal) ani).setInverted(true);
 
 		}
 		// else {

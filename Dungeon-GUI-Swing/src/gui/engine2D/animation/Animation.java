@@ -12,7 +12,6 @@ import java.awt.Point;
 
 import dungeon.RoomInfo;
 import figure.FigureInfo;
-import graphics.GraphicObjectRenderer;
 import gui.engine2D.GraphBoard;
 
 /**
@@ -34,7 +33,8 @@ public abstract class Animation implements Runnable {
 
 	protected FigureInfo o;
 
-	public int time;
+	protected int time;
+
 	protected Graphics g2;
 
 	protected double sizeModifier = 1;
@@ -46,9 +46,10 @@ public abstract class Animation implements Runnable {
 	protected int aniType;
 
 	protected int roomSize;
+
 	protected int counter = 0;
 
-	public boolean deathAnimation = false;
+	protected boolean deathAnimation = false;
 
 	protected GraphBoard bild;
 
@@ -56,6 +57,10 @@ public abstract class Animation implements Runnable {
 
 	public Animation(RoomInfo r) {
 		this.r = r;
+	}
+
+	public void setDeathAnimation(boolean deathAnimation) {
+		this.deathAnimation = deathAnimation;
 	}
 
 	public FigureInfo getObject() {

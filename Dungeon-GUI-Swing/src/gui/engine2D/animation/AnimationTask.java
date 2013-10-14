@@ -9,12 +9,12 @@ package gui.engine2D.animation;
 import figure.FigureInfo;
 
 public class AnimationTask {
-	
-	int round;
-	Animation ani;
-	
-	public AnimationTask( Animation ani, int round) {
-	
+
+	private int round;
+	private Animation ani;
+
+	public AnimationTask(Animation ani, int round) {
+
 		this.round = round;
 		this.ani = ani;
 	}
@@ -26,13 +26,6 @@ public class AnimationTask {
 		return round;
 	}
 
-	/**
-	 * @param round The round to set.
-	 */
-	public void setRound(int round) {
-		this.round = round;
-	}
-	
 	public int getLength() {
 		return ani.getLength();
 	}
