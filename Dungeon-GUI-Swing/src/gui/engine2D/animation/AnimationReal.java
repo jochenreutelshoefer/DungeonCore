@@ -25,6 +25,9 @@ import figure.monster.MonsterInfo;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDImageProxy;
+import graphics.util.JDColor;
+import graphics.util.JDDimension;
+import graphics.util.JDRectangle;
 import gui.MyJDGui;
 import gui.engine2D.DrawUtils;
 
@@ -39,7 +42,7 @@ public class AnimationReal extends Animation {
 	private AnimationSet set;
 	private int fromPosIndex = -1;
 	private int toPosIndex = -1;
-	private Point startFigurePositionInRoom;
+	private JDPoint startFigurePositionInRoom;
 
 	public AnimationReal(AnimationSet set, FigureInfo o, int type, RoomInfo r,
 			MyJDGui gui) {
@@ -74,12 +77,12 @@ public class AnimationReal extends Animation {
 				&& !this.deathAnimation)
 			return;
 		JDImageProxy<?> im = set.getImagesNr(num);
-		Dimension d = getSize();
+		JDDimension d = getSize();
 
 		int positionInRoomIndex = o.getPositionInRoomIndex();
 		if (positionInRoomIndex == -1)
 			return;
-		Point point = bild.getPositionCoordModified(positionInRoomIndex);
+		JDPoint point = bild.getPositionCoordModified(positionInRoomIndex);
 		RoomInfo roomInfo = o.getRoomInfo();
 		if (!roomInfo.fightRunning().booleanValue()) {
 			point = this.startFigurePositionInRoom;
@@ -103,10 +106,10 @@ public class AnimationReal extends Animation {
 			}
 		}
 
-		Point p = new Point((int) (x - (d.getWidth() / 2)),
+		JDPoint p = new JDPoint((int) (x - (d.getWidth() / 2)),
 				(int) (y - (d.getHeight() / 2)));
-		GraphicObject c = new GraphicObject(null, new Rectangle(p, getSize()),
-				Color.white, im);
+		GraphicObject c = new GraphicObject(null, new JDRectangle(p, getSize()),
+				JDColor.WHITE, im);
 		DrawUtils.fillGraphicObject(c, g);
 	}
 
@@ -144,7 +147,7 @@ public class AnimationReal extends Animation {
 		return new JDPoint(xcoord, ycoord);
 	}
 
-	private Dimension getSize() {
+	private JDDimension getSize() {
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
 		} else if (o instanceof MonsterInfo) {

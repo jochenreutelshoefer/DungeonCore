@@ -18,108 +18,108 @@ import dungeon.Dir;
 public class ImageManager {
 
 	private static ImageManager instance;
-	private AbstractImageLoader loader;
+	private AbstractImageLoader<?> loader;
 
-	public ImageManager(AbstractImageLoader loader2) {
+	public ImageManager(AbstractImageLoader<?> loader2) {
 		this.loader = loader2;
 	}
 
-	public static ImageManager getInstance(AbstractImageLoader loader) {
+	public static ImageManager getInstance(AbstractImageLoader<?> loader) {
 		if (instance == null) {
 			instance = new ImageManager(loader);
 		}
 		return instance;
 	}
 
-	public static JDImageProxy woodTextureImage;
+	public static JDImageProxy<?> woodTextureImage;
 
-	public static JDImageProxy fieldImage;
+	public static JDImageProxy<?> fieldImage;
 
-	public static JDImageProxy amulettImage;
+	public static JDImageProxy<?> amulettImage;
 
-	public static JDImageProxy armorImage;
+	public static JDImageProxy<?> armorImage;
 
-	public static JDImageProxy axeImage;
+	public static JDImageProxy<?> axeImage;
 
-	public static JDImageProxy bear2Image;
+	public static JDImageProxy<?> bear2Image;
 
-	public static JDImageProxy[] bearImage;
+	public static JDImageProxy<?>[] bearImage;
 
-	public static JDImageProxy bookImage;
+	public static JDImageProxy<?> bookImage;
 
-	public static JDImageProxy caveImage;
+	public static JDImageProxy<?> caveImage;
 
-	public static JDImageProxy chest_lockImage;
+	public static JDImageProxy<?> chest_lockImage;
 
-	public static JDImageProxy chestImage;
+	public static JDImageProxy<?> chestImage;
 
-	public static JDImageProxy clubImage;
+	public static JDImageProxy<?> clubImage;
 
-	public static JDImageProxy cristall_blueImage;
+	public static JDImageProxy<?> cristall_blueImage;
 
-	public static JDImageProxy cristall_greenImage;
+	public static JDImageProxy<?> cristall_greenImage;
 
-	public static JDImageProxy cristall_redImage;
+	public static JDImageProxy<?> cristall_redImage;
 
-	public static JDImageProxy cristall_yellowImage;
+	public static JDImageProxy<?> cristall_yellowImage;
 
-	public static JDImageProxy cursor_clock;
+	public static JDImageProxy<?> cursor_clock;
 
-	public static JDImageProxy cursor_key_Image;
+	public static JDImageProxy<?> cursor_key_Image;
 
-	public static JDImageProxy cursor_key_not_Image;
+	public static JDImageProxy<?> cursor_key_not_Image;
 
-	public static JDImageProxy cursor_go_not_Image;
-	public static JDImageProxy cursor_wand;
-	public static JDImageProxy cursor_use_Image;
+	public static JDImageProxy<?> cursor_go_not_Image;
+	public static JDImageProxy<?> cursor_wand;
+	public static JDImageProxy<?> cursor_use_Image;
 
-	public static JDImageProxy cursor_scout;
+	public static JDImageProxy<?> cursor_scout;
 
-	public static JDImageProxy cursor_sword;
+	public static JDImageProxy<?> cursor_sword;
 
-	public static JDImageProxy dark_dwarfImage;
+	public static JDImageProxy<?> dark_dwarfImage;
 
-	public static JDImageProxy finImage;
+	public static JDImageProxy<?> finImage;
 
-	public static JDImageProxy darkMasterImage;
+	public static JDImageProxy<?> darkMasterImage;
 
-	public static JDImageProxy dead_druidImage;
+	public static JDImageProxy<?> dead_druidImage;
 
-	public static JDImageProxy dead_dwarfImage;
+	public static JDImageProxy<?> dead_dwarfImage;
 
-	public static JDImageProxy dead_mageImage;
+	public static JDImageProxy<?> dead_mageImage;
 
-	public static JDImageProxy dead_thiefImage;
+	public static JDImageProxy<?> dead_thiefImage;
 
-	public static JDImageProxy dead_warriorImage;
+	public static JDImageProxy<?> dead_warriorImage;
 
-	public static JDImageProxy deathImage;
+	public static JDImageProxy<?> deathImage;
 
-	public static JDImageProxy documentImage;
+	public static JDImageProxy<?> documentImage;
 
-	public static JDImageProxy door_east;
+	public static JDImageProxy<?> door_east;
 
-	public static JDImageProxy door_east_lock;
+	public static JDImageProxy<?> door_east_lock;
 
-	public static JDImageProxy door_east_none;
+	public static JDImageProxy<?> door_east_none;
 
-	public static JDImageProxy door_north;
+	public static JDImageProxy<?> door_north;
 
-	public static JDImageProxy door_north_lock;
+	public static JDImageProxy<?> door_north_lock;
 
-	public static JDImageProxy door_north_none;
+	public static JDImageProxy<?> door_north_none;
 
-	public static JDImageProxy door_south;
+	public static JDImageProxy<?> door_south;
 
-	public static JDImageProxy door_south_lock;
+	public static JDImageProxy<?> door_south_lock;
 
-	public static JDImageProxy door_south_none;
+	public static JDImageProxy<?> door_south_none;
 
-	public static JDImageProxy door_west;
+	public static JDImageProxy<?> door_west;
 
-	public static JDImageProxy door_west_lock;
+	public static JDImageProxy<?> door_west_lock;
 
-	public static JDImageProxy door_west_none;
+	public static JDImageProxy<?> door_west_none;
 
 	public static AnimationSetDirections druid_been_hit;
 
@@ -137,65 +137,65 @@ public class ImageManager {
 
 	public static AnimationSetDirections druid_walking;
 
-	public static JDImageProxy[] druidImage;
+	public static JDImageProxy<?>[] druidImage;
 
-	public static JDImageProxy dummieImage;
+	public static JDImageProxy<?> dummieImage;
 
-	public static JDImageProxy dustImage;
+	public static JDImageProxy<?> dustImage;
 
-	public static JDImageProxy engelImage;
+	public static JDImageProxy<?> engelImage;
 
-	public static JDImageProxy falltuerImage;
+	public static JDImageProxy<?> falltuerImage;
 
-	public static JDImageProxy floor_darkImage;
+	public static JDImageProxy<?> floor_darkImage;
 
-	public static JDImageProxy floor_darkImage2;
+	public static JDImageProxy<?> floor_darkImage2;
 
-	public static JDImageProxy floor_darkImage3;
+	public static JDImageProxy<?> floor_darkImage3;
 
-	public static JDImageProxy floor_darkImage4;
+	public static JDImageProxy<?> floor_darkImage4;
 
-	public static JDImageProxy floor_darkImage5;
+	public static JDImageProxy<?> floor_darkImage5;
 
-	public static JDImageProxy floor_darkImage6;
+	public static JDImageProxy<?> floor_darkImage6;
 
-	public static JDImageProxy floor_darkImage7;
+	public static JDImageProxy<?> floor_darkImage7;
 
-	public static JDImageProxy floor_mediumImage;
+	public static JDImageProxy<?> floor_mediumImage;
 
-	public static JDImageProxy floor_mediumImage2;
+	public static JDImageProxy<?> floor_mediumImage2;
 
-	public static JDImageProxy floor_mediumImage3;
+	public static JDImageProxy<?> floor_mediumImage3;
 
-	public static JDImageProxy floor_mediumImage4;
+	public static JDImageProxy<?> floor_mediumImage4;
 
-	public static JDImageProxy floor_mediumImage5;
+	public static JDImageProxy<?> floor_mediumImage5;
 
-	public static JDImageProxy floor_mediumImage6;
+	public static JDImageProxy<?> floor_mediumImage6;
 
-	public static JDImageProxy floor_mediumImage7;
+	public static JDImageProxy<?> floor_mediumImage7;
 
-	public static JDImageProxy floorImage;
+	public static JDImageProxy<?> floorImage;
 
-	public static JDImageProxy[] floorImage_darkArray = new JDImageProxy[8];
+	public static JDImageProxy<?>[] floorImage_darkArray = new JDImageProxy<?>[8];
 
-	public static JDImageProxy[] floorImage_mediumArray = new JDImageProxy[8];
+	public static JDImageProxy<?>[] floorImage_mediumArray = new JDImageProxy<?>[8];
 
-	public static JDImageProxy floorImage2;
+	public static JDImageProxy<?> floorImage2;
 
-	public static JDImageProxy floorImage3;
+	public static JDImageProxy<?> floorImage3;
 
-	public static JDImageProxy floorImage4;
+	public static JDImageProxy<?> floorImage4;
 
-	public static JDImageProxy floorImage5;
+	public static JDImageProxy<?> floorImage5;
 
-	public static JDImageProxy floorImage6;
+	public static JDImageProxy<?> floorImage6;
 
-	public static JDImageProxy floorImage7;
+	public static JDImageProxy<?> floorImage7;
 
-	public static JDImageProxy[] floorImageArray = new JDImageProxy[8];
+	public static JDImageProxy<?>[] floorImageArray = new JDImageProxy<?>[8];
 
-	public static JDImageProxy fountainImage;
+	public static JDImageProxy<?> fountainImage;
 
 	public static AnimationSetDirections ghul1_been_hit;
 
@@ -213,31 +213,31 @@ public class ImageManager {
 
 	public static AnimationSetDirections ghul1_walking = null;
 
-	public static JDImageProxy[] ghulImage;
+	public static JDImageProxy<?>[] ghulImage;
 
-	public static JDImageProxy graveImage;
+	public static JDImageProxy<?> graveImage;
 
-	public static JDImageProxy hand_greift1_Image;
+	public static JDImageProxy<?> hand_greift1_Image;
 
-	public static JDImageProxy hand_zeigt1_Image;
+	public static JDImageProxy<?> hand_zeigt1_Image;
 
-	public static JDImageProxy cursor_go_Image;
+	public static JDImageProxy<?> cursor_go_Image;
 
-	public static JDImageProxy helmetImage;
+	public static JDImageProxy<?> helmetImage;
 
-	public static JDImageProxy keyImage;
+	public static JDImageProxy<?> keyImage;
 
-	public static JDImageProxy kugelImage;
+	public static JDImageProxy<?> kugelImage;
 
-	public static JDImageProxy lanceImage;
+	public static JDImageProxy<?> lanceImage;
 
-	public static JDImageProxy luzia_ball_greyImage;
+	public static JDImageProxy<?> luzia_ball_greyImage;
 
-	public static JDImageProxy luzia_ball_redImage;
+	public static JDImageProxy<?> luzia_ball_redImage;
 
-	public static JDImageProxy luzia_hutImage;
+	public static JDImageProxy<?> luzia_hutImage;
 
-	public static JDImageProxy luziaImage;
+	public static JDImageProxy<?> luziaImage;
 
 	public static AnimationSetDirections mage_been_hit;
 
@@ -255,7 +255,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections mage_walking;
 
-	public static JDImageProxy[] mageImage;
+	public static JDImageProxy<?>[] mageImage;
 
 	public static AnimationSetDirections ogre1_been_hit;
 
@@ -305,61 +305,61 @@ public class ImageManager {
 
 	public static AnimationSetDirections orc1_walking = null;
 
-	public static JDImageProxy[] ogreImage;
+	public static JDImageProxy<?>[] ogreImage;
 
-	public static JDImageProxy[] orcImage;
+	public static JDImageProxy<?>[] orcImage;
 
-	public static JDImageProxy pentagrammImage;
+	public static JDImageProxy<?> pentagrammImage;
 
-	public static JDImageProxy potion_blueImage;
+	public static JDImageProxy<?> potion_blueImage;
 
-	public static JDImageProxy potion_redImage;
+	public static JDImageProxy<?> potion_redImage;
 
-	public static JDImageProxy potion_greenImage;
+	public static JDImageProxy<?> potion_greenImage;
 
-	public static JDImageProxy featherImage;
+	public static JDImageProxy<?> featherImage;
 
 	public static AnimationSet puff;
 
-	public static JDImageProxy questionmark;
+	public static JDImageProxy<?> questionmark;
 
-	public static JDImageProxy repairImage;
+	public static JDImageProxy<?> repairImage;
 
-	public static JDImageProxy rune_blueImage;
+	public static JDImageProxy<?> rune_blueImage;
 
-	public static JDImageProxy rune_greenImage;
+	public static JDImageProxy<?> rune_greenImage;
 
-	public static JDImageProxy rune_redImage;
+	public static JDImageProxy<?> rune_redImage;
 
-	public static JDImageProxy rune_yellowImage;
+	public static JDImageProxy<?> rune_yellowImage;
 
-	public static JDImageProxy scrollImage;
+	public static JDImageProxy<?> scrollImage;
 
-	public static JDImageProxy shieldImage;
+	public static JDImageProxy<?> shieldImage;
 
-	public static JDImageProxy shrine_blackImage;
+	public static JDImageProxy<?> shrine_blackImage;
 
-	public static JDImageProxy shrine_blueImage;
+	public static JDImageProxy<?> shrine_blueImage;
 
-	public static JDImageProxy shrine_greenImage;
+	public static JDImageProxy<?> shrine_greenImage;
 
-	public static JDImageProxy shrine_lilaImage;
+	public static JDImageProxy<?> shrine_lilaImage;
 
-	public static JDImageProxy shrine_redImage;
+	public static JDImageProxy<?> shrine_redImage;
 
-	public static JDImageProxy shrine_small_blueImage;
+	public static JDImageProxy<?> shrine_small_blueImage;
 
-	public static JDImageProxy shrine_small_greenImage;
+	public static JDImageProxy<?> shrine_small_greenImage;
 
-	public static JDImageProxy shrine_small_redImage;
+	public static JDImageProxy<?> shrine_small_redImage;
 
-	public static JDImageProxy shrine_small_yellowImage;
+	public static JDImageProxy<?> shrine_small_yellowImage;
 
-	public static JDImageProxy shrine_turkisImage;
+	public static JDImageProxy<?> shrine_turkisImage;
 
-	public static JDImageProxy shrine_whiteImage;
+	public static JDImageProxy<?> shrine_whiteImage;
 
-	public static JDImageProxy shrine_yellowImage;
+	public static JDImageProxy<?> shrine_yellowImage;
 
 	public static AnimationSetDirections skel1_been_hit;
 
@@ -377,17 +377,17 @@ public class ImageManager {
 
 	public static AnimationSetDirections skel1_walking = null;
 
-	public static JDImageProxy skel2Image;
+	public static JDImageProxy<?> skel2Image;
 
-	public static JDImageProxy[] skelImage;
+	public static JDImageProxy<?>[] skelImage;
 
-	public static JDImageProxy sorcLabImage;
+	public static JDImageProxy<?> sorcLabImage;
 
-	public static JDImageProxy spotImage;
+	public static JDImageProxy<?> spotImage;
 
-	public static JDImageProxy statueImage;
+	public static JDImageProxy<?> statueImage;
 
-	public static JDImageProxy swordImage;
+	public static JDImageProxy<?> swordImage;
 
 	public static AnimationSetDirections thief_been_hit;
 
@@ -405,16 +405,16 @@ public class ImageManager {
 
 	public static AnimationSetDirections thief_walking;
 
-	public static JDImageProxy[] thiefImage;
+	public static JDImageProxy<?>[] thiefImage;
 
-	public static JDImageProxy traderImage;
+	public static JDImageProxy<?> traderImage;
 
-	public static JDImageProxy wall_southImage;
+	public static JDImageProxy<?> wall_southImage;
 
-	// public static JDImageProxy wallImage;
+	// public static JDImageProxy<?> wallImage;
 
-	public static JDImageProxy wall_sidesImage;
-	public static JDImageProxy wall_northImage;
+	public static JDImageProxy<?> wall_sidesImage;
+	public static JDImageProxy<?> wall_northImage;
 
 	public static AnimationSetDirections warrior_been_hit;
 
@@ -432,7 +432,7 @@ public class ImageManager {
 
 	public static AnimationSetDirections warrior_walking;
 
-	public static JDImageProxy[] warriorImage;
+	public static JDImageProxy<?>[] warriorImage;
 
 	public static AnimationSetDirections wolf1_been_hit;
 
@@ -450,16 +450,16 @@ public class ImageManager {
 
 	public static AnimationSetDirections wolf1_walking = null;
 
-	public static JDImageProxy wolf2Image;
+	public static JDImageProxy<?> wolf2Image;
 
-	public static JDImageProxy[] wolfImage;
+	public static JDImageProxy<?>[] wolfImage;
 
-	public static JDImageProxy wolfknifeImage;
+	public static JDImageProxy<?> wolfknifeImage;
 
-	public static JDImageProxy xmasImage;
+	public static JDImageProxy<?> xmasImage;
 
 	private static AnimationSetDirections load4Animations(
-			AbstractImageLoader a, String path, String pattern, int cnt) {
+			AbstractImageLoader<?> a, String path, String pattern, int cnt) {
 		System.gc();
 		AnimationSet[] set = new AnimationSet[4];
 		for (int i = 0; i < 4; i++) {
@@ -475,7 +475,7 @@ public class ImageManager {
 
 		if (!imagesLoaded) {
 
-			AbstractImageLoader a = this.loader;
+			AbstractImageLoader<?> a = this.loader;
 
 			puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
@@ -829,9 +829,9 @@ public class ImageManager {
 		imagesLoaded = true;
 	}
 
-	private static JDImageProxy[] makePics(AnimationSetDirections a) {
+	private static JDImageProxy<?>[] makePics(AnimationSetDirections a) {
 		AnimationSet[] sets = a.getAnimations();
-		JDImageProxy ims[] = new JDImageProxy[sets.length];
+		JDImageProxy<?> ims[] = new JDImageProxy<?>[sets.length];
 		for (int i = 0; i < sets.length; i++) {
 			ims[i] = sets[i].getImagesNr(0);
 		}
@@ -921,12 +921,12 @@ public class ImageManager {
 	//
 	// }
 
-	private static JDImageProxy[] loadArray(AbstractImageLoader a, String path,
+	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a, String path,
 			int cnt) {
-		JDImageProxy[] ims = new JDImageProxy[cnt];
+		JDImageProxy<?>[] ims = new JDImageProxy[cnt];
 		for (int i = 0; i < cnt; i++) {
 
-			JDImageProxy im = new JDImageProxy(path + Integer.toString(i)
+			JDImageProxy<?> im = new JDImageProxy(path + Integer.toString(i)
 					+ ".GIF", a);
 
 			ims[i] = im;
@@ -941,10 +941,10 @@ public class ImageManager {
 		return ims;
 	}
 
-	private static JDImageProxy[] loadArray(AbstractImageLoader a, String path,
+	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a, String path,
 			String fileNamePrefix, int dir, int cnt) {
 
-		List<JDImageProxy> imageList = new LinkedList<JDImageProxy>();
+		List<JDImageProxy<?>> imageList = new LinkedList<JDImageProxy<?>>();
 		String dirChar = "";
 		if (dir == Dir.EAST) {
 			dirChar = "e";
@@ -969,7 +969,7 @@ public class ImageManager {
 
 		while (i < 15) {
 
-			JDImageProxy im = new JDImageProxy(path + fileNamePrefix + dirChar
+			JDImageProxy<?> im = new JDImageProxy(path + fileNamePrefix + dirChar
 					+ suffix + "_trans.GIF", a);
 			if (im.fileExists()) {
 				imageList.add(im);
@@ -984,10 +984,10 @@ public class ImageManager {
 			suffix += numberStr;
 		}
 
-		JDImageProxy[] ims = new JDImageProxy[imageList.size()];
+		JDImageProxy<?>[] ims = new JDImageProxy<?>[imageList.size()];
 		int k = 0;
-		for (Iterator<JDImageProxy> iter = imageList.iterator(); iter.hasNext();) {
-			JDImageProxy element = iter.next();
+		for (Iterator<JDImageProxy<?>> iter = imageList.iterator(); iter.hasNext();) {
+			JDImageProxy<?> element = iter.next();
 			ims[k] = element;
 			k++;
 		}

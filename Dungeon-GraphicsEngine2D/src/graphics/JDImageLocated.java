@@ -1,7 +1,6 @@
 package graphics;
 import graphics.util.JDRectangle;
 
-import java.awt.Rectangle;
 
 
 /**
@@ -26,14 +25,6 @@ public class JDImageLocated {
 		this.posY = posY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-	
-	}
-	public JDImageLocated(JDImageProxy<?> i, Rectangle r) {
-		image = i;		
-		this.posX = r.x;
-		this.posY = r.y;
-		this.sizeX = r.width;
-		this.sizeY = r.height;
 	
 	}
 	

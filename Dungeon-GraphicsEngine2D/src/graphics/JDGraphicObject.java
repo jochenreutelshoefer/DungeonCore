@@ -8,15 +8,15 @@
  */
 package graphics;
 
+import graphics.util.JDColor;
 import graphics.util.JDRectangle;
 
-import java.awt.Color;
 
 public class JDGraphicObject extends GraphicObject {
 
 	private JDImageLocated image;
 
-	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, Color c) {
+	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, JDColor c) {
 		super(ob, o, c, null);
 		image = i;
 
@@ -26,14 +26,14 @@ public class JDGraphicObject extends GraphicObject {
 		return image;
 	}
 
-	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, Color c,
+	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, JDColor c,
 			JDRectangle clickRect) {
 		super(ob, o, c, null, clickRect);
 		image = i;
 
 	}
 
-	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, Color c,
+	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, JDColor c,
 			boolean paint) {
 		super(ob, o, c, null);
 		image = i;

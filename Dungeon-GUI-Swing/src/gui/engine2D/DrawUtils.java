@@ -4,6 +4,7 @@ import graphics.GraphicObject;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
+import graphics.util.JDColor;
 import graphics.util.JDRectangle;
 
 import java.awt.Color;
@@ -36,6 +37,10 @@ public class DrawUtils {
 		Image resIm = op.filter(mBufferedImage, mBufferedImage2);
 		g.drawImage(resIm, o.x, o.y, o.width, o.height, null);
 	}
+	
+	public static Color convertColor(JDColor c) {
+		return new Color(c.getRed(), c.getGreen(), c.getBlue());
+	}
 
 	public static void fillGraphicObject(GraphicObject o, Graphics g) {
 		if (o instanceof JDGraphicObject) {
@@ -45,8 +50,8 @@ public class DrawUtils {
 		JDImageProxy<?> image = o.getImage();
 		JDRectangle rect = o.getRectangle();
 		Object clickedObject = o.getClickedObject();
-		Color c = o.getColor();
 		if (image == null) {
+			Color c = convertColor(o.getColor());
 			g.setColor(c);
 			g.fillRect(rect.getX(), rect.getY(), rect.getWidth(),
 					rect.getHeight());
@@ -67,7 +72,6 @@ public class DrawUtils {
 	private static void fillJDGraphicObject(JDGraphicObject o, Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		JDImageLocated image = o.getAWTImage();
-
 		g2D.drawImage((Image) image.getImage().getImage(), image.getPosX(),
 				image.getPosY(), image.getWidth(), image.getHeight(), null);
 	}

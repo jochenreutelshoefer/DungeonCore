@@ -6,7 +6,9 @@ import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
+import graphics.util.JDColor;
 import graphics.util.JDDimension;
+import graphics.util.JDRectangle;
 import gui.JDJPanel;
 import gui.MyJDGui;
 import gui.Paragraph;
@@ -132,9 +134,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		this.renderer = new GraphicObjectRenderer(roomSize, gui);
 	}
 	
-	public Dimension getMonsterSize(MonsterInfo m) {
+	public JDDimension getMonsterSize(MonsterInfo m) {
 		JDDimension dimension = this.renderer.getMonsterSize(m);
-		return new Dimension(dimension.getWidth(), dimension.getHeight());
+		return dimension;
 	}
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
@@ -170,9 +172,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 	}
 
-	public Point getPositionCoordModified(int index) {
+	public JDPoint getPositionCoordModified(int index) {
 		JDPoint point = renderer.getPositionCoordModified(index);
-		return new Point(point.getX(), point.getY());
+		return point;
 	}
 
 	public Point getPositionCoord(int index) {
@@ -224,9 +226,9 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 				} else {
 					renderer.rooms.add(new GraphicObject(new Point(i, j),
-							new Rectangle(new Point(xcoord, ycoord),
-									new Dimension(roomSize, roomSize)),
-							Color.black, false, null));
+							new JDRectangle(new JDPoint(xcoord, ycoord),
+									new JDDimension(roomSize, roomSize)),
+							JDColor.BLACK, false, null));
 				}
 
 			}
@@ -288,8 +290,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	}
 
-	public Dimension getHeroSize() {
-		return new Dimension(
+	public JDDimension getHeroSize() {
+		return new JDDimension(
 				(int) (roomSize / GraphicObjectRenderer.HERO_SIZE_QUOTIENT_X),
 				(int) (roomSize / GraphicObjectRenderer.HERO_SIZE_QUOTIENT_Y));
 	}

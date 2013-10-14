@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
+import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
 import gui.engine2D.GraphBoard;
@@ -100,7 +101,7 @@ public abstract class Animation implements Runnable {
 		this.sizeModifier = sizeModifier;
 	}
 
-	protected Point getPointInRoom() {
+	protected JDPoint getPointInRoom() {
 		return bild.getPositionCoordModified(o.getPositionInRoomIndex());
 	}
 

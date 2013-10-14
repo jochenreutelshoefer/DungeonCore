@@ -13,6 +13,9 @@ import game.JDGUI;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDImageProxy;
+import graphics.util.JDColor;
+import graphics.util.JDDimension;
+import graphics.util.JDRectangle;
 import gui.MyJDGui;
 import gui.engine2D.DrawUtils;
 
@@ -81,11 +84,11 @@ public class AnimationFake extends Animation implements Runnable {
 	public void paintPic(int num, Graphics g) {
 		DrawUtils
 				.fillGraphicObject(new GraphicObject(new String("hero"),
-						new Rectangle(getPointInRoom(), getSize()),
-						Color.white, im), g);
+						new JDRectangle(getPointInRoom(), getSize()),
+						JDColor.WHITE, im), g);
 	}
 
-	private Dimension getSize() {
+	private JDDimension getSize() {
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
 		} else if (o instanceof MonsterInfo) {
