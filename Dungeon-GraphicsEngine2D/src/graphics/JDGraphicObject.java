@@ -8,30 +8,32 @@
  */
 package graphics;
 
+import graphics.util.JDRectangle;
+
 import java.awt.Color;
 
 public class JDGraphicObject extends GraphicObject {
 
-	private JDImageAWT image;
+	private JDImageLocated image;
 
-	public JDGraphicObject(JDImageAWT i, Object ob, JDRectangle o, Color c) {
+	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, Color c) {
 		super(ob, o, c, null);
 		image = i;
 
 	}
 
-	public JDImageAWT getAWTImage() {
+	public JDImageLocated getAWTImage() {
 		return image;
 	}
 
-	public JDGraphicObject(JDImageAWT i, Object ob, JDRectangle o, Color c,
+	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, Color c,
 			JDRectangle clickRect) {
 		super(ob, o, c, null, clickRect);
 		image = i;
 
 	}
 
-	public JDGraphicObject(JDImageAWT i, Object ob, JDRectangle o, Color c,
+	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, Color c,
 			boolean paint) {
 		super(ob, o, c, null);
 		image = i;

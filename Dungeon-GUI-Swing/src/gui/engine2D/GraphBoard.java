@@ -6,6 +6,7 @@ import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
+import graphics.util.JDDimension;
 import gui.JDJPanel;
 import gui.MyJDGui;
 import gui.Paragraph;
@@ -132,7 +133,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 	
 	public Dimension getMonsterSize(MonsterInfo m) {
-		return this.renderer.getMonsterSize(m);
+		JDDimension dimension = this.renderer.getMonsterSize(m);
+		return new Dimension(dimension.getWidth(), dimension.getHeight());
 	}
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
@@ -169,11 +171,13 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	public Point getPositionCoordModified(int index) {
-		return renderer.getPositionCoordModified(index);
+		JDPoint point = renderer.getPositionCoordModified(index);
+		return new Point(point.getX(), point.getY());
 	}
 
 	public Point getPositionCoord(int index) {
-		return renderer.getPositionCoord(index);
+		JDPoint point = renderer.getPositionCoord(index);
+		return new Point(point.getX(), point.getY());
 	}
 
 	public void paint(Graphics g) {

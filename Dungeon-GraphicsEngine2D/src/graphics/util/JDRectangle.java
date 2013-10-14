@@ -1,4 +1,4 @@
-package graphics;
+package graphics.util;
 
 import dungeon.JDPoint;
 
@@ -21,6 +21,13 @@ public class JDRectangle {
 		this.y = p.getY();
 		this.width = width;
 		this.height = height;
+	}
+	
+	public JDRectangle(JDPoint p, JDDimension d) {
+		this.x = p.getX();
+		this.y = p.getY();
+		this.width = d.getWidth();
+		this.height = d.getHeight();
 	}
 
 	public int getX() {

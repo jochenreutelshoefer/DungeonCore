@@ -2,9 +2,9 @@ package gui.engine2D;
 
 import graphics.GraphicObject;
 import graphics.JDGraphicObject;
-import graphics.JDImageAWT;
+import graphics.JDImageLocated;
 import graphics.JDImageProxy;
-import graphics.JDRectangle;
+import graphics.util.JDRectangle;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -66,7 +66,7 @@ public class DrawUtils {
 
 	private static void fillJDGraphicObject(JDGraphicObject o, Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
-		JDImageAWT image = o.getAWTImage();
+		JDImageLocated image = o.getAWTImage();
 
 		g2D.drawImage((Image) image.getImage().getImage(), image.getPosX(),
 				image.getPosY(), image.getWidth(), image.getHeight(), null);

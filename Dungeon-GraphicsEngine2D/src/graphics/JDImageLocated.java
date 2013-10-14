@@ -1,4 +1,6 @@
 package graphics;
+import graphics.util.JDRectangle;
+
 import java.awt.Rectangle;
 
 
@@ -10,15 +12,15 @@ import java.awt.Rectangle;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class JDImageAWT {
+public class JDImageLocated {
 
 	
-	private JDImageProxy image;
+	private JDImageProxy<?> image;
 	private int sizeX;
 	private int sizeY;
 	private int posY;
 	
-	public JDImageAWT(JDImageProxy i, int posX, int posY,int sizeX, int sizeY) {
+	public JDImageLocated(JDImageProxy<?> i, int posX, int posY,int sizeX, int sizeY) {
 		image = i;		
 		this.posX = posX;
 		this.posY = posY;
@@ -26,7 +28,7 @@ public class JDImageAWT {
 		this.sizeY = sizeY;
 	
 	}
-	public JDImageAWT(JDImageProxy i, Rectangle r) {
+	public JDImageLocated(JDImageProxy<?> i, Rectangle r) {
 		image = i;		
 		this.posX = r.x;
 		this.posY = r.y;
@@ -35,7 +37,7 @@ public class JDImageAWT {
 	
 	}
 	
-	public JDImageAWT(JDImageProxy i, JDRectangle r) {
+	public JDImageLocated(JDImageProxy<?> i, JDRectangle r) {
 		image = i;		
 		this.posX = r.getX();
 		this.posY = r.getY();
@@ -77,7 +79,7 @@ public class JDImageAWT {
 	 * 
 	 * @uml.property name="image"
 	 */
-	public JDImageProxy getImage() {
+	public JDImageProxy<?> getImage() {
 		return image;
 	}
 

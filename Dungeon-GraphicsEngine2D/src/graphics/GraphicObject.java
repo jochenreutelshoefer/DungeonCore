@@ -8,6 +8,8 @@
  */
 package graphics;
 
+import graphics.util.JDRectangle;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 
