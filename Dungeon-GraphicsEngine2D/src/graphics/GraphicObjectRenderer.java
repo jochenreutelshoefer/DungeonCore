@@ -66,7 +66,6 @@ public class GraphicObjectRenderer {
 	private int ROOMSIZE_BY_8; 
 	private int ROOMSIZE_BY_6;
 	private int ROOMSIZE_BY_5; 
-	private int ROOMSIZE_BY_4; 
 	private int ROOMSIZE_BY_3; 
 	private int ROOMSIZE_BY_2;
 	private Point[] positionCoord = new Point[8];
@@ -124,7 +123,6 @@ public class GraphicObjectRenderer {
 		ROOMSIZE_BY_8 = RoomSize.by(8,roomSize);
 		ROOMSIZE_BY_6 = RoomSize.by(6,roomSize);
 		ROOMSIZE_BY_5 = RoomSize.by(5,roomSize);
-		ROOMSIZE_BY_4 = RoomSize.by(4,roomSize);
 		ROOMSIZE_BY_3 = RoomSize.by(3,roomSize);
 		ROOMSIZE_BY_2 = RoomSize.by(2,roomSize);
 
@@ -161,7 +159,7 @@ public class GraphicObjectRenderer {
 
 	}
 	
-	private static GraphicObject[] drawItems(int xcoord, int ycoord,
+	private GraphicObject[] drawItems(int xcoord, int ycoord,
 			ItemInfo[] itemArray, int roomSize) {
 		if (itemArray == null) {
 			return new GraphicObject[0];
@@ -462,26 +460,26 @@ public class GraphicObjectRenderer {
 
 	}
 	
-	private static Point[] getItemPoints(int xcoord, int ycoord, int roomSize) {
+	private Point[] getItemPoints(int xcoord, int ycoord, int roomSize) {
 		Point[] points = new Point[4];
 
-		points[0] = new Point(xcoord + RoomSize.by2(roomSize) -  RoomSize.by8(roomSize),
-				ycoord + RoomSize.by3(roomSize));
-		points[1] = new Point(xcoord + RoomSize.by2(roomSize), ycoord + RoomSize.by2(roomSize)
-				- RoomSize.by16(roomSize));
-		points[2] = new Point(xcoord + RoomSize.by3(roomSize), ycoord
-				+ (3 * RoomSize.by5(roomSize)));
-		points[3] = new Point(xcoord + (int) (3 * RoomSize.by5(roomSize)), ycoord
-				+ (3 * RoomSize.by5(roomSize)));
+		points[0] = new Point(xcoord + ROOMSIZE_BY_2 -  ROOMSIZE_BY_8,
+				ycoord + ROOMSIZE_BY_3);
+		points[1] = new Point(xcoord + ROOMSIZE_BY_2, ycoord + ROOMSIZE_BY_2
+				- ROOMSIZE_BY_16);
+		points[2] = new Point(xcoord + ROOMSIZE_BY_3, ycoord
+				+ (3 * ROOMSIZE_BY_5));
+		points[3] = new Point(xcoord + (int) (3 * ROOMSIZE_BY_5), ycoord
+				+ (3 * ROOMSIZE_BY_5));
 
 		return points;
 	}
 	
-	private static GraphicObject drawAMonster(MonsterInfo m, Point p, int roomSize) {
+	private GraphicObject drawAMonster(MonsterInfo m, Point p) {
 		JDImageAWT ob = null;
 		int mClass = m.getMonsterClass();
-		int sizeX = (int) (getMonsterSize(m, roomSize).width);
-		int sizeY = (int) (getMonsterSize(m, roomSize).height);
+		int sizeX = (int) (getMonsterSize(m).width);
+		int sizeY = (int) (getMonsterSize(m).height);
 		JDRectangle rect = new JDRectangle(new JDPoint(p.x - (sizeX / 2), p.y
 				- (sizeY / 2)), sizeX, sizeY);
 		int dir = m.getLookDir();
@@ -550,12 +548,12 @@ public class GraphicObjectRenderer {
 			}
 		}
 
-		int mouseSize = RoomSize.by5(roomSize);
+		int mouseSize =ROOMSIZE_BY_5;
 		return new JDGraphicObject(ob, m, rect, Color.white, new JDRectangle(p.x - mouseSize / 2, p.y - mouseSize / 2,
 				mouseSize, mouseSize));
 	}
 	
-	public static Dimension getMonsterSize(MonsterInfo m, int roomSize) {
+	public Dimension getMonsterSize(MonsterInfo m) {
 		int mClass = m.getMonsterClass();
 		if (mClass == Monster.WOLF) {
 			return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
@@ -567,10 +565,10 @@ public class GraphicObjectRenderer {
 			return new Dimension((int) (roomSize / 2.5), (int) (roomSize / 2.5));
 		}
 		if (mClass == Monster.GHUL) {
-			return new Dimension(RoomSize.by2(roomSize), RoomSize.by2(roomSize));
+			return new Dimension(ROOMSIZE_BY_2, ROOMSIZE_BY_2);
 		}
 		if (mClass == Monster.OGRE) {
-			return new Dimension(RoomSize.by2(roomSize), RoomSize.by2(roomSize));
+			return new Dimension(ROOMSIZE_BY_2, ROOMSIZE_BY_2);
 		}
 		if (mClass == Monster.BEAR) {
 			return new Dimension((int) (roomSize / 2.2), (int) (roomSize / 2.2));
@@ -592,9 +590,9 @@ public class GraphicObjectRenderer {
 			MonsterInfo m = ((MonsterInfo) monsterList.get(i));
 			int position = m.getPositionInRoomIndex();
 
-			GraphicObject gr = GraphicObjectRenderer.drawAMonster(m, new Point(
+			GraphicObject gr = drawAMonster(m, new Point(
 					getPositionCoordModified(position).x + xcoord,
-					getPositionCoordModified(position).y + ycoord), roomSize);
+					getPositionCoordModified(position).y + ycoord));
 			if (i >= 8) {
 				break;
 			}
@@ -1034,7 +1032,7 @@ public class GraphicObjectRenderer {
 	
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r,
 			Object obj, int xcoord, int ycoord,
-			List aniObs) {
+			List<?> aniObs) {
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, this);
@@ -1056,7 +1054,7 @@ public class GraphicObjectRenderer {
 			if (r.equals(gui.getFigure().getRoomInfo())) {
 				Point[] positionCoord = getPositionCoord();
 				for (int i = 0; i < positionCoord.length; i++) {
-					int posSize = RoomSize.by8(roomSize);
+					int posSize = ROOMSIZE_BY_8;
 
 					GraphicObject ob = new GraphicObject(
 							r.getPositionInRoom(i), new Rectangle(
@@ -1115,7 +1113,7 @@ public class GraphicObjectRenderer {
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
 
-			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord,
+			GraphicObject[] itObs = drawItems(xcoord,
 					ycoord, r.getItemArray(), roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
@@ -1186,7 +1184,7 @@ public class GraphicObjectRenderer {
 			Point[] positionCoord = getPositionCoord();
 			if (r.equals(gui.getFigure().getRoomInfo())) {
 				for (int i = 0; i < positionCoord.length; i++) {
-					int posSize = RoomSize.by8(roomSize);
+					int posSize = ROOMSIZE_BY_8;
 
 					JDImageProxy<?> im = ImageManager.fieldImage;
 					GraphicObject ob = new GraphicObject(
@@ -1212,7 +1210,7 @@ public class GraphicObjectRenderer {
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS) || (visCheat)) {
 
-			GraphicObject[] itObs = GraphicObjectRenderer.drawItems(xcoord,
+			GraphicObject[] itObs = drawItems(xcoord,
 					ycoord, r.getItemArray(), roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];

@@ -14,26 +14,21 @@
 package gui.engine2D;
 
 import graphics.AbstractImageLoader;
-import io.ImageLoader;
 import io.PictureLoadDialog;
 import io.ResourceLoader;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.LookupOp;
-import java.applet.*;
+import java.applet.Applet;
+import java.awt.Image;
+import java.awt.MediaTracker;
 import java.io.File;
-import java.net.*;
+import java.net.URL;
 
 public class AWTImageLoader implements AbstractImageLoader<Image> {
 
 	public static final String LOCAL_PICTURE_PATH = "resources/pics/";
 
-	Applet applet;
-	static MediaTracker tracker = null;
+	private Applet applet;
+	private static MediaTracker tracker = null;
 
 	public AWTImageLoader(Applet a) {
 		applet = a;
@@ -53,7 +48,6 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 		Image im = null;
 		String path = new String();
 
-		//System.out.println("loadImage: " + filename);
 		if (a != null) {
 			// Falls als Applet gestartet
 			path = "";
@@ -62,11 +56,7 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 			if (dialog != null) {
 				dialog.setPicName(filename);
 			}
-			ImageLoader r3 = new ImageLoader(a);
 			try {
-				String file = path + filename;
-				//System.out.println("versuche bild über applet zu laden: "+ file);
-				// im = r3.getImage(file);
 				String picsFolder = "/pics/";
 				URL url = new URL(a.getCodeBase().toExternalForm() +picsFolder);
 				int lastPathSep = filename.lastIndexOf("/");
@@ -75,7 +65,6 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 					filename = filename.substring(lastPathSep + 1);
 					url = new URL(a.getCodeBase().toExternalForm() + picsFolder
 							+ folderpath);
-					//System.out.println("Url: " + url.toExternalForm()		+ "  file:  " + filename);
 				} 
 				im = a.getImage(url, filename);
 				if (im == null) {
@@ -86,7 +75,6 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 				System.out.println("Bild aus Applet laden gescheitert!");
 			}
 		} else {
-			//System.out.println("lade bild ohne applet: "+filename);
 			if (dialog != null) {
 				dialog.setPicName(filename);
 			}
@@ -101,7 +89,6 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 
 				}
 			} catch (Exception e) {
-				// System.out.println("Bild nicht geladen: "+filename);
 
 			}
 		}

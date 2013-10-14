@@ -89,8 +89,7 @@ public class AnimationFake extends Animation implements Runnable {
 		if (o instanceof HeroInfo) {
 			return bild.getHeroSize();
 		} else if (o instanceof MonsterInfo) {
-			return GraphicObjectRenderer.getMonsterSize((MonsterInfo) o,
-					roomSize);
+			return bild.getMonsterSize((MonsterInfo) o);
 		} else {
 			return null;
 		}

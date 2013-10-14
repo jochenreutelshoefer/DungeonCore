@@ -22,7 +22,7 @@ public class GraphicObject {
 		return rect;
 	}
 
-	public JDImageProxy getImage() {
+	public JDImageProxy<?> getImage() {
 		return image;
 	}
 	protected JDRectangle rect;
@@ -33,13 +33,13 @@ public class GraphicObject {
 	protected Object clickedObject;
 
 	protected boolean rim = false;
-	protected JDImageProxy image;
+	protected JDImageProxy<?> image;
 
 	public GraphicObject(
 		Object ob,
 		JDRectangle o,
 		Color c,
-		JDImageProxy i) {
+		JDImageProxy<?> i) {
 		
 		this.rect = o;
 		this.c = c;
@@ -51,7 +51,7 @@ public class GraphicObject {
 			Object ob,
 			Rectangle o,
 			Color c,
-			JDImageProxy i) {			
+			JDImageProxy<?> i) {			
 			this(ob, new JDRectangle(o.x, o.y, o.width, o.height), c, i);
 		}
 	
@@ -59,7 +59,7 @@ public class GraphicObject {
 			Object ob,
 			JDRectangle o,
 			Color c,
-			JDImageProxy i, JDRectangle clickRect) {
+			JDImageProxy<?> i, JDRectangle clickRect) {
 			
 			this.rect = o;
 			this.c = c;
@@ -72,12 +72,12 @@ public class GraphicObject {
 			Object ob,
 			Rectangle o,
 			Color c,
-			JDImageProxy i, Rectangle clickRect) {
+			JDImageProxy<?> i, Rectangle clickRect) {
 			
 			this(ob, new JDRectangle(o.x, o.y, o.width, o.height), c, i,new JDRectangle(clickRect.x, clickRect.y, clickRect.width, clickRect.height));
 		}
 
-	public GraphicObject(Object ob,	JDRectangle o,Color c,boolean rim,JDImageProxy i) {
+	public GraphicObject(Object ob,	JDRectangle o,Color c,boolean rim,JDImageProxy<?> i) {
 		this.rim = rim;
 		this.rect = o;
 		this.c = c;
@@ -85,7 +85,7 @@ public class GraphicObject {
 		image = i;
 	}
 	
-	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,JDImageProxy i) {
+	public GraphicObject(Object ob,	Rectangle o,Color c,boolean rim,JDImageProxy<?> i) {
 		this(ob, new JDRectangle(o.x, o.y, o.width, o.height), c,rim, i);
 		
 	}
