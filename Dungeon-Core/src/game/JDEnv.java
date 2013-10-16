@@ -1,5 +1,8 @@
 package game;
 
+import gui.Texts;
+
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -10,7 +13,7 @@ import java.util.ResourceBundle;
  */
 public class JDEnv {
 
-	protected static DungeonGame game;
+	public static DungeonGame game;
 	
 	protected static ResourceBundle res;
 	
@@ -28,6 +31,25 @@ public class JDEnv {
 		JDEnv.english = english;
 	}
 
+	public static void init() {
+		Locale loc_de = Locale.GERMAN;
+		Locale loc_en = Locale.ENGLISH;
+
+		if (english) {
+			res = ResourceBundle.getBundle("texts", loc_en);
+		} else {
+			res = ResourceBundle.getBundle("texts", loc_de);
+
+		}
+
+		if (res == null) {
+			System.out.println("Bundle ist null");
+			System.exit(0);
+		}
+		Texts.init();
+
+	}
+	
 	public static ResourceBundle getResourceBundle() {
 		return res;
 	}

@@ -11,13 +11,13 @@ import java.util.List;
 import figure.Figure;
 import game.JDEnv;
 
-public abstract class Percept extends JDEnv{
+public abstract class Percept {
 	
 	protected Figure viewer;
 	protected int round; 
 	
 	public Percept() {
-		round = this.game.getRound();
+		round = JDEnv.game.getRound();
 	}
 	
 	public void perceivedBy(Figure f) {
