@@ -50,7 +50,7 @@ import spell.Thunderstorm;
 import figure.attribute.Attribute;
 import figure.attribute.ItemModification;
 import figure.hero.Character;
-import game.Game;
+import game.DungeonGame;
 
 
 public class ItemPool {
@@ -326,8 +326,8 @@ public class ItemPool {
 		return i;
 	}
 	
-	public static Game game = null;
-	public static void setGame(Game game) {
+	public static DungeonGame game = null;
+	public static void setGame(DungeonGame game) {
 		ItemPool.game = game;
 	}
 

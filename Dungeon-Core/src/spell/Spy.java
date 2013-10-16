@@ -10,7 +10,7 @@
 package spell;
 
 import java.util.*;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import gui.Texts;
 

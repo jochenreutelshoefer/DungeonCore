@@ -17,7 +17,7 @@ import dungeon.RouteInstruction;
 
 import figure.Figure;
 import figure.monster.Monster;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 
 public class SectorDungeonFiller1 extends DungeonFiller {
@@ -25,7 +25,7 @@ public class SectorDungeonFiller1 extends DungeonFiller {
 	public boolean succes = true;
 
 	// dungeonView view;
-	public SectorDungeonFiller1(Dungeon d, int value, Game game, Rune[] runen,
+	public SectorDungeonFiller1(Dungeon d, int value, DungeonGame game, Rune[] runen,
 
 	int level) {
 

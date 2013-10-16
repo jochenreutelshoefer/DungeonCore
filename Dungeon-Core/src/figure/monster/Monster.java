@@ -36,7 +36,7 @@ import figure.percept.DiePercept;
 import figure.percept.FleePercept;
 import figure.percept.ItemDroppedPercept;
 import figure.percept.Percept;
-import game.Game;
+import game.DungeonGame;
 import game.InfoEntity;
 import game.InfoProvider;
 import game.JDEnv;
@@ -276,7 +276,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return tumbleValue;
 	}
 
-	public static Monster createMonster(int type, int value, Game game) {
+	public static Monster createMonster(int type, int value, DungeonGame game) {
 		if (type == WOLF) {
 			return new Wolf(value);
 		}
@@ -355,7 +355,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * @return a <code>monster</code> value
 	 */
 	public static Monster newMonster(int value, Dungeon d, int x, int y,
-			Game game) {
+			DungeonGame game) {
 		int a = (int) (Math.random() * 100);
 		// System.out.println("bis 100: " + a);
 		if (a <= 10)

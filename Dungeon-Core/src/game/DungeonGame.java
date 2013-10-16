@@ -44,7 +44,7 @@ import gui.AbstractStartWindow;
  * Aktionen (Klasse Action) erstellen und auffuehren.
  * 
  */
-public class Game implements Runnable {
+public class DungeonGame implements Runnable {
 
 	public boolean started = false;
 
@@ -76,16 +76,16 @@ public class Game implements Runnable {
 
 	TestTracker tracker;
 	
-	private static Game instance = null;
+	private static DungeonGame instance = null;
 	
-	public static Game getInstance() {
+	public static DungeonGame getInstance() {
 		if(instance == null) {
-			instance = new Game();
+			instance = new DungeonGame();
 		}
 		return instance;
 	}
 
-	private Game() {
+	private DungeonGame() {
 		startTime = System.currentTimeMillis();
 		tracker = new TestTracker();
 	}

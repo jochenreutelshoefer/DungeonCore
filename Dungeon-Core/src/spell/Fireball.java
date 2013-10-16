@@ -14,7 +14,7 @@ import java.util.*;
 import dungeon.Position;
 
 import util.Arith;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import fight.Slap;
 import fight.SlapResult;

@@ -17,7 +17,7 @@ import dungeon.RouteInstruction;
 import shrine.DarkMasterShrine;
 
 import figure.monster.Monster;
-import game.Game;
+import game.DungeonGame;
 
 
 
@@ -38,7 +38,7 @@ public class Sector {
 	Dungeon d;
 
 	
-	Game game;
+	DungeonGame game;
 
 	
 	DungeonFiller df;
@@ -54,7 +54,7 @@ public class Sector {
 		int number,
 		int avMonsterStrength,
 		int mainSize,
-		Game game,
+		DungeonGame game,
 		DungeonFiller df) {
 		this.df = df;
 		this.d = d;
@@ -107,10 +107,10 @@ public class Sector {
 		if (!master_activated) {
 
 			if (dark_master_room != null) {
-//				game.newStatement("Du hörst plötzlich einen langgezogenen dumpfen Schrei, offenbar von der" +
-//					" Kreatur, die Du eben halb tot geprügelt hast. Der Schrei gellt duch die Gemäuer und als " +
-//					"er endlich abklingt hast Du das Gefühl, dass sich dort tiefer im Dungeon hinter den " +
-//					"dunklen Mauern etwas tut. Und Du fühlst Dich gar nicht wohl dabei.",3);
+//				game.newStatement("Du hï¿½rst plï¿½tzlich einen langgezogenen dumpfen Schrei, offenbar von der" +
+//					" Kreatur, die Du eben halb tot geprï¿½gelt hast. Der Schrei gellt duch die Gemï¿½uer und als " +
+//					"er endlich abklingt hast Du das Gefï¿½hl, dass sich dort tiefer im Dungeon hinter den " +
+//					"dunklen Mauern etwas tut. Und Du fï¿½hlst Dich gar nicht wohl dabei.",3);
 				((DarkMasterShrine)dark_master_room.getShrine()).callKeys();
 				
 			}

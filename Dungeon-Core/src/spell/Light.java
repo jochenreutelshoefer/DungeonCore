@@ -9,7 +9,7 @@
 package spell;
 
 import java.util.*;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import figure.Figure;
 import figure.hero.Hero;

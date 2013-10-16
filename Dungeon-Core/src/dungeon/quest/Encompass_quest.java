@@ -4,7 +4,7 @@ import dungeon.generate.DungeonFiller;
 import item.*;
 import shrine.*;
 import figure.monster.Monster;
-import game.Game;
+import game.DungeonGame;
 
 /**
  * Ein Quest, bei dem starke Monster einen Schatz umzingeln, bis auf eine Luecke,
@@ -15,7 +15,7 @@ public class Encompass_quest extends Quest {
 	
 	public static int size = 5;
 	
-	public Encompass_quest(Room r, Dungeon d, int level, Game game) {
+	public Encompass_quest(Room r, Dungeon d, int level, DungeonGame game) {
 		int [][] a = getArray();
 		fillRooms(d,r,a,level, game);
 	}
@@ -32,7 +32,7 @@ public class Encompass_quest extends Quest {
 	public void action() {
 	}
 
-	private void fillRooms(Dungeon d, Room r, int [][]a, int level, Game game) {
+	private void fillRooms(Dungeon d, Room r, int [][]a, int level, DungeonGame game) {
 		JDPoint p = r.getNumber();
 		for(int i = 0; i < 5; i++) {
 			for(int j = 0; j < 5; j++) {
@@ -48,15 +48,15 @@ public class Encompass_quest extends Quest {
 					
 				}
 				if(c == 2) {
-					String s = "Hier befindet sich die letzte Ruhestätte des";
+					String s = "Hier befindet sich die letzte Ruhestï¿½tte des";
 					s += " grossen Merianor, dem einstigen Herrscher des Dungeon.";
-					s += " Seine Rache wird die treffen, die seine Ruhe stören.";
+					s += " Seine Rache wird die treffen, die seine Ruhe stï¿½ren.";
 					raum.setShrine((Shrine)(new InfoShrine(s, raum)),true);
 				}
 				if(c == 3) {
 					String s = "Dies ist das Grab des Merianor, und all derer";
-					s += " die es wagen hierher zu kommen und seine Ruhe zu stören.";
-					//s += " Seine Rache wird die Treffen, die sein Ruhe stören.";
+					s += " die es wagen hierher zu kommen und seine Ruhe zu stï¿½ren.";
+					//s += " Seine Rache wird die Treffen, die sein Ruhe stï¿½ren.";
 					raum.setShrine(new InfoShrine(s, raum),true);
 					int k = (int)(Math.random()* 4) + 2;
 					for(int o = 0; o < 5; o++) {

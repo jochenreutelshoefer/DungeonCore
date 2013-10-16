@@ -35,7 +35,7 @@ import shrine.RuneShrine;
 import shrine.Shrine;
 
 import figure.monster.Monster;
-import game.Game;
+import game.DungeonGame;
 
 
 public class Sector2 extends Sector {
@@ -62,7 +62,7 @@ public class Sector2 extends Sector {
 		int number,
 		int avMonsterStrength,
 		int mainSize,
-		Game game,
+		DungeonGame game,
 		DungeonFiller df) {
 
 		this.df = df;

@@ -11,7 +11,7 @@ package spell;
 import java.util.LinkedList;
 
 import dungeon.Room;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import fight.Slap;
 import fight.SlapResult;

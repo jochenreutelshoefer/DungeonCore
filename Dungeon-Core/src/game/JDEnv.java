@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
  */
 public class JDEnv {
 
-	protected static Game game;
+	protected static DungeonGame game;
 	
 	protected static ResourceBundle res;
 	
@@ -18,11 +18,21 @@ public class JDEnv {
 	
 	public static double BEGINNER_RATE = 0.65;
 	
+	private static boolean english = false;
+	
+	public static boolean isEnglish() {
+		return english;
+	}
+
+	public static void setEnglish(boolean english) {
+		JDEnv.english = english;
+	}
+
 	public static ResourceBundle getResourceBundle() {
 		return res;
 	}
 
-	public static void setGame(Game g) {
+	public static void setGame(DungeonGame g) {
 		game = g;
 		System.gc();
 	}

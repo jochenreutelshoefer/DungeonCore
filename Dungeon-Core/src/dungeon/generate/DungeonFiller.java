@@ -16,7 +16,7 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
-import game.Game;
+import game.DungeonGame;
 import item.DustItem;
 import item.HealPotion;
 import item.Item;
@@ -59,7 +59,7 @@ public abstract class DungeonFiller {
 	 * @uml.property name="game"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	Game game;
+	DungeonGame game;
 
 	/**
 	 * 
@@ -95,7 +95,7 @@ public abstract class DungeonFiller {
 	public DungeonFiller(
 		Dungeon d,
 		int value,
-		Game game,
+		DungeonGame game,
 		Rune[] runen,
 		int level) {
 		this.d = d;
@@ -505,7 +505,7 @@ public abstract class DungeonFiller {
 
 	}
 
-	public static Monster getBigMonster(int value, Game game) {
+	public static Monster getBigMonster(int value, DungeonGame game) {
 		int k = (int) (Math.random() * 3);
 		if (k == 0)
 			return new Spider(value);

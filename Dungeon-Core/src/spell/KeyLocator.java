@@ -3,7 +3,7 @@ import dungeon.Door;
 import dungeon.DoorInfo;
 import figure.Figure;
 import figure.percept.TextPercept;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 
 /**

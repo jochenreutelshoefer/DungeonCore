@@ -9,7 +9,7 @@ package spell;
 
 import dungeon.HiddenSpot;
 import dungeon.Door;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import dungeon.Room;
 import figure.Figure;

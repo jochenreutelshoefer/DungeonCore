@@ -9,7 +9,7 @@ import fight.Slap;
 import figure.Figure;
 import figure.action.Action;
 import figure.attribute.Attribute;
-import game.Game;
+import game.DungeonGame;
 
 /**
  * Endgegner von Sektor 1. Wird herbeigerufen von verletzten Monstern. Ist allwissend.
@@ -29,7 +29,7 @@ public class DarkMaster extends Monster {
 	/**
 	 * @param game
 	 */
-	public DarkMaster(Game game, Room baseRoom) {
+	public DarkMaster(DungeonGame game, Room baseRoom) {
 
 		super(3000);
 		tumbleValue = 0;
@@ -220,7 +220,7 @@ public class DarkMaster extends Monster {
 //			value = 0;
 //		}
 //		if (elude == 0) {
-//			//gegner gelähmt - voller Schlag
+//			//gegner gelï¿½hmt - voller Schlag
 //			value = getSlapStrength(m);
 //		}
 //
@@ -258,7 +258,7 @@ public class DarkMaster extends Monster {
 //			}
 //			justGotSlap = false;
 //		}
-//		//System.out.println("das Monster kämpft");
+//		//System.out.println("das Monster kï¿½mpft");
 //		if (dead) {
 //			game.newStatement("stirbt jetzt erstmal gleich!", 2);
 //			getKilled();
@@ -291,7 +291,7 @@ public class DarkMaster extends Monster {
 //				beam = true;
 //				attack(op);
 //				newStatement(
-//					"Hmm, ich werde Dich später töten, bis dahin musst Du mit meinen Dienern vorlieb nehmen!\n"
+//					"Hmm, ich werde Dich spï¿½ter tï¿½ten, bis dahin musst Du mit meinen Dienern vorlieb nehmen!\n"
 //						+ "Aber ich komme wieder!",
 //					3);
 //				Room here = getRoom();
@@ -320,7 +320,7 @@ public class DarkMaster extends Monster {
 	//			//w.newStatement(getName() + getStatus(), 0);
 	//			justGotSlap = false;
 	//		}
-	//		//System.out.println("das Monster kämpft");
+	//		//System.out.println("das Monster kï¿½mpft");
 	//		if (dead) {
 	//			w.newStatement("stirbt jetzt erstmal gleich!", 2);
 	//			getKilled(w);
@@ -336,7 +336,7 @@ public class DarkMaster extends Monster {
 	//			k = 1;
 	//		for (int i = 0;
 	//			i < k;
-	//			i++) { //brave gibt den Wert wie oft geprüft wird, der beste Wert wird genommen
+	//			i++) { //brave gibt den Wert wie oft geprï¿½ft wird, der beste Wert wird genommen
 	//			int a = fleeHelp(handycap);
 	//			////System.out.println("Durchlauf: "+Integer.toString(i)+" Wert: "+Integer.toString(a));
 	//			if (a > level)
@@ -367,7 +367,7 @@ public class DarkMaster extends Monster {
 	//				exitsFight = true;
 	//				w.newStatement(getName() + texts.flee(1), 2);
 	//				getGame().newStatement(
-	//					" Level ist 1 -> Gegenstände verlieren & fliehen... ",
+	//					" Level ist 1 -> Gegenstï¿½nde verlieren & fliehen... ",
 	//					4);
 	//			} else if (level == 2) {
 	//				flee(w);
@@ -378,21 +378,21 @@ public class DarkMaster extends Monster {
 	//				int r = ((int) (Math.random() * 5)) + 2;
 	//				decFightAP(r);
 	//				w.newStatement(getName() + texts.flee(3), 2);
-	//				getGame().newStatement(" Level ist 3 -> wird gelähmt:" + r, 4);
+	//				getGame().newStatement(" Level ist 3 -> wird gelï¿½hmt:" + r, 4);
 	//			} else if (level == 4) {
 	//				int r = ((int) (Math.random() * 3)) + 1;
 	//				decFightAP(r);
 	//				w.newStatement(getName() + texts.flee(4), 2);
-	//				getGame().newStatement(" Level ist 4 -> wird gelähmt:" + r, 4);
+	//				getGame().newStatement(" Level ist 4 -> wird gelï¿½hmt:" + r, 4);
 	//			} else if (level == 5) {
 	//				w.newStatement(getName() + texts.flee(5), 1);
-	//				getGame().newStatement(" Level ist 5 -> kämpft weiter", 4);
+	//				getGame().newStatement(" Level ist 5 -> kï¿½mpft weiter", 4);
 	//			}
 	//
 	//			if (brave.getValue() < brave.getBasic()) {
 	//				if ((int) (Math.random() * 1) < 1) {
 	//					brave.modValue(1);
-	//					getGame().newStatement(" Mut um 1 erhöht", 4);
+	//					getGame().newStatement(" Mut um 1 erhï¿½ht", 4);
 	//				}
 	//			}
 	//		} else {
@@ -443,7 +443,7 @@ public class DarkMaster extends Monster {
 	//
 	//			monster m = base.getSec().getRandomSectorMonster(0);
 	////			System.out.println(
-	////				"Auserwähltes Monster!: "
+	////				"Auserwï¿½hltes Monster!: "
 	////					+ m.toString()
 	////					+ "in: "
 	////					+ m.getRoom().toString());
@@ -464,7 +464,7 @@ public class DarkMaster extends Monster {
 	//			if (beam) {
 	//
 	//				w.newStatement(
-	//					"Hmm, ich werde Dich später töten, bis dahin musst Du mit meinen Dienern vorlieb nehmen!\n"
+	//					"Hmm, ich werde Dich spï¿½ter tï¿½ten, bis dahin musst Du mit meinen Dienern vorlieb nehmen!\n"
 	//						+ "Aber ich komme wieder!",
 	//					3);
 	//			}
@@ -535,7 +535,7 @@ public class DarkMaster extends Monster {
 	//				value = 0;
 	//			}
 	//			if (elude == 0) {
-	//				//gegner gelähmt - voller Schlag
+	//				//gegner gelï¿½hmt - voller Schlag
 	//				value = getSlapStrength(m);
 	//			}
 	//			int random = (int) (Math.random() * 100);

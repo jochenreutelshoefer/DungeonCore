@@ -1,6 +1,6 @@
 package dungeon;
 
-import game.Game;
+import game.DungeonGame;
 //import dungeon.*;
 
 /**
@@ -26,7 +26,7 @@ public class RouteInstruction {
 	}
 	
 	public RouteInstruction(RoomInfo r) {
-		destination = Game.getInstance().getDungeon().getRoom(r.getLocation());
+		destination = DungeonGame.getInstance().getDungeon().getRoom(r.getLocation());
 	}
 
 

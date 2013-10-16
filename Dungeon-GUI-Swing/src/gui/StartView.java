@@ -4,7 +4,7 @@ package gui;
 
 import figure.Figure;
 import figure.hero.Hero;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import graphics.ImageManager;
 import gui.audio.AppletAudioLoader;
@@ -294,7 +294,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 	
 	MainFrame main;
 
-	Game dagame;
+	DungeonGame dagame;
 
 	MyJDGui gui;
 
@@ -476,7 +476,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 				heldFenster.dispose();
 
 				
-				dagame = Game.getInstance();
+				dagame = DungeonGame.getInstance();
 //				dagame.init(this, applet, s, h,
 //						this.sendHighscore, new MyJDGui(), AId3Factory.makeAI());
 				dagame.init(this, applet, s, h,

@@ -14,7 +14,7 @@ import java.awt.event.*;
 
 
 import dungeon.RouteInstruction;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import figure.Figure;
 import figure.action.FleeAction;

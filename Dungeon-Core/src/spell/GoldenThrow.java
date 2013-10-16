@@ -4,7 +4,7 @@ import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.percept.TextPercept;
 import gui.*;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 
 

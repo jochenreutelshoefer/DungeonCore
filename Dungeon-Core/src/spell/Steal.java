@@ -1,7 +1,7 @@
 package spell;
 
 import item.*;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 
 import java.util.*;

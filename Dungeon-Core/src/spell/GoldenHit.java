@@ -15,7 +15,7 @@ import dungeon.Position;
 import figure.Figure;
 import figure.percept.TextPercept;
 import gui.*;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 public class GoldenHit extends Spell implements TargetSpell{
 	

@@ -29,11 +29,11 @@ public class Dungeon implements Turnable {
 
 	List<Shrine> shrines = new LinkedList<Shrine>();
 
-	Game game;
+	DungeonGame game;
 
 	public JDPoint nature_brood_point;
 
-	public Dungeon(int x, int y, int xh, int yh, Game g) {
+	public Dungeon(int x, int y, int xh, int yh, DungeonGame g) {
 
 		this.game = g;
 
@@ -724,7 +724,7 @@ public class Dungeon implements Turnable {
 
 	}
 
-	public Game getGame() {
+	public DungeonGame getGame() {
 		return game;
 	}
 

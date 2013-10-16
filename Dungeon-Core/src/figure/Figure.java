@@ -82,7 +82,7 @@ import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 import game.ControlUnit;
-import game.Game;
+import game.DungeonGame;
 import game.InfoEntity;
 import game.InfoProvider;
 import game.JDEnv;
@@ -127,7 +127,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	protected int fightAP = 0;
 	
-	protected Game game;
+	protected DungeonGame game;
 
 	private Spell lastSpell = null;
 
@@ -1939,7 +1939,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		return roomVisibility.getStatusObject(p);
 	}
 
-	public Game getGame() {
+	public DungeonGame getGame() {
 		return game;
 	}
 

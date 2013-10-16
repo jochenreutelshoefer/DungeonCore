@@ -17,7 +17,7 @@ import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Wolf;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import item.AttrPotion;
 import item.DustItem;
@@ -82,7 +82,7 @@ public class Sector1 extends Sector {
 	Room con_room = null;
 
 	public Sector1(Dungeon d, JDPoint startRoom, int number,
-			int avMonsterStrength, int mainSize, Game game, DungeonFiller df) throws DungeonGenerationFailedException{
+			int avMonsterStrength, int mainSize, DungeonGame game, DungeonFiller df) throws DungeonGenerationFailedException{
 
 		this.df = df;
 		this.game = game;

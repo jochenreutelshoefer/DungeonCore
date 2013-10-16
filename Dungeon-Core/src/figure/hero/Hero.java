@@ -46,7 +46,7 @@ import figure.percept.InfoPercept;
 import figure.percept.Percept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.TextPercept;
-import game.Game;
+import game.DungeonGame;
 import game.InfoEntity;
 import game.InfoProvider;
 
@@ -1584,7 +1584,7 @@ public class Hero extends Figure implements InfoProvider {
 	// }
 	// }
 
-	public Game getGame() {
+	public DungeonGame getGame() {
 		return game;
 	}
 

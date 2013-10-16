@@ -13,7 +13,7 @@ import java.util.*;
 
 import dungeon.Door;
 import dungeon.Position;
-import game.Game;
+import game.DungeonGame;
 import game.JDEnv;
 import fight.Frightening;
 import figure.Figure;
