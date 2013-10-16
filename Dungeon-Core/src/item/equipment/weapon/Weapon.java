@@ -1,25 +1,21 @@
 package item.equipment.weapon;
 
-import item.Item;
+import figure.attribute.Attribute;
+import figure.attribute.ItemModification;
+import game.JDEnv;
+import gui.Paragraph;
 import item.equipment.EquipmentItem;
 
-import java.util.*;
+import java.util.LinkedList;
 
+import util.JDColor;
+import dungeon.Position;
 /**
  * abstrakte Klasse weapon
  *
  * @author <a href="mailto:"></a>
  * @version 1.0
  */
-
-import java.awt.Color;
-
-import dungeon.Position;
-
-import figure.attribute.Attribute;
-import figure.attribute.ItemModification;
-import game.JDEnv;
-import gui.Paragraph;
 
 
 public abstract class Weapon extends EquipmentItem {
@@ -54,7 +50,7 @@ public abstract class Weapon extends EquipmentItem {
 
 	public int getDamage(int k) {
 		actualHits++;
-		////System.out.println("Schläge: "+actualHits);
+		////System.out.println("Schlï¿½ge: "+actualHits);
 		if (actualHits == hitsPerHP) {
 			////System.out.println("Waffenzustand -1");
 			hitPoints.modValue(-1);
@@ -62,12 +58,12 @@ public abstract class Weapon extends EquipmentItem {
 		}
 
 		if (k == 0) {
-			return (int) getMin_Damage()
+			return getMin_Damage()
 				+ ((int) (Math.random() * ((2 * scatter) + 1)));
 		} else if (k == -1) {
-			return (int) getMin_Damage();
+			return getMin_Damage();
 		} else if (k == 1) {
-			return (int) getMaxDamage();
+			return getMaxDamage();
 		} else
 			return 0;
 	}
@@ -148,7 +144,7 @@ public abstract class Weapon extends EquipmentItem {
 	protected static int tumbleBasicValue;
 
 	/**
-	 * Random Konstruktor erschafft zufällige Waffen írgendeines Typs
+	 * Random Konstruktor erschafft zufï¿½llige Waffen ï¿½rgendeines Typs
 	 *
 	 * @param value an <code>int</code> value
 	 * @return a <code>weapon</code> value
@@ -222,12 +218,13 @@ public abstract class Weapon extends EquipmentItem {
 	}
 	
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph []p = new Paragraph[4];
 		p[0] = new Paragraph(getClassName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(new Color(82,82,82));
+		p[0].setColor(new JDColor(82, 82, 82));
 		p[0].setBold();
 		
 		p[1] = new Paragraph(getClassName()+ " "
@@ -238,7 +235,7 @@ public abstract class Weapon extends EquipmentItem {
 				+ chanceToHit);
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 		
 		String s = 	JDEnv.getResourceBundle().getString("damage")+": "
@@ -263,7 +260,7 @@ public abstract class Weapon extends EquipmentItem {
 		p[2] = new Paragraph(s);
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 		
 
 		
@@ -284,7 +281,7 @@ public abstract class Weapon extends EquipmentItem {
 		p[3] = new Paragraph(rangeString);
 		p[3].setSize(14);
 		p[3].setCentered();
-		p[3].setColor(Color.black);
+		p[3].setColor(JDColor.black);
 		
 		
 		
@@ -378,6 +375,7 @@ public abstract class Weapon extends EquipmentItem {
 		name = n;
 	}
 	
+	@Override
 	public String toString() {
 		//if(Max_Damage == 0) return ("keine");
 		//else { 
@@ -416,6 +414,7 @@ public abstract class Weapon extends EquipmentItem {
 		//}
 	}
 
+	@Override
 	public String getName() {
 		//if (unique) {
 			return name;
@@ -440,6 +439,7 @@ public abstract class Weapon extends EquipmentItem {
 	}
 	
 
+	@Override
 	public String getText() {
 		String s =
 			JDEnv.getResourceBundle().getString("damage")+": "

@@ -21,17 +21,17 @@ import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
 
-import java.awt.Color;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import shrine.ShrineInfo;
+import util.JDColor;
 
 public class RoomInfo extends InfoEntity  {
 
-	private Room r;
+	private final Room r;
 
 	//private RoomObservationStatus visStats;
 
@@ -52,6 +52,7 @@ public class RoomInfo extends InfoEntity  {
 		return null;
 	}
 	
+	@Override
 	public RoomMemory getMemoryObject(FigureInfo info) {
 		return (RoomMemory)r.getMemoryObject(info);
 	}
@@ -77,12 +78,14 @@ public class RoomInfo extends InfoEntity  {
 		return r.getConnectionDirectionTo(r1);
 	}
 	
+	@Override
 	public String toString() {
 		return r.toString();
 	}
 	
 	
 
+	@Override
 	public int hashCode() {
 		return r.getX() + r.getY();
 	}
@@ -91,6 +94,7 @@ public class RoomInfo extends InfoEntity  {
 		return r.getConnectionDirectionTo(other);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 
 		if (o instanceof RoomInfo) {
@@ -106,6 +110,7 @@ public class RoomInfo extends InfoEntity  {
 		return r.getNumber();
 	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		
 		String room = new String();
@@ -125,7 +130,7 @@ public class RoomInfo extends InfoEntity  {
 		p[0] = new Paragraph(room);
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 
 		String shrine = new String();
@@ -137,7 +142,7 @@ public class RoomInfo extends InfoEntity  {
 		p[1] = new Paragraph(shrine);
 		p[1].setSize(20);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 
 		String monster = new String();
@@ -150,7 +155,7 @@ public class RoomInfo extends InfoEntity  {
 		p[2] = new Paragraph(monster);
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 
 		String itemS = new String();
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
@@ -162,7 +167,7 @@ public class RoomInfo extends InfoEntity  {
 		p[3] = new Paragraph(itemS);
 		p[3].setSize(14);
 		p[3].setCentered();
-		p[3].setColor(Color.black);
+		p[3].setColor(JDColor.black);
 
 		return p;
 	}
@@ -295,7 +300,7 @@ public class RoomInfo extends InfoEntity  {
 			ItemInfo[] wrappedIts = new ItemInfo[itArray.length];
 			for (int i = 0; i < itArray.length; i++) {
 				if(itArray[i]!= null) {
-					wrappedIts[i] = (ItemInfo) ((Item)itArray[i]).makeInfoObject(map);
+					wrappedIts[i] = (ItemInfo) itArray[i].makeInfoObject(map);
 				}
 			}
 			return wrappedIts;
@@ -312,7 +317,7 @@ public class RoomInfo extends InfoEntity  {
 			int items = 0;
 			for (int i = 0; i < itArray.length; i++) {
 				if(itArray[i]!= null) {
-					wrappedIts[i] = (ItemInfo) ((Item)itArray[i]).makeInfoObject(map);
+					wrappedIts[i] = (ItemInfo) itArray[i].makeInfoObject(map);
 					items++;
 				}
 			}

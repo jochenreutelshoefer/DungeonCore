@@ -1,16 +1,30 @@
 package gui.mainframe.component;
 
-import gui.MyJDGui;
 import gui.JDJPanel;
+import gui.MyJDGui;
 import gui.Paragraph;
+import gui.engine2D.DrawUtils;
 import gui.mainframe.MainFrame;
 
-import javax.swing.*;
-import javax.swing.text.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.MediaTracker;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
-import javax.swing.border.*;
+import javax.swing.JTextPane;
+import javax.swing.border.EtchedBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
+import util.JDColor;
 
 /**
  * @author Duke1
@@ -74,6 +88,7 @@ public class InfoView extends JDJPanel {
 	private static final int texSizeY = 96;
 	
 
+	@Override
 	public void paint(Graphics g) {
 		if (m != null) {
 			if (offscreenImage == null) {
@@ -107,9 +122,10 @@ public class InfoView extends JDJPanel {
 							if (actualP[i] != null) {
 
 								String text = actualP[i].getText();
-								g2.setFont(new Font(actualP[i].getF(), 0,
+								g2.setFont(new Font(actualP[i].getFont(), 0,
 										actualP[i].getSize()));
-								g2.setColor(actualP[i].getC());
+								g2.setColor(DrawUtils.convertColor(actualP[i]
+										.getC()));
 								if (text != null) {
 
 									g2.drawString(text, calcx(actualP[i], i),
@@ -208,7 +224,7 @@ public class InfoView extends JDJPanel {
 					Paragraph sub = new Paragraph(s);
 					sub.setC(p[i].getC());
 					sub.setSize(p[i].getSize());
-					sub.setFont(p[i].getF());
+					sub.setFont(p[i].getFont());
 					list.add(sub);
 				}
 
@@ -235,7 +251,36 @@ public class InfoView extends JDJPanel {
 		if (pars != null) {
 
 			for (int i = 0; i < pars.length; i++) {
-				SimpleAttributeSet set = pars[i].getStyle();
+				SimpleAttributeSet style = new SimpleAttributeSet();
+				
+
+				boolean bold = pars[i].isBold();
+				boolean just = pars[i].isJustified();
+				boolean centered = pars[i].isCentered();
+				if (centered)
+					StyleConstants.setAlignment(style,
+							StyleConstants.ALIGN_CENTER);
+				if (just)
+					StyleConstants.setAlignment(style,
+							StyleConstants.ALIGN_JUSTIFIED);
+				if (bold)
+					StyleConstants.setBold(style, true);
+
+				JDColor color = pars[i].getC();
+				if (color != null) {
+
+				StyleConstants.setForeground(style,
+							DrawUtils.convertColor(color));
+				}
+				String font = pars[i].getFont();
+				if (font != null) {
+					StyleConstants.setFontFamily(style, font);
+				}
+				int size = pars[i].getSize();
+				if (size != 0) {
+					StyleConstants.setFontSize(style, size);
+				}
+				
 				String s = pars[i].getText();
 				if (s == null) {
 					s = new String();
@@ -244,9 +289,9 @@ public class InfoView extends JDJPanel {
 				int k = doc.getLength();
 				try {
 
-					doc.insertString(doc.getLength(), s + newline, set);
+					doc.insertString(doc.getLength(), s + newline, style);
 					// Formatierungen werden nicht korrekt angenommen
-					doc.setParagraphAttributes(k, l, set, true);
+					doc.setParagraphAttributes(k, l, style, true);
 					// Hier wird fuer jeden Absatz gepluggt
 
 				} catch (BadLocationException ble) {

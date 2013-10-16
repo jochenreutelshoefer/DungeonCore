@@ -10,18 +10,15 @@ package item.paper;
 
 
 
-import item.Item;
-import item.interfaces.Usable;
-
-import java.awt.Color;
-
-import spell.Spell;
-import spell.TargetSpell;
-
 import figure.Figure;
 import figure.action.result.ActionResult;
 import game.JDEnv;
 import gui.Paragraph;
+import item.Item;
+import item.interfaces.Usable;
+import spell.Spell;
+import spell.TargetSpell;
+import util.JDColor;
 public class Scroll extends Item implements Usable{
 	
 	
@@ -32,14 +29,17 @@ public class Scroll extends Item implements Usable{
 		s.setCost((int)(cost*0.5));
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return theSpell.isAbleToCast(f);
 	}
 	
+	@Override
 	public boolean usableOnce() {
 		return true;
 	}
 	
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		theSpell.setCostsAP(false);
 		ActionResult res = theSpell.fire(f,target,true);
@@ -50,6 +50,7 @@ public class Scroll extends Item implements Usable{
 		return false;
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return theSpell instanceof TargetSpell;
 	}
@@ -62,6 +63,7 @@ public class Scroll extends Item implements Usable{
 		return scroll;
 	}
 	
+	@Override
 	public String getText() {
 		String s = new String();
 		int t = theSpell.getLevel();
@@ -84,39 +86,41 @@ public class Scroll extends Item implements Usable{
 		s += "\n"+JDEnv.getResourceBundle().getString("cost")+":"+theSpell.getCost();
 		return s;
 	}
+	@Override
 	public String toString() {
 		String a = (scroll()+": "+theSpell.getName()+"("+theSpell.getLevel()+")("+theSpell.getCost()+")");
 		return a;
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph []p = new Paragraph[5];
 		p[0] = new Paragraph(scroll()+": "+theSpell.getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.blue);
+		p[0].setColor(JDColor.blue);
 		p[0].setBold();
 		
 		p[1] = new Paragraph(JDEnv.getResourceBundle().getString("spell")+JDEnv.getResourceBundle().getString("level")+": "+theSpell.getLevel());
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 		
 		p[2] = new Paragraph((JDEnv.getResourceBundle().getString("cost")+": "+theSpell.getCost()));
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 		
 		p[3] = new Paragraph((JDEnv.getResourceBundle().getString("spell_min_wisdom")+": "+theSpell.getDifficultyMin()));
 		p[3].setSize(14);
 		p[3].setCentered();
-		p[3].setColor(Color.black);
+		p[3].setColor(JDColor.black);
 		
 		p[4] = new Paragraph((JDEnv.getResourceBundle().getString("spell_difficulty")+": "+theSpell.getDifficulty()));
 		p[4].setSize(14);
 		p[4].setCentered();
-		p[4].setColor(Color.black);
+		p[4].setColor(JDColor.black);
 		
 		return p;
 	}

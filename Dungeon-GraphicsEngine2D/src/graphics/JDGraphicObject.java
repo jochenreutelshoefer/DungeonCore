@@ -8,7 +8,7 @@
  */
 package graphics;
 
-import graphics.util.JDColor;
+import util.JDColor;
 import graphics.util.JDRectangle;
 
 

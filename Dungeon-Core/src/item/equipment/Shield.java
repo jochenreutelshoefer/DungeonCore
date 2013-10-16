@@ -1,10 +1,8 @@
 package item.equipment;
 
-import item.Item;
+import java.util.LinkedList;
 
-import java.util.*;
-import java.awt.Color;
-
+import util.JDColor;
 import figure.attribute.Attribute;
 import figure.attribute.ItemModification;
 import game.JDEnv;
@@ -14,11 +12,11 @@ public class Shield extends EquipmentItem {
 	/**
 	 * 
 	 */
-	private int chanceToBlock;
+	private final int chanceToBlock;
 
    // private String Type;
     //attribute hit_points;
-    private int dmgPerHP = 10;
+    private final int dmgPerHP = 10;
     private int actualBlocks = 0;
 
     public Shield (int value, boolean magic) {
@@ -59,7 +57,7 @@ public class Shield extends EquipmentItem {
 	
 	public void madeBlock(int dmg) {
 		actualBlocks +=dmg;
-		////System.out.println("Schläge: "+actualBlocks);
+		////System.out.println("Schlï¿½ge: "+actualBlocks);
 		if(actualBlocks >= dmgPerHP) {
 			////System.out.println("Waffenzustand -1");
 			int hp = dmg / dmgPerHP;
@@ -70,18 +68,19 @@ public class Shield extends EquipmentItem {
 		}
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph []p = new Paragraph[3];
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(new Color(170,140,60));
+		p[0].setColor(new JDColor(170, 140, 60));
 		p[0].setBold();
 		
 		p[1] = new Paragraph(toString());
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 		
 		String s = 	getText();
@@ -90,11 +89,12 @@ public class Shield extends EquipmentItem {
 		p[2] = new Paragraph(s);
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 			
 		return p;
 	}
 	
+	@Override
 	public String getName() {
 		if(unique) {
     		return name;	
@@ -103,6 +103,7 @@ public class Shield extends EquipmentItem {
 	}
 	
 	
+	@Override
 	public Attribute getHitPoints() {
 		return hitPoints;
 	}
@@ -143,17 +144,18 @@ public class Shield extends EquipmentItem {
 	}
 	
 //	public Color getStatusColor() {
-//				Color color = Color.black;
+	// Color color = JDColor.black;
 //					if (hit_points.perCent() <= 50) {
-//							 color = Color.red;
+	// color = JDColor.red;
 //							} else if (hit_points.perCent() <= 70) {
-//								color = Color.yellow;
+	// color = JDColor.yellow;
 //						} 
 //					
 //			return color;
 //		}
 
-    public String toString(){
+    @Override
+	public String toString(){
     	
 		String s = "";
  //s+="<html><font color =";
@@ -205,7 +207,8 @@ public class Shield extends EquipmentItem {
     	
 		}
 
-    public String getText(){
+    @Override
+	public String getText(){
 		String s = (JDEnv.getString("chance_to_block")+": "+getBlockValue()+"/"+chanceToBlock+"%"+"\n"+JDEnv.getString("state")+": "+(int)hitPoints.getValue()+"/"+(int)hitPoints.getBasic()+"\n");
 		if(magic) {
     		for(int i = 0; i < modifications.size(); i++) {

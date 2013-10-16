@@ -16,7 +16,6 @@ import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.ControlUnit;
 import game.InfoEntity;
-import game.InfoProvider;
 import game.JDEnv;
 import gui.Paragraph;
 import item.DustItem;
@@ -24,7 +23,6 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 
-import java.awt.Color;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,6 +33,7 @@ import java.util.Map;
 
 import shrine.Shrine;
 import shrine.Statue;
+import util.JDColor;
 import dungeon.generate.Hall;
 import dungeon.generate.Sector;
 import dungeon.quest.Quest;
@@ -61,8 +60,9 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	boolean isWall = false;
 
-	private Map<Figure,Integer> observer = new HashMap<Figure,Integer>();;
+	private final Map<Figure,Integer> observer = new HashMap<Figure,Integer>();;
 
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new RoomInfo(this, map);
 	}
@@ -80,7 +80,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		double diff = 0;
 		List<Figure> l = getFight().getFightFigures();
 		for (int i = 0; i < l.size(); i++) {
-			diff += ((Figure) l.get(i)).getAntiFleeValue();
+			diff += l.get(i).getAntiFleeValue();
 		}
 		if (l.size() == 2) {
 			diff = diff * 4 / 5;
@@ -104,9 +104,9 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	private Chest Chest;
 
-	private Dungeon d;
+	private final Dungeon d;
 
-	private List<Quest> quests = new LinkedList<Quest>();
+	private final List<Quest> quests = new LinkedList<Quest>();
 
 	private List<Figure> roomFigures;
 
@@ -118,7 +118,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 		boolean fight = false;
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			ControlUnit c = element.getControl();
 			if (c != null
 					&& (c.isHostileTo(FigureInfo.makeFigureInfo(movedIn,
@@ -151,13 +151,14 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		return null;
 	}
 
+	@Override
 	public MemoryObject getMemoryObject(FigureInfo info) {
 		return new RoomMemory(this,info);
 	}
 
 	public boolean monstersThere() {
 		for (Iterator<Figure> iter = this.roomFigures.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			if (element instanceof Monster) {
 				return true;
 			}
@@ -172,7 +173,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	private boolean part_scouted = false;
 
-	private Item[] itemArray = new Item[4];
+	private final Item[] itemArray = new Item[4];
 
 
 	int floorIndex;
@@ -215,7 +216,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	private void tickFigures(int round) {
 		for (Iterator<Figure> i = roomFigures.iterator(); i.hasNext();) {
-			Figure element = (Figure) i.next();
+			Figure element = i.next();
 			element.timeTick(round);
 		}
 	}
@@ -238,7 +239,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 			if (this.d.getGame().isGameOver()) {
 				break;
 			}
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			element.turn(round);
 
 		}
@@ -284,14 +285,16 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		return infos;
 	}
 
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[Items.size()];
 		for (int i = 0; i < Items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo((Item) Items.get(i), map);
+			array[i] = ItemInfo.makeItemInfo(Items.get(i), map);
 		}
 		return array;
 	}
 
+	@Override
 	public Item getItem(ItemInfo wrapped) {
 		Item[] items = getItemArray();
 		for (int i = 0; i < items.length; i++) {
@@ -313,8 +316,9 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		}
 	}
 
+	@Override
 	public Item getItemNumber(int i) {
-		return (Item) Items.get(i);
+		return Items.get(i);
 	}
 
 	public boolean directionPassable(int dir) {
@@ -324,6 +328,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		return false;
 	}
 
+	@Override
 	public boolean removeItem(Item i) {
 		boolean b = false;
 		if (Items.remove(i)) {
@@ -352,10 +357,12 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	}
 
+	@Override
 	public Room getRoom() {
 		return this;
 	}
 
+	@Override
 	public JDPoint getLocation() {
 		return number;
 	}
@@ -388,9 +395,10 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		return start;
 	}
 
+	@Override
 	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
-			Item it = (Item) (l.get(i));
+			Item it = (l.get(i));
 			this.takeItem(it, o);
 		}
 		return true;
@@ -454,14 +462,14 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 					done = true;
 					break;
 				}
-				Item it = (Item) workList.getFirst();
+				Item it = workList.getFirst();
 				while (itemArrayContains(it)) {
 					workList.removeFirst();
 					if (workList.size() == 0) {
 						done = true;
 						break;
 					}
-					it = (Item) workList.getFirst();
+					it = workList.getFirst();
 				}
 				if (done) {
 					itemArray[i] = null;
@@ -479,7 +487,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	public FigureInfo[] getMonsterInfoArray(DungeonVisibilityMap map) {
 		FigureInfo[] mons = new FigureInfo[roomFigures.size()];
 		for (int i = 0; i < roomFigures.size(); i++) {
-			mons[i] = MonsterInfo.makeFigureInfo(((Figure) roomFigures.get(i)),
+			mons[i] = MonsterInfo.makeFigureInfo((roomFigures.get(i)),
 					map);
 		}
 		return mons;
@@ -489,8 +497,8 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 		if (p instanceof OpticalPercept || p instanceof TextPercept|| p instanceof InfoPercept) {
 			for (Iterator<Figure> iter = observer.keySet().iterator(); iter.hasNext();) {
-				Figure element = (Figure) iter.next();
-				Integer visStat = (Integer) observer.get(element);
+				Figure element = iter.next();
+				Integer visStat = observer.get(element);
 				if (visStat.intValue() >= RoomObservationStatus.VISIBILITY_FIGURES) {
 					element.tellPercept(p);
 				}
@@ -501,7 +509,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	public boolean hasHero() {
 		for (Iterator<Figure> iter = this.roomFigures.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			if (element instanceof Hero) {
 				return true;
 			}
@@ -511,7 +519,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	}
 
 	public Figure getFighterNumber(int i) {
-		return (Figure) roomFigures.get(i);
+		return roomFigures.get(i);
 	}
 
 	public int getItemNumber(Item it) {
@@ -527,7 +535,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	public boolean isAccessibleNeighbour(Room r) {
 		List<Room> neighbours = this.getScoutableNeighbours();
 		for (int i = 0; i < neighbours.size(); i++) {
-			Room n = ((Room) neighbours.get(i));
+			Room n = (neighbours.get(i));
 			if (n == r) {
 				if (n.hasOpenConnectionTo(r)) {
 					return true;
@@ -1065,12 +1073,13 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		return takeItem(i, null);
 	}
 
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 
 		if (i instanceof DustItem) {
 			boolean foundother = false;
 			for (int k = 0; k < Items.size(); k++) {
-				Item a = ((Item) Items.get(k));
+				Item a = (Items.get(k));
 				if (a instanceof DustItem) {
 					this.removeItem(a);
 					DustItem newDust = new DustItem(((DustItem) a).getCount()
@@ -1286,7 +1295,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		p[0] = new Paragraph(room);
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 
 		String shrine = new String();
@@ -1298,7 +1307,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		p[1] = new Paragraph(shrine);
 		p[1].setSize(20);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 
 		String monster = new String();
@@ -1310,7 +1319,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		p[2] = new Paragraph(monster);
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 
 		String itemS = new String();
 		if (status.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_ITEMS) {
@@ -1321,7 +1330,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		p[3] = new Paragraph(itemS);
 		p[3].setSize(14);
 		p[3].setCentered();
-		p[3].setColor(Color.black);
+		p[3].setColor(JDColor.black);
 
 		return p;
 	}
@@ -1344,7 +1353,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	// p[0] = new Paragraph(room);
 	// p[0].setSize(24);
 	// p[0].setCentered();
-	// p[0].setColor(Color.orange);
+	// p[0].setColor(JDColor.orange);
 	// p[0].setBold();
 	//
 	// String shrine = new String();
@@ -1356,7 +1365,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	// p[1] = new Paragraph(shrine);
 	// p[1].setSize(20);
 	// p[1].setCentered();
-	// p[1].setColor(Color.black);
+	// p[1].setColor(JDColor.black);
 	// p[1].setBold();
 	//
 	// String monster = new String();
@@ -1368,7 +1377,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	// p[2] = new Paragraph(monster);
 	// p[2].setSize(14);
 	// p[2].setCentered();
-	// p[2].setColor(Color.black);
+	// p[2].setColor(JDColor.black);
 	//
 	// String itemS = new String();
 	// if (visibilityStatus >= RoomObservationStatus.VISIBILITY_ITEMS) {
@@ -1379,7 +1388,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	// p[3] = new Paragraph(itemS);
 	// p[3].setSize(14);
 	// p[3].setCentered();
-	// p[3].setColor(Color.black);
+	// p[3].setColor(JDColor.black);
 	//
 	// return p;
 	// }
@@ -1467,6 +1476,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 		}
 	}
 
+	@Override
 	public String toString() {
 		String s = " Raum Nr.: " + number.toString();
 		if (getChest() != null) {
@@ -1564,7 +1574,7 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	public void endFight() {
 		fight = null;
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			boolean disappears = element.fightEnded();
 			if(disappears) {
 				// prevent concurrent modification
@@ -1576,10 +1586,11 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	class MyFightOrderComparator implements Comparator<Figure> {
 
+		@Override
 		public int compare(Figure o1, Figure o2) {
 			if (o1 instanceof Figure && o2 instanceof Figure) {
-				Figure f1 = (Figure) o1;
-				Figure f2 = (Figure) o2;
+				Figure f1 = o1;
+				Figure f2 = o2;
 				double readines1 = f1.getReadines();
 				double readines2 = f2.getReadines();
 				if (f1.isRaiding()) {

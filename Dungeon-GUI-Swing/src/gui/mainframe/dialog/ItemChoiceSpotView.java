@@ -1,18 +1,31 @@
 package gui.mainframe.dialog;
 
-import item.*;
+import item.Item;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
-import dungeon.*;
+import javax.swing.DefaultDesktopManager;
+import javax.swing.DefaultListModel;
+import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import dungeon.HiddenSpot;
 import figure.Figure;
-import gui.mainframe.MainFrame;
 
 
 /**
@@ -70,7 +83,7 @@ public class ItemChoiceSpotView
 	 * @uml.property name="itemsH"
 	 * @uml.associationEnd multiplicity="(0 -1)" elementType="item.Item"
 	 */
-	LinkedList itemsH;
+	List<Item> itemsH;
 
 	/**
 	 * 
@@ -144,12 +157,13 @@ public class ItemChoiceSpotView
 		positionieren();
 	}
 
+	@Override
 	public void valueChanged(ListSelectionEvent lse) {
 		JList list = (JList) lse.getSource();
 		int i = list.getSelectedIndex();
 		if (i != -1) {
 			if (list == heroItemL) {
-				Item u = ((Item) itemsH.get(i));
+				Item u = (itemsH.get(i));
 				cool.setText(u.getText());
 				//if (takeAway) {
 				//	x.giveAwayItem(u, null);
@@ -162,11 +176,12 @@ public class ItemChoiceSpotView
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		int i = heroItemL.getSelectedIndex();
 		if (i != -1) {
-			if(rec.takeItem((Item) itemsH.get(i),x)) {
-				x.removeItem((Item)itemsH.get(i))	;
+			if(rec.takeItem(itemsH.get(i),x)) {
+				x.removeItem(itemsH.get(i))	;
 			}
 			
 			setVisible(false);
@@ -175,6 +190,7 @@ public class ItemChoiceSpotView
 		}
 	}
 
+	@Override
 	public void repaint() {
 		//System.out.println("repaint()");
 		itemsH = x.getItems();
@@ -184,11 +200,11 @@ public class ItemChoiceSpotView
 		listModel.removeAllElements();
 
 		for (int i = 0; i < b; i++) {
-			Item ite = ((Item) itemsH.get(i));
+			Item ite = (itemsH.get(i));
 			//System.out.println(ite.toString());
 			listModel.addElement(ite.toString());
 		}
-		//Hier werden Stringrepräsentationen der Items in die listModels gefüllt
+		//Hier werden Stringreprï¿½sentationen der Items in die listModels gefï¿½llt
 	}
 	
 	public void positionieren()

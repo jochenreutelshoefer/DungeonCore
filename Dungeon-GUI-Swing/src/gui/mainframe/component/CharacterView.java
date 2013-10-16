@@ -2,15 +2,13 @@ package gui.mainframe.component;
 
 import figure.FigureInfo;
 import figure.attribute.Attribute;
-import figure.hero.Character;
 import figure.hero.HeroInfo;
-import gui.MyJDGui;
 import gui.JDJLabel;
 import gui.JDJPanel;
+import gui.MyJDGui;
 import gui.Paragraph;
 import item.ItemInfo;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -20,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import util.JDColor;
 import control.ActionAssembler;
 
 /**
@@ -268,22 +267,27 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 		return " --> " + k;
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		
 		Object o = me.getSource();
@@ -342,71 +346,71 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			dexterity.setText((int)(heroInfo
 					.getAttributeValue(Attribute.DEXTERITY))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.DEXTERITY)));
 			psycho.setText((int)(heroInfo
 					.getAttributeValue(Attribute.PSYCHO))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.PSYCHO)));
 			axe.setText((int)(heroInfo
 					.getAttributeValue(Attribute.AXE))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.AXE))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.AXE)));
 			lance.setText((int)(heroInfo
 					.getAttributeValue(Attribute.LANCE))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.LANCE))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.LANCE)));
 			sword.setText((int)(heroInfo
 					.getAttributeValue(Attribute.SWORD))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.SWORD))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.SWORD)));
 			club.setText((int)(heroInfo
 					.getAttributeValue(Attribute.CLUB))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.CLUB))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.CLUB)));
 			wolfknife.setText((int)(heroInfo
 					.getAttributeValue(Attribute.WOLFKNIFE))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.WOLFKNIFE))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.WOLFKNIFE)));
 			scout.setText((int)(heroInfo
 					.getAttributeValue(Attribute.SCOUT))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.SCOUT)));
 			nature.setText((int)(heroInfo
 					.getAttributeValue(Attribute.NATURE_KNOWLEDGE))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.NATURE_KNOWLEDGE))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.NATURE_KNOWLEDGE)));
 			creature.setText((int)(heroInfo
 					.getAttributeValue(Attribute.CREATURE_KNOWLEDGE))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.CREATURE_KNOWLEDGE))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.CREATURE_KNOWLEDGE)));
 			undead.setText((int)(heroInfo
 					.getAttributeValue(Attribute.UNDEAD_KNOWLEDGE))
 					+ "/"
-					+ (int)((int) heroInfo
+					+ ((int) heroInfo
 							.getAttributeBasic(Attribute.UNDEAD_KNOWLEDGE))
 					+ getAbsoluteValueString(heroInfo
 							.getAttributeValue(Attribute.UNDEAD_KNOWLEDGE)));
@@ -503,6 +507,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent me) {
 		Object sc = me.getSource();
 		if (sc == naturet) {
@@ -510,84 +515,84 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[0] = new Paragraph("Naturkenntnis:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					"Kenntnis des Helden über Naturmonster: Wölfe und Spinnen");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Erhöht Trefferchance, Trefferstärke, \nFluchtwahrscheinlichkeit, Drohstärke...");
 			p[2].setSize(12);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 			gui.getMainFrame().getText().setText(p);
 		} else if (sc == creaturet) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Kreaturenkenntnis:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					"Kenntnis des Helden über Kreaturenmonster: Orks und Oger");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Erhöht Trefferchance, Trefferstärke, \nFluchtwahrscheinlichkeit, Drohstärke...");
 			p[2].setSize(12);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 			gui.getMainFrame().getText().setText(p);
 		} else if (sc == undeadt) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Untotenkenntnis:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					"Kenntnis des Helden über Untotenmonster: Skelette und Ghuls");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Erhöht Trefferchance, Trefferstärke, \nFluchtwahrscheinlichkeit, Drohstärke...");
 			p[2].setSize(12);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 			gui.getMainFrame().getText().setText(p);
 		} else if (sc == axet) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Axtfertigkeit:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					" erhöht Schadensrate und Trefferwahrscheinlickeit mit Axt");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Ghul: ++      Spinne: +\nOger: 0       Skelett:  0\nOrk: 0       Wolf: -");
 			p[2].setSize(14);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 
 			gui.getMainFrame().getText().setText(p);
 		} else if (sc == clubt) {
@@ -595,21 +600,21 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[0] = new Paragraph("Knüppelfertigkeit:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					" erhöht Schadensrate und Trefferwahrscheinlickeit mit Knüppel");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Ghul: -      Spinne: --\nOger: -       Skelett:  +++\nOrk: 0       Wolf: 0");
 			p[2].setSize(14);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 
 			gui.getMainFrame().getText().setText(p);
 
@@ -618,21 +623,21 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[0] = new Paragraph("Lanzenfertigkeit:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					" erhöht Schadensrate und Trefferwahrscheinlickeit mit Lanze");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Ghul: 0      Spinne: +\nOger: ++       Skelett:  -\nOrk: 0       Wolf: --");
 			p[2].setSize(14);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 
 			gui.getMainFrame().getText().setText(p);
 
@@ -641,21 +646,21 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[0] = new Paragraph("Schwertfertigkeit:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					" erhöht Schadensrate und Trefferwahrscheinlickeit mit Schwert");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Ghul: 0      Spinne: 0\nOger: 0       Skelett:  0\nOrk: +       Wolf: 0");
 			p[2].setSize(14);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 
 			gui.getMainFrame().getText().setText(p);
 
@@ -664,26 +669,27 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[0] = new Paragraph("Wolfsmesserfertigkeit:");
 			p[0].setSize(24);
 			p[0].setCentered();
-			p[0].setColor(Color.black);
+			p[0].setColor(JDColor.black);
 			p[0].setBold();
 
 			p[1] = new Paragraph(
 					" erhöht Schadensrate und Trefferwahrscheinlickeit mit Wolfsmesser");
 			p[1].setSize(12);
 			p[1].setCentered();
-			p[1].setColor(Color.black);
+			p[1].setColor(JDColor.black);
 			p[1].setBold();
 
 			p[2] = new Paragraph(
 					"Ghul: -      Spinne: -\nOger: -       Skelett:  --\nOrk: -       Wolf: +++");
 			p[2].setSize(14);
 			p[2].setCentered();
-			p[2].setColor(Color.black);
+			p[2].setColor(JDColor.black);
 
 			gui.getMainFrame().getText().setText(p);
 		}
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent me) {
 
 	}

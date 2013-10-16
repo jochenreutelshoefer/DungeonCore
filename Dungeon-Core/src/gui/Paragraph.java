@@ -8,37 +8,36 @@
  */
 
 package gui;
-import javax.swing.text.*;
-import java.awt.Color;
+
+import util.JDColor;
+
 
 public class Paragraph {
 
-	SimpleAttributeSet style;
+	// private final SimpleAttributeSet style;
 
 	
-	String text;
+	private String text;
 
 	
-	boolean Centered;
+	private boolean centered;
+
+	private boolean justified;
+	
+	private boolean bold;
+
+	private JDColor c;
 
 	
-	Color c;
+	private String font;
 
 	
-	String f;
+	private int size;
 
 	
-	int size;
 
-	
-	public Paragraph(SimpleAttributeSet set, String txt) {
-		style = set;
-		text = txt;
-	}
-	
 	public Paragraph(String txt) {
 		text = txt;
-		style = new SimpleAttributeSet();
 	}
 	
 	public static boolean areEqual(Paragraph[] a, Paragraph [] b) {
@@ -63,14 +62,11 @@ public class Paragraph {
 		return true;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if(o instanceof Paragraph) {
 			Paragraph other = (Paragraph)o;
-			String s1 = other.text;
-			String s2 = this.text;
-			
 			if(other.text.equals(this.text)) {
-				
 				return true;
 			}
 		}
@@ -80,17 +76,16 @@ public class Paragraph {
 	}
 	
 	public void setCentered() {
-		Centered = true;
-		StyleConstants.setAlignment(style, StyleConstants.ALIGN_CENTER);
+		centered = true;
 	}
 	
 	public void setJustified() {
-		StyleConstants.setAlignment(style, StyleConstants.ALIGN_JUSTIFIED);
+		this.justified = true;
 	}
 	
-	public void setColor(Color c) {
+	public void setColor(JDColor c) {
 		this.c = c;
-		StyleConstants.setForeground(style, c);
+		//StyleConstants.setForeground(style, c);
 	}
 
 	/**
@@ -98,11 +93,7 @@ public class Paragraph {
 	 * @uml.property name="f"
 	 */
 	public void setFont(String font) {
-		this.f = font;
-		if (font != null) {
-
-			StyleConstants.setFontFamily(style, font);
-		}
+		this.font = font;
 	}
 
 	/**
@@ -111,26 +102,24 @@ public class Paragraph {
 	 */
 	public void setSize(int size) {
 		this.size = size;
-		StyleConstants.setFontSize(style, size);
 	}
 
 	
 	public void setBold() {
-		StyleConstants.setBold(style,true);
+		bold = true;
 	}
 	
+	@Override
 	public String toString() {
 		return text;
 	}
 
-	/**
-	 * Returns the style.
-	 * @return SimpleAttributeSet
-	 * 
-	 * @uml.property name="style"
-	 */
-	public SimpleAttributeSet getStyle() {
-		return style;
+	public boolean isJustified() {
+		return justified;
+	}
+
+	public boolean isBold() {
+		return bold;
 	}
 
 	/**
@@ -149,7 +138,7 @@ public class Paragraph {
 	 * @uml.property name="centered"
 	 */
 	public boolean isCentered() {
-		return Centered;
+		return centered;
 	}
 
 	/**
@@ -157,8 +146,8 @@ public class Paragraph {
 	 * 
 	 * @uml.property name="f"
 	 */
-	public String getF() {
-		return f;
+	public String getFont() {
+		return font;
 	}
 
 	/**
@@ -166,7 +155,7 @@ public class Paragraph {
 	 * 
 	 * @uml.property name="c"
 	 */
-	public void setC(Color color) {
+	public void setC(JDColor color) {
 		c = color;
 	}
 
@@ -193,7 +182,7 @@ public class Paragraph {
 	 * 
 	 * @uml.property name="c"
 	 */
-	public Color getC() {
+	public JDColor getC() {
 		return c;
 	}
 

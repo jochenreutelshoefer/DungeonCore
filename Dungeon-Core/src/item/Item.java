@@ -12,7 +12,7 @@ import java.awt.Color;
 
 import shrine.Shrine;
 import shrine.ShrineInfo;
-
+import util.JDColor;
 import dungeon.Chest;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
@@ -148,19 +148,19 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(new Color(200,40,30));
+		p[0].setColor(new JDColor(200,40,30));
 		p[0].setBold();
 		
 		p[1] = new Paragraph(toString());
 		p[1].setSize(20);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 		
 		p[2] = new Paragraph(getText());
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 		
 		return p;
 	}

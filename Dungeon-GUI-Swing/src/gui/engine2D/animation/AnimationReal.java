@@ -10,6 +10,7 @@ package gui.engine2D.animation;
 import java.awt.Graphics;
 import java.util.Set;
 
+import util.JDColor;
 import animation.AnimationSet;
 import audio.AbstractAudioSet;
 import dungeon.JDPoint;
@@ -19,7 +20,6 @@ import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import graphics.GraphicObject;
 import graphics.JDImageProxy;
-import graphics.util.JDColor;
 import graphics.util.JDDimension;
 import graphics.util.JDRectangle;
 import gui.MyJDGui;

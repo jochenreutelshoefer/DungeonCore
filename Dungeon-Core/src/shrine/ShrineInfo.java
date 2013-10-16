@@ -6,20 +6,18 @@
  */
 package shrine;
 
-import java.awt.Color;
-
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.memory.ShrineMemory;
 import game.InfoEntity;
 import gui.Paragraph;
-import gui.Paragraphable;
+import util.JDColor;
 import dungeon.JDPoint;
 
 public class ShrineInfo extends InfoEntity  {
 
-	private Shrine s;
+	private final Shrine s;
 
 	public ShrineInfo(Shrine s, DungeonVisibilityMap map) {
 		super(map);
@@ -33,8 +31,9 @@ public class ShrineInfo extends InfoEntity  {
 		return -1;
 	}
 	
+	@Override
 	public ShrineMemory getMemoryObject(FigureInfo info) {
-		return (ShrineMemory)s.getMemoryObject(info);
+		return s.getMemoryObject(info);
 	}
 
 	public int getType() {
@@ -45,6 +44,7 @@ public class ShrineInfo extends InfoEntity  {
 		return -1;
 	}
 
+	@Override
 	public String toString() {
 		if (map.getDiscoveryStatus(getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
 
@@ -53,19 +53,20 @@ public class ShrineInfo extends InfoEntity  {
 		return null;
 	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 
 		Paragraph[] p = new Paragraph[3];
 		p[0] = new Paragraph(toString());
 		p[0].setSize(20);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 
 		p[1] = new Paragraph(getText());
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 		
 		String str3 = "";
@@ -75,7 +76,7 @@ public class ShrineInfo extends InfoEntity  {
 		p[2] = new Paragraph(str3);
 		p[2].setSize(16);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 		p[2].setBold();
 
 		return p;

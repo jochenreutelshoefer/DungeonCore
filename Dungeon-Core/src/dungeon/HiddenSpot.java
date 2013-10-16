@@ -14,10 +14,11 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 
-import java.awt.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import util.JDColor;
 
 /**
  * Ein Raum kann ein Versteck haben, es ist zu Beginn unsichtbar und kann per Zufall
@@ -30,7 +31,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 	private boolean found = false;
 
 	
-	private LinkedList items = new LinkedList();
+	private List<Item> items = new LinkedList<Item>();
 
 	
 	private int difficulty;
@@ -51,6 +52,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		this.items.add(i);
 			
 	}
+	@Override
 	public Item getItem(ItemInfo it) {
 		for (Iterator iter = items.iterator(); iter.hasNext();) {
 			Item element = (Item) iter.next();
@@ -66,6 +68,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		return new SpotMemory();
 	}
 	
+	@Override
 	public boolean addItems(List l, ItemOwner o) {
 		for(int i = 0; i < l.size();i++) {
 			Item it = (Item)(l.get(i));
@@ -74,22 +77,26 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		return true;
 	}
 	
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new SpotInfo(this,map);
 	}
+	@Override
 	public Item getItemNumber(int i) {
-		return (Item)items.get(i);
+		return items.get(i);
 	}
 	
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[items.size()];
 		for(int i = 0; i < items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo((Item)items.get(i),map);
+			array[i] = ItemInfo.makeItemInfo(items.get(i),map);
 		}
 		return array;
 	}
 
 	
+	@Override
 	public Room getRoom() {
 		return location;
 	}
@@ -107,12 +114,13 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 			
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph [] p = new Paragraph[3];
 		p[0] = new Paragraph("Versteck");
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 		
 			
@@ -126,7 +134,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		String itemS = new String("");
 		////System.out.println("in Kiste; "+items.size());
 		for(int i = 0; i < items.size(); i++) {
-			Item it = ((Item)items.get(i));
+			Item it = (items.get(i));
 			////System.out.println(it.toString());
 			itemS += it.toString()+"  ";	
 		}
@@ -151,12 +159,14 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		
 	}
 	
+	@Override
 	public boolean removeItem(Item i) {
 		return items.remove(i);	
 	}
 	
 	
 	
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 		items.add(i);
 		Item.notifyItem(i,this);
@@ -174,7 +184,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 	}
 
 	
-	public LinkedList getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 
@@ -184,6 +194,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 //		return location;
 //	}
 	
+	@Override
 	public JDPoint getLocation() {
 		return location.getPoint();
 	}

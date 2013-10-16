@@ -4,7 +4,6 @@ import graphics.GraphicObject;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
-import graphics.util.JDColor;
 import graphics.util.JDRectangle;
 
 import java.awt.Color;
@@ -17,6 +16,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 
+import util.JDColor;
 import dungeon.Door;
 
 public class DrawUtils {
@@ -39,6 +39,8 @@ public class DrawUtils {
 	}
 	
 	public static Color convertColor(JDColor c) {
+		if (c == null)
+			return null;
 		return new Color(c.getRed(), c.getGreen(), c.getBlue());
 	}
 

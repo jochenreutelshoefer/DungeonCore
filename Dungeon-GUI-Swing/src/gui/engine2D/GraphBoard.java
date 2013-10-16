@@ -6,7 +6,6 @@ import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
-import graphics.util.JDColor;
 import graphics.util.JDDimension;
 import graphics.util.JDRectangle;
 import gui.JDJPanel;
@@ -34,6 +33,7 @@ import java.util.List;
 import javax.swing.Scrollable;
 
 import shrine.ShrineInfo;
+import util.JDColor;
 import animation.AnimationSet;
 import dungeon.ChestInfo;
 import dungeon.Dir;

@@ -1,10 +1,17 @@
 package gui.mainframe.component;
-import gui.MyJDGui;
 import gui.JDJPanel;
+import gui.MyJDGui;
+import gui.engine2D.DrawUtils;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+
+import util.JDColor;
 
 public class HealthPot extends JComponent {
 
@@ -18,8 +25,9 @@ public class HealthPot extends JComponent {
 	
 	MyJDGui gui;
 	
-	public HealthPot(int val, int max, int sizeX, int sizeY, Color c,MyJDGui gui) {
-		this.c = c;
+	public HealthPot(int val, int max, int sizeX, int sizeY, JDColor c,
+			MyJDGui gui) {
+		this.c = DrawUtils.convertColor(c);
 		healthValue = val;
 		healthMax = max;
 		this.sizeX = sizeX;
@@ -40,8 +48,9 @@ public class HealthPot extends JComponent {
 
 	private static final int texSizeY = 96;
 	
-	public HealthPot(int sizeX, int sizeY, Color c, Image deathImage,MyJDGui gui,Image pot) {
-		this.c = c;
+	public HealthPot(int sizeX, int sizeY, JDColor c, Image deathImage,
+			MyJDGui gui, Image pot) {
+		this.c = DrawUtils.convertColor(c);
 		this.gui = gui;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
@@ -53,8 +62,8 @@ public class HealthPot extends JComponent {
 		this.setOpaque(false);
 	}
 	
-	public HealthPot(int sizeX, int sizeY, Color c,MyJDGui gui, Image pot) {
-			this.c = c;
+	public HealthPot(int sizeX, int sizeY, JDColor c, MyJDGui gui, Image pot) {
+		this.c = DrawUtils.convertColor(c);
 			this.sizeX = sizeX;
 			this.sizeY = sizeY;
 			healthValue = 1;
@@ -73,6 +82,7 @@ public class HealthPot extends JComponent {
 	
 	Image offscreenImage; 
 	
+	@Override
 	public void paint(Graphics g) {
 		
 		if(healthValue < 0 && deathImage != null) {

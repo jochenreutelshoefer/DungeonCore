@@ -8,8 +8,7 @@
  */
 package item;
 
-import java.awt.Color;
-
+import util.JDColor;
 import figure.attribute.Attribute;
 import game.JDEnv;
 import gui.Paragraph;
@@ -44,18 +43,19 @@ public class DustItem extends Item {
 		return null;
 	}
 	
-	 public Paragraph[] getParagraphs() {
+	 @Override
+	public Paragraph[] getParagraphs() {
 		Paragraph []p = new Paragraph[2];
 		p[0] = new Paragraph(getText());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(new Color(170,190,40));
+		p[0].setColor(new JDColor(170, 190, 40));
 		p[0].setBold();
 		
 		p[1] = new Paragraph(getText());
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 			
 		return p;
@@ -64,10 +64,12 @@ public class DustItem extends Item {
 	/**
 	 * @see Item#getText()
 	 */
+	@Override
 	public String getText() {
 		return JDEnv.getResourceBundle().getString("dust")+": "+Math.round(cnt);
 	}
 	
+	@Override
 	public String toString() {
 		return getText();
 	}

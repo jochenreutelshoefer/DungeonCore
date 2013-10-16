@@ -1,11 +1,12 @@
 package item.equipment;
 
-import java.util.*;
-import java.awt.Color;
-
 import figure.attribute.ItemModification;
 import game.JDEnv;
 import gui.Paragraph;
+
+import java.util.LinkedList;
+
+import util.JDColor;
 
 public class Helmet extends ArmorItem {
 
@@ -56,18 +57,19 @@ public class Helmet extends ArmorItem {
 		return Type;
 	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[3];
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(new Color(100, 70, 40));
+		p[0].setColor(new JDColor(100, 70, 40));
 		p[0].setBold();
 
 		p[1] = new Paragraph(toString());
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 
 		String s = getText();
@@ -75,11 +77,12 @@ public class Helmet extends ArmorItem {
 		p[2] = new Paragraph(s);
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 
 		return p;
 	}
 
+	@Override
 	public String getName() {
 		if (unique) {
 			return name;
@@ -99,6 +102,7 @@ public class Helmet extends ArmorItem {
 	// return color;
 	// }
 
+	@Override
 	public String toString() {
 		String s = "";
 
@@ -127,6 +131,7 @@ public class Helmet extends ArmorItem {
 		name = n;
 	}
 
+	@Override
 	public String getText() {
 		String s = super.getText(); 
 		

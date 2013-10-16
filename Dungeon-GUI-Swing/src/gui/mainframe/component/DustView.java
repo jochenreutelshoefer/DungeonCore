@@ -4,26 +4,21 @@ package gui.mainframe.component;
 
 import figure.FigureInfo;
 import figure.attribute.Attribute;
-import figure.hero.Character;
 import figure.hero.HeroInfo;
 import game.JDEnv;
-import gui.MyJDGui;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
 import gui.JDJTitledBorder;
 import gui.MyComboRenderer;
+import gui.MyJDGui;
 import gui.Paragraph;
-import gui.mainframe.MainFrame;
-import item.AttrPotion;
 import item.HealPotion;
 //import item.Item;
 import item.ItemInfo;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -41,10 +36,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.border.EmptyBorder;
 
-import control.ActionAssembler;
 import spell.SpellInfo;
+import util.JDColor;
+import control.ActionAssembler;
 
 /**
  * @author Duke1
@@ -193,6 +188,7 @@ public class DustView
 				return healings;
 			}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object sc = e.getSource();
 		if(gui.getMainFrame().isNoControl()) {
@@ -235,13 +231,14 @@ public class DustView
 	/**
 	 * @see java.awt.event.ItemListener#itemStateChanged(ItemEvent)
 	 */
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 	
 	}
 
 	private void makePotPanel() {
 		Image potI = gui.getMainFrame().imageSource.loadImage("lebenskugel.gif");
-		pot = new HealthPot(110, 110, Color.yellow,gui,potI);
+		pot = new HealthPot(110, 110, JDColor.yellow, gui, potI);
 		//potPanel.setBorder(new EtchedBorder());
 		potPanel.setLayout(null);
 		potPanel.add(pot);
@@ -341,6 +338,7 @@ public class DustView
 		//}
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		Object quelle = me.getSource();
 		if (quelle == exp1) {
@@ -363,9 +361,11 @@ public class DustView
 
 		}
 	}
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
+	@Override
 	public void mouseEntered(MouseEvent me) {
 		Object quelle = me.getSource();
 		Paragraph[] p = null;
@@ -377,29 +377,31 @@ public class DustView
 			p = new Paragraph[1];
 			p[0] = new Paragraph(JDEnv.getResourceBundle().getString("gui_ap_button_alt"));
 			p[0].setSize(12);
-			p[0].setColor(new Color(255,255,255));
+			p[0].setColor(new JDColor(255, 255, 255));
 			p[0].setCentered();
 		}
 		else if (quelle == smallHeal) {
 					p = new Paragraph[1];
 					p[0] = new Paragraph(JDEnv.getResourceBundle().getString("gui_small_heal_alt"));
 					p[0].setSize(12);
-					p[0].setColor(new Color(255,255,255));
+			p[0].setColor(new JDColor(255, 255, 255));
 					p[0].setCentered();
 				}
 		else if(quelle == zaubern) {
 			p = new Paragraph[1];
 			p[0] = new Paragraph(JDEnv.getResourceBundle().getString("gui_sorc_button_alt"));
 			p[0].setSize(12);
-			p[0].setColor(new Color(255,255,255));
+			p[0].setColor(new JDColor(255, 255, 255));
 			p[0].setCentered();
 		}
 		
 		gui.getMainFrame().getText().setText(p);
 	}
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}
+	@Override
 	public void mouseExited(MouseEvent me) {
 		gui.getMainFrame().getText().resetText();
 	}

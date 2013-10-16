@@ -1,25 +1,22 @@
 package spell;
 
-import java.awt.Color;
+import figure.DungeonVisibilityMap;
+import figure.Figure;
+import figure.action.result.ActionResult;
+import figure.percept.Percept;
+import figure.percept.SpellPercept;
+import figure.percept.TextPercept;
+import game.InfoEntity;
+import game.JDEnv;
+import gui.Paragraph;
+import gui.Texts;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import spell.conjuration.FirConjuration;
-
+import util.JDColor;
 import dungeon.Position;
-import dungeon.RoomInfo;
-
-import figure.DungeonVisibilityMap;
-import figure.Figure;
-import figure.FigureInfo;
-import figure.action.result.ActionResult;
-import figure.other.Fir;
-import figure.percept.Percept;
-import figure.percept.SpellPercept;
-import figure.percept.TextPercept;
-import game.*;
-import gui.Paragraph;
-import gui.Texts;
 
 /**
  * Abstrakte Oberklasse aller Zaubersprueche In fire() wird geprueft ob die
@@ -191,6 +188,7 @@ public abstract class Spell/* extends JDEnv */{
 			return null;
 	}
 
+	@Override
 	public String toString() {
 		return getName() + " " + Integer.toString(level);
 	}
@@ -234,35 +232,35 @@ public abstract class Spell/* extends JDEnv */{
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 
 		p[1] = new Paragraph(JDEnv.getResourceBundle().getString("level")
 				+ ": " + getLevel());
 		p[1].setSize(20);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 
 		p[2] = new Paragraph(JDEnv.getResourceBundle().getString("cost") + ": "
 				+ getCost());
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 
 		p[3] = new Paragraph(JDEnv.getResourceBundle().getString(
 				"spell_difficulty")
 				+ ": " + getDifficulty());
 		p[3].setSize(14);
 		p[3].setCentered();
-		p[3].setColor(Color.black);
+		p[3].setColor(JDColor.black);
 
 		p[4] = new Paragraph(JDEnv.getResourceBundle().getString(
 				"spell_min_wisdom")
 				+ ": " + getDifficultyMin());
 		p[4].setSize(14);
 		p[4].setCentered();
-		p[4].setColor(Color.black);
+		p[4].setColor(JDColor.black);
 
 		return p;
 	}

@@ -13,12 +13,11 @@ import figure.memory.DoorMemory;
 import game.InfoEntity;
 import game.JDEnv;
 import gui.Paragraph;
-
-import java.awt.Color;
+import util.JDColor;
 
 public class DoorInfo extends InfoEntity {
 
-	private Door d;
+	private final Door d;
 
 	public DoorInfo(Door door, DungeonVisibilityMap m) {
 		super(m);
@@ -30,8 +29,9 @@ public class DoorInfo extends InfoEntity {
 				|| map.getVisibilityStatus(getRooms()[1].getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE;
 	}
 	
+	@Override
 	public DoorMemory getMemoryObject(FigureInfo info) {
-		return (DoorMemory)d.getMemoryObject(info);
+		return d.getMemoryObject(info);
 	}
 	
 	public int getDir(JDPoint p) {
@@ -62,6 +62,7 @@ public class DoorInfo extends InfoEntity {
 		return null;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if(o instanceof DoorInfo) {
 			if(((DoorInfo)o).d == this.d) {
@@ -80,12 +81,13 @@ public class DoorInfo extends InfoEntity {
 	
 
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[4];
 		p[0] = new Paragraph(JDEnv.getString("door"));
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 		if (d.isPassable(map.getFigure())) {
 			p[1] = new Paragraph(JDEnv.getString("door_passable"));

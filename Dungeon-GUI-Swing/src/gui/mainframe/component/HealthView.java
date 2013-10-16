@@ -8,18 +8,16 @@ package gui.mainframe.component;
 import figure.FigureInfo;
 import figure.action.EquipmentChangeAction;
 import figure.attribute.Attribute;
-import figure.hero.Character;
 import figure.hero.HeroInfo;
 import game.JDEnv;
-import gui.MyJDGui;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
 import gui.JDJTitledBorder;
 import gui.MyComboRenderer;
+import gui.MyJDGui;
 import gui.Paragraph;
 import gui.mainframe.MainFrame;
-import item.AttrPotion;
 import item.HealPotion;
 //import item.Item;
 import item.ItemInfo;
@@ -29,7 +27,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -48,8 +45,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.border.EmptyBorder;
 
+import util.JDColor;
 import control.ActionAssembler;
 
 /**
@@ -181,6 +178,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object quelle = ae.getSource();
 	
@@ -197,7 +195,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 			int i = itemCombo.getSelectedIndex();
 			if (i != -1) {
 				List<ItemInfo> l = gui.getFigure().getFigureItemList();
-				ItemInfo info = (ItemInfo) l.get(i);
+				ItemInfo info = l.get(i);
 				gui.getControl().useButtonClicked(info,meta);
 			}
 		
@@ -244,6 +242,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 		return healings;
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 	
 	}
@@ -267,7 +266,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 			// System.out.println("totenkopf ist null");
 		}
-		pot = new HealthPot(110, 110, Color.red, d, gui, potI);
+		pot = new HealthPot(110, 110, JDColor.red, d, gui, potI);
 		// potPanel.setBorder(new EtchedBorder());
 		BorderLayout bl = new BorderLayout();
 		bl.setHgap(0);
@@ -394,6 +393,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 		this.repaint();
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		Object quelle = me.getSource();
 		if (quelle == weap1) {
@@ -413,10 +413,12 @@ public class HealthView extends JDJPanel implements ActionListener,
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 		Object quelle = me.getSource();
 		Paragraph[] p = null;
@@ -447,21 +449,21 @@ public class HealthView extends JDJPanel implements ActionListener,
 			p[0] = new Paragraph(JDEnv.getResourceBundle().getString(
 					"gui_use_button_alt"));
 			p[0].setSize(12);
-			p[0].setColor(new Color(255, 255, 255));
+			p[0].setColor(new JDColor(255, 255, 255));
 			p[0].setCentered();
 		} else if (quelle == memoryB) {
 			p = new Paragraph[1];
 			
 			p[0] = new Paragraph("feature not available yet!");
 			p[0].setSize(12);
-			p[0].setColor(new Color(255, 255, 255));
+			p[0].setColor(new JDColor(255, 255, 255));
 			p[0].setCentered();
 		} else if (quelle == bigHeal) {
 			p = new Paragraph[1];
 			p[0] = new Paragraph(JDEnv.getResourceBundle().getString(
 					"gui_big_heal_alt"));
 			p[0].setSize(12);
-			p[0].setColor(new Color(255, 255, 255));
+			p[0].setColor(new JDColor(255, 255, 255));
 			p[0].setCentered();
 		} else {
 			if (itemCombo.getItemCount() > 0) {
@@ -474,10 +476,12 @@ public class HealthView extends JDJPanel implements ActionListener,
 		gui.getMainFrame().getText().setText(p);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me) {
 		gui.getMainFrame().getText().resetText();
 	}

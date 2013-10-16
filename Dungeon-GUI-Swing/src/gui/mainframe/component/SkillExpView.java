@@ -16,6 +16,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.border.EtchedBorder;
+
+import util.JDColor;
 public class SkillExpView extends HealthPot {
 
 	
@@ -23,7 +25,7 @@ public class SkillExpView extends HealthPot {
 
 	
 	public SkillExpView(int val, int max, int sizeX, int sizeY,MyJDGui gui) {
-		super(val,max,sizeX,sizeY, Color.black,gui);
+		super(val, max, sizeX, sizeY, JDColor.black, gui);
 		
 		repaint();
 		
@@ -36,7 +38,7 @@ public class SkillExpView extends HealthPot {
 	}
 	
 	public SkillExpView(int val, int max,MyJDGui gui) {
-		super(val,max,50,12, Color.black,gui);
+		super(val, max, 50, 12, JDColor.black, gui);
 		
 		
 		this.setBorder(new EtchedBorder());
@@ -57,6 +59,7 @@ public class SkillExpView extends HealthPot {
 		this.skillPoints = skillPoints;
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		
 		FigureInfo info = gui.getFigure();

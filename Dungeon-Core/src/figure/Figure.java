@@ -6,7 +6,6 @@ import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,6 +16,7 @@ import java.util.Set;
 import shrine.Shrine;
 import spell.Spell;
 import spell.SpellInfo;
+import util.JDColor;
 import ai.AI;
 import ai.AbstractReflexBehavior;
 import ai.DefaultMonsterIntelligence;
@@ -59,7 +59,6 @@ import figure.hero.Character;
 import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.memory.FigureMemory;
-import figure.memory.MemoryObject;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import figure.other.ConjuredMagicFigure;
@@ -84,7 +83,6 @@ import figure.percept.WaitPercept;
 import game.ControlUnit;
 import game.DungeonGame;
 import game.InfoEntity;
-import game.InfoProvider;
 import game.JDEnv;
 import game.Turnable;
 import gui.Paragraph;
@@ -131,7 +129,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	private Spell lastSpell = null;
 
-	private Action lastAction = null;
+	private final Action lastAction = null;
 
 	protected Action retrieveFightActionFromControl() {
 		Action a;
@@ -163,6 +161,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	}
 
 	
+	@Override
 	public FigureMemory getMemoryObject(FigureInfo info) {
 		return new FigureMemory(this,info);
 	}
@@ -203,7 +202,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	public static void unsetUnnecessaryRoomObStatsObjects(Dungeon d) {
 		for (Iterator iter = allFigures.keySet().iterator(); iter.hasNext();) {
 
-			Figure element = (Figure) allFigures.get(iter.next());
+			Figure element = allFigures.get(iter.next());
 			DungeonVisibilityMap map = element.getRoomVisibility();
 			RoomObservationStatus[][] rooms = map.getRooms();
 			for (int i = 0; i < rooms.length; i++) {
@@ -218,7 +217,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	}
 
 	public static Figure getFigure(int id) {
-		return (Figure) allFigures.get(new Integer(id));
+		return allFigures.get(new Integer(id));
 	}
 
 	protected int level;
@@ -270,6 +269,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	public abstract String getName();
 
+	@Override
 	public int getVisibilityStatus() {
 		return 4;
 	}
@@ -277,7 +277,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	public boolean hasKey(String k) {
 		List<Item> items = getItems();
 		for (int i = 0; i < items.size(); i++) {
-			Item it = (Item) items.get(i);
+			Item it = items.get(i);
 			if (it instanceof Key) {
 				if (((Key) it).getType().equals(k)) {
 					return true;
@@ -302,9 +302,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		poisonings.add(p);
 	}
 
+	@Override
 	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
-			Item it = (Item) (l.get(i));
+			Item it = (l.get(i));
 			this.takeItem(it, o);
 		}
 		return true;
@@ -312,7 +313,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	public void sufferPoisonings() {
 		for (int i = 0; i < poisonings.size(); i++) {
-			Poisoning p = ((Poisoning) poisonings.get(i));
+			Poisoning p = (poisonings.get(i));
 			if (p.getTime() == 0) {
 				poisonings.remove(p);
 			} else {
@@ -368,6 +369,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	public abstract void recDust(double k);
 
+	@Override
 	public abstract boolean removeItem(Item i);
 
 	public abstract void receiveSlapResult(SlapResult r);
@@ -488,7 +490,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		Set s = allFigures.keySet();
 		for (Iterator iter = s.iterator(); iter.hasNext();) {
 			Integer element = (Integer) iter.next();
-			Figure f = (Figure) allFigures.get(element);
+			Figure f = allFigures.get(element);
 			f.createVisibilityMap(d);
 
 		}
@@ -499,7 +501,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		Set s = allFigures.keySet();
 		for (Iterator iter = s.iterator(); iter.hasNext();) {
 			Integer element = (Integer) iter.next();
-			Figure f = (Figure) allFigures.get(element);
+			Figure f = allFigures.get(element);
 			// if(f.getName().equals("Vim Wadenbei�er")) {
 			// System.out.println("Vim ist dran");
 			// }
@@ -636,6 +638,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		scoutedRooms.add(r);
 	}
 
+	@Override
 	public void turn(int i) {
 
 		if (lastTurn >= i) {
@@ -710,10 +713,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		if (value < allArmor) {
 			return value / 2;
 		} else if (value < allArmor * 2) {
-			return (int) ((double) value / 1.5);
+			return (int) (value / 1.5);
 		} else {
 
-			int v = (int) (value - (1.2 * ((double) allArmor)));
+			int v = (int) (value - (1.2 * (allArmor)));
 			if (v <= 0) {
 				return 1;
 			} else {
@@ -757,7 +760,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	protected void spellBreak() {
 		if (lastSpell != null) {
 			int cost = lastSpell.getCost();
-			int pay = (int) cost / 3;
+			int pay = cost / 3;
 			this.payDust(pay);
 			lastSpell.resetSpell();
 			lastSpell = null;
@@ -1075,7 +1078,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 			return ActionResult.OTHER;
 		} else {
 			if (doIt) {
-				Item ding = (Item) this.getItems().get(index);
+				Item ding = this.getItems().get(index);
 				layDown(ding);
 				return ActionResult.DONE;
 			}
@@ -1091,7 +1094,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	}
 
 	private ActionResult handleAttackAction(AttackAction a, boolean doIt) {
-		int targetIndex = ((AttackAction) a).getTarget();
+		int targetIndex = a.getTarget();
 		Figure target = game.getFighter(targetIndex);
 		if (target == null) {
 			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
@@ -1374,7 +1377,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		if (fight) {
 
 			if (this.canPayFightActionPoint()) {
-				ItemInfo info = ((TakeItemAction) a).getItem();
+				ItemInfo info = a.getItem();
 				Item it = getRoom().getItem(info);
 				if (this.isAbleToTakeItemInFight(it)) {
 					
@@ -1403,7 +1406,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 			}
 
 		} else {
-			ItemInfo info = ((TakeItemAction) a).getItem();
+			ItemInfo info = a.getItem();
 			Item it = getRoom().getItem(info);
 			if (this.isAbleToTakeItem(it)) {
 				
@@ -1434,7 +1437,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		if (this.getActionPoints() < 1) {
 			return ActionResult.NOAP;
 		}
-		int dir = ((MoveAction) a).getDirection();
+		int dir = a.getDirection();
 		if (pos.getIndex() != getDirPos(dir)) {
 			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION);
@@ -1449,7 +1452,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 					// System.out.println("mache Move Action");
 				}
 				this.payMoveActionPoints(1);
-				walk(((MoveAction) a).getDirection());
+				walk(a.getDirection());
 				return ActionResult.DONE;
 			} else {
 				return ActionResult.POSSIBLE;
@@ -1623,7 +1626,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	private ActionResult handleUseItemAction(UseItemAction a, boolean doIt) {
 		// TODO check auf use moeglich
 		if (canPayActionPoints(1)) {
-			ItemInfo info = ((UseItemAction) a).getItem();
+			ItemInfo info = a.getItem();
 			Item it = this.getItem(info);
 			// Item it = (Item)game.unwrappObject(info);
 			if (it instanceof Usable) {
@@ -1727,7 +1730,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 				}
 
 				// if (game.getFight().getFightRoom() == this.getRoom()) {
-				int field = ((StepAction) a).getTargetIndex();
+				int field = a.getTargetIndex();
 				Position newPos = getRoom().getPositions()[field];
 				Figure neighbour = null;
 
@@ -1764,7 +1767,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 			if (this.getActionPoints() < 1) {
 				return ActionResult.NOAP;
 			}
-			Position newPos = getRoom().getPositions()[((StepAction) a)
+			Position newPos = getRoom().getPositions()[a
 					.getTargetIndex()];
 			if (newPos.getFigure() != null) {
 				return ActionResult.TARGET;
@@ -1794,7 +1797,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		if (this.getActionPoints() < 1) {
 			return ActionResult.NOAP;
 		}
-		int dir = ((ScoutAction) a).getDirection();
+		int dir = a.getDirection();
 		if (pos.getIndex() != getDirPos(dir)) {
 			return ActionResult.POSITION;
 		}
@@ -1911,7 +1914,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		int erg = 0;
 		// System.out.println(
 		// "Tumbling:" + tumbleValue + " anti: " + antiTumbleValue);
-		if (tumbleValue >= 1.5 * (double) antiTumbleValue) {
+		if (tumbleValue >= 1.5 * antiTumbleValue) {
 			if (Math.random() < 0.05) {
 				return 2;
 			}
@@ -1922,11 +1925,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 			if (Math.random() < 0.5) {
 				return 1;
 			}
-		} else if (tumbleValue >= 0.7 * (double) antiTumbleValue) {
+		} else if (tumbleValue >= 0.7 * antiTumbleValue) {
 			if (Math.random() < 0.3) {
 				return 1;
 			}
-		} else if (tumbleValue >= 0.4 * (double) antiTumbleValue) {
+		} else if (tumbleValue >= 0.4 * antiTumbleValue) {
 			if (Math.random() < 0.2) {
 				return 1;
 			}
@@ -2087,6 +2090,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	protected int worth;
 
+	@Override
 	public Room getRoom() {
 		return room;
 	}
@@ -2130,6 +2134,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		return this.getDust().getValue() >= amount;
 	}
 
+	@Override
 	public abstract boolean takeItem(Item i, ItemOwner o);
 
 	/**
@@ -2265,29 +2270,30 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		this.fightAP = fightAP;
 	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[4];
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 
 		p[1] = new Paragraph(getMclass());
 		p[1].setSize(20);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 
 		p[2] = new Paragraph(getStatus());
 		p[2].setSize(14);
 		p[2].setCentered();
-		p[2].setColor(Color.black);
+		p[2].setColor(JDColor.black);
 
 		p[3] = new Paragraph(getSpecialsText());
 		p[3].setSize(10);
 		p[3].setCentered();
-		p[3].setColor(Color.black);
+		p[3].setColor(JDColor.black);
 
 		return p;
 	}
@@ -2456,6 +2462,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 		room = game.getDungeon().getRoom(location);
 	}
 
+	@Override
 	public JDPoint getLocation() {
 		return location;
 	}
@@ -2792,7 +2799,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 					target = game.unwrappObject((InfoEntity) a.getTarget());
 				}
 				lastSpell = sp;
-				return sp.fire((Figure) this, target, doIt);
+				return sp.fire(this, target, doIt);
 
 			}
 			return ActionResult.NOAP;

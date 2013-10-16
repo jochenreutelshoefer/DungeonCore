@@ -363,46 +363,8 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 	}
 
 	public static void setResourceBundles(boolean english) {
-		ResourceBundle en = null;
-		ResourceBundle de = null;
-		Locale loc_de = Locale.GERMAN;
-		Locale loc_en = Locale.ENGLISH;
-
-		ResourceBundle myBundle = null;
-		if (english) {
-			myBundle = ResourceBundle.getBundle("texts", loc_en);
-		} else {
-			myBundle = ResourceBundle.getBundle("texts", loc_de);
-
-		}
-
-		if (myBundle == null) {
-			System.out.println("Bundle ist null");
-			System.exit(0);
-		}
-		// System.out.println("Bundle: "+myBundle.toString());
-		// System.out.println("sword: "+myBundle.getString("sword"));
-		JDEnv.setRes(myBundle);
-		Texts.init();
-		// try {
-		// en = new PropertyResourceBundle(new FileInputStream(
-		// "txt\\texts"));
-		// de = new PropertyResourceBundle(new FileInputStream(
-		// "txt\\texts_de"));
-		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }else {
-		// en = new PropertyResourceBundle(new InputStream(new
-		// URL(applet.getCodeBase().toString()+"txt\\texts")));
-		// de = new PropertyResourceBundle(new FileInputStream(
-		// "txt\\texts_de"));
-		// }
-
+		//TODO: refactor
+		JDEnv.init();
 	}
 
 	private String PICS_NOT_LOADED = "";

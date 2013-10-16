@@ -4,7 +4,6 @@ import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.memory.ChestMemory;
-import figure.memory.MemoryObject;
 import figure.percept.Percept;
 import figure.percept.TakePercept;
 import game.InfoEntity;
@@ -17,10 +16,11 @@ import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
 
-import java.awt.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import util.JDColor;
 
 /**
  * Eine Truhe steht immer fest in einem Raum. Truhen koennen Gegenstaende
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
-	private LinkedList items;
+	private final LinkedList items;
 
 	private String lock = new String("unlockable");
 
@@ -65,18 +65,22 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	}
 
+	@Override
 	public Item getItemNumber(int i) {
 		return (Item) items.get(i);
 	}
 
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new ChestInfo(this, map);
 	}
 
+	@Override
 	public Room getRoom() {
 		return r;
 	}
 
+	@Override
 	public Item getItem(ItemInfo it) {
 		for (Iterator iter = items.iterator(); iter.hasNext();) {
 			Item element = (Item) iter.next();
@@ -101,6 +105,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		}
 	}
 
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[items.size()];
 		for (int i = 0; i < items.size(); i++) {
@@ -109,6 +114,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return array;
 	}
 
+	@Override
 	public boolean addItems(List l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
 			Item it = (Item) (l.get(i));
@@ -185,12 +191,13 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return lock;
 	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[4];
 		p[0] = new Paragraph(JDEnv.getString("chest"));
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(Color.orange);
+		p[0].setColor(JDColor.orange);
 		p[0].setBold();
 
 		String s2 = new String();
@@ -234,10 +241,12 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	}
 
+	@Override
 	public boolean removeItem(Item i) {
 		return items.remove(i);
 	}
 
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 
 		items.add(i);
@@ -249,6 +258,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return items;
 	}
 
+	@Override
 	public JDPoint getLocation() {
 		return location;
 	}

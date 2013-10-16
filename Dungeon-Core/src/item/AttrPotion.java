@@ -1,22 +1,21 @@
 package item;
 
-import item.interfaces.Usable;
-
-import java.util.*;
-import java.awt.Color;
-import figure.hero.Character;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.attribute.TimedAttributeModification;
-import figure.hero.Hero;
 import figure.percept.TextPercept;
 import game.JDEnv;
 import gui.Paragraph;
 import gui.Texts;
+import item.interfaces.Usable;
+
+import java.util.LinkedList;
+
+import util.JDColor;
 
 public class AttrPotion extends Item implements Usable {
 
-	private int a;
+	private final int a;
 
 	
 	public static final int delay = 30;
@@ -30,11 +29,13 @@ public class AttrPotion extends Item implements Usable {
 		Type = setType();
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
 	
+	@Override
 	public int getItemKey() {
 		return Item.ITEM_KEY_ATTRPOTION;
 	}
@@ -43,10 +44,12 @@ public class AttrPotion extends Item implements Usable {
 		return null;
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return f.getAttribute(a) != null;
 	}
 
+	@Override
 	public boolean usableOnce() {
 		return true;
 	}
@@ -55,6 +58,7 @@ public class AttrPotion extends Item implements Usable {
 		return a;
 	}
 
+	@Override
 	public boolean use(Figure h,Object target,boolean meta) {
 		//Hero held = (Hero) h;
 		h.tellPercept(new TextPercept(Texts.getPoitionDrinkString(a)));
@@ -71,14 +75,17 @@ public class AttrPotion extends Item implements Usable {
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		return Type;
 	}
 
+	@Override
 	public String getText() {
 		return toString();
 	}
 
+	@Override
 	public String getName() {
 		if (a ==(Attribute.HEALTH)) {
 			return JDEnv.getResourceBundle().getString("heal_potion");
@@ -86,18 +93,19 @@ public class AttrPotion extends Item implements Usable {
 		return JDEnv.getResourceBundle().getString("elixier")+" " + Texts.getAttributeName(a);
 	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[2];
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
-		p[0].setColor(new Color(170, 140, 60));
+		p[0].setColor(new JDColor(170, 140, 60));
 		p[0].setBold();
 
 		p[1] = new Paragraph(toString());
 		p[1].setSize(16);
 		p[1].setCentered();
-		p[1].setColor(Color.black);
+		p[1].setColor(JDColor.black);
 		p[1].setBold();
 
 		return p;
@@ -110,9 +118,9 @@ public class AttrPotion extends Item implements Usable {
 				|| (a==(Attribute.PSYCHO))) {
 
 			int sum = worth / 5;
-			int half = (int) (sum / 2);
+			int half = sum / 2;
 			int rest = sum - half;
-			int quarter1 = (int) (rest / 2) + 1;
+			int quarter1 = rest / 2 + 1;
 			int quarter2 = rest - quarter1;
 
 			mods.add(new PotionMod(half, 0));
@@ -130,9 +138,9 @@ public class AttrPotion extends Item implements Usable {
 				== (Attribute.WOLFKNIFE)))) {
 
 			int sum = 5 * worth / 7;
-			int half = (int) (sum / 2);
+			int half = sum / 2;
 			int rest = sum - half;
-			int quarter1 = (int) (rest / 2) + 1;
+			int quarter1 = rest / 2 + 1;
 			int quarter2 = rest - quarter1;
 
 			mods.add(new PotionMod(half, 0));
@@ -151,9 +159,9 @@ public class AttrPotion extends Item implements Usable {
 				|| (a == (Attribute.UNDEAD_KNOWLEDGE))) {
 
 			int sum = 5 * worth / 8;
-			int half = (int) (sum / 2);
+			int half = sum / 2;
 			int rest = sum - half;
-			int quarter1 = (int) (rest / 2) + 1;
+			int quarter1 = rest / 2 + 1;
 			int quarter2 = rest - quarter1;
 
 			mods.add(new PotionMod(half, 0));
@@ -161,7 +169,7 @@ public class AttrPotion extends Item implements Usable {
 			mods.add(new PotionMod(quarter2, 2));
 
 			int i = 0;
-			// //System.out.println("übergabe-while:");
+			// //System.out.println("ï¿½bergabe-while:");
 			while (i < sum) {
 				// System.out.println(Integer.toString(i));
 				mods.add(new PotionMod(-1, i + delay));
@@ -169,9 +177,9 @@ public class AttrPotion extends Item implements Usable {
 			}
 		} else if (a == (Attribute.SCOUT)) {
 			int sum = worth / 10;
-			int half = (int) (worth / 2);
+			int half = worth / 2;
 			int rest = sum - half;
-			int quarter1 = (int) (rest / 2) + 1;
+			int quarter1 = rest / 2 + 1;
 			int quarter2 = rest - quarter1;
 
 			mods.add(new PotionMod(half, 0));
@@ -186,9 +194,9 @@ public class AttrPotion extends Item implements Usable {
 
 		} else if (a == (Attribute.THREAT)) {
 			int sum = worth / 9;
-			int half = (int) (sum / 2);
+			int half = sum / 2;
 			int rest = sum - half;
-			int quarter1 = (int) (rest / 2) + 1;
+			int quarter1 = rest / 2 + 1;
 			int quarter2 = rest - quarter1;
 
 			mods.add(new PotionMod(half, 0));
@@ -205,7 +213,7 @@ public class AttrPotion extends Item implements Usable {
 
 			int max = (int) (held.getHealth().getBasic());
 			int h = worth;
-			int one = (int) (worth / 3);
+			int one = worth / 3;
 			// //System.out.println("attHelps: ");
 			PotionMod m = new PotionMod(one, 0);
 			// //System.out.println("erstes");
