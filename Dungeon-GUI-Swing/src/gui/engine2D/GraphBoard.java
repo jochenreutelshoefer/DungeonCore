@@ -101,7 +101,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		initCursors();
-		this.renderer = new GraphicObjectRenderer(roomSize, gui);
+		this.renderer = new GraphicObjectRenderer(roomSize, gui.getFigure());
 		this.setPreferredSize(new Dimension(screenSize, screenSize));
 	}
 
@@ -131,7 +131,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	private void sizeChanged() {
-		this.renderer = new GraphicObjectRenderer(roomSize, gui);
+		this.renderer = new GraphicObjectRenderer(roomSize, gui.getFigure());
 	}
 	
 	public JDDimension getMonsterSize(MonsterInfo m) {
@@ -141,7 +141,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
 		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize,
-				gui);
+				gui.getFigure());
 
 		int xcoord = 0;
 		int ycoord = 0;

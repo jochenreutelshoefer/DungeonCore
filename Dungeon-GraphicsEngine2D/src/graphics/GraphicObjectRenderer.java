@@ -1,5 +1,6 @@
 package graphics;
 
+import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -104,15 +105,15 @@ public class GraphicObjectRenderer {
 
 	public GraphicObject hero;
 	
-	private JDGUI gui;
+	private FigureInfo figure;
 
 	
 	private JDPoint[] getPositionCoord() {
 		return positionCoord;
 	}
 
-	public GraphicObjectRenderer(int roomSize, JDGUI gui) {
-		this.gui = gui;
+	public GraphicObjectRenderer(int roomSize, FigureInfo info) {
+		this.figure = info;
 		this.roomSize = roomSize;
 		ROOMSIZE_BY_36 = RoomSize.by(36,roomSize);
 		ROOMSIZE_BY_24 = RoomSize.by(24,roomSize);
@@ -1050,7 +1051,7 @@ public class GraphicObjectRenderer {
 		if ((status >= RoomObservationStatus.VISIBILITY_SHRINE)
 				) {
 
-			if (r.equals(gui.getFigure().getRoomInfo())) {
+			if (r.equals(figure.getRoomInfo())) {
 				JDPoint[] positionCoord = getPositionCoord();
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
@@ -1181,7 +1182,7 @@ public class GraphicObjectRenderer {
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
 			JDPoint[] positionCoord = getPositionCoord();
-			if (r.equals(gui.getFigure().getRoomInfo())) {
+			if (r.equals(figure.getRoomInfo())) {
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
 
