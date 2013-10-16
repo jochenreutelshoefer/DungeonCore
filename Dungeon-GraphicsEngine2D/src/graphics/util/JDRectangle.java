@@ -1,5 +1,6 @@
 package graphics.util;
 
+import util.JDDimension;
 import dungeon.JDPoint;
 
 public class JDRectangle {

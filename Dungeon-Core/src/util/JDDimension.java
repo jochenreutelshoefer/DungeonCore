@@ -1,4 +1,4 @@
-package graphics.util;
+package util;
 
 public class JDDimension {
 

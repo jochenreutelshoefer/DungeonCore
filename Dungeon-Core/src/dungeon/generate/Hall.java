@@ -10,10 +10,11 @@
  */
 package dungeon.generate;
 
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
-import java.awt.*;
 
+import shrine.Shrine;
+import util.JDDimension;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.Dungeon;
@@ -21,9 +22,6 @@ import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RouteInstruction;
 import dungeon.quest.RoomQuest_XxY;
-
-import shrine.Shrine;
-
 import figure.Figure;
 import figure.monster.Monster;
 
@@ -96,7 +94,7 @@ public class Hall {
 
 	private void claimRooms() {
 		for (int i = 0; i < rooms.size(); i++) {
-			Room r = (Room) rooms.get(i);
+			Room r = rooms.get(i);
 			boolean ok = r.setHall(this);
 
 			//Fehler in Levelgenerierung
@@ -147,7 +145,7 @@ public class Hall {
 		Room r = null;
 		int k = 6;
 		for (int i = 0; i < rooms.size(); i++) {
-			Room p = (Room) rooms.get(i);
+			Room p = rooms.get(i);
 			////System.out.println("möglicher Raum fuer spot: " + p.toString());
 			int pD = getDoors(p);
 			////System.out.println("Tueren: " + pD);
@@ -172,7 +170,7 @@ public class Hall {
 			rounds++;
 			int e = (int) (Math.random() * rooms.size());
 			//System.out.println("e: " + e);
-			Room r1 = (Room) rooms.get(e);
+			Room r1 = rooms.get(e);
 			//System.out.println(r1.hasHallDoor());
 			int k = 1 + ((int) Math.random() * 4);
 			Door d1 = r1.getDoor(k);
@@ -215,7 +213,7 @@ public class Hall {
 		//System.out.println();
 		////System.out.println("rooms ohne rq:");
 		for (int i = 0; i < rooms.size(); i++) {
-			Room r = (Room) rooms.get(i);
+			Room r = rooms.get(i);
 			if (r.getRoomQuest() == null) {
 				////System.out.println(i+": adding" +r.toString());
 				not_rq_rooms.add(r);
@@ -229,7 +227,7 @@ public class Hall {
 		hash.add(first);
 		int k = 0;
 		while (k < hash.size()) {
-			Room r = (Room) hash.get(k);
+			Room r = hash.get(k);
 			Door[] doors = r.getDoors();
 			for (int i = 0; i < 4; i++) {
 				if (doors[i] != null) {
@@ -264,7 +262,7 @@ public class Hall {
 			return d.getRoomNr(0, 0);
 		}
 
-		Room r = (Room) rooms.get(k);
+		Room r = rooms.get(k);
 		return r;
 
 	}
@@ -277,23 +275,23 @@ public class Hall {
 		}
 
 		while (true) {
-			if(((Room) rooms.get(k)).getShrine() == null) {
+			if(rooms.get(k).getShrine() == null) {
 				break;
 			}
 			k = (int) (Math.random() * rooms.size());
 		}
 
-		return (Room) rooms.get(k);
+		return rooms.get(k);
 
 	}
 	public Room getRimRoom(int dir) {
 		int rounds = 0;
 		int k = (int) (Math.random() * rooms.size());
-		Room r = (Room) rooms.get(k);
+		Room r = rooms.get(k);
 		while (!isRimRoom(r, dir)) {
 			rounds++;
 			k = (int) (Math.random() * rooms.size());
-			r = (Room) rooms.get(k);
+			r = rooms.get(k);
 			if (rounds > 50) {
 				return null;
 
@@ -323,9 +321,9 @@ public class Hall {
 
 		int rounds = 0;
 		while (!ok) {
-			Integer i =  (Integer)indexList.get((int)(Math.random()*indexList.size()));
+			Integer i =  indexList.get((int)(Math.random()*indexList.size()));
 			indexList.remove(i);
-			r = (Room)rooms.get(i.intValue());
+			r = rooms.get(i.intValue());
 			if ((!this.isHereRimRoom(r, 0))
 				&& (!this
 					.isHereRimRoom(
@@ -424,7 +422,7 @@ public class Hall {
 		//System.out.println("ueberpruefe: " + r.toString());
 		List<Room> neighbours = d.getNeighbourRooms(r);
 		for (int i = 0; i < neighbours.size(); i++) {
-			Room n = (Room) neighbours.get(i);
+			Room n = neighbours.get(i);
 			if ((!n.isClaimed())) {
 				if (dir == 0) {
 					return true;
@@ -448,7 +446,7 @@ public class Hall {
 		}
 		List<Room> neighbours = d.getNeighbourRooms(r);
 		for (int i = 0; i < neighbours.size(); i++) {
-			Room n = (Room) neighbours.get(i);
+			Room n = neighbours.get(i);
 			Hall halle = n.getHall();
 			
 			if ((!n.isClaimed())) {
@@ -492,7 +490,7 @@ public class Hall {
 		while (monsters.size() > 0) {
 			int k = (int) (Math.random() * rooms.size());
 			////System.out.println("k: " + k);
-			Room r = (Room) rooms.get(k);
+			Room r = rooms.get(k);
 			if (r.getRoomQuest() == null && (!r.isStart())) {
 				Monster mon = (Monster) monsters.removeFirst();
 				r.figureEnters(mon,0);
@@ -529,8 +527,8 @@ public class Hall {
 		}
 	}
 
-	public boolean makeArea(Dimension d) {
-		Dimension dim;
+	public boolean makeArea(JDDimension d) {
+		JDDimension dim;
 		if (d == null) {
 			dim = makeDimension();
 		} else {
@@ -546,8 +544,8 @@ public class Hall {
 			//System.out.println("Halle 0 x 0 !!!");
 		} else {
 			//System.out.println("maximale Breite w�re: " + found);
-			int anz = dim.height * dim.width;
-			dim = new Dimension(anz / found, found);
+			int anz = dim.getHeight() * dim.getWidth();
+			dim = new JDDimension(anz / found, found);
 			return makeArea(dim);
 
 		}
@@ -570,11 +568,11 @@ public class Hall {
 
 	public void makeDoors() {
 		for (int i = 0; i < rooms.size(); i++) {
-			Room r = (Room) rooms.get(i);
+			Room r = rooms.get(i);
 			////System.out.println("Raum: "+r.toString());
 			List<Room> neighbours = d.getNeighbourRooms(r);
 			for (int j = 0; j < neighbours.size(); j++) {
-				Room n = (Room) neighbours.get(j);
+				Room n = neighbours.get(j);
 				if ((n != null) && (n.isClaimed()) && n.getHall() == this) {
 					Door d = new Door(r, n);
 					////System.out.println("Setze Tuer nach: "+n.toString());
@@ -585,7 +583,7 @@ public class Hall {
 		}
 	}
 
-	private Dimension makeDimension() {
+	private JDDimension makeDimension() {
 		int a =
 			((int) Math.sqrt(preferredSize)) - 1 + (int) (Math.random() * 3);
 		if (a == 0) {
@@ -595,20 +593,20 @@ public class Hall {
 		if (b == 0) {
 			b = 1;
 		}
-		if (a * b > (int) (((double) preferredSize) * 0.75)) {
+		if (a * b > (int) ((preferredSize) * 0.75)) {
 			if (Math.random() > 0.5) {
 				////System.out.println("a,b");
-				return new Dimension(a, b);
+				return new JDDimension(a, b);
 			} else {
 				////System.out.println("b,a");
-				return new Dimension(b, a);
+				return new JDDimension(b, a);
 			}
 		} else {
 			return makeDimension();
 		}
 	}
 
-	private int tryFindHall(Dimension dim) {
+	private int tryFindHall(JDDimension dim) {
 		//System.out.println("Startposition: " + startPoint.toString());
 		//System.out.println(
 		//	"Richtung: " + routeInstruction.dirToString(direction));
@@ -630,7 +628,7 @@ public class Hall {
 		//System.out.println("maxDistSecondCorner: " + maxDistSecondCorner);
 
 		int[] hallResult;
-		if (maxDistFirstCorner + maxDistSecondCorner + 1 >= dim.height) {
+		if (maxDistFirstCorner + maxDistSecondCorner + 1 >= dim.getHeight()) {
 			hallResult =
 				tryFindEnoughRows(dim, maxDistFirstCorner, maxDistSecondCorner);
 			//System.out.println();
@@ -718,7 +716,7 @@ public class Hall {
 			List<Room> neighbours = d.getNeighbourRooms(r);
 			newRoom = false;
 			for (int i = 0; i < neighbours.size(); i++) {
-				Room n = (Room) neighbours.get(i);
+				Room n = neighbours.get(i);
 				if ((!n.isClaimed())
 					&& (!rooms.contains(n))
 					&& (!l.contains(n))
@@ -739,7 +737,7 @@ public class Hall {
 		return l;
 	}
 	private int[] tryFindEnoughRows(
-		Dimension dim,
+JDDimension dim,
 		int maxDistFirstCorner,
 		int maxDistSecondCorner) {
 		//System.out.println();
@@ -750,9 +748,9 @@ public class Hall {
 		//System.out.println("MaxDistSecondCorner: " + maxDistSecondCorner);
 		int res[] = new int[4];
 		int maxKres[] = new int[4];
-		int b = dim.width;
+		int b = dim.getWidth();
 		//System.out.println("Tiefe des zu suchenden Raumes: " + b);
-		int a = dim.height;
+		int a = dim.getHeight();
 		//System.out.println("Breite des zu suchenden Raumes: " + a);
 		int aHalf = a / 2;
 		//System.out.println("A-Halbe: " + aHalf);
@@ -1051,7 +1049,7 @@ public class Hall {
 		int n = 1000;
 		Room northest = null;
 		for (int i = 0; i < rooms.size(); i++) {
-			Room r = (Room) rooms.get(i);
+			Room r = rooms.get(i);
 			int y = r.getNumber().getY();
 			if (y < n
 				&& (!d.getRoomAt(r, RouteInstruction.NORTH).isClaimed())) {

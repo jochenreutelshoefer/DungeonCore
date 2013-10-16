@@ -56,23 +56,23 @@ public class DungeonGame implements Runnable {
 
 	public Dungeon derDungeon;
 
-	private Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
+	private final Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
 
 	public int DungeonSizeX = 30;
 
 	public int DungeonSizeY = 40;
 
-	private String[] word = { "JAVA", "CLUB", "BEAR" };
+	private final String[] word = { "JAVA", "CLUB", "BEAR" };
 
 	private Rune[] runen;
 
-	private boolean visibility = false;
+	private final boolean visibility = false;
 
 	private boolean imortal = false;
 
-	private List<Item> uniqueItems = new LinkedList<Item>();
+	private final List<Item> uniqueItems = new LinkedList<Item>();
 
-	private long startTime;
+	private final long startTime;
 
 	TestTracker tracker;
 	
@@ -178,13 +178,13 @@ public class DungeonGame implements Runnable {
 				return null;
 			}
 			int k = (int) (Math.random() * uniqueItems.size());
-			Item it = (Item) uniqueItems.get(k);
+			Item it = uniqueItems.get(k);
 			uniqueItems.remove(it);
 			return it;
 		} else {
 
 			int k = (int) (Math.random() * possible.size());
-			Item it = (Item) possible.get(k);
+			Item it = possible.get(k);
 			uniqueItems.remove(it);
 			return it;
 		}
@@ -202,7 +202,7 @@ public class DungeonGame implements Runnable {
 		Collection<Figure> l = guiFigures.keySet();
 		List<Figure> toDelete = new LinkedList<Figure>();
 		for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			if (element.isDead()) {
 				toDelete.add(element);
 			}
@@ -210,7 +210,7 @@ public class DungeonGame implements Runnable {
 		}
 
 		for (Iterator<Figure> iter = toDelete.iterator(); iter.hasNext();) {
-			Object element = (Object) iter.next();
+			Object element = iter.next();
 			guiFigures.remove(element);
 			System.out.println("Figure aus GuiHash genommen weil tot!");
 		}
@@ -220,13 +220,14 @@ public class DungeonGame implements Runnable {
 		Collection<Figure> l = guiFigures.keySet();
 
 		for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
-			JDGUI gui = (JDGUI) guiFigures.get(element);
+			Figure element = iter.next();
+			JDGUI gui = guiFigures.get(element);
 			gui.gameRoundEnded();
 
 		}
 	}
 
+	@Override
 	public void run() {
 
 		while (gameOver == false) {
@@ -262,7 +263,7 @@ public class DungeonGame implements Runnable {
 		}
 	}
 
-	private List<Turnable> turnableItems = new LinkedList<Turnable>();
+	private final List<Turnable> turnableItems = new LinkedList<Turnable>();
 
 	public void addTurnableItem(Item i) {
 		if (i instanceof Turnable) {
@@ -272,7 +273,7 @@ public class DungeonGame implements Runnable {
 
 	private void itemsTurn() {
 		for (Iterator<Turnable> iter = turnableItems.iterator(); iter.hasNext();) {
-			Turnable element = (Turnable) iter.next();
+			Turnable element = iter.next();
 			element.turn(round);
 
 		}
@@ -286,6 +287,10 @@ public class DungeonGame implements Runnable {
 	}
 
 	public void fillDungeon(Dungeon d) throws DungeonGenerationFailedException {
+
+		if (this.derDungeon == null) {
+			derDungeon = d;
+		}
 
 		// held.resetMemory(DungeonSizeX, DungeonSizeY);
 		makeUniqueItems();
