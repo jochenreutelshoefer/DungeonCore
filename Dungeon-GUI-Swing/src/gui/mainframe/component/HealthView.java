@@ -17,6 +17,7 @@ import gui.JDJTitledBorder;
 import gui.MyComboRenderer;
 import gui.MyJDGui;
 import gui.Paragraph;
+import gui.engine2D.DrawUtils;
 import gui.mainframe.MainFrame;
 import item.HealPotion;
 //import item.Item;
@@ -364,7 +365,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 		EquipmentItemInfo weapon1 = heroInfo.getWeapon(0);
 		if (weapon1 != null) {
-			weap1.setForeground(weapon1.getStatusColor());
+			weap1.setForeground(DrawUtils.convertColor(weapon1.getStatusColor()));
 			weap1.setText((weapon1.toString()));
 
 		} else {
@@ -374,7 +375,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 		EquipmentItemInfo weapon2 = heroInfo.getWeapon(1);
 		if (weapon2 != null) {
-			weap2.setForeground(weapon2.getStatusColor());
+			weap2.setForeground(DrawUtils.convertColor(weapon2.getStatusColor()));
 			weap2.setText((weapon2.toString()));
 
 		} else {
@@ -383,7 +384,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 		EquipmentItemInfo weapon3 = heroInfo.getWeapon(2);
 		if (weapon3 != null) {
-			weap3.setForeground(weapon3.getStatusColor());
+			weap3.setForeground(DrawUtils.convertColor(weapon3.getStatusColor()));
 			weap3.setText((weapon3.toString()));
 
 		} else {

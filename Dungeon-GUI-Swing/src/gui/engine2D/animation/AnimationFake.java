@@ -11,7 +11,6 @@ import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import graphics.GraphicObject;
 import graphics.JDImageProxy;
-import graphics.util.JDDimension;
 import graphics.util.JDRectangle;
 import gui.MyJDGui;
 import gui.engine2D.DrawUtils;
@@ -19,6 +18,7 @@ import gui.engine2D.DrawUtils;
 import java.awt.Graphics;
 
 import util.JDColor;
+import util.JDDimension;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 

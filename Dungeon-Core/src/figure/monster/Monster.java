@@ -6,7 +6,6 @@ import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
 import item.quest.DarkMasterKey;
 
-import java.awt.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +26,6 @@ import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
-import figure.RoomObservationStatus;
 import figure.Spellbook;
 import figure.action.Action;
 import figure.attribute.Attribute;
@@ -109,10 +107,12 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 
 
+	@Override
 	public int filterFrightening(Frightening f) {
 		return f.getValue();
 	}
 	
+	@Override
 	protected boolean tryUnlockDoor(Door d, boolean doIt) {
 		return false;
 	}
@@ -123,6 +123,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	protected Attribute dexterity = new Attribute(Attribute.DEXTERITY,7);
 	
 
+	@Override
 	public Attribute getStrength() {
 		if (strength == null) {
 			System.out.println("st�rke-attribut von Monster ist null: "
@@ -136,6 +137,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected int lastMove = 0;
 
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new MonsterInfo(this, map);
 	}
@@ -146,6 +148,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	
 	protected Attribute dust;
 	
+	@Override
 	protected boolean getBlock(int dmg) {
 		return false;
 	}
@@ -192,6 +195,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected String Mclass;
 
+	@Override
 	public Item getItem(ItemInfo it) {
 		for (Iterator iter = items.iterator(); iter.hasNext();) {
 			Item element = (Item) iter.next();
@@ -272,6 +276,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		construcHelp(value);
 	}
 
+	@Override
 	public int getTumbleValue(Figure f) {
 		return tumbleValue;
 	}
@@ -311,6 +316,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	
+	@Override
 	public int getAntiTumbleValue() {
 		return antiTumbleValue;
 	}
@@ -320,27 +326,33 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return magicResistRate;
 	}
 
+	@Override
 	public double getFireResistRate() {
 		return fireResistRate;
 	}
 
+	@Override
 	public double getLightningResistRate() {
 		return lightningResistRate;
 	}
 
+	@Override
 	public double getMagicResistRate() {
 		return magicResistRate;
 	}
 
+	@Override
 	public Attribute getAttribute(int name) {
 		return null;
 	}
 	
+	@Override
 	public List getModificationList() {
 		return this.modifications;
 	}
 
 	
+	@Override
 	public double getPoisonResistRate() {
 		return poisonResistRate;
 	}
@@ -374,6 +386,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected abstract double getAntiFleeFactor();
 
+	@Override
 	public double getAntiFleeValue() {
 		if (this.getFightAP() < 0) {
 			return 0;
@@ -406,19 +419,22 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 	}
 
+	@Override
 	public String getMclass() {
 		return Mclass;
 	}
 
+	@Override
 	protected boolean scout(int dir) {
 		// TODO
 		return false;
 	}
 
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[items.size()];
 		for (int i = 0; i < items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo((Item) items.get(i),map);
+			array[i] = ItemInfo.makeItemInfo(items.get(i),map);
 		}
 		return array;
 	}
@@ -427,26 +443,31 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return this.specialAttackCounter == 0;
 	}
 
+	@Override
 	public List<Item> getAllItems() {
 		return items;
 	}
 
+	@Override
 	public Attribute getDust() {
 		return dust;
 	}
 	
+	@Override
 	public Attribute getDexterity() {
 		return this.dexterity;
 	}
 
+	@Override
 	public void addScoutedRoom(Room r) {
 
 	}
 
+	@Override
 	public boolean hasItem(Item k) {
 
 		for (int i = 0; i < items.size(); i++) {
-			Item it = (Item) items.get(i);
+			Item it = items.get(i);
 			if (it == k) {
 				return true;
 			}
@@ -455,6 +476,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	}
 
+	@Override
 	public void recDust(double value) {
 		// //System.out.println("Dust erh�hen um: "+value);
 		// getCharacter().getDust().modValue(value);
@@ -463,28 +485,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		// getCharacter().getDust().setValue(getCharacter().getDust().getBasic());
 	}
 
-	public Color getColor() {
-		if (this instanceof Wolf) {
-			return Color.green;
-		}
-		if (this instanceof Spider) {
-			return Color.cyan;
-		}
-		if (this instanceof Orc) {
-			return Color.yellow;
-		}
-		if (this instanceof Ogre) {
-			return Color.orange;
-		}
-		if (this instanceof Ghul) {
-			return Color.black;
-		}
-		if (this instanceof Wolf) {
-			return Color.lightGray;
-		} else
-			return Color.pink;
-	}
-
+	@Override
 	public void addModification(TimedAttributeModification mod) {
 		modifications.add(mod);
 	}
@@ -496,6 +497,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * 
 	 * @uml.property name="worth"
 	 */
+	@Override
 	public int getWorth() {
 		return worth;
 	}
@@ -507,10 +509,12 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * 
 	 * @uml.property name="name"
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public int getItemIndex(Item it) {
 
 		for (int i = 0; i < items.size(); i++) {
@@ -550,6 +554,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * 
 	 * @uml.property name="health"
 	 */
+	@Override
 	public Attribute getHealth() {
 		return health;
 	}
@@ -570,6 +575,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * 
 	 * @uml.property name="psycho"
 	 */
+	@Override
 	public Attribute getPsycho() {
 		return psycho;
 	}
@@ -603,18 +609,22 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 *            an <code>int</code> value
 	 * @return a <code>boolean</code> value
 	 */
+	@Override
 	protected int getTypeSkill(Figure m) {
 		return 1;
 	}
 
+	@Override
 	protected int getAllArmor(Slap s) {
 		return 0;
 	}
 
+	@Override
 	public Action getForcedFightAction() {
 		return null;
 	}
 
+	@Override
 	public Action getForcedMovementAction() {
 		return null;
 	}
@@ -640,6 +650,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	//
 	// }
 
+	@Override
 	public float getActualChanceToHit(Figure m) {
 
 		// game.newStatement(
@@ -653,6 +664,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return c;
 	}
 
+	@Override
 	public int getActualRangeCapability(int range) {
 		if (range == Position.DIST_FAR) {
 			return 100;
@@ -668,9 +680,10 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	}
 
+	@Override
 	public int getSlapStrength(Figure m) {
 		// Faktor 1,0 !!
-		int k = (int) (1.0 * (int) (minDamage + ((int) (Math.random() * (maxDamage
+		int k = (int) (1.0 * (minDamage + ((int) (Math.random() * (maxDamage
 				- minDamage + 1)))));
 		// game.newStatement(this.getName() + " Schlagst�rke:" + k, 4);
 		int h = this.getHealthLevel();
@@ -689,6 +702,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	}
 
+	@Override
 	public int getElude(Figure m) {
 		int k = 5;
 		// game.newStatement(this.getName() + " Chance ausweichen:" + k, 4);
@@ -722,6 +736,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 			
 	}
 
+	@Override
 	public int getLevel() {
 		int potenz = 2;
 		int unit = 2000;
@@ -776,11 +791,13 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * 
 	 * @uml.property name="making_special_attack"
 	 */
+	@Override
 	public void setMakingSpecialAttack(boolean b) {
 
 		this.makingSpecialAttack = b;
 	}
 
+	@Override
 	protected void sanction(int i) {
 		for (int j = 0; j < i; j++) {
 			bravery.modValue((-1));
@@ -789,6 +806,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 	}
 
+	@Override
 	public int getHealthLevel() {
 		int i = health.perCent();
 		if (i > 50)
@@ -807,10 +825,12 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * 
 	 * @uml.property name="items"
 	 */
+	@Override
 	public List<Item> getItems() {
 		return items;
 	}
 
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 		items.add(i);
 		ItemOwner before = i.getOwner();
@@ -821,6 +841,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return true; // ?
 	}
 
+	@Override
 	public boolean removeItem(Item i) {
 		if (i instanceof Locatable) {
 			((Locatable) i).getsRemoved();
@@ -858,6 +879,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	}
 
+	@Override
 	public boolean giveAwayItem(Item i, ItemOwner o) {
 		if (items.contains(i)) {
 			o.takeItem(i, this);
@@ -930,11 +952,13 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 
+	@Override
 	public Item getItemNumber(int i) {
-		return (Item) items.get(i);
+		return items.get(i);
 	}
 
 
+	@Override
 	public void recover() {
 
 		heal(healthRecover);
@@ -959,10 +983,10 @@ public abstract class Monster extends Figure implements Paragraphable,
 		if (count > 0) {
 			if (count == 1) {
 				// newStatement("Zweite Drohung:", 4);
-				k = (int) (k / 2);
+				k = k / 2;
 			} else if (count == 2) {
 				// newStatement("dritte Drohung:", 4);
-				k = (int) (k / 3);
+				k = k / 3;
 			} else if (count == 3) {
 				// newStatement("vierte Drohung:", 4);
 				k = 0;
@@ -979,18 +1003,22 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 
+	@Override
 	public Attribute getBrave() {
 		return bravery;
 	}
 
+	@Override
 	protected void lookInRoom() {
 
 	}
 
+	@Override
 	public String toString() {
 		return (this.getMclass() + " " + this.getName());
 	}
 
+	@Override
 	public void receiveSlapResult(SlapResult r) {
 		// macht noch nichts
 	}
@@ -999,6 +1027,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		convinced += k;
 	}
 
+	@Override
 	public int getKnowledgeBalance(Figure f) {
 		return level - f.getLevel();
 	}
@@ -1041,19 +1070,23 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 	}
 
+	@Override
 	public boolean isAbleToUseItem() {
 		return false;
 	}
 
+	@Override
 	public boolean isAbleToTakeItem(Item it) {
 		return true;
 
 	}
 
+	@Override
 	public boolean isAbleToTakeItemInFight(Item it) {
 		return false;
 	}
 
+	@Override
 	public boolean canTakeItem(Item it) {
 		return true;
 	}
@@ -1065,6 +1098,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return ((double) l) / 10;
 	}
 
+	@Override
 	protected boolean flee(int dir) {
 		Room from = getRoom();
 		if (Math.random() < calcFleeChance()) {
@@ -1147,6 +1181,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 		
 	}
+	@Override
 	protected boolean layDown(Item i) {
 		actualDungeon.getRoom(location).takeItem(i, null);
 		items.remove(i);
@@ -1170,6 +1205,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 			return 0;
 	}
 
+	@Override
 	public int getKilled(/* Fight f */) {
 		dead = true;
 
@@ -1226,10 +1262,12 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return null;
 	}
 
+	@Override
 	public boolean isAbleToUseShrine() {
 		return false;
 	}
 
+	@Override
 	public boolean isAbleToUseChest() {
 		return false;
 	}
@@ -1258,6 +1296,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		luzia = b;
 	}
 
+	@Override
 	public void fightBegins() {
 
 	}

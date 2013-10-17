@@ -9,22 +9,18 @@
 // import java.util.*;
 package shrine;
 
-import item.interfaces.ItemOwner;
-import item.interfaces.Usable;
-import item.quest.Rune;
-
-import java.awt.*;
-
-import dungeon.*;
-
 import figure.Figure;
-import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
-import gui.Texts;
+import item.interfaces.ItemOwner;
+import item.interfaces.Usable;
+import item.quest.Rune;
+import util.JDColor;
+import dungeon.JDPoint;
+import dungeon.Room;
 
 public class RuneFinder extends Shrine {
 
@@ -44,10 +40,12 @@ public class RuneFinder extends Shrine {
 		type = Rune.getRuneIndex(r.getChar());
 	}
 
+	@Override
 	public String getStory() {
 		return story;
 	}
 
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_RUNEFINDER;
 	}
@@ -55,6 +53,7 @@ public class RuneFinder extends Shrine {
 	public void metaClick(Figure f) {
 		
 	}
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return f instanceof Hero;
 	   }
@@ -63,12 +62,14 @@ public class RuneFinder extends Shrine {
 		return r;
 	}
 
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	/**
 	 * @see Shrine#turn(int)
 	 */
+	@Override
 	public void turn(int round) {
 		ItemOwner o = r.getOwner();
 		JDPoint p = o.getLocation();
@@ -77,15 +78,18 @@ public class RuneFinder extends Shrine {
 
 	}
 
+	@Override
 	public String getText() {
 		return toString() + "\n"+JDEnv.getResourceBundle().getString("shrine_runeFinder_text_a")+" "
 				+ r.toString() + JDEnv.getResourceBundle().getString("shrine_runeFinder_text_b")+" ";
 	}
 
-	public Color getColor() {
-		return java.awt.Color.cyan;
+	@Override
+	public JDColor getColor() {
+		return JDColor.blue;
 	}
 
+	@Override
 	public boolean usableOnce() {
 		return false;
 
@@ -94,6 +98,7 @@ public class RuneFinder extends Shrine {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_runeFinder_name");
 	}
@@ -103,6 +108,7 @@ public class RuneFinder extends Shrine {
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		return JDEnv.getResourceBundle().getString("shrine_runeFinder_name")+": " + r.toString();
 	}
@@ -110,6 +116,7 @@ public class RuneFinder extends Shrine {
 	/**
 	 * @see Usable#use(fighter)
 	 */
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		Percept p = new UsePercept(f, this);
 		f.getRoom().distributePercept(p);

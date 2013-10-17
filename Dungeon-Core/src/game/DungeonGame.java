@@ -35,7 +35,6 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import gui.AbstractStartWindow;
 
-//import java.awt.*;
 
 /**
  * Die Klasse Game verwaltet den ganzen Spielablauf. Sie verwaltet Dungeon, Held

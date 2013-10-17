@@ -1,38 +1,36 @@
 package shrine;
 
-import item.*;
+import fight.Slap;
+import figure.DungeonVisibilityMap;
+import figure.Figure;
+import figure.hero.Hero;
+import figure.percept.Percept;
+import figure.percept.TextPercept;
+import figure.percept.UsePercept;
+import game.JDEnv;
+import item.Item;
+import item.ItemInfo;
+import item.ItemPool;
 import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 import item.quest.Thing;
-
-import java.awt.Color;
-
+import util.JDColor;
+import dungeon.Room;
 /*
  * Created on 04.08.2004
  *
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-
+import java.util.Iterator;
 /**
  * @author Jochen
  *
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-import java.util.*;
-
-import dungeon.*;
-
-import fight.Slap;
-import figure.DungeonVisibilityMap;
-import figure.Figure;
-import figure.FigureInfo;
-import figure.hero.Hero;
-import figure.percept.Percept;
-import figure.percept.TextPercept;
-import figure.percept.UsePercept;
-import game.JDEnv;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Luzia extends Shrine implements ItemOwner {
 
@@ -80,15 +78,18 @@ public class Luzia extends Shrine implements ItemOwner {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return f instanceof Hero;
 	}
 
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 
 		return null;
 	}
 
+	@Override
 	public Item getItemNumber(int i) {
 		return (Item) items.get(i);
 	}
@@ -97,15 +98,18 @@ public class Luzia extends Shrine implements ItemOwner {
 		requestedItem = req;
 	}
 
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 		items.add(i);
 		return true;
 	}
 
+	@Override
 	public Item getItem(ItemInfo it) {
 		for (Iterator iter = items.iterator(); iter.hasNext();) {
 			Item element = (Item) iter.next();
@@ -117,14 +121,17 @@ public class Luzia extends Shrine implements ItemOwner {
 		return null;
 	}
 
+	@Override
 	public Room getRoom() {
 		return this.location;
 	}
 
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_LUZIA;
 	}
 
+	@Override
 	public boolean removeItem(Item i) {
 		if (items.remove(i)) {
 			return true;
@@ -132,6 +139,7 @@ public class Luzia extends Shrine implements ItemOwner {
 		return false;
 	}
 
+	@Override
 	public boolean addItems(List l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
 			Item it = (Item) (l.get(i));
@@ -162,6 +170,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see shrine#turn(int)
 	 */
+	@Override
 	public void turn(int round) {
 		if (solved) {
 			return;
@@ -206,7 +215,8 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see shrine#getColor()
 	 */
-	public Color getColor() {
+	@Override
+	public JDColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -216,6 +226,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		// TODO Auto-generated method stub
 		return JDEnv.getResourceBundle().getString("shrine_luzia_story");
@@ -226,6 +237,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
@@ -236,6 +248,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see shrine#getText()
 	 */
+	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
 		return JDEnv.getResourceBundle().getString("shrine_luzia_text");
@@ -310,6 +323,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		if (dead) {
 			return JDEnv.getString("shrine_luzia_dead");
@@ -333,6 +347,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see usable#use(fighter)
 	 */
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 
 		if (solved || dead) {
@@ -361,6 +376,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 * 
 	 * @see usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		// TODO Auto-generated method stub
 		return false;

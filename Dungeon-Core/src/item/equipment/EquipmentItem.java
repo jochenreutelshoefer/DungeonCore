@@ -6,11 +6,9 @@
  */
 package item.equipment;
 
-import java.awt.Color;
 
+import util.JDColor;
 import figure.attribute.Attribute;
-
-import item.Item;
 
 /**
  * Klasse
@@ -25,14 +23,15 @@ public abstract class EquipmentItem extends item.Item {
 	}
 	
 	
+	@Override
 	public abstract String getText();
 
-	public Color getStatusColor() {
-			Color color = Color.black;
+	public JDColor getStatusColor() {
+		JDColor color = JDColor.black;
 				if (hitPoints.perCent() <= 50) {
-						 color = Color.red;
+			color = JDColor.red;
 						} else if (hitPoints.perCent() <= 70) {
-							color = Color.yellow;
+			color = JDColor.yellow;
 					} 
 					
 		return color;

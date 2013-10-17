@@ -1,23 +1,19 @@
 //import java.util.*;
 package shrine;
 
-import item.*;
-
-import java.awt.Color;
-
-import dungeon.*;
-
 import figure.Figure;
-import figure.hero.Hero;
-import figure.monster.Spider;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
+import figure.monster.Spider;
 import figure.monster.Wolf;
 import game.JDEnv;
-import gui.Texts;
+import item.Item;
+import util.JDColor;
+import dungeon.Room;
+import dungeon.RouteInstruction;
 
 public class Brood extends Shrine {
 
@@ -58,6 +54,7 @@ public class Brood extends Shrine {
 		
 		setStory();
 	}
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
@@ -87,22 +84,27 @@ public class Brood extends Shrine {
 		blockTime = t;
 	}
 
+	@Override
 	public String getStory() {
 		return story;
 	}
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}
 
-	public Color getColor() {
-		return java.awt.Color.pink;
+	@Override
+	public JDColor getColor() {
+		return JDColor.red;
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_BROOD;
 	}
 
 	
+	@Override
 	public void turn(int round) {
 		////System.out.println(
 		//	"brood: " + Type + " Raum: " + raum.getNumber().toString());
@@ -130,6 +132,7 @@ public class Brood extends Shrine {
 		}
 	}
 
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		//
 		return true;
@@ -222,6 +225,7 @@ public class Brood extends Shrine {
 
 	}
 
+	@Override
 	public String toString() {
 		String name = "-";
 		if (type == Brood.BROOD_NATURE)
@@ -233,18 +237,22 @@ public class Brood extends Shrine {
 		return name/*+"\n Out of order- N/A"*/;
 	}
 
+	@Override
 	public int getType() {
 		return type;
 	}
+	@Override
 	public String getText() {
 		return text;
 	}
 
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return false;
 	   }
 
+	@Override
 	public String getStatus() {
 		if (blocked) {
 			return JDEnv.getResourceBundle().getString("shrine_brood_blocked");

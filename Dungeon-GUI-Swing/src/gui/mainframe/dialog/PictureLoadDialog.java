@@ -1,4 +1,4 @@
-package io;
+package gui.mainframe.dialog;
 
 import gui.AbstractStartWindow;
 

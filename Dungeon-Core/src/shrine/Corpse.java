@@ -12,24 +12,21 @@ package shrine;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-import item.Item;
-import item.interfaces.Usable;
-
-import java.util.*;
-import java.util.List;
-
-//import JDItem.*;
-import java.awt.*;
-
-import dungeon.*;
-
 import figure.Figure;
-import figure.FigureInfo;
-import figure.hero.Hero;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
+import item.Item;
+import item.interfaces.Usable;
+
+import java.util.List;
+
+import util.JDColor;
+import dungeon.Dungeon;
+import dungeon.JDPoint;
+import dungeon.Room;
+//import JDItem.*;
 
 public class Corpse extends Shrine {
 	List<Item> items;
@@ -47,21 +44,25 @@ public class Corpse extends Shrine {
 			}
 			
 
-	public Color getColor() {
-		return Color.gray;
+	@Override
+	public JDColor getColor() {
+		return JDColor.DARK_GRAY;
 	}
 	   
 
 	/**
 	 * @see Shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		return JDEnv.getResourceBundle().getString("shrine_corpse_story");
 	}
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_CORPSE;
 	}
@@ -69,6 +70,7 @@ public void metaClick(Figure f){
 		
 	}
 
+@Override
 public boolean canBeUsedBy(Figure f) {
 	   return true;
 }
@@ -76,6 +78,7 @@ public boolean canBeUsedBy(Figure f) {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_corpse_name");
 	}
@@ -117,6 +120,7 @@ public boolean canBeUsedBy(Figure f) {
 	/**
 	 * @see Shrine#getText()
 	 */
+	@Override
 	public String getText() {
 		String s ="";
 		if(this.type_code == 0) {
@@ -147,6 +151,7 @@ public boolean canBeUsedBy(Figure f) {
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		return null;
 	}
@@ -154,6 +159,7 @@ public boolean canBeUsedBy(Figure f) {
 	/**
 	 * @see Usable#use(fighter)
 	 */
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		if(items != null) {
 			 String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
@@ -170,12 +176,14 @@ public boolean canBeUsedBy(Figure f) {
 		return true;
 	}
 		
-	 public void turn(int k) {
+	 @Override
+	public void turn(int k) {
 			
 	 }
 	/**
 	 * @see Usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}

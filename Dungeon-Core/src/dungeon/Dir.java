@@ -6,7 +6,7 @@
  */
 package dungeon;
 
-import java.awt.Point;
+
 
 
 public class Dir {
@@ -21,11 +21,11 @@ public class Dir {
 	}
 	
 	
-	public static int getDirFromToIfNeighbour(Point from, Point to) {
-		int x1 = from.x;
-		int y1 = from.y;
-		int x2 = to.x;
-		int y2 = to.y;
+	public static int getDirFromToIfNeighbour(JDPoint from, JDPoint to) {
+		int x1 = from.getX();
+		int y1 = from.getY();
+		int x2 = to.getX();
+		int y2 = to.getY();
 		
 		if(x1 == x2) {
 			if(y1 == y2+1) {
@@ -48,12 +48,5 @@ public class Dir {
 		
 	}
 	
-	public static int getDirFromToIfNeighbour(JDPoint from, Point to) {
-		return getDirFromToIfNeighbour(new Point(from.getX(),from.getY()),to);
-	}
-	
-	public static int getDirFromToIfNeighbour(JDPoint from, JDPoint to) {
-		return getDirFromToIfNeighbour(new Point(from.getX(),from.getY()),new Point(to.getX(),to.getY()));
-	}
 
 }

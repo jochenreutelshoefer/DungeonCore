@@ -17,6 +17,7 @@ public class JDColor {
 	public static final JDColor orange = new JDColor(245,200,30);
 	public static final JDColor blue = new JDColor(0, 0, 230);
 	public static final JDColor red = new JDColor(255, 0, 0);
+	public static final JDColor green = new JDColor(0, 255, 0);
 	
 	
 	public JDColor(int r, int g, int b) {

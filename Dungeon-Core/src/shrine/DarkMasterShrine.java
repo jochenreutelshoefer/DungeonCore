@@ -1,15 +1,11 @@
 package shrine;
 
-import item.*;
-import item.interfaces.ItemOwner;
+import item.Item;
+import item.ItemPool;
 import item.quest.DarkMasterKey;
-
-import java.awt.Color;
-
-import dungeon.*;
-
+import util.JDColor;
+import dungeon.Room;
 import figure.Figure;
-import figure.hero.Hero;
 import figure.monster.DarkMaster;
 import figure.monster.Monster;
 
@@ -67,6 +63,7 @@ public void metaClick(Figure f){
 		
 	}
 
+@Override
 public boolean needsTarget() {
 	return false;
 }
@@ -77,10 +74,10 @@ public boolean needsTarget() {
 //			.getDungeon()
 //			.getGame()
 //			.newStatement(
-//					"Du hörst ein dumpfen Ton, wie aus"
+//					"Du hï¿½rst ein dumpfen Ton, wie aus"
 //							+ " einer riesigen Kehle, es scheint fasst ein Lachen zu sein. Der dunkle Dungeon scheint"
-//							+ " Dir plötzlich noch dusterer zu werden. Du musst sie aufhalten! Jetzt ist es nicht mehr "
-//							+ "lange bis das Unheil über Dich hereinbricht. Im Siegel des Portals des Dunklen Meisters "
+//							+ " Dir plï¿½tzlich noch dusterer zu werden. Du musst sie aufhalten! Jetzt ist es nicht mehr "
+//							+ "lange bis das Unheil ï¿½ber Dich hereinbricht. Im Siegel des Portals des Dunklen Meisters "
 //							+ "fehlt nur noch ein Stein!", 3);
 			
 			
@@ -99,6 +96,7 @@ public boolean needsTarget() {
 		checkActivation();
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return true;
 	   }
@@ -116,7 +114,7 @@ public boolean needsTarget() {
 			masterOut= true;
 //			newStatement(
 //							"Ein lautes dunkles Lachen erhebt sich, es scheint "
-//									+ "von allen Seiten zu kommen, und es lässt Dir die Haare zu Berge stehen. DU bist gemeint.",
+//									+ "von allen Seiten zu kommen, und es lï¿½sst Dir die Haare zu Berge stehen. DU bist gemeint.",
 //							3);
 			//System.out.println("Der Meister ist gekommen!!");
 		}
@@ -152,11 +150,13 @@ public boolean needsTarget() {
 	 * 
 	 * @see shrine#turn(int)
 	 */
+	@Override
 	public void turn(int round) {
 		// TODO Auto-generated method stub
 
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_DARK_MASTER;
 	}
@@ -166,7 +166,8 @@ public boolean needsTarget() {
 	 * 
 	 * @see shrine#getColor()
 	 */
-	public Color getColor() {
+	@Override
+	public JDColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -176,12 +177,13 @@ public boolean needsTarget() {
 	 * 
 	 * @see shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		// TODO Auto-generated method stub
 		return "Das unheimliche geometrische Gebilde in der Ecke fesselt sofort Deinen Blick"
-				+ " und obwohl das Bestreben sich davon abzuwenden deutlich in Dir anwächst, erkennst Du"
-				+ " den seltsamen Schimmer über der Mitte des Kreises und das Siegel, in dem offenbar 2 "
-				+ "Gegenstände eingesetzt werden können. Du fragst Dich ob Du wirklich wissen willst, was dann"
+				+ " und obwohl das Bestreben sich davon abzuwenden deutlich in Dir anwï¿½chst, erkennst Du"
+				+ " den seltsamen Schimmer ï¿½ber der Mitte des Kreises und das Siegel, in dem offenbar 2 "
+				+ "Gegenstï¿½nde eingesetzt werden kï¿½nnen. Du fragst Dich ob Du wirklich wissen willst, was dann"
 				+ " passiert. ";
 	}
 
@@ -190,6 +192,7 @@ public boolean needsTarget() {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "Pentagramm";
@@ -200,6 +203,7 @@ public boolean needsTarget() {
 	 * 
 	 * @see shrine#getText()
 	 */
+	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
 		return "Portal des Dunklen Meisters\n" + getStatus();
@@ -212,6 +216,7 @@ public boolean needsTarget() {
 	 * 
 	 * @see shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		// TODO Auto-generated method stub
 		int keys = 0;
@@ -226,7 +231,7 @@ public boolean needsTarget() {
 		if (keys < 2) {
 			s += "Versiegelt";
 		} else {
-			s += "GEÖFFNET";
+			s += "GEï¿½FFNET";
 		}
 		s += "\nSiegelsteine: " + keys + "/2";
 		return s;
@@ -237,6 +242,7 @@ public boolean needsTarget() {
 	 * 
 	 * @see usable#use(fighter)
 	 */
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		// TODO Auto-generated method stub
 		return false;
@@ -247,6 +253,7 @@ public boolean needsTarget() {
 	 * 
 	 * @see usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		// TODO Auto-generated method stub
 		return false;

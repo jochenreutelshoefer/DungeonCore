@@ -6,11 +6,8 @@
  */
 package item.equipment;
 
-import java.awt.Color;
-
+import util.JDColor;
 import figure.DungeonVisibilityMap;
-
-import item.ItemInfo;;
 
 /**
  * Klasse
@@ -22,7 +19,7 @@ public class EquipmentItemInfo extends item.ItemInfo {
 		super(i,map);
 	}
 	
-	public Color getStatusColor(){
+	public JDColor getStatusColor() {
 		return ((EquipmentItem)it).getStatusColor();
 	}
 

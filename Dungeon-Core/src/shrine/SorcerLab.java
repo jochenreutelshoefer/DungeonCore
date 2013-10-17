@@ -1,33 +1,16 @@
 package shrine;
 
-import item.*;
-import item.interfaces.Usable;
+import item.AttrPotion;
+import item.DustItem;
+import item.HealPotion;
+import item.Item;
 import item.paper.Scroll;
-import figure.hero.Character;
-
-import java.awt.Color;
-
-/*
- * Created on 04.08.2004
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-
-/**
- * @author Jochen
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-import java.util.*;
-
-import dungeon.*;
-
-import spell.*;
-
+import spell.Discover;
+import spell.Repair;
+import spell.Spell;
+import util.JDColor;
+import dungeon.Room;
 import figure.Figure;
-import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.VisibilityModifier;
 import figure.attribute.Attribute;
@@ -37,6 +20,20 @@ import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
 import gui.Texts;
+/*
+ * Created on 04.08.2004
+ *
+ * To change the template for this generated file go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+/**
+ * @author Jochen
+ *
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+import java.util.LinkedList;
+import java.util.List;
 
 public class SorcerLab extends Shrine implements VisibilityModifier {
 
@@ -70,6 +67,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		actions.add(new sorcer_lab_action(5));
 	}
 
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return f instanceof Hero;
 	}
@@ -82,6 +80,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public int getVisibilityStatus() {
 		if (activated) {
 			return RoomObservationStatus.VISIBILITY_ITEMS;
@@ -96,6 +95,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	 * 
 	 * @see shrine#turn(int)
 	 */
+	@Override
 	public void turn(int round) {
 		int k = location.getRoomFigures().size();
 		if(k >= 2) {
@@ -153,15 +153,18 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	 * 
 	 * @see shrine#getColor()
 	 */
-	public Color getColor() {
+	@Override
+	public JDColor getColor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_SORCER_LAB;
 	}
@@ -171,6 +174,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	 * 
 	 * @see shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		String s = "";
 		if (activated) {
@@ -186,11 +190,13 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("sorcLab");
 	}
 
 	
+	@Override
 	public String getText() {
 		return JDEnv.getResourceBundle().getString("sorcLab");
 	}
@@ -200,7 +206,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	public void metaClick(Figure f, Object target) {
 		// AKTION MACHEN
 		if (activated) {
-			Percept p = new UsePercept(f, (Usable) this);
+			Percept p = new UsePercept(f, this);
 			this.getRoom()
 					.distributePercept(p);
 			((sorcer_lab_action) (actions.get(actionPointer))).fire((Hero) f);
@@ -217,7 +223,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		List<Room> rooms = location.getScoutableNeighbours();
 		rooms.add(location);
 		for (int i = 0; i < rooms.size(); i++) {
-			Room toView = (Room) rooms.get(i);
+			Room toView = rooms.get(i);
 			f.getRoomObservationStatus(toView.getLocation())
 					.addVisibilityModifier(this);
 
@@ -226,6 +232,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		f.tellPercept(new TextPercept(s));
 	}
 
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 
 		if (!activated) {
@@ -289,6 +296,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	 * 
 	 * @see shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 
 		String s = "";
@@ -326,6 +334,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	 * 
 	 * @see usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		// TODO Auto-generated method stub
 		return false;

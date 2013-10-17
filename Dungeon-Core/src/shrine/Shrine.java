@@ -1,19 +1,14 @@
 package shrine;
-import item.interfaces.Usable;
-
-
-import java.awt.Color;
-
-import dungeon.*;
-
 import figure.DungeonVisibilityMap;
-import figure.Figure;
 import figure.FigureInfo;
-import figure.memory.MemoryObject;
 import figure.memory.ShrineMemory;
-import game.*;
-import gui.Paragraph;
-import gui.Paragraphable;
+import game.InfoEntity;
+import game.InfoProvider;
+import game.Turnable;
+import item.interfaces.Usable;
+import util.JDColor;
+import dungeon.JDPoint;
+import dungeon.Room;
 
 /**
  * Abstrakte Oberklasse aller Schreine/Oertlichkeiten. 
@@ -81,6 +76,7 @@ public abstract class Shrine /*extends JDEnv*/ implements Usable,Turnable,InfoPr
 		location = p;
 	}
 	
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new ShrineInfo(this,map);
 	}
@@ -96,7 +92,8 @@ public abstract class Shrine /*extends JDEnv*/ implements Usable,Turnable,InfoPr
 
 	public abstract int getShrineIndex();
 
-    public abstract void turn(int round);
+    @Override
+	public abstract void turn(int round);
 
 	
 	public int getType() {
@@ -104,13 +101,14 @@ public abstract class Shrine /*extends JDEnv*/ implements Usable,Turnable,InfoPr
 	}
 
 	
-	public abstract Color getColor();
+	public abstract JDColor getColor();
 
 	
 	public abstract String getStory();
 
     
-    public abstract String toString();
+    @Override
+	public abstract String toString();
     
 //    public Paragraph[] getParagraphs() {
 //		Paragraph []p = new Paragraph[2];
@@ -148,6 +146,7 @@ public abstract class Shrine /*extends JDEnv*/ implements Usable,Turnable,InfoPr
 		return location;
 	}
 
+	@Override
 	public JDPoint getLocation() {
 		return location.getNumber();
 	}

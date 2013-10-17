@@ -1,11 +1,12 @@
 package shrine;
 
-import java.awt.Color;
+import item.interfaces.Usable;
+
 import java.util.Iterator;
 import java.util.List;
 
-import dungeon.*;
-
+import util.JDColor;
+import dungeon.Room;
 import figure.Figure;
 import figure.hero.Hero;
 import game.JDEnv;
@@ -41,6 +42,7 @@ public void metaClick(Figure f){
 	}
 	
 	
+	@Override
 	public void turn(int round) {
 		//System.out.println(location.toString());
 		List l = location.getRoomFigures();
@@ -54,6 +56,7 @@ public void metaClick(Figure f){
 		
 	}
 
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		return false;
 	}
@@ -61,20 +64,24 @@ public void metaClick(Figure f){
 	/**
 	 * @see Shrine#getColor()
 	 */
-	public Color getColor() {
-		return Color.gray;
+	@Override
+	public JDColor getColor() {
+		return JDColor.DARK_GRAY;
 	}
 
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	/**
 	 * @see Shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		return JDEnv.getResourceBundle().getString("shrine_statue_story");
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_STATUE;
 	}
@@ -82,6 +89,7 @@ public void metaClick(Figure f){
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_statue_name");
 	}
@@ -89,6 +97,7 @@ public void metaClick(Figure f){
 	/**
 	 * @see Shrine#getText()
 	 */
+	@Override
 	public String getText() {
 		return toString();
 	}
@@ -97,6 +106,7 @@ public void metaClick(Figure f){
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		return null;
 	}
@@ -106,6 +116,7 @@ public void metaClick(Figure f){
 	 */
 	
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return false;
 	}
@@ -113,6 +124,7 @@ public void metaClick(Figure f){
 	/**
 	 * @see Usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}

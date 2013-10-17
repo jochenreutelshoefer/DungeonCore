@@ -8,86 +8,94 @@
  */
 package shrine;
 
-import java.awt.Color;
-
-import dungeon.*;
-
+import item.interfaces.Usable;
+import util.JDColor;
+import dungeon.Room;
 import figure.Figure;
 import figure.hero.Hero;
 import game.JDEnv;
 
-
 public class InfoShrine extends Shrine {
 
-	
 	String info;
 
-	
 	public InfoShrine(String s, Room p) {
 		super(p);
 		info = s;
 	}
-public void metaClick(Figure f){
-		
+
+	public void metaClick(Figure f) {
+
 	}
 
 	/**
 	 * @see Shrine#turn(int)
 	 */
+	@Override
 	public void turn(int round) {
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_info_name");
 	}
-	
+
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_INFO;
 	}
 
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
-	
+
+	@Override
 	public String getText() {
 		return info;
 	}
 
+	@Override
 	public String getStory() {
-		
+
 		String s = JDEnv.getResourceBundle().getString("shrine_info_story");
-		s += ": \n"+info;
-			return s;
+		s += ": \n" + info;
+		return s;
 	}
-	
+
+	@Override
 	public boolean canBeUsedBy(Figure f) {
-		   return f instanceof Hero;
-	   }
+		return f instanceof Hero;
+	}
 
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		return null;
 	}
-	
-	public Color getColor() {
-		return java.awt.Color.orange;	
+
+	@Override
+	public JDColor getColor() {
+		return JDColor.orange;
 	}
 
 	/**
 	 * @see Usable#use(fighter)
 	 */
-	public boolean use(Figure f,Object target,boolean meta) {
+	@Override
+	public boolean use(Figure f, Object target, boolean meta) {
 		return true;
 	}
 
 	/**
 	 * @see Usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}

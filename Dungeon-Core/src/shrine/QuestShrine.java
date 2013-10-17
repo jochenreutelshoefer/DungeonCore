@@ -1,18 +1,16 @@
 package shrine;
 
-import item.*;
-import item.interfaces.Usable;
-import item.quest.Thing;
-
-import java.awt.Color;
-
 import figure.Figure;
-import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.percept.Percept;
 import figure.percept.UsePercept;
 import game.JDEnv;
 import gui.Texts;
+import item.Item;
+import item.ItemPool;
+import item.interfaces.Usable;
+import item.quest.Thing;
+import util.JDColor;
 
 
 /**
@@ -69,13 +67,16 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see Shrine#turn(int)
 	 */
+	@Override
 	public void turn(int round) {
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return f instanceof Hero;
 	   }
@@ -83,17 +84,20 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see Shrine#getColor()
 	 */
-	public Color getColor() {
-		return Color.black;
+	@Override
+	public JDColor getColor() {
+		return JDColor.black;
 	}
 
 	/**
 	 * @see Shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		return null;
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_QUEST;
 	}
@@ -101,6 +105,7 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return name +": "+getStatus();
 	}
@@ -108,6 +113,7 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see Shrine#getText()
 	 */
+	@Override
 	public String getText() {
 		return name;
 	}
@@ -120,6 +126,7 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		if(goodItem == null) {
 			return JDEnv.getResourceBundle().getString("shrine_quest_solved");
@@ -132,6 +139,7 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see Usable#use(fighter)
 	 */
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		if(f.hasItem(this.requestedItem) && (goodItem != null)) {
 			 Percept p = new UsePercept(f,this);
@@ -148,6 +156,7 @@ public class QuestShrine extends Shrine {
 	/**
 	 * @see Usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}

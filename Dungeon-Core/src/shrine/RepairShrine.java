@@ -9,20 +9,17 @@
 
 package shrine;
 
-import item.*;
+import figure.Figure;
+import game.JDEnv;
+import item.Item;
 import item.equipment.EquipmentItem;
 import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
 
-import java.awt.Color;
-import java.util.*;
+import java.util.List;
 
-import dungeon.*;
-
-import figure.Figure;
-import figure.hero.Hero;
-import game.JDEnv;
-import gui.Texts;
+import util.JDColor;
+import dungeon.Room;
 
 
 public class RepairShrine extends Shrine /**implements itemReceiver, itemOwner*/{
@@ -55,6 +52,7 @@ public class RepairShrine extends Shrine /**implements itemReceiver, itemOwner*/
 		rest = 0;
 		story = JDEnv.getResourceBundle().getString("see_repair_shrine");
 	} 
+	@Override
 	public String getStory() {
 		return story;
 	}
@@ -62,11 +60,13 @@ public void metaClick(Figure f) {
 		
 	}
 
+@Override
 public boolean needsTarget() {
 	return false;
 }
 
 
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}
@@ -76,15 +76,18 @@ public boolean needsTarget() {
 		this.i = i;
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_REPAIR;
 	}
 
 	
-	public Color getColor() {
-		return java.awt.Color.black;	
+	@Override
+	public JDColor getColor() {
+		return JDColor.black;
 	}
 	
+	@Override
 	public String getText() {
 		return toString()+"\n"+JDEnv.getResourceBundle().getString("shrine_repair_text");	
 	}
@@ -103,6 +106,7 @@ public boolean needsTarget() {
 	 * @see Shrine#turn(int)
 	 * 
 	 */
+	@Override
 	public void turn(int round) {
 		//if(i != null) {
 		rounds++;
@@ -137,11 +141,13 @@ public boolean needsTarget() {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_repair_name");
 	}
 
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return false;
 	   }
@@ -149,6 +155,7 @@ public boolean needsTarget() {
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		if(i == null) {
 			return JDEnv.getResourceBundle().getString("empty");
@@ -160,6 +167,7 @@ public boolean needsTarget() {
 	/**
 	 * @see Usable#use(fighter)
 	 */
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 
 		return false;

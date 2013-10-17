@@ -1,9 +1,9 @@
 package shrine;
 
-import item.*;
+import item.DustItem;
+import item.Item;
+import item.ItemPool;
 import item.interfaces.Usable;
-
-import java.awt.Color;
 
 /**
  * @author Duke1
@@ -13,12 +13,12 @@ import java.awt.Color;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-import java.util.*;
-
-import dungeon.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import util.Arith;
-
+import util.JDColor;
+import dungeon.Dungeon;
 import figure.Figure;
 import figure.hero.Hero;
 import game.JDEnv;
@@ -60,13 +60,14 @@ public class Trader extends Shrine /*implements itemOwner*/{
 		
 	}
 	
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		return false;
 	}
 	
 	
 	private void addNewItem() {
-		int value = (int)Arith.gauss((int)(10 + (int)(Math.random() * AvWorth)), 2);	
+		int value = (int)Arith.gauss(10 + (int)(Math.random() * AvWorth), 2);	
 		Item i = ItemPool.getRandomItem(value, 0.8+Math.random());
 		while((i instanceof DustItem)) {
 			i = ItemPool.getRandomItem(value, 0.8+Math.random());
@@ -75,9 +76,11 @@ public class Trader extends Shrine /*implements itemOwner*/{
 		items.add(i);
 	}
 
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return f instanceof Hero;
 	   }
+	@Override
 	public void turn(int round) {
 		rounds++;
 		if (rounds > rounds_to_change) {
@@ -93,10 +96,12 @@ public class Trader extends Shrine /*implements itemOwner*/{
 		return ok;
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_TRADER;
 	}
@@ -109,13 +114,15 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	/**
 	 * @see Shrine#getColor()
 	 */
-	public Color getColor() {
-		return Color.cyan;
+	@Override
+	public JDColor getColor() {
+		return JDColor.blue;
 	}
 
 	/**
 	 * @see Shrine#getStory()
 	 */
+	@Override
 	public String getStory() {
 		return JDEnv.getResourceBundle().getString("shrine_trader_story");
 	}
@@ -123,6 +130,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_trader_name");
 	}
@@ -130,6 +138,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	/**
 	 * @see Shrine#getText()
 	 */
+	@Override
 	public String getText() {
 		return JDEnv.getResourceBundle().getString("shrine_trader_text");
 	}
@@ -156,7 +165,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 		//System.out.println(heroItems.size()+ " biete : "+heroGives);
 		
 		int heroWants = summItems(traderItems);
-		//System.out.println(traderItems.size()+"möchte : "+heroWants);
+		//System.out.println(traderItems.size()+"mï¿½chte : "+heroWants);
 		
 		if(heroGives < heroWants * rate) {
 			ok = false;
@@ -171,13 +180,13 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	public void makeTrade(List heroItems,List traderItems) {
 		for(int i = 0; i< heroItems.size(); i++) {
 			Item it = (Item)heroItems.get(i);
-			//[TODO] Gegenstände wegnehmen 
+			//[TODO] Gegenstï¿½nde wegnehmen 
 			//System.out.println("held gibt ab; "+it.toString());
 			//boolean b = game.getHero().removeItem(it);	
 			//System.out.println(b);
 		}
 		for(int i = 0; i< traderItems.size(); i++) {
-//			[TODO] Gegenstände geben
+//			[TODO] Gegenstï¿½nde geben
 			//game.getHero().addItem((Item)traderItems.get(i),location);	
 			items.remove(traderItems.get(i));
 		}
@@ -214,6 +223,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	/**
 	 * @see Shrine#getStatus()
 	 */
+	@Override
 	public String getStatus() {
 		return null;
 	}
@@ -223,6 +233,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	/**
 	 * @see Usable#usableOnce()
 	 */
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}

@@ -7,8 +7,7 @@ import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
 
-import java.util.*;
-import java.awt.Color;
+import java.util.LinkedList;
 
 import shrine.Shrine;
 import shrine.ShrineInfo;
@@ -18,20 +17,14 @@ import dungeon.ChestInfo;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RoomInfo;
-
-
-
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
-import figure.attribute.Attribute;
 import figure.attribute.ItemModification;
 import figure.attribute.ModifierI;
 import figure.memory.ItemMemory;
-import figure.memory.MemoryObject;
 import game.InfoEntity;
 import game.InfoProvider;
-import game.JDEnv;
 import gui.Paragraph;
 import gui.Paragraphable;
 
@@ -64,6 +57,7 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 	protected String name = "itemname";
 
 	
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new ItemInfo(this,map); 	
 	}
@@ -94,10 +88,12 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 		return null;
 	}
 	
+	@Override
 	public JDPoint getLocation () {
 		return owner.getLocation();
 	}
 	
+	@Override
 	public ItemOwner getOwner() {
 //		if(owner == null) {
 //			System.out.println("ItemOwner ist null! : "+this.toString());
@@ -105,10 +101,12 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 		return owner;
 	}
 	
+	@Override
 	public void setOwner(ItemOwner o) {
 		owner = o;
 	}
 	
+	@Override
 	public void getsRemoved() {
 		owner = null;
 	}
@@ -143,6 +141,7 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 		}	
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph []p = new Paragraph[3];
 		p[0] = new Paragraph(getName());
@@ -199,6 +198,7 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 	}
 
 
+	@Override
 	public LinkedList getRemoveModifications() {
 
 		//kreirt die umgekehrten Modifikationen
@@ -223,6 +223,7 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 	}
 
 	
+	@Override
 	public LinkedList getModifications() {
 		return modifications;
 	}

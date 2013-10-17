@@ -14,7 +14,7 @@
 package gui.engine2D;
 
 import graphics.AbstractImageLoader;
-import io.PictureLoadDialog;
+import gui.mainframe.dialog.PictureLoadDialog;
 import io.ResourceLoader;
 
 import java.applet.Applet;

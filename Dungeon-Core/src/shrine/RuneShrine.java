@@ -1,22 +1,21 @@
 package shrine;
 
-import item.*;
-import item.interfaces.ItemOwner;
-import item.quest.Rune;
-
-import java.awt.Color;
-import java.util.*;
-
-import dungeon.*;
-
 import figure.DungeonVisibilityMap;
 import figure.Figure;
-import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.percept.Percept;
 import figure.percept.UsePercept;
 import game.JDEnv;
-import gui.Texts;
+import item.Item;
+import item.ItemInfo;
+import item.interfaces.ItemOwner;
+import item.quest.Rune;
+
+import java.awt.Color;
+import java.util.List;
+
+import util.JDColor;
+import dungeon.Room;
 
 
 public class RuneShrine extends Shrine implements ItemOwner {
@@ -50,12 +49,14 @@ public class RuneShrine extends Shrine implements ItemOwner {
 		type = Rune.getRuneIndex(c);
 	}
 	
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_RUNE;
 	}
 public void metaClick(Figure f) {
 		
 	}
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] it = new ItemInfo[1];
 		if(r != null) {
@@ -65,10 +66,12 @@ public void metaClick(Figure f) {
 		return null;
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return f instanceof Hero;
 	   }
 	
+	@Override
 	public Item getItem(ItemInfo it) {
 		
 			if(ItemInfo.makeItemInfo(r,null).equals(it)) 
@@ -76,10 +79,12 @@ public void metaClick(Figure f) {
 		
 			return null;
 	}
+	@Override
 	public Room getRoom() {
 			return this.location; 
 		}
 		
+	@Override
 	public boolean removeItem(Item i) {
 		if(i == r) {
 			r = null;
@@ -88,10 +93,12 @@ public void metaClick(Figure f) {
 		return false;
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 
+	@Override
 	public String getText() {
 
 		return toString()
@@ -101,10 +108,12 @@ public void metaClick(Figure f) {
 			+ "\n"+JDEnv.getResourceBundle().getString("state")+ ": "+getStatus();
 	}
 
+	@Override
 	public String getStory() {
 		return story;
 	}
 	
+	@Override
 	public boolean addItems(List l, ItemOwner o) {
 		for(int i = 0; i < l.size();i++) {
 			Item it = (Item)(l.get(i));
@@ -113,6 +122,7 @@ public void metaClick(Figure f) {
 		return true;
 	}
 
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}
@@ -128,13 +138,15 @@ public void metaClick(Figure f) {
 	}
 
 
-	public Color getColor() {
-		return java.awt.Color.red;
+	@Override
+	public JDColor getColor() {
+		return JDColor.red;
 	}
 
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 		if ((r == null)) {
-			r = (Rune) i;
+			r = i;
 			if (r instanceof Rune) {
 				if (((Rune) r).getChar() == c) {
 					solved = true;
@@ -157,6 +169,7 @@ public void metaClick(Figure f) {
 			return null;
 	}
 	
+	@Override
 	public Item getItemNumber(int i) {
 		if(i == 0) {
 			return r;
@@ -164,10 +177,12 @@ public void metaClick(Figure f) {
 		return null;
 	}
 
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_rune_name")+": " + Integer.toString(index);
 	}
 
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		if(r != null) {
 			this.location.addItem(r);
@@ -176,6 +191,7 @@ public void metaClick(Figure f) {
 		return true;
 	}
 
+	@Override
 	public void turn(int k) {
 	}
 
@@ -191,6 +207,7 @@ public void metaClick(Figure f) {
 		}
 	}
 
+	@Override
 	public String getStatus() {
 		if (r == null) {
 			return JDEnv.getResourceBundle().getString("empty");

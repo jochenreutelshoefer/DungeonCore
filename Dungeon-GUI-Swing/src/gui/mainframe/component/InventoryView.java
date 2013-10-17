@@ -8,12 +8,12 @@ import figure.FigureInfo;
 import figure.action.EquipmentChangeAction;
 import figure.hero.HeroInfo;
 import game.JDEnv;
-import gui.MyJDGui;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
+import gui.MyJDGui;
 import gui.Paragraph;
-import gui.mainframe.MainFrame;
+import gui.engine2D.DrawUtils;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 
@@ -29,7 +29,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -395,7 +394,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 			// Hier werden Stringrepr�sentationen der Items in die listModels
 			// gef�llt
 			for (int i = 0; i < b; i++) {
-				ItemInfo it = (ItemInfo) itemsH.get(i);
+				ItemInfo it = itemsH.get(i);
 				if (it != null) {
 					listModel2.addElement(it.toString());
 				}
@@ -410,6 +409,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		Object quelle = me.getSource();
 		Paragraph[] p = null;
@@ -463,15 +463,17 @@ public class InventoryView extends JDJPanel implements ActionListener,
 			butt.setText(JDEnv.getResourceBundle().getString("empty"));
 			butt.setForeground(Color.BLACK);
 		} else {
-			butt.setForeground(it.getStatusColor());
+			butt.setForeground(DrawUtils.convertColor(it.getStatusColor()));
 			butt.setText(getSizedString(it.toString()));
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 		Object quelle = me.getSource();
 		Paragraph[] p = null;
@@ -521,14 +523,17 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		gui.getMainFrame().getText().setText(p);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me) {
 		gui.getMainFrame().getText().resetText();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object quelle = ae.getSource();
 
@@ -566,7 +571,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		if (quelle == use) {
 			int i = heroItemL.getSelectedIndex();
 			if (i != -1) {
-				ItemInfo info = (ItemInfo) itemsH.get(i);
+				ItemInfo info = itemsH.get(i);
 				gui.getControl().useButtonClicked(info, false);
 
 				gui.getMainFrame().getGesundheit().itemCombo
@@ -597,10 +602,12 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		}
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		Object quelle = ie.getSource();
 	}
 
+	@Override
 	public void valueChanged(ListSelectionEvent le) {
 		JList list = (JList) le.getSource();
 		int i = list.getSelectedIndex();
@@ -610,7 +617,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 						.setText(((ItemInfo) items.get(i)).getParagraphs());
 			} else if (list == heroItemL) {
 				gui.getMainFrame().getText()
-						.setText(((ItemInfo) itemsH.get(i)).getParagraphs());
+						.setText(itemsH.get(i).getParagraphs());
 			}
 
 		}

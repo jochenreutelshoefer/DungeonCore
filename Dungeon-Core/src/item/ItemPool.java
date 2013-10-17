@@ -13,8 +13,11 @@
 package item;
 
 
+import figure.attribute.Attribute;
+import figure.attribute.ItemModification;
+import figure.hero.Character;
+import game.DungeonGame;
 import item.equipment.Armor;
-
 import item.equipment.Helmet;
 import item.equipment.Shield;
 import item.equipment.weapon.Axe;
@@ -27,7 +30,7 @@ import item.paper.BookSpell;
 import item.paper.Scroll;
 import item.paper.ScrollMagic;
 
-import java.util.*;
+import java.util.LinkedList;
 
 import spell.Bonebreaker;
 import spell.Discover;
@@ -46,11 +49,6 @@ import spell.Spell;
 import spell.Spy;
 import spell.Steal;
 import spell.Thunderstorm;
-
-import figure.attribute.Attribute;
-import figure.attribute.ItemModification;
-import figure.hero.Character;
-import game.DungeonGame;
 
 
 public class ItemPool {
@@ -389,7 +387,7 @@ public class ItemPool {
 		
 		glas.setUnique();	
 		glas.setWorth(40);
-		glas.setName("Gl�serner Engel");
+		glas.setName("Gläserner Engel");
 		
 		
 		return glas;
@@ -433,7 +431,7 @@ public class ItemPool {
 		////System.out.println("value: "+value);
 		////System.out.println("quotien: "+quotient);
 		if(Math.random() < 0.7) {
-			item1 = (int) (((double)value) / (2 * quotient));
+			item1 = (int) ((value) / (2 * quotient));
 			if(item1 < 10) {
 				item1 = 10;
 			}	
@@ -441,7 +439,7 @@ public class ItemPool {
 		}
 		else {
 			//gr�sseres Standarditem
-			item1 = (int) (((double)value) / ((quotient * 4) / 3));
+			item1 = (int) ((value) / ((quotient * 4) / 3));
 			
 		}
 		////System.out.println("Realteil1: "+item1);

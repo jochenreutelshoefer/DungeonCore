@@ -9,15 +9,11 @@
 
 package shrine;
 
-import java.awt.Color;
-
-import dungeon.*;
-
+import util.JDColor;
+import dungeon.Room;
 import figure.Figure;
 import figure.attribute.Attribute;
-import figure.hero.Hero;
 import game.JDEnv;
-import gui.Texts;
 
 public class HealthFountain extends Shrine {
 
@@ -51,28 +47,35 @@ public void metaClick(Figure f){
 		
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
+	@Override
 	public int getSecondIdentifier() {
 		return type;
 	}
 	
+	@Override
 	public String getText() {
 		return toString()+" "+health.getValue()+" / "+health.getBasic();	
 	}
 	
+	@Override
 	public String getStory() {
 		return story;
 	}
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		   return true;
 	   }
+	@Override
 	public void turn(int round) {
 		if((health.getBasic() - health.getValue()) > rate) {
 			health.modValue(rate);
@@ -82,17 +85,21 @@ public void metaClick(Figure f){
 		}
 	}
 	
-	public Color getColor() {
-		return java.awt.Color.blue;	
+	@Override
+	public JDColor getColor() {
+		return JDColor.blue;
 	}
+	@Override
 	public int getShrineIndex() {
 		return Shrine.SHRINE_HEALTH_FOUNTAIN;
 	}
 	
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_fountain_name");
 	}
 	
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		//System.out.println("erfrischen am Brunnen!");
 		Attribute h = f.getHealth();
@@ -112,6 +119,7 @@ public void metaClick(Figure f){
 			
 	
 	
+	@Override
 	public String getStatus() {
 		return toString()+"\n"+health.toString();
 	}
