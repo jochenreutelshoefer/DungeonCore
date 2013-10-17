@@ -25,7 +25,9 @@ public class ShrineInfo extends InfoEntity  {
 	}
 
 	public int getShrineIndex() {
-		if (map.getDiscoveryStatus(getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
+		JDPoint location = getLocation();
+		if (location != null
+				&& map.getDiscoveryStatus(location) >= RoomObservationStatus.VISIBILITY_SHRINE) {
 			return s.getShrineIndex();
 		}
 		return -1;

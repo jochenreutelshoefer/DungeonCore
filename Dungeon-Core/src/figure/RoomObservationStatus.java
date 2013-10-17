@@ -6,13 +6,14 @@
  */
 package figure;
 
+import game.JDEnv;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.JDPoint;
 import dungeon.RouteInstruction;
-import game.JDEnv;
 
 public class RoomObservationStatus {
 	
@@ -34,15 +35,15 @@ public class RoomObservationStatus {
 
 	private int discoveryStatus = 0;
 
-	private int lastVisited = -1;
+	private final int lastVisited = -1;
 
-	private JDPoint point;
+	private final JDPoint point;
 	
 	//private Room r;
 
-	private DungeonVisibilityMap map;
+	private final DungeonVisibilityMap map;
 	
-	private List visibilityModifier = new LinkedList();
+	private final List visibilityModifier = new LinkedList();
 
 	public RoomObservationStatus(DungeonVisibilityMap map, JDPoint p) {
 		this.map = map;
@@ -70,7 +71,6 @@ public class RoomObservationStatus {
 		
 		int max = VISIBILITY_FOUND;
 		if(discoveryStatus >= VISIBILITY_SHRINE) {
-			//System.out.println("setzte max auf shrine, weil discovered");
 			max = VISIBILITY_SHRINE;
 		}
 		for (Iterator iter = visibilityModifier.iterator(); iter.hasNext();) {
@@ -78,10 +78,8 @@ public class RoomObservationStatus {
 			if(element.getVisibilityStatus() > max) {
 				
 				max = element.getVisibilityStatus();
-				//System.out.println("setzte max auf :"+max+" wegen: "+element.toString());
 			}
 		}
-		//System.out.println("reseting visStat: "+max);
 		if(max < VISIBILITY_FIGURES) {
 			map.getFigure().getControl().resetingRoomVisibility(point);
 		}
@@ -132,10 +130,6 @@ public class RoomObservationStatus {
 	 *            The visibilityStatus to set.
 	 */
 	public void setVisibilityStatus(int visibilityStatus) {
-		//if(this.visibilityStatus == 2 || visibilityStatus == 2) {
-			//System.out.println("aktuell visStat: "+this.visibilityStatus);
-			//System.out.println("will setzten auf:"+visibilityStatus );
-		//}
 		this.visibilityStatus = visibilityStatus;
 		if(visibilityStatus > discoveryStatus) {
 			discoveryStatus = visibilityStatus;

@@ -14,8 +14,7 @@ import item.ItemPool;
 import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 import item.quest.Thing;
-import util.JDColor;
-import dungeon.Room;
+
 /*
  * Created on 04.08.2004
  *
@@ -31,6 +30,9 @@ import java.util.Iterator;
  */
 import java.util.LinkedList;
 import java.util.List;
+
+import util.JDColor;
+import dungeon.Room;
 
 public class Luzia extends Shrine implements ItemOwner {
 
@@ -239,8 +241,7 @@ public class Luzia extends Shrine implements ItemOwner {
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Luzia";
 	}
 
 	/*
