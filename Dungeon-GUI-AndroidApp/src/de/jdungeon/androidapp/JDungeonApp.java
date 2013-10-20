@@ -6,7 +6,7 @@ import android.view.Menu;
 import de.jdungeon.game.Screen;
 import de.jdungeon.implementation.AndroidGame;
 
-public class JDungeon extends AndroidGame {
+public class JDungeonApp extends AndroidGame {
 
 
 	private boolean firstTimeCreate = true;

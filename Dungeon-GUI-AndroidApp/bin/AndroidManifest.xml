@@ -19,7 +19,7 @@
         android:label="JDungeon"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="de.jdungeon.androidapp.JDungeon"
+            android:name="de.jdungeon.androidapp.JDungeonApp"
             android:label="JDungeon" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
