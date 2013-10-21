@@ -4,9 +4,11 @@ import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.monster.Monster;
-import game.*;
+import game.DungeonGame;
+import game.Turnable;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import shrine.Shrine;
 import test.TestTracker;
@@ -21,15 +23,15 @@ public class Dungeon implements Turnable {
 
 	public Room[][] theDungeon;
 
-	private JDPoint[][] points;
+	private final JDPoint[][] points;
 
-	JDPoint size;
+	private final JDPoint size;
 
-	JDPoint heroPosition;
+	private JDPoint heroPosition;
 
-	List<Shrine> shrines = new LinkedList<Shrine>();
+	private final List<Shrine> shrines = new LinkedList<Shrine>();
 
-	DungeonGame game;
+	private final DungeonGame game;
 
 	public JDPoint nature_brood_point;
 
@@ -44,8 +46,6 @@ public class Dungeon implements Turnable {
 			for (int j = 0; j < y; j++) {
 				points[i][j] = new JDPoint(i, j);
 				theDungeon[i][j] = new Room(i, j, this);
-
-				// theDungeon[i][j].setPoint(new point(i,j));
 			}
 		}
 		JDPoint.setPoints(points);
@@ -74,6 +74,7 @@ public class Dungeon implements Turnable {
 		return stats;
 	}
 
+	@Override
 	public void turn(int round) {
 		shrinesTurn(round);
 		roomsTurn(round);
@@ -96,7 +97,7 @@ public class Dungeon implements Turnable {
 	private void shrinesTurn(int round) {
 		int j = shrines.size();
 		for (int i = 0; i < j; i++) {
-			Shrine s = ((Shrine) shrines.get(i));
+			Shrine s = (shrines.get(i));
 			// doPrint("turning: "+s.toString());
 			s.turn(round);
 		}
@@ -119,12 +120,12 @@ public class Dungeon implements Turnable {
 			// System.out.println("Liste: " + l.size());
 			while (index < l.size() - 1) {
 				// System.out.print("Pruefe Raum mit index: " + index + " :");
-				Room r = (Room) l.get(index);
+				Room r = l.get(index);
 				// System.out.println(r.toString());
 				int lastAppearence = -1;
 				for (int i = index + 1; i < l.size(); i++) {
 
-					Room next = (Room) l.get(i);
+					Room next = l.get(i);
 					if (next == r) {
 						// System.out.println("Wiedergefunden! an Stelle: " +
 						// i);
@@ -136,7 +137,7 @@ public class Dungeon implements Turnable {
 					//+ lastAppearence + " : "
 					//		+ ((Room) l.get(lastAppearence)).toString());
 					for (int i = index; i < lastAppearence; i++) {
-						Room rx = (Room) l.remove(index);
+						Room rx = l.remove(index);
 						//doPrint("loesche aus Liste: " + rx.toString());
 					}
 				}
@@ -154,12 +155,12 @@ public class Dungeon implements Turnable {
 			// System.out.println("Liste: " + l.size());
 			while (index < l.size() - 1) {
 				// System.out.print("Pruefe Raum mit index: " + index + " :");
-				Room r = (Room) l.getRooms().get(index);
+				Room r = l.getRooms().get(index);
 				// System.out.println(r.toString());
 				int lastAppearence = -1;
 				for (int i = index + 1; i < l.getRooms().size(); i++) {
 
-					Room next = (Room) l.getRooms().get(i);
+					Room next = l.getRooms().get(i);
 					if (next == r) {
 						// System.out.println("Wiedergefunden! an Stelle: " +
 						// i);
@@ -171,10 +172,10 @@ public class Dungeon implements Turnable {
 							+ " nochmal an Stelle: "
 							+ lastAppearence
 							+ " : "
-							+ ((Room) l.getRooms().get(lastAppearence))
+							+ l.getRooms().get(lastAppearence)
 									.toString());
 					for (int i = index; i < lastAppearence; i++) {
-						Room rx = (Room) l.getRooms().remove(index);
+						Room rx = l.getRooms().remove(index);
 						doPrint("loesche aus Liste: " + rx.toString());
 					}
 				}
@@ -241,7 +242,7 @@ public class Dungeon implements Turnable {
 			noWay = true;
 		} else {
 
-			next = ((RoomInfo) way.get(1)).getRoom();
+			next = way.get(1).getRoom();
 
 			// System.out.println("gehe erstmal nach: " + next.toString());
 		}
@@ -297,9 +298,9 @@ public class Dungeon implements Turnable {
 		// System.out.println();
 		// System.out.println("SHORTCUTTING!!!!");
 		while (i < way.getRooms().size()) {
-			Room r1 = ((Room) way.getRooms().get(i));
+			Room r1 = (way.getRooms().get(i));
 			for (int j = way.getRooms().size() - 1; j > 0; j--) {
-				Room r2 = ((Room) way.getRooms().get(j));
+				Room r2 = (way.getRooms().get(j));
 				if (r2.hasConnectionTo(r1)) {
 					doPrint(r2.getNumber().toString()
 							+ " has direct Connection to: "
@@ -337,7 +338,7 @@ public class Dungeon implements Turnable {
 		if (way != null) {
 
 			for (int i = 0; i < way.size(); i++) {
-				doPrint(((Room) way.get(i)).getNumber().toString());
+				doPrint(way.get(i).getNumber().toString());
 
 			}
 		}
@@ -424,7 +425,7 @@ public class Dungeon implements Turnable {
 		LinkedList<RoomInfo> erg = new LinkedList<RoomInfo>();
 
 		for (int i = 0; i < list.size(); i++) {
-			erg.add(((Tupel) list.get(i)).r);
+			erg.add(list.get(i).r);
 		}
 		// doPrint("ERGEBNISS!!!");
 		// doPrintBisWay(erg);
@@ -448,7 +449,7 @@ public class Dungeon implements Turnable {
 		explore(list, to);
 		LinkedList<Room> erg = new LinkedList<Room>();
 		for (int i = 0; i < list.size(); i++) {
-			erg.add(((Tupel) list.get(i)).r.getRoom());
+			erg.add(list.get(i).r.getRoom());
 		}
 		doPrint("ERGEBNISS!!!");
 		doPrintBisWay(erg);
@@ -460,7 +461,7 @@ public class Dungeon implements Turnable {
 		boolean more = walkBackToLastUnexploredPoint(list);
 		if (more) {
 
-			Tupel t = ((Tupel) list.getLast());
+			Tupel t = (list.getLast());
 			doPrint("Bin jetzt bei Raum: " + t.r.getNumber().toString());
 			explorer ex = t.exp;
 			int dir = ex.getOpenDir(to);
@@ -495,7 +496,7 @@ public class Dungeon implements Turnable {
 		boolean more = walkBackToLastUnexploredPoint(list);
 		if (more) {
 
-			Tupel t = ((Tupel) list.getLast());
+			Tupel t = (list.getLast());
 			// System.out.println("Bin jetzt bei Raum: " +
 			// t.r.getNumber().toString());
 			explorer ex = t.exp;
@@ -524,7 +525,7 @@ public class Dungeon implements Turnable {
 
 	private void configExp(explorer exp, List<Tupel> list) {
 		for (int i = 0; i < list.size(); i++) {
-			RoomInfo r1 = ((Tupel) list.get(i)).r;
+			RoomInfo r1 = list.get(i).r;
 			if (exp.r.hasConnectionTo(r1)) {
 				int dir = exp.r.getConnectionDirectionTo(r1);
 
@@ -535,7 +536,7 @@ public class Dungeon implements Turnable {
 
 	private boolean walkBackToLastUnexploredPoint(LinkedList<Tupel> list) {
 		doPrint("Laufe zur�ck zum n�chsten offenen Punkt!");
-		explorer ex = ((Tupel) list.getLast()).exp;
+		explorer ex = list.getLast().exp;
 		configExp(ex, list);
 		if (ex.stillOpen()) {
 			//doPrint("Das Ende ist noch offen!");
@@ -548,7 +549,7 @@ public class Dungeon implements Turnable {
 					//doPrint("Zurück bis an den Anfang, KEIN WEG GEFUNDEN!!!");
 					return false;
 				}
-				Tupel t = ((Tupel) list.get(k));
+				Tupel t = (list.get(k));
 				ex = t.exp;
 				if (!ex.stillOpen()) {
 					//doPrint(t.r.getNumber().toString()
@@ -571,8 +572,8 @@ public class Dungeon implements Turnable {
 			//doPrint("letzte Richtung noch nicht verfuegbar");
 			return 0;
 		}
-		Room r1 = (Room) way.get(way.size() - 2);
-		Room r2 = (Room) way.get(way.size() - 1);
+		Room r1 = way.get(way.size() - 2);
+		Room r2 = way.get(way.size() - 1);
 		int dir = r1.getConnectionDirectionTo(r2);
 		if (dir == 0) {
 			//doPrint("Error bei lastDir() --> Weg gar nicht moeglich");
@@ -588,7 +589,7 @@ public class Dungeon implements Turnable {
 		for (int i = 0; i < l.size(); i++) {
 			if (printing)
 				System.out.println(i + ": "
-						+ ((Room) l.get(i)).getNumber().toString());
+						+ l.get(i).getNumber().toString());
 
 		}
 	}
@@ -772,7 +773,7 @@ public class Dungeon implements Turnable {
 	// }
 	// }
 
-	public void roomsTurn(int round) {
+	private void roomsTurn(int round) {
 		for (int i = 0; i < theDungeon.length; i++) {
 			for (int j = 0; j < theDungeon[0].length; j++) {
 				if (game.isGameOver()) {
@@ -957,6 +958,7 @@ class Tupel {
 		exp = e;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if(o instanceof Tupel) {
 			if(r.equals(((Tupel)o).r)) {

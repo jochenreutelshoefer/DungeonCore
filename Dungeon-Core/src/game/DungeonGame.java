@@ -211,7 +211,6 @@ public class DungeonGame implements Runnable {
 		for (Iterator<Figure> iter = toDelete.iterator(); iter.hasNext();) {
 			Object element = iter.next();
 			guiFigures.remove(element);
-			System.out.println("Figure aus GuiHash genommen weil tot!");
 		}
 	}
 
@@ -231,7 +230,6 @@ public class DungeonGame implements Runnable {
 
 		while (gameOver == false) {
 
-			// System.out.println("game turn");
 			checkGuiFigures();
 			if (guiFigures.size() == 0) {
 				break;
@@ -240,8 +238,6 @@ public class DungeonGame implements Runnable {
 			worldTurn();
 			tickGuis();
 		}
-
-		System.out.println("THREAD TERMINATED!");
 
 	}
 

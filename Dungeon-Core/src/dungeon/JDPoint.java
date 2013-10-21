@@ -34,17 +34,43 @@ public class JDPoint{
     	this.y = (int)y;
     }
 
-    public boolean equals(JDPoint p){
-	if((p.getX() == this.x) && (p.getY() == this.y)) return true;
-	else return false;
-    }
+	// public boolean equals(JDPoint p){
+	// if((p.getX() == this.x) && (p.getY() == this.y)) return true;
+	// else return false;
+	// }
+	//
+	// public boolean equals(int x, int y){
+	// if((this.x == x)&&(this.y == y)) return true;
+	// else return false;
+	// }
 
-    public boolean equals(int x, int y){
-	if((this.x == x)&&(this.y == y)) return true;
-	else return false;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
 
-    public String toString(){
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JDPoint other = (JDPoint) obj;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
 	return (" "+Integer.toString(x)+" - "+Integer.toString(y));
     }
 

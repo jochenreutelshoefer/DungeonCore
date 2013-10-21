@@ -141,7 +141,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 			a = control.getAction();
 			while (a == null) {
-				// System.out.print("+");
 				try {
 					Thread.currentThread().sleep(80);
 				} catch (InterruptedException e) {
@@ -156,7 +155,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 			}
 		}
-		// control.resetAction();
 		return a;
 	}
 
