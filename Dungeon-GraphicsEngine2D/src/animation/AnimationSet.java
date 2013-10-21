@@ -23,12 +23,13 @@ import audio.AbstractAudioSet;
  */
 public class AnimationSet {
 
-	private JDImageProxy[] images;
+	private final JDImageProxy[] images;
 	private JDImageProxy defaultImage = null;
 	private int[] times;
 	private int length;
+	private final int totalDuration;
 
-	private Map<Integer, Set<AbstractAudioSet>> sounds = new HashMap<Integer, Set<AbstractAudioSet>>();
+	private final Map<Integer, Set<AbstractAudioSet>> sounds = new HashMap<Integer, Set<AbstractAudioSet>>();
 
 	/**
 	 * @return Returns the images.
@@ -36,6 +37,26 @@ public class AnimationSet {
 	 */
 	public JDImageProxy[] getImages() {
 		return images;
+	}
+
+	public JDImageProxy getImageAtTime(long millisecondsPassed) {
+		if (millisecondsPassed > totalDuration) {
+			return images[images.length - 1];
+		}
+		long sum = 0;
+		for (int i = 0; i < times.length; i++) {
+			sum += times[i];
+			if (millisecondsPassed < sum) {
+				if (images.length > i) {
+					return images[i];
+				}
+			}
+		}
+		return images[images.length - 1];
+	}
+
+	public int getTotalDuration() {
+		return totalDuration;
 	}
 
 	public Set<AbstractAudioSet> getSound(int round) {
@@ -71,6 +92,17 @@ public class AnimationSet {
 		} else {
 			times = t;
 		}
+
+		totalDuration = sumArray(times);
+
+	}
+
+	private static int sumArray(int[] times) {
+		int sum = 0;
+		for (int i : times) {
+			sum += i;
+		}
+		return sum;
 	}
 
 	public JDImageProxy getImagesNr(int k) {
