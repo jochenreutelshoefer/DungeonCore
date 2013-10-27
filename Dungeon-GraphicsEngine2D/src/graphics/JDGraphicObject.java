@@ -8,18 +8,27 @@
  */
 package graphics;
 
-import util.JDColor;
 import graphics.util.JDRectangle;
+import util.JDColor;
 
 
 public class JDGraphicObject extends GraphicObject {
 
-	private JDImageLocated image;
+	private final JDImageLocated image;
 
 	public JDGraphicObject(JDImageLocated i, Object ob, JDRectangle o, JDColor c) {
 		super(ob, o, c, null);
 		image = i;
 
+	}
+
+	@Override
+	public String toString() {
+		if (clickedObject == null) {
+			return image.toString();
+		} else {
+			return clickedObject.toString();
+		}
 	}
 
 	public JDImageLocated getAWTImage() {

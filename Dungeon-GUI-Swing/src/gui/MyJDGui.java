@@ -8,7 +8,6 @@ package gui;
 
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.LearnSpellAction;
 import figure.action.TakeItemAction;
 import figure.action.result.ActionResult;
@@ -61,13 +60,13 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 
-import animation.AnimationSet;
-import animation.AnimationUtils;
-import audio.AudioEffectsManager;
 import spell.Spell;
 import spell.SpellInfo;
 import text.Statement;
 import text.StatementManager;
+import animation.AnimationSet;
+import animation.AnimationUtils;
+import audio.AudioEffectsManager;
 import control.ActionAssembler;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -90,7 +89,7 @@ public class MyJDGui implements JDGUI {
 
 	public final static int BUTTON_GO_WEST = 5;
 
-	private ActionAssembler control;
+	private final ActionAssembler control;
 
 	private MainFrame frame;
 
@@ -98,13 +97,14 @@ public class MyJDGui implements JDGUI {
 
 	private Memory memory;
 
-	private Map masterAnis = new HashMap();
+	private final Map masterAnis = new HashMap();
 
 	private FigureInfo figure;
 
 	/**
 	 * @return Returns the figure.
 	 */
+	@Override
 	public FigureInfo getFigure() {
 		return figure;
 	}
@@ -113,6 +113,7 @@ public class MyJDGui implements JDGUI {
 	 * @param figure
 	 *            The figure to set.
 	 */
+	@Override
 	public void setFigure(FigureInfo figure) {
 		this.figure = figure;
 
@@ -122,6 +123,7 @@ public class MyJDGui implements JDGUI {
 		return visibilityCheat;
 	}
 
+	@Override
 	public void resetingRoomVisibility(JDPoint p) {
 		if (memory != null) {
 			memory.storeRoom(figure.getRoomInfo(p), figure.getGameRound(),
@@ -144,6 +146,7 @@ public class MyJDGui implements JDGUI {
 
 	}
 
+	@Override
 	public boolean isHostileTo(FigureInfo f) {
 		if(f.getFigureClass().equals(Fir.class)) {
 			return false;
@@ -154,6 +157,7 @@ public class MyJDGui implements JDGUI {
 		return false;
 	}
 
+	@Override
 	public void gameRoundEnded() {
 		newStatement("--------", 0);
 		// this.repaintPicture();
@@ -167,7 +171,6 @@ public class MyJDGui implements JDGUI {
 	}
 
 	private void handleMovePercept(MovePercept p) {
-		// repaintPicture();
 		MasterAnimation ani = (MasterAnimation) this.masterAnis.get(this.figure
 				.getRoomInfo());
 		if (ani != null) {
@@ -185,16 +188,18 @@ public class MyJDGui implements JDGUI {
 
 	boolean justPainted = false;
 
+	@Override
 	public Action getAction() {
 		if (memory == null) {
 			memory = new Memory(figure.getDungeonSize());
 		}
 		if (actionQueue.size() > 0) {
-			return (Action) actionQueue.remove(0);
+			return actionQueue.remove(0);
 		}
 		return null;
 	}
 
+	@Override
 	public void plugAction(Action a) {
 
 		actionQueue.add(a);
@@ -276,7 +281,7 @@ public class MyJDGui implements JDGUI {
 
 	private void handleFightEndedPercept(FightEndedPercept p) {
 
-		newStatement(StatementManager.getStatement((FightEndedPercept) p));
+		newStatement(StatementManager.getStatement(p));
 		MasterAnimation ani = (MasterAnimation) this.masterAnis.get(this.figure
 				.getRoomInfo());
 		if (ani != null) {
@@ -292,7 +297,7 @@ public class MyJDGui implements JDGUI {
 
 	private void handleDoorSmashPercept(DoorSmashPercept p) {
 
-		newStatement(StatementManager.getStatement((DoorSmashPercept) p,
+		newStatement(StatementManager.getStatement(p,
 				this.figure));
 		figureBeenHitAnimation(p.getVictim());
 	}
@@ -305,6 +310,7 @@ public class MyJDGui implements JDGUI {
 		figurePauseAnimation(p.getFigure());
 	}
 
+	@Override
 	public void tellPercept(Percept p) {
 
 		if (p instanceof WaitPercept) {
@@ -405,7 +411,6 @@ public class MyJDGui implements JDGUI {
 			newStatement(StatementManager.getStatement((FightBeginsPercept) p));
 		}
 
-		// newStatement(p.getGuiStatement(),1);
 	}
 
 	public void setVisibility(boolean b) {
@@ -416,7 +421,6 @@ public class MyJDGui implements JDGUI {
 		this.figure = f;
 		control = new ActionAssembler();
 		control.setGui(this);
-		// threadManager = new ThreadPool(20);
 	}
 
 	public MyJDGui() {
@@ -462,21 +466,12 @@ public class MyJDGui implements JDGUI {
 			frame = new MainFrame((StartView) start,
 					MainFrame.clearString(playerName), applet, this,
 					"Java Dungeon V.22.08.06 - 3");
-			// setMain(main);
 			frame.initMainframe();
 		} else {
 			System.out.println("MyJDGui.iniGUI: wrong StartWindow instance");
 			System.exit(0);
 		}
 	}
-
-	// public RoomInfo getMasterAnimationRoomInfo() {
-	// if (masterAni == null) {
-	// return null;
-	// }
-	// return masterAni.getRoom();
-	//
-	// }
 
 	public Map getHighScoreString(String playerName, String comment,
 			boolean reg, boolean liga) {
@@ -488,18 +483,6 @@ public class MyJDGui implements JDGUI {
 		}
 	}
 
-	// public void fightEnded() {
-	// // int k = queue.size();
-	// // for (int i = 0; i < k - 1; i++) {
-	// // queue.remove(0);
-	// // }
-	// // masterAni.stop();
-	//
-	// // stopAllAnimation();
-	// // frame.fightEnded();
-	// repaintPicture();
-	// }
-
 	public void stopAllAnimation() {
 		Collection c = masterAnis.keySet();
 		for (Iterator iter = c.iterator(); iter.hasNext();) {
@@ -510,10 +493,8 @@ public class MyJDGui implements JDGUI {
 
 	}
 
-//	public void resetViewPoint() {
-//		frame.getSpielfeld().resetViewPoint();
-//	}
 
+	@Override
 	public void gameOver() {
 		frame.gameOver();
 		Collection s = masterAnis.keySet();
@@ -522,8 +503,6 @@ public class MyJDGui implements JDGUI {
 			MasterAnimation ani = (MasterAnimation) masterAnis.get(element);
 			ani.myStop();
 		}
-		// this.threadManager.complete();
-		// this.threadManager.doFinalize();
 
 	}
 
@@ -531,91 +510,26 @@ public class MyJDGui implements JDGUI {
 		frame.disableControl();
 	}
 
-	// public void updateGUI(int key, boolean repaint) {
-	// // Thread th = new Thread(frame);
-	// // th.start();
-	// frame.updateGUI(key, repaint);
-	// }
-
-	// public void repaintSpielfeldBild() {
-	// frame.getSpielfeld().getSpielfeldBild().repaint();
-	// }
-
-	// public void repaintFigureRoom() {
-	// frame.getSpielfeld().getSpielfeldBild().repaintRoom(getGraphics(),
-	// figure.getRoomInfo(), true);
-	// }
 
 	public Graphics getGraphics() {
 		return frame.getSpielfeld().getSpielfeldBild().getGraphics();
 	}
 
 
-	// public void setRoomViewPoint(JDPoint wannaGo) {
-	// frame.getSpielfeld().setRoomViewPoint(wannaGo);
-	// }
-
 	public int getChoosenEnemy() {
 		return frame.getChoosenEnemy();
 	}
 
-	// public void causeActionEvent(int key, String commando) {
-	// if (key == this.BUTTON_SLAP) {
-	// ActionEvent ae = new ActionEvent(frame.slap, 0, commando);
-	// frame.actionPerformed(ae);
-	// }
-	// if (key == this.BUTTON_GO_EAST) {
-	// ActionEvent ae = new ActionEvent(frame.getSteuerung().east, 0,
-	// commando);
-	// frame.getSteuerung().actionPerformed(ae);
-	// }
-	// if (key == this.BUTTON_GO_SOUTH) {
-	// ActionEvent ae = new ActionEvent(frame.getSteuerung().south, 0,
-	// commando);
-	// frame.getSteuerung().actionPerformed(ae);
-	// }
-	// if (key == this.BUTTON_GO_WEST) {
-	// ActionEvent ae = new ActionEvent(frame.getSteuerung().west, 0,
-	// commando);
-	// frame.getSteuerung().actionPerformed(ae);
-	// }
-	// if (key == this.BUTTON_GO_NORTH) {
-	// ActionEvent ae = new ActionEvent(frame.getSteuerung().north, 0,
-	// commando);
-	// frame.getSteuerung().actionPerformed(ae);
-	// }
-	// }
 
-	public void animationDone() {
-		// if (!queue.isEmpty()) {
-		// Animation nextAni = (Animation) (queue.remove(0));
-		// current = nextAni;
-		// currentThread = new Thread(nextAni);
-		// currentThread.start();
-		// } else {
-		// current = null;
-		// frame.getSpielfeld().getSpielfeldBild().drawHero(
-		// getGraphics(),
-		// frame.getSpielfeld().getSpielfeldBild().getHeroPoint()
-		// .getX(),
-		// frame.getSpielfeld().getSpielfeldBild().getHeroPoint()
-		// .getY());
-		// }
-	}
+
 
 	public void figureSlaysAnimation(AttackPercept p) {
 		FigureInfo fig = p.getAttacker();
-		// RoomInfo info =
-		// RoomInfo.makeRoomInfo(game.getDungeon().getRoom(figure.getRoomNumber()),
-		// figure.getObservationStatusObject(figure.getRoomNumber()));
 		RoomInfo info = fig.getRoomInfo();
 		AnimationSet set = AnimationUtils.getFigure_slays(fig);
 		if (set != null) {
 			AnimationReal ani = new AnimationReal(set, fig,
 					AnimationReal.SLAYS, info, this);
-//			if(p.getResult().getValue() > 0) {
-//				ani.setFinishingSound(AudioEffectsManager.HIT);
-//			}
 			runAnimation(ani, 0);
 		}
 	}
@@ -623,7 +537,6 @@ public class MyJDGui implements JDGUI {
 	public void figureWalkingAnimation(FigureInfo fig) {
 
 		RoomInfo info = fig.getRoomInfo();
-		// int code = game.getHero().getHeroCode();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if (set != null) {
@@ -735,10 +648,6 @@ public class MyJDGui implements JDGUI {
 			ani = new AnimationReal(set, m, AnimationReal.SLAYS, info, this);
 
 		}
-		// else {
-		// ani = new AnimationFake(frame.getSpielfeld().getSpielfeldBild()
-		// .getMonsterImage(m), m, Animation.SLAYS,info);
-		// }
 
 		runAnimation(ani, 0);
 	}
@@ -754,7 +663,7 @@ public class MyJDGui implements JDGUI {
 		}
 
 		for (Iterator iter = toRemove.iterator(); iter.hasNext();) {
-			Object element = (Object) iter.next();
+			Object element = iter.next();
 			l.remove(element);
 		}
 	}
@@ -778,34 +687,23 @@ public class MyJDGui implements JDGUI {
 
 	int attackDelay = 0;
 
-	Vector actionQueue = new Vector();
+	Vector<Action> actionQueue = new Vector<Action>();
 
 	public void fightRoundEnded() {
 		attackDelay = 0;
 
 	}
 
-	private void printAniMap() {
-		System.out.println("AniMap: " + masterAnis.size());
-		Collection c = masterAnis.keySet();
-		for (Iterator iter = c.iterator(); iter.hasNext();) {
-			RoomInfo element = (RoomInfo) iter.next();
-			MasterAnimation ani = (MasterAnimation) masterAnis.get(element);
-			System.out.println(element.toString() + "  -  " + ani.toString());
-		}
-		System.out.println("\n");
-	}
+
 
 	int clearAniThreadHashCnt = 0;
 
 	private void runAnimation(Animation ani, int timeOffset) {
 
 		RoomInfo r = ani.getRoomInfo();
-		// printAniMap();
 		MasterAnimation masterAni = (MasterAnimation) masterAnis.get(r);
 
 		if (masterAni != null && !masterAni.finished) {
-			// System.out.println("also animation dazupacken!");
 			Vector map = masterAni.getAnimations();
 			Vector map2 = new Vector();
 			map2.addAll(map);
@@ -819,9 +717,7 @@ public class MyJDGui implements JDGUI {
 			} else {
 				masterAni.addAnimationAsNext(ani);
 			}
-			// } else if(masterAni != null && !masterAni.isAlive()) {
-			// masterAni.addAnimationAsNext(ani);
-			// masterAni.start();
+
 		} else {
 
 			GraphBoard bord = getMainFrame().getSpielfeld().getSpielfeldBild();
@@ -830,7 +726,6 @@ public class MyJDGui implements JDGUI {
 			masterAni.addAnimationAsNext(ani);
 
 			masterAnis.put(r, masterAni);
-			// threadManager.assign(masterAni);
 			masterAni.start();
 
 		}
@@ -853,35 +748,11 @@ public class MyJDGui implements JDGUI {
 		masterAni.addAnimationAsNext(ani);
 		masterAnis.put(r, masterAni);
 
-		// threadManager.assign(masterAni);
 		masterAni.start();
 
 	}
 
-	// public void onlyTipOver(MonsterInfo m) {
-	// int k = 0;
-	// while (k < queue.size()) {
-	// Animation ani = (Animation) queue.get(k);
-	// if (ani.getObject() == m && ani.getType() != Animation.TIPPING_OVER) {
-	// queue.remove(ani);
-	// k--;
-	// }
-	// k++;
-	// }
-	// }
-	//
-	// public void suspendAnimation() {
-	// if (currentThread != null) {
-	// currentThread.suspend();
-	// }
-	// }
-
-	// public void resumeAnimation() {
-	// if (currentThread != null) {
-	// currentThread.resume();
-	// }
-	// }
-
+	@Override
 	public boolean currentAnimationThreadRunning(RoomInfo r) {
 		MasterAnimation ani = (MasterAnimation) masterAnis.get(r);
 
@@ -892,9 +763,6 @@ public class MyJDGui implements JDGUI {
 		return false;
 	}
 
-	// public Animation getCurrent() {
-	// return current;
-	// }
 
 	/**
 	 * @return Returns the control.
@@ -913,20 +781,18 @@ public class MyJDGui implements JDGUI {
 
 	}
 
+	@Override
 	public void onTurn() {
 		updateGui();
 		repaintPicture();
 	}
 
+	@Override
 	public void actionDone(Action a, ActionResult res) {
 
 		if (res.getKey1() == ActionResult.KEY_IMPOSSIBLE) {
 			newStatement(StatementManager.getStatement(res));
 		} else {
-			if (!(a instanceof AttackAction)) {
-
-				// repaintPicture();
-			}
 
 			updateGui();
 			if (a instanceof LearnSpellAction) {
@@ -941,18 +807,9 @@ public class MyJDGui implements JDGUI {
 		}
 	}
 
-	// public Action getMovementAction() {
-	// return control.getSpecifiedMovementAction();
-	// }
-
-	// public void resetMovementAction() {
-	// control.setSpecifiedAction(null);
-	// }
-
 	public void figureWalkingAnimationFromTo(FigureInfo fig, int fromPos,
 			int toPos) {
 		RoomInfo info = fig.getRoomInfo();
-		// int code = game.getHero().getHeroCode();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if (set != null) {

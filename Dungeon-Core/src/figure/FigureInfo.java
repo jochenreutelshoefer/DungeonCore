@@ -11,7 +11,6 @@ import figure.action.result.ActionResult;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.memory.FigureMemory;
-import figure.memory.Memory;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.InfoEntity;
@@ -23,12 +22,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ai.DefaultMonsterIntelligence;
-
 import spell.Spell;
 import spell.SpellInfo;
+import ai.DefaultMonsterIntelligence;
 import dungeon.DoorInfo;
-import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
@@ -82,8 +79,9 @@ public abstract class FigureInfo extends InfoEntity {
 	
 	public abstract List<ItemInfo> getAllItems();
 	
+	@Override
 	public FigureMemory getMemoryObject(FigureInfo info) {
-		return (FigureMemory)f.getMemoryObject(info);
+		return f.getMemoryObject(info);
 	}
 	
 	
@@ -173,20 +171,27 @@ public abstract class FigureInfo extends InfoEntity {
 		return f.getRoomObservationStatus(r.getLocation()).getVisibilityStatus();
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		
 		if(o instanceof FigureInfo) {
-			if(((FigureInfo)o).f == this.f) {
+			if (((FigureInfo) o).f.equals(this.f)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	@Override
+	public int hashCode() {
+		return f.hashCode();
+	}
+
 	public String getShortStatus() {
 		return f.getShortStatus();
 	}
 	
+	@Override
 	public String toString() {
 		return f.toString();
 	}
@@ -232,6 +237,7 @@ public abstract class FigureInfo extends InfoEntity {
 	//		return m.getFighterID();
 	//	}
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		return ((Paragraphable)f).getParagraphs();
 	}

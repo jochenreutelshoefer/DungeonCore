@@ -8,8 +8,8 @@
  */
 package graphics;
 
-import util.JDColor;
 import graphics.util.JDRectangle;
+import util.JDColor;
 import dungeon.JDPoint;
 
 public class GraphicObject {
@@ -20,6 +20,15 @@ public class GraphicObject {
 
 	public JDImageProxy<?> getImage() {
 		return image;
+	}
+
+	@Override
+	public String toString() {
+		if (clickedObject == null) {
+			return image.toString();
+		} else {
+			return clickedObject.toString();
+		}
 	}
 
 	protected JDRectangle rect;

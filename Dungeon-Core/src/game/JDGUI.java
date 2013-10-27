@@ -7,15 +7,11 @@
 package game;
 
 
+import item.ItemInfo;
+import spell.SpellInfo;
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
-import gui.AbstractStartWindow;
-import item.ItemInfo;
-
-import java.applet.Applet;
-
-import dungeon.RoomInfo;
-import spell.SpellInfo;
 
 public interface JDGUI extends ControlUnit{
 	
@@ -36,11 +32,4 @@ public interface JDGUI extends ControlUnit{
 	public void setUseWithTarget(boolean b);
 	
 	public void gameRoundEnded();
-	
-	public void initGui(AbstractStartWindow start, Applet applet,
-			String playerName);
-	
-	public abstract void setFigure(FigureInfo info);
-
-	public void animationDone();
 }

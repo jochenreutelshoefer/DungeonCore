@@ -31,6 +31,10 @@ public class AnimationSet {
 
 	private final Map<Integer, Set<AbstractAudioSet>> sounds = new HashMap<Integer, Set<AbstractAudioSet>>();
 
+	public Map<Integer, Set<AbstractAudioSet>> getSounds() {
+		return sounds;
+	}
+
 	/**
 	 * @return Returns the images.
 	 * 
@@ -40,19 +44,23 @@ public class AnimationSet {
 	}
 
 	public JDImageProxy getImageAtTime(long millisecondsPassed) {
+		return images[getImageNrAtTime(millisecondsPassed)];
+	}
+
+	public int getImageNrAtTime(long millisecondsPassed) {
 		if (millisecondsPassed > totalDuration) {
-			return images[images.length - 1];
+			return images.length - 1;
 		}
 		long sum = 0;
 		for (int i = 0; i < times.length; i++) {
 			sum += times[i];
 			if (millisecondsPassed < sum) {
 				if (images.length > i) {
-					return images[i];
+					return i;
 				}
 			}
 		}
-		return images[images.length - 1];
+		return images.length - 1;
 	}
 
 	public int getTotalDuration() {
@@ -114,16 +122,6 @@ public class AnimationSet {
 		}
 	}
 
-	// public void preLoad() {
-	// if(!loaded) {
-	// Graphics g = gui.getGraphics();
-	// for(int i = 0; i < length; i++) {
-	// g.drawImage(images[i],0,0,100,100,null);
-	//
-	// }
-	// loaded = true;
-	// }
-	// }
 
 	public int getTimeNr(int k) {
 		return times[k];

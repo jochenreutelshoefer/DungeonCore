@@ -27,7 +27,7 @@ public class MasterAnimation extends Thread implements Runnable {
 
 	public final int TIMESTEP = 50;
 
-	private Vector<AnimationTask> animations = new Vector<AnimationTask>();
+	private final Vector<AnimationTask> animations = new Vector<AnimationTask>();
 
 	private int counter = 0;
 
@@ -35,23 +35,23 @@ public class MasterAnimation extends Thread implements Runnable {
 
 	private Image offscreenImage;
 
-	private int roomSize;
+	private final int roomSize;
 
-	private GraphBoard bild;
+	private final GraphBoard bild;
 
 	private RoomInfo r;
 
-	private MyJDGui gui;
+	private final MyJDGui gui;
 
-	private Graphics g;
+	private final Graphics g;
 
-	private Vector<AnimationTask> additionalAnis = new Vector<AnimationTask>();
+	private final Vector<AnimationTask> additionalAnis = new Vector<AnimationTask>();
 
-	private Map<AnimationTask, Integer> toPaint = new HashMap<AnimationTask, Integer>();
+	private final Map<AnimationTask, Integer> toPaint = new HashMap<AnimationTask, Integer>();
 	
-	private List<FigureInfo> paintedObs = new LinkedList<FigureInfo>();
+	private final List<FigureInfo> paintedObs = new LinkedList<FigureInfo>();
 	
-	private List<AnimationTask> oldAnis = new LinkedList<AnimationTask>();
+	private final List<AnimationTask> oldAnis = new LinkedList<AnimationTask>();
 
 	public MasterAnimation(int size, GraphBoard bord, RoomInfo r, MyJDGui gui) {
 		roomSize = size;
@@ -64,10 +64,6 @@ public class MasterAnimation extends Thread implements Runnable {
 
 	public void addAnimation(Animation ani) {
 		additionalAnis.add(new AnimationTask(ani, counter));
-	}
-
-	public void addAnimation(Animation ani, int offset) {
-		additionalAnis.add(new AnimationTask(ani, counter + offset));
 	}
 
 	public void addAnimationAt(Animation ani, int time) {
@@ -114,6 +110,7 @@ public class MasterAnimation extends Thread implements Runnable {
 	}
 
 
+	@Override
 	public void run() {
 		work();
 		finished = true;
@@ -187,9 +184,9 @@ public class MasterAnimation extends Thread implements Runnable {
 			bild.repaintRoomSmall(g2, r, paintedObs);
 
 			for (Iterator<AnimationTask> iter = toPaint.keySet().iterator(); iter.hasNext();) {
-				AnimationTask actuallAnimation = (AnimationTask) iter.next();
+				AnimationTask actuallAnimation = iter.next();
 				actuallAnimation.getAni().paintPic(
-						((Integer) toPaint.get(actuallAnimation)).intValue(),
+						toPaint.get(actuallAnimation).intValue(),
 						g2);
 			}
 

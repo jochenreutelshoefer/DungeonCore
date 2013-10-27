@@ -156,6 +156,7 @@ public class GraphicObjectRenderer {
 		walls.clear();
 		lastWalls.clear();
 		positions.clear();
+		hero = null;
 
 	}
 	
@@ -1131,7 +1132,11 @@ public class GraphicObjectRenderer {
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(xcoord, ycoord, r.getHeroInfo(), this);
+			GraphicObject heroObject = drawHero(xcoord, ycoord,
+					r.getHeroInfo(), this);
+			if (heroObject != null) {
+				graphObs.add(heroObject);
+			}
 		}
 
 		graphObs.add(new GraphicObject(r, new JDRectangle(new JDPoint(xcoord,
@@ -1232,7 +1237,7 @@ public class GraphicObjectRenderer {
 		}
 
 		if (r.getHeroInfo() != null) {
-			drawHero(xcoord, ycoord, r.getHeroInfo(), this);
+			hero = drawHero(xcoord, ycoord, r.getHeroInfo(), this);
 		}
 	}
 	
@@ -1243,12 +1248,12 @@ public class GraphicObjectRenderer {
 		return new JDPoint(x1, y1);
 	}
 
-	private void drawHero(int x, int y, HeroInfo info,
+	private GraphicObject drawHero(int x, int y, HeroInfo info,
 			GraphicObjectRenderer renderer) {
 		if (info == null) {
-			return;
+			return null;
 		}
-		hero = renderer.getHeroGraphicObject(x, y, info, renderer);
+		return renderer.getHeroGraphicObject(x, y, info, renderer);
 	}
 	
 }

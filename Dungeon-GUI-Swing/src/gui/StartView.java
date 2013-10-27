@@ -4,6 +4,7 @@ package gui;
 
 import figure.Figure;
 import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import game.DungeonGame;
 import game.JDEnv;
 import graphics.ImageManager;
@@ -29,17 +30,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -49,10 +46,11 @@ import javax.swing.border.TitledBorder;
 import audio.AudioEffectsManager;
 import audio.AudioLoader;
 import control.ActionAssembler;
+import dungeon.Dungeon;
+import dungeon.generate.DungeonGenerationFailedException;
 
-
-public class StartView extends AbstractStartWindow implements ActionListener, KeyListener,
-		ItemListener {
+public class StartView extends AbstractStartWindow implements ActionListener,
+		KeyListener, ItemListener {
 
 	public static final String GODMODE = "godmode1";
 
@@ -83,7 +81,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 	JRadioButton germanRB = new JRadioButton("Deutsch");
 
 	JRadioButton englishRB = new JRadioButton("English");
-	
+
 	JRadioButton rookieRB = new JRadioButton("Anfänger (keine Scores)");
 
 	JRadioButton normalRB = new JRadioButton("Normal (Empfohlen)");
@@ -93,12 +91,12 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 	Applet applet;
 	Box box = null;
 	Box boxDiff = null;
+
 	public StartView(String playerName, int code, Applet a, boolean english) {
 
 		super("Willkommen bei JAVA-DUNGEON");
 
 		setResourceBundles(english);
-		
 
 		GregorianCalendar c = new GregorianCalendar();
 		int day = c.get(GregorianCalendar.DAY_OF_MONTH);
@@ -110,15 +108,15 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 					System.out.println("Invalid start code");
 
 					if (applet != null) {
-						//applet.stop();
+						// applet.stop();
 					} else {
-						//System.exit(0);
+						// System.exit(0);
 					}
 				}
 			}
 		}
 		cp = getContentPane();
-		
+
 		// this.appletRunning = appletRunning;
 		applet = a;
 
@@ -130,6 +128,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 			 * @param windowEvent
 			 *            Datentyp WindowEvent
 			 */
+			@Override
 			public void windowClosing(WindowEvent windowEvent) {
 				if (applet == null) {
 					System.exit(0);
@@ -141,7 +140,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		});
 
 		JPanel panel = new JPanel();
-		
+
 		JPanel middlePanel = new JPanel();
 		JPanel upperPanel = new JPanel();
 		upperPanel.setLayout(new GridLayout(2, 1));
@@ -149,12 +148,11 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		middlePanel.setLayout(new GridLayout(4, 1));
 		panel.setLayout(new BorderLayout());
 
-		
-	    FlowLayout fl = new FlowLayout();
-	    fl.setHgap(4);
-	    
-	    cp.setLayout(fl);
-	    cp.add(panel);
+		FlowLayout fl = new FlowLayout();
+		fl.setHgap(4);
+
+		cp.setLayout(fl);
+		cp.add(panel);
 
 		autoZoom.setSelected(false);
 		sounds.setSelected(true);
@@ -163,7 +161,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		name.setText(defaultString);
 		if (playerName.equals("Application")) {
 			name.setEditable(true);
-			
+
 			ligaCB.setSelected(false);
 			sendHighscore = false;
 		} else if (playerName.equals("Gast")) {
@@ -190,7 +188,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		// middlePanel.add(name);
 		// middlePanel.add(label2);
 		// middlePanel.add(label3);
-		
+
 		if (english) {
 			englishRB.setSelected(true);
 		} else {
@@ -206,15 +204,14 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		box.add(germanRB);
 		box.add(englishRB);
 		middlePanel.add(box);
-		
-		
+
 		JPanel checkButtonPanel = new JPanel();
-		//checkButtonPanel.add(ligaCB);
+		// checkButtonPanel.add(ligaCB);
 		checkButtonPanel.add(sounds);
 		checkButtonPanel.add(autoZoom);
-		
+
 		middlePanel.add(checkButtonPanel);
-		
+
 		normalRB.setSelected(true);
 		normalRB.addItemListener(this);
 		rookieRB.addItemListener(this);
@@ -226,10 +223,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		boxDiff.add(rookieRB);
 		boxDiff.add(normalRB);
 		middlePanel.add(boxDiff);
-		
-		
-		
-		
+
 		middlePanel.add(picStatusLabel);
 
 		// start.setSize(new Dimension(100,50));
@@ -246,52 +240,53 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		buttonPanel.setAlignmentY(30);
 		start.setAlignmentY(30);
 		start.addActionListener(this);
-		//name.addActionListener(this);
+		// name.addActionListener(this);
 		// name.setSelectionStart(0);
-		//name.setSelectionEnd(name.getText().length());
+		// name.setSelectionEnd(name.getText().length());
 		name.setEditable(true);
 
 		initGui();
-		
+
 		this.setResizable(false);
 		this.setSize(320, 480);
 		// pack();
 		positionieren();
 		this.setVisible(true);
 
-		//System.out.println("finished init StartView");
+		// System.out.println("finished init StartView");
 	}
 
 	private void initGui() {
-		PICS_LOADED = JDEnv.getResourceBundle().getString("state")+": "
-			+ JDEnv.getResourceBundle().getString("gui_pics_are_loaded");
-	PICS_NOT_LOADED = JDEnv.getResourceBundle().getString("state")+": "
-			+ JDEnv.getResourceBundle().getString("gui_pics_not_loaded");
+		PICS_LOADED = JDEnv.getResourceBundle().getString("state") + ": "
+				+ JDEnv.getResourceBundle().getString("gui_pics_are_loaded");
+		PICS_NOT_LOADED = JDEnv.getResourceBundle().getString("state") + ": "
+				+ JDEnv.getResourceBundle().getString("gui_pics_not_loaded");
 
-		
 		if (ImageManager.imagesLoaded) {
 			this.picStatusLabel.setText(PICS_LOADED);
 		} else {
 			this.picStatusLabel.setText(PICS_NOT_LOADED);
 		}
-		
-		TitledBorder border = new TitledBorder(JDEnv.getResourceBundle().getString("language")+":");
+
+		TitledBorder border = new TitledBorder(JDEnv.getResourceBundle()
+				.getString("language") + ":");
 		box.setBorder(border);
-		
-		TitledBorder borderDiff = new TitledBorder(JDEnv.getResourceBundle().getString("gui_difficulty")+":");
+
+		TitledBorder borderDiff = new TitledBorder(JDEnv.getResourceBundle()
+				.getString("gui_difficulty") + ":");
 		boxDiff.setBorder(borderDiff);
-		
+
 		normalRB.setText(JDEnv.getString("gui_difficulty_normal"));
 		rookieRB.setText(JDEnv.getString("gui_difficulty_rookie"));
-		
+
 		start.setText(JDEnv.getResourceBundle().getString("gui_start_new_game"));
-		
-		label.setText(JDEnv.getResourceBundle().getString("playername")+":");
-		ligaCB.setText(JDEnv.getResourceBundle().getString("league")+":");
+
+		label.setText(JDEnv.getResourceBundle().getString("playername") + ":");
+		ligaCB.setText(JDEnv.getResourceBundle().getString("league") + ":");
 		sounds.setText("Sound FX");
 		autoZoom.setText("Auto Zoom");
 	}
-	
+
 	MainFrame main;
 
 	DungeonGame dagame;
@@ -315,10 +310,11 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 	public boolean ligaGame() {
 		return ligaCB.isSelected();
 	}
-	
+
 	public boolean autoZoom() {
 		return autoZoom.isSelected();
 	}
+
 	public boolean soundEffects() {
 		return sounds.isSelected();
 	}
@@ -353,6 +349,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 
 	int startCount = 0;
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (englishRB.isSelected()) {
 			setResourceBundles(true);
@@ -363,7 +360,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 	}
 
 	public static void setResourceBundles(boolean english) {
-		//TODO: refactor
+		// TODO: refactor
 		JDEnv.init();
 	}
 
@@ -371,9 +368,9 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 
 	private String PICS_LOADED = "";
 
-	private String PICS_LOADING = "Status: Bilder werden geladen. Einen Moment..";
+	private final String PICS_LOADING = "Status: Bilder werden geladen. Einen Moment..";
 
-	private JLabel picStatusLabel = new JLabel(PICS_NOT_LOADED);
+	private final JLabel picStatusLabel = new JLabel(PICS_NOT_LOADED);
 
 	public void imagesLoaded() {
 		picStatusLabel.setText(PICS_LOADED);
@@ -381,6 +378,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 
 	private boolean sendHighscore = true;
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 
 		if (ae.getSource() == this.start) {
@@ -389,90 +387,146 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 
 			final StartView view = this;
 
-			if(soundEffects()) {
+			if (soundEffects()) {
 				AudioSet.setSoundEnable(true);
 			} else {
 				AudioSet.setSoundEnable(false);
 			}
-			
+
 			if (ImageManager.imagesLoaded) {
-				
+
 			} else {
 				picStatusLabel.setText(PICS_LOADING);
-				this.repaint();	
-				
+				this.repaint();
+
 				JFrame waitDialog = new JFrame("Downloading Pics");
 				waitDialog.setPreferredSize(new Dimension(200, 20));
-				waitDialog.setLocation(this.getX()+50, this.getY()+(this.getHeight()/2));
+				waitDialog.setLocation(this.getX() + 50,
+						this.getY() + (this.getHeight() / 2));
 				waitDialog.pack();
 				waitDialog.setVisible(true);
-				
-				if(soundEffects()) {
+
+				if (soundEffects()) {
 					AudioLoader audioLoader = new DefaultSwingAudioLoader();
-					if(applet != null) {
+					if (applet != null) {
 						audioLoader = new AppletAudioLoader(applet);
 					}
 					AudioEffectsManager.init(audioLoader);
 				}
-				
+
 				MediaTracker tracker = new MediaTracker(view);
 				AWTImageLoader.setTracker(tracker);
-				
-				ImageManager imageManager = ImageManager.getInstance(new AWTImageLoader(applet));
+
+				ImageManager imageManager = ImageManager
+						.getInstance(new AWTImageLoader(applet));
 				imageManager.loadImages();
 				view.imagesLoaded();
 				waitDialog.setVisible(false);
 				waitDialog.dispose();
 			}
 
-			String s = name.getText();
-//			if (!(s.equals(defaultString) | s.equals(this.nameRequestString))) {
-				if(rookieRB.isSelected()) {
-					JDEnv.setBeginnerGame(true);
-				}else {
-					JDEnv.setBeginnerGame(false);
+			String playername = name.getText();
+			if (rookieRB.isSelected()) {
+				JDEnv.setBeginnerGame(true);
+			} else {
+				JDEnv.setBeginnerGame(false);
+			}
+			this.setVisible(false);
+			heldFenster = new NewHeroView(this);
+			h = heldFenster.getHero();
+			heldFenster.dispose();
+
+			dagame = DungeonGame.getInstance();
+			// dagame.init(this, applet, playername, h, this.sendHighscore,
+			// new MyJDGui());
+
+			initGame(this, applet, playername, h, this.sendHighscore,
+					new MyJDGui());
+
+		}
+
+	}
+
+	private void initGame(StartView startView, Applet applet2,
+			String playerName, Hero held, boolean sendHighscore2,
+			MyJDGui myJDGui) {
+		this.sendHighscore = sendHighscore;
+		JDEnv.setGame(dagame);
+
+		/*
+		 * according to experiences, there is about 98% probability for success
+		 * to generate a dungeon with the current generator hence, trying 3x to
+		 * generate Dungeon
+		 */
+		Dungeon derDungeon = new Dungeon(dagame.DungeonSizeX,
+				dagame.DungeonSizeY, 18, 39, dagame);
+		try {
+			dagame.fillDungeon(derDungeon);
+		} catch (DungeonGenerationFailedException e) {
+			derDungeon = new Dungeon(dagame.DungeonSizeX, dagame.DungeonSizeY,
+					18, 39, dagame);
+			try {
+				dagame.fillDungeon(derDungeon);
+			} catch (DungeonGenerationFailedException e1) {
+				derDungeon = new Dungeon(dagame.DungeonSizeX,
+						dagame.DungeonSizeY, 18, 39, dagame);
+				try {
+					dagame.fillDungeon(derDungeon);
+				} catch (DungeonGenerationFailedException e2) {
+					System.out
+							.println("Cound not generate Dungeon - check Dungeon Generator!");
+					e1.printStackTrace();
+					System.exit(0);
 				}
-				this.setVisible(false);
-				heldFenster = new NewHeroView(this);
-				h = heldFenster.getHero();
-				heldFenster.dispose();
+				e1.printStackTrace();
+			}
 
-				
-				dagame = DungeonGame.getInstance();
-//				dagame.init(this, applet, s, h,
-//						this.sendHighscore, new MyJDGui(), AId3Factory.makeAI());
-				dagame.init(this, applet, s, h,
-						this.sendHighscore, new MyJDGui(), null);
+		}
+		dagame.setDungeon(derDungeon);
 
-//			} else {
-//				if (s.equals(this.nameRequestString)) {
-//					name.setText(this.defaultString);
-//				} else {
-//
-//					name.setText(this.nameRequestString);
-//				}
-//				name.grabFocus();
-//				name.selectAll();
-//				name.setEditable(true);
-//			}
-//		}
-		 }
+		held.createVisibilityMap(derDungeon);
+		myJDGui.setFigure(new HeroInfo(held, held.getRoomVisibility()));
 
-		// waitWin.dispose();
+		dagame.putGuiFigure(held, myJDGui);
+
+		held.setControl(myJDGui);
+
+		// hack to save some memory
+		Figure.unsetUnnecessaryRoomObStatsObjects(derDungeon);
+
+		held.move(dagame.getDungeon().getRoomNr(18, 39));
+		myJDGui.initGui(startView, applet, playerName);
+
+		if (playerName.equals("godmode1")) {
+			// System.out.println("setting cheat mode!");
+			dagame.setImortal(true);
+			JDEnv.visCheat = true;
+			held.getRoomVisibility().setVisCheat();
+			held.setInvulnerable(true);
+		} else {
+			JDEnv.visCheat = false;
+		}
+		dagame.started = true;
+		Thread th = new Thread(dagame);
+		th.start();
+
 	}
 
 	public boolean isAppletRunning() {
 		return applet != null;
 	}
 
+	@Override
 	public void keyPressed(KeyEvent ke) {
 
 	}
 
+	@Override
 	public void keyReleased(KeyEvent ke) {
 
 	}
 
+	@Override
 	public void keyTyped(KeyEvent ke) {
 		// System.out.println("keyTyped: "+ke.toString());
 		int o = ke.getKeyCode();
@@ -506,7 +560,7 @@ public class StartView extends AbstractStartWindow implements ActionListener, Ke
 		// SwingUtilities.invokeLater(new Runnable() {
 		// public void run() {
 		String name = "AgentTest01";
-		//String name = "xy";
+		// String name = "xy";
 		StartView start = new StartView(name, 756851968, null, false);
 		// }
 		// });

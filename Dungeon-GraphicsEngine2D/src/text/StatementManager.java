@@ -9,10 +9,8 @@ package text;
 import java.util.LinkedList;
 import java.util.List;
 
-import figure.Figure;
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
-import figure.percept.AttackPercept;
 import figure.percept.BreakSpellPercept;
 import figure.percept.DiePercept;
 import figure.percept.DisappearPercept;
@@ -281,8 +279,8 @@ public class StatementManager {
 		return new Statement(Texts.fightEnded(), 2);
 	}
 
-	public static List getStatements(HitPercept p, FigureInfo to) {
-		List l = new LinkedList();
+	public static List<Statement> getStatements(HitPercept p, FigureInfo to) {
+		List<Statement> l = new LinkedList<Statement>();
 
 		FigureInfo attacker = p.getAttacker();
 		FigureInfo victim = p.getVictim();

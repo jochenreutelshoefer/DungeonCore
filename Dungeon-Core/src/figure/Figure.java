@@ -833,10 +833,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	}
 
 	public void doActions(int i) {
-		if (control == null) {
-			System.out
-					.println("control der figur ist null: " + this.toString());
-		}
 
 		if (control != null && !this.isDead()) {
 

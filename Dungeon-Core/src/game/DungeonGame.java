@@ -6,7 +6,6 @@ import item.ItemPool;
 import item.interfaces.ItemOwner;
 import item.quest.Rune;
 
-import java.applet.Applet;
 import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import java.util.Map;
 import spell.Spell;
 import spell.TimedSpellInstance;
 import test.TestTracker;
-import ai.AI;
 import dungeon.Door;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
@@ -33,7 +31,6 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
-import gui.AbstractStartWindow;
 
 
 /**
@@ -320,70 +317,8 @@ public class DungeonGame implements Runnable {
 		imortal = b;
 	}
 
-	private boolean sendHighscore = true;
+	private final boolean sendHighscore = true;
 
-	public void init(AbstractStartWindow start, Applet applet,
-			String playerName, Hero held, boolean sendHighscore, JDGUI gui,
-			AI ai) {
-		this.sendHighscore = sendHighscore;
-		JDEnv.setGame(this);
-
-		/*
-		 * according to experiences, there is about 98% probability 
-		 * for success to generate a dungeon with the current generator
-		 * hence, trying 3x to generate Dungeon
-		 */
-		derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39, this);
-		try {
-			fillDungeon(derDungeon);
-		} catch (DungeonGenerationFailedException e) {
-			derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39, this);
-			try {
-				fillDungeon(derDungeon);
-			} catch (DungeonGenerationFailedException e1) {
-				derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
-						this);
-				try {
-					fillDungeon(derDungeon);
-				} catch (DungeonGenerationFailedException e2) {
-					System.out
-							.println("Cound not generate Dungeon - check Dungeon Generator!");
-					e1.printStackTrace();
-					System.exit(0);
-				}
-				e1.printStackTrace();
-			}
-
-		}
-
-		held.createVisibilityMap(derDungeon);
-		gui.setFigure(new HeroInfo(held, held.getRoomVisibility()));
-
-		guiFigures.put(held, gui);
-
-		held.setControl(gui);
-
-		// hack to save some memory
-		Figure.unsetUnnecessaryRoomObStatsObjects(derDungeon);
-
-		held.move(getDungeon().getRoomNr(18, 39));
-		gui.initGui(start, applet, playerName);
-
-		if (playerName.equals("godmode1")) {
-			// System.out.println("setting cheat mode!");
-			setImortal(true);
-			JDEnv.visCheat = true;
-			held.getRoomVisibility().setVisCheat();
-			held.setInvulnerable(true);
-		} else {
-			JDEnv.visCheat = false;
-		}
-		started = true;
-		Thread th = new Thread(this);
-		th.start();
-
-		// held.setMemory();
-	}
 
 	public Map<String,String> getHighScoreString(String playerName, String comment,
 			boolean reg, boolean liga, HeroInfo h) {
@@ -526,5 +461,15 @@ public class DungeonGame implements Runnable {
 
 	public void endGame() {
 		gameOver = true;
+	}
+
+	public void putGuiFigure(Hero held, JDGUI gui) {
+		guiFigures.put(held, gui);
+
+	}
+
+	public void setDungeon(Dungeon d) {
+		this.derDungeon = d;
+
 	}
 }
