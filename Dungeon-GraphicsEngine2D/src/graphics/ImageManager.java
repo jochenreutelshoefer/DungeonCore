@@ -18,7 +18,7 @@ import dungeon.Dir;
 public class ImageManager {
 
 	private static ImageManager instance;
-	private AbstractImageLoader<?> loader;
+	private final AbstractImageLoader<?> loader;
 
 	public ImageManager(AbstractImageLoader<?> loader2) {
 		this.loader = loader2;
@@ -458,13 +458,24 @@ public class ImageManager {
 
 	public static JDImageProxy<?> xmasImage;
 
+	public static JDImageProxy<?> paperBackground;
+
+	public static JDImageProxy<?> border_double_left_upper_corner;
+	public static JDImageProxy<?> border_double_left_lower_corner;
+	public static JDImageProxy<?> border_double_right_upper_corner;
+	public static JDImageProxy<?> border_double_right_lower_corner;
+	public static JDImageProxy<?> border_double_top;
+	public static JDImageProxy<?> border_double_bottom;
+	public static JDImageProxy<?> border_double_left;
+	public static JDImageProxy<?> border_double_right;
+
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern, int cnt) {
 		System.gc();
 		AnimationSet[] set = new AnimationSet[4];
 		for (int i = 0; i < 4; i++) {
 			set[i] = new AnimationSet(loadArray(a, path, pattern, i + 1, cnt),
-					getArray(35, cnt));
+					getArray(50, cnt));
 		}
 		return new AnimationSetDirections(set);
 	}
@@ -823,6 +834,22 @@ public class ImageManager {
 
 			featherImage = new JDImageProxy(a, "feder.gif");
 			potion_greenImage = new JDImageProxy(a, "potion_green.gif");
+
+			paperBackground = new JDImageProxy(a, "paper_background.gif");
+
+			border_double_left_upper_corner = new JDImageProxy(a,
+					"border_double_left_upper_corner.gif");
+			border_double_left_lower_corner = new JDImageProxy(a,
+					"border_double_left_lower_corner.gif");
+			border_double_right_upper_corner = new JDImageProxy(a,
+					"border_double_right_upper_corner.gif");
+			border_double_right_lower_corner = new JDImageProxy(a,
+					"border_double_right_lower_corner.gif");
+			border_double_top = new JDImageProxy(a, "border_double_top.gif");
+			border_double_bottom = new JDImageProxy(a,
+					"border_double_bottom.gif");
+			border_double_left = new JDImageProxy(a, "border_double_left.gif");
+			border_double_right = new JDImageProxy(a, "border_double_right.gif");
 
 		}
 

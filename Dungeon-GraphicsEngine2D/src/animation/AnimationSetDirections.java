@@ -4,7 +4,7 @@ import audio.AbstractAudioSet;
 
 public class AnimationSetDirections {
 
-	private AnimationSet[] animations;
+	private final AnimationSet[] animations;
 	
 	public AnimationSet[] getAnimations() {
 		return animations;
@@ -27,6 +27,8 @@ public class AnimationSetDirections {
 	}
 	
 	public AnimationSet get(int dir) {
+		if (dir < 0 || dir > 3)
+			return null;
 		return animations[dir];
 	}
 	
