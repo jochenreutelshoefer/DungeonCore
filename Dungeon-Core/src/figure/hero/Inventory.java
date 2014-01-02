@@ -23,7 +23,6 @@ import figure.Figure;
 import figure.attribute.Attribute;
 import figure.attribute.ModifierI;
 import figure.monster.Ghul;
-import figure.monster.Monster;
 import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
@@ -38,17 +37,17 @@ import figure.percept.TextPercept;
  */
 public class Inventory /*implements ItemOwner*/ {
 
-	private Figure owner;
+	private final Figure owner;
 
-	private LinkedList items;
+	private final LinkedList items;
 
-	private Weapon[] weapons;
+	private final Weapon[] weapons;
 
-	private Armor[] armors;
+	private final Armor[] armors;
 
-	private Helmet[] helmets;
+	private final Helmet[] helmets;
 
-	private Shield[] shields;
+	private final Shield[] shields;
 
 	private int weaponIndex = 0;
 
@@ -117,28 +116,28 @@ public class Inventory /*implements ItemOwner*/ {
 		return array;
 	}
 
-	public float give_Weapon_on_Type_Modifier(Monster m) {
+	public float give_Weapon_on_Type_Modifier(Figure m) {
 		if(getWeapon1() == null) {
 			return 1;
 		}
 		if (m instanceof Wolf)
-			return (float) (1 + ((float) ((float) getWeapon1()
-					.getWolfModifier() / 100)));
+			return 1 + ((float) getWeapon1()
+					.getWolfModifier() / 100);
 		if (m instanceof Spider)
-			return (float) (1 + ((float) ((float) getWeapon1()
-					.getBearModifier() / 100)));
+			return 1 + ((float) getWeapon1()
+					.getBearModifier() / 100);
 		if (m instanceof Skeleton)
-			return (float) (1 + ((float) ((float) getWeapon1()
-					.getSkeletonModifier() / 100)));
+			return 1 + ((float) getWeapon1()
+					.getSkeletonModifier() / 100);
 		if (m instanceof Ghul)
-			return (float) (1 + ((float) ((float) getWeapon1()
-					.getGhulModifier() / 100)));
+			return 1 + ((float) getWeapon1()
+					.getGhulModifier() / 100);
 		if (m instanceof Orc)
-			return (float) (1 + ((float) ((float) getWeapon1()
-					.getOrcModifier() / 100)));
+			return 1 + ((float) getWeapon1()
+					.getOrcModifier() / 100);
 		if (m instanceof Ogre)
-			return (float) (1 + ((float) ((float) getWeapon1()
-					.getOgreModifier() / 100)));
+			return 1 + ((float) getWeapon1()
+					.getOgreModifier() / 100);
 		else
 			return 1;
 	}
@@ -454,7 +453,7 @@ public class Inventory /*implements ItemOwner*/ {
 					o.removeItem(ding);
 
 			} else {
-				// System.out.println("rest zurück");
+				// System.out.println("rest zurï¿½ck");
 				double rest = ((DustItem) ding).getCount() - (basic - value);
 				DustItem j = new DustItem(rest);
 				dust.setValue(dust.getBasic());

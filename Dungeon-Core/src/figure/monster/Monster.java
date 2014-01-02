@@ -1206,10 +1206,10 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	public int getKilled(/* Fight f */) {
+	public int getKilled(int damage) {
 		dead = true;
 
-		Percept p = new DiePercept(this, this.getRoom());
+		Percept p = new DiePercept(this, this.getRoom(), damage);
 		this.getRoom().distributePercept(p);
 		pos.figureLeaves();
 		// while(game.getGui().getCurrent() != null) {

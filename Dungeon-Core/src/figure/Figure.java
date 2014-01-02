@@ -812,7 +812,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 					sanction(healthBefore - healthAfter);
 				}
 				if (dies) {
-					getKilled();
+					getKilled(allDmg);
 					gameOver();
 				}
 				res = new SlapResult(allDmg, dies, this, allDmg, s);
@@ -1588,7 +1588,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 	}
 
 	private ActionResult handleSuicideAction(SuicideAction a, boolean doIt) {
-		this.getKilled();
+		this.getKilled(-1);
 		return ActionResult.DONE;
 	}
 
@@ -1828,7 +1828,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 
 	protected abstract boolean scout(int dir);
 
-	protected abstract int getKilled();
+	protected abstract int getKilled(int dmg);
 
 	public abstract Attribute getHealth();
 

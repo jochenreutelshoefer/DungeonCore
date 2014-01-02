@@ -154,6 +154,9 @@ public class DoorInfo extends InfoEntity {
 		return d.getOtherRoomInfo(r, map);
 	}
 
-	
+	@Override
+	public String toString() {
+		return d.toString();
+	}
 
 }

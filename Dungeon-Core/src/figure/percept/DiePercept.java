@@ -16,14 +16,25 @@ import figure.FigureInfo;
 
 public class DiePercept extends OpticalPercept {
 	
-	private Figure f;
-	private Room from;
-	
+	private final Figure f;
+	private final Room from;
+	private int damage = -1;
+
 	public DiePercept(Figure f, Room from) {
 		this.f = f;
 		this.from = from;
 	}
 	
+	public DiePercept(Figure f, Room from, int damage) {
+		this.f = f;
+		this.from = from;
+		this.damage = damage;
+	}
+	
+	public int getDamage() {
+		return damage;
+	}
+
 	public FigureInfo getFigure() {
 		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
 	}
@@ -32,6 +43,7 @@ public class DiePercept extends OpticalPercept {
 		return RoomInfo.makeRoomInfo(from, viewer.getRoomVisibility());
 	}
 	
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<FigureInfo>();
 		l.add(getFigure());

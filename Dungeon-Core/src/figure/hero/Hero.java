@@ -10,7 +10,6 @@ import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	// private static LinkedList allHeros = new LinkedList();
 
-	private int hero_index;
+	private final int hero_index;
 
 	public final static int HEROCODE_WARRIOR = 1;
 
@@ -94,16 +93,16 @@ public class Hero extends Figure implements InfoProvider {
 
 	protected double poison_resist_rate = 1.0;
 
-	private Character c;
+	private final Character c;
 
-	private Inventory inv;
+	private final Inventory inv;
 
 	// private Game game;
-	private Bunch bund = new Bunch();
+	private final Bunch bund = new Bunch();
 
 	// public LinkedList Statements = new LinkedList();
 
-	private JDPoint oldLocation = new JDPoint(0, 0);
+	private final JDPoint oldLocation = new JDPoint(0, 0);
 
 	private int kills = 0;
 
@@ -122,6 +121,7 @@ public class Hero extends Figure implements InfoProvider {
 		return paused;
 	}
 	
+	@Override
 	public Attribute getDexterity() {
 		return c.getDexterity();
 	}
@@ -131,18 +131,22 @@ public class Hero extends Figure implements InfoProvider {
 		return game.getHighScoreString(playerName, comment, reg, liga, h);
 	}
 
+	@Override
 	public Attribute getStrength() {
 		return c.getStrength();
 	}
 
+	@Override
 	public int filterFrightening(Frightening fr) {
 		return fr.getValue();
 	}
 	
+	@Override
 	public int getWorth() {
 		return 1000 + (500 * level);
 	}
 	
+	@Override
 	protected boolean getBlock(int dmg) {
 		//System.out.println("getBlock");
 		Shield shield = this.inv.getShield1();
@@ -168,6 +172,7 @@ public class Hero extends Figure implements InfoProvider {
 		
 	}
 
+	@Override
 	public boolean canTakeItem(Item i) {
 		return inv.canTakeItem(i);
 	}
@@ -180,13 +185,16 @@ public class Hero extends Figure implements InfoProvider {
 		this.paused = paused;
 	}
 
+	@Override
 	public int getLevel() {
 		return c.getLevel();
 	}
 
+	@Override
 	public void setMakingSpecialAttack(boolean b) {
 	}
 
+	@Override
 	public int getKnowledgeBalance(Figure f) {
 		if (f instanceof Monster) {
 			return c.getKnowledgeBalance((Monster) f);
@@ -197,10 +205,12 @@ public class Hero extends Figure implements InfoProvider {
 
 	private Room[][] memory;
 
+	@Override
 	public Item getItemNumber(int i) {
 		return inv.getItemNumber(i);
 	}
 
+	@Override
 	public int getItemIndex(Item it) {
 		List items = inv.getItems();
 		for (int i = 0; i < items.size(); i++) {
@@ -211,11 +221,13 @@ public class Hero extends Figure implements InfoProvider {
 		return -1;
 	}
 
+	@Override
 	public void addModification(TimedAttributeModification mod) {
 		// System.out.println("adding mod");
 		c.addModification(mod);
 	}
 
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new HeroInfo(this, map);
 	}
@@ -253,10 +265,12 @@ public class Hero extends Figure implements InfoProvider {
 
 	}
 
+	@Override
 	public String getMclass() {
 		return "Held";
 	}
 
+	@Override
 	public boolean removeItem(Item i) {
 		getInventory().removeItem(i);
 		return true;
@@ -270,34 +284,42 @@ public class Hero extends Figure implements InfoProvider {
 	// getCharacter().decActionPoints(k);
 	// }
 
+	@Override
 	public Character getCharacter() {
 		return c;
 	}
 
+	@Override
 	public Action getForcedFightAction() {
 		return null;
 	}
 
+	@Override
 	public Action getForcedMovementAction() {
 		return null;
 	}
 
+	@Override
 	public LinkedList getItems() {
 		return getInventory().getItems();
 	}
 
+	@Override
 	public double getFireResistRate() {
 		return fire_resist_rate;
 	}
 
+	@Override
 	public double getLightningResistRate() {
 		return lightning_resist_rate;
 	}
 
+	@Override
 	public double getMagicResistRate() {
 		return magic_resist_rate;
 	}
 
+	@Override
 	public double getPoisonResistRate() {
 		return poison_resist_rate;
 	}
@@ -313,6 +335,7 @@ public class Hero extends Figure implements InfoProvider {
 	// return Level;
 	// }
 
+	@Override
 	public boolean giveAwayItem(Item i, ItemOwner o) {
 		return getInventory().giveAwayItem(i, o);
 	}
@@ -323,6 +346,7 @@ public class Hero extends Figure implements InfoProvider {
 	// return s;
 	// }
 
+	@Override
 	public Attribute getHealth() {
 		return getCharacter().getHealth();
 	}
@@ -390,6 +414,7 @@ public class Hero extends Figure implements InfoProvider {
 		return HeroCode;
 	}
 
+	@Override
 	public Attribute getPsycho() {
 		return getCharacter().getPsycho();
 	}
@@ -404,14 +429,17 @@ public class Hero extends Figure implements InfoProvider {
 		return Sign;
 	}
 
+	@Override
 	public boolean isAbleToTakeItemInFight(Item it) {
 		return this.isThief() && isAbleToTakeItem(it);
 	}
 
+	@Override
 	public boolean isAbleToUseShrine() {
 		return true;
 	}
 
+	@Override
 	public boolean isAbleToUseChest() {
 		return true;
 	}
@@ -425,6 +453,7 @@ public class Hero extends Figure implements InfoProvider {
 	 * 
 	 * @return a <code>String</code> value
 	 */
+	@Override
 	public String getName() {
 		return getCharacter().getName();
 	}
@@ -444,6 +473,7 @@ public class Hero extends Figure implements InfoProvider {
 		return (int) getCharacter().getHealth().getValue();
 	}
 
+	@Override
 	public int getActualRangeCapability(int range) {
 		Weapon w = this.getInventory().getWeapon1();
 		if (w != null) {
@@ -476,14 +506,17 @@ public class Hero extends Figure implements InfoProvider {
 	 *            an <code>int</code> wieviel
 	 */
 
+	@Override
 	public int getTypeSkill(Figure m) {
 		return c.giveType_skill(m);
 	}
 
+	@Override
 	public int getAllArmor(Slap s) {
 		return inv.getAllArmor(s);
 	}
 
+	@Override
 	public Attribute getAttribute(int name) {
 		return this.c.getAttribute(name);
 	}
@@ -492,6 +525,7 @@ public class Hero extends Figure implements InfoProvider {
 	 * 
 	 * @uml.property name="sanctions"
 	 */
+	@Override
 	protected void sanction(int i) {
 		for (int j = 0; j < i; j++) {
 			// //System.out.println("sanctioning!");
@@ -504,6 +538,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	}
 
+	@Override
 	public void recover() {
 		// //System.out.println(getCharacter().getActionPoints());
 		// System.out.println("recover()");
@@ -526,21 +561,25 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
+	@Override
 	public void heal(int k) {
 		heal((double) k);
 	}
 
+	@Override
 	public int getAntiTumbleValue() {
 		int str = c.getStrength_Value();
 		return (str - 2) * 8;
 
 	}
 
+	@Override
 	public boolean layDown(Item it) {
 		inv.layDown(it);
 		return true;
 	}
 
+	@Override
 	public void heal(double value) {
 		// System.out.println("Will heilen :"+value);
 		Attribute healthAttr = c.getHealth();
@@ -553,12 +592,14 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
+	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 		return getInventory().takeItem(i, o);
 		// return true; //?
 
 	}
 
+	@Override
 	public int getTumbleValue(Figure f) {
 		if (f instanceof Monster) {
 			int i = c.getKnowledgeBalance(((Monster) f));
@@ -604,6 +645,7 @@ public class Hero extends Figure implements InfoProvider {
 	// }
 	// }
 
+	@Override
 	public void recDust(double value) {
 		// System.out.println("Dust erh�hen um: " + value);
 		getCharacter().getDust().modValue(value);
@@ -613,10 +655,12 @@ public class Hero extends Figure implements InfoProvider {
 					getCharacter().getDust().getBasic());
 	}
 
+	@Override
 	public boolean isAbleToUseItem() {
 		return true;
 	}
 
+	@Override
 	public boolean isAbleToTakeItem(Item it) {
 		if(it instanceof DustItem) {
 			if(getDust().getValue() == getDust().getBasic()) {
@@ -641,12 +685,13 @@ public class Hero extends Figure implements InfoProvider {
 	// <= (getInventory().getShield1().getChance_to_block()
 	// + ((getCharacter().getDexterity().getValue()) / 2)));
 	// }
+	@Override
 	public int getElude(Figure m) {
 		int k;
 		if (getInventory().getShield1() == null) {
 			k = 0;
 		} else {
-			int shield = (int) (getInventory().getShield1().getBlockValue());
+			int shield = (getInventory().getShield1().getBlockValue());
 
 			double skillValue = shield
 					* (((double) getCharacter()
@@ -681,10 +726,12 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
+	@Override
 	public Attribute getDust() {
 		return getCharacter().getDust();
 	}
 
+	@Override
 	public float getActualChanceToHit(Figure m) {
 		float c;
 		Weapon weap = getInventory().getWeapon1();
@@ -698,10 +745,10 @@ public class Hero extends Figure implements InfoProvider {
 				c = 100;
 			} else {
 
-				float k = (float) (weap.getChanceToHit() * (float) (1 + ((float) (getCharacter()
+				float k = weap.getChanceToHit() * (1 + ((float) (getCharacter()
 						.getDexterity().getValue()
 						+ getCharacter().giveType_skill(m) + getCharacter()
-						.giveWeapon_skill()) / 40)));
+						.giveWeapon_skill()) / 40));
 				c = k;
 			}
 		} else {
@@ -735,10 +782,12 @@ public class Hero extends Figure implements InfoProvider {
 	//
 	// }
 
+	@Override
 	public LinkedList getAllItems() {
 		return getInventory().getAllItems();
 	}
 
+	@Override
 	public int getSlapStrength(Figure m) {
 		int weapon_blank;
 		Weapon weap = getInventory().getWeapon1();
@@ -748,22 +797,23 @@ public class Hero extends Figure implements InfoProvider {
 			if (getCharacter().giveWeapon_skill() == 0) {
 				weapon_blank = getInventory().getWeapon1().getDamage(-1);
 			} else {
-				weapon_blank = (int) (getInventory().getWeapon1().getDamage(0));
+				weapon_blank = (getInventory().getWeapon1().getDamage(0));
 			}
 		}
-		String s = "Schlagst�rke: Waffe: " + weapon_blank;
+		String s = "Schlagstaerke: Waffe: " + weapon_blank;
 
-		float Strength_Weapon_Type_Modifier = (float) (1 + ((float) (2
+		float Strength_Weapon_Type_Modifier = 1 + ((float) (2
 				* getCharacter().getStrength().getValue()
 				+ (10 * getCharacter().giveType_skill(m)) + (10 * getCharacter()
-				.giveWeapon_skill())) / 100));
-		s += " - St�rke-K�nnen-Wissen-Faktor: " + Strength_Weapon_Type_Modifier;
+				.giveWeapon_skill())) / 100);
+		s += " - Staerke-Koennen-Wissen-Faktor: "
+				+ Strength_Weapon_Type_Modifier;
 		float Weapon_on_Type_Modifier = getInventory()
-				.give_Weapon_on_Type_Modifier((Monster) m);
+				.give_Weapon_on_Type_Modifier(m);
 		s += " - Waffe-Faktor:" + Weapon_on_Type_Modifier;
 		float faktor = Strength_Weapon_Type_Modifier * Weapon_on_Type_Modifier;
 		s += " - Gesamtfaktor: " + faktor;
-		int x = (int) (float) (weapon_blank * faktor);
+		int x = (int) (weapon_blank * faktor);
 		s += " - Erfahrungspunkte geben: " + x;
 		// game.newStatement(s, 4);
 
@@ -771,6 +821,7 @@ public class Hero extends Figure implements InfoProvider {
 		return x;
 	}
 
+	@Override
 	public void receiveSlapResult(SlapResult r) {
 		getCharacter().giveExp(r);
 		if (r.isLethal()) {
@@ -799,6 +850,7 @@ public class Hero extends Figure implements InfoProvider {
 	 * 
 	 * @uml.property name="inv"
 	 */
+	@Override
 	public Inventory getInventory() {
 		return inv;
 	}
@@ -1073,7 +1125,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	public int threat(Monster m) {
 		int handycap = 90;
-		int k = (int) getCharacter().getKnowledge(m)
+		int k = getCharacter().getKnowledge(m)
 				+ (int) getCharacter().getThreat().getValue();
 		// game.newStatement("Drohungswert hier: " + k, 4);
 
@@ -1148,6 +1200,7 @@ public class Hero extends Figure implements InfoProvider {
 	//
 	// }
 
+	@Override
 	public boolean payDust(int k) {
 
 		if (c.getDust().getValue() >= k) {
@@ -1206,6 +1259,7 @@ public class Hero extends Figure implements InfoProvider {
 //		}
 //	}
 
+	@Override
 	public List getModificationList() {
 		return c.getModifications();
 	}
@@ -1278,6 +1332,7 @@ public class Hero extends Figure implements InfoProvider {
 	// return false;
 	// }
 
+	@Override
 	public JDPoint getLocation() {
 		return location;
 	}
@@ -1286,6 +1341,7 @@ public class Hero extends Figure implements InfoProvider {
 		return inv.getLuziasBall();
 	}
 
+	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		return inv.getItemInfos(map);
 	}
@@ -1461,7 +1517,8 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
-	public int getKilled() {
+	@Override
+	public int getKilled(int damage) {
 		if(isBonusLive()) {
 			this.setBonusLive(false);
 			this.getHealth().setValue(1);
@@ -1472,7 +1529,7 @@ public class Hero extends Figure implements InfoProvider {
 			return 1;
 		}
 		
-		Percept p = new DiePercept(this, getRoom());
+		Percept p = new DiePercept(this, getRoom(), damage);
 		getRoom().distributePercept(p);
 		
 		isDead = true;
@@ -1480,6 +1537,7 @@ public class Hero extends Figure implements InfoProvider {
 		
 	}
 
+	@Override
 	public boolean isDead() {
 		return isDead;
 	}
@@ -1534,6 +1592,7 @@ public class Hero extends Figure implements InfoProvider {
 		memory = new Room[x][y];
 	}
 
+	@Override
 	public Item getItem(ItemInfo it) {
 		return inv.getItem(it);
 	}
@@ -1584,6 +1643,7 @@ public class Hero extends Figure implements InfoProvider {
 	// }
 	// }
 
+	@Override
 	public DungeonGame getGame() {
 		return game;
 	}
@@ -1593,6 +1653,7 @@ public class Hero extends Figure implements InfoProvider {
 	 * 
 	 * @param d
 	 */
+	@Override
 	public boolean tryUnlockDoor(Door d, boolean doIt) {
 		LinkedList items = this.getItems();
 		boolean b = false;
@@ -1612,6 +1673,7 @@ public class Hero extends Figure implements InfoProvider {
 		return b;
 	}
 
+	@Override
 	public boolean hasKey(String k) {
 		LinkedList items = getItems();
 		for (int i = 0; i < items.size(); i++) {
@@ -1697,6 +1759,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	LinkedList threatings = new LinkedList();
 
+	@Override
 	protected void lookInRoom() {
 
 		game.derDungeon.getRoom(getLocation()).setVisited(game.getRound());
@@ -1712,6 +1775,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	}
 
+	@Override
 	protected boolean flee(int dir) {
 		String fleeDirection = new String();
 		if (dir == RouteInstruction.NORTH) {
@@ -1834,6 +1898,7 @@ public class Hero extends Figure implements InfoProvider {
 		Sign = sign;
 	}
 
+	@Override
 	public boolean scout(int dir) {
 
 		Room loc = getRoom();
