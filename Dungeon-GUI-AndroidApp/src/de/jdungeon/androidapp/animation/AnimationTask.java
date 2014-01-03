@@ -29,6 +29,10 @@ public class AnimationTask {
 		this.text = text;
 	}
 
+	public boolean isFinished() {
+		return getCurrentAnimationFrame() == null;
+	}
+
 	public AnimationFrame getCurrentAnimationFrame() {
 		long timePassed = System.currentTimeMillis() - startTime;
 		int imageNr = ani.getImageNrAtTime(timePassed);

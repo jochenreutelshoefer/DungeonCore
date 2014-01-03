@@ -164,7 +164,7 @@ public class PerceptHandler {
 		int toIndex = p.getToIndex();
 
 		if (set != null) {
-			screen.startAnimation(set, figure);
+			screen.startAnimation(set, fig);
 		}
 
 	}
@@ -207,7 +207,6 @@ public class PerceptHandler {
 				screen.startAnimation(set, deadFigure, "-" + damage);
 			} else {
 				screen.startAnimation(set, deadFigure);
-
 			}
 		}
 

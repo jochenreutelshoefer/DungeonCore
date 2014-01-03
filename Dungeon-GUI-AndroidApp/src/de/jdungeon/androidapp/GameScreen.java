@@ -338,8 +338,7 @@ public class GameScreen extends Screen {
 					(int) coordY);
 
 			Object clickedObject = findClickedObjectLongPressed(longPressedCoordinates);
-			System.out.println("long pressed object: "
- + clickedObject);
+			System.out.println("long pressed object: " + clickedObject);
 
 			if (clickedObject != null && clickedObject instanceof InfoEntity) {
 				Paragraph[] paragraphs = ((InfoEntity) clickedObject)
@@ -381,8 +380,13 @@ public class GameScreen extends Screen {
 
 		}
 
+		/*
+		 * handle scroll events
+		 */
 		FloatDimension scrollEvent = g.getInput().getScrollEvent();
 		if (scrollEvent != null) {
+			// System.out.println("scroll-event: " + scrollEvent.getX() + " /"
+			// + scrollEvent.getY());
 			this.viewportPosition = new JDPoint(viewportPosition.getX()
 					+ scrollEvent.getX(), viewportPosition.getY()
 					+ scrollEvent.getY());
@@ -404,24 +408,10 @@ public class GameScreen extends Screen {
 				touchDownEvent = touchEvent;
 
 			}
-			if (touchEvent.type == TouchEvent.TOUCH_DRAGGED) {
-				/*
-				 * drag events are handeled above already
-				 */
-				// dragEvents.add(touchEvent);
-			}
 		}
 
-		if (dragEvents.size() > 0) {
-			int dx = Math.abs(getDragDistance(dragEvents).getWidth());
-			int dy = Math.abs(getDragDistance(dragEvents).getHeight());
-			if (dx > 5 && dy > 5) {
-				checkDragEvent(dragEvents);
-			}
-		} else {
-			if (touchDownEvent != null) {
-				handleClickEvent(touchDownEvent);
-			}
+		if (touchDownEvent != null) {
+			handleClickEvent(touchDownEvent);
 		}
 
 		/*
@@ -510,8 +500,7 @@ public class GameScreen extends Screen {
 		int x = (int) (p.getX() * ((float) screenSize.getWidth()) / 1915);
 		int y = (int) (p.getY() * ((float) screenSize.getHeight()) / 1100);
 
-		JDPoint inGameLocation = new JDPoint(
-viewportPosition.getX() + x,
+		JDPoint inGameLocation = new JDPoint(viewportPosition.getX() + x,
 				viewportPosition.getY() + y);
 
 		int roomNrX = (inGameLocation.getX() / roomSize);
@@ -530,23 +519,15 @@ viewportPosition.getX() + x,
 	}
 
 	private Object findClickedObject(JDPoint p) {
-		// why why why these numbers ???
-		// int offsetX = 195;
-		// int offsetY = 170;
-		//
-		int offsetX = 0;
-		int offsetY = 0;
 
-		JDPoint screenLocation = new JDPoint(p.getX() - offsetX, p.getY()
-				- offsetY);
-		
+		JDPoint screenLocation = new JDPoint(p.getX(), p.getY());
+
 		this.beaconCounter = 400f;
 		this.beacon = screenLocation;
 
-		JDPoint inGameLocation = new JDPoint(
-				viewportPosition.getX() + screenLocation.getX(), viewportPosition.getY()
-						+ screenLocation.getY() );
-
+		JDPoint inGameLocation = new JDPoint(viewportPosition.getX()
+				+ screenLocation.getX(), viewportPosition.getY()
+				+ screenLocation.getY());
 
 		JDPoint adjustedClickLocation = new JDPoint(inGameLocation.getX(),
 				inGameLocation.getY());
@@ -585,21 +566,6 @@ viewportPosition.getX() + x,
 		int dy = endEvent.y - startEvent.y;
 
 		return new JDDimension(dx, dy);
-	}
-
-	private void checkDragEvent(List<TouchEvent> touchEvents) {
-
-		if (touchEvents.size() >= 2) {
-
-			JDDimension dragDistance = getDragDistance(touchEvents);
-
-			viewportPosition = new JDPoint(viewportPosition.getX()
-					- dragDistance.getWidth(), viewportPosition.getY()
-					- dragDistance.getHeight());
-
-			targetViewportPosition = viewportPosition;
-		}
-
 	}
 
 	class GraphicObjectComparator implements Comparator<GraphicObject> {

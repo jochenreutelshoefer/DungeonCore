@@ -17,21 +17,27 @@ public class AnimationManager {
 		return instance;
 	}
 
-
 	private final Map<FigureInfo, AnimationTask> animations = new HashMap<FigureInfo, AnimationTask>();
-
 
 	public AnimationFrame getAnimationImage(FigureInfo info) {
 		AnimationTask animationTask = animations.get(info);
 		if (animationTask != null) {
-			return animationTask.getCurrentAnimationFrame();
+			if (animationTask.isFinished()) {
+				animations.remove(info);
+				return null;
+			}
+			AnimationFrame currentAnimationFrame = animationTask
+					.getCurrentAnimationFrame();
+			// System.out.println("ani image for: " + info.toString());
+			return currentAnimationFrame;
 		}
 		return null;
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		animations
-.put(info, new AnimationTask(ani, System.currentTimeMillis(),
+		System.out.println("Starting animation for: " + info.toString() + " - "
+				+ ani.toString());
+		animations.put(info, new AnimationTask(ani, System.currentTimeMillis(),
 				text));
 	}
 
