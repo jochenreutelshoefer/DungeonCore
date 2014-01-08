@@ -3,6 +3,7 @@ package de.jdungeon.androidapp;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import figure.hero.HeroUtil;
 import game.DungeonGame;
 import game.InfoEntity;
@@ -10,8 +11,8 @@ import game.JDEnv;
 import game.JDGUI;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
-import gui.Paragraph;
 import item.ItemInfo;
+import item.equipment.weapon.Club;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,11 @@ import android.view.MotionEvent;
 import animation.AnimationSet;
 import de.jdungeon.androidapp.animation.AnimationManager;
 import de.jdungeon.androidapp.gui.GUIElement;
+import de.jdungeon.androidapp.gui.GameOverView;
+import de.jdungeon.androidapp.gui.HealthBar;
+import de.jdungeon.androidapp.gui.HourGlassTimer;
 import de.jdungeon.androidapp.gui.InfoPanel;
+import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequenceManager;
@@ -39,7 +44,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.Screen;
-import de.jdungeon.util.FloatDimension;
+import de.jdungeon.util.ScrollMotion;
 import dungeon.Chest;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
@@ -54,7 +59,7 @@ public class GameScreen extends Screen {
 	private Dungeon derDungeon;
 	private final DungeonGame dungeonGame;
 	private Hero hero;
-	private final FigureInfo figureInfo;
+	private final HeroInfo figureInfo;
 	private GraphicObjectRenderer dungeonRenderer;
 	public int DungeonSizeX = 30;
 
@@ -65,6 +70,7 @@ public class GameScreen extends Screen {
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
 	private final List<GUIElement> guiElements = new ArrayList<GUIElement>();
 	private final InfoPanel infoPanel;
+	GameOverView gos = null;
 
 	private JDPoint viewportPosition;
 	private JDPoint targetViewportPosition;
@@ -73,6 +79,9 @@ public class GameScreen extends Screen {
 	private final int maxRoomSize = 400;
 	private final int minRoomsize = 100;
 	private final Control control;
+
+	private long lastDoubleTapEventTime = -1;
+	private long lastTouchEventTime = -1;
 
 	private final JDGUI gui;
 
@@ -86,14 +95,15 @@ public class GameScreen extends Screen {
 
 	public GameScreen(Game game) {
 		super(game);
-		dungeonGame = DungeonGame.getInstance();
+
+		dungeonGame = DungeonGame.newInstance();
 		dungeonGame.run();
 		JDEnv.init();
 		JDEnv.setGame(dungeonGame);
 		createDungeon();
 		DungeonVisibilityMap heroVisMap = hero.getRoomVisibility();
-		heroVisMap.setVisCheat();
-		figureInfo = FigureInfo.makeFigureInfo(hero, heroVisMap);
+		// heroVisMap.setVisCheat();
+		figureInfo = new HeroInfo(hero, heroVisMap);
 
 		resetDungeonRenderer();
 
@@ -101,11 +111,55 @@ public class GameScreen extends Screen {
 		centerOnRoom(heroRoomNumber);
 		scrollTo(heroRoomNumber, 100f);
 
+		/*
+		 * init info panel
+		 */
 		int quarterScreenX = (int) (this.screenSize.getWidth() * 0.25);
 		int halfScreenY = (int) (this.screenSize.getHeight() * 0.5);
 		infoPanel = new InfoPanel(new JDPoint(3 * quarterScreenX, 0),
-				new JDDimension(quarterScreenX, halfScreenY));
+				new JDDimension(quarterScreenX, halfScreenY), this);
 		this.guiElements.add(infoPanel);
+
+		/*
+		 * init health bars
+		 */
+		int posX = 22;
+		HealthBar healthView = new HealthBar(new JDPoint(posX, 5),
+				new JDDimension(200, 20), figureInfo, HealthBar.Kind.health,
+				this);
+		this.guiElements.add(healthView);
+		HealthBar dustView = new HealthBar(new JDPoint(posX, 25),
+				new JDDimension(
+				200, 20), figureInfo, HealthBar.Kind.dust, this);
+		this.guiElements.add(dustView);
+
+		/*
+		 * init inventory panel
+		 */
+		InventoryPanel inventory = new InventoryPanel(figureInfo, this);
+		this.guiElements.add(inventory);
+
+		/*
+		 * init hour glass
+		 */
+		HourGlassTimer hourglass = new HourGlassTimer(new JDPoint(
+				this.screenSize.getWidth() - 50,
+				this.screenSize.getHeight() / 2 + 10), new JDDimension(36, 60),
+				this, figureInfo);
+		this.guiElements.add(hourglass);
+		
+		
+		/*
+		 * init game over view
+		 */
+		int width = this.screenSize.getWidth();
+		int height = this.screenSize.getHeight();
+		int widghtFifth = (width / 5);
+		int heightFifth = (height / 4);
+		gos = new GameOverView(new JDPoint((width / 2)
+				- widghtFifth, (height / 2) - heightFifth), new JDDimension(
+				2 * widghtFifth, 2 * heightFifth), this);
+		this.guiElements.add(gos);
 
 		this.gui = new AndroidScreenJDGUI(this);
 
@@ -117,6 +171,14 @@ public class GameScreen extends Screen {
 		Thread th = new Thread(dungeonGame);
 		th.start();
 
+	}
+
+	public Game getGame() {
+		return g;
+	}
+
+	public Control getControl() {
+		return control;
 	}
 
 	private void resetDungeonRenderer() {
@@ -174,6 +236,7 @@ public class GameScreen extends Screen {
 
 		hero.createVisibilityMap(derDungeon);
 		hero.move(derDungeon.getRoomNr(18, 39));
+		hero.getRoom().addItem(new Club(50, false));
 
 	}
 
@@ -286,70 +349,101 @@ public class GameScreen extends Screen {
 		/*
 		 * trigger gui-elements
 		 */
-		List<GUIElement> elements = this.guiElements;
-		for (GUIElement guiElement : elements) {
+		for (GUIElement guiElement : guiElements) {
 			guiElement.update(arg0);
 		}
 
-		/*
-		 * check for movie sequences
-		 */
-		MovieSequence currentSequence = sequenceManager
-				.getCurrentSequence(arg0);
-		if (currentSequence != null) {
-			// movie running
-			Pair<Float, Float> centerViewRoomCoordinates = currentSequence
-					.getViewportPosition(arg0);
-			centerOnRoom(centerViewRoomCoordinates);
-			int movieRoomSize = currentSequence.getScale(arg0);
-			if (movieRoomSize != this.roomSize) {
-				this.changeRoomSize(movieRoomSize);
-			}
+		{
+			/*
+			 * check for movie sequences
+			 */
+			MovieSequence currentSequence = sequenceManager
+					.getCurrentSequence(arg0);
+			if (currentSequence != null) {
+				// movie running
+				Pair<Float, Float> centerViewRoomCoordinates = currentSequence
+						.getViewportPosition(arg0);
+				centerOnRoom(centerViewRoomCoordinates);
+				int movieRoomSize = currentSequence.getScale(arg0);
+				if (movieRoomSize != this.roomSize) {
+					this.changeRoomSize(movieRoomSize);
+				}
 
-			// flush events and quit processing
-			g.getInput().getTouchEvents();
-			return;
+				// flush events and quit processing
+				g.getInput().getTouchEvents();
+				return;
+			}
 		}
 
-		/*
-		 * check double tap event
-		 */
-		MotionEvent doubleTapEvent = g.getInput().getDoubleTapEvent();
-		if (doubleTapEvent != null) {
+		{
+			/*
+			 * check double tap event
+			 */
+			MotionEvent doubleTapEvent = g.getInput().getDoubleTapEvent();
+			if (doubleTapEvent != null) {
+				long timeNow = System.currentTimeMillis();
+				if (timeNow - lastDoubleTapEventTime < 100) {
+					/*
+					 * catch double event recognition; should have at least 0.1s
+					 * between events
+					 */
+					return;
+				}
+				lastDoubleTapEventTime = timeNow;
 
-			scrollTo(this.figureInfo.getRoomNumber(), 10f);
+				JDPoint doubleTapCoordinates = normalizeRawCoordinates(doubleTapEvent);
 
-			// flush events and quit processing
-			g.getInput().getTouchEvents();
-			return;
+				boolean guiOP = false;
+				for (GUIElement guiElement : guiElements) {
+					if (guiElement.hasPoint(doubleTapCoordinates)
+							&& guiElement.isVisible()) {
+						guiElement.handleDoubleTapEvent(doubleTapEvent);
+						guiOP = true;
+						break;
+					}
+				}
+
+				if (!guiOP) {
+					scrollTo(this.figureInfo.getRoomNumber(), 10f);
+				}
+
+				// flush events and quit processing
+				g.getInput().getTouchEvents();
+				return;
+			}
 		}
 
-		/*
-		 * check long press event
-		 */
-		MotionEvent longPressEvent = g.getInput().getLongPressEvent();
-		if (longPressEvent != null) {
+		{
+			/*
+			 * check long press event
+			 */
+			MotionEvent longPressEvent = g.getInput().getLongPressEvent();
+			if (longPressEvent != null) {
 
-			// TODO: find and handle item to be pressed
-			float coordX = longPressEvent.getRawX();
-			float coordY = longPressEvent.getRawY();
+				JDPoint longPressedCoordinates = normalizeRawCoordinates(longPressEvent);
 
-			JDPoint longPressedCoordinates = new JDPoint((int) coordX,
-					(int) coordY);
+				boolean guiOP = false;
+				for (GUIElement guiElement : guiElements) {
+					if (guiElement.hasPoint(longPressedCoordinates)
+							&& guiElement.isVisible()) {
+						guiElement.handleLongPressEvent(longPressEvent);
+						guiOP = true;
+						break;
+					}
+				}
 
-			Object clickedObject = findClickedObjectLongPressed(longPressedCoordinates);
-			System.out.println("long pressed object: " + clickedObject);
+				if (!guiOP) {
+					Object clickedObject = findClickedObjectLongPressed(longPressedCoordinates);
+					if (clickedObject != null
+							&& clickedObject instanceof InfoEntity) {
+						infoPanel.setContent(((InfoEntity) clickedObject));
+					}
+				}
 
-			if (clickedObject != null && clickedObject instanceof InfoEntity) {
-				Paragraph[] paragraphs = ((InfoEntity) clickedObject)
-						.getParagraphs();
-				infoPanel.setContent(paragraphs);
-
+				// flush events and quit processing
+				g.getInput().getTouchEvents();
+				return;
 			}
-
-			// flush events and quit processing
-			g.getInput().getTouchEvents();
-			return;
 		}
 
 		/*
@@ -383,13 +477,27 @@ public class GameScreen extends Screen {
 		/*
 		 * handle scroll events
 		 */
-		FloatDimension scrollEvent = g.getInput().getScrollEvent();
+		ScrollMotion scrollEvent = g.getInput().getScrollEvent();
 		if (scrollEvent != null) {
-			// System.out.println("scroll-event: " + scrollEvent.getX() + " /"
-			// + scrollEvent.getY());
-			this.viewportPosition = new JDPoint(viewportPosition.getX()
-					+ scrollEvent.getX(), viewportPosition.getY()
-					+ scrollEvent.getY());
+			MotionEvent startEvent = scrollEvent.getStartEvent();
+			JDPoint coordinates = normalizeRawCoordinates(startEvent);
+			boolean guiOP = false;
+			for (GUIElement guiElement : guiElements) {
+				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+					guiElement.handleScrollEvent(scrollEvent);
+					guiOP = true;
+					break;
+				}
+			}
+
+			if (!guiOP) {
+
+				this.viewportPosition = new JDPoint(viewportPosition.getX()
+						+ scrollEvent.getMovement().getX(), viewportPosition.getY()
+								+ scrollEvent.getMovement().getY());
+
+			}
+
 			// flush events and quit processing
 			List<TouchEvent> touchEvents = g.getInput().getTouchEvents();
 			return;
@@ -399,7 +507,6 @@ public class GameScreen extends Screen {
 		 * handle touch events
 		 */
 		List<TouchEvent> touchEvents = g.getInput().getTouchEvents();
-		List<TouchEvent> dragEvents = new ArrayList<TouchEvent>();
 		TouchEvent touchDownEvent = null;
 		for (int i = 0; i < touchEvents.size(); i++) {
 			TouchEvent touchEvent = touchEvents.get(i);
@@ -411,7 +518,29 @@ public class GameScreen extends Screen {
 		}
 
 		if (touchDownEvent != null) {
-			handleClickEvent(touchDownEvent);
+			long timeNow = System.currentTimeMillis();
+			if (timeNow - lastTouchEventTime < 100) {
+				/*
+				 * catch double event recognition; should have at least 0.1s
+				 * between events
+				 */
+				return;
+			}
+			lastTouchEventTime = timeNow;
+
+			boolean guiOP = false;
+			JDPoint coordinates = new JDPoint(touchDownEvent.x,
+					touchDownEvent.y);
+			for (GUIElement guiElement : guiElements) {
+				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+					guiElement.handleTouchEvent(touchDownEvent);
+					guiOP = true;
+					break;
+				}
+			}
+			if (!guiOP) {
+				handleClickEvent(touchDownEvent);
+			}
 		}
 
 		/*
@@ -452,6 +581,23 @@ public class GameScreen extends Screen {
 		}
 	}
 
+	public JDPoint normalizeRawCoordinates(MotionEvent longPressEvent) {
+
+		/*
+		 * for some reason these coordinates need to be normalized from scale
+		 * 1915/1100
+		 */
+
+		int x = (int) (longPressEvent.getRawX() * (screenSize.getWidth()) / 1915);
+		int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) / 1100);
+
+		JDPoint point = new JDPoint(x, y);
+		this.beacon = new JDPoint(point.getX(), point.getY());
+		this.beaconCounter = 300f;
+
+		return point;
+	}
+
 	private Pair<Float, Float> getCurrentViewCenterRoomCoordinates() {
 
 		/*
@@ -482,26 +628,26 @@ public class GameScreen extends Screen {
 
 	private void handleClickEvent(TouchEvent touchEvent) {
 
+		if (this.figureInfo.isDead()) {
+			gos.setShow(true);
+		}
+
 		JDPoint p = new JDPoint(touchEvent.x, touchEvent.y);
 		Object clickedObject = findClickedObject(p);
 		if (clickedObject != null) {
 			control.objectClicked(clickedObject);
+			if (clickedObject instanceof InfoEntity) {
+				infoPanel.setContent(((InfoEntity) clickedObject));
+			}
 		}
 
 	}
 
 	private Object findClickedObjectLongPressed(JDPoint p) {
 
-		/*
-		 * for some reason these coordinates need to be normalized from scale
-		 * 1915/1100
-		 */
-
-		int x = (int) (p.getX() * ((float) screenSize.getWidth()) / 1915);
-		int y = (int) (p.getY() * ((float) screenSize.getHeight()) / 1100);
-
-		JDPoint inGameLocation = new JDPoint(viewportPosition.getX() + x,
-				viewportPosition.getY() + y);
+		JDPoint inGameLocation = new JDPoint(
+				viewportPosition.getX() + p.getX(), viewportPosition.getY()
+						+ p.getY());
 
 		int roomNrX = (inGameLocation.getX() / roomSize);
 		int roomNrY = (inGameLocation.getY() / roomSize);
@@ -512,8 +658,7 @@ public class GameScreen extends Screen {
 		if (roomObjects == null)
 			return null;
 
-		this.beacon = new JDPoint(x, y);
-		this.beaconCounter = 300f;
+
 
 		return findClickedObjectsInRoom(inGameLocation, roomObjects);
 	}
@@ -693,6 +838,11 @@ public class GameScreen extends Screen {
 				new StraightLineScroller(currentViewCenterRoomCoordinates,
 						targetViewCenterRoomCoordinattes, duration), duration);
 		this.sequenceManager.addSequence(sequence);
+
+	}
+
+	public void setInfoEntity(ItemInfo item) {
+		this.infoPanel.setContent(item);
 
 	}
 }

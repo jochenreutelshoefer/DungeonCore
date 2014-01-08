@@ -469,6 +469,30 @@ public class ImageManager {
 	public static JDImageProxy<?> border_double_left;
 	public static JDImageProxy<?> border_double_right;
 
+	public static JDImageProxy<?> health_bar_empty;
+	public static JDImageProxy<?> health_bar_yellow;
+	public static JDImageProxy<?> health_bar_red;
+
+	public static JDImageProxy<?> inventory_figure_background;
+
+	public static JDImageProxy<?> inventory_box_select;
+	public static JDImageProxy<?> inventory_box_hover;
+	public static JDImageProxy<?> inventory_box_normal;
+
+	public static JDImageProxy<?> inventory_empty_helmet;
+	public static JDImageProxy<?> inventory_empty_armor;
+	public static JDImageProxy<?> inventory_empty_shield;
+	public static JDImageProxy<?> inventory_empty_weapon;
+
+	public static JDImageProxy<?> inventory_sword1;
+	public static JDImageProxy<?> inventory_armor1;
+	public static JDImageProxy<?> inventory_knife1;
+	public static JDImageProxy<?> inventory_shield1;
+	public static JDImageProxy<?> inventory_lance1;
+	public static JDImageProxy<?> inventory_axe1;
+	public static JDImageProxy<?> inventory_club1;
+	public static JDImageProxy<?> inventory_helmet1;
+
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern, int cnt) {
 		System.gc();
@@ -850,6 +874,33 @@ public class ImageManager {
 					"border_double_bottom.gif");
 			border_double_left = new JDImageProxy(a, "border_double_left.gif");
 			border_double_right = new JDImageProxy(a, "border_double_right.gif");
+
+			health_bar_empty = new JDImageProxy(a, "health_bar_empty.gif");
+			health_bar_red = new JDImageProxy(a, "health_bar_red.gif");
+			health_bar_yellow = new JDImageProxy(a, "health_bar_yellow.gif");
+			
+			inventory_figure_background = new JDImageProxy(a,
+					"figure-shadow1.gif");
+
+			inventory_box_select = new JDImageProxy(a, "boxSelect.gif");
+			inventory_box_hover = new JDImageProxy(a, "boxHover.gif");
+			inventory_box_normal = new JDImageProxy(a, "boxNormal.gif");
+
+			inventory_empty_helmet = new JDImageProxy(a, "guiItems/helmet.gif");
+			inventory_empty_armor = new JDImageProxy(a, "guiItems/armor.gif");
+			inventory_empty_shield = new JDImageProxy(a, "guiItems/shield.gif");
+			inventory_empty_weapon = new JDImageProxy(a, "guiItems/weapon.gif");
+
+			inventory_sword1 = new JDImageProxy(a, "guiItems/shortsword.gif");
+			inventory_armor1 = new JDImageProxy(a, "guiItems/cloth_chest1.gif");
+			inventory_knife1 = new JDImageProxy(a, "guiItems/dagger.gif");
+			inventory_shield1 = new JDImageProxy(a, "guiItems/buckler.gif");
+			inventory_lance1 = new JDImageProxy(a, "guiItems/wand.gif");
+			inventory_axe1 = new JDImageProxy(a, "guiItems/axe1.gif");
+			inventory_club1 = new JDImageProxy(a, "guiItems/club1.gif");
+			inventory_helmet1 = new JDImageProxy(a, "guiItems/helmet1.gif");
+
+			deathImage = new JDImageProxy(a, "tot1.gif");
 
 		}
 

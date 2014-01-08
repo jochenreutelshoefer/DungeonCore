@@ -1,37 +1,31 @@
 package de.jdungeon.androidapp.gui;
 
-import graphics.ImageManager;
-import graphics.JDImageProxy;
 import gui.Paragraph;
+import gui.Paragraphable;
 import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import de.jdungeon.androidapp.GameScreen;
 import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.FloatDimension;
+import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
 
-public class InfoPanel implements GUIElement {
+public class InfoPanel extends SlidingGUIElement {
 
-	private final JDPoint position;
-	private final JDDimension dimension;
-	private Paragraph[] content;
+	public InfoPanel(JDPoint position, JDDimension dimension, GameScreen screen) {
+		super(position, dimension, new JDPoint(position.getX()
+				+ dimension.getWidth(), position.getY()), screen);
+	}
+
+	private Paragraphable content;
 	private boolean visible = true;
 	private float timer = 0;
 	private final static float DISPLAY_TIME = 1000f;
 	private final static int SLIDE_OUT_STEPS = 20;
-	private int slideStep = -1;
 
-	public InfoPanel(JDPoint position, JDDimension dimension) {
-		super();
-		this.position = position;
-		this.dimension = dimension;
-	}
-
-	public void setContent(Paragraph[] content) {
-		this.content = content;
+	public void setContent(Paragraphable entity) {
+		this.content = entity;
 		visible = true;
 		timer = DISPLAY_TIME;
 	}
@@ -42,106 +36,55 @@ public class InfoPanel implements GUIElement {
 	}
 
 	@Override
-	public JDPoint getPositionOnScreen() {
-		return position;
+	public void handleScrollEvent(ScrollMotion scrolling) {
+		if (scrolling.getMovement().getX() < 0) {
+			timer = 0;
+		}
 	}
 
-	@Override
-	public JDDimension getDimension() {
-		return dimension;
-	}
-
-	@Override
-	public void handleTouchEvent(TouchEvent touch) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleScrollEvent(FloatDimension scrolling) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		/*
 		 * draw background
 		 */
-		int x = position.getX();
-		if (slideStep >= 0) {
-			x = x
-					+ ((SLIDE_OUT_STEPS - slideStep)
-							* this.getDimension().getWidth() / SLIDE_OUT_STEPS);
-		}
+		int x = getCurrentX();
 		g.drawRect(x, position.getY(), dimension.getWidth(),
 				dimension.getHeight(), Color.GRAY);
 
-		JDImageProxy<?> background = ImageManager.paperBackground;
-		Image image = (Image) background.getImage();
-		g.drawScaledImage(image, x, position.getY(),
-				dimension.getWidth(), dimension.getHeight(), 0, 0,
-				image.getWidth(), image.getHeight());
+		GUIUtils.drawBackground(g, x, position.getY(), dimension);
 
 		/*
 		 * print information
 		 */
-		Paragraph[] paragraphs = this.content;
-		if (paragraphs != null) {
-
-			int posCounterY = 35;
-			for (Paragraph paragraph : paragraphs) {
-				Paint p = new Paint();
-				p.setColor(ColorConverter.getColor(paragraph.getC()));
-				p.setTextAlign(Align.CENTER);
-				p.setStyle(p.getStyle());
-				p.setTextSize(13);
-				// paragraph.getFont();
-				g.drawString(paragraph.getText(), x
-						+ (this.dimension.getWidth() / 2), position.getY()
-						+ posCounterY, p);
-				posCounterY += 30;
+		if (this.content != null) {
+			Paragraph[] paragraphs = this.content.getParagraphs();
+			if (paragraphs != null) {
+				int posCounterY = 35;
+				for (Paragraph paragraph : paragraphs) {
+					Paint p = new Paint();
+					p.setColor(ColorConverter.getColor(paragraph.getC()));
+					p.setTextAlign(Align.CENTER);
+					p.setStyle(p.getStyle());
+					p.setTextSize(13);
+					// paragraph.getFont();
+					g.drawString(paragraph.getText(),
+							x + (this.dimension.getWidth() / 2),
+							position.getY() + posCounterY, p);
+					posCounterY += 30;
+				}
 			}
 		}
 
-		int borderWidth = 20;
 
 		/*
 		 * paint border
 		 */
-		g.drawScaledImage(
-				(Image) ImageManager.border_double_left_upper_corner.getImage(),
-				x, position.getY(), borderWidth, borderWidth, 0, 0, 20, 20);
-		g.drawScaledImage(
-				(Image) ImageManager.border_double_left_lower_corner.getImage(),
-				x, position.getY() + dimension.getHeight() - borderWidth,
-				borderWidth, borderWidth, 0, 0, 20, 20);
-		g.drawScaledImage((Image) ImageManager.border_double_right_upper_corner
-				.getImage(), x + dimension.getWidth() - borderWidth, position
-				.getY(), borderWidth, borderWidth, 0, 0, 20, 20);
-		g.drawScaledImage((Image) ImageManager.border_double_right_lower_corner
-				.getImage(), x + dimension.getWidth() - borderWidth,
-				position.getY() + dimension.getHeight() - borderWidth,
-				borderWidth, borderWidth, 0, 0, 20, 20);
-
-		g.drawScaledImage((Image) ImageManager.border_double_top.getImage(), x
-				+ borderWidth, position.getY(), dimension.getWidth() - 40,
-				borderWidth, 0, 0, 72, 20);
-
-		g.drawScaledImage((Image) ImageManager.border_double_left.getImage(),
-				x, position.getY() + borderWidth, borderWidth,
-				dimension.getHeight() - 40 + 6, 0, 0, 20, 56);
-
-		g.drawScaledImage((Image) ImageManager.border_double_bottom.getImage(),
-				x + borderWidth, position.getY() + dimension.getHeight()
-						- borderWidth, dimension.getWidth() - 40, borderWidth,
-				0, 0, 72, 20);
-
-		g.drawScaledImage((Image) ImageManager.border_double_right.getImage(),
-				x + dimension.getWidth() - 20, position.getY() + borderWidth,
-				borderWidth, dimension.getHeight() - 40 + 4, 0, 0, 20, 56);
+		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
 
 	}
+
+
 
 	@Override
 	public void update(float time) {

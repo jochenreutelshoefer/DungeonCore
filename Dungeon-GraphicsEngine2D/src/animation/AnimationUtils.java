@@ -65,7 +65,7 @@ public class AnimationUtils {
 		return null;
 
 	}
-	
+
 	public static AnimationSet getFigure_been_hit(FigureInfo info) {
 		int dir = info.getLookDir();
 		if (info instanceof MonsterInfo) {
@@ -120,7 +120,7 @@ public class AnimationUtils {
 		return null;
 
 	}
-	
+
 	public static AnimationSet getFigure_walking(FigureInfo info) {
 		int dir = info.getLookDir();
 
@@ -177,7 +177,7 @@ public class AnimationUtils {
 		return null;
 
 	}
-	
+
 	public static AnimationSet getFigure_running(FigureInfo info) {
 		int dir = info.getLookDir();
 		if (info instanceof MonsterInfo) {
@@ -233,7 +233,6 @@ public class AnimationUtils {
 
 	}
 
-
 	public static AnimationSet getFigure_tipping_over(FigureInfo info) {
 		int dir = info.getLookDir();
 		if (info instanceof MonsterInfo) {
@@ -276,7 +275,6 @@ public class AnimationUtils {
 		return null;
 
 	}
-
 
 	public static AnimationSet getFigure_sorcering(FigureInfo info) {
 		int dir = info.getLookDir();
@@ -340,33 +338,51 @@ public class AnimationUtils {
 			int mClass = ((MonsterInfo) info).getMonsterClass();
 			if (mClass == Monster.WOLF) {
 				if (info.getLevel() == 1) {
-					return ImageManager.wolf1_using.get(dir - 1);
+					AnimationSetDirections wolf1_using = ImageManager.wolf1_using;
+					if (wolf1_using != null) {
+						return wolf1_using.get(dir - 1);
+					}
 				}
 			}
 
 			if (mClass == Monster.SKELETON) {
 				if (info.getLevel() == 1) {
-					return ImageManager.skel1_using.get(dir - 1);
+					AnimationSetDirections skel1_using = ImageManager.skel1_using;
+					if (skel1_using != null) {
+						return skel1_using.get(dir - 1);
+					}
 				}
 			}
 			if (mClass == Monster.GHUL) {
 				if (info.getLevel() == 1) {
-					return ImageManager.ghul1_using.get(dir - 1);
+					AnimationSetDirections ghul1_using = ImageManager.ghul1_using;
+					if (ghul1_using != null) {
+						return ghul1_using.get(dir - 1);
+					}
 				}
 			}
 			if (mClass == Monster.OGRE) {
 				if (info.getLevel() == 1) {
-					return ImageManager.ogre1_using.get(dir - 1);
+					AnimationSetDirections ogre1_using = ImageManager.ogre1_using;
+					if (ogre1_using != null) {
+						return ogre1_using.get(dir - 1);
+					}
 				}
 			}
 			if (mClass == Monster.BEAR) {
 				if (info.getLevel() == 1) {
-					return ImageManager.spider1_using.get(dir - 1);
+					AnimationSetDirections spider1_using = ImageManager.spider1_using;
+					if (spider1_using != null) {
+						return ImageManager.spider1_using.get(dir - 1);
+					}
 				}
 			}
 			if (mClass == Monster.ORC) {
 				if (info.getLevel() == 1) {
-					return ImageManager.orc1_using.get(dir - 1);
+					AnimationSetDirections orc1_using = ImageManager.orc1_using;
+					if (orc1_using != null) {
+						return orc1_using.get(dir - 1);
+					}
 				}
 			}
 		}
@@ -444,7 +460,4 @@ public class AnimationUtils {
 
 	}
 
-
-
-	
 }

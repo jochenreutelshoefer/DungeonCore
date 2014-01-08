@@ -7,6 +7,7 @@ import de.jdungeon.game.Sound;
 
 public class AndroidAudioLoader implements AudioLoader {
 
+
 	private final Audio audio;
 
 	public AndroidAudioLoader(Audio audio) {
@@ -15,6 +16,7 @@ public class AndroidAudioLoader implements AudioLoader {
 
 	@Override
 	public AbstractAudioSet createAudioSet(String[] files) {
+
 		AndroidAudioSet set = new AndroidAudioSet();
 		for (String file : files) {
 			String fullFilename = "sounds/" + file;

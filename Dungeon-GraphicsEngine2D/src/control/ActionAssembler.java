@@ -6,20 +6,6 @@
  */
 package control;
 
-import item.ItemInfo;
-import item.quest.LuziasBall;
-
-import java.util.Iterator;
-import java.util.List;
-
-import shrine.ShrineInfo;
-import spell.SpellInfo;
-import dungeon.ChestInfo;
-import dungeon.Dir;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -39,6 +25,20 @@ import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.hero.HeroInfo;
 import game.JDGUI;
+import item.ItemInfo;
+import item.quest.LuziasBall;
+
+import java.util.Iterator;
+import java.util.List;
+
+import shrine.ShrineInfo;
+import spell.SpellInfo;
+import dungeon.ChestInfo;
+import dungeon.Dir;
+import dungeon.DoorInfo;
+import dungeon.JDPoint;
+import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
 
 public class ActionAssembler {
 
@@ -47,8 +47,8 @@ public class ActionAssembler {
 	private boolean spellMeta = false;
 
 	public void wannaAttack(int index) {
-		wannaAttack(((FigureInfo) getFigure().getRoomInfo().getFigureInfos()
-				.get(index)).getFighterID());
+		wannaAttack(getFigure().getRoomInfo().getFigureInfos()
+				.get(index).getFighterID());
 	}
 
 	public void setGui(JDGUI gui) {
@@ -148,10 +148,7 @@ public class ActionAssembler {
 
 	public void wannaSwitchEquipmentItem(int type, int index) {
 
-		Action a = new EquipmentChangeAction(/*
-												 * f .getFighterID(),
-												 */
-		type, index);
+		Action a = new EquipmentChangeAction(type, index);
 		plugAction(a);
 	}
 
@@ -234,7 +231,7 @@ public class ActionAssembler {
 
 			} else {
 
-				wannaAttack(((FigureInfo) o));
+				wannaAttack((o));
 
 			}
 		}
@@ -252,7 +249,7 @@ public class ActionAssembler {
 			useWithTarget = false;
 			gui.setUseWithTarget(false);
 
-			ItemInfo it = (ItemInfo) gui.getSelectedItem();
+			ItemInfo it = gui.getSelectedItem();
 			if (!right) {
 				wannaUseItem(it, o, right);
 			}
@@ -408,7 +405,7 @@ public class ActionAssembler {
 		} else {
 
 			if (right) {
-				SpellInfo sp = (SpellInfo) gui.getSelectedSpellInfo();
+				SpellInfo sp = gui.getSelectedSpellInfo();
 				wannaSpell(sp, o);
 			} else {
 				if (d.hasLock().booleanValue()) {

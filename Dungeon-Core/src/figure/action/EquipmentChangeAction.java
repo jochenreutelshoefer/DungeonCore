@@ -16,11 +16,11 @@ public class EquipmentChangeAction extends Action {
 
 	
 	
-	private int equpipmentType;
-	private int index;
+	private final int equpipmentType;
+	private final int index;
 	
-	public EquipmentChangeAction(/*int fighterID,*/ int eType, int index) {
-		super(/*fighterID*/);
+	public EquipmentChangeAction(int eType, int index) {
+		super();
 		this.equpipmentType = eType;
 		this.index = index;
 	}

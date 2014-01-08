@@ -36,6 +36,7 @@ import figure.percept.WaitPercept;
 public class PerceptHandler {
 
 	private final GameScreen screen;
+
 	private final FigureInfo figure;
 
 	public PerceptHandler(GameScreen screen) {
@@ -141,17 +142,29 @@ public class PerceptHandler {
 	}
 
 	private void handleFleePercept(FleePercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo fleeingFigure = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_running(fleeingFigure);
+		if (set != null) {
+			screen.startAnimation(set, fleeingFigure);
+		}
 
 	}
 
 	private void handleUsePercept(UsePercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo user = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_using(user);
+		if (set != null) {
+			screen.startAnimation(set, user);
+		}
 
 	}
 
 	private void handleTakePercept(TakePercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo taker = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_using(taker);
+		if (set != null) {
+			screen.startAnimation(set, taker);
+		}
 
 	}
 
@@ -170,12 +183,20 @@ public class PerceptHandler {
 	}
 
 	private void handleSpellPercept(SpellPercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo user = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_using(user);
+		if (set != null) {
+			screen.startAnimation(set, user);
+		}
 
 	}
 
 	private void handleScoutPercept(ScoutPercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo user = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_using(user);
+		if (set != null) {
+			screen.startAnimation(set, user);
+		}
 
 	}
 
@@ -188,11 +209,11 @@ public class PerceptHandler {
 		RoomInfo to = p.getTo();
 
 		if (set != null) {
-			screen.startAnimation(set, figure);
+			screen.startAnimation(set, fig);
 		}
 
 		if (fig.equals(this.figure)) {
-			screen.scrollTo(info.getNumber(), 100f);
+			screen.scrollTo(info.getNumber(), 50f);
 		}
 
 	}
@@ -223,7 +244,11 @@ public class PerceptHandler {
 	}
 
 	private void handleItemDroppedPercept(ItemDroppedPercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo user = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_using(user);
+		if (set != null) {
+			screen.startAnimation(set, user);
+		}
 
 	}
 

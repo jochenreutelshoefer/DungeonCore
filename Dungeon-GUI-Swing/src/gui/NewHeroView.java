@@ -1,34 +1,56 @@
 package gui;
 
 
-import item.*;
+import item.HealPotion;
+import item.Item;
+import item.ItemPool;
 import item.equipment.Armor;
 import item.equipment.Shield;
 import item.equipment.weapon.Axe;
 import item.equipment.weapon.Club;
 import item.equipment.weapon.Lance;
-import item.equipment.weapon.Sword;
-import item.equipment.weapon.Weapon;
 import item.equipment.weapon.Wolfknife;
 import item.paper.BookSpell;
 import item.paper.Scroll;
 
-import javax.swing.*;
-import java.awt.event.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.LinkedList;
+//import javax.swing.text.*;
+import java.util.List;
 
-import spell.*;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultDesktopManager;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
+import spell.Escape;
+import spell.GoldenHit;
+import spell.Heal;
+import spell.Search;
+import spell.Spell;
+import spell.Threat;
 import figure.Spellbook;
 import figure.hero.Hero;
+import figure.hero.HeroUtil;
 import game.JDEnv;
 import gui.mainframe.MainFrame;
 import gui.mainframe.component.InfoView;
-
-
-import java.awt.*;
-import java.util.*;
-//import javax.swing.text.*;
 
 public class NewHeroView
 	extends JDialog
@@ -586,6 +608,7 @@ public class NewHeroView
 	}
 
 
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 
 		Object quelle = ie.getSource();
@@ -645,6 +668,7 @@ public class NewHeroView
 
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object quelle = ae.getSource();
 		Item jungfrauWeapon = null;
@@ -717,9 +741,11 @@ public class NewHeroView
 						//System.out.println("heroCode Error!");
 				}
 				Item i = null;
-				LinkedList itemsToAdd = new LinkedList();
+				List<Item> itemsToAdd = new LinkedList<Item>();
 				
 				Spellbook book = new Spellbook();
+				book.addSpell(new Threat());
+				held.setSpellbook(book);
 				if (signString == "Stier ") {
 					healthVal = healthVal + 6;
 					strengthVal += 1;
@@ -743,14 +769,14 @@ public class NewHeroView
 					lance += 10;
 					itemsToAdd.add(new Lance(20, false));
 				}
-				if (signString == "L�we ") {
+				if (signString == "Loewe ") {
 					psychoVal += 2;
 				}
 				if (signString == "Krebs ") {
 					itemsToAdd.add(new Axe(20, false));
 					axe += 10;
 				}
-				if (signString == "Sch�tze ") {
+				if (signString == "Schuetze ") {
 					dexterityVal++;
 					for (int j = 0; j < 2; j++) {
 						int k = (int) (Math.random() * 4);
@@ -866,78 +892,28 @@ public class NewHeroView
 						dustReg,
 						0);
 
-				
-//				if (heroCode == Hero.HEROCODE_WARRIOR) {
-//					book.addSpell(new GoldenHit(1));
-//					//book.addSpell(new KeyLocator(1));
-//				}
-//				if (heroCode == Hero.HEROCODE_HUNTER) {
-//					//book.addSpell(new key_locator_spell(1));
-//					book.addSpell(new Search(1));
-//					//book.addSpell(new steal_spell(1));
-//				}
-//				if (heroCode == Hero.HEROCODE_DRUID) {
-//					//book.addSpell(new heal_spell(1,4,8,6,35));
-//					book.addSpell(new Heal(1,8,4,6,35));
-//				}
-//				if (heroCode == Hero.HEROCODE_MAGE) {
-//					//book.addSpell(new light_spell(1));
-//					book.addSpell(new Fireball(1,9,6,5,12));
-//				}
-				book.addSpell(new Threat());
-				held.setSpellbook(book);
+				for (int j = 0; j < itemsToAdd.size(); j++) {
+
+					Item it = itemsToAdd.get(j);
+					held.getInventory().takeItem(it, null);
+				}
+
 				Armor hemd = new Armor(20, false);
-				held.getCharacter().setSpellPoints(spellPoints);
-				Weapon waffe;
-				if(thief) {
-					held.setThief(true);	
-				}
-				switch (held.getHeroCode()) {
-					case 1 :
-						waffe = new Sword(25, false);
-						break;
-					case 2 :
-						waffe = new Club(25, false);
-						held.setThief(true);
-						break;
-					case 3 :
-						waffe = new Wolfknife(25, false);
-						Spell s = new Bonebreaker(1);
-						Scroll scroll1 = new Scroll(s, 5);
-						Scroll scroll2 = new Scroll(s, 5);
-						Scroll scroll3 = new Scroll(s, 5);
-						held.takeItem(scroll1, null);
-						held.takeItem(scroll2, null);
-						held.takeItem(scroll3, null);
-						break;
-					case 4 :
-						waffe = new Lance(25, false);
-						break;
-					default :
-						waffe = new Sword(100, false);
-						//System.out.println("HeroCode Error!");
-				}
-				held.getInventory().take_weapon1(waffe);
-				
-				//
-				//held.getInventory().takeItem(itemPool.getGoodItem(120,1.6),null);
-				//
-				
 				if (!Grossgrundbesitzer.isSelected()) {
 					held.getInventory().takeItem(hemd, null);
 				}
-				for (int j = 0; j < itemsToAdd.size(); j++) {
 
-					Item it = (Item) itemsToAdd.get(j);
-					held.getInventory().takeItem(it, null);
+				held.getCharacter().setSpellPoints(spellPoints);
+				if (thief) {
+					held.setThief(true);
 				}
+				
+				HeroUtil.addHeroStartWeapon(held);
 
 				this.setVisible(false);
 
 			}
 		}
-		//if (quelle == Zeile)
-		//	heroName = Zeile.getText();
 	}
 
 
@@ -967,10 +943,12 @@ public class NewHeroView
 			(screenHeight / 2) - (height / 2));
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 		Object o = me.getSource();
 		//String text[] = new String[1];
@@ -1064,14 +1042,17 @@ public class NewHeroView
 		view.setText2(p);
 
 	}
+	@Override
 	public void mouseExited(MouseEvent me) {
 		view.resetText2();
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}

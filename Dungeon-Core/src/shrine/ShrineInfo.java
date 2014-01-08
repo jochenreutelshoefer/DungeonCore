@@ -93,10 +93,11 @@ public class ShrineInfo extends InfoEntity  {
 	}
 
 	public JDPoint getLocation() {
-		if (map.getDiscoveryStatus(s.getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
+		// if (map.getDiscoveryStatus(s.getLocation()) >=
+		// RoomObservationStatus.VISIBILITY_SHRINE) {
 
 			return s.getLocation();
-		}
-		return null;
+		// }
+		// return null;
 	}
 }

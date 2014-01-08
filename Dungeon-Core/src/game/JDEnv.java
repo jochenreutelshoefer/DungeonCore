@@ -59,7 +59,7 @@ public class JDEnv {
 		System.gc();
 	}
 	
-	public static boolean visCheat = true;
+	public static boolean visCheat = false;
 	
 	public static void unsetGame() {
 		game = null;

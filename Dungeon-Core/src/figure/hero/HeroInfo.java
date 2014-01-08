@@ -6,14 +6,15 @@
  */
 package figure.hero;
 
-import figure.DungeonVisibilityMap;
-import figure.FigureInfo;
-import figure.RoomObservationStatus;
-
 import item.Item;
 import item.ItemInfo;
+import item.equipment.Armor;
+import item.equipment.EquipmentItem;
+import item.equipment.EquipmentItemInfo;
+import item.equipment.Helmet;
+import item.equipment.Shield;
+import item.equipment.weapon.Weapon;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,15 +22,17 @@ import java.util.Map;
 
 import spell.Spell;
 import spell.SpellInfo;
-import item.equipment.*;
-import item.equipment.weapon.*;
+import figure.DungeonVisibilityMap;
+import figure.FigureInfo;
+import figure.RoomObservationStatus;
+import figure.action.EquipmentChangeAction;
 
 /**
  * Liefert die Informationen fuer eine Heldensteuerung
  */
 public class HeroInfo extends FigureInfo {
 
-	private Hero h;
+	private final Hero h;
 
 	public HeroInfo(Hero h, DungeonVisibilityMap stats) {
 		super(h, stats);
@@ -41,6 +44,7 @@ public class HeroInfo extends FigureInfo {
 		return h.getHighScoreData(playerName, comment, reg, liga, this);
 	}
 
+	@Override
 	public List getAllItems() {
 		if (map.getFigure().equals(h)) {
 			List l = h.getAllItems();
@@ -63,6 +67,7 @@ public class HeroInfo extends FigureInfo {
 
 	}
 
+	@Override
 	public int getMight() {
 		int lvl = h.getLevel();
 		return (lvl+1) * 500;
@@ -318,6 +323,25 @@ public class HeroInfo extends FigureInfo {
 		return null;
 	}
 
+	public EquipmentItemInfo getEquipmentItemInfo(int index, int type) {
+		if (type == EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR) {
+			return getArmor(index);
+		}
+
+		if (type == EquipmentChangeAction.EQUIPMENT_TYPE_HELMET) {
+			return getHelmet(index);
+		}
+
+		if (type == EquipmentChangeAction.EQUIPMENT_TYPE_SHIELD) {
+			return getShield(index);
+		}
+
+		if (type == EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON) {
+			return getWeapon(index);
+		}
+		return null;
+	}
+
 	public int getSkillPoints() {
 		if (map.getFigure().equals(h)) {
 			return h.getCharacter().getSkillPoints();
@@ -395,6 +419,7 @@ public class HeroInfo extends FigureInfo {
 		return -1;
 	}
 
+	@Override
 	public int getLevel() {
 		if (map.getVisibilityStatus(h.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 

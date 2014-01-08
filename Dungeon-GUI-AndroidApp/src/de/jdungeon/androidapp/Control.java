@@ -1,8 +1,10 @@
 package de.jdungeon.androidapp;
 
 import figure.FigureInfo;
+import figure.hero.HeroInfo;
 import game.JDGUI;
 import item.ItemInfo;
+import item.equipment.EquipmentItemInfo;
 import shrine.ShrineInfo;
 import control.ActionAssembler;
 import dungeon.ChestInfo;
@@ -76,5 +78,22 @@ public class Control {
 	private void handleItemInfoClick(ItemInfo item) {
 		actionAssembler.itemClicked(item, false);
 
+	}
+
+	public void inventoryItemDoubleClicked(int itemType, EquipmentItemInfo info) {
+		HeroInfo hero = ((HeroInfo) info.getOwner());
+		int weaponIndex = -1;
+		for (int i = 0; i < 3; i++) {
+			EquipmentItemInfo itemInfo = hero.getEquipmentItemInfo(i, itemType);
+			if (info.equals(itemInfo)) {
+				weaponIndex = i;
+				break;
+			}
+		}
+		actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
+	}
+
+	public void endRound() {
+		actionAssembler.wannaEndRound();
 	}
 }
