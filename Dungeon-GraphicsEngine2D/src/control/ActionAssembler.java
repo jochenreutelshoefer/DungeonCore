@@ -55,6 +55,7 @@ public class ActionAssembler {
 		this.gui = gui;
 	}
 
+
 	public void wannaAttack(FigureInfo o) {
 		Action a = Action.makeActionAttack(o.getFighterID());
 		plugAction(a);
@@ -152,20 +153,25 @@ public class ActionAssembler {
 		plugAction(a);
 	}
 
-	public void wannaLayDownEquipmentItem(int type) {
+	public void wannaLayDownItem(ItemInfo it) {
 
-		Action a = new LayDownItemAction(/*
-											 * f .getFighterID(),
-											 */true, type);
+		Action a = new LayDownItemAction(it);
 		plugAction(a);
 
 	}
 
+	@Deprecated
+	public void wannaLayDownEquipmentItem(int type) {
+
+		Action a = new LayDownItemAction(true, type);
+		plugAction(a);
+
+	}
+
+	@Deprecated
 	public void wannaLayDownItem(int index) {
 
-		Action a = new LayDownItemAction(/*
-											 * f .getFighterID(),
-											 */false, index);
+		Action a = new LayDownItemAction(false, index);
 		plugAction(a);
 
 	}

@@ -8,10 +8,11 @@
  */
 package item;
 
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import dungeon.*;
-
+import dungeon.Door;
 import figure.attribute.Attribute;
 import game.JDEnv;
 
@@ -19,7 +20,7 @@ import game.JDEnv;
 public class Bunch extends Item {
 
 	
-	LinkedList keys = new LinkedList();
+	private final Set<Key> keys = new HashSet<Key>();
 
 	
 	public Bunch() {
@@ -34,15 +35,14 @@ public class Bunch extends Item {
 	}
 
 	
-	public LinkedList getKeys() {
+	public Collection<Key> getKeys() {
 		return keys;
 	}
 
 	
 	public boolean tryUnlockDoor(Door d,boolean doIt) {
 		boolean b = false;
-		for(int i = 0; i < keys.size(); i++) {
-			Key k = (Key)keys.get(i);
+		for (Key k : this.keys) {
 			b = d.lock(k,doIt);
 			if(b) return true;	
 		}
@@ -58,8 +58,7 @@ public class Bunch extends Item {
 	}
 	
 	public boolean hasKey(String k) {
-		for(int i= 0; i< keys.size(); i++) {
-			Key ke = (Key)keys.get(i);
+		for (Key ke : this.keys) {
 			if(ke.getType().equals(k)) {
 				return true;
 				
@@ -72,6 +71,7 @@ public class Bunch extends Item {
 		return keys.remove(k);	
 	}
 	
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("bunch")+": "+keys.size();	
 	}
@@ -79,10 +79,11 @@ public class Bunch extends Item {
 	/**
 	 * @see Item#getText()
 	 */
+	@Override
 	public String getText() {
 		String text = new String();
-		for(int i= 0; i < keys.size(); i++) {
-			String one = ((Key)keys.get(i)).toString();
+		for (Key k : this.keys) {
+			String one = k.toString();
 			String cut = cut(one); 
 			text += " , "+cut;
 		}	

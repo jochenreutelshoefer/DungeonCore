@@ -45,6 +45,10 @@ public class Control {
 
 	}
 
+	public void inventoryItemClicked(ItemInfo item) {
+		actionAssembler.wannaUseItem(item, null, false);
+	}
+
 	private void handleDoorInfoClick(DoorInfo doorInfo) {
 		actionAssembler.doorClicked(doorInfo, false);
 
@@ -91,6 +95,10 @@ public class Control {
 			}
 		}
 		actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
+	}
+
+	public void inventoryItemLongClicked(int itemType, EquipmentItemInfo info) {
+		actionAssembler.wannaLayDownItem(info);
 	}
 
 	public void endRound() {

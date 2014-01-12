@@ -14,6 +14,7 @@ import item.quest.LuziasBall;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import dungeon.JDPoint;
 import dungeon.Room;
@@ -572,11 +573,11 @@ public class Inventory /*implements ItemOwner*/ {
 					}
 				}
 			} else {
-				LinkedList l = getItems();
+				List<Item> l = getItems();
 				int k = l.size();
 
 				for (int i = 0; i < k; i++) {
-					if (it == ((Item) l.get(i))) {
+					if (it == (l.get(i))) {
 						if (o != null) {
 							o.takeItem(it, null);
 						}
@@ -807,7 +808,7 @@ public class Inventory /*implements ItemOwner*/ {
 	 * 
 	 * @uml.property name="items"
 	 */
-	public LinkedList getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 

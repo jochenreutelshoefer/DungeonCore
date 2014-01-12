@@ -35,6 +35,8 @@ import de.jdungeon.androidapp.gui.HealthBar;
 import de.jdungeon.androidapp.gui.HourGlassTimer;
 import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
+import de.jdungeon.androidapp.gui.ItemWheel;
+import de.jdungeon.androidapp.gui.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequenceManager;
@@ -148,7 +150,14 @@ public class GameScreen extends Screen {
 				this, figureInfo);
 		this.guiElements.add(hourglass);
 		
-		
+		/*
+		 * init wheel
+		 */
+		ItemWheel wheel = new ItemWheel(new JDPoint(780, 780), new JDDimension(
+				400, 400), figureInfo, this, new ItemWheelBindingSetSimple(
+				this.figureInfo, 20, 36));
+		this.guiElements.add(wheel);
+
 		/*
 		 * init game over view
 		 */
@@ -589,7 +598,10 @@ public class GameScreen extends Screen {
 		 */
 
 		int x = (int) (longPressEvent.getRawX() * (screenSize.getWidth()) / 1915);
-		int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) / 1100);
+		// int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) /
+		// 1100);
+		int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) / 1000);
+
 
 		JDPoint point = new JDPoint(x, y);
 		this.beacon = new JDPoint(point.getX(), point.getY());

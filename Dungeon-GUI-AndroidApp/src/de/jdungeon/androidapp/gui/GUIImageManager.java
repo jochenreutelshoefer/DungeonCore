@@ -14,6 +14,12 @@ public class GUIImageManager {
 	public static final String HOUR_GLASS_FULL = "hour-glass-full.gif";
 	public static final String HOUR_GLASS_HALF = "hour-glass-half.gif";
 
+	public static final String SCROLL = "guiItems/Scroll.gif";
+	public static final String BOOK = "guiItems/Book.gif";
+	public static final String PARCHMENT = "guiItems/Parchment.gif";
+	public static final String POTION = "guiItems/Potion.gif";
+	public static final String KEY = "guiItems/key.gif";
+
 	public static AbstractImageLoader<?> loader;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

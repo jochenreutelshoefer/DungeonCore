@@ -1044,8 +1044,29 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 				ActionResult.IMPOSSIBLE_REASON_OTHER);
 	}
 
+	private Item getItemForInfo(ItemInfo item) {
+		List<Item> allItems = this.getAllItems();
+		for (Item it : allItems) {
+			ItemInfo itemInfo = ItemInfo.makeItemInfo(it, this.roomVisibility);
+			if (itemInfo.equals(item)) {
+				return it;
+			}
+
+		}
+		return null;
+	}
+
 	private ActionResult handleLayDownItemAction(LayDownItemAction a,
-	/* boolean fight, */boolean doIt) {
+			boolean doIt) {
+		if(a.getItem() != null){
+			ItemInfo itemInfo = a.getItem();
+			Item item = getItemForInfo(itemInfo);
+			if (doIt) {
+				this.layDown(item);
+				return ActionResult.DONE;
+			}
+			return ActionResult.POSSIBLE;
+		}
 		boolean equip = a.isEquipment();
 		int index = a.getIndex();
 		if (equip) {

@@ -46,10 +46,13 @@ public class HourGlassTimer extends AbstractGUIElement {
 			image = GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_FULL,
 					screen.getGame());
 		}
+		if (image != null) {
+
 		g.drawScaledImage(image, this.position.getX(), this
 				.getPositionOnScreen().getY(), this.getDimension().getWidth(),
 				this.getDimension().getHeight(), 0, 0, image.getWidth(), image
 						.getHeight());
+		}
 	}
 
 }

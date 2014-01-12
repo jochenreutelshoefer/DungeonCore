@@ -10,6 +10,7 @@ import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -300,8 +301,8 @@ public class Hero extends Figure implements InfoProvider {
 	}
 
 	@Override
-	public LinkedList getItems() {
-		return getInventory().getItems();
+	public List<Item> getItems() {
+		return Collections.unmodifiableList(getInventory().getItems());
 	}
 
 	@Override
@@ -1655,10 +1656,10 @@ public class Hero extends Figure implements InfoProvider {
 	 */
 	@Override
 	public boolean tryUnlockDoor(Door d, boolean doIt) {
-		LinkedList items = this.getItems();
+		List<Item> items = this.getItems();
 		boolean b = false;
 		for (int i = 0; i < items.size(); i++) {
-			Item a = ((Item) items.get(i));
+			Item a = (items.get(i));
 			if (a instanceof Bunch) {
 				b = ((Bunch) a).tryUnlockDoor(d, doIt);
 			}
@@ -1675,9 +1676,9 @@ public class Hero extends Figure implements InfoProvider {
 
 	@Override
 	public boolean hasKey(String k) {
-		LinkedList items = getItems();
+		List<Item> items = getItems();
 		for (int i = 0; i < items.size(); i++) {
-			Item it = (Item) items.get(i);
+			Item it = items.get(i);
 			if (it instanceof Key) {
 				if (((Key) it).getType().equals(k)) {
 					return true;

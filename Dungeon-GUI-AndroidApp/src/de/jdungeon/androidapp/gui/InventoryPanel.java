@@ -163,15 +163,31 @@ public class InventoryPanel extends SlidingGUIElement {
 		JDPoint coordinates = new JDPoint(touch.x, touch.y);
 		for (InventoryBox box : boxes) {
 			if (box.hasPoint(coordinates)) {
-				boxClicked(box, false);
+				boxClicked(box, ItemActionType.show);
+			}
+		}
+
+	}
+
+	private enum ItemActionType {
+		show, change, drop
+	};
+
+	@Override
+	public void handleLongPressEvent(MotionEvent touch) {
+		JDPoint coordinates = this.getScreen().normalizeRawCoordinates(touch);
+		/*
+		 * if an icon is clicked, we trigger an inventory action
+		 */
+		for (InventoryBox box : boxes) {
+			if (box.hasPoint(coordinates)) {
+				boxClicked(box, ItemActionType.drop);
 			}
 		}
 	}
 
 	@Override
 	public void handleDoubleTapEvent(MotionEvent touch) {
-		float rawX = touch.getRawX();
-		float rawY = touch.getRawY();
 
 		JDPoint coordinates = this.getScreen().normalizeRawCoordinates(touch);
 
@@ -181,7 +197,7 @@ public class InventoryPanel extends SlidingGUIElement {
 		boolean isOnIcon = false;
 		for (InventoryBox box : boxes) {
 			if (box.hasPoint(coordinates)) {
-				boxClicked(box, true);
+				boxClicked(box, ItemActionType.change);
 				isOnIcon = true;
 			}
 		}
@@ -199,12 +215,12 @@ public class InventoryPanel extends SlidingGUIElement {
 		}
 	}
 
-	private void boxClicked(InventoryBox clickedBox, boolean changeAction) {
+	private void boxClicked(InventoryBox clickedBox, ItemActionType action) {
 		int type = -1;
 		EquipmentItemInfo item = null;
 		if (clickedBox == armor1) {
 			type = EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR;
-			item = armor2.getItem();
+			item = armor1.getItem();
 		}
 		if (clickedBox == armor2) {
 			type = EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR;
@@ -258,9 +274,15 @@ public class InventoryPanel extends SlidingGUIElement {
 		if (item != null) {
 			this.getScreen().setInfoEntity(item);
 
-		if (type != -1 && changeAction) {
+			if (type != -1) {
+			if(action.equals(ItemActionType.change)) {
 			this.getScreen().getControl()
 					.inventoryItemDoubleClicked(type, item);
+			}	
+				if (action.equals(ItemActionType.drop)) {
+					this.getScreen().getControl()
+							.inventoryItemLongClicked(type, item);
+				}
 		}
 		}
 

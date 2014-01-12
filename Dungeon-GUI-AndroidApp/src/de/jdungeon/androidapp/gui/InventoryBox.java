@@ -43,7 +43,8 @@ public class InventoryBox extends AbstractGUIElement {
 				this.dimension.getWidth(), this.dimension.getHeight(), 0, 0,
 				background.getWidth(), background.getHeight());
 		if (item != null) {
-			Image itemImage = InventoryImageManager.getImage(item);
+			Image itemImage = InventoryImageManager.getImage(item,
+					this.getScreen());
 			g.drawScaledImage(itemImage,
 					parentPosition.getX() + position.getX() + 8,
 					parentPosition.getY() + position.getY() + 8,

@@ -6,20 +6,32 @@
  */
 package figure.action;
 
+import item.ItemInfo;
+
 public class LayDownItemAction extends Action {
 	
 	private boolean equipment;
 	private int index;
+	private ItemInfo item = null;
 	
-	public LayDownItemAction(/*int fighterID,*/ boolean equip, int index) {
-		super(/*fighterID*/);
+	public ItemInfo getItem() {
+		return item;
+	}
+
+	@Deprecated
+	public LayDownItemAction(boolean equip, int index) {
 		this.equipment=equip;
 		this.index = index;
+	}
+
+	public LayDownItemAction(ItemInfo item) {
+		this.item = item;
 	}
 
 	/**
 	 * @return Returns the equipment.
 	 */
+	@Deprecated
 	public boolean isEquipment() {
 		return equipment;
 	}
@@ -27,6 +39,7 @@ public class LayDownItemAction extends Action {
 	/**
 	 * @return Returns the index.
 	 */
+	@Deprecated
 	public int getIndex() {
 		return index;
 	}
