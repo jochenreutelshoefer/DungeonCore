@@ -1,6 +1,5 @@
 package de.jdungeon.androidapp.gui;
 
-import item.ItemInfo;
 import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,18 +22,20 @@ public class ItemWheel extends AbstractGUIElement {
 	private final JDPoint[] points = new JDPoint[36];
 	private float rotationState = (float) TWO_PI;
 	private final int radius;
-	private int markedPointIndex = 20;
-	private final int startPointerIndex = 20;
+	private int markedPointIndex;
+	private final int startPointerIndex;
 	private int itemRotationPointer = 0;
 	ItemWheelBindingSet binding;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
-			GameScreen screen, ItemWheelBindingSet binding) {
+			GameScreen screen, ItemWheelBindingSet binding, int selectedIndex) {
 		super(position, dim, screen);
 		this.info = info;
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
+		markedPointIndex = selectedIndex;
+		startPointerIndex = selectedIndex;
 	}
 
 	@Override
@@ -66,9 +67,9 @@ public class ItemWheel extends AbstractGUIElement {
 
 	private void iconTouched(int i) {
 		if (i == markedPointIndex) {
-			ItemInfo infoEntity = (ItemInfo) binding.getInfoEntity(i);
+			ItemWheelActivity infoEntity = binding.getActivity(i);
 			Control control = this.getScreen().getControl();
-			control.inventoryItemClicked(infoEntity);
+			control.itemWheelActivityClicked(infoEntity);
 		} else {
 			centerOnIndex(i);
 		}
@@ -105,9 +106,12 @@ public class ItemWheel extends AbstractGUIElement {
 
 	private void setMarkedIndex(int i) {
 		markedPointIndex = i;
-		InfoEntity item = binding.getInfoEntity(markedPointIndex);
+		ItemWheelActivity item = binding.getActivity(markedPointIndex);
 		if (item != null) {
-			this.getScreen().setInfoEntity((ItemInfo) item);
+			Object object = item.getObject();
+			if (object instanceof InfoEntity) {
+				this.getScreen().setInfoEntity((InfoEntity) object);
+			}
 		}
 	}
 
@@ -142,13 +146,12 @@ public class ItemWheel extends AbstractGUIElement {
 				dimension.getHeight(), Color.BLUE);
 
 		for (int i = 0; i < points.length; i++) {
-			int imageWidth = 80;
-			int imageHeight = 80;
+			int imageWidth = 60;
+			int imageHeight = 60;
 			int toDraw = (markedPointIndex + i + 1) % points.length;
-			InfoEntity item = this.binding.getInfoEntity(toDraw);
-			if (item != null) {
-				Image im = InventoryImageManager.getImage((ItemInfo) item,
-						screen);
+			ItemWheelActivity activity = this.binding.getActivity(toDraw);
+			if (activity != null) {
+				Image im = binding.getProvider().getActivityImage(activity);
 				if (toDraw == this.markedPointIndex) {
 					imageWidth *= 2;
 					imageHeight *= 2;

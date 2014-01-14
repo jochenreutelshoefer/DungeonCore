@@ -1,8 +1,5 @@
 package de.jdungeon.androidapp.gui;
 
-import figure.hero.HeroInfo;
-import item.ItemInfo;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,68 +7,71 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ItemWheelBindingSetSimple implements
-		ItemWheelBindingSet<ItemInfo> {
+public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
-	private final HeroInfo hero;
 	private final int size;
 	private final int initValue;
-	private final Map<Integer, ItemInfo> mapping = new HashMap<Integer, ItemInfo>();
-	
-	public ItemWheelBindingSetSimple(HeroInfo hero, int initialValue, int size) {
-		this.hero = hero;
+	private final Map<Integer, ItemWheelActivity> mapping = new HashMap<Integer, ItemWheelActivity>();
+	private final ItemActivityItemProvider provider;
+
+	@Override
+	public ItemActivityItemProvider getProvider() {
+		return provider;
+	}
+
+	public ItemWheelBindingSetSimple(int initialValue, int size,
+			ItemActivityItemProvider provider) {
 		this.initValue = initialValue;
 		this.size = size;
+		this.provider = provider;
 
-		List<ItemInfo> figureItemList = hero.getFigureItemList();
-		if (figureItemList.size() > this.size) {
+		List<ItemWheelActivity> activities = provider.getActivities();
+		if (activities.size() > this.size) {
 			throw new IllegalArgumentException(
 					"Item wheel binding set not implemented for this case: too many items!");
 		}
-
 		int index = initValue;
-		for (ItemInfo itemInfo : figureItemList) {
+		for (ItemWheelActivity itemInfo : activities) {
 			mapping.put(index, itemInfo);
 			index = (index + 1) % this.size;
 		}
 	}
 
 	@Override
-	public ItemInfo getInfoEntity(int index) {
+	public ItemWheelActivity getActivity(int index) {
 		return mapping.get(index);
 	}
 
 	@Override
 	public void update(float time) {
-		List<ItemInfo> figureItemList = hero.getFigureItemList();
+		List<ItemWheelActivity> figureItemList = provider.getActivities();
 		/*
 		 * remove items not possessed any more
 		 */
-		Iterator<ItemInfo> iterator = mapping.values().iterator();
-		List<ItemInfo> toRemove = new ArrayList<ItemInfo>();
+		Iterator<ItemWheelActivity> iterator = mapping.values().iterator();
+		List<ItemWheelActivity> toRemove = new ArrayList<ItemWheelActivity>();
 		while (iterator.hasNext()) {
-			ItemInfo itemInfo = iterator.next();
+			ItemWheelActivity itemInfo = iterator.next();
 			if (!figureItemList.contains(itemInfo)) {
 				toRemove.add(itemInfo);
 			}
 		}
-		for (ItemInfo itemInfo : toRemove) {
+		for (ItemWheelActivity itemInfo : toRemove) {
 			removeBinding(itemInfo);
 		}
 
 		/*
 		 * bind new items
 		 */
-		for (ItemInfo itemInfo : figureItemList) {
+		for (ItemWheelActivity itemInfo : figureItemList) {
 			if (!mapping.containsValue(itemInfo)) {
 				insertItem(itemInfo);
 			}
 		}
 
-
 	}
 
-	private void insertItem(ItemInfo itemInfo) {
+	private void insertItem(ItemWheelActivity itemInfo) {
 
 		boolean inserted = false;
 		int index = initValue;
@@ -93,7 +93,7 @@ public class ItemWheelBindingSetSimple implements
 
 	}
 
-	private void removeBinding(ItemInfo itemInfo) {
+	private void removeBinding(ItemWheelActivity itemInfo) {
 		Set<Integer> keySet = mapping.keySet();
 		/*
 		 * TODO: optimize this using bidirectional map

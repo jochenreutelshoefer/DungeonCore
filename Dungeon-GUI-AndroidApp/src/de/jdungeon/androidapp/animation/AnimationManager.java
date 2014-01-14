@@ -35,8 +35,6 @@ public class AnimationManager {
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		System.out.println("Starting animation for: " + info.toString() + " - "
-				+ ani.toString());
 		animations.put(info, new AnimationTask(ani, System.currentTimeMillis(),
 				text));
 	}

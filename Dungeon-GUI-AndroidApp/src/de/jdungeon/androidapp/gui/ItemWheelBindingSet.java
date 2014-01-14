@@ -1,10 +1,11 @@
 package de.jdungeon.androidapp.gui;
 
-import game.InfoEntity;
 
-public interface ItemWheelBindingSet<T extends InfoEntity> {
+public interface ItemWheelBindingSet {
 
-	T getInfoEntity(int index);
+	ItemWheelActivity getActivity(int index);
 
 	void update(float time);
+
+	ItemActivityItemProvider getProvider();
 }

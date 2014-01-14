@@ -7,6 +7,7 @@ import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 import shrine.ShrineInfo;
 import control.ActionAssembler;
+import de.jdungeon.androidapp.gui.ItemWheelActivity;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
@@ -47,6 +48,13 @@ public class Control {
 
 	public void inventoryItemClicked(ItemInfo item) {
 		actionAssembler.wannaUseItem(item, null, false);
+	}
+
+	public void itemWheelActivityClicked(ItemWheelActivity item) {
+		Object o = item.getObject();
+		if (o instanceof ItemInfo) {
+			inventoryItemClicked((ItemInfo) o);
+		}
 	}
 
 	private void handleDoorInfoClick(DoorInfo doorInfo) {

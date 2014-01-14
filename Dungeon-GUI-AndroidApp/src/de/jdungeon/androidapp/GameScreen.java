@@ -35,6 +35,7 @@ import de.jdungeon.androidapp.gui.HealthBar;
 import de.jdungeon.androidapp.gui.HourGlassTimer;
 import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
+import de.jdungeon.androidapp.gui.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.ItemWheel;
 import de.jdungeon.androidapp.gui.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
@@ -153,9 +154,11 @@ public class GameScreen extends Screen {
 		/*
 		 * init wheel
 		 */
-		ItemWheel wheel = new ItemWheel(new JDPoint(780, 780), new JDDimension(
+		int selectedIndex = 16;
+		ItemWheel wheel = new ItemWheel(new JDPoint(50, 780), new JDDimension(
 				400, 400), figureInfo, this, new ItemWheelBindingSetSimple(
-				this.figureInfo, 20, 36));
+				selectedIndex, 36, new ItemActivityItemProvider(figureInfo,
+						this)), selectedIndex);
 		this.guiElements.add(wheel);
 
 		/*
@@ -853,7 +856,7 @@ public class GameScreen extends Screen {
 
 	}
 
-	public void setInfoEntity(ItemInfo item) {
+	public void setInfoEntity(InfoEntity item) {
 		this.infoPanel.setContent(item);
 
 	}

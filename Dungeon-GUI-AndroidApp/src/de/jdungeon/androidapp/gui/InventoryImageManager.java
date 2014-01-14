@@ -72,7 +72,7 @@ public class InventoryImageManager {
 		}
 
 		if (item.getItemClass().equals(Bunch.class)) {
-			return GUIImageManager.getImage(GUIImageManager.KEY,
+			return GUIImageManager.getImage(GUIImageManager.BUNCH,
 					screen.getGame());
 		}
 
