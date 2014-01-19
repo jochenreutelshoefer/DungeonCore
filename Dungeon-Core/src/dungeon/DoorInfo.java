@@ -63,13 +63,13 @@ public class DoorInfo extends InfoEntity {
 	}
 	
 	@Override
-	public boolean equals(Object o) {
-		if(o instanceof DoorInfo) {
-			if(((DoorInfo)o).d == this.d) {
-				return true;
-			}
-		}
-		return false;
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (!(obj instanceof DoorInfo))
+			return false;
+
+		return d.equals(((DoorInfo) obj).d);
 	}
 
 	public Boolean isPassable() {

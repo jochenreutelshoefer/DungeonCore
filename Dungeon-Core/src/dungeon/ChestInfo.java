@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ChestInfo extends InfoEntity {
 	
-	private Chest chest;
+	private final Chest chest;
 	
 	public ChestInfo(Chest c,DungeonVisibilityMap stats) {
 		super(stats);
@@ -29,6 +29,17 @@ public class ChestInfo extends InfoEntity {
 		return chest.hasLock();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (!(obj instanceof ChestInfo))
+			return false;
+
+		return chest.equals(((ChestInfo) obj).chest);
+	}
+
+	@Override
 	public Paragraph[] getParagraphs() {
 			return chest.getParagraphs();
 	}
@@ -37,8 +48,9 @@ public class ChestInfo extends InfoEntity {
 		return chest.getLocation();
 	}
 	
+	@Override
 	public ChestMemory getMemoryObject(FigureInfo info) {
-		return (ChestMemory)chest.getMemoryObject(info);
+		return chest.getMemoryObject(info);
 	}
 	
 	public ItemInfo[] getItems() {

@@ -11,11 +11,10 @@ package spell;
 
 
 
-import dungeon.Position;
 import figure.Figure;
+import figure.FigureInfo;
 import figure.percept.TextPercept;
-import gui.*;
-import game.DungeonGame;
+import game.InfoEntity;
 import game.JDEnv;
 public class GoldenHit extends Spell implements TargetSpell{
 	
@@ -26,8 +25,8 @@ public class GoldenHit extends Spell implements TargetSpell{
 								{7,5,5,20,2}
 								};
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public GoldenHit(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
@@ -35,20 +34,30 @@ public class GoldenHit extends Spell implements TargetSpell{
 		isPossibleInFight = true;
 		
 	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
 
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -56,10 +65,12 @@ public class GoldenHit extends Spell implements TargetSpell{
 		return false;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_GOLDENHIT;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_goldenHit_text");
 			return s;
@@ -77,6 +88,7 @@ public class GoldenHit extends Spell implements TargetSpell{
 		isPossibleInFight = true;
 	}
 	
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_goldenHit_name");
 	}
@@ -102,9 +114,10 @@ public class GoldenHit extends Spell implements TargetSpell{
 //		return 5*level;
 //	}
 	
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		
-				((Figure)mage).setGolden_hit(level);
+				mage.setGolden_hit(level);
 				//setzt nur die Trefferwahrscheinlichkeit f�r den n�chsten Schlag hoch
 				
 				//und l�st dann einen Schlag aus
@@ -122,6 +135,7 @@ public class GoldenHit extends Spell implements TargetSpell{
 	}
 	
 	
+	@Override
 	public String toString(){
 		return getName();
 	}

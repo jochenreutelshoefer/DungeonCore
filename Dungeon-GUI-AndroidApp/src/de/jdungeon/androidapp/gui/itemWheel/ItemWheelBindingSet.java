@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui;
+package de.jdungeon.androidapp.gui.itemWheel;
 
 
 public interface ItemWheelBindingSet {
@@ -7,5 +7,5 @@ public interface ItemWheelBindingSet {
 
 	void update(float time);
 
-	ItemActivityItemProvider getProvider();
+	ItemWheelActivityProvider getProvider();
 }

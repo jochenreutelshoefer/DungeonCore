@@ -1,11 +1,12 @@
 package spell;
 
-import dungeon.Position;
 import item.equipment.Armor;
 import item.equipment.Helmet;
 import fight.Slap;
 import figure.Figure;
+import figure.FigureInfo;
 import figure.hero.Hero;
+import game.InfoEntity;
 import game.JDEnv;
 
 public class MightyStruck extends Spell implements TargetSpell{
@@ -14,8 +15,8 @@ public class MightyStruck extends Spell implements TargetSpell{
 	
 	public static final String suffix = "mighty_struck";
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public MightyStruck(int level) {
 		super(level, values[level-1]);
@@ -32,26 +33,32 @@ public class MightyStruck extends Spell implements TargetSpell{
 
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return Spell.distanceMax(mage,target,2);
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_MIGHTYSTRUCK;
 	}
 
+	@Override
 	public String getText() {
 		return JDEnv.getString("spell_"+suffix+"_text");
 	}
 
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -59,6 +66,12 @@ public class MightyStruck extends Spell implements TargetSpell{
 		return false;
 	}
 
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			((Figure)target).getSlap(new Slap(mage,this.getStrength(),100,150));
@@ -81,6 +94,7 @@ public class MightyStruck extends Spell implements TargetSpell{
 
 	}
 
+@Override
 public String getName() {
 		
 		return JDEnv.getString("spell_"+suffix+"_name");

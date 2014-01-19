@@ -9,18 +9,15 @@
 
 package spell;
 
-import java.util.*;
-import game.DungeonGame;
-import game.JDEnv;
-import gui.Texts;
+import java.util.List;
 
-import dungeon.*;
-
+import dungeon.Room;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
+import game.JDEnv;
 
-public class Spy extends Spell {
+public class Spy extends NoTargetSpell {
 
 
 //	public int [] diff = { 6 , 13 };
@@ -30,8 +27,8 @@ public class Spy extends Spell {
 								{15,10,7,30,2}
 								};
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Spy(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
@@ -40,19 +37,23 @@ public class Spy extends Spell {
 		
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		
 		return true;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_SPY;
 	}
@@ -101,7 +102,8 @@ public class Spy extends Spell {
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
-	public void sorcer(Figure mage, Object target) {
+	@Override
+	public void sorcer(Figure mage) {
 				
 				List rooms = mage.getRoom().getNeighboursWithDoor();
 				
@@ -120,10 +122,12 @@ public class Spy extends Spell {
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_spy_name");
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_spy_text");
 			return s;

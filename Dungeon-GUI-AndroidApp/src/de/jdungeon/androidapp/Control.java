@@ -2,12 +2,16 @@ package de.jdungeon.androidapp;
 
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
+import game.InfoEntity;
 import game.JDGUI;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
+
+import java.util.List;
+
 import shrine.ShrineInfo;
 import control.ActionAssembler;
-import de.jdungeon.androidapp.gui.ItemWheelActivity;
+import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
@@ -19,6 +23,10 @@ public class Control {
 	private final JDGUI gui;
 	private final ActionAssembler actionAssembler;
 
+	public ActionAssembler getActionAssembler() {
+		return actionAssembler;
+	}
+
 	public Control(JDungeonApp game, JDGUI gui) {
 		this.app = game;
 		this.gui = gui;
@@ -27,21 +35,22 @@ public class Control {
 
 	}
 
-	public void objectClicked(Object clickedObject) {
+	public void objectClicked(Object clickedObject, boolean doubleClick) {
 		if (clickedObject instanceof ItemInfo) {
-			handleItemInfoClick(((ItemInfo) clickedObject));
+			handleItemInfoClick(((ItemInfo) clickedObject), doubleClick);
 		} else if (clickedObject instanceof FigureInfo) {
-			handleFigureInfoClick(((FigureInfo) clickedObject));
+			handleFigureInfoClick(((FigureInfo) clickedObject), doubleClick);
 		} else if (clickedObject instanceof ShrineInfo) {
-			handleShrineInfoClick(((ShrineInfo) clickedObject));
+			handleShrineInfoClick(((ShrineInfo) clickedObject), doubleClick);
 		} else if (clickedObject instanceof PositionInRoomInfo) {
-			handlePosInfoClick(((PositionInRoomInfo) clickedObject));
+			handlePosInfoClick(((PositionInRoomInfo) clickedObject),
+					doubleClick);
 		} else if (clickedObject instanceof RoomInfo) {
-			handleRoomInfoClick(((RoomInfo) clickedObject));
+			handleRoomInfoClick(((RoomInfo) clickedObject), doubleClick);
 		} else if (clickedObject instanceof ChestInfo) {
-			handleChestInfoClick(((ChestInfo) clickedObject));
+			handleChestInfoClick(((ChestInfo) clickedObject), doubleClick);
 		} else if (clickedObject instanceof DoorInfo) {
-			handleDoorInfoClick(((DoorInfo) clickedObject));
+			handleDoorInfoClick(((DoorInfo) clickedObject), doubleClick);
 		}
 
 	}
@@ -51,44 +60,47 @@ public class Control {
 	}
 
 	public void itemWheelActivityClicked(ItemWheelActivity item) {
+		if (item == null) {
+			return;
+		}
 		Object o = item.getObject();
 		if (o instanceof ItemInfo) {
 			inventoryItemClicked((ItemInfo) o);
 		}
 	}
 
-	private void handleDoorInfoClick(DoorInfo doorInfo) {
-		actionAssembler.doorClicked(doorInfo, false);
+	private void handleDoorInfoClick(DoorInfo doorInfo, boolean doubleClick) {
+		actionAssembler.doorClicked(doorInfo, doubleClick);
 
 	}
 
-	private void handleChestInfoClick(ChestInfo chestInfo) {
-		actionAssembler.chestClicked(chestInfo, false);
+	private void handleChestInfoClick(ChestInfo chestInfo, boolean doubleClick) {
+		actionAssembler.chestClicked(chestInfo, doubleClick);
 
 	}
 
-	private void handleRoomInfoClick(RoomInfo room) {
-		actionAssembler.roomClicked(room, false);
+	private void handleRoomInfoClick(RoomInfo room, boolean doubleClick) {
+		actionAssembler.roomClicked(room, doubleClick);
 
 	}
 
-	private void handlePosInfoClick(PositionInRoomInfo pos) {
-		actionAssembler.positionClicked(pos, false);
+	private void handlePosInfoClick(PositionInRoomInfo pos, boolean doubleClick) {
+		actionAssembler.positionClicked(pos, doubleClick);
 
 	}
 
-	private void handleShrineInfoClick(ShrineInfo info) {
+	private void handleShrineInfoClick(ShrineInfo info, boolean doubleClick) {
 		actionAssembler.shrineClicked(false);
 
 	}
 
-	private void handleFigureInfoClick(FigureInfo figure) {
-		actionAssembler.monsterClicked(figure, false);
+	private void handleFigureInfoClick(FigureInfo figure, boolean doubleClick) {
+		actionAssembler.monsterClicked(figure, doubleClick);
 
 	}
 
-	private void handleItemInfoClick(ItemInfo item) {
-		actionAssembler.itemClicked(item, false);
+	private void handleItemInfoClick(ItemInfo item, boolean doubleClick) {
+		actionAssembler.itemClicked(item, doubleClick);
 
 	}
 
@@ -111,5 +123,22 @@ public class Control {
 
 	public void endRound() {
 		actionAssembler.wannaEndRound();
+	}
+
+	public InfoEntity getUniqueTargetEntity(
+			Class<? extends InfoEntity> targetClass) {
+		if (targetClass.equals(FigureInfo.class)) {
+			List<FigureInfo> figureInfos = gui.getFigure().getRoomInfo()
+					.getFigureInfos();
+			if (figureInfos.size() == 2) {
+				// remove player
+				figureInfos.remove(gui.getFigure());
+				// enemy remains
+				return figureInfos.get(0);
+			}
+		}
+
+		return null;
+
 	}
 }

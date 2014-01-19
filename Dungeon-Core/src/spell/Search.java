@@ -8,16 +8,15 @@
  */
 package spell;
 
-import item.*;
-import game.DungeonGame;
-import game.JDEnv;
+import item.Item;
 
-import java.util.*;
+import java.util.List;
 
 import figure.Figure;
-import figure.monster.Monster;
+import figure.FigureInfo;
 import figure.percept.TextPercept;
-import gui.*;
+import game.InfoEntity;
+import game.JDEnv;
 
 
 
@@ -27,8 +26,8 @@ public class Search extends Spell {
 								{15,13,12,25,2}
 								};
 
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 
 
 	public Search(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
@@ -38,18 +37,22 @@ public class Search extends Spell {
 		isPossibleInFight = true;
 		
 	}
+	@Override
 	public int getType() {
 		return Spell.SPELL_SEARCH;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -57,6 +60,7 @@ public class Search extends Spell {
 		return false;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_search_text");
 			return s;
@@ -85,6 +89,7 @@ public class Search extends Spell {
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		
 		if(target instanceof Figure) {
@@ -93,7 +98,7 @@ public class Search extends Spell {
 		String s = new String();
 		List<Item> list = m.getItems();
 		for(int i = 0; i < list.size(); i++) {
-			Item it = (Item)list.get(i);
+			Item it = list.get(i);
 			s += it.toString()+"\n";	
 		}
 		if(list.size() == 0) {
@@ -106,9 +111,15 @@ public class Search extends Spell {
 		
 	}
 
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_search_name");
 	}

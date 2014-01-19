@@ -3,7 +3,7 @@ import dungeon.Door;
 import dungeon.DoorInfo;
 import figure.Figure;
 import figure.percept.TextPercept;
-import game.DungeonGame;
+import game.InfoEntity;
 import game.JDEnv;
 
 /**
@@ -20,8 +20,8 @@ public class KeyLocator extends Spell implements TargetSpell {
 								{6,12,7,30,1}
 								};
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public KeyLocator(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
@@ -30,22 +30,27 @@ public class KeyLocator extends Spell implements TargetSpell {
 		
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_KEYLOCATOR;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_keyLocator_text");
 			return s;
@@ -58,6 +63,7 @@ public class KeyLocator extends Spell implements TargetSpell {
 		isPossibleInFight = false;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Door) {
 			return true;
@@ -65,6 +71,7 @@ public class KeyLocator extends Spell implements TargetSpell {
 		return false;
 	}
 
+	@Override
 	public int getLernCost() {
 			return 1;
 		}
@@ -80,11 +87,17 @@ public class KeyLocator extends Spell implements TargetSpell {
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		if(target instanceof Door) {
 			tellDirection(((Door)target),mage);
 		}
 				
+	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return DoorInfo.class;
 	}
 
 	public void tellDirection(Door d,Figure f) {
@@ -101,6 +114,7 @@ public class KeyLocator extends Spell implements TargetSpell {
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_keyLocator_name");
 	}

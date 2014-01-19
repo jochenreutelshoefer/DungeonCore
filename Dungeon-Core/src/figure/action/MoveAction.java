@@ -14,13 +14,11 @@ package figure.action;
  */
 public class MoveAction extends Action {
 	
-	private int direction;
+	private final int direction;
 	
-	public MoveAction(/*int fighterIndex,*/int dir) {
-		
-		super(/*fighterIndex*/);
+	public MoveAction(int dir) {
+		super();
 		direction = dir;
-		
 	}
 
 	/**
@@ -30,6 +28,7 @@ public class MoveAction extends Action {
 		return direction;
 	}
 	
+	@Override
 	public String toString() {
 		return (this.getClass()+" :"+direction);
 	}

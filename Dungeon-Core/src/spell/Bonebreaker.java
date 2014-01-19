@@ -8,19 +8,15 @@
  */
 package spell;
 
-import java.util.LinkedList;
-
-import dungeon.Room;
-import game.DungeonGame;
-import game.JDEnv;
 import fight.Slap;
 import fight.SlapResult;
 import figure.Figure;
 import figure.hero.Hero;
-import figure.monster.Monster;
+import figure.monster.MonsterInfo;
 import figure.monster.Skeleton;
 import figure.percept.TextPercept;
-import gui.*;
+import game.InfoEntity;
+import game.JDEnv;
 
 public class Bonebreaker extends Spell implements TargetSpell {
 //	public static int[] diffArray = { 5, 13 };
@@ -30,8 +26,8 @@ public class Bonebreaker extends Spell implements TargetSpell {
 	public static int[][] values = { { 8, 5, 8, 12,2 }, { 15, 13, 12, 25,2 } };
 
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Bonebreaker(int level, int diffMin, int diff, int cost, int strength, int learnCost) {
 		super(level, diffMin, diff, cost, strength,learnCost);
@@ -41,13 +37,16 @@ public class Bonebreaker extends Spell implements TargetSpell {
 
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -55,6 +54,7 @@ public class Bonebreaker extends Spell implements TargetSpell {
 		return false;
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
@@ -64,10 +64,12 @@ public class Bonebreaker extends Spell implements TargetSpell {
 //		return 2 * level;
 //	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_BONEBREAKER;
 	}
 
+	@Override
 	public String getText() {
 		String s = JDEnv.getResourceBundle().getString("spell_bonebreaker_text");
 		return s;
@@ -90,6 +92,7 @@ public class Bonebreaker extends Spell implements TargetSpell {
 	}
 
 	
+	@Override
 	public void sorcer(Figure mage, Object target/*, int l*/) {
 		
 		if (target instanceof Figure) {
@@ -113,8 +116,14 @@ public class Bonebreaker extends Spell implements TargetSpell {
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_bonebreaker_name");
+	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return MonsterInfo.class;
 	}
 
 }

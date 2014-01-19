@@ -1,7 +1,6 @@
 package spell;
 import figure.Figure;
 import figure.percept.TextPercept;
-import game.DungeonGame;
 import game.JDEnv;
 
 /**
@@ -13,9 +12,8 @@ import game.JDEnv;
  * Window>Preferences>Java>Code Generation.
  */
 
-//import java.awt.event.*;
 
-public class Heal extends Spell {
+public class Heal extends NoTargetSpell {
 	
 //	public static int [] diff = { 4 , 7 };
 //	public static int [] diffMin = { 8 , 14};
@@ -24,13 +22,15 @@ public class Heal extends Spell {
 								{7,11,9,45,2}
 								};
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
@@ -50,15 +50,18 @@ public class Heal extends Spell {
 		
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		
 		return true;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_HEAL;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_heal_text");
 			return s;
@@ -82,6 +85,7 @@ public class Heal extends Spell {
 		isPossibleInFight = true;
 	}
 	
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_heal_name");
 	}
@@ -92,7 +96,8 @@ public class Heal extends Spell {
 	/**
 	 * @see Spell#fire(fighter, Object, int)
 	 */
-	public void sorcer(Figure mage, Object target) {
+	@Override
+	public void sorcer(Figure mage) {
 		
 				mage.heal(strength);
 				mage.healPoisonings();

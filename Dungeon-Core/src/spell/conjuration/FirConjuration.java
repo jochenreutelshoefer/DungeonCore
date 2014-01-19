@@ -7,10 +7,11 @@ import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import figure.Figure;
 import figure.other.Fir;
+import game.InfoEntity;
 
 public class FirConjuration extends Spell implements TargetSpell{
 
-	private int level;
+	private final int level;
 	
 	public FirConjuration(int lvl) {
 		this.level = lvl;
@@ -57,6 +58,11 @@ public class FirConjuration extends Spell implements TargetSpell{
 				Room room = mage.getRoom();
 				int pos = ((Position)target).getIndex();
 				room.figureEntersAtPosition(fir, pos);
+	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return PositionInRoomInfo.class;
 	}
 
 	@Override

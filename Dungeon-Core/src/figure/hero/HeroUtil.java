@@ -1,5 +1,6 @@
 package figure.hero;
 
+import figure.Spellbook;
 import item.equipment.Armor;
 import item.equipment.weapon.Club;
 import item.equipment.weapon.Lance;
@@ -8,6 +9,7 @@ import item.equipment.weapon.Weapon;
 import item.equipment.weapon.Wolfknife;
 import item.paper.Scroll;
 import spell.Bonebreaker;
+import spell.GoldenHit;
 import spell.Spell;
 
 public class HeroUtil {
@@ -15,10 +17,12 @@ public class HeroUtil {
 	public static void addHeroStartWeapon(Hero held) {
 
 		Weapon waffe;
-
+		Spellbook spells = new Spellbook();
+		held.setSpellbook(spells);
 		switch (held.getHeroCode()) {
 		case 1:
 			waffe = new Sword(25, false);
+			spells.addSpell(new GoldenHit(1));
 			break;
 		case 2:
 			waffe = new Club(25, false);
@@ -41,6 +45,7 @@ public class HeroUtil {
 			waffe = new Sword(100, false);
 			// System.out.println("HeroCode Error!");
 		}
+
 		held.takeItem(waffe, null);
 		held.takeItem(new Armor(10, false), null);
 

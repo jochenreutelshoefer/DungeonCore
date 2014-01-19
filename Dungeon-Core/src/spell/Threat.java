@@ -1,9 +1,9 @@
 package spell;
 
-import spell.Spell;
-import spell.TargetSpell;
 import fight.Frightening;
 import figure.Figure;
+import figure.FigureInfo;
+import game.InfoEntity;
 import game.JDEnv;
 
 public class Threat extends Spell implements TargetSpell{
@@ -13,47 +13,54 @@ public class Threat extends Spell implements TargetSpell{
 		};
 	
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Threat() {
 		super(1, values[0]);
 		this.isPossibleInFight = true;
 		this.isPossibleNormal = false;
-//		this.strength = 4;
-//		this.diff = 1;
-//		this.diffMin = 1;
-//		this.cost = 2;
-//		this.level = 1;
 	}
+	@Override
 	public int getType() {
 	
 		return Spell.SPELL_THREAT;
 	}
 	
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public String toString() {
 		return getName();
 	}
 
 
 
+	@Override
 	public String getText() {
 		
 		return JDEnv.getResourceBundle().getString("spell_threat_text");
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			int balance = mage.getKnowledgeBalance((Figure)target);
@@ -83,6 +90,7 @@ public class Threat extends Spell implements TargetSpell{
 			
 	}
 
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			int value = getStrength(mage,(Figure)target);
@@ -93,6 +101,7 @@ public class Threat extends Spell implements TargetSpell{
 
 	}
 
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_threat_name");
 

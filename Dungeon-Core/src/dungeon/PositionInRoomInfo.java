@@ -14,8 +14,9 @@ import gui.Paragraph;
 
 public class PositionInRoomInfo extends InfoEntity{ 
 	
-	Position pos;
-	public PositionInRoomInfo(Position p,DungeonVisibilityMap map) {
+	private final Position pos;
+
+	public PositionInRoomInfo(Position p, DungeonVisibilityMap map) {
 		super(map);
 		pos = p;
 	}
@@ -24,6 +25,16 @@ public class PositionInRoomInfo extends InfoEntity{
 		return pos.getIndex();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(! (obj instanceof PositionInRoomInfo)) return false;
+		return pos.equals(((PositionInRoomInfo) obj).pos);
+	}
+	
+	public int getPossibleFleeDirection() {
+		return pos.getPossibleFleeDirection();
+	}
 	
 	public JDPoint getLocation() {
 		return pos.getLocation();
@@ -50,10 +61,12 @@ public class PositionInRoomInfo extends InfoEntity{
 		}
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		return null;
 	}
 
+	@Override
 	public MemoryObject getMemoryObject(FigureInfo info) {
 		
 		return null;

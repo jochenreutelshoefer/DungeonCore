@@ -1743,9 +1743,12 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner, Tu
 					return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
 							ActionResult.IMPOSSIBLE_REASON_OTHER);
 				}
-
-				// if (game.getFight().getFightRoom() == this.getRoom()) {
 				int field = a.getTargetIndex();
+				if (field == -1) {
+					return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+							ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
+				}
+				// if (game.getFight().getFightRoom() == this.getRoom()) {
 				Position newPos = getRoom().getPositions()[field];
 				Figure neighbour = null;
 

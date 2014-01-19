@@ -1,19 +1,17 @@
 package spell;
 
+import item.Item;
+import item.ItemValueComparator;
+
 import java.util.Collections;
 import java.util.List;
 
-import dungeon.Position;
-
-import item.Item;
-import item.ItemValueComparator;
-import item.equipment.Armor;
-import item.equipment.Helmet;
-import fight.Slap;
 import figure.Figure;
+import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.percept.TextPercept;
+import game.InfoEntity;
 import game.JDEnv;
 
 public class StealOrc extends Spell implements TargetSpell{
@@ -29,8 +27,8 @@ public class StealOrc extends Spell implements TargetSpell{
 		isPossibleInFight = true;
 	}
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 
 	public StealOrc(int level, int diffMin, int diff, int cost, int strength,
 			int learnCost) {
@@ -41,26 +39,32 @@ public class StealOrc extends Spell implements TargetSpell{
 
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return Spell.distanceMax(mage,target,2);
 	}
 
+	@Override
 	public int getType() {
 		return Spell.SPELL_STEALORC;
 	}
 
+	@Override
 	public String getText() {
 		return JDEnv.getString("spell_" + suffix + "_text");
 	}
 
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if (target instanceof Figure) {
 			return true;
@@ -84,6 +88,7 @@ public class StealOrc extends Spell implements TargetSpell{
 		}
 	}
 
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		if (target instanceof Figure) {
 			List l = ((Figure) target).getAllItems();
@@ -117,6 +122,12 @@ public class StealOrc extends Spell implements TargetSpell{
 
 	}
 
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
+	@Override
 	public String getName() {
 
 		return JDEnv.getString("spell_" + suffix + "_name");

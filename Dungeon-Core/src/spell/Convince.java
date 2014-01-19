@@ -8,22 +8,20 @@
  */
 package spell;
 
-import java.util.*;
-import game.DungeonGame;
-import game.JDEnv;
 import figure.Figure;
-import figure.hero.Hero;
+import figure.FigureInfo;
 import figure.monster.Monster;
 import figure.percept.TextPercept;
-import gui.*;
+import game.InfoEntity;
+import game.JDEnv;
 public class Convince extends Spell implements TargetSpell{
 
 	public static int[][] values = { { 7, 4, 7, 30,1 }, {
 			12, 12, 9, 20,1 }
 	};
 
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Convince(
 		int level,
@@ -37,14 +35,22 @@ public class Convince extends Spell implements TargetSpell{
 
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
@@ -52,10 +58,12 @@ public class Convince extends Spell implements TargetSpell{
 	public boolean fightModus(){
 		return isPossibleInFight;
 	}
+	@Override
 	public int getType() {
 		return Spell.SPELL_CONVINCE;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -69,6 +77,7 @@ public class Convince extends Spell implements TargetSpell{
 		return isPossibleNormal;
 	}
 	
+	@Override
 	public String getText() {
 		String s = JDEnv.getResourceBundle().getString("spell_convince_text");
 			return s;
@@ -88,6 +97,7 @@ public class Convince extends Spell implements TargetSpell{
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target/*, int l*/) {
 
 		if(target instanceof Monster) {
@@ -124,6 +134,7 @@ public class Convince extends Spell implements TargetSpell{
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_convince_name");
 	}

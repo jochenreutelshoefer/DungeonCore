@@ -1,9 +1,11 @@
 package spell;
-import item.*;
-import game.JDEnv;
+import item.Item;
+import item.ItemInfo;
 import item.equipment.EquipmentItem;
 import figure.Figure;
 import figure.percept.TextPercept;
+import game.InfoEntity;
+import game.JDEnv;
 
 
 /**
@@ -24,9 +26,10 @@ public class Repair extends Spell implements TargetSpell {
 								};
 	
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof EquipmentItem) {
 			return true;
@@ -34,11 +37,13 @@ public class Repair extends Spell implements TargetSpell {
 		return false;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
@@ -49,6 +54,7 @@ public class Repair extends Spell implements TargetSpell {
 		
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
@@ -61,10 +67,12 @@ public class Repair extends Spell implements TargetSpell {
 //		return isPossibleNormal;
 //	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_REPAIR;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_rapair_text");
 			return s;
@@ -92,6 +100,7 @@ public class Repair extends Spell implements TargetSpell {
 //		return diffMin[level-1];
 //	}
 
+@Override
 public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_rapair_name");
 	}
@@ -109,6 +118,7 @@ public String getName() {
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		//ItemChoiceView v = new ItemChoiceView(mage.getGame().getGui().getMainFrame(),"Gegenstand ausw�hlen",this,mage, false);
 		if(target instanceof Item) {
@@ -117,6 +127,11 @@ public String getName() {
 			mage.tellPercept(new TextPercept(str));
 		}
 		
+	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return ItemInfo.class;
 	}
 
 	/**

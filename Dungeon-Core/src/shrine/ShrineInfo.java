@@ -34,6 +34,16 @@ public class ShrineInfo extends InfoEntity  {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (!(obj instanceof ShrineInfo))
+			return false;
+
+		return s.equals(((ShrineInfo) obj).s);
+	}
+
+	@Override
 	public ShrineMemory getMemoryObject(FigureInfo info) {
 		return s.getMemoryObject(info);
 	}

@@ -3,14 +3,16 @@ package spell.conjuration;
 import spell.Spell;
 import spell.TargetSpell;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.other.Lioness;
+import game.InfoEntity;
 
 public class LionessConjuration extends Spell implements TargetSpell  {
 
-private int level;
+private final int level;
 	
 	public LionessConjuration(int lvl) {
 		this.level = lvl;
@@ -57,6 +59,11 @@ private int level;
 				Room room = mage.getRoom();
 				int pos = ((Position)target).getIndex();
 				room.figureEntersAtPosition(lioness, pos);
+	}
+
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return PositionInRoomInfo.class;
 	}
 
 	@Override

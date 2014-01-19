@@ -32,7 +32,7 @@ import dungeon.Position;
  * Schwierigkeitswert (wirkt sich auf die Wahrscheinlichkeit des gelingens aus)
  * und einen Kosten-Wert (Menge an Zauberstaub).
  */
-public abstract class Spell/* extends JDEnv */{
+public abstract class Spell {
 	
 	
 	public static final int SPELL_BONEBREAKER = 1;
@@ -462,6 +462,8 @@ public abstract class Spell/* extends JDEnv */{
 	}
 
 	public abstract void sorcer(Figure mage, Object target);
+	
+	public abstract Class<? extends InfoEntity> getTargetClass();
 
 	/**
 	 * Returns the difficulty.
@@ -472,10 +474,6 @@ public abstract class Spell/* extends JDEnv */{
 	public int getDifficulty() {
 		return this.getConfigValues()[1];
 	}
-
-//	public int getDiffMin() {
-//		return diffMin;
-//	}
 
 	/**
 	 * Returns the worth.

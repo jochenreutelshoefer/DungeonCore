@@ -8,15 +8,13 @@
  */
 package spell;
 
-import java.util.*;
-import game.DungeonGame;
-import game.JDEnv;
 import figure.Figure;
-import figure.hero.Hero;
+import figure.FigureInfo;
 import figure.monster.Monster;
 import figure.monster.UndeadMonster;
 import figure.percept.TextPercept;
-import gui.*;
+import game.InfoEntity;
+import game.JDEnv;
 
 public class Light extends Spell implements TargetSpell{
 
@@ -26,19 +24,23 @@ public class Light extends Spell implements TargetSpell{
 		super(level, diffMin, diff, cost, strength, lerncost);
 	}
 
+	@Override
 	public String getText() {
 		String s = JDEnv.getResourceBundle().getString("spell_light_text");
 		return s;
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return false;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return true;
 	}
@@ -47,6 +49,7 @@ public class Light extends Spell implements TargetSpell{
 		super(level, values[level - 1]);
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -54,6 +57,7 @@ public class Light extends Spell implements TargetSpell{
 		return false;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_LIGHT;
 	}
@@ -66,11 +70,15 @@ public class Light extends Spell implements TargetSpell{
 		return isPossibleNormal();
 	}
 
-	
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
 
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target) {
 
 		if (target instanceof Monster) {
@@ -105,6 +113,7 @@ public class Light extends Spell implements TargetSpell{
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_light_name");
 	}

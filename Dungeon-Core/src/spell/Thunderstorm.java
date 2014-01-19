@@ -9,27 +9,22 @@
 
 package spell;
 
-import java.util.*;
+import java.util.List;
 
 import dungeon.Door;
 import dungeon.Position;
-import game.DungeonGame;
-import game.JDEnv;
 import fight.Frightening;
 import figure.Figure;
-import figure.monster.Monster;
 import figure.percept.TextPercept;
+import game.JDEnv;
 
-public class Thunderstorm extends Spell {
+public class Thunderstorm extends NoTargetSpell {
 
-//	public int[] diff = { 5, 13 };
-//
-//	public int[] diffMin = { 10, 15 };
 
 	public static int[][] values = { { 10, 5, 9, 10,2 }, { 15, 13, 12, 30,3 } };
 
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 
 	public Thunderstorm(int level, int diffMin, int diff, int cost, int strength, int lerncost) {
 		super(level, diffMin, diff, cost, strength, lerncost);
@@ -37,17 +32,21 @@ public class Thunderstorm extends Spell {
 		isPossibleInFight = true;
 
 	}
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
+	@Override
 	public int getType() {
 		return Spell.SPELL_THUNDERSTORM;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		
 		return true;
@@ -61,6 +60,7 @@ public class Thunderstorm extends Spell {
 //		return isPossibleNormal;
 //	}
 
+	@Override
 	public String getText() {
 		String s = JDEnv.getResourceBundle().getString(
 				"spell_thunderstorm_text");
@@ -100,12 +100,13 @@ public class Thunderstorm extends Spell {
 	/**
 	 * @see Spell#fire(fighter, Object, int)
 	 */
-	public void sorcer(Figure mage, Object target) {
+	@Override
+	public void sorcer(Figure mage) {
 		if(mage.getRoom().fightRunning()) {
 		List<Figure> monster = mage.getRoom().getFight().getFightFigures();
 		boolean first = false;
 		for (int i = 0; i < monster.size(); i++) {
-			Figure m = (Figure) monster.get(i);
+			Figure m = monster.get(i);
 			if (m != mage) {
 				if (!first) {
 					first = true;
@@ -140,6 +141,7 @@ public class Thunderstorm extends Spell {
 		
 	}
 
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_thunderstorm_name");
 	}

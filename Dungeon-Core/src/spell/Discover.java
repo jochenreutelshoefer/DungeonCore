@@ -7,13 +7,12 @@
 package spell;
 
 
-import dungeon.HiddenSpot;
 import dungeon.Door;
-import game.DungeonGame;
-import game.JDEnv;
+import dungeon.HiddenSpot;
 import dungeon.Room;
 import figure.Figure;
 import figure.percept.TextPercept;
+import game.JDEnv;
 
 /**
  * @author Jochen
@@ -21,7 +20,7 @@ import figure.percept.TextPercept;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class Discover extends Spell {
+public class Discover extends NoTargetSpell {
 //	public int [] diff = { 3 , 13 };
 //	public int [] diffMin = { 6 , 15};
 	
@@ -29,8 +28,8 @@ public class Discover extends Spell {
 								{15,10,7,30,2}
 								};
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Discover(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength,lerncost);
@@ -39,14 +38,17 @@ public class Discover extends Spell {
 		
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		return true;
 	}
@@ -59,6 +61,7 @@ public class Discover extends Spell {
 		isPossibleInFight = false;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_DISCOVER;
 	}
@@ -97,7 +100,8 @@ public class Discover extends Spell {
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
-	public void sorcer(Figure mage, Object target) {
+	@Override
+	public void sorcer(Figure mage) {
 				
 				Room r = mage.getGame().getDungeon().getRoom(mage.getLocation());
 				HiddenSpot spot = r.getSpot();
@@ -129,10 +133,12 @@ public class Discover extends Spell {
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return  JDEnv.getResourceBundle().getString("spell_discover_name");
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_discover_text");
 			return s;

@@ -1,6 +1,7 @@
 package de.jdungeon.androidapp;
 
 import figure.FigureInfo;
+import game.InfoEntity;
 import graphics.GraphicObject;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
@@ -15,8 +16,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import de.jdungeon.androidapp.animation.AnimationFrame;
 import de.jdungeon.androidapp.animation.AnimationManager;
+import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
+import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 
@@ -29,7 +32,8 @@ public class DrawUtils {
 	private static void drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
 			JDPoint viewportPosition, RoomInfo roomInfo, int roomSize,
-			int roomOffsetX, int roomOffsetY) {
+			int roomOffsetX, int roomOffsetY, GameScreen screen) {
+
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {
 			if (graphicObject != null) {
 
@@ -58,11 +62,25 @@ public class DrawUtils {
 						}
 					}
 
+					boolean drawHighlightBoxOnTopOfItem = clickedObject instanceof DoorInfo;
+					if (!drawHighlightBoxOnTopOfItem) {
+						drawHighlightBox(g, viewportPosition, screen,
+								jdGraphicObject, clickedObject);
+					}
+
+					/*
+					 * draw the image
+					 */
 					g.drawScaledImage(im,
 							image.getPosX() - viewportPosition.getX(),
 							image.getPosY() - viewportPosition.getY(),
 							image.getWidth(), image.getHeight(), 0, 0,
 							im.getWidth(), im.getHeight());
+
+					if (drawHighlightBoxOnTopOfItem) {
+						drawHighlightBox(g, viewportPosition, screen,
+								jdGraphicObject, clickedObject);
+					}
 
 					if (showText != null) {
 						/*
@@ -101,6 +119,49 @@ public class DrawUtils {
 					if (image != null) {
 						JDRectangle destinationRectangle = graphicObject
 								.getRectangle();
+						/*
+						 * draw highlight background if necessary
+						 */
+						if (clickedObject instanceof InfoEntity) {
+							InfoEntity highlightedEntity = screen
+									.getHighlightedEntity();
+							if (highlightedEntity != null) {
+								if (clickedObject.equals(highlightedEntity)) {
+									Image highlightImage = GUIImageManager
+											.getImage(
+													GUIImageManager.HIGHLIGHT,
+													screen.getGame());
+									int yellow = Color.YELLOW;
+
+									int x1 = destinationRectangle.getX()
+											- viewportPosition.getX();
+									int y1 = destinationRectangle.getY()
+											- viewportPosition.getY();
+									int x2 = x1
+											+ destinationRectangle.getWidth();
+									int y2 = y1
+											+ destinationRectangle.getHeight();
+
+									g.drawLine(x1, y1, x2, y1, yellow);
+									g.drawLine(x1, y1, x1, y2, yellow);
+									g.drawLine(x1, y2, x2, y2, yellow);
+									g.drawLine(x2, y1, x2, y2, yellow);
+									// g.drawScaledImage(highlightImage,
+									// destinationRectangle.getX()
+									// - viewportPosition.getX(),
+									// destinationRectangle.getY()
+									// - viewportPosition.getY(),
+									// destinationRectangle.getWidth(),
+									// destinationRectangle.getHeight(),
+									// 0, 0, highlightImage.getWidth(),
+									// highlightImage.getHeight());
+								}
+							}
+						}
+
+						/*
+						 * draw the image
+						 */
 
 						g.drawScaledImage(
 								image,
@@ -120,6 +181,45 @@ public class DrawUtils {
 		g.drawString(roomInfo.getNumber().getX() + "/"
 				+ roomInfo.getNumber().getY(), roomOffsetX + roomSize / 2,
 				roomOffsetY + roomSize / 2, p);
+	}
+
+	private static void drawHighlightBox(Graphics g, JDPoint viewportPosition,
+			GameScreen screen, JDGraphicObject jdGraphicObject,
+			Object clickedObject) {
+		/*
+		 * draw highlight background if necessary
+		 */
+		if (clickedObject instanceof InfoEntity) {
+			InfoEntity highlightedEntity = screen.getHighlightedEntity();
+			JDRectangle rectangle = jdGraphicObject.getRectangle();
+			if (highlightedEntity != null) {
+				if (clickedObject.equals(highlightedEntity)) {
+					Image highlightImage = GUIImageManager.getImage(
+							GUIImageManager.HIGHLIGHT, screen.getGame());
+
+					int yellow = Color.YELLOW;
+
+					int x1 = rectangle.getX() - viewportPosition.getX();
+					int y1 = rectangle.getY() - viewportPosition.getY();
+					int x2 = x1 + rectangle.getWidth();
+					int y2 = y1 + rectangle.getHeight();
+
+					// int x1 = image.getPosX()
+					// - viewportPosition.getX();
+					// int y1 = image.getPosY()
+					// - viewportPosition.getY();
+					// int x2 = x1
+					// + image.getWidth();
+					// int y2 = y1
+					// + image.getHeight();
+
+					g.drawLine(x1, y1, x2, y1, yellow);
+					g.drawLine(x1, y1, x1, y2, yellow);
+					g.drawLine(x1, y2, x2, y2, yellow);
+					g.drawLine(x2, y1, x2, y2, yellow);
+				}
+			}
+		}
 	}
 
 	private static void clearNulls(List<?> l) {
@@ -142,6 +242,6 @@ public class DrawUtils {
 				.put(roomInfo.getPoint(), graphicObjectsForRoom);
 		DrawUtils.drawObjects(g, graphicObjectsForRoom,
 				screen.getViewportPosition(), roomInfo, screen.getRoomSize(),
-				roomOffsetX, roomOffsetY);
+				roomOffsetX, roomOffsetY, screen);
 	}
 }

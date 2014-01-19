@@ -8,32 +8,17 @@ package figure.action;
 
 
 /**
- * Flieh-Aktion. Enthaelt die Fluchtrichtung
+ * Flieh-Aktion.
  */
 public class FleeAction extends Action {
 	
-	//int direction;
 	private boolean panic = false;
 	
-	public FleeAction(/*int fighterIndex,int dir,*/ boolean panic) {
-		super(/*fighterIndex*/);
+	public FleeAction(boolean panic) {
+		super();
 	    this.panic = panic;
-		//direction = dir;
 		
 	}
 	
-//	FleeAction(int dir) {
-//		direction = dir;
-//	}
 
-	/**
-	 * @return Returns the direction.
-	 */
-//	public int getDirection() {
-//		return direction;
-//	}
-	
-//	public String toString() {
-//		return (this.getClass()+" :"+direction);
-//	}
 }

@@ -29,6 +29,10 @@ public class GUIImageManager {
 	public static final String HEART_ICON = "guiItems/heart_icon.gif";
 	public static final String TARGET_ICON = "guiItems/target_icon.gif";
 	public static final String SHIELD_ICON = "guiItems/shield_icon.gif";
+	public static final String HIGHLIGHT = "guiItems/highlight_square.gif";
+	public static final String HAMMER = "guiItems/icon_hammer2.gif";
+	public static final String HAMMER2 = "guiItems/TO_hammer.gif";
+	public static final String RUN_ICON = "guiItems/run.gif";
 
 	public static AbstractImageLoader<?> loader;
 

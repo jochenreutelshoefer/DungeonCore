@@ -275,15 +275,15 @@ public class InventoryPanel extends SlidingGUIElement {
 			this.getScreen().setInfoEntity(item);
 
 			if (type != -1) {
-			if(action.equals(ItemActionType.change)) {
-			this.getScreen().getControl()
-					.inventoryItemDoubleClicked(type, item);
-			}	
+				if (action.equals(ItemActionType.change)) {
+					this.getScreen().getControl()
+							.inventoryItemDoubleClicked(type, item);
+				}
 				if (action.equals(ItemActionType.drop)) {
 					this.getScreen().getControl()
 							.inventoryItemLongClicked(type, item);
 				}
-		}
+			}
 		}
 
 	}

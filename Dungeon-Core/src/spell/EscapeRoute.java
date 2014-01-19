@@ -1,7 +1,9 @@
 package spell;
 
 import dungeon.Door;
+import dungeon.DoorInfo;
 import figure.Figure;
+import game.InfoEntity;
 import game.JDEnv;
 
 public class EscapeRoute extends TimedSpell {
@@ -14,8 +16,8 @@ public class EscapeRoute extends TimedSpell {
 
 	Figure mage;
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 
 	public EscapeRoute(int level) {
 		super(level, values[level - 1]);
@@ -24,22 +26,27 @@ public class EscapeRoute extends TimedSpell {
 	}
 
 
+	@Override
 	public int getType() {
 		return Spell.SPELL_ESCAPEROUTE;
 	}
 
+	@Override
 	public String getText() {
 		return JDEnv.getString("spell_"+suffix+"_text");
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Door) {
 			return true;
@@ -47,6 +54,7 @@ public class EscapeRoute extends TimedSpell {
 		return false;
 	}
 
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		if (target instanceof Door) {
 			Spell.addTimedSpell(new EscapeRouteInstance(this.getStrength(),
@@ -54,6 +62,12 @@ public class EscapeRoute extends TimedSpell {
 		}
 	}
 
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return DoorInfo.class;
+	}
+
+	@Override
 	public String getName() {
 		
 		return JDEnv.getString("spell_"+suffix+"_name");

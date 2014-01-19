@@ -1,11 +1,13 @@
-package de.jdungeon.androidapp.gui;
+package de.jdungeon.androidapp.gui.itemWheel;
 
 import item.ItemInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.gui.InventoryImageManager;
 import de.jdungeon.game.Image;
 import figure.hero.HeroInfo;
 
@@ -29,11 +31,18 @@ public class ItemActivityItemProvider implements ItemWheelActivityProvider {
 
 	}
 
+	@Override
 	public Image getActivityImage(ItemWheelActivity a) {
 		if (a.getObject() instanceof ItemInfo) {
 			return InventoryImageManager.getImage((ItemInfo)a.getObject(), screen);
 		}
 		return null;
+	}
+
+	@Override
+	public void activityPressed(ItemWheelActivity infoEntity) {
+		Control control = screen.getControl();
+		control.itemWheelActivityClicked(infoEntity);
 	}
 
 }

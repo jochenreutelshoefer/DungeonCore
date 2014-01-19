@@ -7,8 +7,11 @@
 package spell;
 
 
-import dungeon.*;
+import dungeon.Door;
+import dungeon.Room;
 import figure.Figure;
+import figure.FigureInfo;
+import game.InfoEntity;
 import game.JDEnv;
 
 /**
@@ -19,15 +22,13 @@ import game.JDEnv;
  */
 public class Raid extends Spell implements TargetSpell {
 
-//	public int[] diff = { 4, 4 };
-//	public int[] diffMin = { 7, 8 };
 
 	public static int[][] values = { { 7, 3, 6, 10,1 }, {
 			7, 5, 5, 20,2 }
 	};
 
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 
 	public Raid(
 		int level,
@@ -41,19 +42,23 @@ public class Raid extends Spell implements TargetSpell {
 
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_raid_text");
 			return s;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
@@ -62,6 +67,7 @@ public class Raid extends Spell implements TargetSpell {
 //		return level;
 //	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_RAID;
 	}
@@ -82,10 +88,12 @@ public class Raid extends Spell implements TargetSpell {
 		isPossibleInFight =false;
 	}
 
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_raid_name");
 	}
 
+	@Override
 	public boolean isApplicable(Figure mage, Object o) {
 		if (o instanceof Figure) {
 			Room targetRoom = ((Figure) o).getRoom();
@@ -109,6 +117,7 @@ public class Raid extends Spell implements TargetSpell {
 	//			return 5*level;
 	//		}
 
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		
 		
@@ -123,6 +132,12 @@ public class Raid extends Spell implements TargetSpell {
 		
 	}
 
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
+	@Override
 	public String toString() {
 		return getName();
 	}

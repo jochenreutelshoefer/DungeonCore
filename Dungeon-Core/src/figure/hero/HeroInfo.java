@@ -15,6 +15,7 @@ import item.equipment.Helmet;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -195,13 +196,12 @@ public class HeroInfo extends FigureInfo {
 		return -1;
 	}
 
-	public LinkedList getSpellBuffer() {
+	public List<SpellInfo> getSpellBuffer() {
 		if (map.getFigure().equals(h)) {
-
-			LinkedList res = new LinkedList();
-			List l = h.getCharacter().getSpellBuffer();
-			for (Iterator iter = l.iterator(); iter.hasNext();) {
-				Spell element = (Spell) iter.next();
+			List<SpellInfo> res = new ArrayList<SpellInfo>();
+			List<Spell> l = h.getCharacter().getSpellBuffer();
+			for (Iterator<Spell> iter = l.iterator(); iter.hasNext();) {
+				Spell element = iter.next();
 				res.add(new SpellInfo(element, map));
 			}
 			return res;

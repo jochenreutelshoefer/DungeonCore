@@ -1076,6 +1076,9 @@ public class GraphicObjectRenderer {
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r,
 			Object obj, int xcoord, int ycoord, List<?> aniObs) {
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
+		if (r == null) {
+			return graphObs;
+		}
 
 		/*
 		 * room

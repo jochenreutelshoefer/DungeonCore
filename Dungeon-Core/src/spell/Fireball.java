@@ -9,58 +9,51 @@
 
 package spell;
 
-import java.util.*;
-
-import dungeon.Position;
-
-import util.Arith;
-import game.DungeonGame;
-import game.JDEnv;
 import fight.Slap;
 import fight.SlapResult;
 import figure.Figure;
+import figure.FigureInfo;
 import figure.hero.Hero;
-import figure.monster.Monster;
 import figure.percept.TextPercept;
-import gui.*;
+import game.InfoEntity;
+import game.JDEnv;
+import util.Arith;
+import dungeon.Position;
 
 public class Fireball extends Spell implements TargetSpell{
 
-	//public static int[] diffArray = { 6, 13 };
-
-	//public static int[] diffMinArray = { 10, 15 };
-	
-	//diffMin , diff, cost, strength, lerncost
 
 	public static int[][] VALUES = { { 10, 6, 5, 9 ,1}, { 17, 13, 7, 24,2 } };
 
-	// public fireball_spell() {
-	// target = spell.TARGET_SELF;
-	// normal = false;
-	// fight = true;
-	// level = 1;
-	// worth = 10;
-	// }
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
 
 	public Fireball(int level, int diffMin, int diff, int cost, int strength, int lerncost) {
 		super(level, diffMin, diff, cost, strength, lerncost);
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return true;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return false;
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_FIREBALL;
 	}
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -69,6 +62,7 @@ public class Fireball extends Spell implements TargetSpell{
 	}
 	
 
+	@Override
 	public String getText() {
 		String s = JDEnv.getResourceBundle().getString("spell_fireball_text");
 		return s;
@@ -93,30 +87,12 @@ public class Fireball extends Spell implements TargetSpell{
 		this.level = level;
 	}
 
-//	/**
-//	 * @see Spell#getDifficulty(int)
-//	 */
-//	public int getDifficulty() {
-//		return diff;
-//	}
-//
-//	/**
-//	 * @see Spell#getDifficultyMin(int)
-//	 */
-//	public int getDifficultyMin() {
-//		return diffMin;
-//	}
-//
-//	/**
-//	 * @see Spell#getCost(int)
-//	 */
-//	public int getCost(int level) {
-//		return level * 8;
-//	}
+
 
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target) {
 
 		
@@ -141,6 +117,7 @@ public class Fireball extends Spell implements TargetSpell{
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_fireball_name");
 	}

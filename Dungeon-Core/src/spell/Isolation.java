@@ -14,13 +14,14 @@ package spell;
  */
 import figure.Figure;
 import figure.percept.TextPercept;
-import game.DungeonGame;
+import game.InfoEntity;
 import game.JDEnv;
-import dungeon.Room;
-import dungeon.Door;
-import dungeon.DoorBlock;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import dungeon.Door;
+import dungeon.Room;
 public class Isolation extends TimedSpell {
 	
 //	public static int[] diffArray = { 5, 13 };
@@ -31,8 +32,8 @@ public class Isolation extends TimedSpell {
 								};
 	
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	List doors = new LinkedList();
 	
 	public Isolation(int level){
@@ -41,27 +42,33 @@ public class Isolation extends TimedSpell {
 		isPossibleInFight = true;
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
 	
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_isolation_name");
 	}
 	
+	@Override
 	public String getText() {
 		return JDEnv.getResourceBundle().getString("spell_isolation_text");
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_ISOLATION;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		
 		return true;
@@ -83,6 +90,7 @@ public class Isolation extends TimedSpell {
 		return true;
 	}
 	
+	@Override
 	public void sorcer(Figure sorcerer, Object o) {
 		Room r = sorcerer.getRoom();
 		Door[] d = r.getDoors();
@@ -93,6 +101,11 @@ public class Isolation extends TimedSpell {
 		
 	}
 	
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return null;
+	}
+
 	public void stopEffect(){
 		for(int i =0 ; i < doors.size(); i++) {
 			((Door)doors.get(i)).removeBlocking(this);

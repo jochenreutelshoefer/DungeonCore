@@ -11,6 +11,8 @@ import game.JDEnv;
 import game.JDGUI;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
+import graphics.ImageManager;
+import gui.Paragraphable;
 import item.ItemInfo;
 import item.equipment.weapon.Club;
 
@@ -35,9 +37,10 @@ import de.jdungeon.androidapp.gui.HealthBar;
 import de.jdungeon.androidapp.gui.HourGlassTimer;
 import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
-import de.jdungeon.androidapp.gui.ItemActivityItemProvider;
-import de.jdungeon.androidapp.gui.ItemWheel;
-import de.jdungeon.androidapp.gui.ItemWheelBindingSetSimple;
+import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
+import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
+import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
+import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequenceManager;
@@ -45,10 +48,11 @@ import de.jdungeon.androidapp.movieSequence.StraightLineScroller;
 import de.jdungeon.androidapp.movieSequence.TrivialScaleSequence;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.Screen;
 import de.jdungeon.util.ScrollMotion;
-import dungeon.Chest;
+import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
@@ -73,15 +77,20 @@ public class GameScreen extends Screen {
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
 	private final List<GUIElement> guiElements = new ArrayList<GUIElement>();
 	private final InfoPanel infoPanel;
-	GameOverView gos = null;
+	private GameOverView gos = null;
 
 	private JDPoint viewportPosition;
 	private JDPoint targetViewportPosition;
-	double diffRatio = 1;
+	private final double diffRatio = 1;
 	private int roomSize = 200;
 	private final int maxRoomSize = 400;
 	private final int minRoomsize = 100;
 	private final Control control;
+	private InfoEntity highlightedEntity = null;
+
+	public InfoEntity getHighlightedEntity() {
+		return highlightedEntity;
+	}
 
 	private long lastDoubleTapEventTime = -1;
 	private long lastTouchEventTime = -1;
@@ -132,8 +141,7 @@ public class GameScreen extends Screen {
 				this);
 		this.guiElements.add(healthView);
 		HealthBar dustView = new HealthBar(new JDPoint(posX, 25),
-				new JDDimension(
-				200, 20), figureInfo, HealthBar.Kind.dust, this);
+				new JDDimension(200, 20), figureInfo, HealthBar.Kind.dust, this);
 		this.guiElements.add(dustView);
 
 		/*
@@ -150,16 +158,29 @@ public class GameScreen extends Screen {
 				this.screenSize.getHeight() / 2 + 10), new JDDimension(36, 60),
 				this, figureInfo);
 		this.guiElements.add(hourglass);
-		
+
 		/*
-		 * init wheel
+		 * init item wheel
 		 */
-		int selectedIndex = 16;
-		ItemWheel wheel = new ItemWheel(new JDPoint(50, 780), new JDDimension(
-				400, 400), figureInfo, this, new ItemWheelBindingSetSimple(
-				selectedIndex, 36, new ItemActivityItemProvider(figureInfo,
-						this)), selectedIndex);
-		this.guiElements.add(wheel);
+		int selectedIndexItem = 16;
+		ItemWheel wheelItems = new ItemWheel(new JDPoint(50, 780),
+				new JDDimension(400, 400), figureInfo, this,
+				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
+						new ItemActivityItemProvider(figureInfo, this)),
+				selectedIndexItem, null);
+		this.guiElements.add(wheelItems);
+
+		/*
+		 * init skills wheel
+		 */
+		int selectedIndexSkills = 20;
+		ItemWheel wheelSkills = new ItemWheel(new JDPoint(780, 780),
+				new JDDimension(400, 400), figureInfo, this,
+				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
+						new SkillActivityProvider(figureInfo, this)),
+				selectedIndexSkills,
+				(Image) ImageManager.inventory_box_normal.getImage());
+		this.guiElements.add(wheelSkills);
 
 		/*
 		 * init game over view
@@ -168,9 +189,9 @@ public class GameScreen extends Screen {
 		int height = this.screenSize.getHeight();
 		int widghtFifth = (width / 5);
 		int heightFifth = (height / 4);
-		gos = new GameOverView(new JDPoint((width / 2)
-				- widghtFifth, (height / 2) - heightFifth), new JDDimension(
-				2 * widghtFifth, 2 * heightFifth), this);
+		gos = new GameOverView(new JDPoint((width / 2) - widghtFifth,
+				(height / 2) - heightFifth), new JDDimension(2 * widghtFifth,
+				2 * heightFifth), this);
 		this.guiElements.add(gos);
 
 		this.gui = new AndroidScreenJDGUI(this);
@@ -416,7 +437,11 @@ public class GameScreen extends Screen {
 				}
 
 				if (!guiOP) {
-					scrollTo(this.figureInfo.getRoomNumber(), 10f);
+					Object clickedObject = findClickedObject(doubleTapCoordinates);
+					control.objectClicked(clickedObject, true);
+					setInfoEntity(((InfoEntity) clickedObject));
+					setHighlightedEntity(((InfoEntity) clickedObject));
+					// scrollTo(this.figureInfo.getRoomNumber(), 10f);
 				}
 
 				// flush events and quit processing
@@ -505,7 +530,8 @@ public class GameScreen extends Screen {
 			if (!guiOP) {
 
 				this.viewportPosition = new JDPoint(viewportPosition.getX()
-						+ scrollEvent.getMovement().getX(), viewportPosition.getY()
+						+ scrollEvent.getMovement().getX(),
+						viewportPosition.getY()
 								+ scrollEvent.getMovement().getY());
 
 			}
@@ -605,7 +631,6 @@ public class GameScreen extends Screen {
 		// 1100);
 		int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) / 1000);
 
-
 		JDPoint point = new JDPoint(x, y);
 		this.beacon = new JDPoint(point.getX(), point.getY());
 		this.beaconCounter = 300f;
@@ -650,13 +675,17 @@ public class GameScreen extends Screen {
 		JDPoint p = new JDPoint(touchEvent.x, touchEvent.y);
 		Object clickedObject = findClickedObject(p);
 		if (clickedObject != null) {
-			control.objectClicked(clickedObject);
-			if (clickedObject instanceof InfoEntity) {
-				infoPanel.setContent(((InfoEntity) clickedObject));
-			}
-		}
+			if ((highlightedEntity != null && highlightedEntity
+					.equals(clickedObject))
+					|| (!(clickedObject instanceof FigureInfo))) {
 
+				control.objectClicked(clickedObject, false);
+			}
+				setInfoEntity(((InfoEntity) clickedObject));
+				setHighlightedEntity(((InfoEntity) clickedObject));
+		}
 	}
+
 
 	private Object findClickedObjectLongPressed(JDPoint p) {
 
@@ -672,8 +701,6 @@ public class GameScreen extends Screen {
 		List<GraphicObject> roomObjects = drawnObjects.get(roomNumber);
 		if (roomObjects == null)
 			return null;
-
-
 
 		return findClickedObjectsInRoom(inGameLocation, roomObjects);
 	}
@@ -774,7 +801,7 @@ public class GameScreen extends Screen {
 			if (o instanceof ShrineInfo) {
 				return this.SHRINE;
 			}
-			if (o instanceof Chest) {
+			if (o instanceof ChestInfo) {
 				return this.CHEST;
 			}
 			if (o instanceof SpotInfo) {
@@ -856,8 +883,20 @@ public class GameScreen extends Screen {
 
 	}
 
-	public void setInfoEntity(InfoEntity item) {
-		this.infoPanel.setContent(item);
-
+	public void setInfoEntity(Paragraphable item) {
+		if (item == null || item.equals(this.figureInfo)) {
+			this.infoPanel.setContent(null);
+		} else {
+			this.infoPanel.setContent(item);
+		}
 	}
+
+	public void setHighlightedEntity(InfoEntity item) {
+		if(item.equals(this.figureInfo)) {
+			highlightedEntity = null;
+		} else {
+			this.highlightedEntity = item;
+		}
+	}
+
 }

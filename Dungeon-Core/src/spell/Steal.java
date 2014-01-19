@@ -1,15 +1,14 @@
 package spell;
 
-import item.*;
-import game.DungeonGame;
-import game.JDEnv;
+import item.Item;
 
-import java.util.*;
+import java.util.List;
 
 import figure.Figure;
-import figure.monster.Monster;
+import figure.FigureInfo;
 import figure.percept.TextPercept;
-import gui.*;
+import game.InfoEntity;
+import game.JDEnv;
 
 
 
@@ -20,8 +19,8 @@ public class Steal extends Spell {
 								};
 
 
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Steal(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
@@ -31,24 +30,29 @@ public class Steal extends Spell {
 		
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
 		}
 		return false;
 	}
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_STEAL;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_steal_text");
 			return s;
@@ -78,6 +82,7 @@ public class Steal extends Spell {
 	/**
 	 * @see Spell#sorcer(fighter, Object, int)
 	 */
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		
 		if(target instanceof Figure) {
@@ -87,7 +92,7 @@ public class Steal extends Spell {
 		int max = -1;
 		Item best = null;
 		for(int i = 0; i < list.size(); i++) {
-			Item it = (Item)list.get(i);
+			Item it = list.get(i);
 			int k = it.getWorth();	
 			if(k > max) {
 				max = k;
@@ -105,9 +110,15 @@ public class Steal extends Spell {
 		
 	}
 
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
 	/**
 	 * @see Spell#getName()
 	 */
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_steal_name");
 	}

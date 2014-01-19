@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui;
+package de.jdungeon.androidapp.gui.itemWheel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,15 +12,15 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 	private final int size;
 	private final int initValue;
 	private final Map<Integer, ItemWheelActivity> mapping = new HashMap<Integer, ItemWheelActivity>();
-	private final ItemActivityItemProvider provider;
+	private final ItemWheelActivityProvider provider;
 
 	@Override
-	public ItemActivityItemProvider getProvider() {
+	public ItemWheelActivityProvider getProvider() {
 		return provider;
 	}
 
 	public ItemWheelBindingSetSimple(int initialValue, int size,
-			ItemActivityItemProvider provider) {
+			ItemWheelActivityProvider provider) {
 		this.initValue = initialValue;
 		this.size = size;
 		this.provider = provider;

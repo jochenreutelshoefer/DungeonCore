@@ -10,17 +10,12 @@
 
 package spell;
 
-import java.awt.event.*;
-
-
-import dungeon.RouteInstruction;
-import game.DungeonGame;
-import game.JDEnv;
 import figure.Figure;
 import figure.action.FleeAction;
+import game.JDEnv;
 
 
-public class Escape extends Spell {
+public class Escape extends NoTargetSpell {
 	
 //	public int [] diff = { 3 , 8 };
 //	public int [] diffMin = { 6 , 12};
@@ -29,8 +24,8 @@ public class Escape extends Spell {
 								{6,12,7,30,1}
 								};
 	
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public Escape(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength,lerncost);
@@ -39,23 +34,28 @@ public class Escape extends Spell {
 		
 	}
 	
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_ESCAPE;
 	}
 	
+	@Override
 	public String getText() {
 		String s = JDEnv.getResourceBundle().getString("spell_escape_text");
 		return s;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		
 		return true;
@@ -81,65 +81,26 @@ public class Escape extends Spell {
 		isPossibleInFight = true;
 	}
 
-//	/**
-//	 * @see Spell#getDifficulty(int)
-//	 */
-//	public int getDifficulty(int level) {
-//		return diff[level -1] ;
-//	}
-//	
-//	public int getDifficultyMin(int level) {
-//		return diffMin[level -1] ;
-//	}
 	
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_escape_name");
 	}
 
-	/**
-	 * @see Spell#getCost(int)
-	 */
-//	public int getCost(int level) {
-//		return level*5;
-//	}
 
 	/**
 	 * @see Spell#fire(fighter, Object, int)
 	 */
-	public void sorcer(Figure mage, Object target) {
+	@Override
+	public void sorcer(Figure mage) {
 		
+				mage.setEscape(level);
+				mage.incFightAP(1);
+				mage.handleFleeAction(new FleeAction(false),true);
 				
-		
-				((Figure)mage).setEscape(level);
-				((Figure)mage).incFightAP(1);
-				((Figure)mage).handleFleeAction(new FleeAction(false),true);
-				
-				//DirectionChoiceView dcv = new DirectionChoiceView(f, "Richtung w�hlen", this);
-				//geht dann nach tellDirection per Knopfauswahl
 	}
 
-//	public void tellDirection(int i, Figure f) {
-//		ActionEvent ae = null;
-//		if(i == RouteInstruction.NORTH) {
-//			 ae = new ActionEvent(f.getSteuerung().north,0,"");
-//			
-//		}
-//		else if(i == RouteInstruction.SOUTH) {
-//			ae = new ActionEvent(f.getSteuerung().south,0,"");
-//			
-//		}
-//		else if(i == RouteInstruction.EAST) {
-//			ae = new ActionEvent(f.getSteuerung().east,0,"");
-//		}
-//		else if(i == RouteInstruction.WEST) {
-//			ae = new ActionEvent(f.getSteuerung().west,0,"");
-//		}
-//		//System.out.println("Zauberflucht!");
-//		f.newStatement("Mit einem magischen Windsto� entfliehst Du Deinen Feinden!",2);
-//		f.getSteuerung().actionPerformed(ae);
-			
-			
-//	}
+	@Override
 	public String toString() {
 		return getName();
 	}

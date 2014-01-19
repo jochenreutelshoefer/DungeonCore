@@ -14,17 +14,22 @@ import gui.Paragraph;
 
 public class SpellInfo extends InfoEntity{
 	
-	private Spell s;
+	private final Spell s;
 	public SpellInfo(Spell s, DungeonVisibilityMap map) {
 		super(map);
 		this.s = s;
 		
 	}
 	
+	public Class<? extends InfoEntity> getTargetClass() {
+		return s.getTargetClass();
+	}
+
 	public int getType() {
 		return s.getType();
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if(o instanceof SpellInfo) {
 			if(((SpellInfo)o).s.equals(this.s)) {
@@ -41,6 +46,7 @@ public class SpellInfo extends InfoEntity{
 	public int getLernCost() {
 		return s.getLernCost();
 	}
+	@Override
 	public String toString()  {
 		return s.toString();
 	}
@@ -57,6 +63,7 @@ public class SpellInfo extends InfoEntity{
 		
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		return s.getParagraphs();
 	}
@@ -77,6 +84,7 @@ public class SpellInfo extends InfoEntity{
 		return s.getName();
 	}
 
+	@Override
 	public MemoryObject getMemoryObject(FigureInfo info) {
 		// TODO Auto-generated method stub
 		return null;

@@ -1,10 +1,10 @@
 package spell;
 import figure.Figure;
+import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.percept.TextPercept;
-import gui.*;
-import game.DungeonGame;
+import game.InfoEntity;
 import game.JDEnv;
 
 
@@ -12,14 +12,11 @@ import game.JDEnv;
 
 public class GoldenThrow extends Spell implements TargetSpell{
 	
-//	public int [] diff = { 1 , 4 };
-//	public int [] diffMin = { 5 , 8};
-	
 	public static int [][] values = { {5,3,5,10,1},
 								{7,5,5,20,2}
 								};
-	private boolean isPossibleNormal;
-	private boolean isPossibleInFight;
+	private final boolean isPossibleNormal;
+	private final boolean isPossibleInFight;
 	
 	public GoldenThrow(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
@@ -28,18 +25,27 @@ public class GoldenThrow extends Spell implements TargetSpell{
 		
 	}
 	
+	@Override
+	public Class<? extends InfoEntity> getTargetClass() {
+		return FigureInfo.class;
+	}
+
+	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
 	
+	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
 	
+	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
 	
+	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
 			return true;
@@ -47,10 +53,12 @@ public class GoldenThrow extends Spell implements TargetSpell{
 		return false;
 	}
 	
+	@Override
 	public int getType() {
 		return Spell.SPELL_GOLDENTHROW;
 	}
 	
+	@Override
 	public String getText() {
 			String s = JDEnv.getResourceBundle().getString("spell_goldenThrow_text");
 			return s;
@@ -76,6 +84,7 @@ public class GoldenThrow extends Spell implements TargetSpell{
 		return isPossibleNormal;
 	}
 	
+	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_goldenThrow_name");
 	}
@@ -93,6 +102,7 @@ public class GoldenThrow extends Spell implements TargetSpell{
 //		return 5*level;
 //	}
 	
+	@Override
 	public void sorcer(Figure mage, Object target) {
 		
 				((Figure)target).setGolden_hit(level);
@@ -114,6 +124,7 @@ public class GoldenThrow extends Spell implements TargetSpell{
 	}
 	
 	
+	@Override
 	public String toString(){
 		return getName();
 	}
