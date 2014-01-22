@@ -462,15 +462,6 @@ public class GameScreen extends Screen {
 					}
 				}
 
-				// for (GUIElement guiElement : guiElements) {
-				// if (guiElement.hasPoint(doubleTapCoordinates)
-				// && guiElement.isVisible()) {
-				// guiElement.handleDoubleTapEvent(doubleTapEvent);
-				// guiOP = true;
-				// break;
-				// }
-				// }
-
 				if (!guiOP) {
 					Object clickedObject = findClickedObject(doubleTapCoordinates);
 					control.objectClicked(clickedObject, true);
@@ -506,14 +497,6 @@ public class GameScreen extends Screen {
 						break;
 					}
 				}
-				// for (GUIElement guiElement : guiElements) {
-				// if (guiElement.hasPoint(longPressedCoordinates)
-				// && guiElement.isVisible()) {
-				// guiElement.handleLongPressEvent(longPressEvent);
-				// guiOP = true;
-				// break;
-				// }
-				// }
 
 				if (!guiOP) {
 					Object clickedObject = findClickedObjectLongPressed(longPressedCoordinates);

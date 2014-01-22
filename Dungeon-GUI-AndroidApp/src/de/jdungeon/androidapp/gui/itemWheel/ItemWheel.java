@@ -17,27 +17,40 @@ public class ItemWheel extends AbstractGUIElement {
 
 	private static final double PI_EIGHTEENTH = Math.PI / 18;
 	private static final double TWO_PI = Math.PI * 2;
-	private final HeroInfo info;
 	private final JDPoint[] points = new JDPoint[36];
 	private float rotationState = (float) TWO_PI;
 	private final int radius;
 	private int markedPointIndex;
-	private final int startPointerIndex;
-	private int itemRotationPointer = 0;
 	private final Image backgroundImage;
 	private final ItemWheelBindingSet binding;
 	private boolean justRotated = true;
+	private final int defaultImageWidth = 50;
+	private final int defaultImageHeight = 50;
+	private final int defaultImageWidthHalf = defaultImageWidth / 2;
+	private final int defaultImageHeightHalf = defaultImageHeight / 2;
+	private final int doubleImageWidth = defaultImageWidth * 2;
+	private final int doubleImageHeight = defaultImageHeight * 2;
+	private final int backgroundPanelOffset = 7;
+	private final int doubleBackgroundPanelOffset = 2 * backgroundPanelOffset;
+	private final int screenWidth = screen.getScreenSize().getWidth();
+	private final int screenHeight = screen.getScreenSize().getHeight();
+	private final int screenPlusDefaultImageWidth = screenWidth
+			+ defaultImageWidth;
+	private final int screenPlusDefaultImageHeight = screenHeight
+			+ defaultImageHeight;
+	private final int doubleWidthPlusOffset = doubleImageWidth
+			+ doubleBackgroundPanelOffset;
+	private final int doubleHeightPlusOffset = doubleImageHeight
+			+ doubleBackgroundPanelOffset;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 			GameScreen screen, ItemWheelBindingSet binding, int selectedIndex,
 			Image background) {
 		super(position, dim, screen);
-		this.info = info;
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
 		markedPointIndex = selectedIndex;
-		startPointerIndex = selectedIndex;
 		this.backgroundImage = background;
 
 		/*
@@ -48,9 +61,7 @@ public class ItemWheel extends AbstractGUIElement {
 			int x = (int) (this.position.getX() + (Math.sin(degreeRad) * radius));
 			int y = (int) (this.position.getY() + (Math.cos(degreeRad) * radius));
 			points[i] = new JDPoint(x, y);
-
 		}
-
 	}
 
 	@Override
@@ -64,7 +75,6 @@ public class ItemWheel extends AbstractGUIElement {
 		float movementX = movement.getX();
 		changeRotation(movementX / 500);
 		justRotated = true;
-
 	}
 
 	@Override
@@ -84,11 +94,9 @@ public class ItemWheel extends AbstractGUIElement {
 		if (i == markedPointIndex) {
 			ItemWheelActivity infoEntity = binding.getActivity(i);
 			binding.getProvider().activityPressed(infoEntity);
-
 		} else {
 			centerOnIndex(i);
 		}
-
 	}
 
 	private void centerOnIndex(int i) {
@@ -101,23 +109,7 @@ public class ItemWheel extends AbstractGUIElement {
 	private void changeRotation(float rotationChange) {
 
 		this.rotationState += rotationChange;
-		int itemsRotated = (int) (rotationState / PI_EIGHTEENTH);
-		if (itemsRotated != itemRotationPointer) {
-			if (itemsRotated > itemRotationPointer) {
-				int newMarkedPointIndex = (markedPointIndex - 1)
-						% points.length;
-				if (newMarkedPointIndex < 0) {
-					newMarkedPointIndex += points.length;
-				}
-				setMarkedIndex(newMarkedPointIndex);
-			}
-			if (itemsRotated < itemRotationPointer) {
-				setMarkedIndex((markedPointIndex + 1) % points.length);
 
-			}
-
-			itemRotationPointer = itemsRotated;
-		}
 	}
 
 	private void setMarkedIndex(int i) {
@@ -162,50 +154,71 @@ public class ItemWheel extends AbstractGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		g.drawOval(position.getX(), position.getY(), dimension.getWidth(),
 				dimension.getHeight(), Color.BLUE);
-		int screenWidth = screen.getScreenSize().getWidth();
-		int screenHeight = screen.getScreenSize().getHeight();
 		for (int i = 0; i < points.length; i++) {
-			int imageWidth = 50;
-			int imageHeight = 50;
 			int toDraw = (markedPointIndex + i + 1) % points.length;
-			if (points[toDraw].getX() > screenWidth + imageWidth
-					|| points[toDraw].getX() < 0 - imageWidth * 2
-					|| points[toDraw].getY() > screenHeight + imageHeight
-					|| points[toDraw].getY() < 0 - imageWidth*2) {
+			int x = points[toDraw].getX();
+			int y = points[toDraw].getY();
+			if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
+					|| y > screenPlusDefaultImageHeight
+					|| y < 0 - doubleImageHeight) {
 				continue;
 			}
 			ItemWheelActivity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
 				Image im = binding.getProvider().getActivityImage(activity);
 				if (im == null) {
-					System.out.println("Actiivty image is null: "
+					System.out.println("Activity image is null: "
 							+ activity.toString());
 				}
+				int yMinusDefaultHeight = y - defaultImageHeight;
+				int xMinusDefaultWidth = x - defaultImageWidth;
+				int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
+				int yMinusDefaultHeightHalf = y - defaultImageHeightHalf;
 				if (toDraw == this.markedPointIndex) {
-					imageWidth *= 2;
-					imageHeight *= 2;
-				}
+					/*
+					 * draw background if existing
+					 */
+					if (backgroundImage != null) {
+						g.drawScaledImage(backgroundImage, xMinusDefaultWidth
+								- backgroundPanelOffset, yMinusDefaultHeight
+								- backgroundPanelOffset, doubleWidthPlusOffset,
+								doubleHeightPlusOffset, 0, 0,
+								backgroundImage.getWidth(),
+								backgroundImage.getHeight());
+					}
 
-				/*
-				 * draw background if existing
-				 */
-				int offset = 7;
-				if (backgroundImage != null) {
-					g.drawScaledImage(backgroundImage, points[toDraw].getX()
-							- imageWidth / 2 - offset, points[toDraw].getY()
-							- imageHeight / 2 - offset,
-							imageWidth + 2 * offset, imageHeight + 2 * offset,
-							0, 0,
-							backgroundImage.getWidth(),
-							backgroundImage.getHeight());
-				}
+					/*
+					 * draw actual item
+					 */
+					g.drawScaledImage(im, xMinusDefaultWidth,
+							yMinusDefaultHeight, doubleImageWidth,
+							doubleImageHeight, 0, 0, im.getWidth(),
+							im.getHeight());
+				} else {
 
-				/*
-				 * draw actual item
-				 */
-				g.drawScaledImage(im, points[toDraw].getX() - imageWidth / 2,
-						points[toDraw].getY() - imageHeight / 2, imageWidth,
-						imageHeight, 0, 0, im.getWidth(), im.getHeight());
+					/*
+					 * draw background if existing
+					 */
+					if (backgroundImage != null) {
+						g.drawScaledImage(
+								backgroundImage,
+								xMinusDefaultWidthHalf - backgroundPanelOffset,
+								yMinusDefaultHeightHalf - backgroundPanelOffset,
+								defaultImageWidth + doubleBackgroundPanelOffset,
+								defaultImageHeight
+										+ doubleBackgroundPanelOffset, 0, 0,
+								backgroundImage.getWidth(),
+								backgroundImage.getHeight());
+					}
+
+					/*
+					 * draw actual item
+					 */
+					g.drawScaledImage(im, xMinusDefaultWidthHalf,
+							yMinusDefaultHeightHalf, defaultImageWidth,
+							defaultImageHeight, 0, 0, im.getWidth(),
+							im.getHeight());
+				}
 			}
 
 			/*
@@ -213,8 +226,7 @@ public class ItemWheel extends AbstractGUIElement {
 			 */
 			Paint numberPain = new Paint();
 			numberPain.setColor(Color.YELLOW);
-			g.drawString("" + toDraw, points[toDraw].getX(),
-					points[toDraw].getY(), numberPain);
+			g.drawString("" + toDraw, x, y, numberPain);
 
 		}
 
