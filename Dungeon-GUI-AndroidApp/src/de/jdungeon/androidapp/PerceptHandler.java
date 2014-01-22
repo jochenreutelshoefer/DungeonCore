@@ -119,10 +119,10 @@ public class PerceptHandler {
 			 * write text messages
 			 */
 			String s = StatementManager.getStatement((InfoPercept) p);
-			newStatement(s, 2);
+			newStatement(new Statement(s, 2));
 		}
 		if (p instanceof TextPercept) {
-			newStatement(((TextPercept) p).getText(), 2);
+			newStatement(new Statement(((TextPercept) p).getText(), 2));
 		}
 		if (p instanceof DisappearPercept) {
 			newStatement(StatementManager.getStatement(((DisappearPercept) p),
@@ -299,9 +299,7 @@ public class PerceptHandler {
 		}
 	}
 
-	private void newStatement(String text, int styleCode) {
-		screen.newStatement(text, styleCode);
-	}
+
 
 	private void newStatement(Statement s) {
 		screen.newStatement(s);

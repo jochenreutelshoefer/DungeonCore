@@ -2,6 +2,8 @@ package de.jdungeon.androidapp.gui;
 
 import util.JDDimension;
 import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.game.Input.TouchEvent;
+import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
 
 public abstract class SlidingGUIElement extends AbstractGUIElement {
@@ -14,6 +16,35 @@ public abstract class SlidingGUIElement extends AbstractGUIElement {
 			JDPoint targetPos, GameScreen screen) {
 		super(position, dimension, screen);
 		this.targetPos = targetPos;
+
+		this.slideOut();
+	}
+
+	protected void slideOut() {
+		this.slideStep = SLIDE_OUT_STEPS;
+	}
+
+	@Override
+	public void handleScrollEvent(ScrollMotion scrolling) {
+		if (scrolling.getMovement().getX() > 0) {
+			slideOut();
+		}
+	}
+
+	@Override
+	public void handleTouchEvent(TouchEvent touch) {
+
+		/*
+		 * if it is out of screen a touch on the visible border will open it
+		 */
+		if (getCurrentX() == targetPos.getX()) {
+			this.slideStep = -1;
+			return;
+		}
+	}
+
+	protected void slideIn() {
+		this.slideStep = -1;
 	}
 
 	protected int getCurrentX() {

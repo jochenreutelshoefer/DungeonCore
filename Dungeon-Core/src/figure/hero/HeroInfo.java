@@ -27,6 +27,7 @@ import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.action.EquipmentChangeAction;
+import figure.attribute.Attribute;
 
 /**
  * Liefert die Informationen fuer eine Heldensteuerung
@@ -71,7 +72,7 @@ public class HeroInfo extends FigureInfo {
 	@Override
 	public int getMight() {
 		int lvl = h.getLevel();
-		return (lvl+1) * 500;
+		return (lvl + 1) * 500;
 	}
 
 	public Boolean LuziaBallSeesEnemy() {
@@ -133,7 +134,10 @@ public class HeroInfo extends FigureInfo {
 
 	public double getAttributeValue(int s) {
 		if (map.getFigure().equals(h)) {
-			return h.getAttribute(s).getValue();
+			Attribute attribute = h.getAttribute(s);
+			if (attribute != null) {
+				return attribute.getValue();
+			}
 		}
 		return -1;
 
@@ -141,7 +145,10 @@ public class HeroInfo extends FigureInfo {
 
 	public double getAttributeBasic(int s) {
 		if (map.getFigure().equals(h)) {
-			return h.getAttribute(s).getBasic();
+			Attribute attribute = h.getAttribute(s);
+			if (attribute != null) {
+				return attribute.getBasic();
+			}
 		}
 		return -1;
 	}

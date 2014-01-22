@@ -26,37 +26,49 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 
 	private final HeroInfo info;
 	private final GameScreen screen;
+	private boolean fightState = false;
+	private final List<ItemWheelActivity> activityCache = new ArrayList<ItemWheelActivity>();
+
+	private final ItemWheelActivity attack = new ItemWheelActivity(ATTACK);
+	private final ItemWheelActivity flee = new ItemWheelActivity(FLEE);
+	private final ItemWheelActivity scout = new ItemWheelActivity(SCOUT);
 
 	public SkillActivityProvider(HeroInfo info, GameScreen screen) {
 		super();
 		this.info = info;
 		this.screen = screen;
+		updateActivityList(false);
 	}
 
 	@Override
 	public List<ItemWheelActivity> getActivities() {
-		List<ItemWheelActivity> activities = new ArrayList<ItemWheelActivity>();
-
-		Boolean fightRunning = info.getRoomInfo().fightRunning();
-		if (fightRunning != null && fightRunning) {
-			activities.add(new ItemWheelActivity(ATTACK));
-			activities.add(new ItemWheelActivity(FLEE));
-		} else {
-			activities.add(new ItemWheelActivity(SCOUT));
-			// activities.add(new ItemWheelActivity(WALK));
+		Boolean currentFightstate = info.getRoomInfo().fightRunning();
+		if (currentFightstate == fightState) {
+			return activityCache;
 		}
-		// activities.add(new ItemWheelActivity(LOOK));
+		fightState = currentFightstate;
+		updateActivityList(currentFightstate);
+		return activityCache;
+	}
+
+	private void updateActivityList(Boolean currentFightstate) {
+		activityCache.clear();
+		if (currentFightstate != null && currentFightstate) {
+			activityCache.add(attack);
+			activityCache.add(flee);
+		} else {
+			activityCache.add(scout);
+		}
 
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
-			if (fightRunning && spell.isFight()) {
-				activities.add(new ItemWheelActivity(spell));
+			if (currentFightstate && spell.isFight()) {
+				activityCache.add(new ItemWheelActivity(spell));
 			}
-			if (fightRunning == false && spell.isNormal()) {
-				activities.add(new ItemWheelActivity(spell));
+			if (currentFightstate == false && spell.isNormal()) {
+				activityCache.add(new ItemWheelActivity(spell));
 			}
 		}
-		return activities;
 	}
 
 	@Override

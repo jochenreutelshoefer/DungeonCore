@@ -49,49 +49,49 @@ import figure.percept.TextPercept;
  */
 public class Character {
 
-	private List<TimedAttributeModification> modifications = new LinkedList<TimedAttributeModification>();
+	private final List<TimedAttributeModification> modifications = new LinkedList<TimedAttributeModification>();
 
-	private String name;
+	private final String name;
 
 	private int level;
 
 	private int points;
 
-	private Attribute health;
+	private final Attribute health;
 
-	private Attribute strength;
+	private final Attribute strength;
 
-	private Attribute dexterity;
+	private final Attribute dexterity;
 
 	private Attribute psycho;
 
-	private Attribute axe;
+	private final Attribute axe;
 
-	private Attribute lance;
+	private final Attribute lance;
 
-	private Attribute sword;
+	private final Attribute sword;
 
-	private Attribute club;
+	private final Attribute club;
 
-	private Attribute wolfknife;
+	private final Attribute wolfknife;
 
-	private Attribute scout;
+	private final Attribute scout;
 
-	private Attribute threat;
+	private final Attribute threat;
 
-	private Attribute dust;
+	private final Attribute dust;
 
-	private Attribute dustReg;
+	private final Attribute dustReg;
 
-	private Attribute healthReg;
+	private final Attribute healthReg;
 
-	private Attribute natureKnowledge;
+	private final Attribute natureKnowledge;
 
-	private Attribute creatureKnowledge;
+	private final Attribute creatureKnowledge;
 
-	private Attribute undeadKnowledge;
+	private final Attribute undeadKnowledge;
 	
-	private Map<Integer, Attribute> attributes = new HashMap<Integer, Attribute>();
+	private final Map<Integer, Attribute> attributes = new HashMap<Integer, Attribute>();
 
 	private final int lerndauer = 250;
 
@@ -103,19 +103,19 @@ public class Character {
 
 	private int expCode;
 
-	private int[] weaponExp = new int[5];
+	private final int[] weaponExp = new int[5];
 
-	private int[] knowExp = new int[3];
+	private final int[] knowExp = new int[3];
 
 	private int selfExp;
 
 	private int totalExp;
 
-	private int selfLevel;
+	private final int selfLevel;
 
-	private Figure owner;
+	private final Figure owner;
 
-	private List<Spell> spellBuffer = new LinkedList<Spell>();
+	private final List<Spell> spellBuffer = new LinkedList<Spell>();
 
 	private final int weaponLearning[][] = { { 15, 20, 14, 12, 19 }, { 17, 11, 15, 16, 13 },
 			{ 14, 15, 15, 16, 11 }, { 16, 14, 12, 17, 14 } };
@@ -359,31 +359,31 @@ public class Character {
 				int value = (int) natureKnowledge.getBasic();
 				int rest = value % 10;
 				res[0] = (rest
-						* (int) (quadrieren(((int) natureKnowledge.getBasic()) / 10) + 1) * lerndauerKnow)
+						* (quadrieren(((int) natureKnowledge.getBasic()) / 10) + 1) * lerndauerKnow)
 						+ knowExp[0];
 				res[1] = 10
-						* (int) (quadrieren(((int) natureKnowledge.getBasic()) / 10) + 1)
+						* (quadrieren(((int) natureKnowledge.getBasic()) / 10) + 1)
 						* lerndauerKnow;
 			}
 			if (type == 1) {
 				int value = (int) creatureKnowledge.getBasic();
 				int rest = value % 10;
 				res[0] = (rest
-						* (int) (quadrieren(((int) creatureKnowledge
+						* (quadrieren(((int) creatureKnowledge
 								.getBasic()) / 10) + 1) * lerndauerKnow)
 						+ knowExp[1];
 				res[1] = 10
-						* (int) (quadrieren(((int) creatureKnowledge
+						* (quadrieren(((int) creatureKnowledge
 								.getBasic()) / 10) + 1) * lerndauerKnow;
 			}
 			if (type == 2) {
 				int value = (int) undeadKnowledge.getBasic();
 				int rest = value % 10;
 				res[0] = (rest
-						* (int) (quadrieren(((int) undeadKnowledge.getBasic()) / 10) + 1) * lerndauerKnow)
+						* (quadrieren(((int) undeadKnowledge.getBasic()) / 10) + 1) * lerndauerKnow)
 						+ knowExp[2];
 				res[1] = 10
-						* (int) (quadrieren(((int) undeadKnowledge.getBasic()) / 10) + 1)
+						* (quadrieren(((int) undeadKnowledge.getBasic()) / 10) + 1)
 						* lerndauerKnow;
 			}
 		}
@@ -685,9 +685,9 @@ public class Character {
 					* weaponLearning[((Hero) owner).getHeroCode() - 1][0]) {
 				weaponExp[0] -= (quadrieren(((int) axe.getBasic()) / 10) + 1)
 						* weaponLearning[((Hero) owner).getHeroCode() - 1][0];
-				int before = (int) ((int) axe.getBasic() / 10);
+				int before = (int) axe.getBasic() / 10;
 				axe.incBasic();
-				int after = (int) ((int) axe.getBasic() / 10);
+				int after = (int) axe.getBasic() / 10;
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
@@ -700,9 +700,9 @@ public class Character {
 					* weaponLearning[((Hero) owner).getHeroCode() - 1][1]) {
 				weaponExp[1] -= (quadrieren(((int) club.getBasic()) / 10) + 1)
 						* weaponLearning[((Hero) owner).getHeroCode() - 1][1];
-				int before = (int) ((int) club.getBasic() / 10);
+				int before = (int) club.getBasic() / 10;
 				club.incBasic();
-				int after = (int) ((int) club.getBasic() / 10);
+				int after = (int) club.getBasic() / 10;
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
@@ -715,9 +715,9 @@ public class Character {
 					* weaponLearning[((Hero) owner).getHeroCode() - 1][2]) {
 				weaponExp[2] -= (quadrieren(((int) lance.getBasic()) / 10) + 1)
 						* weaponLearning[((Hero) owner).getHeroCode() - 1][2];
-				int before = (int) ((int) lance.getBasic() / 10);
+				int before = (int) lance.getBasic() / 10;
 				lance.incBasic();
-				int after = (int) ((int) lance.getBasic() / 10);
+				int after = (int) lance.getBasic() / 10;
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
@@ -730,9 +730,9 @@ public class Character {
 					* weaponLearning[((Hero) owner).getHeroCode() - 1][3]) {
 				weaponExp[3] -= (quadrieren(sword.getBasic() / 10) + 1)
 						* weaponLearning[((Hero) owner).getHeroCode() - 1][3];
-				int before = (int) ((int) sword.getBasic() / 10);
+				int before = (int) sword.getBasic() / 10;
 				sword.incBasic();
-				int after = (int) ((int) sword.getBasic() / 10);
+				int after = (int) sword.getBasic() / 10;
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
@@ -745,9 +745,9 @@ public class Character {
 					* weaponLearning[((Hero) owner).getHeroCode() - 1][4]) {
 				weaponExp[4] -= (quadrieren(((int) wolfknife.getBasic()) / 10) + 1)
 						* weaponLearning[((Hero) owner).getHeroCode() - 1][4];
-				int before = (int) ((int) wolfknife.getBasic() / 10);
+				int before = (int) wolfknife.getBasic() / 10;
 				wolfknife.incBasic();
-				int after = (int) ((int) wolfknife.getBasic() / 10);
+				int after = (int) wolfknife.getBasic() / 10;
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
@@ -799,11 +799,10 @@ public class Character {
 //	}
 	
 	public Attribute getAttribute(int a) {
-		Attribute attr = (Attribute)attributes.get(new Integer(a));
+		Attribute attr = attributes.get(new Integer(a));
 		if(attr != null) {
 			return attr;
-		}else {
-			System.out.println("Attribut in hash nicht gefunden!");
+		} else {
 			return null;
 		}
 

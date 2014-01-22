@@ -1,6 +1,7 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +46,11 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 	@Override
 	public void update(float time) {
 		List<ItemWheelActivity> figureItemList = provider.getActivities();
+		Collection<ItemWheelActivity> values = mapping.values();
+		if (figureItemList.containsAll(values)
+				&& values.containsAll(figureItemList)) {
+			return;
+		}
 		/*
 		 * remove items not possessed any more
 		 */

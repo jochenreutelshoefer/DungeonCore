@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import shrine.ShrineInfo;
@@ -31,12 +33,14 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import animation.AnimationSet;
 import de.jdungeon.androidapp.animation.AnimationManager;
+import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GameOverView;
 import de.jdungeon.androidapp.gui.HealthBar;
 import de.jdungeon.androidapp.gui.HourGlassTimer;
 import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
+import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
@@ -75,8 +79,10 @@ public class GameScreen extends Screen {
 	private final Map<JDPoint, List<GraphicObject>> drawnObjects = new HashMap<JDPoint, List<GraphicObject>>();
 
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
-	private final List<GUIElement> guiElements = new ArrayList<GUIElement>();
+	private final List<GUIElement> guiElements = new LinkedList<GUIElement>();
+	private final List<GUIElement> guiElementsReverse = new ArrayList<GUIElement>();
 	private final InfoPanel infoPanel;
+	private final TextPerceptView textPerceptView;
 	private GameOverView gos = null;
 
 	private JDPoint viewportPosition;
@@ -98,6 +104,10 @@ public class GameScreen extends Screen {
 	private final JDGUI gui;
 
 	private final JDDimension screenSize = new JDDimension(800, 400);
+
+	public JDDimension getScreenSize() {
+		return screenSize;
+	}
 
 	/*
 	 * for developer mode only
@@ -124,6 +134,12 @@ public class GameScreen extends Screen {
 		scrollTo(heroRoomNumber, 100f);
 
 		/*
+		 * init text messages panel
+		 */
+		textPerceptView = new TextPerceptView(this);
+		this.guiElements.add(textPerceptView);
+
+		/*
 		 * init info panel
 		 */
 		int quarterScreenX = (int) (this.screenSize.getWidth() * 0.25);
@@ -137,18 +153,13 @@ public class GameScreen extends Screen {
 		 */
 		int posX = 22;
 		HealthBar healthView = new HealthBar(new JDPoint(posX, 5),
-				new JDDimension(200, 20), figureInfo, HealthBar.Kind.health,
+				new JDDimension(180, 20), figureInfo, HealthBar.Kind.health,
 				this);
 		this.guiElements.add(healthView);
 		HealthBar dustView = new HealthBar(new JDPoint(posX, 25),
-				new JDDimension(200, 20), figureInfo, HealthBar.Kind.dust, this);
+				new JDDimension(180, 20), figureInfo, HealthBar.Kind.dust, this);
 		this.guiElements.add(dustView);
 
-		/*
-		 * init inventory panel
-		 */
-		InventoryPanel inventory = new InventoryPanel(figureInfo, this);
-		this.guiElements.add(inventory);
 
 		/*
 		 * init hour glass
@@ -183,6 +194,17 @@ public class GameScreen extends Screen {
 		this.guiElements.add(wheelSkills);
 
 		/*
+		 * init inventory panel
+		 */
+		InventoryPanel inventory = new InventoryPanel(figureInfo, this);
+		this.guiElements.add(inventory);
+
+		/*
+		 * init inventory panel
+		 */
+		CharAttributeView charView = new CharAttributeView(figureInfo, this);
+		this.guiElements.add(charView);
+		/*
 		 * init game over view
 		 */
 		int width = this.screenSize.getWidth();
@@ -193,6 +215,7 @@ public class GameScreen extends Screen {
 				(height / 2) - heightFifth), new JDDimension(2 * widghtFifth,
 				2 * heightFifth), this);
 		this.guiElements.add(gos);
+
 
 		this.gui = new AndroidScreenJDGUI(this);
 
@@ -427,7 +450,10 @@ public class GameScreen extends Screen {
 				JDPoint doubleTapCoordinates = normalizeRawCoordinates(doubleTapEvent);
 
 				boolean guiOP = false;
-				for (GUIElement guiElement : guiElements) {
+				ListIterator<GUIElement> listIterator = guiElements
+						.listIterator(guiElements.size());
+				while (listIterator.hasPrevious()) {
+					GUIElement guiElement = listIterator.previous();
 					if (guiElement.hasPoint(doubleTapCoordinates)
 							&& guiElement.isVisible()) {
 						guiElement.handleDoubleTapEvent(doubleTapEvent);
@@ -435,6 +461,15 @@ public class GameScreen extends Screen {
 						break;
 					}
 				}
+
+				// for (GUIElement guiElement : guiElements) {
+				// if (guiElement.hasPoint(doubleTapCoordinates)
+				// && guiElement.isVisible()) {
+				// guiElement.handleDoubleTapEvent(doubleTapEvent);
+				// guiOP = true;
+				// break;
+				// }
+				// }
 
 				if (!guiOP) {
 					Object clickedObject = findClickedObject(doubleTapCoordinates);
@@ -460,7 +495,10 @@ public class GameScreen extends Screen {
 				JDPoint longPressedCoordinates = normalizeRawCoordinates(longPressEvent);
 
 				boolean guiOP = false;
-				for (GUIElement guiElement : guiElements) {
+				ListIterator<GUIElement> listIterator = guiElements
+						.listIterator(guiElements.size());
+				while (listIterator.hasPrevious()) {
+					GUIElement guiElement = listIterator.previous();
 					if (guiElement.hasPoint(longPressedCoordinates)
 							&& guiElement.isVisible()) {
 						guiElement.handleLongPressEvent(longPressEvent);
@@ -468,6 +506,14 @@ public class GameScreen extends Screen {
 						break;
 					}
 				}
+				// for (GUIElement guiElement : guiElements) {
+				// if (guiElement.hasPoint(longPressedCoordinates)
+				// && guiElement.isVisible()) {
+				// guiElement.handleLongPressEvent(longPressEvent);
+				// guiOP = true;
+				// break;
+				// }
+				// }
 
 				if (!guiOP) {
 					Object clickedObject = findClickedObjectLongPressed(longPressedCoordinates);
@@ -519,13 +565,23 @@ public class GameScreen extends Screen {
 			MotionEvent startEvent = scrollEvent.getStartEvent();
 			JDPoint coordinates = normalizeRawCoordinates(startEvent);
 			boolean guiOP = false;
-			for (GUIElement guiElement : guiElements) {
+			ListIterator<GUIElement> listIterator = guiElements
+					.listIterator(guiElements.size());
+			while (listIterator.hasPrevious()) {
+				GUIElement guiElement = listIterator.previous();
 				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
 					guiElement.handleScrollEvent(scrollEvent);
 					guiOP = true;
 					break;
 				}
 			}
+			// for (GUIElement guiElement : guiElements) {
+			// if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+			// guiElement.handleScrollEvent(scrollEvent);
+			// guiOP = true;
+			// break;
+			// }
+			// }
 
 			if (!guiOP) {
 
@@ -569,13 +625,24 @@ public class GameScreen extends Screen {
 			boolean guiOP = false;
 			JDPoint coordinates = new JDPoint(touchDownEvent.x,
 					touchDownEvent.y);
-			for (GUIElement guiElement : guiElements) {
+			ListIterator<GUIElement> listIterator = guiElements
+					.listIterator(guiElements.size());
+			while (listIterator.hasPrevious()) {
+				GUIElement guiElement = listIterator.previous();
 				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
 					guiElement.handleTouchEvent(touchDownEvent);
 					guiOP = true;
 					break;
 				}
 			}
+
+			// for (GUIElement guiElement : guiElements) {
+			// if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+			// guiElement.handleTouchEvent(touchDownEvent);
+			// guiOP = true;
+			// break;
+			// }
+			// }
 			if (!guiOP) {
 				handleClickEvent(touchDownEvent);
 			}
@@ -819,13 +886,8 @@ public class GameScreen extends Screen {
 		return this.dungeonGame;
 	}
 
-	public void newStatement(String text, int styleCode) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void newStatement(Statement s) {
-		// TODO Auto-generated method stub
+		this.showNewTextPercept(s);
 
 	}
 
@@ -883,6 +945,10 @@ public class GameScreen extends Screen {
 
 	}
 
+	public void showNewTextPercept(Statement p) {
+		textPerceptView.addTextPercept(p);
+	}
+
 	public void setInfoEntity(Paragraphable item) {
 		if (item == null || item.equals(this.figureInfo)) {
 			this.infoPanel.setContent(null);
@@ -892,7 +958,7 @@ public class GameScreen extends Screen {
 	}
 
 	public void setHighlightedEntity(InfoEntity item) {
-		if(item.equals(this.figureInfo)) {
+		if (item == null || item.equals(this.figureInfo)) {
 			highlightedEntity = null;
 		} else {
 			this.highlightedEntity = item;

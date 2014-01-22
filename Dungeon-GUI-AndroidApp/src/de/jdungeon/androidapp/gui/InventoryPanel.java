@@ -7,7 +7,6 @@ import de.jdungeon.androidapp.GameScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
 import figure.action.EquipmentChangeAction;
 import figure.hero.HeroInfo;
@@ -132,7 +131,7 @@ public class InventoryPanel extends SlidingGUIElement {
 		InventoryBox[] armors = { armor1, armor2, armor3 };
 		this.armors = armors;
 
-		this.slideOut();
+
 
 	}
 
@@ -141,13 +140,7 @@ public class InventoryPanel extends SlidingGUIElement {
 		return true;
 	}
 
-	private void slideOut() {
-		this.slideStep = SLIDE_OUT_STEPS;
-	}
 
-	private void slideIn() {
-		this.slideStep = -1;
-	}
 
 	@Override
 	public void handleTouchEvent(TouchEvent touch) {
@@ -288,12 +281,7 @@ public class InventoryPanel extends SlidingGUIElement {
 
 	}
 
-	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
-		if (scrolling.getMovement().getX() > 0) {
-			slideOut();
-		}
-	}
+
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
