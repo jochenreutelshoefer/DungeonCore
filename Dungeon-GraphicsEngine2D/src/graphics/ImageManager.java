@@ -6,14 +6,45 @@
  */
 package graphics;
 
+import item.AttrPotion;
+import item.DustItem;
+import item.Item;
+import item.ItemInfo;
+import item.Key;
+import item.equipment.Armor;
+import item.equipment.Helmet;
+import item.equipment.Shield;
+import item.equipment.weapon.Axe;
+import item.equipment.weapon.Club;
+import item.equipment.weapon.Lance;
+import item.equipment.weapon.Sword;
+import item.equipment.weapon.Wolfknife;
+import item.paper.Book;
+import item.paper.InfoScroll;
+import item.paper.Scroll;
+import item.quest.DarkMasterKey;
+import item.quest.Feather;
+import item.quest.Incense;
+import item.quest.LuziasBall;
+import item.quest.Rune;
+import item.quest.Thing;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import shrine.Brood;
+import shrine.Luzia;
+import shrine.Shrine;
+import shrine.ShrineInfo;
 import animation.AnimationSet;
 import animation.AnimationSetDirections;
 import audio.AudioEffectsManager;
 import dungeon.Dir;
+import dungeon.DoorInfo;
+import figure.FigureInfo;
+import figure.monster.Monster;
+import figure.monster.MonsterInfo;
 
 public class ImageManager {
 
@@ -878,7 +909,7 @@ public class ImageManager {
 			health_bar_empty = new JDImageProxy(a, "health_bar_empty.gif");
 			health_bar_red = new JDImageProxy(a, "health_bar_red.gif");
 			health_bar_yellow = new JDImageProxy(a, "health_bar_yellow.gif");
-			
+
 			inventory_figure_background = new JDImageProxy(a,
 					"figure-shadow1.gif");
 
@@ -916,91 +947,8 @@ public class ImageManager {
 		return ims;
 	}
 
-	// static int[][] bgGIF = { {4, 2, 4}};
-	// static BufferedImageOp opGIF = new LookupOp(new MyLookUpTable(bgGIF,4),
-	// null);
-	// static Graphics g2;
-
-	// private static Image performCutOperationsGIF(Image element,String
-	// fileName) {
-	//
-	//
-	//
-	// BufferedImage mBufferedImage = new BufferedImage(
-	// element.getWidth(null), element.getHeight(null),
-	// BufferedImage.TYPE_INT_ARGB);
-	// g2 = mBufferedImage.createGraphics();
-	// g2.drawImage(element, 0, 0, null);
-	//
-	// //Image im = bild.createImage(mBufferedImage.getWidth(),
-	// mBufferedImage.getHeight());
-	// opGIF.filter(mBufferedImage, mBufferedImage);
-	// OutputStream output = null;
-	// //D:\workspaces\workspaceJD\java_dungeon\pics
-	// String dest = JDImageLoader.LOCAL_PICTURE_PATH+fileName+".gif";
-	// System.out.println("writing out : "+dest);
-	// try {
-	// output = new BufferedOutputStream(
-	// new FileOutputStream(dest
-	// ));
-	//
-	// } catch (Exception e) {
-	// System.out.println("filenotfound!");
-	// }
-	// BMP_Writer bmpwriter = new BMP_Writer();
-	//
-	// Gif89Encoder encode = null;
-	// try {
-	//
-	// encode = new Gif89Encoder(mBufferedImage);
-	//
-	// encode.encode(output);
-	// output.close();
-	// System.out.println("ready!");
-	// } catch (Exception e) {
-	// System.out.println("encode error :");
-	// e.printStackTrace();
-	// System.out.println(e.toString());
-	// }
-	// //System.exit(0);
-	// return mBufferedImage;
-	//
-	// }
-	// //static int[][] bgPNG = { {97, 68, 43}};
-	// //static int[][] bgPNG = { {111, 79, 51}};
-	// //static int[][] bgPNG = { {106, 76 ,48}};
-	// static int[][] bgPNG = { {105, 74, 46}};
-	// //static int[][] bgPNG = { {110 ,80, 52}};
-	// static BufferedImageOp opPNG = new LookupOp(new MyLookUpTable(bgPNG,0),
-	// null);
-	//
-	//
-	// private static void performCutOperationsPNG(Image element,String
-	// fileName) {
-	//
-	// BufferedImage mBufferedImage = new BufferedImage(
-	// element.getWidth(null), element.getHeight(null),
-	// BufferedImage.TYPE_INT_ARGB);
-	// g2 = mBufferedImage.createGraphics();
-	// g2.drawImage(element, 0, 0, null);
-	//
-	// opPNG.filter(mBufferedImage, mBufferedImage);
-	// String dest = JDImageLoader.LOCAL_PICTURE_PATH+fileName+"_trans.PNG";
-	// System.out.println("writing out : "+dest);
-	//
-	// try {
-	// ImageIO.write(mBufferedImage, "png", new File(dest));
-	// System.out.println("ready!");
-	// } catch (Exception e) {
-	// System.out.println("encode error :");
-	// e.printStackTrace();
-	// System.out.println(e.toString());
-	// }
-	//
-	// }
-
-	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a, String path,
-			int cnt) {
+	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a,
+			String path, int cnt) {
 		JDImageProxy<?>[] ims = new JDImageProxy[cnt];
 		for (int i = 0; i < cnt; i++) {
 
@@ -1019,8 +967,8 @@ public class ImageManager {
 		return ims;
 	}
 
-	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a, String path,
-			String fileNamePrefix, int dir, int cnt) {
+	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a,
+			String path, String fileNamePrefix, int dir, int cnt) {
 
 		List<JDImageProxy<?>> imageList = new LinkedList<JDImageProxy<?>>();
 		String dirChar = "";
@@ -1047,8 +995,8 @@ public class ImageManager {
 
 		while (i < 15) {
 
-			JDImageProxy<?> im = new JDImageProxy(path + fileNamePrefix + dirChar
-					+ suffix + "_trans.GIF", a);
+			JDImageProxy<?> im = new JDImageProxy(path + fileNamePrefix
+					+ dirChar + suffix + "_trans.GIF", a);
 			if (im.fileExists()) {
 				imageList.add(im);
 			}
@@ -1064,7 +1012,8 @@ public class ImageManager {
 
 		JDImageProxy<?>[] ims = new JDImageProxy<?>[imageList.size()];
 		int k = 0;
-		for (Iterator<JDImageProxy<?>> iter = imageList.iterator(); iter.hasNext();) {
+		for (Iterator<JDImageProxy<?>> iter = imageList.iterator(); iter
+				.hasNext();) {
 			JDImageProxy<?> element = iter.next();
 			ims[k] = element;
 			k++;
@@ -1378,4 +1327,172 @@ public class ImageManager {
 		return ImageManager.warrior_slays.get(dir - 1);
 	}
 
+	public static JDImageProxy<?> getImage(DoorInfo s) {
+		if (s.hasLock()) {
+			return ImageManager.door_north_lock;
+		} else {
+			return ImageManager.door_north;
+		}
+	}
+
+	public static JDImageProxy<?> getImage(ShrineInfo s) {
+		JDImageProxy<?> im = null;
+		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
+			im = ImageManager.fountainImage;
+		} else if (s.getShrineIndex() == Shrine.SHRINE_REPAIR) {
+			im = 	ImageManager.repairImage;
+		} else if (s.getShrineIndex() == Shrine.SHRINE_STATUE) {
+			im = 	ImageManager.statueImage; 
+		} else if (s.getShrineIndex() == Shrine.SHRINE_ANGEL) {
+			im = ImageManager.engelImage;
+		} else if (s.getShrineIndex() == Shrine.SHRINE_SORCER_LAB) {
+			im = ImageManager.sorcLabImage;
+		} else if (s.getShrineIndex() == Shrine.SHRINE_BROOD) {
+			if ((s).getType() == Brood.BROOD_NATURE) {
+				im = 	ImageManager.caveImage;
+			} else if ((s).getType() == Brood.BROOD_CREATURE) {
+				im =		ImageManager.falltuerImage;
+			} else if ((s).getType() == Brood.BROOD_UNDEAD) {
+				im = ImageManager.graveImage;
+			}
+		} else if (s.getShrineIndex() == Shrine.SHRINE_TRADER) {
+			im = 	ImageManager.traderImage;
+		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNE) {
+			
+			if ((s).getType() == 1) {
+				im = ImageManager.shrine_yellowImage;
+			} else if ((s).getType() == 2) {
+				im = ImageManager.shrine_greenImage;
+			} else if (s.getType() == 3) {
+				im = ImageManager.shrine_redImage;
+			}
+			
+		} else if (s.getShrineIndex() == Shrine.SHRINE_CORPSE) {
+			
+			if ((s).getType() == 0) {
+				im = ImageManager.dead_dwarfImage;
+			} else if ((s).getType() == 1) {
+				im = ImageManager.dead_warriorImage;
+			} else if ((s).getType() == 2) {
+				im = ImageManager.dead_thiefImage;
+
+			} else if ((s).getType() == 3) {
+				im = ImageManager.dead_druidImage;
+			} else if ((s).getType() == 4) {
+				im = ImageManager.dead_mageImage;
+			}
+		} else if (s.getShrineIndex() == Shrine.SHRINE_QUEST) {
+			
+			im = ImageManager.shrine_blackImage;
+
+		} else if (s.getShrineIndex() == Shrine.SHRINE_XMAS) {
+			
+			im = ImageManager.xmasImage;
+
+
+		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNEFINDER) {
+			if ((s).getType() == 1) {
+				im = ImageManager.shrine_small_yellowImage;
+			} else if ((s).getType() == 2) {
+				im = ImageManager.shrine_small_greenImage;
+			} else if ((s).getType() == 3) {
+				im = ImageManager.shrine_small_redImage;
+			}
+
+		} else if (s.getShrineIndex() == Shrine.SHRINE_DARK_MASTER) {
+			im = ImageManager.pentagrammImage;
+		} else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
+			im = ImageManager.luziaImage;
+			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
+				im = ImageManager.luzia_hutImage;
+			}
+		}
+		return im;
+	}
+
+	public static JDImageProxy<?> getImage(FigureInfo figure, int dir) {
+		JDImageProxy<?> im = null;
+		if (figure instanceof MonsterInfo) {
+			MonsterInfo m = (MonsterInfo) figure;
+			int mClass = m.getMonsterClass();
+			if (mClass == Monster.WOLF) {
+				im = ImageManager.wolfImage[dir - 1];
+			} else if (mClass == Monster.ORC) {
+				im = ImageManager.orcImage[dir - 1];
+			} else if (mClass == Monster.SKELETON) {
+				im = ImageManager.skelImage[dir - 1];
+			} else if (mClass == Monster.GHUL) {
+				im = ImageManager.ghulImage[dir - 1];
+			} else if (mClass == Monster.OGRE) {
+				im = ImageManager.ogreImage[dir - 1];
+			} else if (mClass == Monster.BEAR) {
+				im = ImageManager.bearImage[dir - 1];
+			} else if (mClass == Monster.DARKMASTER) {
+				im = ImageManager.darkMasterImage;
+			} else if (mClass == Monster.DWARF) {
+				im = ImageManager.dark_dwarfImage;
+			} else if (mClass == Monster.FIR) {
+				im = ImageManager.finImage;
+			} else {
+				im = ImageManager.engelImage;
+			}
+		}
+		return im;
+	}
+
+	public static JDImageProxy<?> getImage(ItemInfo item) {
+		JDImageProxy<?> im = null;
+		if (AttrPotion.class.isAssignableFrom(item.getItemClass())) {
+			if (((item).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
+				im = ImageManager.potion_redImage;
+			} else {
+				im = ImageManager.potion_blueImage;
+			}
+		} else if (item.getItemClass().equals(DustItem.class)) {
+			im = ImageManager.dustImage;
+		} else if (item.getItemClass().equals(Sword.class)) {
+			im = ImageManager.swordImage;
+		} else if (item.getItemClass().equals(Axe.class)) {
+			im = ImageManager.axeImage;
+		} else if (item.getItemClass().equals(Club.class)) {
+			im = ImageManager.clubImage;
+		} else if (item.getItemClass().equals(Lance.class)) {
+			im = ImageManager.lanceImage;
+		} else if (item.getItemClass().equals(Wolfknife.class)) {
+			im = ImageManager.wolfknifeImage;
+		} else if (item.getItemClass().equals(Armor.class)) {
+			im = ImageManager.armorImage;
+		} else if (item.getItemClass().equals(Shield.class)) {
+			im = ImageManager.shieldImage;
+		} else if (item.getItemClass().equals(Helmet.class)) {
+			im = ImageManager.helmetImage;
+		} else if (Scroll.class.isAssignableFrom(item.getItemClass())) {
+			im = ImageManager.scrollImage;
+		} else if (item.getItemClass().equals(InfoScroll.class)) {
+			im = ImageManager.documentImage;
+		} else if (item.getItemClass().equals(Feather.class)) {
+			im = ImageManager.featherImage;
+		} else if (item.getItemClass().equals(Incense.class)) {
+			im = ImageManager.potion_greenImage;
+		} else if (item.getItemClass().equals(Key.class)) {
+			im = ImageManager.keyImage;
+		} else if (item.getItemClass().equals(Rune.class)) {
+			if ((item).toString().indexOf('J') != -1) {
+				im = ImageManager.rune_yellowImage;
+			} else if ((item).toString().indexOf('A') != -1) {
+				im = ImageManager.rune_greenImage;
+			} else if ((item).toString().indexOf('V') != -1) {
+				im = ImageManager.rune_redImage;
+			}
+		} else if (item.getItemClass().equals(DarkMasterKey.class)) {
+			im = ImageManager.cristall_redImage;
+		} else if (item.getClass().equals(LuziasBall.class)) {
+			im = ImageManager.kugelImage;
+		} else if (item.getClass().equals(Book.class)) {
+			im = ImageManager.bookImage;
+		} else if (Thing.class.isAssignableFrom(item.getItemClass())) {
+			im = ImageManager.amulettImage;
+		}
+		return im;
+	}
 }

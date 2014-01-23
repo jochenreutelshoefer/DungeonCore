@@ -174,7 +174,7 @@ public class GameScreen extends Screen {
 		 * init item wheel
 		 */
 		int selectedIndexItem = 16;
-		ItemWheel wheelItems = new ItemWheel(new JDPoint(50, 780),
+		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, 780),
 				new JDDimension(400, 400), figureInfo, this,
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new ItemActivityItemProvider(figureInfo, this)),
@@ -185,7 +185,7 @@ public class GameScreen extends Screen {
 		 * init skills wheel
 		 */
 		int selectedIndexSkills = 20;
-		ItemWheel wheelSkills = new ItemWheel(new JDPoint(780, 780),
+		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 780),
 				new JDDimension(400, 400), figureInfo, this,
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),

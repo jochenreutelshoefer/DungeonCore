@@ -43,6 +43,12 @@ public class ItemWheel extends AbstractGUIElement {
 	private final int doubleHeightPlusOffset = doubleImageHeight
 			+ doubleBackgroundPanelOffset;
 
+	private float timer = 0;
+	private float velocity = 0;
+	private float startVelocity = 0;
+	private final float maxVelocity = 50;
+	private double startVelocityTenth;
+
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 			GameScreen screen, ItemWheelBindingSet binding, int selectedIndex,
 			Image background) {
@@ -74,6 +80,14 @@ public class ItemWheel extends AbstractGUIElement {
 		FloatDimension movement = scrolling.getMovement();
 		float movementX = movement.getX();
 		changeRotation(movementX / 500);
+		if (movementX > maxVelocity) {
+			velocity = maxVelocity;
+		} else {
+			velocity = movementX;
+
+		}
+		startVelocity = velocity;
+		startVelocityTenth = 0.1 * startVelocity;
 		justRotated = true;
 	}
 
@@ -130,9 +144,11 @@ public class ItemWheel extends AbstractGUIElement {
 
 	@Override
 	public void update(float time) {
-
+		timer += time;
 		if (justRotated) {
-
+			/*
+			 * calc user motion
+			 */
 			if (rotationState >= TWO_PI) {
 				rotationState = (float) ((rotationState) % TWO_PI);
 			}
@@ -145,6 +161,20 @@ public class ItemWheel extends AbstractGUIElement {
 
 			}
 			justRotated = false;
+		} else {
+			/*
+			 * calc movement due to inertia-velocity
+			 */
+			if (velocity > 0) {
+				if (timer > 20000f) {
+					velocity *= 0.9;
+					timer = 0;
+				}
+				changeRotation(velocity);
+				if (velocity < startVelocityTenth) {
+					velocity = 0;
+				}
+			}
 		}
 
 		binding.update(time);

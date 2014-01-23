@@ -1,12 +1,13 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import spell.Spell;
 import spell.SpellInfo;
 import de.jdungeon.androidapp.GameScreen;
-import de.jdungeon.androidapp.gui.GUIImageManager;
+import de.jdungeon.androidapp.gui.SkillImageManager;
 import de.jdungeon.game.Image;
 import dungeon.Dir;
 import dungeon.DoorInfo;
@@ -32,6 +33,8 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 	private final ItemWheelActivity attack = new ItemWheelActivity(ATTACK);
 	private final ItemWheelActivity flee = new ItemWheelActivity(FLEE);
 	private final ItemWheelActivity scout = new ItemWheelActivity(SCOUT);
+
+	private final Map<Object, Image> imageCache = new HashMap<Object, Image>();
 
 	public SkillActivityProvider(HeroInfo info, GameScreen screen) {
 		super();
@@ -73,38 +76,13 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 
 	@Override
 	public Image getActivityImage(ItemWheelActivity a) {
-		Image im = null;
-		Object o = a.getObject();
-		if (o.equals(ATTACK)) {
-			im = GUIImageManager.getImage(GUIImageManager.SWORD_ICON,
-					screen.getGame());
-		} else if (o.equals(SCOUT)) {
-			im = GUIImageManager.getImage(GUIImageManager.SPY_ICON,
-					screen.getGame());
-			// } else if (o.equals(WALK)) {
-			// im = GUIImageManager.getImage(GUIImageManager.FOOT_ICON,
-			// screen.getGame());
-		} else if (o.equals(FLEE)) {
-			im = GUIImageManager.getImage(GUIImageManager.FOOT_ICON,
-					screen.getGame());
-		} else if (o.equals(LOOK)) {
-			im = GUIImageManager.getImage(GUIImageManager.LUPE,
-					screen.getGame());
-		} else if (o instanceof SpellInfo) {
-			SpellInfo spell = ((SpellInfo) o);
-			int spellType = spell.getType();
-			if (spellType == Spell.SPELL_GOLDENHIT) {
-				im = GUIImageManager.getImage(GUIImageManager.TARGET_ICON,
-						screen.getGame());
-			} else if (spellType == Spell.SPELL_HEAL) {
-				im = GUIImageManager.getImage(GUIImageManager.HEART_ICON,
-						screen.getGame());
-			} else if (spellType == Spell.SPELL_REPAIR) {
-				im = GUIImageManager.getImage(GUIImageManager.HAMMER,
-						screen.getGame());
-			}
+		Image image = imageCache.get(a.getObject());
+		if (image != null) {
+			return image;
 		}
-		return im;
+		image = SkillImageManager.getSkillImage(a, screen);
+		imageCache.put(a.getObject(), image);
+		return image;
 	}
 
 	@Override

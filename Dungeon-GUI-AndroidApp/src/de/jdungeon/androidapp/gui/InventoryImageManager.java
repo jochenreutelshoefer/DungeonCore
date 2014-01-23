@@ -81,7 +81,8 @@ public class InventoryImageManager {
 					screen.getGame());
 		}
 
-		return (Image) ImageManager.deathImage.getImage();
+		return GUIImageManager.getImage(GUIImageManager.NO_IMAGE,
+				screen.getGame());
 	}
 
 }

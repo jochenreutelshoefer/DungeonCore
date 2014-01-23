@@ -1,14 +1,21 @@
 package de.jdungeon.androidapp.gui;
 
+import figure.FigureInfo;
+import graphics.ImageManager;
 import gui.Paragraph;
 import gui.Paragraphable;
+import item.ItemInfo;
+import shrine.ShrineInfo;
 import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Image;
 import de.jdungeon.util.ScrollMotion;
+import dungeon.DoorInfo;
 import dungeon.JDPoint;
 
 public class InfoPanel extends SlidingGUIElement {
@@ -54,6 +61,13 @@ public class InfoPanel extends SlidingGUIElement {
 
 		GUIUtils.drawBackground(g, x, position.getY(), dimension);
 
+		Image im = getImage();
+		if (im != null) {
+			g.drawScaledImage(im, getCurrentX() + 20, position.getY() + 20, 60,
+					60, 0, 0,
+					im.getWidth(), im.getHeight());
+		}
+
 		/*
 		 * print information
 		 */
@@ -85,6 +99,50 @@ public class InfoPanel extends SlidingGUIElement {
 	}
 
 
+
+	private Image getImage() {
+		if (content instanceof DoorInfo) {
+			return (Image) ImageManager.getImage((DoorInfo) content).getImage();
+		}
+		if (content instanceof ShrineInfo) {
+			return (Image) ImageManager.getImage((ShrineInfo) content)
+					.getImage();
+		}
+		if (content instanceof FigureInfo) {
+			if (((FigureInfo) content).isDead()) {
+				return (Image) ImageManager.deathImage;
+			}
+			return (Image) ImageManager.getImage((FigureInfo) content, 3)
+					.getImage();
+		}
+		if(content instanceof ItemInfo) {
+			Image image = InventoryImageManager.getImage((ItemInfo) content,
+					screen);
+			if (image.equals(GUIImageManager.getImage(GUIImageManager.NO_IMAGE,
+					screen.getGame()))) {
+				image = (Image) ImageManager.getImage((ItemInfo) content)
+						.getImage();
+			}
+			return image;
+		}
+		if (content instanceof ItemWheelActivity) {
+			ItemWheelActivity activity = (ItemWheelActivity) content;
+			if (activity.getObject() instanceof ItemInfo) {
+				Image image = InventoryImageManager.getImage(
+						(ItemInfo) activity.getObject(), screen);
+				if (image.equals(GUIImageManager.getImage(
+						GUIImageManager.NO_IMAGE, screen.getGame()))) {
+					image = (Image) ImageManager.getImage((ItemInfo) content)
+							.getImage();
+				}
+				return image;
+			} else {
+				return SkillImageManager.getSkillImage(activity, screen);
+
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void update(float time) {

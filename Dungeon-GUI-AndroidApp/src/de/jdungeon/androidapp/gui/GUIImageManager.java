@@ -34,6 +34,8 @@ public class GUIImageManager {
 	public static final String HAMMER2 = "guiItems/TO_hammer.gif";
 	public static final String RUN_ICON = "guiItems/run.gif";
 
+	public static final String NO_IMAGE = "guiItems/no_image.gif";
+
 	public static AbstractImageLoader<?> loader;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
