@@ -23,7 +23,7 @@ public class Bonebreaker extends Spell implements TargetSpell {
 //
 //	public static int[] diffMinArray = { 9, 15 };
 
-	public static int[][] values = { { 8, 5, 8, 12,2 }, { 15, 13, 12, 25,2 } };
+	public static int[][] values = { { 7, 5, 8, 12, 2 }, { 15, 13, 12, 25, 2 } };
 
 	
 	private final boolean isPossibleNormal;

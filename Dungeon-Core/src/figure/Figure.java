@@ -894,7 +894,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	public boolean fight() {
-		System.out.println(this.toString() + " fight()");
 
 		incFightAP(1);
 		boolean isLamed = lame();

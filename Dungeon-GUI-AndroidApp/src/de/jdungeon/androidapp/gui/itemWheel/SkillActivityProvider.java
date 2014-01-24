@@ -94,7 +94,8 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		InfoEntity highlightedEntity = screen.getHighlightedEntity();
 		if (o.equals(ATTACK)) {
 			List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
-			if (figureInfos.size() == 2) {
+			if (figureInfos.size() == 2
+					&& (highlightedEntity == null || !(highlightedEntity instanceof FigureInfo))) {
 				// remove player
 				figureInfos.remove(info);
 				// enemy remains
@@ -166,7 +167,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				screen.getControl().getActionAssembler()
 						.wannaSpell(spell, uniqueTargetEntity);
 			} else {
-				if (highlightedEntity.getClass().isAssignableFrom(targetClass)) {
+				if (targetClass.isAssignableFrom(highlightedEntity.getClass())) {
 					screen.getControl().getActionAssembler()
 							.wannaSpell(spell, highlightedEntity);
 				} else {

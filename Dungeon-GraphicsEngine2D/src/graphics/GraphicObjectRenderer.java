@@ -1064,8 +1064,8 @@ public class GraphicObjectRenderer {
 			}
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
-
-			if (r.getMonsterInfos().size() > 0) {
+			if (r != null && r.getMonsterInfos() != null
+					&& r.getMonsterInfos().size() > 0) {
 				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
 						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {

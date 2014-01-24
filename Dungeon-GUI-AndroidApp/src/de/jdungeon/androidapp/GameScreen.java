@@ -16,7 +16,6 @@ import gui.Paragraphable;
 import item.ItemInfo;
 import item.equipment.weapon.Club;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -80,7 +79,6 @@ public class GameScreen extends Screen {
 
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
 	private final List<GUIElement> guiElements = new LinkedList<GUIElement>();
-	private final List<GUIElement> guiElementsReverse = new ArrayList<GUIElement>();
 	private final InfoPanel infoPanel;
 	private final TextPerceptView textPerceptView;
 	private GameOverView gos = null;
@@ -115,14 +113,14 @@ public class GameScreen extends Screen {
 	private JDPoint beacon = null;
 	private float beaconCounter = 0;
 
-	public GameScreen(Game game) {
+	public GameScreen(Game game, int heroType) {
 		super(game);
 
 		dungeonGame = DungeonGame.newInstance();
 		dungeonGame.run();
 		JDEnv.init();
 		JDEnv.setGame(dungeonGame);
-		createDungeon();
+		createDungeon(heroType);
 		DungeonVisibilityMap heroVisMap = hero.getRoomVisibility();
 		// heroVisMap.setVisCheat();
 		figureInfo = new HeroInfo(hero, heroVisMap);
@@ -153,11 +151,11 @@ public class GameScreen extends Screen {
 		 */
 		int posX = 22;
 		HealthBar healthView = new HealthBar(new JDPoint(posX, 5),
-				new JDDimension(180, 20), figureInfo, HealthBar.Kind.health,
+				new JDDimension(160, 20), figureInfo, HealthBar.Kind.health,
 				this);
 		this.guiElements.add(healthView);
 		HealthBar dustView = new HealthBar(new JDPoint(posX, 25),
-				new JDDimension(180, 20), figureInfo, HealthBar.Kind.dust, this);
+				new JDDimension(160, 20), figureInfo, HealthBar.Kind.dust, this);
 		this.guiElements.add(dustView);
 
 
@@ -184,7 +182,7 @@ public class GameScreen extends Screen {
 		/*
 		 * init skills wheel
 		 */
-		int selectedIndexSkills = 20;
+		int selectedIndexSkills = 19;
 		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 780),
 				new JDDimension(400, 400), figureInfo, this,
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
@@ -260,10 +258,10 @@ public class GameScreen extends Screen {
 				* roomSize - (screenSize.getHeight() / 2) + (this.roomSize / 2));
 	}
 
-	private void createDungeon() {
-		hero = new Hero("DefaultHero", 1, null, 40, 10, 10, 10, 1, 1, 1, 1, 1,
-				1, 1, 1, 1, 10, 1, 0);
-		HeroUtil.addHeroStartWeapon(hero);
+	private void createDungeon(int heroType) {
+
+		hero = HeroUtil.getBasicHero(heroType, "Gisbert", "Wassermann");
+
 
 		derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
 				dungeonGame);
@@ -292,7 +290,7 @@ public class GameScreen extends Screen {
 
 		hero.createVisibilityMap(derDungeon);
 		hero.move(derDungeon.getRoomNr(18, 39));
-		hero.getRoom().addItem(new Club(50, false));
+		hero.getRoom().addItem(new Club(40, false));
 
 	}
 
@@ -558,13 +556,7 @@ public class GameScreen extends Screen {
 					break;
 				}
 			}
-			// for (GUIElement guiElement : guiElements) {
-			// if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
-			// guiElement.handleScrollEvent(scrollEvent);
-			// guiOP = true;
-			// break;
-			// }
-			// }
+
 
 			if (!guiOP) {
 
@@ -619,13 +611,6 @@ public class GameScreen extends Screen {
 				}
 			}
 
-			// for (GUIElement guiElement : guiElements) {
-			// if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
-			// guiElement.handleTouchEvent(touchDownEvent);
-			// guiOP = true;
-			// break;
-			// }
-			// }
 			if (!guiOP) {
 				handleClickEvent(touchDownEvent);
 			}
@@ -946,6 +931,11 @@ public class GameScreen extends Screen {
 		} else {
 			this.highlightedEntity = item;
 		}
+	}
+
+	public void clearAnimationManager() {
+		AnimationManager.getInstance().clear();
+
 	}
 
 }

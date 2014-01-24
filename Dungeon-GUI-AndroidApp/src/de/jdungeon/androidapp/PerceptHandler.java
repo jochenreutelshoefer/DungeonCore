@@ -46,6 +46,7 @@ public class PerceptHandler {
 	}
 
 	public void handlePercept(Percept p) {
+		// System.out.println("receiving Percept: " + p.toString());
 		if (p instanceof WaitPercept) {
 			handleWaitPercept((WaitPercept) p);
 		}
@@ -137,8 +138,8 @@ public class PerceptHandler {
 	}
 
 	private void handleFightEndedPercept(FightEndedPercept p) {
-		// TODO Auto-generated method stub
-
+		newStatement(StatementManager.getStatement(p));
+		screen.clearAnimationManager();
 	}
 
 	private void handleFleePercept(FleePercept p) {
@@ -234,12 +235,12 @@ public class PerceptHandler {
 	}
 
 	private void handleTumblingPercept(TumblingPercept p) {
-		// TODO Auto-generated method stub
+		newStatement(StatementManager.getStatement(p, figure));
 
 	}
 
 	private void handleMissPercept(MissPercept p) {
-		// TODO Auto-generated method stub
+		newStatement(StatementManager.getStatement(p, figure));
 
 	}
 
@@ -253,7 +254,7 @@ public class PerceptHandler {
 	}
 
 	private void handleShieldBlockPercept(ShieldBlockPercept p) {
-		// TODO Auto-generated method stub
+		newStatement(StatementManager.getStatement(p, figure));
 
 	}
 
@@ -263,12 +264,29 @@ public class PerceptHandler {
 	}
 
 	private void handleDoorSmashPercept(DoorSmashPercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo victim = p.getVictim();
+		newStatement(StatementManager.getStatement(p, figure));
+		if (p.getValue() > 0) {
+
+			RoomInfo info = victim.getRoomInfo();
+
+			int damage = p.getValue();
+
+			AnimationSet set = AnimationUtils.getFigure_been_hit(victim);
+
+			if (set != null) {
+				screen.startAnimation(set, victim, "-" + damage);
+			}
+		}
 
 	}
 
 	private void handleWaitPercept(WaitPercept p) {
-		// TODO Auto-generated method stub
+		FigureInfo user = p.getFigure();
+		AnimationSet set = AnimationUtils.getFigure_using(user);
+		if (set != null) {
+			screen.startAnimation(set, user);
+		}
 
 	}
 
@@ -301,7 +319,7 @@ public class PerceptHandler {
 
 
 
-	private void newStatement(Statement s) {
+	public void newStatement(Statement s) {
 		screen.newStatement(s);
 	}
 

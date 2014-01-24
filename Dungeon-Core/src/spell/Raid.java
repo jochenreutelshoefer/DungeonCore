@@ -23,7 +23,7 @@ import game.JDEnv;
 public class Raid extends Spell implements TargetSpell {
 
 
-	public static int[][] values = { { 7, 3, 6, 10,1 }, {
+	public static int[][] values = { { 5, 3, 6, 10, 1 }, {
 			7, 5, 5, 20,2 }
 	};
 

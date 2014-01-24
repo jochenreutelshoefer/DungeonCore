@@ -1,7 +1,5 @@
 package de.jdungeon.androidapp.animation;
 
-import graphics.JDImageProxy;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,22 +9,33 @@ import animation.AnimationSet;
 import audio.AbstractAudioSet;
 import de.jdungeon.game.Image;
 import dungeon.JDPoint;
+import figure.FigureInfo;
+import graphics.JDImageProxy;
 
 public class AnimationTask {
 
 	private final AnimationSet ani;
-	private final long startTime;
+	private long startTime;
 	private final Collection<AbstractAudioSet> soundsPlayed = new HashSet<AbstractAudioSet>();
 	private final String text;
+	boolean wasStarted = false;
+	private final FigureInfo info;
 
-	public AnimationTask(AnimationSet ani, long timestemp) {
-		this(ani, timestemp, null);
+	public AnimationTask(AnimationSet ani, long timestemp, FigureInfo info) {
+		this(ani, timestemp, null, info);
+
 	}
 
-	public AnimationTask(AnimationSet ani, long timestemp, String text) {
+	public FigureInfo getFigure() {
+		return info;
+	}
+
+	public AnimationTask(AnimationSet ani, long timestemp, String text,
+			FigureInfo info) {
 		this.ani = ani;
 		this.startTime = timestemp;
 		this.text = text;
+		this.info = info;
 	}
 
 	public boolean isFinished() {
@@ -34,7 +43,15 @@ public class AnimationTask {
 	}
 
 	public AnimationFrame getCurrentAnimationFrame() {
+		if (!wasStarted) {
+			wasStarted = true;
+			startTime = System.currentTimeMillis();
+		}
 		long timePassed = System.currentTimeMillis() - startTime;
+		// if (timePassed < 0) {
+		// // has not started yet
+		// return null;
+		// }
 		int imageNr = ani.getImageNrAtTime(timePassed);
 
 		JDImageProxy<?> currentImage = getCurrentImage(imageNr, timePassed);

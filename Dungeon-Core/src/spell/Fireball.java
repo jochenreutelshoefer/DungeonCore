@@ -23,7 +23,7 @@ import dungeon.Position;
 public class Fireball extends Spell implements TargetSpell{
 
 
-	public static int[][] VALUES = { { 10, 6, 5, 9 ,1}, { 17, 13, 7, 24,2 } };
+	public static int[][] VALUES = { { 9, 6, 5, 9, 1 }, { 17, 13, 7, 24, 2 } };
 
 	@Override
 	public Class<? extends InfoEntity> getTargetClass() {

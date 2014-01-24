@@ -52,7 +52,8 @@ public class ItemActivityItemProvider implements ItemWheelActivityProvider {
 	@Override
 	public void activityPressed(ItemWheelActivity infoEntity) {
 		Control control = screen.getControl();
-		control.itemWheelActivityClicked(infoEntity);
+		control.itemWheelActivityClicked(infoEntity,
+				screen.getHighlightedEntity());
 	}
 
 }

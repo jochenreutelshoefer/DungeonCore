@@ -55,17 +55,18 @@ public class Control {
 
 	}
 
-	public void inventoryItemClicked(ItemInfo item) {
-		actionAssembler.wannaUseItem(item, null, false);
+	public void inventoryItemClicked(ItemInfo item, InfoEntity target) {
+		actionAssembler.wannaUseItem(item, target, false);
 	}
 
-	public void itemWheelActivityClicked(ItemWheelActivity item) {
+	public void itemWheelActivityClicked(ItemWheelActivity item,
+			InfoEntity target) {
 		if (item == null) {
 			return;
 		}
 		Object o = item.getObject();
 		if (o instanceof ItemInfo) {
-			inventoryItemClicked((ItemInfo) o);
+			inventoryItemClicked((ItemInfo) o, target);
 		}
 	}
 
@@ -90,11 +91,12 @@ public class Control {
 	}
 
 	private void handleShrineInfoClick(ShrineInfo info, boolean doubleClick) {
-		actionAssembler.shrineClicked(false);
+		actionAssembler.shrineClicked(doubleClick);
 
 	}
 
 	private void handleFigureInfoClick(FigureInfo figure, boolean doubleClick) {
+		System.out.println("handleFigureClick: " + figure);
 		actionAssembler.monsterClicked(figure, doubleClick);
 
 	}

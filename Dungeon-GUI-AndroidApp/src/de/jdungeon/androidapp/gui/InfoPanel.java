@@ -14,6 +14,7 @@ import de.jdungeon.androidapp.GameScreen;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
+import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.util.ScrollMotion;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
@@ -22,7 +23,7 @@ public class InfoPanel extends SlidingGUIElement {
 
 	public InfoPanel(JDPoint position, JDDimension dimension, GameScreen screen) {
 		super(position, dimension, new JDPoint(position.getX()
-				+ dimension.getWidth(), position.getY()), screen);
+				+ dimension.getWidth() - 10, position.getY()), screen);
 	}
 
 	private Paragraphable content;
@@ -49,6 +50,10 @@ public class InfoPanel extends SlidingGUIElement {
 		}
 	}
 
+	@Override
+	public void handleTouchEvent(TouchEvent touch) {
+		setContent(content);
+	}
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
@@ -64,8 +69,7 @@ public class InfoPanel extends SlidingGUIElement {
 		Image im = getImage();
 		if (im != null) {
 			g.drawScaledImage(im, getCurrentX() + 20, position.getY() + 20, 60,
-					60, 0, 0,
-					im.getWidth(), im.getHeight());
+					60, 0, 0, im.getWidth(), im.getHeight());
 		}
 
 		/*
@@ -90,7 +94,6 @@ public class InfoPanel extends SlidingGUIElement {
 			}
 		}
 
-
 		/*
 		 * paint border
 		 */
@@ -98,9 +101,9 @@ public class InfoPanel extends SlidingGUIElement {
 
 	}
 
-
-
 	private Image getImage() {
+		if (content == null)
+			return null;
 		if (content instanceof DoorInfo) {
 			return (Image) ImageManager.getImage((DoorInfo) content).getImage();
 		}
@@ -109,13 +112,17 @@ public class InfoPanel extends SlidingGUIElement {
 					.getImage();
 		}
 		if (content instanceof FigureInfo) {
-			if (((FigureInfo) content).isDead()) {
-				return (Image) ImageManager.deathImage;
+			try {
+				if (content != null && ((FigureInfo) content).isDead()) {
+					return (Image) ImageManager.deathImage.getImage();
+				}
+			} catch (NullPointerException e) {
+				return null;
 			}
 			return (Image) ImageManager.getImage((FigureInfo) content, 3)
 					.getImage();
 		}
-		if(content instanceof ItemInfo) {
+		if (content instanceof ItemInfo) {
 			Image image = InventoryImageManager.getImage((ItemInfo) content,
 					screen);
 			if (image.equals(GUIImageManager.getImage(GUIImageManager.NO_IMAGE,

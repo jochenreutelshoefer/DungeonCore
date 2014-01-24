@@ -11,7 +11,7 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	protected final JDPoint position;
 	protected final JDDimension dimension;
-	protected final GameScreen screen;
+	protected GameScreen screen = null;
 
 	public AbstractGUIElement(JDPoint position, JDDimension dimension,
 			GameScreen screen) {
@@ -19,6 +19,12 @@ public abstract class AbstractGUIElement implements GUIElement {
 		this.position = position;
 		this.dimension = dimension;
 		this.screen = screen;
+	}
+
+	public AbstractGUIElement(JDPoint position, JDDimension dimension) {
+		super();
+		this.position = position;
+		this.dimension = dimension;
 	}
 
 	public AbstractGUIElement(JDPoint position, JDDimension dimension,

@@ -12,6 +12,7 @@ import item.ItemInfo;
 import java.util.Vector;
 
 import spell.SpellInfo;
+import text.StatementManager;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 
@@ -30,8 +31,9 @@ public class AndroidScreenJDGUI implements JDGUI {
 
 	@Override
 	public void actionDone(Action a, ActionResult res) {
-		// TODO Auto-generated method stub
-
+		if (res.getKey1() == ActionResult.KEY_IMPOSSIBLE) {
+			perceptHandler.newStatement(StatementManager.getStatement(res));
+		}
 	}
 
 	@Override

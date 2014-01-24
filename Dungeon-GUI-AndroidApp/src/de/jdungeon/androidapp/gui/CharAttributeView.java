@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import de.jdungeon.androidapp.GameScreen;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Input.TouchEvent;
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
 
@@ -19,15 +20,26 @@ public class CharAttributeView extends SlidingGUIElement {
 
 	private static final int yPosition = 150;
 
+	private final Paint black;
+
 	public CharAttributeView(HeroInfo info, GameScreen screen) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
 				(size.getWidth() * -1) + 20, yPosition), screen);
 		this.info = info;
+		black = new Paint();
+		black.setColor(Color.BLACK);
+		black.setTextSize(12);
 	}
 
 	@Override
 	public boolean isVisible() {
 		return true;
+	}
+
+	@Override
+	public void handleTouchEvent(TouchEvent touch) {
+		screen.scrollTo(info.getRoomNumber(), 50f);
+		super.handleTouchEvent(touch);
 	}
 
 	@Override
@@ -37,6 +49,9 @@ public class CharAttributeView extends SlidingGUIElement {
 		GUIUtils.drawBackground(g, x, position.getY(), dimension);
 
 		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
+
+		g.drawString("Punkte: " + info.getTotalExp(), this.getCurrentX() + 15,
+				position.getY() + 25, black);
 
 		/*
 		 * TODO: refactor attributes to enum
@@ -76,12 +91,10 @@ public class CharAttributeView extends SlidingGUIElement {
 
 	private void writeLine(int i, List<String> texts, Graphics g) {
 
-		int textStartRow = this.position.getY() + 25;
+		int textStartRow = this.position.getY() + 35;
 		int textStartX = this.getCurrentX() + 15;
 		int lineHeight = 17;
-		Paint black = new Paint();
-		black.setColor(Color.BLACK);
-		black.setTextSize(12);
+
 		double value = info.getAttributeValue(i);
 
 		double basic = info.getAttributeBasic(i);
