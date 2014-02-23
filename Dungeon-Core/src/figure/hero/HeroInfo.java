@@ -412,7 +412,7 @@ public class HeroInfo extends FigureInfo {
 		return s;
 	}
 
-	public String getSign() {
+	public Zodiac getSign() {
 		if (map.getFigure().equals(h)) {
 			return h.getSign();
 		}

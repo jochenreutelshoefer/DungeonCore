@@ -69,7 +69,6 @@ public class Hero extends Figure implements InfoProvider {
 
 	// private int fightAP = 0;
 	int timeDelay = 2000;
-
 	public static int hero_index_counter = -1;
 
 	// private static LinkedList allHeros = new LinkedList();
@@ -107,9 +106,9 @@ public class Hero extends Figure implements InfoProvider {
 
 	private int kills = 0;
 
-	private int HeroCode;
+	private final int HeroCode;
 
-	private String Sign;
+	private final Zodiac sign;
 
 	private boolean isDead = false;
 
@@ -233,7 +232,7 @@ public class Hero extends Figure implements InfoProvider {
 		return new HeroInfo(this, map);
 	}
 
-	public Hero(String name, int heroCode, String Sign, int HealthVal,
+	public Hero(String name, int heroCode, Zodiac sign, int HealthVal,
 			int StrengthVal, int DexterityVal, int PsychoVal, int Axe,
 			int Lance, int Sword, int Club, int Wolfknife, int nature,
 			int creature, int undead, int scout, int dust, double dustReg,
@@ -241,7 +240,7 @@ public class Hero extends Figure implements InfoProvider {
 		super();
 		this.HeroCode = heroCode;
 		this.reflexReactionUnit = new DefaultHeroReflexBehavior(this);
-		this.Sign = Sign;
+		this.sign = sign;
 		int brave = 0;
 		if (heroCode == 1) {
 			brave = 8;
@@ -426,8 +425,8 @@ public class Hero extends Figure implements InfoProvider {
 	 * @return a <code>String</code> value
 	 * 
 	 */
-	public String getSign() {
-		return Sign;
+	public Zodiac getSign() {
+		return sign;
 	}
 
 	@Override
@@ -1867,37 +1866,6 @@ public class Hero extends Figure implements InfoProvider {
 		return before;
 	}
 
-	// class Waiter implements Runnable {
-	//
-	// boolean ready = false;
-	//
-	// public void run() {
-	// while (game.getActualFightAction() == null) {
-	//
-	// }
-	// ready = true;
-	// }
-	//
-	// public boolean getReady() {
-	// return ready;
-	// }
-	//
-	// }
-	/**
-	 * @param heroCode
-	 *            The heroCode to set.
-	 */
-	public void setHeroCode(int heroCode) {
-		HeroCode = heroCode;
-	}
-
-	/**
-	 * @param sign
-	 *            The sign to set.
-	 */
-	public void setSign(String sign) {
-		Sign = sign;
-	}
 
 	@Override
 	public boolean scout(int dir) {

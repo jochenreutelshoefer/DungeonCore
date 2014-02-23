@@ -1,6 +1,9 @@
 package figure.hero;
 
 import figure.Spellbook;
+import figure.attribute.Attribute;
+import item.Item;
+import item.ItemPool;
 import item.equipment.Armor;
 import item.equipment.weapon.Club;
 import item.equipment.weapon.Lance;
@@ -13,6 +16,7 @@ import spell.Convince;
 import spell.Fireball;
 import spell.GoldenHit;
 import spell.Raid;
+import spell.Search;
 import spell.Spell;
 
 public class HeroUtil {
@@ -27,9 +31,9 @@ public class HeroUtil {
 	public static final double[] mageBasic = { 30, 5, 5, 9, 0, 10, 0, 0, 20,
 			10, 10, 10, 1, 23, 1.0 };
 
-	public static Hero getBasicHero(int heroCode, String heroName,
-			String signString) {
-		
+	public static Hero getBasicHero(int heroCode, String heroName, Zodiac sign,
+			Profession prof) {
+
 		Weapon waffe = null;
 		int healthVal = 0;
 		int strengthVal = 0;
@@ -133,30 +137,14 @@ public class HeroUtil {
 		default:
 			// System.out.println("heroCode Error!");
 		}
-		
-		Hero held =
-				new Hero(
-					heroName,
-					heroCode,
-					signString,
-					healthVal,
-					strengthVal,
-					dexterityVal,
-					psychoVal,
-					axe,
-					lance,
-					sword,
-					club,
-					wolfknife,
-					nature,
-					creature,
-					undead,
-					scout,
-					dust,
-					dustReg,
-					0);
 
-		//spells.addSpell(new Threat());
+		Hero held = new Hero(heroName, heroCode, sign, healthVal,
+				strengthVal, dexterityVal, psychoVal, axe, lance, sword, club,
+				wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
+
+		handleProfession(held, prof);
+
+		// spells.addSpell(new Threat());
 		held.setSpellbook(spells);
 
 		held.getCharacter().setSpellPoints(1);
@@ -177,8 +165,41 @@ public class HeroUtil {
 		held.takeItem(waffe, null);
 		held.takeItem(new Armor(10, false), null);
 
-
 		return held;
+	}
+
+	private static void handleProfession(Hero held, Profession prof) {
+		if (prof.equals(Profession.Lumberjack)) {
+			held.getAttribute(Attribute.AXE).incBasic(10);
+			held.getAttribute(Attribute.STRENGTH).incBasic(1);
+		} else if (prof.equals(Profession.Trader)) {
+			Item unique = ItemPool.getUnique(40, 0);
+			held.takeItem(unique, null);
+		} else if (prof.equals(Profession.Nobleman)) {
+			held.takeItem(new Armor(40, false), null);
+		} else if (prof.equals(Profession.Thief)) {
+			if (held.getHeroCode() != Hero.HEROCODE_HUNTER) {
+				held.getSpellbook().addSpell(new Search(1));
+				held.setThief(true);
+			}
+
+		} else if (prof.equals(Profession.Hunter)) {
+			// todo: implement
+		} else if (prof.equals(Profession.Blacksmith)) {
+			// todo: implement
+		} else if (prof.equals(Profession.Bookman)) {
+			held.getCharacter().setSpellPoints(
+					held.getCharacter().getSpellPoints() + 2);
+		} else if (prof.equals(Profession.Alchemist)) {
+			// todo: implement
+		} else if (prof.equals(Profession.Sorcerer)) {
+			held.getAttribute(Attribute.DUSTREG).incBasic(0.3);
+			held.getAttribute(Attribute.DUST).incBasic(4);
+
+		} else if (prof.equals(Profession.Sailor)) {
+			held.getAttribute(Attribute.HEALTH).incBasic(8);
+		}
+
 	}
 
 }

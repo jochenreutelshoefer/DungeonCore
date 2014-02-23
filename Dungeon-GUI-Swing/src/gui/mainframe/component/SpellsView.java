@@ -9,10 +9,9 @@ package gui.mainframe.component;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.JDEnv;
-import gui.MyJDGui;
 import gui.JDJLabel;
 import gui.JDJPanel;
-import gui.mainframe.MainFrame;
+import gui.MyJDGui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,11 +19,10 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 
-import control.ActionAssembler;
 import spell.SpellInfo;
 
 /**
@@ -39,37 +37,34 @@ public class SpellsView extends JDJPanel implements ActionListener {
 
 	private JButton[] butts;
 
-	private LinkedList spells;
+	private List<SpellInfo> spells;
 	
-	private ActionAssembler control;
+	// private ActionAssembler control;
 
 	public SpellsView(MyJDGui gui) {
 		super(gui);
 		gui.getControl();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (spells != null) {
 			Object sc = ae.getSource();
 
 			for (int i = 0; i < butts.length; i++) {
 				if (sc == butts[i]) {
-					gui.getControl().wannaLernSpell((SpellInfo)spells.get(i));
+					gui.getControl().wannaLernSpell(spells.get(i));
 				}
 			}
 		}
-		// gui.getMainFrame().updateGUI(MainFrame.UPDATE_ALL,true);
 	}
 
 	public void updateView() {
-		// if(true)return;
 
 		this.removeAll();
 
 		FigureInfo info = gui.getFigure();
 		HeroInfo heroInfo = null;
-		int healthVal = 0;
-		int healthBase = 0;
 		if (info instanceof HeroInfo) {
 			heroInfo = (HeroInfo) info;
 			spells = heroInfo.getSpellBuffer();
@@ -101,7 +96,7 @@ public class SpellsView extends JDJPanel implements ActionListener {
 
 			// System.out.println("spells.size(): "+spells.size());
 			for (int i = 0; i < spells.size(); i++) {
-				SpellInfo s = ((SpellInfo) spells.get(i));
+				SpellInfo s = (spells.get(i));
 				butts[i] = new JButton("<html>" + s.toString() + " :  <b>"
 						+ s.getLernCost() + "</b></html>");
 				// System.out.println("i: "+i+ " butt:"+butts[i].toString());

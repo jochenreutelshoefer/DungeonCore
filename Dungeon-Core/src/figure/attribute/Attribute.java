@@ -3,16 +3,16 @@ package figure.attribute;
 //import java.util.*;
 
 /**
- * Attributwert einer Figur. Ein Attribut stellt das bezifferte Maß fuer eine
+ * Attributwert einer Figur. Ein Attribut stellt das bezifferte Maï¿½ fuer eine
  * Eigenschaft oder Faehigkeit der Figur dar. Eine Attribut besteht aus 2
  * Werten. Dem Basiswert und dem aktuellen Wert. Der Basiswert gibt an wie stark
  * die Eigenschaft prinzipiell ausgepraegt ist und der aktuelle Wert stellt das
- * momentane auf die Umstaende angepasste Maß dar.
+ * momentane auf die Umstaende angepasste Maï¿½ dar.
  * 
  */
 public class Attribute {
 
-	private int name;
+	private final int name;
 
 	private double value;
 
@@ -73,9 +73,6 @@ public class Attribute {
 	}
 
 	public double getValue() {
-		if (name == (Attribute.HEALTHREG)) {
-			// System.out.println("getValue() -- normal :"+name);
-		}
 		return value;
 	}
 	
@@ -92,6 +89,7 @@ public class Attribute {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return new String("" + getValue() + "/" + getBasic());
 	}
@@ -109,9 +107,10 @@ public class Attribute {
 		value++;
 	}
 
-	// public void modValue(int k){
-	// value += k;
-	// }
+	public void incBasic(double incr) {
+		basic += incr;
+		value += incr;
+	}
 
 	public void modValue(double k) {
 		int x = (int) (k * 100);
@@ -132,7 +131,7 @@ public class Attribute {
 	}
 
 	public int perCent() {
-		return (int) (((float) ((float) getValue() / (float) getBasic())) * 100);
+		return (int) (((float) getValue() / (float) getBasic()) * 100);
 	}
 
 	public double relValue() {

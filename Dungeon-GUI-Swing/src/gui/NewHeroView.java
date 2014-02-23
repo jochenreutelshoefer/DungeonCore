@@ -1,9 +1,7 @@
 package gui;
 
-
 import item.HealPotion;
 import item.Item;
-import item.ItemPool;
 import item.equipment.Armor;
 import item.equipment.Shield;
 import item.equipment.weapon.Axe;
@@ -42,29 +40,29 @@ import javax.swing.border.TitledBorder;
 import spell.Escape;
 import spell.GoldenHit;
 import spell.Heal;
-import spell.Search;
 import spell.Spell;
 import spell.Threat;
 import figure.Spellbook;
 import figure.hero.Hero;
 import figure.hero.HeroUtil;
+import figure.hero.Profession;
+import figure.hero.Zodiac;
 import game.JDEnv;
 import gui.mainframe.MainFrame;
 import gui.mainframe.component.InfoView;
 
-public class NewHeroView
-	extends JDialog
-	implements ItemListener, ActionListener, MouseListener {
+public class NewHeroView extends JDialog implements ItemListener,
+		ActionListener, MouseListener {
 
-	//    HP, ST,DX,PY,AX, LZ, SW, KN, WM,NN,KN, UN,SC, DU, SP
-	public static final double[] warriorBasic =
-		{ 42, 8, 6, 5, 10, 10, 20, 10, 0, 0, 10, 0, 1, 10, 0.2 };
-	public static final double[] hunterBasic =
-		{ 35, 5, 9, 5, 0, 0, 0, 20, 10, 0, 0, 10, 3, 13, 0.3 };
-	public static final double[] druidBasic =
-		{ 39, 6, 6, 7, 0, 0, 0, 10, 20, 10, 0, 0, 2, 20, 0.6 };
-	public static final double[] mageBasic =
-		{ 30, 5, 5, 9, 0, 10, 0, 0, 20, 10, 10, 10, 1, 23, 1.0 };
+	// HP, ST,DX,PY,AX, LZ, SW, KN, WM,NN,KN, UN,SC, DU, SP
+	public static final double[] warriorBasic = { 42, 8, 6, 5, 10, 10, 20, 10,
+			0, 0, 10, 0, 1, 10, 0.2 };
+	public static final double[] hunterBasic = { 35, 5, 9, 5, 0, 0, 0, 20, 10,
+			0, 0, 10, 3, 13, 0.3 };
+	public static final double[] druidBasic = { 39, 6, 6, 7, 0, 0, 0, 10, 20,
+			10, 0, 0, 2, 20, 0.6 };
+	public static final double[] mageBasic = { 30, 5, 5, 9, 0, 10, 0, 0, 20,
+			10, 10, 10, 1, 23, 1.0 };
 
 	boolean thief = false;
 	String signString = new String("keins");
@@ -72,7 +70,6 @@ public class NewHeroView
 	String heroName = null;
 	int healthVal;
 
-	
 	int strengthVal;
 
 	int dexterityVal;
@@ -95,109 +92,77 @@ public class NewHeroView
 
 	InfoView view;
 
+	Hero held;
 
-	Hero held = null;
+	JRadioButton Lion = new JRadioButton("Löwe");
 
-	
-	JRadioButton Lion = new JRadioButton("L�we");
-
-	
 	JRadioButton Scorpion = new JRadioButton("Skorpion");
 
-	
 	JRadioButton Waterman = new JRadioButton("Wassermann");
 
-	
 	JRadioButton Bull = new JRadioButton("Stier");
 
-	
 	JRadioButton Fisch = new JRadioButton("Fisch");
 
-	
 	JRadioButton Waage = new JRadioButton("Waage");
 
-	
 	JRadioButton Zwilling = new JRadioButton("Zwilling");
 
-	
 	JRadioButton Jungfrau = new JRadioButton("Jungfrau");
 
-	
 	JRadioButton Krebs = new JRadioButton("Krebs");
 
-
-	JRadioButton Schuetze = new JRadioButton("Sch�tze");
-
+	JRadioButton Schuetze = new JRadioButton("Schütze");
 
 	JRadioButton Steinbock = new JRadioButton("Steinbock");
 
-	
 	JRadioButton Widder = new JRadioButton("Widder");
 
-	
 	JRadioButton Alchemist = new JRadioButton("Alchemist");
 
-	
 	JRadioButton Dieb = new JRadioButton("Dieb");
 
-	
 	JRadioButton Jaeger = new JRadioButton("Jäger");
 
-	
 	JRadioButton Holzfaeller = new JRadioButton("Holzfäller");
 
-	
 	JRadioButton Schmied = new JRadioButton("Schmied");
-
 
 	JRadioButton Haendler = new JRadioButton("Händler");
 
-	
 	JRadioButton Magier = new JRadioButton("Zauberer");
 
 	JRadioButton Grossgrundbesitzer = new JRadioButton("Großgrundbesitzer");
 
 	JRadioButton Gelehrter = new JRadioButton("Gelehrter");
 
-	
 	JRadioButton Seemann = new JRadioButton("Seemann");
 
-	
 	JButton knopf = new JButton("OK");
 
 	JTextField Zeile = new JTextField(20);
 
-	
 	JRadioButton Warrior = new JRadioButton("Krieger");
 
-	
 	JRadioButton Hunter = new JRadioButton("Dieb");
 
-	
 	JRadioButton Druid = new JRadioButton("Druide");
 
-	
 	JRadioButton Mage = new JRadioButton("Magier");
 
-	
-	JLabel choosen = new JLabel("Noch nichts gew�hlt");
+	JLabel choosen = new JLabel("Noch nichts gewählt");
 
-	
 	JPanel name = new JPanel();
 
-	
 	JPanel attr = new JPanel();
 
-	
 	JPanel sign = new JPanel();
 
-	
 	JPanel type = new JPanel();
 
-	
 	JPanel ok = new JPanel();
 
-	JLabel health; //= new JLabel("Gesundheit:");
+	JLabel health; // = new JLabel("Gesundheit:");
 
 	JLabel strength;// = new JLabel("Kraft:");
 	JLabel dexterity;// = new JLabel("Geschicklichkeit:    ");
@@ -214,134 +179,116 @@ public class NewHeroView
 
 	ButtonGroup bg3;
 
-	
 	JButton generate;// = new JButton("generieren");
 
-
-	String[] heroNames =
-		{ "Bernd", "Harald", "Dieter", "Konstantinius", "Siegfried", "Billi" };
+	String[] heroNames = { "Bernd", "Harald", "Dieter", "Konstantinius",
+			"Siegfried", "Billi" };
 
 	public NewHeroView(Frame sup) {
 
 		super(sup, "Neuer Held", true);
-		
-		Warrior = new JRadioButton(JDEnv.getResourceBundle().getString("warrior"));
 
-		
+		Warrior = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"warrior"));
+
 		Hunter = new JRadioButton(JDEnv.getResourceBundle().getString("thief"));
 
-		
 		Druid = new JRadioButton(JDEnv.getResourceBundle().getString("druid"));
 
-		
 		Mage = new JRadioButton(JDEnv.getResourceBundle().getString("mage"));
 
-		health = new JLabel(JDEnv.getResourceBundle().getString("attr_health")+": ");
+		health = new JLabel(JDEnv.getResourceBundle().getString("attr_health")
+				+ ": ");
 
-		strength = new JLabel(JDEnv.getResourceBundle().getString("attr_strength")+": ");
-		dexterity = new JLabel(JDEnv.getResourceBundle().getString("attr_dexterity")+": ");
+		strength = new JLabel(JDEnv.getResourceBundle().getString(
+				"attr_strength")
+				+ ": ");
+		dexterity = new JLabel(JDEnv.getResourceBundle().getString(
+				"attr_dexterity")
+				+ ": ");
 
-		psycho = new JLabel(JDEnv.getResourceBundle().getString("attr_psycho")+": ");
-		generate = new JButton(JDEnv.getResourceBundle().getString("gui_new_generate"));
-		
-		 Lion = new JRadioButton(JDEnv.getResourceBundle().getString("sign_leo"));
+		psycho = new JLabel(JDEnv.getResourceBundle().getString("attr_psycho")
+				+ ": ");
+		generate = new JButton(JDEnv.getResourceBundle().getString(
+				"gui_new_generate"));
 
-		
-		 Scorpion = new JRadioButton(JDEnv.getResourceBundle().getString("sign_scorpio"));
+		Lion = new JRadioButton(JDEnv.getResourceBundle().getString("sign_leo"));
 
-		
-		 Waterman = new JRadioButton(JDEnv.getResourceBundle().getString("sign_aquarius"));
+		Scorpion = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_scorpio"));
 
-		
-		 Bull = new JRadioButton(JDEnv.getResourceBundle().getString("sign_taurus"));
+		Waterman = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_aquarius"));
 
-		
-		 Fisch = new JRadioButton(JDEnv.getResourceBundle().getString("sign_fish"));
+		Bull = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_taurus"));
 
-		
-		 Waage = new JRadioButton(JDEnv.getResourceBundle().getString("sign_libra"));
+		Fisch = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_fish"));
 
-		
-		 Zwilling = new JRadioButton(JDEnv.getResourceBundle().getString("sign_twin"));
+		Waage = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_libra"));
 
-		
-		 Jungfrau = new JRadioButton(JDEnv.getResourceBundle().getString("sign_virgo"));
+		Zwilling = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_twin"));
 
-		
-		 Krebs = new JRadioButton(JDEnv.getResourceBundle().getString("sign_cancer"));
+		Jungfrau = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_virgo"));
 
+		Krebs = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_cancer"));
 
-		 Schuetze = new JRadioButton(JDEnv.getResourceBundle().getString("sign_sagittarius"));
+		Schuetze = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_sagittarius"));
 
+		Steinbock = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_capricorn"));
 
-		 Steinbock = new JRadioButton(JDEnv.getResourceBundle().getString("sign_capricorn"));
+		Widder = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"sign_aries"));
 
-		
-		 Widder = new JRadioButton(JDEnv.getResourceBundle().getString("sign_aries"));
+		Alchemist = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_alchemist"));
 
-		
-		 Alchemist = new JRadioButton(JDEnv.getResourceBundle().getString("craft_alchemist"));
+		Dieb = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_thief"));
 
-		
-		 Dieb = new JRadioButton(JDEnv.getResourceBundle().getString("craft_thief"));
+		Jaeger = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_hunter"));
 
-		
-		 Jaeger = new JRadioButton(JDEnv.getResourceBundle().getString("craft_hunter"));
+		Holzfaeller = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_lumberjack"));
 
-		
-		 Holzfaeller = new JRadioButton(JDEnv.getResourceBundle().getString("craft_lumberjack"));
+		Schmied = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_blacksmith"));
 
-		
-		 Schmied = new JRadioButton(JDEnv.getResourceBundle().getString("craft_blacksmith"));
+		Haendler = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_trader"));
 
+		Magier = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_sorcerer"));
 
-		 Haendler = new JRadioButton(JDEnv.getResourceBundle().getString("craft_trader"));
+		Grossgrundbesitzer = new JRadioButton(JDEnv.getResourceBundle()
+				.getString("craft_nobleman"));
 
-		
-		Magier = new JRadioButton(JDEnv.getResourceBundle().getString("craft_sorcerer"));
+		Gelehrter = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_bookman"));
 
-		 Grossgrundbesitzer = new JRadioButton(JDEnv.getResourceBundle().getString("craft_nobleman"));
+		Seemann = new JRadioButton(JDEnv.getResourceBundle().getString(
+				"craft_sailor"));
 
-		Gelehrter = new JRadioButton(JDEnv.getResourceBundle().getString("craft_bookman"));
-
-		
-		Seemann = new JRadioButton(JDEnv.getResourceBundle().getString("craft_sailor"));
-		
-		
-//		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-//		addWindowListener(new WindowAdapter() {
-//			/**
-//			  * Die Methode windowClosing gibt an, was passiert wenn "this"
-//			ge-
-//			  * geschlossen wird
-//			*
-//				* @param windowEvent Datentyp WindowEvent
-//			  */
-//			public void windowClosing(WindowEvent windowEvent) {
-//				System.out.println("Mache closing adapter!");
-//				int end =
-//			JOptionPane.showConfirmDialog(
-//				getContentPane(),
-//				"Jetzt gibt es keine zur�ck mehr!",
-//				"Spiel muss gestartet werden.",
-//				JOptionPane.OK_OPTION,
-//				JOptionPane.INFORMATION_MESSAGE);
-//		if (end == 0) {
-//				
-//		}
-//				
-//			}
-//		});
 		int k = (int) (Math.random() * heroNames.length);
 		Zeile.setText(heroNames[k]);
-		//Zeile.addActionListener(this);
 		Zeile.setSelectionStart(0);
 		Zeile.setSelectionEnd(Zeile.getText().length());
 		name.setBorder(new TitledBorder("Name"));
-		type.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString("type")));
-		attr.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString("attributes")));
+		type.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString(
+				"type")));
+		attr.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString(
+				"attributes")));
 		JPanel gilde = new JPanel();
-		gilde.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString("profession")));
+		gilde.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString(
+				"profession")));
 
 		attr.setLayout(new GridLayout(1, 2));
 		JPanel attr1 = new JPanel();
@@ -351,14 +298,15 @@ public class NewHeroView
 
 		JPanel info = new JPanel();
 		info.setBorder(new TitledBorder("Info"));
-		view = new InfoView(250, 120, false,null);
+		view = new InfoView(250, 120, false, null);
 		info.add(view);
 
 		attr2.setLayout(grid2);
 		attr.add(attr1);
 		attr.add(attr2);
 
-		sign.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString("sign")));
+		sign.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString(
+				"sign")));
 
 		attr1.add(health);
 		attr2.add(healthValue);
@@ -520,19 +468,18 @@ public class NewHeroView
 		gilde.add(box3a);
 		gilde.add(box3b);
 
-
 		knopf.addActionListener(this);
 		Zeile.addActionListener(this);
 		knopf.addMouseListener(this);
 		Zeile.addMouseListener(this);
 		Zeile.grabFocus();
-		knopf.setPreferredSize(new Dimension(90,55));
-		
+		knopf.setPreferredSize(new Dimension(90, 55));
+
 		generateAttr(heroCode);
-		
+
 		Zeile.setSelectionStart(0);
 		Zeile.setSelectionEnd(Zeile.getText().length());
-		//this.setLocation(300,0);
+		// this.setLocation(300,0);
 		this.setSize(900, 350);
 		positionieren();
 		this.setVisible(true);
@@ -540,56 +487,55 @@ public class NewHeroView
 
 	}
 
-	
 	public void generateAttr(int type) {
-		//		int bonus1a = 5; //basisbonus
-		//		int bonus1b = Math.round(split.about_value(bonus1a));
-		//		int[] bonus1c = split.split_equal(bonus1b, 3);
+		// int bonus1a = 5; //basisbonus
+		// int bonus1b = Math.round(split.about_value(bonus1a));
+		// int[] bonus1c = split.split_equal(bonus1b, 3);
 		//
-		//		int a = 4;
-		//		float b = split.about_value(a);
-		//		float c = (a / b);
-		//		if (c < 1)
-		//			c = (-1 / c);
-		//		int bonus2 = Math.round(c * 2);
+		// int a = 4;
+		// float b = split.about_value(a);
+		// float c = (a / b);
+		// if (c < 1)
+		// c = (-1 / c);
+		// int bonus2 = Math.round(c * 2);
 
 		switch (type) {
-			case Hero.HEROCODE_WARRIOR :
-				healthVal = (int) warriorBasic[0];
-				strengthVal = (int) warriorBasic[1];
-				dexterityVal = (int) warriorBasic[2];
-				psychoVal = (int) warriorBasic[3];
-				break;
-			case Hero.HEROCODE_HUNTER :
-				healthVal = (int) hunterBasic[0];
-				strengthVal = (int) hunterBasic[1];
-				dexterityVal = (int) hunterBasic[2];
-				psychoVal = (int) hunterBasic[3];
-				break;
-			case Hero.HEROCODE_DRUID :
-				healthVal = (int) druidBasic[0];
-				strengthVal = (int) druidBasic[1];
-				dexterityVal = (int) druidBasic[2];
-				psychoVal = (int) druidBasic[3];
-				break;
-			case Hero.HEROCODE_MAGE :
-				healthVal = (int) mageBasic[0];
-				strengthVal = (int) mageBasic[1];
-				dexterityVal = (int) mageBasic[2];
-				psychoVal = (int) mageBasic[3];
-				break;
-			default : {
-				//System.out.println("heroCode Error!");
-			}
+		case Hero.HEROCODE_WARRIOR:
+			healthVal = (int) warriorBasic[0];
+			strengthVal = (int) warriorBasic[1];
+			dexterityVal = (int) warriorBasic[2];
+			psychoVal = (int) warriorBasic[3];
+			break;
+		case Hero.HEROCODE_HUNTER:
+			healthVal = (int) hunterBasic[0];
+			strengthVal = (int) hunterBasic[1];
+			dexterityVal = (int) hunterBasic[2];
+			psychoVal = (int) hunterBasic[3];
+			break;
+		case Hero.HEROCODE_DRUID:
+			healthVal = (int) druidBasic[0];
+			strengthVal = (int) druidBasic[1];
+			dexterityVal = (int) druidBasic[2];
+			psychoVal = (int) druidBasic[3];
+			break;
+		case Hero.HEROCODE_MAGE:
+			healthVal = (int) mageBasic[0];
+			strengthVal = (int) mageBasic[1];
+			dexterityVal = (int) mageBasic[2];
+			psychoVal = (int) mageBasic[3];
+			break;
+		default: {
+			// System.out.println("heroCode Error!");
+		}
 		}
 		int additionalPoints = 5;
-		//System.out.println("vor schleife");
+		// System.out.println("vor schleife");
 		for (int i = 0; i < additionalPoints; i++) {
-			//System.out.println("schleife");
+			// System.out.println("schleife");
 			int k = (int) (Math.random() * 3);
 			if (k == 0) {
 				strengthVal++;
-				//System.out.println("Strength++!");
+				// System.out.println("Strength++!");
 			}
 			if (k == 1) {
 				dexterityVal++;
@@ -606,7 +552,6 @@ public class NewHeroView
 		psychoValue.setText(Integer.toString(psychoVal));
 
 	}
-
 
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
@@ -673,110 +618,117 @@ public class NewHeroView
 		Object quelle = ae.getSource();
 		Item jungfrauWeapon = null;
 		if (quelle == generate) {
-			//System.out.println("generieren!");
+			// System.out.println("generieren!");
 			generateAttr(heroCode);
 		}
 
 		if (quelle == knopf || quelle == Zeile) {
 			if (!Zeile.getText().equals("")) {
 				heroName = MainFrame.clearString(Zeile.getText());
-				//System.out.println(Zeile.getText());
+				// System.out.println(Zeile.getText());
 
 				switch (heroCode) {
-					case 1 :
-						axe = (int) warriorBasic[4];
-						lance = (int) warriorBasic[5];
-						sword = (int) warriorBasic[6];
-						club = (int) warriorBasic[7];
-						wolfknife = (int) warriorBasic[8];
-						nature = (int) warriorBasic[9];
-						creature = (int) warriorBasic[10];
-						undead = (int) warriorBasic[11];
-						scout = (int) warriorBasic[12];
-						dust = (int) warriorBasic[13];
-						dustReg = warriorBasic[14];
-						
-						break;
+				case 1:
+					axe = (int) warriorBasic[4];
+					lance = (int) warriorBasic[5];
+					sword = (int) warriorBasic[6];
+					club = (int) warriorBasic[7];
+					wolfknife = (int) warriorBasic[8];
+					nature = (int) warriorBasic[9];
+					creature = (int) warriorBasic[10];
+					undead = (int) warriorBasic[11];
+					scout = (int) warriorBasic[12];
+					dust = (int) warriorBasic[13];
+					dustReg = warriorBasic[14];
 
-					case 2 :
-						axe = (int) hunterBasic[4];
-						lance = (int) hunterBasic[5];
-						sword = (int) hunterBasic[6];
-						club = (int) hunterBasic[7];
-						wolfknife = (int) hunterBasic[8];
-						nature = (int) hunterBasic[9];
-						creature = (int) hunterBasic[10];
-						undead = (int) hunterBasic[11];
-						scout = (int) hunterBasic[12];
-						dust = (int) hunterBasic[13];
-						dustReg = hunterBasic[14];
-						break;
-					case 3 :
-						axe = (int) druidBasic[4];
-						lance = (int) druidBasic[5];
-						sword = (int) druidBasic[6];
-						club = (int) druidBasic[7];
-						wolfknife = (int) druidBasic[8];
-						nature = (int) druidBasic[9];
-						creature = (int) druidBasic[10];
-						undead = (int) druidBasic[11];
-						scout = (int) druidBasic[12];
-						dust = (int) druidBasic[13];
-						dustReg = druidBasic[14];
-						break;
-					case 4 :
-						axe = (int) mageBasic[4];
-						lance = (int) mageBasic[5];
-						sword = (int) mageBasic[6];
-						club = (int) mageBasic[7];
-						wolfknife = (int) mageBasic[8];
-						nature = (int) mageBasic[9];
-						creature = (int) mageBasic[10];
-						undead = (int) mageBasic[11];
-						scout = (int) mageBasic[12];
-						dust = (int) mageBasic[13];
-						dustReg = mageBasic[14];
-						break;
-					default :
-						//System.out.println("heroCode Error!");
+					break;
+
+				case 2:
+					axe = (int) hunterBasic[4];
+					lance = (int) hunterBasic[5];
+					sword = (int) hunterBasic[6];
+					club = (int) hunterBasic[7];
+					wolfknife = (int) hunterBasic[8];
+					nature = (int) hunterBasic[9];
+					creature = (int) hunterBasic[10];
+					undead = (int) hunterBasic[11];
+					scout = (int) hunterBasic[12];
+					dust = (int) hunterBasic[13];
+					dustReg = hunterBasic[14];
+					break;
+				case 3:
+					axe = (int) druidBasic[4];
+					lance = (int) druidBasic[5];
+					sword = (int) druidBasic[6];
+					club = (int) druidBasic[7];
+					wolfknife = (int) druidBasic[8];
+					nature = (int) druidBasic[9];
+					creature = (int) druidBasic[10];
+					undead = (int) druidBasic[11];
+					scout = (int) druidBasic[12];
+					dust = (int) druidBasic[13];
+					dustReg = druidBasic[14];
+					break;
+				case 4:
+					axe = (int) mageBasic[4];
+					lance = (int) mageBasic[5];
+					sword = (int) mageBasic[6];
+					club = (int) mageBasic[7];
+					wolfknife = (int) mageBasic[8];
+					nature = (int) mageBasic[9];
+					creature = (int) mageBasic[10];
+					undead = (int) mageBasic[11];
+					scout = (int) mageBasic[12];
+					dust = (int) mageBasic[13];
+					dustReg = mageBasic[14];
+					break;
+				default:
+					// System.out.println("heroCode Error!");
 				}
 				Item i = null;
 				List<Item> itemsToAdd = new LinkedList<Item>();
-				
+
 				Spellbook book = new Spellbook();
 				book.addSpell(new Threat());
-				held.setSpellbook(book);
+				Zodiac sign = null;
 				if (signString == "Stier ") {
 					healthVal = healthVal + 6;
 					strengthVal += 1;
+					sign = Zodiac.Taurus;
 				}
 				if (signString == "Wassermann ") {
+					sign = Zodiac.Aquarius;
 					for (int j = 0; j < 2; j++) {
 						int k = (int) (Math.random() * 3);
 						if (k == 0) {
-							nature += 7 + (int)(Math.random()*8);
+							nature += 7 + (int) (Math.random() * 8);
 						}
 						if (k == 1) {
-							creature += 7 + (int)(Math.random()*8);
+							creature += 7 + (int) (Math.random() * 8);
 						}
 						if (k == 2) {
-							undead += 7 + (int)(Math.random()*8);
+							undead += 7 + (int) (Math.random() * 8);
 						}
 
-					};
+					}
+					;
 				}
 				if (signString == "Skorpion ") {
+					sign = Zodiac.Scorpio;
 					lance += 10;
 					itemsToAdd.add(new Lance(20, false));
 				}
 				if (signString == "Loewe ") {
+					sign = Zodiac.Leo;
 					psychoVal += 2;
 				}
 				if (signString == "Krebs ") {
+					sign = Zodiac.Cancer;
 					itemsToAdd.add(new Axe(20, false));
 					axe += 10;
 				}
 				if (signString == "Schuetze ") {
+					sign = Zodiac.Sagittarius;
 					dexterityVal++;
 					for (int j = 0; j < 2; j++) {
 						int k = (int) (Math.random() * 4);
@@ -787,110 +739,89 @@ public class NewHeroView
 							club += 10;
 						}
 						if (k == 2) {
-							lance += 10 ;
+							lance += 10;
 						}
 						if (k == 3) {
 							sword += 10;
 						}
 						if (k == 4) {
-							wolfknife += 10 ;
+							wolfknife += 10;
 						}
 
-					};
+					}
+					;
 				}
 				if (signString == "Waage ") {
+					sign = Zodiac.Libra;
 					incMinAttr();
 					healthVal += 3;
 					dust += 3;
 					itemsToAdd.add(new HealPotion(25));
 				}
 				if (signString == "Jungfrau ") {
+					sign = Zodiac.Virgo;
 					itemsToAdd.add(new Wolfknife(20, false));
 					wolfknife += 10;
 				}
 				if (signString == "Steinbock ") {
+					sign = Zodiac.Capricorn;
 					scout += 2;
 				}
 				if (signString == "Widder ") {
+					sign = Zodiac.Aries;
 					itemsToAdd.add(new Club(20, false));
 					club += 10;
 				}
 				if (signString == "Fisch ") {
+					sign = Zodiac.Fish;
 					itemsToAdd.add(new Shield(30, false));
 					dexterityVal += 1;
 				}
 				if (signString == "Zwilling ") {
+					sign = Zodiac.Twin;
 					itemsToAdd.add(new HealPotion(25));
 					itemsToAdd.add(new HealPotion(25));
 					Spell s1 = new Heal(1);
 					BookSpell heal_book = new BookSpell(s1, 4);
 					itemsToAdd.add(heal_book);
-					//spell s2 = new heal_spell(2);
+					// spell s2 = new heal_spell(2);
 					Spell s3 = new Escape(1);
 					Spell s4 = new GoldenHit(1);
-					//scroll scroll2 = new scroll(s2, 8);
+					// scroll scroll2 = new scroll(s2, 8);
 					Scroll scroll3 = new Scroll(s3, 4);
 					Scroll scroll4 = new Scroll(s4, 3);
-					//itemsToAdd.add(scroll2);
+					// itemsToAdd.add(scroll2);
 					itemsToAdd.add(scroll3);
 					itemsToAdd.add(scroll4);
 				}
 
+				Profession prof = null;
+
 				if (Holzfaeller.isSelected()) {
-					axe += 10;
-					strengthVal += 1;
+					prof = Profession.Lumberjack;
 				} else if (Haendler.isSelected()) {
-					////System.out.println("mache h�ndler");
-					Item unique = ItemPool.getUnique(40,0);
-					////System.out.println(unique.toString());
-					itemsToAdd.add(unique);
+					prof = Profession.Trader;
 				} else if (Grossgrundbesitzer.isSelected()) {
-					itemsToAdd.add(new Armor(40, false));
+					prof = Profession.Nobleman;
 				} else if (Dieb.isSelected()) {
-					if(heroCode != Hero.HEROCODE_HUNTER) {
-						book.addSpell(new Search(1));
-						thief = true;
-					}
-
+					prof = Profession.Thief;
 				} else if (Jaeger.isSelected()) {
-
+					prof = Profession.Hunter;
 				} else if (Schmied.isSelected()) {
-
+					prof = Profession.Blacksmith;
 				} else if (Gelehrter.isSelected()) {
-					spellPoints += 2;
+					prof = Profession.Bookman;
 				} else if (Alchemist.isSelected()) {
-
+					prof = Profession.Alchemist;
 				} else if (Magier.isSelected()) {
-					dustReg += 0.3;
-					dust += 4;
-
+					prof = Profession.Sorcerer;
 				} else if (Seemann.isSelected()) {
-					healthVal += 8;
+					prof = Profession.Sailor;
 				}
-				
-				
 
-				held =
-					new Hero(
-						heroName,
-						heroCode,
-						signString,
-						healthVal,
-						strengthVal,
-						dexterityVal,
-						psychoVal,
-						axe,
-						lance,
-						sword,
-						club,
-						wolfknife,
-						nature,
-						creature,
-						undead,
-						scout,
-						dust,
-						dustReg,
-						0);
+				held = HeroUtil.getBasicHero(heroCode, heroName, sign, prof);
+
+				held.setSpellbook(book);
 
 				for (int j = 0; j < itemsToAdd.size(); j++) {
 
@@ -902,20 +833,11 @@ public class NewHeroView
 				if (!Grossgrundbesitzer.isSelected()) {
 					held.getInventory().takeItem(hemd, null);
 				}
-
-				held.getCharacter().setSpellPoints(spellPoints);
-				if (thief) {
-					held.setThief(true);
-				}
-				
-				HeroUtil.addHeroStartWeapon(held);
-
 				this.setVisible(false);
 
 			}
 		}
 	}
-
 
 	public Hero getHero() {
 
@@ -938,9 +860,8 @@ public class NewHeroView
 		int screenHeight = (int) dimension.getHeight();
 		int width = this.getWidth();
 		int height = this.getHeight();
-		setLocation(
-			(screenWidth / 2) - (width / 2),
-			(screenHeight / 2) - (height / 2));
+		setLocation((screenWidth / 2) - (width / 2), (screenHeight / 2)
+				- (height / 2));
 	}
 
 	@Override
@@ -951,88 +872,104 @@ public class NewHeroView
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		Object o = me.getSource();
-		//String text[] = new String[1];
+		// String text[] = new String[1];
 		Paragraph[] p = new Paragraph[1];
 		String s = new String();
 		if (o == Lion) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_leo");
+			s = JDEnv.getResourceBundle().getString("sign_text_leo");
 
 		} else if (o == Scorpion) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_scorpio");
+			s = JDEnv.getResourceBundle().getString("sign_text_scorpio");
 		} else if (o == Fisch) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_fish");
+			s = JDEnv.getResourceBundle().getString("sign_text_fish");
 		} else if (o == Schuetze) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_sagittarius");
+			s = JDEnv.getResourceBundle().getString("sign_text_sagittarius");
 		} else if (o == Widder) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_aries");
+			s = JDEnv.getResourceBundle().getString("sign_text_aries");
 
 		} else if (o == Steinbock) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_capricorn");
+			s = JDEnv.getResourceBundle().getString("sign_text_capricorn");
 		} else if (o == Zwilling) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_twin");
+			s = JDEnv.getResourceBundle().getString("sign_text_twin");
 		} else if (o == Waterman) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_aquarius");
+			s = JDEnv.getResourceBundle().getString("sign_text_aquarius");
 		} else if (o == Jungfrau) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_virgo");
+			s = JDEnv.getResourceBundle().getString("sign_text_virgo");
 
 		} else if (o == Krebs) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_cancer");
+			s = JDEnv.getResourceBundle().getString("sign_text_cancer");
 		} else if (o == Bull) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_taurus");
+			s = JDEnv.getResourceBundle().getString("sign_text_taurus");
 		} else if (o == Waage) {
-			s =
-				JDEnv.getResourceBundle().getString("sign_text_libra");
+			s = JDEnv.getResourceBundle().getString("sign_text_libra");
 		} else if (o == Hunter) {
-			s =
-				JDEnv.getResourceBundle().getString("thief_text");
+			s = JDEnv.getResourceBundle().getString("thief_text");
 		} else if (o == Druid) {
-			s =
-				JDEnv.getResourceBundle().getString("druid_text");
+			s = JDEnv.getResourceBundle().getString("druid_text");
 		} else if (o == Mage) {
-			s =
-				JDEnv.getResourceBundle().getString("mage_text");
+			s = JDEnv.getResourceBundle().getString("mage_text");
 		} else if (o == Warrior) {
-			s =
-				JDEnv.getResourceBundle().getString("warrior_text");
+			s = JDEnv.getResourceBundle().getString("warrior_text");
 		} else if (o == Seemann) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_sailor");
+			s = JDEnv.getResourceBundle().getString("craft_text_sailor");
 		} else if (o == Haendler) {
-			s = JDEnv.getResourceBundle().getString("craft_text_not_available");// Die H�ndler lieben wertvolle und seltene Gegent�nde";
+			s = JDEnv.getResourceBundle().getString("craft_text_not_available");// Die
+																				// H�ndler
+																				// lieben
+																				// wertvolle
+																				// und
+																				// seltene
+																				// Gegent�nde";
 		} else if (o == Holzfaeller) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_lumberjack");
+			s = JDEnv.getResourceBundle().getString("craft_text_lumberjack");
 		} else if (o == Grossgrundbesitzer) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_nobleman");
+			s = JDEnv.getResourceBundle().getString("craft_text_nobleman");
 		} else if (o == Dieb) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_thief");
+			s = JDEnv.getResourceBundle().getString("craft_text_thief");
 		} else if (o == Alchemist) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_not_available"); //Alchemisten haben einen Faible f�r Tr�nke und Elexire aller Art.";
+			s = JDEnv.getResourceBundle().getString("craft_text_not_available"); // Alchemisten
+																					// haben
+																					// einen
+																					// Faible
+																					// f�r
+																					// Tr�nke
+																					// und
+																					// Elexire
+																					// aller
+																					// Art.";
 		} else if (o == Magier) {
 			s = JDEnv.getResourceBundle().getString("craft_text_sorcerer");
 		} else if (o == Gelehrter) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_bookman");
+			s = JDEnv.getResourceBundle().getString("craft_text_bookman");
 		} else if (o == Jaeger) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_not_available"); // Bringen alle Fertigkeiten mit, die man haben muss um allein in der Wildniss zurecht zu kommen.";
+			s = JDEnv.getResourceBundle().getString("craft_text_not_available"); // Bringen
+																					// alle
+																					// Fertigkeiten
+																					// mit,
+																					// die
+																					// man
+																					// haben
+																					// muss
+																					// um
+																					// allein
+																					// in
+																					// der
+																					// Wildniss
+																					// zurecht
+																					// zu
+																					// kommen.";
 		} else if (o == Schmied) {
-			s =
-				JDEnv.getResourceBundle().getString("craft_text_not_available"); // Die Schmiede verstehen sich auf das reparieren von Waffen und R�stungen.";
+			s = JDEnv.getResourceBundle().getString("craft_text_not_available"); // Die
+																					// Schmiede
+																					// verstehen
+																					// sich
+																					// auf
+																					// das
+																					// reparieren
+																					// von
+																					// Waffen
+																					// und
+																					// R�stungen.";
 		} else if (o == knopf) {
 			s = JDEnv.getResourceBundle().getString("click_to_enter");
 		} else if (o == Zeile) {
@@ -1042,6 +979,7 @@ public class NewHeroView
 		view.setText2(p);
 
 	}
+
 	@Override
 	public void mouseExited(MouseEvent me) {
 		view.resetText2();
