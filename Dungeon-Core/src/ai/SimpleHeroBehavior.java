@@ -14,6 +14,7 @@ import figure.monster.MonsterInfo;
 import figure.percept.MovePercept;
 import figure.percept.Percept;
 import game.ControlUnit;
+import game.JDGUI;
 import item.DustItem;
 import dungeon.Door;
 import dungeon.JDPoint;
@@ -30,24 +31,29 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 		//h = i;
 	}
 	
+	@Override
 	public void setFigure(FigureInfo f) {
 		if(f instanceof HeroInfo) {
 			h = (HeroInfo)f;
 		}
 	}
 	
+	@Override
 	protected void processPercept(Percept  p) {
 		
 	}
 	
+	@Override
 	public void onTurn() {
 		
 	}
 	
+	@Override
 	public void resetingRoomVisibility(JDPoint p) {
 		
 	}
 	
+	@Override
 	public boolean isHostileTo(FigureInfo f) {
 		if(f instanceof MonsterInfo) {
 			return true;
@@ -55,14 +61,17 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 		return false;
 	}
 	
+	@Override
 	public void gameOver() {
 		
 	}
 	
+	@Override
 	public void actionDone(Action a, ActionResult res) {
 		
 	}
 	
+	@Override
 	public Action getAction() {
 		if(h.getRoomInfo().fightRunning() != null && h.getRoomInfo().fightRunning().booleanValue()) {
 			return chooseFightAction();
@@ -102,6 +111,7 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 		return k;
 	}
 	
+	@Override
 	public Action chooseMovementAction() {
 		if(h.getRoomItems().length > 0) {
 			int i = 0;
@@ -135,6 +145,7 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 		return a;
 	}
 	
+	@Override
 	public Action chooseFightAction(){
 		Action a = null;
 		//	System.out.println("control:getFA() : fight Running --> return Action");
@@ -158,6 +169,12 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 	protected void updateKBdueMovement(MovePercept p) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setMonitoringGUI(JDGUI gui) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

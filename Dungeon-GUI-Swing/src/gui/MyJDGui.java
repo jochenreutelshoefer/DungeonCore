@@ -462,15 +462,15 @@ public class MyJDGui implements JDGUI {
 
 	public void initGui(AbstractStartWindow start, Applet applet,
 			String playerName) {
-		if (start instanceof StartView) {
+		// if (start instanceof StartView) {
 			frame = new MainFrame((StartView) start,
 					MainFrame.clearString(playerName), applet, this,
 					"Java Dungeon V.22.08.06 - 3");
 			frame.initMainframe();
-		} else {
-			System.out.println("MyJDGui.iniGUI: wrong StartWindow instance");
-			System.exit(0);
-		}
+		// } else {
+		// System.out.println("MyJDGui.iniGUI: wrong StartWindow instance");
+		// System.exit(0);
+		// }
 	}
 
 	public Map getHighScoreString(String playerName, String comment,
@@ -850,6 +850,12 @@ public class MyJDGui implements JDGUI {
 	public ItemInfo getSelectedItem() {
 		return (ItemInfo)getMainFrame().getGesundheit()
 				.getItemCombo().getSelectedItem();
+	}
+
+	@Override
+	public void setMonitoringGUI(JDGUI gui) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

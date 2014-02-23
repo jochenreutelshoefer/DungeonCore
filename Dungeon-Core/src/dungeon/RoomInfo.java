@@ -33,8 +33,6 @@ public class RoomInfo extends InfoEntity  {
 
 	private final Room r;
 
-	//private RoomObservationStatus visStats;
-
 	public Room getRoom() {
 		return r;
 	}
@@ -42,7 +40,6 @@ public class RoomInfo extends InfoEntity  {
 	public RoomInfo(Room r, DungeonVisibilityMap stats) {
 		super(stats);
 		this.r = r;
-		//this.visStats = stats.getStatusObject(this.getLocation());
 	}
 
 	public static RoomInfo makeRoomInfo(Room r, DungeonVisibilityMap stats) {

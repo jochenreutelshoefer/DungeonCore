@@ -69,12 +69,13 @@ import dungeon.JDPoint;
 /**
  * @author Duke1
  * 
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates. To enable and disable the creation of type
- * comments go to Window>Preferences>Java>Code Generation.
+ *         To change this generated comment edit the template variable
+ *         "typecomment": Window>Preferences>Java>Templates. To enable and
+ *         disable the creation of type comments go to
+ *         Window>Preferences>Java>Code Generation.
  */
-public class MainFrame extends JFrame implements ActionListener,
-		ItemListener, MouseListener, ChangeListener {
+public class MainFrame extends JFrame implements ActionListener, ItemListener,
+		MouseListener, ChangeListener {
 
 	public static final int UPDATE_ALL = 0;
 
@@ -93,14 +94,12 @@ public class MainFrame extends JFrame implements ActionListener,
 	public static final int UPDATE_CHARACTER = 7;
 
 	public static final int UPDATE_INVENTORY = 8;
-	
+
 	public static final int UPDATE_SPELLS = 9;
 
-	
 	Container cp1;
 
 	JDBackgroundPanel cp;
-
 
 	int choosenEnemy = 0;
 
@@ -119,7 +118,7 @@ public class MainFrame extends JFrame implements ActionListener,
 	BoardView spielfeld;
 
 	TextView kampfVerlauf;
-	
+
 	public TextView getKampfVerlauf() {
 		return kampfVerlauf;
 	}
@@ -154,7 +153,6 @@ public class MainFrame extends JFrame implements ActionListener,
 
 	Box enemyBox = Box.createVerticalBox();
 
-
 	Logger log;
 
 	boolean logging = false;
@@ -164,8 +162,8 @@ public class MainFrame extends JFrame implements ActionListener,
 	boolean appletRunning;
 
 	private boolean soundEffects = true;
-	private boolean autoZoom = true;
-	
+	private boolean autoZoom = false;
+
 	public boolean isSoundEffects() {
 		return soundEffects;
 	}
@@ -176,21 +174,23 @@ public class MainFrame extends JFrame implements ActionListener,
 
 	Applet applet;
 
-	private MyJDGui gui;
+	private final MyJDGui gui;
 
 	public static Font ButtonFont;
 
 	public static AWTImageLoader imageSource;
 
-	public MainFrame(StartView listenerx, String name,
-			Applet a, MyJDGui gui,String title) {
+	public MainFrame(StartView listenerx, String name, Applet a, MyJDGui gui,
+			String title) {
 
 		super(title);
 		this.gui = gui;
-		
-		this.autoZoom = listenerx.autoZoom();
-		this.soundEffects = listenerx.soundEffects();
-		
+
+		if (listenerx != null) {
+			this.autoZoom = listenerx.autoZoom();
+			this.soundEffects = listenerx.soundEffects();
+		}
+
 		east = new JPanel();
 		east.setBackground(JDJPanel.bgColor);
 
@@ -209,7 +209,6 @@ public class MainFrame extends JFrame implements ActionListener,
 			Benemy[i].addMouseListener(this);
 
 		}
-
 
 		fleeNorth.addActionListener(this);
 		fleeSouth.addActionListener(this);
@@ -238,15 +237,11 @@ public class MainFrame extends JFrame implements ActionListener,
 
 		character = new CharacterView(gui);
 
-		
-
 		spielfeld = new BoardView(applet, gui);
-		
 
 		cp.add(spielfeld, BorderLayout.CENTER);
 
 		verlauf = new TextView(380, 250, gui);
-	
 
 		east.setLayout(new BorderLayout());
 		east.add(verlauf, BorderLayout.NORTH);
@@ -259,15 +254,14 @@ public class MainFrame extends JFrame implements ActionListener,
 		JDJPanel southPanel = new JDJPanel(gui);
 		BorderLayout fl = new BorderLayout();
 		southPanel.setLayout(fl);
-		southPanel.setBorder(new EmptyBorder(0, 50, 0, 50) );
+		southPanel.setBorder(new EmptyBorder(0, 50, 0, 50));
 		gesundheit = new HealthView(this, gui);
-		text = new InfoView(gui,this);
+		text = new InfoView(gui, this);
 		staub = new DustView(gui);
-		southPanel.add(gesundheit,BorderLayout.WEST);
-		southPanel.add(text,BorderLayout.CENTER);
-		southPanel.add(staub,BorderLayout.EAST);
+		southPanel.add(gesundheit, BorderLayout.WEST);
+		southPanel.add(text, BorderLayout.CENTER);
+		southPanel.add(staub, BorderLayout.EAST);
 
-		
 		fightPanel = new JPanelNoRepaint();
 		fightPanel.setBackground(JDJPanel.bgColor);
 		fightPanel.setLayout(new BorderLayout());
@@ -286,25 +280,26 @@ public class MainFrame extends JFrame implements ActionListener,
 		inventory = new InventoryView(gui);
 		zauberP = new SpellsView(gui);
 		kampfVerlauf = new TextView(380, 250, gui);
-		
 
 		JDJPanel enemyPanel = new JDJPanel(gui);
 		enemyPanel.add(enemyBox);
 		fightPanel.add(kampfVerlauf, BorderLayout.NORTH);
-		
-		
+
 		northEast.setOpaque(true);
 		northEast.addChangeListener(this);
-		
+
 		northEast.addTab(JDEnv.getResourceBundle().getString("movement"), east);
 		east.setOpaque(true);
-		northEast.addTab(JDEnv.getResourceBundle().getString("fight"), fightPanel);
+		northEast.addTab(JDEnv.getResourceBundle().getString("fight"),
+				fightPanel);
 		fightPanel.setOpaque(true);
 		northEast.addTab("Char", character);
 		character.setOpaque(true);
-		northEast.addTab(JDEnv.getResourceBundle().getString("gui_inventory"), inventory);
+		northEast.addTab(JDEnv.getResourceBundle().getString("gui_inventory"),
+				inventory);
 		inventory.setOpaque(true);
-		northEast.addTab(JDEnv.getResourceBundle().getString("spelling"), zauberP);
+		northEast.addTab(JDEnv.getResourceBundle().getString("spelling"),
+				zauberP);
 		zauberP.setOpaque(true);
 		northEast.setBackground(JDJPanel.bgColor);
 		northEast.setOpaque(true);
@@ -313,14 +308,12 @@ public class MainFrame extends JFrame implements ActionListener,
 		cp.add(northEast, BorderLayout.EAST);
 
 		cp.add(southPanel, BorderLayout.SOUTH);
-		
 
 		this.setSize(1280, 780);
 		this.setResizable(false);
 		this.positionieren();
-		
+
 		final MainFrame mf = this;
-		
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -331,40 +324,37 @@ public class MainFrame extends JFrame implements ActionListener,
 			 * @param windowEvent
 			 *            Datentyp WindowEvent
 			 */
+			@Override
 			public void windowClosing(WindowEvent windowEvent) {
-				int end = JOptionPane.showConfirmDialog(cp,JDEnv.getResourceBundle().getString("gui_really_quit_game")
-						,JDEnv.getResourceBundle().getString("gui_quit_game")
-						, JOptionPane.YES_NO_OPTION,
+				int end = JOptionPane.showConfirmDialog(cp, JDEnv
+						.getResourceBundle().getString("gui_really_quit_game"),
+						JDEnv.getResourceBundle().getString("gui_quit_game"),
+						JOptionPane.YES_NO_OPTION,
 						JOptionPane.INFORMATION_MESSAGE);
 				if (end == 0) {
 
-					
-					sendScoreData(listener.registeredPlayer(),listener.ligaGame());
+					sendScoreData(listener.registeredPlayer(),
+							listener.ligaGame());
 					dispose();
 					signOff();
 					listener.setVisible(true);
 
-				} 
+				}
 
 			}
 		});
 
-		
 	}
-	
+
 	private void signOff() {
 		gui.getFigure().controlLeaves();
 	}
-
-
 
 	public void disableControl() {
 		noControl = true;
 	}
 
-
-
-	public void sendScoreData(boolean reg,boolean liga) {
+	public void sendScoreData(boolean reg, boolean liga) {
 		FtpSendView sendWin = new FtpSendView(this);
 		String s = sendWin.getText();
 		if (s == null || s.length() == 0) {
@@ -372,37 +362,38 @@ public class MainFrame extends JFrame implements ActionListener,
 		}
 		WaitView waitWin = new WaitView();
 
-	
 		try {
 
-			
-			String url = "http://denkbares.dyndns.org/DenkDungeon" + "/PutData.jsp" + // file
-					"?action=newEntry"; 
-			
-//			String url = "http://localhost:8080" + "/PutData.jsp" + // file
-//			"?action=newEntry"; 
+			String url = "http://denkbares.dyndns.org/DenkDungeon"
+					+ "/PutData.jsp" + // file
+					"?action=newEntry";
 
-			Map dataMap = makeInfoString(s,reg,liga);// + dateString;
-			if(dataMap == null) {
+			// String url = "http://localhost:8080" + "/PutData.jsp" + // file
+			// "?action=newEntry";
+
+			Map dataMap = makeInfoString(s, reg, liga);// + dateString;
+			if (dataMap == null) {
 				sendWin.dispose();
 				waitWin.dispose();
 				return;
 			}
-			
+
 			for (Iterator iter = dataMap.keySet().iterator(); iter.hasNext();) {
-				Object key = (Object) iter.next();
+				Object key = iter.next();
 				Object value = dataMap.get(key);
-				String encodedValue = java.net.URLEncoder.encode(value.toString());
-				url += "&"+key+"="+encodedValue;
+				String encodedValue = java.net.URLEncoder.encode(value
+						.toString());
+				url += "&" + key + "=" + encodedValue;
 			}
-		
-			//System.out.println(url);
+
+			// System.out.println(url);
 			URL jd = new URL(url);
-			System.out.println("sending score to server: "+jd.toExternalForm());
+			System.out.println("sending score to server: "
+					+ jd.toExternalForm());
 			URLConnection uc = jd.openConnection();
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(uc
-					.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					uc.getInputStream()));
 
 			in.close();
 
@@ -415,7 +406,7 @@ public class MainFrame extends JFrame implements ActionListener,
 
 	public static String clearString(String s) {
 		int k = s.indexOf("&&&");
-		
+
 		while (k != -1) {
 			// System.out.println("String: "+s);
 			String s1 = s.substring(0, k);
@@ -446,48 +437,46 @@ public class MainFrame extends JFrame implements ActionListener,
 	}
 
 	// public static void sendScoreData(String string) {
-	//		
+	//
 	// try {
 	// String url = "http://jd.jupi.info" +
 	// "/highscores.php" + //file
 	// "?action=newEntry" + //action
 	// "&verbose=on" + //output?
 	// "&string="; // String to be added URL-encoded later
-	//            
+	//
 	// // The string what all is about... (with linebreak)
-	//					
-	//           
+	//
+	//
 	// // add URL-encoded string to url
 	// url += java.net.URLEncoder.encode(string);
-	//            
+	//
 	// URL jd = new URL(url);
 	// URLConnection uc = jd.openConnection();
-	//            
+	//
 	// BufferedReader in = new BufferedReader(
 	// new InputStreamReader(uc.getInputStream()));
-	//                                  
+	//
 	// //System.out.println("Sende String: "+string);
-	//            
+	//
 	// // Read the output (response) to StdOut
 	// // String inputLine;
 	// // while ((inputLine = in.readLine()) != null){
 	// // //System.out.println(inputLine);
 	// // }
-	//            
+	//
 	// in.close();
-	//            
+	//
 	// } catch (Exception e) { // at least: it's not Throwable ;-)
 	// //System.out.println(e.getMessage());
 	// }
-	//    
+	//
 	// }
 
-	private Map makeInfoString(String comment,boolean reg, boolean liga) {
-		return gui.getHighScoreString(this.playerName,comment,reg,liga);
-		
+	private Map makeInfoString(String comment, boolean reg, boolean liga) {
+		return gui.getHighScoreString(this.playerName, comment, reg, liga);
 
 	}
-
 
 	public boolean isAppletRunning() {
 		return appletRunning;
@@ -497,6 +486,7 @@ public class MainFrame extends JFrame implements ActionListener,
 		this.Benemy[a].setSelected(true);
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		Object quelle = ie.getSource();
 		if (quelle == Benemy[0]) {
@@ -511,58 +501,51 @@ public class MainFrame extends JFrame implements ActionListener,
 
 	}
 
-//	public void setGame(Game game) {
-//		dasSpiel = game;
-//	}
-//
-//	public Game getGame() {
-//		return dasSpiel;
-//	}
+	// public void setGame(Game game) {
+	// dasSpiel = game;
+	// }
+	//
+	// public Game getGame() {
+	// return dasSpiel;
+	// }
 
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
+
 		Object quelle = ae.getSource();
 
 		if (noControl) {
 			quelle = null;
 		}
 
-		
+		if (quelle == slap) {
 
-			
-			if (quelle == slap) {
+			if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
 
-				if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
+				gui.getControl().wannaAttack(choosenEnemy);
 
-					gui.getControl().wannaAttack(choosenEnemy);
-
-				} else {
-					newStatement("...ja, aber wen?", 0);
-				}
+			} else {
+				newStatement("...ja, aber wen?", 0);
 			}
-
-
+		}
 
 	}
 
 	public void initMainframe() {
-		
+
 		newStatement(Texts.begin(), 0);
 
-		updateGUI2(this.UPDATE_ALL,false);
-		
-		
+		updateGUI2(this.UPDATE_ALL, false);
+
 		this.repaint();
 		getSpielfeld().getSpielfeldBild().setGameStarted();
 		text.setText(new Paragraph[0]);
 		this.setVisible(true);
 
-		
 	}
-
 
 	public void newStatement(String s, int code) {
 		if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
@@ -598,14 +581,17 @@ public class MainFrame extends JFrame implements ActionListener,
 		}
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 		Object quelle = me.getSource();
 		Paragraph[] p = null;
@@ -625,17 +611,19 @@ public class MainFrame extends JFrame implements ActionListener,
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me) {
 		text.resetText();
 
 	}
 
-	public void updateGUI2(int code,boolean repaint) {
-		
+	public void updateGUI2(int code, boolean repaint) {
+
 		if (code == this.UPDATE_CHARACTER) {
 			character.updateView();
 		}
@@ -648,37 +636,38 @@ public class MainFrame extends JFrame implements ActionListener,
 		if (code == this.UPDATE_INVENTORY) {
 			inventory.updateView();
 		}
-		
+
 		if (code == this.UPDATE_FIGHT) {
 			if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
 				northEast.setSelectedComponent(fightPanel);
-//				//LinkedList monster = dasSpiel.getFight().getMonstersL();
-//				List  monster = gui.getFigure().getRoomInfo().getMonsterInfos();
-//				int i = 0;
-//				ListIterator it = monster.listIterator();
-//				while (it.hasNext()) {
-//					MonsterInfo m = (MonsterInfo) it.next();
-//					Benemy[i].setText(m.toString() + " (" + m.getShortStatus()
-//							+ ")");
-//					i++;
-//				}
-//				for (int b = i; b < 4; b++) {
-//					Benemy[b].setText("Kein Feind");
-//				}
+				// //LinkedList monster = dasSpiel.getFight().getMonstersL();
+				// List monster =
+				// gui.getFigure().getRoomInfo().getMonsterInfos();
+				// int i = 0;
+				// ListIterator it = monster.listIterator();
+				// while (it.hasNext()) {
+				// MonsterInfo m = (MonsterInfo) it.next();
+				// Benemy[i].setText(m.toString() + " (" + m.getShortStatus()
+				// + ")");
+				// i++;
+				// }
+				// for (int b = i; b < 4; b++) {
+				// Benemy[b].setText("Kein Feind");
+				// }
 			} else {
-				if(northEast.getSelectedComponent() == fightPanel) {
+				if (northEast.getSelectedComponent() == fightPanel) {
 					northEast.setSelectedComponent(east);
 				}
 			}
 			int size = spielfeld.getSpielfeldBild().getRoomSize();
 			int off = spielfeld.getSpielfeldBild().getOffset();
 			JDPoint p = gui.getFigure().getRoomNumber();
-			//checkViewPos(off + (p.getX() * size), off + (p.getY() * size));
+			// checkViewPos(off + (p.getX() * size), off + (p.getY() * size));
 
 		}
 		if (code == UPDATE_ALL) {
 			for (int i = 1; i < 10; i++) {
-				updateGUI2(i,false);
+				updateGUI2(i, false);
 			}
 		}
 		if (code == UPDATE_VIEW) {
@@ -687,18 +676,18 @@ public class MainFrame extends JFrame implements ActionListener,
 			spielfeld.getSpielfeldBild().updateInfoForMouseCursor();
 
 		}
-		if(code == UPDATE_SPELLS) {
+		if (code == UPDATE_SPELLS) {
 			zauberP.updateView();
 			int points = 0;
 			FigureInfo f = gui.getFigure();
-			if(f instanceof HeroInfo) {
-				points = ((HeroInfo)f).getSpellPoints();
-				
+			if (f instanceof HeroInfo) {
+				points = ((HeroInfo) f).getSpellPoints();
+
 			}
-			if(points > 0) {
-				northEast.setForegroundAt(4,Color.BLUE);
-			}else {
-				northEast.setForegroundAt(4,Color.BLACK);
+			if (points > 0) {
+				northEast.setForegroundAt(4, Color.BLUE);
+			} else {
+				northEast.setForegroundAt(4, Color.BLACK);
 			}
 		}
 		// this.getSpielfeld().getSpielfeldBild().repaint();
@@ -706,10 +695,10 @@ public class MainFrame extends JFrame implements ActionListener,
 		// System.out.println("MALE!");
 		// this.getSpielfeld().getSpielfeldBild().malen();
 		// }
-//		if(!repaint) {
-//		northEast.getSelectedComponent().repaint();
-//		}
-		if(repaint) {
+		// if(!repaint) {
+		// northEast.getSelectedComponent().repaint();
+		// }
+		if (repaint) {
 			this.repaint();
 		}
 
@@ -723,19 +712,17 @@ public class MainFrame extends JFrame implements ActionListener,
 	// northEast.setSelectedComponent(east);
 	// }
 
-//	public void fightBegins() {
-//		System.out.println("mainFrame fightBegins");
-//		kampfVerlauf.cls();
-//		//inFight = true;
-//		this.updateGUI(this.UPDATE_FIGHT,true);
-//	}
+	// public void fightBegins() {
+	// System.out.println("mainFrame fightBegins");
+	// kampfVerlauf.cls();
+	// //inFight = true;
+	// this.updateGUI(this.UPDATE_FIGHT,true);
+	// }
 
-//	public void fightEnded() {
-//		//inFight = false;
-//		this.updateGUI(this.UPDATE_FIGHT,true);
-//	}
-
-	
+	// public void fightEnded() {
+	// //inFight = false;
+	// this.updateGUI(this.UPDATE_FIGHT,true);
+	// }
 
 	/**
 	 * Returns the steuerung.
@@ -743,9 +730,9 @@ public class MainFrame extends JFrame implements ActionListener,
 	 * @return steuerungView
 	 * 
 	 */
-//	public ControlView getSteuerung() {
-//		return steuerung;
-//	}
+	// public ControlView getSteuerung() {
+	// return steuerung;
+	// }
 
 	/**
 	 * Returns the choosenEnemy.
@@ -832,9 +819,10 @@ public class MainFrame extends JFrame implements ActionListener,
 		return gui;
 	}
 
+	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

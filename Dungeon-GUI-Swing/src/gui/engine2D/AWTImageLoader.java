@@ -23,21 +23,25 @@ import java.awt.MediaTracker;
 import java.io.File;
 import java.net.URL;
 
+import javax.swing.JPanel;
+
 public class AWTImageLoader implements AbstractImageLoader<Image> {
 
 	public static final String LOCAL_PICTURE_PATH = "resources/pics/";
 
-	private Applet applet;
+	private final Applet applet;
 	private static MediaTracker tracker = null;
 
 	public AWTImageLoader(Applet a) {
 		applet = a;
+		setTracker(new MediaTracker(new JPanel()));
 	}
 
 	public static void setTracker(MediaTracker t) {
 		tracker = t;
 	}
 
+	@Override
 	public Image loadImage(String filename) {
 		return AWTImageLoader.loadImage(applet, filename);
 	}
@@ -58,17 +62,18 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 			}
 			try {
 				String picsFolder = "/pics/";
-				URL url = new URL(a.getCodeBase().toExternalForm() +picsFolder);
+				URL url = new URL(a.getCodeBase().toExternalForm() + picsFolder);
 				int lastPathSep = filename.lastIndexOf("/");
 				if (lastPathSep != -1) {
 					String folderpath = filename.substring(0, lastPathSep + 1);
 					filename = filename.substring(lastPathSep + 1);
 					url = new URL(a.getCodeBase().toExternalForm() + picsFolder
 							+ folderpath);
-				} 
+				}
 				im = a.getImage(url, filename);
 				if (im == null) {
-					System.out.println("bild ist null! --> return null: "+filename);
+					System.out.println("bild ist null! --> return null: "
+							+ filename);
 					return null;
 				}
 			} catch (Exception e) {
@@ -93,16 +98,16 @@ public class AWTImageLoader implements AbstractImageLoader<Image> {
 			}
 		}
 
-		tracker.addImage(im, 1);
-		try {
-			tracker.waitForAll();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (tracker != null) {
+			tracker.addImage(im, 1);
+			try {
+				tracker.waitForAll();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return im;
 	}
-
-
 
 }

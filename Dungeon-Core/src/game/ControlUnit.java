@@ -7,7 +7,6 @@
 package game;
 
 import dungeon.JDPoint;
-import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -29,6 +28,8 @@ public interface ControlUnit extends ActionSpecifier{
 	public void gameOver();
 	
 	public void setFigure(FigureInfo f);
+
+	public void setMonitoringGUI(JDGUI gui);
 
 	public boolean isHostileTo(FigureInfo f);
 	

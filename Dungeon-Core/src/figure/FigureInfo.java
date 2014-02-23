@@ -221,8 +221,8 @@ public abstract class FigureInfo extends InfoEntity {
 	}
 
 	/**
-	 * Liefert ein Integer-Array, dass die Tueren des Raumes kodiert. array[0] ->
-	 * Norden; array[1] -> Osten; array[0] -> Sueden; array[0] -> Westen;
+	 * Liefert ein Integer-Array, dass die Tueren des Raumes kodiert. array[0]
+	 * -> Norden; array[1] -> Osten; array[2] -> Sueden; array[3] -> Westen;
 	 * 
 	 * 0 -> Keine Tuere; 1 -> normale Tuere; 2 -> Tuere mit Schloss offen; 3 ->
 	 * Tuere mit Schloss verschlossen;
@@ -232,10 +232,6 @@ public abstract class FigureInfo extends InfoEntity {
 	public int[] getRoomDoors() {
 		return f.getRoom().makeDoorInfo();
 	}
-
-	//	public int getFighterIndex() {
-	//		return m.getFighterID();
-	//	}
 
 	@Override
 	public Paragraph[] getParagraphs() {

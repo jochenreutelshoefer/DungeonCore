@@ -2480,13 +2480,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	/**
-	 * @param actionPoints
-	 *            The actionPoints to set.
-	 */
-	// public void setActionPoints(int actionPoints) {
-	// this.actionPoints = actionPoints;
-	// }
-	/**
 	 * @return Returns the control.
 	 */
 	public ControlUnit getControl() {

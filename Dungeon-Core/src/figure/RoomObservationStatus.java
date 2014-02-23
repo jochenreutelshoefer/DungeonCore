@@ -35,15 +35,11 @@ public class RoomObservationStatus {
 
 	private int discoveryStatus = 0;
 
-	private final int lastVisited = -1;
-
 	private final JDPoint point;
 	
-	//private Room r;
-
 	private final DungeonVisibilityMap map;
 	
-	private final List visibilityModifier = new LinkedList();
+	private final List<VisibilityModifier> visibilityModifier = new LinkedList<VisibilityModifier>();
 
 	public RoomObservationStatus(DungeonVisibilityMap map, JDPoint p) {
 		this.map = map;
@@ -73,8 +69,9 @@ public class RoomObservationStatus {
 		if(discoveryStatus >= VISIBILITY_SHRINE) {
 			max = VISIBILITY_SHRINE;
 		}
-		for (Iterator iter = visibilityModifier.iterator(); iter.hasNext();) {
-			VisibilityModifier element = (VisibilityModifier) iter.next();
+		for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
+				.hasNext();) {
+			VisibilityModifier element = iter.next();
 			if(element.getVisibilityStatus() > max) {
 				
 				max = element.getVisibilityStatus();
