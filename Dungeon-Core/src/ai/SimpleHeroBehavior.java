@@ -11,10 +11,8 @@ import figure.action.Action;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
-import figure.percept.MovePercept;
 import figure.percept.Percept;
 import game.ControlUnit;
-import game.JDGUI;
 import item.DustItem;
 import dungeon.Door;
 import dungeon.JDPoint;
@@ -148,7 +146,6 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 	@Override
 	public Action chooseFightAction(){
 		Action a = null;
-		//	System.out.println("control:getFA() : fight Running --> return Action");
 		if(this.h.getHealthLevel() <= 2 && Math.random() < 0.3) {
 			a = Action.makeActionFlee();
 			this.h.checkMovementAction(a);
@@ -159,22 +156,8 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 			this.h.checkMovementAction(a);
 			
 			return a;
-		//}
-		//System.out.println("simpleHeroBehaviour:getFA() : NO  fight Running --> return null");
-		//return null;
-		//return null;
 	}
 
-	@Override
-	protected void updateKBdueMovement(MovePercept p) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void setMonitoringGUI(JDGUI gui) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

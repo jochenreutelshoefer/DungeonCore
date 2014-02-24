@@ -29,7 +29,6 @@ public interface ControlUnit extends ActionSpecifier{
 	
 	public void setFigure(FigureInfo f);
 
-	public void setMonitoringGUI(JDGUI gui);
 
 	public boolean isHostileTo(FigureInfo f);
 	

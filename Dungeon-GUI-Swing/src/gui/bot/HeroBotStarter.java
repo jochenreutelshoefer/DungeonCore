@@ -1,17 +1,18 @@
 package gui.bot;
 
 import figure.DungeonVisibilityMap;
+import figure.HeroControlWithSpectator;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
-import game.ControlUnit;
 import game.DungeonGame;
 import game.JDEnv;
 import graphics.ImageManager;
 import gui.MyJDGui;
 import gui.engine2D.AWTImageLoader;
+import ai.AI;
 import dungeon.Dungeon;
 import dungeon.generate.DungeonGenerationFailedException;
 
@@ -69,18 +70,18 @@ public class HeroBotStarter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (newBotInstance instanceof ControlUnit) {
+		if (newBotInstance instanceof AI) {
 			MyJDGui gui = new MyJDGui(figureInfo);
-			h.setControl((ControlUnit) newBotInstance);
-			((ControlUnit) newBotInstance).setFigure(figureInfo);
-			((ControlUnit) newBotInstance).setMonitoringGUI(gui);
+			HeroControlWithSpectator control = new HeroControlWithSpectator(
+					figureInfo, (AI) newBotInstance, gui);
+			h.setControl(control);
+			((AI) newBotInstance).setFigure(figureInfo);
 			dungeonGame.putGuiFigure(h, gui);
 			// new StartView(h.getName(), 0, null, false)
 			gui.initGui(null, null, h.getName());
 
 			Thread th = new Thread(dungeonGame);
 			th.start();
-
 		}
 
 	}

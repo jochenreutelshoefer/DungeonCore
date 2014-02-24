@@ -10,7 +10,6 @@ import figure.action.Action;
 import figure.action.result.ActionResult;
 import figure.percept.Percept;
 import game.ControlUnit;
-import game.JDGUI;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,11 +19,11 @@ import dungeon.JDPoint;
 
 public class FigureControl implements ControlUnit {
 
-	FigureInfo f;
+	private FigureInfo f;
 
-	AI brain;
+	private final AI brain;
 
-	List<Percept> perceptList = new LinkedList<Percept>();
+	private List<Percept> perceptList = new LinkedList<Percept>();
 
 	public FigureControl(FigureInfo f, AI ai) {
 		this.f = f;
@@ -88,11 +87,6 @@ public class FigureControl implements ControlUnit {
 		return a;
 	}
 
-	@Override
-	public void setMonitoringGUI(JDGUI gui) {
-		// TODO Auto-generated method stub
-
-	}
 
 
 }

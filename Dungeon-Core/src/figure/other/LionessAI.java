@@ -3,6 +3,7 @@ package figure.other;
 import java.util.Iterator;
 import java.util.List;
 
+import ai.AI;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import dungeon.RouteInstruction;
@@ -13,7 +14,6 @@ import figure.action.DoNothingAction;
 import figure.action.MoveAction;
 import figure.percept.MovePercept;
 import figure.percept.Percept;
-import ai.AI;
 
 public class LionessAI extends AI {
 
@@ -78,12 +78,6 @@ public class LionessAI extends AI {
 				currentWalkTarget = target;
 			}
 		}
-
-	}
-
-	@Override
-	protected void updateKBdueMovement(MovePercept p) {
-		// TODO Auto-generated method stub
 
 	}
 

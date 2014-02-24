@@ -33,7 +33,6 @@ import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
-import figure.percept.MovePercept;
 import figure.percept.Percept;
 
 /**
@@ -43,7 +42,7 @@ public class DefaultMonsterIntelligence extends AI {
 
 	protected MonsterInfo monster;
 
-	protected Vector actionQueue = new Vector();
+	protected Vector<Action> actionQueue = new Vector<Action>();
 
 	protected Action lastAction = null;
 
@@ -51,6 +50,7 @@ public class DefaultMonsterIntelligence extends AI {
 		att = new AttitudeMonsterDefault();
 	}
 
+	@Override
 	public void setFigure(FigureInfo info) {
 		if (info instanceof MonsterInfo) {
 			monster = ((MonsterInfo) info);
@@ -58,14 +58,17 @@ public class DefaultMonsterIntelligence extends AI {
 		}
 	}
 
+	@Override
 	protected void processPercept(Percept p) {
 
 	}
-	
-public void resetingRoomVisibility(JDPoint p) {
-		
+
+	@Override
+	public void resetingRoomVisibility(JDPoint p) {
+
 	}
 
+	@Override
 	public boolean isHostileTo(FigureInfo f) {
 		return att.isHostile(f);
 	}
@@ -102,9 +105,9 @@ public void resetingRoomVisibility(JDPoint p) {
 	}
 
 	private boolean hasLuziaAmulett() {
-		List l = monster.getAllItems();
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			ItemInfo element = (ItemInfo) iter.next();
+		List<ItemInfo> l = monster.getAllItems();
+		for (Iterator<ItemInfo> iter = l.iterator(); iter.hasNext();) {
+			ItemInfo element = iter.next();
 			if (element.getItemClass() == LuziaAmulett.class) {
 				Action a = LuziaRunner.getAction(monster);
 
@@ -115,9 +118,10 @@ public void resetingRoomVisibility(JDPoint p) {
 		return false;
 	}
 
+	@Override
 	public Action chooseMovementAction() {
 
-		if (monster.getName().equals("Vim Wadenbeißer")) {
+		if (monster.getName().equals("Vim Wadenbeiï¿½er")) {
 			System.out.println("Vim ist dran");
 		}
 
@@ -127,7 +131,7 @@ public void resetingRoomVisibility(JDPoint p) {
 			return a;
 		}
 		if (actionQueue.size() > 0) {
-			Action a = (Action) actionQueue.remove(0);
+			Action a = actionQueue.remove(0);
 			lastAction = a;
 			return a;
 		}
@@ -242,10 +246,10 @@ public void resetingRoomVisibility(JDPoint p) {
 		Action a = Action.makeActionFlee();
 		ActionResult res = monster.checkMovementAction(Action.makeActionFlee());
 		if (res.getKey1() == ActionResult.KEY_POSSIBLE) {
-			// System.out.println("flucht hier möglich");
+			// System.out.println("flucht hier mï¿½glich");
 			return a;
 		} else {
-			// System.out.println("Flucht hier NICHT möglich!");
+			// System.out.println("Flucht hier NICHT mï¿½glich!");
 
 			StepAction step = getStepActionToDoor(monster);
 			if (step != null) {
@@ -282,7 +286,7 @@ public void resetingRoomVisibility(JDPoint p) {
 		DoorStep[] stepsA = getDoorSteps(monster);
 		if (stepsA.length > 0) {
 
-			DoorStep step = (DoorStep) stepsA[0];
+			DoorStep step = stepsA[0];
 			return new StepAction(step.getIndex());
 		}
 		return null;
@@ -291,7 +295,7 @@ public void resetingRoomVisibility(JDPoint p) {
 
 	private static DoorStep[] getDoorSteps(FigureInfo monster) {
 		int doors[] = monster.getRoomDoors();
-		List steps = new LinkedList();
+		List<DoorStep> steps = new LinkedList<DoorStep>();
 		for (int i = 0; i < doors.length; i++) {
 			if (doors[i] == Door.DOOR || doors[i] == Door.DOOR_LOCK_OPEN) {
 				DoorStep step = calcDoorStep(i, monster);
@@ -303,20 +307,20 @@ public void resetingRoomVisibility(JDPoint p) {
 		}
 		Object[] stepsA = steps.toArray();
 		Arrays.sort(stepsA);
-		DoorStep []a  = new DoorStep[stepsA.length];
+		DoorStep[] a = new DoorStep[stepsA.length];
 		for (int i = 0; i < stepsA.length; i++) {
-			a[i] = (DoorStep)stepsA[i];
+			a[i] = (DoorStep) stepsA[i];
 		}
 		return a;
 
 	}
-	
+
 	public static int getMinFleeDist(FigureInfo info) {
-		DoorStep []a  = getDoorSteps(info);
-		if(a == null ||a.length == 0) {
+		DoorStep[] a = getDoorSteps(info);
+		if (a == null || a.length == 0) {
 			return -1;
 		}
-		
+
 		return a[0].getDistance();
 	}
 
@@ -340,14 +344,14 @@ public void resetingRoomVisibility(JDPoint p) {
 		boolean[] poses = getOccupiedPoses(info);
 		boolean isFree = scanWay(poses, pos, doorPos, true, true);
 		if (isFree) {
-			return new DoorStep(Position.incIndex(pos), Position
-					.getDistanceFromTo(doorPos, pos, true), door);
+			return new DoorStep(Position.incIndex(pos),
+					Position.getDistanceFromTo(doorPos, pos, true), door);
 		}
 
 		isFree = scanWay(poses, pos, doorPos, false, true);
 		if (isFree) {
-			return new DoorStep(Position.decIndex(pos), Position
-					.getDistanceFromTo(doorPos, pos, false), door);
+			return new DoorStep(Position.decIndex(pos),
+					Position.getDistanceFromTo(doorPos, pos, false), door);
 		}
 
 		return null;
@@ -402,11 +406,8 @@ public void resetingRoomVisibility(JDPoint p) {
 		if (!dirExisting) {
 			System.out
 					.println("AbstractFightIntelligence.getRandomFleeDir() - NO VALID DIRECTION!!!");
-			// System.exit(0);
 			return 0;
 		}
-		int k = -1;
-		int dir = ((int) (Math.random() * 4));
 		int pos = monster.getPositionInRoomIndex();
 		if (pos == 0) {
 			if (poss[0]) {
@@ -464,8 +465,8 @@ public void resetingRoomVisibility(JDPoint p) {
 			PositionInRoomInfo pos = info.getPositionInRoom(i);
 			FigureInfo f = pos.getFigure();
 			if (f instanceof HeroInfo) {
-				if (Position.getMinDistanceFromTo(monster
-						.getPositionInRoomIndex(), i) == 1) {
+				if (Position.getMinDistanceFromTo(
+						monster.getPositionInRoomIndex(), i) == 1) {
 					return null;
 				}
 				StepAction a = stepTowardsPosition(i);
@@ -486,14 +487,14 @@ public void resetingRoomVisibility(JDPoint p) {
 		DoorStep step1 = null;
 		DoorStep step2 = null;
 		if (isFree) {
-			step1 = new DoorStep(Position.incIndex(pos), Position
-					.getDistanceFromTo(pos, doorPos, true), -1);
+			step1 = new DoorStep(Position.incIndex(pos),
+					Position.getDistanceFromTo(pos, doorPos, true), -1);
 		}
 
 		isFree = scanWay(poses, pos, doorPos, false, false);
 		if (isFree) {
-			step2 = new DoorStep(Position.decIndex(pos), Position
-					.getDistanceFromTo(pos, doorPos, false), -1);
+			step2 = new DoorStep(Position.decIndex(pos),
+					Position.getDistanceFromTo(pos, doorPos, false), -1);
 		}
 		if (step1 != null && step2 != null) {
 			if (step1.getDistance() > step2.getDistance()) {
@@ -529,7 +530,7 @@ public void resetingRoomVisibility(JDPoint p) {
 	}
 
 	protected int getHeroIndex() {
-		List infos = monster.getRoomInfo().getFigureInfos();
+		List<FigureInfo> infos = monster.getRoomInfo().getFigureInfos();
 		int heroIndex = -1;
 		for (int i = 0; i < infos.size(); i++) {
 			if (infos.get(i) instanceof HeroInfo) {
@@ -548,9 +549,9 @@ public void resetingRoomVisibility(JDPoint p) {
 			}
 		}
 
-		List spells = monster.getSpells();
-		for (Iterator iter = spells.iterator(); iter.hasNext();) {
-			SpellInfo element = (SpellInfo) iter.next();
+		List<SpellInfo> spells = monster.getSpells();
+		for (Iterator<SpellInfo> iter = spells.iterator(); iter.hasNext();) {
+			SpellInfo element = iter.next();
 			Action a = trySpell(element);
 			if (a != null) {
 				return a;
@@ -560,6 +561,7 @@ public void resetingRoomVisibility(JDPoint p) {
 		return null;
 	}
 
+	@Override
 	public Action chooseFightAction() {
 
 		if (hasLuziaAmulett()) {
@@ -585,10 +587,9 @@ public void resetingRoomVisibility(JDPoint p) {
 			return getActionForMonsterCount2();
 		}
 		if (monsterCount > 2) {
-			return Action
-					.makeActionAttack(/* monster.getFighterID(), */heroIndex);
+			return Action.makeActionAttack(heroIndex);
 		}
-		return Action.makeActionAttack(/* monster.getFighterID(), */heroIndex);
+		return Action.makeActionAttack(heroIndex);
 	}
 
 	protected Action getActionForMonsterCount2() {
@@ -651,37 +652,21 @@ public void resetingRoomVisibility(JDPoint p) {
 		} else if (a <= 85) {
 			return Action.makeActionMove(monster.getFighterID(),
 					RouteInstruction.SOUTH);
-			// goSouth(); //////System.out.println(name+" geht suedlich");
 		} else if (a <= 90) {
 			return Action.makeActionMove(monster.getFighterID(),
 					RouteInstruction.EAST);
-			// goEast();//////System.out.println(name+" get oestlich");
 		} else if (a <= 95) {
 			return Action.makeActionMove(monster.getFighterID(),
 					RouteInstruction.NORTH);
-			// goNorth();//////System.out.println(name+" get noerdlich");
 		} else {
 			return Action.makeActionMove(monster.getFighterID(),
 					RouteInstruction.WEST);
-			// goWest();//////System.out.println(name+" get westlich");
 		}
-	}
-
-	private int getFleeDirection() {
-		int last = monster.getLastMove();
-		int back = RouteInstruction.turnOpp(last);
-		return back;
-	}
-
-	@Override
-	protected void updateKBdueMovement(MovePercept p) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
 
-class DoorStep implements Comparable {
+class DoorStep implements Comparable<DoorStep> {
 	int index;
 
 	int distance;
@@ -702,9 +687,10 @@ class DoorStep implements Comparable {
 		return distance;
 	}
 
-	public int compareTo(Object o) {
+	@Override
+	public int compareTo(DoorStep o) {
 		if (o instanceof DoorStep) {
-			DoorStep other = (DoorStep) o;
+			DoorStep other = o;
 			if (this.distance < other.distance) {
 				return 1;
 			} else {

@@ -3,6 +3,7 @@ package figure.other;
 import java.util.LinkedList;
 import java.util.List;
 
+import ai.AI;
 import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
@@ -10,14 +11,11 @@ import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
 import figure.action.DoNothingAction;
-import figure.action.SuicideAction;
 import figure.hero.HeroInfo;
 import figure.percept.AttackPercept;
 import figure.percept.FightEndedPercept;
 import figure.percept.FleePercept;
-import figure.percept.MovePercept;
 import figure.percept.Percept;
-import ai.AI;
 
 public class FirAI  extends AI{
 	
@@ -89,10 +87,6 @@ public class FirAI  extends AI{
 		if(p instanceof FightEndedPercept) {
 			this.fightEnded = true;
 		}
-	}
-
-	@Override
-	protected void updateKBdueMovement(MovePercept p) {
 	}
 
 }

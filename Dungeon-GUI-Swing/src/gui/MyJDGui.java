@@ -852,10 +852,4 @@ public class MyJDGui implements JDGUI {
 				.getItemCombo().getSelectedItem();
 	}
 
-	@Override
-	public void setMonitoringGUI(JDGUI gui) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
