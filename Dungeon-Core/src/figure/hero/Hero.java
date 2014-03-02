@@ -64,16 +64,10 @@ import game.InfoProvider;
 // a00d058
 public class Hero extends Figure implements InfoProvider {
 
-	// private int actionPoints;
 	public boolean agentStarted = false;
 
-	// private int fightAP = 0;
 	int timeDelay = 2000;
 	public static int hero_index_counter = -1;
-
-	// private static LinkedList allHeros = new LinkedList();
-
-	private final int hero_index;
 
 	public final static int HEROCODE_WARRIOR = 1;
 
@@ -82,6 +76,7 @@ public class Hero extends Figure implements InfoProvider {
 	public final static int HEROCODE_DRUID = 3;
 
 	public final static int HEROCODE_MAGE = 4;
+
 
 	private int sanctions = 0;
 
@@ -97,10 +92,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	private final Inventory inv;
 
-	// private Game game;
 	private final Bunch bund = new Bunch();
-
-	// public LinkedList Statements = new LinkedList();
 
 	private final JDPoint oldLocation = new JDPoint(0, 0);
 
@@ -148,17 +140,12 @@ public class Hero extends Figure implements InfoProvider {
 	
 	@Override
 	protected boolean getBlock(int dmg) {
-		//System.out.println("getBlock");
 		Shield shield = this.inv.getShield1();
 		if(shield != null) {
 			int shieldValue = shield.getBlockValue();
-			//System.out.println("shield: "+shieldValue);
 			
 			int total = (int)((shieldValue + c.getDexterity_Value()/3) * (((double)100+c.getDexterity_Value())/100));
-			//System.out.println("dex: "+c.getDexterity_Value());
-			//System.out.println("block total: "+total);
 			int random = (int)(Math.random() * 100);
-			//System.out.println("random: "+random);
 			if(random > 100 - total) {
 				
 				shield.madeBlock(dmg);
@@ -212,7 +199,7 @@ public class Hero extends Figure implements InfoProvider {
 
 	@Override
 	public int getItemIndex(Item it) {
-		List items = inv.getItems();
+		List<Item> items = inv.getItems();
 		for (int i = 0; i < items.size(); i++) {
 			if (items.get(i) == it) {
 				return i;
@@ -223,7 +210,6 @@ public class Hero extends Figure implements InfoProvider {
 
 	@Override
 	public void addModification(TimedAttributeModification mod) {
-		// System.out.println("adding mod");
 		c.addModification(mod);
 	}
 
@@ -259,9 +245,6 @@ public class Hero extends Figure implements InfoProvider {
 		this.bravery = new Attribute(Attribute.BRAVE, brave);
 		inv = new Inventory(3, 3, 3, 3, this);
 		inv.addItem(bund);
-		this.hero_index = Hero.hero_index_counter;
-		Hero.hero_index_counter--;
-		// Hero.allHeros.add(this);
 
 	}
 
@@ -275,14 +258,6 @@ public class Hero extends Figure implements InfoProvider {
 		getInventory().removeItem(i);
 		return true;
 	}
-
-	// public int getActionPoints() {
-	// return getCharacter().getActionPoints();
-	// }
-
-	// public void decActionPoints(int k) {
-	// getCharacter().decActionPoints(k);
-	// }
 
 	@Override
 	public Character getCharacter() {
@@ -331,20 +306,11 @@ public class Hero extends Figure implements InfoProvider {
 
 	}
 
-	// public int getLevel() {
-	// return Level;
-	// }
-
 	@Override
 	public boolean giveAwayItem(Item i, ItemOwner o) {
 		return getInventory().giveAwayItem(i, o);
 	}
 
-	// public LinkedList getStatements() {
-	// LinkedList s = Statements;
-	// Statements = new LinkedList();
-	// return s;
-	// }
 
 	@Override
 	public Attribute getHealth() {
@@ -369,40 +335,6 @@ public class Hero extends Figure implements InfoProvider {
 	public void incKills() {
 		kills++;
 	}
-
-	/**
-	 * Describe <code>incFightAP</code> method here.
-	 * 
-	 * @return an <code>void</code> value
-	 */
-	// public void incFightAP(int v) {
-	// getCharacter().decFightAP((-1) * v);
-	// }
-	// public void incAP(int v) {
-	// incActionPoints(v);
-	// }
-	/**
-	 * Describe <code>decFightAP</code> method here.
-	 * 
-	 * @return an <code>void</code> value
-	 */
-	// public void decFightAP(int v) {
-	// int fightAP = getCharacter().getFightAP() - v;
-	// getCharacter().setFightAP(fightAP);
-	// }
-	/**
-	 * Describe <code>setFightAP</code> method here.
-	 * 
-	 * @return an <code>void </code> value
-	 */
-	// public void setFightAP(int v) {
-	// getCharacter().setFightAP(v);
-	// }
-	/**
-	 * Describe <code>getFightAP</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 */
 
 	/**
 	 * Describe <code>getHeroCode</code> method here.
@@ -484,27 +416,6 @@ public class Hero extends Figure implements InfoProvider {
 
 	
 	
-//	protected ActionResult processSpecialAction(SpecialAction a, boolean doIt) {
-//
-//		int id1 = a.getIdentifier1();
-//		
-//
-//		if (id1 == SpecialAction.ID1_DOOR_LOCK) {
-//		
-//		}
-//
-//		return ActionResult.INVALID;
-//	}
-
-	/**
-	 * Filtert die eingefangenen Schlaege durch die Ruestung, aber ziemlich
-	 * undurchsichtig und zieht dann die health ab
-	 * 
-	 * @param m
-	 *            a <code>monster</code> welches Monster
-	 * @param slap
-	 *            an <code>int</code> wieviel
-	 */
 
 	@Override
 	public int getTypeSkill(Figure m) {
@@ -528,7 +439,6 @@ public class Hero extends Figure implements InfoProvider {
 	@Override
 	protected void sanction(int i) {
 		for (int j = 0; j < i; j++) {
-			// //System.out.println("sanctioning!");
 			getBrave().modValue((-1));
 			getCharacter().getPsycho().modValue((-1));
 			getCharacter().getDexterity().modValue((-1));
@@ -540,14 +450,8 @@ public class Hero extends Figure implements InfoProvider {
 
 	@Override
 	public void recover() {
-		// //System.out.println(getCharacter().getActionPoints());
-		// System.out.println("recover()");
-		// if(hasLuziaBall()) {
-		// getLuziasBall().show();
-		// }
 		double healing = getActionPoints()
 				* getCharacter().getAttribute(Attribute.HEALTHREG).getValue();
-		// System.out.println("heile: "+healing);
 		heal(healing);
 
 		recDust(getCharacter().getDustReg().getValue());
@@ -581,7 +485,6 @@ public class Hero extends Figure implements InfoProvider {
 
 	@Override
 	public void heal(double value) {
-		// System.out.println("Will heilen :"+value);
 		Attribute healthAttr = c.getHealth();
 
 		if (healthAttr.getValue() + value <= healthAttr.getBasic()) {
@@ -595,7 +498,6 @@ public class Hero extends Figure implements InfoProvider {
 	@Override
 	public boolean takeItem(Item i, ItemOwner o) {
 		return getInventory().takeItem(i, o);
-		// return true; //?
 
 	}
 
@@ -609,7 +511,6 @@ public class Hero extends Figure implements InfoProvider {
 			double strMod = 0.7 + (str / 10);
 			if (weap1 != null) {
 				wv = weap1.getTumbleBasic();
-				// System.out.println("wv geholt: "+wv);
 			}
 			if (i < -1) {
 				return 0;
@@ -635,19 +536,8 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
-	// private boolean hurt(int value) {
-	// // game.newStatement("hurt: " + value, 4);
-	// if (!game.getImortal()) {
-	// getCharacter().getHealth().modValue(value * (-1));
-	// return (getCharacter().getHealth().getValue() <= 0);
-	// } else {
-	// return false;
-	// }
-	// }
-
 	@Override
 	public void recDust(double value) {
-		// System.out.println("Dust erh�hen um: " + value);
 		getCharacter().getDust().modValue(value);
 		if (getCharacter().getDust().getValue() >= getCharacter().getDust()
 				.getBasic())
@@ -671,20 +561,6 @@ public class Hero extends Figure implements InfoProvider {
 
 	}
 
-	/**
-	 * blockt vielleicht wenn der Held ein Schild hat
-	 * 
-	 * @return a <code>boolean</code> value
-	 */
-	// public boolean block(monster m) {
-	// if (getInventory().getShield1().toString().equals("noItem"))
-	// return false;
-	// else
-	// return (
-	// ((int) (Math.random() * 100))
-	// <= (getInventory().getShield1().getChance_to_block()
-	// + ((getCharacter().getDexterity().getValue()) / 2)));
-	// }
 	@Override
 	public int getElude(Figure m) {
 		int k;
@@ -702,10 +578,8 @@ public class Hero extends Figure implements InfoProvider {
 			if (skillValue < 0) {
 				skillValue = 0;
 			}
-			// System.out.println("SkillValue bei blocken: " + skillValue);
 			k = (int) Math.round(shield + skillValue);
 		}
-		// game.newStatement("Chance auf blocken: " + k, 4);
 		if (k > (int) (Math.random() * 100)) {
 			getInventory().getShield1().madeBlock(10);
 			getRoom().distributePercept(new ShieldBlockPercept(this));
@@ -716,7 +590,6 @@ public class Hero extends Figure implements InfoProvider {
 			float dex_3 = dex / 3;
 			int know = getCharacter().getKnowledge((Monster) m);
 			int ret = (int) (dex_3 * know);
-			// game.newStatement("Chance auszuweichen: " + ret, 4);
 
 			// 0 soll nur sein wenn er gel�hmt, versteinert etc ist
 			// weil bei null immer getroffen
@@ -763,27 +636,8 @@ public class Hero extends Figure implements InfoProvider {
 		return this.inv.hasLuziaBall();
 	}
 
-	// /**
-	// * Zuschlagen oder daneben...
-	// *
-	// * @param m a <code>monster</code> value
-	// * @return an <code>int</code> value
-	// */
-	// public int slay(fighter m) {
-	// //System.out.println("Hier! hero.slay(m)");
-	//	
-	// float actual_chance_to_hit = getActual_chance_to_hit(m);
-	// if (actual_chance_to_hit >= (float) (Math.random() * 100)) {
-	//
-	// int x = getSlapStrength(m);
-	// return x;
-	// } else
-	// return 0;
-	//
-	// }
-
 	@Override
-	public LinkedList getAllItems() {
+	public List<Item> getAllItems() {
 		return getInventory().getAllItems();
 	}
 
@@ -829,19 +683,6 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
-	// public void giveExp(int x, monster m) {
-	// if (getCharacter().getExpCode() == 0) {
-	// giveSelfExp(x);
-	// } else if (getCharacter().getExpCode() == 1) {
-	// giveWeaponExp(x);
-	// } else if (getCharacter().getExpCode() == 2) {
-	// giveKnowExp(x, (monster) m);
-	// }
-	//
-	// testLevel();
-	//
-	// }
-
 	public int testLevel() {
 		return this.c.testLevel();
 	}
@@ -855,112 +696,9 @@ public class Hero extends Figure implements InfoProvider {
 		return inv;
 	}
 
-	// private void doLevelUp() {
-	// Level++;
-	// game.newStatement("LEVEL UP!: ", 4);
-	//
-	// int k = 3 + (int) (Math.random() * 5);
-	// game.newStatement("HP +" + k, 4);
-	//
-	// for (int i = 0; i < k; i++) {
-	// getCharacter().getHealth().incBasic();
-	// }
-	// getCharacter().getThreat().incBasic();
-	// }
-
-	// private int giveType_skill(monster m) {
-	// if (m instanceof nature_monster)
-	// return getCharacter().getNature_Knowledge().getValue();
-	// if (m instanceof creature_monster)
-	// return getCharacter().getCreature_Knowledge().getValue();
-	// if (m instanceof undead_monster)
-	// return getCharacter().getUndead_Knowledge().getValue();
-	// else
-	// return 0;
-	// }
-	//
-	// private int giveWeapon_skill() {
-	// if (getWeapon1() instanceof sword)
-	// return Sword.getValue();
-	// if (getWeapon1() instanceof axe)
-	// return Axe.getValue();
-	// if (getWeapon1() instanceof lance)
-	// return Lance.getValue();
-	// if (getWeapon1() instanceof club)
-	// return Club.getValue();
-	// if (getWeapon1() instanceof wolfknife)
-	// return Wolfknife.getValue();
-	// else
-	// return 0;
-	// }
-	// private float give_Weapon_on_Type_Modifier(monster m) {
-	// if (m instanceof wolf)
-	// return (float)
-	// (1 + ((float) ((float) getWeapon1().getWolf_Modifier() / 100)));
-	// if (m instanceof bear)
-	// return (float)
-	// (1 + ((float) ((float) getWeapon1().getBear_Modifier() / 100)));
-	// if (m instanceof skeleton)
-	// return (float)
-	// (1
-	// + ((float) ((float) getWeapon1().getSkeleton_Modifier()
-	// / 100)));
-	// if (m instanceof ghul)
-	// return (float)
-	// (1 + ((float) ((float) getWeapon1().getGhul_Modifier() / 100)));
-	// if (m instanceof orc)
-	// return (float)
-	// (1 + ((float) ((float) getWeapon1().getOrc_Modifier() / 100)));
-	// if (m instanceof ogre)
-	// return (float)
-	// (1 + ((float) ((float) getWeapon1().getOgre_Modifier() / 100)));
-	// else
-	// return 1;
-	// }
-
-	/**
-	 * Man kann ihm hier die primaerwaffe geben, falls er noch keine hat.
-	 * 
-	 * @param w
-	 *            a <code>weapon</code> value
-	 * @return a <code>boolean</code> value
-	 * 
-	 * @uml.property name="oldLocation"
-	 */
-	// public boolean take_shield1(shield s) {
-	// boolean bool = true;
-	// if (shields[0].toString().equals("noItem")) {
-	// shields[0] = s;
-	// } else if (shields[1].toString().equals("noItem")) {
-	// shields[1] = s;
-	// } else if (shields[2].toString().equals("noItem")) {
-	// shields[2] = s;
-	// } else
-	// bool = false;
-	// return bool;
-	// }
 	public JDPoint getOldLocation() {
 		return oldLocation;
 	}
-
-	// public boolean takeItem(item ding) {
-	// if (ding instanceof weapon) {
-	// return take_weapon1((weapon) ding);
-	// } else if (ding instanceof an_armor) {
-	// return take_armor1((an_armor) ding);
-	// } else if (ding instanceof shield) {
-	// return take_shield1((shield) ding);
-	// } else if (ding instanceof helmet) {
-	// return take_helmet1((helmet) ding);
-	// } else {
-	// items.add(ding);
-	// return true;
-	// }
-	// }
-
-	// public void removeItem(item i) {
-	// items.remove(i);
-	// }
 
 	protected int calcScout(Room r) {
 		int level = 0;
@@ -971,7 +709,7 @@ public class Hero extends Figure implements InfoProvider {
 			// Wert
 			// wie
 			// oft
-			// gepr�ft
+			// geprüft
 			// wird,
 			// der
 			// beste
@@ -1010,76 +748,9 @@ public class Hero extends Figure implements InfoProvider {
 			return 0;
 	}
 
-	// public String [] toStatement(){
-	// String [] daten = new String[18];
-
-	// daten[0]=("Name: "+this.getName());
-	// daten[16]=("Sternzeichen"+Sign);
-	// daten[1]=("Health: "+this.getHealth_Value()+"/"+this.getHealth());
-	// daten[2]=("Kraft: "+this.getStrength());
-	// daten[3]=("Geschicklichkeit: "+this.getDexterity());
-	// daten[4]=("Psycho: "+this.getPsycho());
-	// daten[5]=("Waffenfertigkeiten:");
-	// daten[6]=("Schwert: "+this.getSword());
-	// daten[7]=("Axt: "+this.getAxe());
-	// daten[8]=("Knueppel: "+this.getClub());
-	// daten[9]=("Lanze: "+this.getLance());
-	// daten[10]=("Wolfmesser: "+this.getWolfknife());
-	// daten[11]=("Wissen:");
-	// daten[12]=("Naturkenntniss; "+this.getNature_Knowledge());
-	// daten[13]=("Kreaturenkenntniss: "+this.getCreature_Knowledge());
-	// daten[14]=("Untotenkenntniss: "+this.getUndead_Knowledge());
-	// daten[15]=("Sp�hen: "+this.getScout());
-	// if (this.getWeapon1()==null) daten[17]=("Keine Waffe");
-	// else{
-	// daten[17]=("Waffe: "+this.getWeapon1().toString());}
-	// return daten;
-	// }
-
-	// private int getAll_armor(monster m) {
-	// int a = 0;
-	// if (getArmor1() != null) {
-	// a += getArmor1().getarmor_value();
-	// }
-	// if (getHelmet1() != null) {
-	// a += getHelmet1().getarmor_value();
-	// }
-	// return a + giveType_skill(m);
-	// }
-
-	// public int fleePanicCalc(int difficulty) {
-	// boolean success = false;
-	// if (Math.random() > 0.25) {
-	// success = true;
-	// c.getDust().setValue(0);
-	// int h = c.getHealth_Value();
-	//
-	// c.getHealth().modValue((-1) * h / 3);
-	//
-	// int dex = (int) getCharacter().getDexterity().getValue() - 2;
-	// int i1 = (int) (Math.random() * difficulty);
-	//
-	// int sanction = 0;
-	// if (dex < i1) {
-	// sanction = i1 - dex;
-	// }
-	//
-	// double relSanction = ((double) sanction) / (double) i1;
-	//
-	// this.inv.payRel(relSanction);
-	// }
-	// if (success) {
-	// return 0;
-	// } else {
-	// return 3;
-	// }
-	//
-	// }
-
 	protected int calcFleeResult(int difficulty) {
 
 		if (escape > 0) {
-			// game.newStatement("Flucht mit dem Wind: ", 4);
 
 			escape = 0;
 			return -1;
@@ -1087,12 +758,9 @@ public class Hero extends Figure implements InfoProvider {
 
 		int i1 = (int) (Math.random() * difficulty);
 
-		// int i2 = (int) (Math.random() * test);
-
-		// NEUE FLUCHT - abh�ngig nur von Geschicklichkeit
+		// NEUE FLUCHT - abhängig nur von Geschicklichkeit
 
 		int dex = (int) getCharacter().getDexterity().getValue() - 2;
-		// int psy = (int) getCharacter().getPsycho().getValue();
 		int erg = 4;
 		if (i1 < dex) {
 			erg = 0;
@@ -1103,9 +771,6 @@ public class Hero extends Figure implements InfoProvider {
 		return erg;
 	}
 
-	// public void makeThreating(Fight f) {
-	//
-	// }
 
 	private int threatHelp(int handycap) {
 		int value = ((int) (Math.random() * handycap));
@@ -1148,57 +813,8 @@ public class Hero extends Figure implements InfoProvider {
 		return l;
 	}
 
-	// public void getThreaten(int value, int count, Fight f) {
-	// }
-
-	// public int getKnowledge(monster m) {
-	// int k = 0;
-	// if (m instanceof nature_monster) {
-	// //System.out.print("Es ist ein Naturmonster: ");
-	// k = getCharacter().getNature_Knowledge_Value();
-	// //System.out.println(k);
-	// return k;
-	// } else if (m instanceof creature_monster) {
-	// //System.out.print("Es ist ein Kreaturenmonster: ");
-	// k = this.getCreature_Knowledge_Value();
-	// //System.out.println(k);
-	// return k;
-	// } else if (m instanceof undead_monster) {
-	// //System.out.print("Es ist ein Untotenmonster: ");
-	// k = getUndead_Knowledge_Value();
-	// //System.out.println(k);
-	// return k;
-	// }
-	//
-	// return Integer.MIN_VALUE;
-	// }
-
 	public void roundEnd() {
-		// System.out.println("Rundenende");
-
 	}
-
-	// public void addModification(modification mod) {
-	// Modifications.add(mod);
-	// }
-
-	// public boolean payActionPoint() {
-	// boolean b = false;
-	// if (getGame().getFight() == null) {
-	// if (getCharacter().getActionPoints() > 0) {
-	// getCharacter().decActionPoints(1);
-	// b = true;
-	// }
-	// }
-	// if (getGame().getFight() != null) {
-	// if (getCharacter().getFightAP() > 0) {
-	// getCharacter().decFightAP(1);
-	// b = true;
-	// }
-	// }
-	// return b;
-	//
-	// }
 
 	@Override
 	public boolean payDust(int k) {
@@ -1211,126 +827,13 @@ public class Hero extends Figure implements InfoProvider {
 		}
 	}
 
-	// public boolean payActionPoints(int k) {
-	// boolean b = false;
-	// if (getGame().getFight() == null) {
-	// if (getCharacter().getActionPoints() >= k) {
-	// getCharacter().decActionPoints(k);
-	// b = true;
-	// }
-	// }
-	// if (getGame().getFight() != null) {
-	// if (getCharacter().getFightAP() >= k) {
-	// getCharacter().decFightAP(k);
-	// b = true;
-	// }
-	// }
-	// return b;
-	//
-	// }
-
-//	protected void fireModifications() {
-//		if (getCharacter().getModifications().size() > 0) {
-//
-//			TimedModification m = ((TimedModification) getCharacter()
-//					.getModifications().get(0));
-//			if (m.hasFired()) {
-//				getCharacter().getModifications().remove(m);
-//			} else {
-//				if (m.newRound()) {
-//
-//				}
-//			}
-//			ListIterator iter = getCharacter().getModifications().listIterator(
-//					0);
-//			while (iter.hasNext()) {
-//
-//				m = (TimedModification) iter.next();
-//				if (m.hasFired()) {
-//					iter.remove();
-//				} else {
-//					if (m.newRound()) {
-//
-//					}
-//				}
-//
-//			}
-//
-//		}
-//	}
-
 	@Override
-	public List getModificationList() {
+	public List<TimedAttributeModification> getModificationList() {
 		return c.getModifications();
 	}
-	// }
-
-	// public void attack(Figure m) {
-	// int dir = PositionInRoom.getDirFromTo(getPositionInRoom(), m
-	// .getPositionInRoom());
-	// lookDir = dir;
-	//
-	// Slap hurt = slay(m);
-	// // game.getGui().figureSlaysAnimation(new HeroInfo(this));
-	// if (hurt.getValue_standard() == 0) {
-	// // f.newStatement("Du schl�gst daneben!", 3);
-	// } else {
-	//
-	// tellPercept(new TextPercept("Du triffst mit: "
-	// + Integer.toString(hurt.getValue_standard())));
-	// }
-	// SlapResult res = m.getSlap(hurt);
-	// receiveSlapResult(res);
-	// }
 
 	public void getThreaten(int i) {
 	}
-
-	// public boolean fight(/* Fight f */) {
-	// System.out.println("enter Hero.fight()");
-	// boolean exitsFight = false;
-	// this.sufferPoisoningsFight();
-	// incFightAP(1);
-	//
-	// // System.out.println("inc: Held: fightAP:" + getFightAP());
-	// if (justGotSlap) {
-	// // //System.out.println("status: ");
-	// // game.newStatement(getCharacter().getStatus(), 0);
-	// justGotSlap = false;
-	// }
-	// // game.getGui().updateGUI(MainFrame.UPDATE_DUST,false);
-	// // game.getGui().updateGUI(MainFrame.UPDATE_HEALTH,false);
-	// // game.getGui().updateGUI(MainFrame.UPDATE_FIGHT,true);
-	// // // if(before != null) game.getGui().repaintRoom(before);
-	// //control.repaint();
-	// if (control != null && !this.isDead) {
-	// Action a = retrieveFightActionFromControl();
-	// processFightAction(a);
-	//			
-	// control.repaint();
-	//			
-	//			
-	// //
-	// // if (!(a instanceof GUIAction)) {
-	// // if (paused) {
-	// // try {
-	// // Thread.sleep(20 * 1000);
-	// // } catch (Exception e) {
-	// // }
-	// // paused = false;
-	// // }
-	// // try {
-	// // Thread.sleep(timeDelay);
-	// // } catch (Exception e) {
-	// // }
-	// // processFightAction(a);
-	// // return true;
-	// // }
-	//			
-	// }
-	//
-	// return false;
-	// }
 
 	@Override
 	public JDPoint getLocation() {
@@ -1345,155 +848,6 @@ public class Hero extends Figure implements InfoProvider {
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		return inv.getItemInfos(map);
 	}
-
-	// public int getTotalExp() {
-	// return totalExp;
-	// }
-	//
-	// private void giveSelfExp(int v) {
-	// totalExp += v;
-	// selfExp += v;
-	// levelUpSelf();
-	// }
-	//
-	// private void giveKnowExp(int v, monster m) {
-	// totalExp += v;
-	// if (m instanceof nature_monster) {
-	// knowExp[0] += v;
-	// levelUpKnow(0);
-	// } else if (m instanceof creature_monster) {
-	// knowExp[1] += v;
-	// levelUpKnow(1);
-	// } else if (m instanceof undead_monster) {
-	// knowExp[2] += v;
-	// levelUpKnow(2);
-	// }
-	// }
-	//
-	// private void giveWeaponExp(int v) {
-	// totalExp += v;
-	// weapon w = getWeapon1();
-	// if (w instanceof axe) {
-	// weaponExp[0] += v;
-	// levelUpWeapon(0);
-	// } else if (w instanceof club) {
-	// weaponExp[1] += v;
-	// levelUpWeapon(1);
-	// } else if (w instanceof lance) {
-	// weaponExp[2] += v;
-	// levelUpWeapon(2);
-	// } else if (w instanceof sword) {
-	// weaponExp[3] += v;
-	// levelUpWeapon(3);
-	// } else if (w instanceof wolfknife) {
-	// weaponExp[4] += v;
-	// levelUpWeapon(4);
-	// }
-	// }
-
-	// private void levelUpKnow(int i) {
-	// int lerndauer = 150;
-	// switch (i) {
-	// case 0 :
-	// if (knowExp[0]
-	// >= (Nature_Knowledge.getBasic() + 1) + lerndauer) {
-	// knowExp[0] = 0;
-	// Nature_Knowledge.incBasic();
-	// Statements.add("Du hast Deine Naturkenntnis verbessert!");
-	// }
-	// break;
-	// case 1 :
-	// if (knowExp[1]
-	// >= (Creature_Knowledge.getBasic() + 1) + lerndauer) {
-	// knowExp[1] = 0;
-	// Creature_Knowledge.incBasic();
-	// Statements.add(
-	// "Du hast Deine Kreaturenkenntnis verbessert!");
-	// }
-	// break;
-	// case 2 :
-	// if (knowExp[2]
-	// >= (Nature_Knowledge.getBasic() + 1) + lerndauer) {
-	// knowExp[2] = 0;
-	// Undead_Knowledge.incBasic();
-	// Statements.add("Du hast Deine Untotenkenntnis verbessert!");
-	// }
-	// break;
-	// }
-	// }
-	//
-	// private void levelUpSelf() {
-	// int lerndauer = 150;
-	// //System.out.println("Erfahrungspunkte: " + Integer.toString(selfExp));
-	// if (selfExp >= (selfLevel + 1) * lerndauer) {
-	// selfExp = 0;
-	// doLevelUpSelf();
-	// }
-	// }
-	//
-	// private void doLevelUpSelf() {
-	// int i = (int) (Math.random() * 4);
-	// if (i == 0) {
-	// Psycho.incBasic();
-	// Statements.add("Du f�hlst Dich pl�tzlich kl�ger und mutiger.");
-	// } else if (i == 1) {
-	// Strength.incBasic();
-	// Statements.add("Du f�hlst neue Kraft in Dir.");
-	// } else if (i == 2) {
-	// Dexterity.incBasic();
-	// Statements.add(
-	// "Du merkst wie Deine Bewegungen pr�ziser und geschmeidiger werden.");
-	// } else if (i == 3) {
-	// Scout.incBasic();
-	// Statements.add("Du merkst wie Deine Sinne sch�rfer werden.");
-	// }
-	// }
-	//
-	// private void levelUpWeapon(int i) {
-	// int lerndauer = 120;
-	// switch (i) {
-	// case 0 :
-	// if (weaponExp[0] >= (Axe.getBasic() + 1) * lerndauer) {
-	// weaponExp[0] = 0;
-	// Axe.incBasic();
-	// Statements.add(
-	// "Du hast Deine Fertigkeit mit der Axt verbessert!");
-	// }
-	// break;
-	// case 1 :
-	// if (weaponExp[1] >= (Club.getBasic() + 1) * lerndauer) {
-	// weaponExp[0] = 0;
-	// Club.incBasic();
-	// Statements.add(
-	// "Du hast Deine Fertigkeit mit dem Kn�ppel verbessert!");
-	// }
-	// break;
-	// case 2 :
-	// if (weaponExp[2] >= (Lance.getBasic() + 1) * lerndauer) {
-	// weaponExp[0] = 0;
-	// Lance.incBasic();
-	// Statements.add(
-	// "Du hast Deine Fertigkeit mit der Lanze verbessert!");
-	// }
-	// break;
-	// case 3 :
-	// if (weaponExp[3] >= (Sword.getBasic() + 1) * lerndauer) {
-	// weaponExp[0] = 0;
-	// Sword.incBasic();
-	// Statements.add(
-	// "Du hast Deine Fertigkeit mit dem Schwert verbessert!");
-	// }
-	// break;
-	// case 4 :
-	// if (weaponExp[4] >= (Wolfknife.getBasic() + 1) * lerndauer) {
-	// weaponExp[0] = 0;
-	// Wolfknife.incBasic();
-	// Statements.add(
-	// "Du hast Deine Fertigkeit mit dem Wolfsmesser verbessert!");
-	// }
-	// break;
-	// }
-	// }
 
 	public void killedMonster(Monster m) {
 		incKills();
@@ -1542,44 +896,6 @@ public class Hero extends Figure implements InfoProvider {
 		return isDead;
 	}
 
-	// public void setExpCode(int i) {
-	// if ((i == 0) || (i == 1) || (i == 2)) {
-	// expCode = i;
-	// } else
-	// //System.out.println("ExpCode Error!");
-	// }
-	// public attribute getAttribut(String a) {
-	// if (a == ("Strength")) {
-	// return Strength;
-	// } else if (a == ("Dexterity")) {
-	// return Dexterity;
-	// } else if (a == ("Psycho")) {
-	// return Psycho;
-	// } else if (a == ("Axe")) {
-	// return Axe;
-	// } else if (a == ("Club")) {
-	// return Club;
-	// } else if (a == ("Lance")) {
-	// return Lance;
-	// } else if (a == ("Sword")) {
-	// return Sword;
-	// } else if (a == ("Wolfknife")) {
-	// return Wolfknife;
-	// } else if (a == ("Nature_Knowledge")) {
-	// return Nature_Knowledge;
-	// } else if (a == ("Creature_Knowledge")) {
-	// return Creature_Knowledge;
-	// } else if (a == ("Undead_Knowledge")) {
-	// return Undead_Knowledge;
-	// } else if (a == ("Scout")) {
-	// return Scout;
-	// } else if (a == ("Threat")) {
-	// return Threat;
-	// } else if (a == ("Health")) {
-	// return Health;
-	// } else
-	// return (new attribute(("Attribut Fehler"), 0));
-	// }
 	public Room[][] getMemory() {
 		return memory;
 	}
@@ -1597,51 +913,6 @@ public class Hero extends Figure implements InfoProvider {
 		return inv.getItem(it);
 	}
 
-	// public void layDown(item it) {
-	// boolean no = (it.toString().equals("noItem"));
-	//
-	// if (!no) {
-	// if (it instanceof weapon) {
-	// for (int i = 0; i < 3; i++) {
-	// if (getInventory().getWeapon(i) == it) {
-	// getRoom().addItem(it);
-	// weapons[i] = new noWeapon();
-	// }
-	// }
-	// } else if (it instanceof an_armor) {
-	// for (int i = 0; i < 3; i++) {
-	// if (getInventory().getArmor(i) == it) {
-	// getRoom().addItem(it);
-	// armors[i] = new noArmor();
-	// }
-	// }
-	// } else if (it instanceof shield) {
-	// for (int i = 0; i < 3; i++) {
-	// if (getInventory().getShield(i) == it) {
-	// getRoom().addItem(it);
-	// shields[i] = new noShield();
-	// }
-	// }
-	// } else if (it instanceof helmet) {
-	// for (int i = 0; i < 3; i++) {
-	// if (getInventory().getHelmet(i) == it) {
-	// getRoom().addItem(it);
-	// helmets[i] = new noHelmet();
-	// }
-	// }
-	// } else {
-	// LinkedList l = getItems();
-	// int k = l.size();
-	// for (int i = 0; i < k; i++) {
-	// if (it == ((item) l.get(i))) {
-	// getRoom().addItem(it);
-	// l.remove(it);
-	// break;
-	// }
-	// }
-	// }
-	// }
-	// }
 
 	@Override
 	public DungeonGame getGame() {
@@ -1696,40 +967,6 @@ public class Hero extends Figure implements InfoProvider {
 		}
 		return false;
 	}
-
-	// public void heroThreats(/* Fight2 fight2, */int e) {
-	// Monster m = null;
-	// LinkedList dieMonster = getRoom().getRoomFigures();
-	// if (e < dieMonster.size()) {
-	// m = (Monster) dieMonster.get(e);
-	// } else {
-	// m = (Monster) dieMonster.getFirst();
-	// }
-	// Threat th = new Threat(m);
-	// int x = alreadyThreaten(m);
-	// int know = getCharacter().getKnowledge(m);
-	// if (know <= 0) {
-	// if (know < 0) {
-	// // System.out.println("Keine Zuordnung war m�glch");
-	// } else {
-	// // System.out.println(
-	// // m.getClass().toString()
-	// // + " : Wissen: "
-	// // + h.getCharacter().getKnowledge(m));
-	// newStatement(
-	// "Du wei�t irgendwie nicht, wie Du das tun sollst bei diesem Gegner.",
-	// 0);
-	// }
-	// } else {
-	// newStatement(Texts.threat(this), 0);
-	// m.getThreaten(threat(m), x);
-	// saveThreating(th);
-	// System.out.println("heroThreats");
-	// decFightAP(1);
-	// // heroParty
-	// // game.getFight().MonstersFight();
-	// }
-	// }
 
 	private int alreadyThreaten(Monster m) {
 		int l = threatings.size();
@@ -1799,7 +1036,7 @@ public class Hero extends Figure implements InfoProvider {
 			return false;
 		}
 
-		if (/* (getHero().getCharacter().getFightAP() > 0) */true) {
+		if (true) {
 
 			double diff = getRoom().calcFleeDiff();
 			String back = getLocation().relativeTo(getOldLocation());
@@ -1871,19 +1108,15 @@ public class Hero extends Figure implements InfoProvider {
 	public boolean scout(int dir) {
 
 		Room loc = getRoom();
-		// System.out.println("loc: " + loc);
 		Room toScout = loc.getNeighbourRoom(dir);
 		scoutedRooms.add(toScout);
-		// System.out.println("toScout :" + toScout);
 		Door d = loc.getConnectionTo(toScout);
 
-		boolean scoutable = ((d != null) /** && (d.isPassable())* */
-		);
-		// System.out.println("scoutable: " + scoutable);
+		boolean scoutable = ((d != null));
 		String s = new String();
 		if ((scoutable)) {
 			List<Figure> monsters = toScout.getRoomFigures();
-			s += ("Du horchst und schaust duch die Ritzen in der T�r -" + "\n");
+			s += ("Du horchst und schaust duch die Ritzen in der Tür -" + "\n");
 
 			decActionPoints(1);
 			int scoutlevel = calcScout(toScout);
@@ -1973,7 +1206,7 @@ public class Hero extends Figure implements InfoProvider {
 					}
 
 				} else {
-					s += ("Wenn da jemand gewesen w�re h�ttest Du es raugekriegt.");
+					s += ("Wenn da jemand gewesen wäre hättest Du es raugekriegt.");
 				}
 				roomVisibility.setVisibilityStatus(toScout.getNumber(),
 						RoomObservationStatus.VISIBILITY_FIGURES);

@@ -62,7 +62,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 	HealthPot pot;
 
-	JDJButton memoryB = new JDJButton("Ged�chtnis");
+	JDJButton memoryB = new JDJButton("Gedächtnis");
 
 	JDJButton bigHeal = new JDJButton(" H ");
 

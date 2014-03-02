@@ -5,11 +5,13 @@ import figure.FigureInfo;
 import figure.hero.Hero;
 import game.InfoEntity;
 import game.JDEnv;
+import item.Item;
 import item.ItemValueComparator;
 import item.equipment.weapon.Weapon;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Rust extends Spell {
 
@@ -66,13 +68,13 @@ public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	@Override
 	public void sorcer(Figure mage, Object op) {
 		if(op instanceof Hero) {
-			LinkedList l = new LinkedList();
+			List<Item> l = new LinkedList<Item>();
 			if (op instanceof Hero) {
 				l = ((Hero) op).getInventory().getWeaponList();
 			}
 			Collections.sort(l, new ItemValueComparator());
 			if (l.size() > 0) {
-				Weapon weap = ((Weapon) l.getFirst());
+				Weapon weap = ((Weapon) l.get(0));
 				weap.takeRelDamage(0.25);
 			}
 		}

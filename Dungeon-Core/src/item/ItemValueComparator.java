@@ -5,7 +5,7 @@
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package item;
-import java.util.*;
+import java.util.Comparator;
 
 /**
  * @author Jochen
@@ -13,11 +13,12 @@ import java.util.*;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ItemValueComparator implements Comparator {
+public class ItemValueComparator implements Comparator<Item> {
 	
-	public int compare(Object o1, Object o2) {
-		Item item1 = ((Item)o1);
-		Item item2 = ((Item)o2);
+	@Override
+	public int compare(Item o1, Item o2) {
+		Item item1 = (o1);
+		Item item2 = (o2);
 		if(item1.getWorth() > item2.getWorth()) {
 			return -1; 
 		}

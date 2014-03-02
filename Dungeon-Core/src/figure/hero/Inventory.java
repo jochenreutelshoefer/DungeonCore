@@ -40,7 +40,7 @@ public class Inventory /*implements ItemOwner*/ {
 
 	private final Figure owner;
 
-	private final LinkedList items;
+	private final List<Item> items;
 
 	private final Weapon[] weapons;
 
@@ -66,14 +66,7 @@ public class Inventory /*implements ItemOwner*/ {
 		helmets = new Helmet[helmetsI];
 		shields = new Shield[shieldsI];
 
-		for (int i = 0; i < 3; i++) {
-			// weapons[i] = new noWeapon();
-			// armors[i] = new noArmor();
-			// shields[i] = new noShield();
-			// helmets[i] = new noHelmet();
-		}
-
-		items = new LinkedList();
+		items = new LinkedList<Item>();
 
 	}
 
@@ -101,9 +94,9 @@ public class Inventory /*implements ItemOwner*/ {
 
 	}
 
-	public boolean addItems(LinkedList l, ItemOwner o) {
+	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
-			Item it = (Item) (l.get(i));
+			Item it = (l.get(i));
 			this.takeItem(it, o);
 		}
 		return true;
@@ -112,7 +105,7 @@ public class Inventory /*implements ItemOwner*/ {
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[items.size()];
 		for (int i = 0; i < items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo((Item) items.get(i),map);
+			array[i] = ItemInfo.makeItemInfo(items.get(i),map);
 		}
 		return array;
 	}
@@ -148,8 +141,8 @@ public class Inventory /*implements ItemOwner*/ {
 	}
 
 	public Item getItem(ItemInfo it) {
-		for (Iterator iter = items.iterator(); iter.hasNext();) {
-			Item element = (Item) iter.next();
+		for (Iterator<Item> iter = items.iterator(); iter.hasNext();) {
+			Item element = iter.next();
 			if (element != null) {
 				if (ItemInfo.makeItemInfo(element,null).equals(it)) {
 					return element;
@@ -175,27 +168,17 @@ public class Inventory /*implements ItemOwner*/ {
 		return a + owner.getCharacter().giveType_skill(m);
 	}
 
-	// public void giveWeapon(int i, weapon w) {
-	// if (i == weaponIndex) {
-	// if (w instanceof modifierI) {
-	// owner.getCharacter().makeModifications(((modifierI) w).plug());
-	// }
-	// }
-	// weapons[i] = w;
-	// }
-
 	public Weapon getWeapon1() {
 		return weapons[weaponIndex];
-
 	}
 
 	public Item getItemNumber(int i) {
-		return (Item) items.get(i);
+		return items.get(i);
 	}
 
-	public LinkedList getWeaponList() {
+	public List<Item> getWeaponList() {
 
-		LinkedList l = new LinkedList();
+		List<Item> l = new LinkedList<Item>();
 		for (int i = 0; i < 3; i++) {
 			if (weapons[i] != null) {
 				l.add(weapons[i]);
@@ -276,7 +259,7 @@ public class Inventory /*implements ItemOwner*/ {
 	public boolean hasLuziaBall() {
 		boolean b = false;
 		for (int i = 0; i < items.size(); i++) {
-			Item it = (Item) items.get(i);
+			Item it = items.get(i);
 			if (it instanceof LuziasBall) {
 				b = true;
 			}
@@ -287,7 +270,7 @@ public class Inventory /*implements ItemOwner*/ {
 	public LuziasBall getLuziasBall() {
 
 		for (int i = 0; i < items.size(); i++) {
-			Item it = (Item) items.get(i);
+			Item it = items.get(i);
 			if (it instanceof LuziasBall) {
 				return (LuziasBall) it;
 			}
@@ -492,7 +475,7 @@ public class Inventory /*implements ItemOwner*/ {
 
 	private Bunch getBunch() {
 		for (int i = 0; i < items.size(); i++) {
-			Item it = (Item) items.get(i);
+			Item it = items.get(i);
 			if (it instanceof Bunch) {
 				return (Bunch) it;
 			}
@@ -502,8 +485,6 @@ public class Inventory /*implements ItemOwner*/ {
 	}
 
 	public boolean removeItem(Item i) {
-		// owner.getGame().getMain().log("Entferne Item: "+i.toString(), 20);
-		// System.out.println("removing: "+i.toString());
 		return items.remove(i);
 	}
 
@@ -614,35 +595,19 @@ public class Inventory /*implements ItemOwner*/ {
 	}
 
 	public Shield getShield(int i) {
-		// if (shields[i] == null) {
-		// return new noItem();
-		// } else {
 		return shields[i];
-		// }
 	}
 
 	public Armor getArmor(int i) {
-		// if (armors[i] == null) {
-		// return new noItem();
-		// } else {
 		return armors[i];
-		// }
 	}
 
 	public Weapon getWeapon(int i) {
-		// if (weapons[i] == null) {
-		// return new noItem();
-		// } else {
 		return weapons[i];
-		// }
 	}
 
 	public Helmet getHelmet(int i) {
-		// if (helmets[i] == null) {
-		// return new noItem();
-		// } else {
 		return helmets[i];
-		// }
 	}
 
 	/**
@@ -856,8 +821,8 @@ public class Inventory /*implements ItemOwner*/ {
 		return weapons;
 	}
 
-	public LinkedList getUnusedItems() {
-		LinkedList things = new LinkedList(items);
+	public List<Item> getUnusedItems() {
+		List<Item> things = new LinkedList<Item>(items);
 
 		for (int i = 0; i < 3; i++) {
 
@@ -884,8 +849,7 @@ public class Inventory /*implements ItemOwner*/ {
 	}
 
 	public void payRel(double d) {
-		LinkedList things = getUnusedItems();
-		// System.out.println("Verlierwahrscheinlichkeit: "+d);
+		List<Item> things = getUnusedItems();
 		if (d > 0) {
 			((Hero) owner).tellPercept(new TextPercept(
 					"Panisch fliehend verlierst Du:"));
@@ -893,7 +857,7 @@ public class Inventory /*implements ItemOwner*/ {
 
 		for (int i = 0; i < things.size(); i++) {
 			if (Math.random() < d) {
-				Item it = ((Item) (things.get(i)));
+				Item it = ((things.get(i)));
 				((Hero) owner).tellPercept(new TextPercept(it.toString()));
 				this.layDown(it);
 			}
@@ -905,9 +869,8 @@ public class Inventory /*implements ItemOwner*/ {
 	 * 
 	 * @return LinkedList
 	 */
-	public LinkedList getAllItems() {
-		LinkedList l = new LinkedList(items);
-		boolean no;
+	public List<Item> getAllItems() {
+		List<Item> l = new LinkedList<Item>(items);
 
 		for (int i = 0; i < 3; i++) {
 

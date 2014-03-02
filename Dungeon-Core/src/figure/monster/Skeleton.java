@@ -1,25 +1,21 @@
 package figure.monster;
 
-import item.ItemValueComparator;
-
-import item.equipment.weapon.Weapon;
-
-import java.util.*;
-
-import spell.Rust;
-
-import dungeon.Dungeon;
-
-
 import figure.Figure;
-
-
 import figure.attribute.Attribute;
 import figure.hero.Hero;
 import figure.percept.SpecialAttackPercept;
-
 import game.JDEnv;
 import gui.Texts;
+import item.Item;
+import item.ItemValueComparator;
+import item.equipment.weapon.Weapon;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import spell.Rust;
+import dungeon.Dungeon;
 
 public class Skeleton extends UndeadMonster {
 
@@ -73,6 +69,7 @@ public class Skeleton extends UndeadMonster {
 		}
 	}
 
+	@Override
 	protected int getSCATTER() {
 		return this.SCATTER;
 	}
@@ -99,18 +96,19 @@ public class Skeleton extends UndeadMonster {
 	//
 	//	}
 
-	public static String SPECIAL_ATTACK_GUI_STATEMENT = " beschwört Rost und Verwesung über Deine Waffe!";
+	public static String SPECIAL_ATTACK_GUI_STATEMENT = " beschwï¿½rt Rost und Verwesung ï¿½ber Deine Waffe!";
 	
 	
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
-		LinkedList l = new LinkedList();
+		List<Item> l = new LinkedList<Item>();
 		if (op instanceof Hero) {
 			l = ((Hero) op).getInventory().getWeaponList();
 		}
 		Collections.sort(l, new ItemValueComparator());
 		if (l.size() > 0) {
-			Weapon weap = ((Weapon) l.getFirst());
+			Weapon weap = ((Weapon) l.get(0));
 			weap.takeRelDamage(0.3);
 		}
 		getRoom().distributePercept(new SpecialAttackPercept(Monster.SKELETON,op,this));
@@ -119,10 +117,12 @@ public class Skeleton extends UndeadMonster {
 
 	}
 
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
 
+	@Override
 	protected int getHEALTH_DAMAGE_BALANCE() {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
@@ -150,10 +150,12 @@ public class Skeleton extends UndeadMonster {
 //		}
 //	}
 
+	@Override
 	public double getAntiFleeFactor() {
 		return 0.9;
 	}
 
+	@Override
 	public int hunting() {
 		return Monster.SKELETON_HUNTING;
 	}

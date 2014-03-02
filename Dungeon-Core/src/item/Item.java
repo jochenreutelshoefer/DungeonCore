@@ -8,6 +8,7 @@ import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import shrine.Shrine;
 import shrine.ShrineInfo;
@@ -124,10 +125,10 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 		unique = true;
 	}
 	
-	public static int calcValueSum(LinkedList l) {
+	public static int calcValueSum(List<Item> l) {
 		int val = 0;
 		for(int i = 0 ; i < l.size(); i++ ) {
-			Item it = ((Item)l.get(i));
+			Item it = (l.get(i));
 			val+= it.getWorth();
 		}
 		

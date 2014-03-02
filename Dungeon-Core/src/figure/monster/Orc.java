@@ -1,25 +1,19 @@
 package figure.monster;
 
-import item.ItemValueComparator;
 import item.Item;
+import item.ItemValueComparator;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import spell.StealOrc;
-
 import dungeon.Dungeon;
-import dungeon.JDPoint;
-
-
-
 import figure.Figure;
-
-
 import figure.attribute.Attribute;
 import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.percept.TextPercept;
-
 import game.JDEnv;
 import gui.Texts;
 
@@ -75,48 +69,47 @@ public class Orc extends CreatureMonster {
 	
 	}
 	
+	@Override
 	protected int getSCATTER() {
-		return this.SCATTER;
+		return Orc.SCATTER;
 	}
 
 
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
 	
+	@Override
 	protected int getHEALTH_DAMAGE_BALANCE() {
-		return this.HEALTH_DAMAGE_BALANCE;
+		return HEALTH_DAMAGE_BALANCE;
 	}
 
 
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
 		if(op instanceof Hero) {
 			Inventory sachen = ((Hero)op).getInventory();
-			LinkedList heroItems = sachen.getUnusedItems();
+			List<Item> heroItems = sachen.getUnusedItems();
 			Collections.sort(heroItems,new ItemValueComparator());
-			LinkedList stolen = new LinkedList();
+			List<Item> stolen = new LinkedList<Item>();
 			op.tellPercept(new TextPercept(getName()+" klaut Dir: "));
 			while(Item.calcValueSum(stolen) < 30) {
 				if(heroItems.size() == 0) {
 					break;
 				}
-				Item toGive = ((Item)heroItems.removeFirst());
+				Item toGive = (heroItems.remove(0));
 				stolen.add(toGive);
 				op.tellPercept(new TextPercept(toGive.toString()));
 				sachen.giveAwayItem(toGive,this);
 				
 			}
-			//getGame().newStatement(" ...und verschwindet durch die Tür. ",2,1);
 			op.tellPercept(new TextPercept(getName()+" beklaut Dich und verschwindet durch die Tür.. "));
 			
 		}
-		//attack(op);
 		int dir = this.getFleeDir();
 		flee(dir);
 		this.specialAttackCounter = 50;
-		//attack(op);
-		//System.out.println("Orc making SpecialAttack returning true");
 		return true;
 
 	}
@@ -126,9 +119,11 @@ public class Orc extends CreatureMonster {
 }
 	
 	
+	@Override
 	public int hunting() {
 		return Monster.ORC_HUNTING;
 	}
+	@Override
 	public double getAntiFleeFactor() {
 		return 0.7;
 	}

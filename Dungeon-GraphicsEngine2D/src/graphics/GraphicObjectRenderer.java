@@ -678,8 +678,8 @@ public class GraphicObjectRenderer {
 				int xsize = roomSize / 4;
 				int ysize = (ROOMSIZE_BY_6);
 				ob = new JDGraphicObject(new JDImageLocated(
-						ImageManager.getImage(s), xpos, ypos, xsize, ysize),
-						s, getShrineRect(xcoord, ycoord), JDColor.YELLOW);
+						ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
+						getShrineRect(xcoord, ycoord), JDColor.YELLOW);
 			} else if ((s).getType() == Brood.BROOD_UNDEAD) {
 				int xpos = xcoord + (3 * ROOMSIZE_BY_5);
 				int ypos = ycoord + (1 * ROOMSIZE_BY_16);
@@ -981,7 +981,7 @@ public class GraphicObjectRenderer {
 	}
 
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r,
-			Object obj, int xcoord, int ycoord, List<?> aniObs) {
+			Object obj, int xcoord, int ycoord, List<?> animatedObs) {
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 		if (r == null) {
 			return graphObs;
@@ -1070,7 +1070,7 @@ public class GraphicObjectRenderer {
 						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
-						boolean contains = aniObs.contains(monsterObs[i]
+						boolean contains = animatedObs.contains(monsterObs[i]
 								.getClickedObject());
 						if (!contains) {
 							if (!(monsterObs[i].getClickedObject().equals(obj))) {
@@ -1103,10 +1103,13 @@ public class GraphicObjectRenderer {
 		}
 
 		if (r.getHeroInfo() != null) {
-			GraphicObject heroObject = drawHero(xcoord, ycoord,
-					r.getHeroInfo(), this);
-			if (heroObject != null) {
-				graphObs.add(heroObject);
+			if (!animatedObs.contains(r.getHeroInfo())) {
+
+				GraphicObject heroObject = drawHero(xcoord, ycoord,
+						r.getHeroInfo(), this);
+				if (heroObject != null) {
+					graphObs.add(heroObject);
+				}
 			}
 		}
 
