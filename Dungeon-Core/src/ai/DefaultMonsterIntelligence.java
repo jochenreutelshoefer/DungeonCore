@@ -64,7 +64,7 @@ public class DefaultMonsterIntelligence extends AI {
 	}
 
 	@Override
-	public void resetingRoomVisibility(JDPoint p) {
+	public void notifyVisbilityStatusDecrease(JDPoint p) {
 
 	}
 

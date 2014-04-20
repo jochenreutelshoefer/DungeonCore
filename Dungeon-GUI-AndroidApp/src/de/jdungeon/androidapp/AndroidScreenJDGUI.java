@@ -64,11 +64,6 @@ public class AndroidScreenJDGUI implements JDGUI {
 		return false;
 	}
 
-	@Override
-	public void resetingRoomVisibility(JDPoint p) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public Action getAction() {
@@ -133,6 +128,12 @@ public class AndroidScreenJDGUI implements JDGUI {
 
 	@Override
 	public void setFigure(FigureInfo f) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void notifyVisbilityStatusDecrease(JDPoint p) {
 		// TODO Auto-generated method stub
 
 	}

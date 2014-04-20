@@ -117,7 +117,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return false;
 	}
 
-	protected LinkedList modifications = new LinkedList();
+	protected List modifications = new LinkedList();
 
 	protected Attribute strength ;
 	protected Attribute dexterity = new Attribute(Attribute.DEXTERITY,7);
@@ -160,16 +160,11 @@ public abstract class Monster extends Figure implements Paragraphable,
 		worth = value;
 		setLevel(value);
 		int cth_modifier = (int) (Math.random() * 8) - 4;
-		//System.out.println("Beginn: Value: "+value);
-		//System.out.println("cth_modifier: "+cth_modifier );
 		value = (int) ((((double) value) / (getCHANCE_TO_HIT() + cth_modifier)) * 6);
-		//System.out.println("nach cth; Value: "+value);
 		int k = (int) ((this.getHEALTH_DAMAGE_BALANCE() - 2 + ((int) (Math
 				.random() * 4))) * Math.sqrt(this.getLevel()));
-		//System.out.println("k: "+k);
 		
 		int HealthI = (int) ((double) value / k);
-		//System.out.println("Health: "+HealthI);
 
 		
 		health = new Attribute(Attribute.HEALTH, HealthI);
@@ -197,8 +192,8 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public Item getItem(ItemInfo it) {
-		for (Iterator iter = items.iterator(); iter.hasNext();) {
-			Item element = (Item) iter.next();
+		for (Iterator<Item> iter = items.iterator(); iter.hasNext();) {
+			Item element = iter.next();
 			if (ItemInfo.makeItemInfo(element,null).equals(it)) {
 				return element;
 			}
@@ -207,7 +202,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return null;
 	}
 
-	protected Stack routing = new Stack();
+	protected Stack<RouteInstruction> routing = new Stack<RouteInstruction>();
 
 	protected boolean makingSpecialAttack = false;
 
@@ -393,10 +388,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		} else {
 
 			int healthLevel = getHealthLevel();
-			// System.out.println("HealthLevel:"+healthLevel);
 			double erg = 6 * healthLevel * getAntiFleeFactor();
-			// System.out.println("erg:"+erg);
-			// int k = game.getHero().getCharacter().getKnowledgeBalance(this);
 			int k = 1;
 			double mult = 1;
 			if (k < -2) {
@@ -764,24 +756,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	}
 
-	private int calcDamage(Slap s) {
-		double k = 0;
-		if (s.getType() == s.FIRE) {
-			k = (int) (s.getValueFire() * this.getFire_resist_rate());
-		} else if (s.getType() == s.LIGHTNING) {
-			k = (int) (s.getValueLightning() * this.getLightning_resist_rate());
-		} else if (s.getType() == s.MAGIC) {
-			k = (int) (s.getValueMagic() * this.getMagic_resist_rate());
-		} else {
-
-			k = (s.getValueFire() * fireResistRate)
-					+ (s.getValueLightning() * lightningResistRate)
-					+ (s.getValueMagic() * magicResistRate);
-
-		}
-		return (int) (k + s.getValueStandard());
-
-	}
 
 	/**
 	 * Steckt ein.
@@ -1334,7 +1308,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	/**
 	 * @return Returns the routing.
 	 */
-	public Stack getRouting() {
+	public Stack<RouteInstruction> getRouting() {
 		return routing;
 	}
 
@@ -1342,7 +1316,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 * @param routing
 	 *            The routing to set.
 	 */
-	public void setRouting(Stack routing) {
+	public void setRouting(Stack<RouteInstruction> routing) {
 		this.routing = routing;
 	}
 }

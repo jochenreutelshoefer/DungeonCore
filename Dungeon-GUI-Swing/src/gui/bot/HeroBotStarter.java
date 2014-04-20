@@ -1,6 +1,5 @@
 package gui.bot;
 
-import figure.DungeonVisibilityMap;
 import figure.HeroControlWithSpectator;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -14,6 +13,8 @@ import gui.MyJDGui;
 import gui.engine2D.AWTImageLoader;
 import ai.AI;
 import dungeon.Dungeon;
+import dungeon.DungeonManager;
+import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
 
 public class HeroBotStarter {
@@ -23,26 +24,31 @@ public class HeroBotStarter {
 	public static int DungeonSizeY = 40;
 
 	public static void main(String[] args) {
+
+		/*
+		 * initialize resources
+		 */
 		JDEnv.init();
 		ImageManager imageManager = ImageManager
 				.getInstance(new AWTImageLoader(null));
 		imageManager.loadImages();
+
+		/*
+		 * init hero
+		 */
 		Hero h = HeroUtil.getBasicHero(1, "BotStarterBot", Zodiac.Taurus,
 				Profession.Nobleman);
 
-		DungeonGame dungeonGame = DungeonGame.newInstance();
-		dungeonGame.run();
-		JDEnv.setGame(dungeonGame);
+		/*
+		 * init game and dungeon
+		 */
+		DungeonGame dungeonGame = DungeonGame.getInstance();
 
 		Dungeon derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
 				dungeonGame);
 
-		dungeonGame.setDungeon(derDungeon);
-
-		h.setActualDungeon(derDungeon);
-		DungeonVisibilityMap heroVisMap = h.getRoomVisibility();
-		HeroInfo figureInfo = new HeroInfo(h, heroVisMap);
-
+		HeroInfo figureInfo = DungeonManager.enterDungeon(h, derDungeon,
+				new JDPoint(18, 39));
 
 		try {
 			dungeonGame.fillDungeon(derDungeon);
@@ -51,8 +57,9 @@ public class HeroBotStarter {
 			e.printStackTrace();
 		}
 
-		h.move(derDungeon.getRoomNr(18, 39));
-
+		/*
+		 * load Bot AI for hero
+		 */
 		Class<?> demoBotClass = null;
 		try {
 			demoBotClass = Class.forName("gui.bot.MyDemoBot");
@@ -71,6 +78,9 @@ public class HeroBotStarter {
 			e.printStackTrace();
 		}
 		if (newBotInstance instanceof AI) {
+			/*
+			 * init GUI
+			 */
 			MyJDGui gui = new MyJDGui(figureInfo);
 			HeroControlWithSpectator control = new HeroControlWithSpectator(
 					figureInfo, (AI) newBotInstance, gui);
@@ -80,6 +90,9 @@ public class HeroBotStarter {
 			// new StartView(h.getName(), 0, null, false)
 			gui.initGui(null, null, h.getName());
 
+			/*
+			 * start game
+			 */
 			Thread th = new Thread(dungeonGame);
 			th.start();
 		}

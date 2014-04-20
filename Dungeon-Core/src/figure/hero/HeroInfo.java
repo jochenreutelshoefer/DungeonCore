@@ -41,7 +41,8 @@ public class HeroInfo extends FigureInfo {
 		this.h = h;
 	}
 
-	public Map getHighScoreString(String playerName, String comment,
+	public Map<String, String> getHighScoreString(String playerName,
+			String comment,
 			boolean reg, boolean liga) {
 		return h.getHighScoreData(playerName, comment, reg, liga, this);
 	}

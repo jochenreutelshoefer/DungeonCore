@@ -33,7 +33,7 @@ public class MyDemoBot extends AI {
 	}
 
 	@Override
-	public void resetingRoomVisibility(JDPoint p) {
+	public void notifyVisbilityStatusDecrease(JDPoint p) {
 		// TODO Auto-generated method stub
 
 	}

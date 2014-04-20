@@ -81,10 +81,7 @@ public class DungeonGame implements Runnable {
 		return instance;
 	}
 
-	public static DungeonGame newInstance() {
-		instance = new DungeonGame();
-		return instance;
-	}
+
 
 	private DungeonGame() {
 		startTime = System.currentTimeMillis();

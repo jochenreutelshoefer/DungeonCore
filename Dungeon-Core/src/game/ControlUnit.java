@@ -14,24 +14,72 @@ import figure.percept.Percept;
 
 
 
-public interface ControlUnit extends ActionSpecifier{
+/**
+ * A control unit controls one figure within the dungeon game. Each figure
+ * within the game is controlled by one control unit.
+ * 
+ * There are two major categories of control units: User Interfaces and AIs.
+ * 
+ * @author Jochen
+ * 
+ */
+public interface ControlUnit extends ActionSpecifier {
 	
 
+	/**
+	 * Sets the figure to be controlled by this ControlUnit. Should be used for
+	 * initialization only.
+	 * 
+	 * @param f
+	 */
+	public void setFigure(FigureInfo f);
 	
+	/**
+	 * Tells the ControlUnit that its figure is on turn. Can be used for GUI
+	 * rendering for instance.
+	 */
+	public void onTurn();
+
+	/**
+	 * Provides feedback about an executed action. In particular, if an invalid
+	 * action had been specified a corresponding ActionResult is provided.
+	 * (ActionResult)
+	 * 
+	 * @param a
+	 *            The action that was (tried to be) executed by this figure
+	 * @param res
+	 *            The result of the execution of Action a
+	 */
 	public void actionDone(Action a, ActionResult res);
-
 	
+	/**
+	 * Processes a percept that the figure observed from the world.
+	 * 
+	 * @param p
+	 */
 	public void tellPercept(Percept p);
 	
-	public void onTurn();
 	
+	/**
+	 * Handles the end of the game. GUIs for instance can show Game-Over screen.
+	 */
 	public void gameOver();
 	
-	public void setFigure(FigureInfo f);
-
-
+	/**
+	 * 
+	 * 
+	 * @param f
+	 * @return
+	 */
 	public boolean isHostileTo(FigureInfo f);
 	
-	public void resetingRoomVisibility(JDPoint p);
+	/**
+	 * Called when the visibility status of room number p has been decreased.
+	 * (Can be used to store memory of latest available information about the
+	 * room.)
+	 * 
+	 * @param p
+	 */
+	public void notifyVisbilityStatusDecrease(JDPoint p);
 
 }

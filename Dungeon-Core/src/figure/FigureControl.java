@@ -37,8 +37,8 @@ public class FigureControl implements ControlUnit {
 	}
 
 	@Override
-	public void resetingRoomVisibility(JDPoint p) {
-		brain.resetingRoomVisibility(p);
+	public void notifyVisbilityStatusDecrease(JDPoint p) {
+		brain.notifyVisbilityStatusDecrease(p);
 	}
 
 	@Override

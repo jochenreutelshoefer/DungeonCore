@@ -317,7 +317,11 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			heroInfo = ((HeroInfo) info);
 		}
 		if (heroInfo != null) {
-			sign.setText(heroInfo.getSign().toString());
+			String signText = "";
+			if (heroInfo.getSign() != null) {
+				signText = heroInfo.getSign().toString();
+			}
+			sign.setText(signText);
 			name.setText(heroInfo.getName());
 			level.setText(Integer.toString(heroInfo.getLevel()));
 			health.setText((int)(heroInfo

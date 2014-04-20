@@ -27,7 +27,7 @@ public abstract class AI implements FightIntelligence, MovementIntelligence {
 		this.gui = gui;
 	}
 
-	public abstract void resetingRoomVisibility(JDPoint p);
+	public abstract void notifyVisbilityStatusDecrease(JDPoint p);
 
 	public final void tellPercept(Percept p) {
 		if (att != null) {

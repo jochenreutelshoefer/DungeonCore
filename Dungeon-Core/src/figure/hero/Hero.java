@@ -118,7 +118,8 @@ public class Hero extends Figure implements InfoProvider {
 		return c.getDexterity();
 	}
 
-	public Map getHighScoreData(String playerName, String comment,
+	public Map<String, String> getHighScoreData(String playerName,
+			String comment,
 			boolean reg, boolean liga, HeroInfo h) {
 		return game.getHighScoreString(playerName, comment, reg, liga, h);
 	}

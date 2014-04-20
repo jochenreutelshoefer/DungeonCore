@@ -1,10 +1,11 @@
 package de.jdungeon.androidapp;
 
-import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.hero.HeroUtil;
+import figure.hero.Profession;
+import figure.hero.Zodiac;
 import game.DungeonGame;
 import game.InfoEntity;
 import game.JDEnv;
@@ -58,6 +59,7 @@ import de.jdungeon.util.ScrollMotion;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
+import dungeon.DungeonManager;
 import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
@@ -66,9 +68,9 @@ import dungeon.generate.DungeonGenerationFailedException;
 
 public class GameScreen extends Screen {
 
-	private Dungeon derDungeon;
+	private final Dungeon derDungeon;
 	private final DungeonGame dungeonGame;
-	private Hero hero;
+	private final Hero hero;
 	private final HeroInfo figureInfo;
 	private GraphicObjectRenderer dungeonRenderer;
 	public int DungeonSizeX = 30;
@@ -112,18 +114,21 @@ public class GameScreen extends Screen {
 	 */
 	private JDPoint beacon = null;
 	private float beaconCounter = 0;
+	private final JDPoint heroEntryPoint = new JDPoint(18, 39);
 
 	public GameScreen(Game game, int heroType) {
 		super(game);
 
-		dungeonGame = DungeonGame.newInstance();
-		dungeonGame.run();
 		JDEnv.init();
-		JDEnv.setGame(dungeonGame);
-		createDungeon(heroType);
-		DungeonVisibilityMap heroVisMap = hero.getRoomVisibility();
-		// heroVisMap.setVisCheat();
-		figureInfo = new HeroInfo(hero, heroVisMap);
+
+		hero = HeroUtil.getBasicHero(heroType, "Gisbert", Zodiac.Aquarius,
+				Profession.Lumberjack);
+
+		dungeonGame = DungeonGame.getInstance();
+		dungeonGame.run();
+		derDungeon = createDungeon();
+		figureInfo = DungeonManager.enterDungeon(hero, derDungeon,
+				heroEntryPoint);
 
 		resetDungeonRenderer();
 
@@ -258,12 +263,8 @@ public class GameScreen extends Screen {
 				* roomSize - (screenSize.getHeight() / 2) + (this.roomSize / 2));
 	}
 
-	private void createDungeon(int heroType) {
-
-		hero = HeroUtil.getBasicHero(heroType, "Gisbert", "Wassermann");
-
-
-		derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
+	private Dungeon createDungeon() {
+		Dungeon derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
 				dungeonGame);
 		try {
 			dungeonGame.fillDungeon(derDungeon);
@@ -288,10 +289,8 @@ public class GameScreen extends Screen {
 
 		}
 
-		hero.createVisibilityMap(derDungeon);
-		hero.move(derDungeon.getRoomNr(18, 39));
-		hero.getRoom().addItem(new Club(40, false));
-
+		derDungeon.getRoom(heroEntryPoint).addItem(new Club(40, false));
+		return derDungeon;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.util.List;
 import dungeon.Dungeon;
 import dungeon.Position;
 import dungeon.Room;
-
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -15,13 +14,12 @@ import figure.action.EndRoundAction;
 import figure.action.StepAction;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
-import game.ActionSpecifier;
 
 public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 	
 	
 	
-	Monster m;
+	private final Monster m;
 	
 	
 	public DefaultMonsterReflexBehavior(Monster m) {
@@ -61,7 +59,7 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 	
 	private Position getRandomFreePos() {
 		Position [] possis = m.getRoom().getPositions();
-		List l = new LinkedList();
+		List<Position> l = new LinkedList<Position>();
 		for (int i = 0; i < possis.length; i++) {
 			if(possis[i].getFigure() == null) {
 				l.add(possis[i]);
@@ -70,7 +68,7 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 		
 		Position p = null;
 		if(l.size() > 0) {
-			p = (Position)l.get((int)(Math.random()*l.size()));
+			p = l.get((int)(Math.random()*l.size()));
 		}
 		return p;
 	}
@@ -102,7 +100,7 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 	
 	private Action getShockAction() {
 		if(shockRounds > 0) {
-			//läuft
+			//lï¿½uft
 			active = true;
 			shockRounds--;
 			if(m.getRoom().fightRunning()) {
@@ -129,13 +127,14 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 					return null;
 				}
 			}else {
-				//läuft nicht
+				//lï¿½uft nicht
 				return null;
 			}
 		}
 	}
 	
 
+	@Override
 	public Action getAction() {
 		Action a = null;
 		a = getShockAction();
@@ -157,11 +156,11 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 		if(this.convincedRounds > 0) {
 			convincedRounds--;
 			if(f.getRoom().fightRunning()) {
-				List l = f.getRoom().getRoomFigures();
+				List<Figure> l = f.getRoom().getRoomFigures();
 				Figure fig = null;
 				if(l.size() > 2) {	
 					while(fig == null || fig == f || fig == this.convincor) {
-						fig = (Figure)l.get((int)(Math.random()*l.size()));
+						fig = l.get((int)(Math.random()*l.size()));
 					}
 					return new AttackAction(fig.getFighterID());
 				}else {

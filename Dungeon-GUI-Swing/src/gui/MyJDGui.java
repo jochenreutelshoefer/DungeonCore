@@ -53,7 +53,6 @@ import java.awt.Graphics;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -97,7 +96,7 @@ public class MyJDGui implements JDGUI {
 
 	private Memory memory;
 
-	private final Map masterAnis = new HashMap();
+	private final Map<RoomInfo, MasterAnimation> masterAnis = new HashMap<RoomInfo, MasterAnimation>();
 
 	private FigureInfo figure;
 
@@ -124,7 +123,7 @@ public class MyJDGui implements JDGUI {
 	}
 
 	@Override
-	public void resetingRoomVisibility(JDPoint p) {
+	public void notifyVisbilityStatusDecrease(JDPoint p) {
 		if (memory != null) {
 			memory.storeRoom(figure.getRoomInfo(p), figure.getGameRound(),
 					figure);
@@ -171,7 +170,7 @@ public class MyJDGui implements JDGUI {
 	}
 
 	private void handleMovePercept(MovePercept p) {
-		MasterAnimation ani = (MasterAnimation) this.masterAnis.get(this.figure
+		MasterAnimation ani = this.masterAnis.get(this.figure
 				.getRoomInfo());
 		if (ani != null) {
 			ani.resetQueue();
@@ -205,17 +204,12 @@ public class MyJDGui implements JDGUI {
 		actionQueue.add(a);
 	}
 
-	// public void resetAction() {
-	// control.setSpecifiedAction(null);
-	// }
 
 	private void handleScoutPercept(ScoutPercept p) {
-		// this.repaintPicture();
 		figureUsingAnimation(p.getFigure());
 	}
 
 	private void handleSpellPercept(SpellPercept p) {
-		// this.repaintPicture();
 
 		figureSorceringAnimation(p.getFigure());
 
@@ -235,7 +229,7 @@ public class MyJDGui implements JDGUI {
 	}
 
 	private void handleStepPercept(StepPercept p) {
-		MasterAnimation ani = (MasterAnimation) this.masterAnis.get(this.figure
+		MasterAnimation ani = this.masterAnis.get(this.figure
 				.getRoomInfo());
 		repaintPicture();
 		if (ani != null) {
@@ -256,7 +250,6 @@ public class MyJDGui implements JDGUI {
 	}
 
 	private void handleFleePercept(FleePercept p) {
-		// this.repaintPicture();
 		newStatement(StatementManager.getStatement(p, figure));
 		figureRunningAnimation(p.getFigure());
 		if (p.getFigure().equals(figure) && !figure.getRoomInfo().fightRunning()) {
@@ -269,20 +262,17 @@ public class MyJDGui implements JDGUI {
 	}
 
 	private void handleMissPercept(MissPercept p) {
-		FigureInfo attacker = p.getAttacker();
-		// figureSlaysAnimation(attacker);
 		newStatement(StatementManager.getStatement(p, figure));
 	}
 
 	private void handleItemDroppedPercept(ItemDroppedPercept p) {
-		// this.repaintPicture();
 		newStatement(StatementManager.getStatement(p));
 	}
 
 	private void handleFightEndedPercept(FightEndedPercept p) {
 
 		newStatement(StatementManager.getStatement(p));
-		MasterAnimation ani = (MasterAnimation) this.masterAnis.get(this.figure
+		MasterAnimation ani = this.masterAnis.get(this.figure
 				.getRoomInfo());
 		if (ani != null) {
 			ani.myStop();
@@ -462,18 +452,14 @@ public class MyJDGui implements JDGUI {
 
 	public void initGui(AbstractStartWindow start, Applet applet,
 			String playerName) {
-		// if (start instanceof StartView) {
 			frame = new MainFrame((StartView) start,
 					MainFrame.clearString(playerName), applet, this,
 					"Java Dungeon V.22.08.06 - 3");
 			frame.initMainframe();
-		// } else {
-		// System.out.println("MyJDGui.iniGUI: wrong StartWindow instance");
-		// System.exit(0);
-		// }
 	}
 
-	public Map getHighScoreString(String playerName, String comment,
+	public Map<String, String> getHighScoreString(String playerName,
+			String comment,
 			boolean reg, boolean liga) {
 		if (figure instanceof FigureInfo) {
 			return ((HeroInfo) figure).getHighScoreString(playerName, comment,
@@ -484,10 +470,10 @@ public class MyJDGui implements JDGUI {
 	}
 
 	public void stopAllAnimation() {
-		Collection c = masterAnis.keySet();
-		for (Iterator iter = c.iterator(); iter.hasNext();) {
-			RoomInfo element = (RoomInfo) iter.next();
-			MasterAnimation ani = (MasterAnimation) masterAnis.get(element);
+		Collection<RoomInfo> c = masterAnis.keySet();
+		for (Iterator<RoomInfo> iter = c.iterator(); iter.hasNext();) {
+			RoomInfo element = iter.next();
+			MasterAnimation ani = masterAnis.get(element);
 			ani.myStop();
 		}
 
@@ -497,10 +483,10 @@ public class MyJDGui implements JDGUI {
 	@Override
 	public void gameOver() {
 		frame.gameOver();
-		Collection s = masterAnis.keySet();
-		for (Iterator iter = s.iterator(); iter.hasNext();) {
-			RoomInfo element = (RoomInfo) iter.next();
-			MasterAnimation ani = (MasterAnimation) masterAnis.get(element);
+		Collection<RoomInfo> s = masterAnis.keySet();
+		for (Iterator<RoomInfo> iter = s.iterator(); iter.hasNext();) {
+			RoomInfo element = iter.next();
+			MasterAnimation ani = masterAnis.get(element);
 			ani.myStop();
 		}
 
@@ -652,27 +638,12 @@ public class MyJDGui implements JDGUI {
 		runAnimation(ani, 0);
 	}
 
-	private void removeAllAnisOf(FigureInfo f, LinkedList l) {
-		LinkedList toRemove = new LinkedList();
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			AnimationTask element = (AnimationTask) iter.next();
-			if (element.getFigure().equals(f)) {
-				toRemove.add(element);
-			}
-
-		}
-
-		for (Iterator iter = toRemove.iterator(); iter.hasNext();) {
-			Object element = iter.next();
-			l.remove(element);
-		}
-	}
-
-	private AnimationTask getLastAniTimeOf(FigureInfo f, Vector map) {
+	private AnimationTask getLastAniTimeOf(FigureInfo f,
+			Vector<AnimationTask> map) {
 		AnimationTask maxTask = null;
 		int max = 0;
-		for (Iterator iter = map.iterator(); iter.hasNext();) {
-			AnimationTask element = (AnimationTask) iter.next();
+		for (Iterator<AnimationTask> iter = map.iterator(); iter.hasNext();) {
+			AnimationTask element = iter.next();
 			FigureInfo aniFigure = element.getFigure();
 			if (f.equals(aniFigure)) {
 				int value = element.getRound();
@@ -701,11 +672,11 @@ public class MyJDGui implements JDGUI {
 	private void runAnimation(Animation ani, int timeOffset) {
 
 		RoomInfo r = ani.getRoomInfo();
-		MasterAnimation masterAni = (MasterAnimation) masterAnis.get(r);
+		MasterAnimation masterAni = masterAnis.get(r);
 
 		if (masterAni != null && !masterAni.finished) {
-			Vector map = masterAni.getAnimations();
-			Vector map2 = new Vector();
+			Vector<AnimationTask> map = masterAni.getAnimations();
+			Vector<AnimationTask> map2 = new Vector<AnimationTask>();
 			map2.addAll(map);
 			masterAni.setRoom(r);
 			AnimationTask maxAni = getLastAniTimeOf(ani.getObject(), map2);
@@ -734,7 +705,7 @@ public class MyJDGui implements JDGUI {
 
 	private void runNewAnimation(Animation ani) {
 		RoomInfo r = ani.getRoomInfo();
-		MasterAnimation masterAni = (MasterAnimation) masterAnis.get(r);
+		MasterAnimation masterAni = masterAnis.get(r);
 		if (masterAni != null) {
 			masterAni.myStop();
 			masterAni = null;
@@ -754,7 +725,7 @@ public class MyJDGui implements JDGUI {
 
 	@Override
 	public boolean currentAnimationThreadRunning(RoomInfo r) {
-		MasterAnimation ani = (MasterAnimation) masterAnis.get(r);
+		MasterAnimation ani = masterAnis.get(r);
 
 		if (ani != null) {
 
@@ -851,5 +822,6 @@ public class MyJDGui implements JDGUI {
 		return (ItemInfo)getMainFrame().getGesundheit()
 				.getItemCombo().getSelectedItem();
 	}
+
 
 }

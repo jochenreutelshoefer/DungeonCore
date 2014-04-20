@@ -169,6 +169,8 @@ public class HeroUtil {
 	}
 
 	private static void handleProfession(Hero held, Profession prof) {
+		if (prof == null)
+			return;
 		if (prof.equals(Profession.Lumberjack)) {
 			held.getAttribute(Attribute.AXE).incBasic(10);
 			held.getAttribute(Attribute.STRENGTH).incBasic(1);

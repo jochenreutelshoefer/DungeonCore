@@ -9,7 +9,7 @@ package figure.percept;
 import java.util.List;
 
 import figure.Figure;
-import game.JDEnv;
+import game.DungeonGame;
 
 public abstract class Percept {
 	
@@ -17,7 +17,11 @@ public abstract class Percept {
 	protected int round; 
 	
 	public Percept() {
-		round = JDEnv.game.getRound();
+		round = DungeonGame.getInstance().getRound();
+	}
+
+	public Percept(int gameRound) {
+		round = gameRound;
 	}
 	
 	public void perceivedBy(Figure f) {

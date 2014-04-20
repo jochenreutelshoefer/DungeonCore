@@ -65,6 +65,9 @@ public class RoomObservationStatus {
 
 	public void resetVisibilityStatus() {
 		
+		/*
+		 * determine current maximum visibility level
+		 */
 		int max = VISIBILITY_FOUND;
 		if(discoveryStatus >= VISIBILITY_SHRINE) {
 			max = VISIBILITY_SHRINE;
@@ -77,9 +80,17 @@ public class RoomObservationStatus {
 				max = element.getVisibilityStatus();
 			}
 		}
+
+		/*
+		 * notify control unit
+		 */
 		if(max < VISIBILITY_FIGURES) {
-			map.getFigure().getControl().resetingRoomVisibility(point);
+			map.getFigure().getControl().notifyVisbilityStatusDecrease(point);
 		}
+
+		/*
+		 * set new visibility status
+		 */
 		visibilityStatus = max;
 		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), visibilityStatus);
 	}

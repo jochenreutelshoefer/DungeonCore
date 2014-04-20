@@ -47,6 +47,8 @@ import audio.AudioEffectsManager;
 import audio.AudioLoader;
 import control.ActionAssembler;
 import dungeon.Dungeon;
+import dungeon.DungeonManager;
+import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
 
 public class StartView extends AbstractStartWindow implements ActionListener,
@@ -56,41 +58,43 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 
 	public static final String AGENT = "AgentTest01";
 
-	Container cp;
+	private final Container cp;
 
-	JTextField name;
+	private final JTextField name;
 
-	JButton start = new JButton("<html>Neues Spiel starten<html>");
+	private final JButton start = new JButton("<html>Neues Spiel starten<html>");
 
-	JLabel label = new JLabel("Spielername:");
+	private final JLabel label = new JLabel("Spielername:");
 
-	JLabel label2 = new JLabel(
+	private final JLabel label2 = new JLabel(
 			"-Bitte immer den gleichen Spielernamen angeben!");
 
-	JLabel label3 = new JLabel(
+	private final JLabel label3 = new JLabel(
 			"<html>-<font color=\"#ff0000\">Datenschutzrechtlicher Hinweis: </font> Dieser Name könnte <p>in der Highscoreliste veröffentlicht werden!</html>");
 
-	JCheckBox ligaCB = new JCheckBox("Ligaspiel");
-	JCheckBox sounds = new JCheckBox("Sound FX");
-	JCheckBox autoZoom = new JCheckBox("Auto Zoom");
+	private final JCheckBox ligaCB = new JCheckBox("Ligaspiel");
+	private final JCheckBox sounds = new JCheckBox("Sound FX");
+	private final JCheckBox autoZoom = new JCheckBox("Auto Zoom");
 
-	String defaultString = new String("Spielername (ist nicht Heldname!)");
+	private final String defaultString = new String(
+			"Spielername (ist nicht Heldname!)");
 
-	String nameRequestString = new String("Bitte Name angeben!!!");
+	private final String nameRequestString = new String("Bitte Name angeben!!!");
 
-	JRadioButton germanRB = new JRadioButton("Deutsch");
+	private final JRadioButton germanRB = new JRadioButton("Deutsch");
 
-	JRadioButton englishRB = new JRadioButton("English");
+	private final JRadioButton englishRB = new JRadioButton("English");
 
-	JRadioButton rookieRB = new JRadioButton("Anfänger (keine Scores)");
+	private final JRadioButton rookieRB = new JRadioButton(
+			"Anfänger (keine Scores)");
 
-	JRadioButton normalRB = new JRadioButton("Normal (Empfohlen)");
+	private final JRadioButton normalRB = new JRadioButton("Normal (Empfohlen)");
 
 	// boolean appletRunning;
 
-	Applet applet;
-	Box box = null;
-	Box boxDiff = null;
+	private Applet applet = null;
+	private Box box = null;
+	private Box boxDiff = null;
 
 	public StartView(String playerName, int code, Applet a, boolean english) {
 
@@ -287,19 +291,19 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 		autoZoom.setText("Auto Zoom");
 	}
 
-	MainFrame main;
+	private MainFrame main;
 
-	DungeonGame dagame;
+	private DungeonGame dagame;
 
-	MyJDGui gui;
+	private MyJDGui gui;
 
 	private boolean istGuest = false;
 
-	Hero h;
+	private Hero h;
 
-	ActionAssembler guiControl;
+	private ActionAssembler guiControl;
 
-	NewHeroView heldFenster;
+	private NewHeroView heldFenster;
 
 	private boolean registered = false;
 
@@ -343,7 +347,6 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 		if (gui != null) {
 			gui = null;
 		}
-		JDEnv.unsetGame();
 		System.gc();
 	}
 
@@ -451,7 +454,6 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 			String playerName, Hero held, boolean sendHighscore2,
 			MyJDGui myJDGui) {
 		this.sendHighscore = sendHighscore;
-		JDEnv.setGame(dagame);
 
 		/*
 		 * according to experiences, there is about 98% probability for success
@@ -482,10 +484,11 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 			}
 
 		}
-		dagame.setDungeon(derDungeon);
 
-		held.createVisibilityMap(derDungeon);
-		myJDGui.setFigure(new HeroInfo(held, held.getRoomVisibility()));
+		HeroInfo heroInfo = DungeonManager.enterDungeon(held, derDungeon,
+				new JDPoint(18, 39));
+
+		myJDGui.setFigure(heroInfo);
 
 		dagame.putGuiFigure(held, myJDGui);
 
@@ -494,7 +497,6 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 		// hack to save some memory
 		Figure.unsetUnnecessaryRoomObStatsObjects(derDungeon);
 
-		held.move(dagame.getDungeon().getRoomNr(18, 39));
 		myJDGui.initGui(startView, applet, playerName);
 
 		if (playerName.equals("godmode1")) {

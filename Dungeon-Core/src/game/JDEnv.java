@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
  */
 public class JDEnv {
 
-	public static DungeonGame game;
 	
 	protected static ResourceBundle res;
 	
@@ -31,6 +30,10 @@ public class JDEnv {
 		JDEnv.english = english;
 	}
 
+	/**
+	 * Initializes the texts and labels by loading the corresponding resource
+	 * bundles
+	 */
 	public static void init() {
 		Locale loc_de = Locale.GERMAN;
 		Locale loc_en = Locale.ENGLISH;
@@ -54,16 +57,10 @@ public class JDEnv {
 		return res;
 	}
 
-	public static void setGame(DungeonGame g) {
-		game = g;
-		System.gc();
-	}
 	
+
 	public static boolean visCheat = false;
 	
-	public static void unsetGame() {
-		game = null;
-	}
 
 	public static void setRes(ResourceBundle res) {
 		JDEnv.res = res;

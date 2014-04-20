@@ -22,6 +22,7 @@ public abstract class AbstractReflexBehavior implements ActionSpecifier {
 		this.f = f;
 	}
 
+	@Override
 	public abstract Action getAction(); 
 	
 	
@@ -37,9 +38,7 @@ public abstract class AbstractReflexBehavior implements ActionSpecifier {
 	}
 
 	public void setShock(int value) {
-		System.out.println("Value: "+value);
 		shockRounds += 2*value;
-		System.out.println("rounds shocked: "+shockRounds);
 		actualType = TYPE_FLEE;
 	}
 	
