@@ -1,13 +1,6 @@
 package gui;
 
-import game.JDGUI;
 import graphics.ImageManager;
-
-import java.awt.Graphics;
-import java.awt.LayoutManager;
-
-import javax.swing.JPanel;
-import javax.swing.border.*;
 
 /**
  * @author Jochen
@@ -15,7 +8,10 @@ import javax.swing.border.*;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
+
+import javax.swing.JPanel;
 
 public class JDJPanel extends JPanel {
 
@@ -24,7 +20,7 @@ public class JDJPanel extends JPanel {
 	 * @param isDoubleBuffered
 	 */
 	public final static Color bgColor = MyComboRenderer.bgColor;
-	protected MyJDGui gui;
+	protected JDGUISwing gui;
 	
 	public static Image getBackGroundImage() {
 		return (Image)ImageManager.woodTextureImage.getImage();
@@ -37,7 +33,7 @@ public class JDJPanel extends JPanel {
 	/**
 	 * 
 	 */
-	public JDJPanel(MyJDGui gui) {
+	public JDJPanel(JDGUISwing gui) {
 		super();
 		this.gui = gui;
 		this.setBackground(bgColor);

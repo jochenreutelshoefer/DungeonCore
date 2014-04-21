@@ -6,12 +6,13 @@ import figure.FigureInfo;
 import figure.attribute.Attribute;
 import figure.hero.HeroInfo;
 import game.JDEnv;
+import graphics.ImageManager;
+import gui.JDGUISwing;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
 import gui.JDJTitledBorder;
 import gui.MyComboRenderer;
-import gui.MyJDGui;
 import gui.Paragraph;
 import item.HealPotion;
 //import item.Item;
@@ -95,7 +96,7 @@ public class DustView
        
     ActionAssembler control;
 	
-	public DustView(MyJDGui gui) {
+	public DustView(JDGUISwing gui) {
 		
 		
 		super(gui);
@@ -191,9 +192,6 @@ public class DustView
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object sc = e.getSource();
-		if(gui.getMainFrame().isNoControl()) {
-			sc =null;	
-		}
 		if(sc == smallHeal) {
 					LinkedList l = getHealingList();
 					int min = 10000;
@@ -237,9 +235,9 @@ public class DustView
 	}
 
 	private void makePotPanel() {
-		Image potI = gui.getMainFrame().imageSource.loadImage("lebenskugel.gif");
+
+		Image potI = (Image) ImageManager.lebenskugel.getImage();
 		pot = new HealthPot(110, 110, JDColor.yellow, gui, potI);
-		//potPanel.setBorder(new EtchedBorder());
 		potPanel.setLayout(null);
 		potPanel.add(pot);
 		pot.setBounds(0, 0, 120, 120);
@@ -249,10 +247,6 @@ public class DustView
 	private void makeExpPanel() {
 	    expBox = Box.createVerticalBox();
 		expBox.setBorder(new JDJTitledBorder(JDEnv.getResourceBundle().getString("gui_learn")));
-		Dimension size = new Dimension(70,70);
-//		expBox.setMaximumSize(size);
-//		expBox.setPreferredSize(size);
-//		expBox.setSize(size);
 		
 		expBox.add(exp1);
 		expBox.add(exp2);
@@ -356,7 +350,7 @@ public class DustView
 			//nachtr�glich eingef�gt, weil NullpointerException wenn Item hinzugef�gt
 			if(sp != null) {
 			p = sp.getParagraphs();
-			gui.getMainFrame().getText().setText(p);
+				gui.getMainFrame().setText(p);
 			}
 
 		}
@@ -395,7 +389,7 @@ public class DustView
 			p[0].setCentered();
 		}
 		
-		gui.getMainFrame().getText().setText(p);
+		gui.getMainFrame().setText(p);
 	}
 	@Override
 	public void mouseReleased(MouseEvent me) {
@@ -403,7 +397,7 @@ public class DustView
 	}
 	@Override
 	public void mouseExited(MouseEvent me) {
-		gui.getMainFrame().getText().resetText();
+		gui.getMainFrame().setText(null);
 	}
 
 	private void resetSorcCombo() {
@@ -431,16 +425,6 @@ public class DustView
 		
 
 	}
-
-	/**
-	 * Sets the game.
-	 * @param game The game to set
-	 * 
-	 */
-//	public void setGame(Game game) {
-//		this.game = game;
-//		updateView();
-//	}
 
 	/**
 	 * @return Returns the sorcCombo.

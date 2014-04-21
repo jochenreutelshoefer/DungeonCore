@@ -10,12 +10,12 @@ import figure.action.EquipmentChangeAction;
 import figure.attribute.Attribute;
 import figure.hero.HeroInfo;
 import game.JDEnv;
+import gui.JDGUISwing;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
 import gui.JDJTitledBorder;
 import gui.MyComboRenderer;
-import gui.MyJDGui;
 import gui.Paragraph;
 import gui.engine2D.DrawUtils;
 import gui.mainframe.MainFrame;
@@ -99,7 +99,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 		return itemCombo.getSelectedIndex();
 	}
 
-	public HealthView(MainFrame mf, MyJDGui gui) {
+	public HealthView(MainFrame mf, JDGUISwing gui) {
 
 		super(gui);
 		this.control = gui.getControl();
@@ -184,9 +184,6 @@ public class HealthView extends JDJPanel implements ActionListener,
 		Object quelle = ae.getSource();
 	
 		
-		if (gui.getMainFrame().isNoControl()) {
-			quelle = null;
-		}
 		if (quelle == benutzen) {
 			boolean meta = false;
 			String s = ae.getActionCommand();
@@ -474,7 +471,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 		}
 
-		gui.getMainFrame().getText().setText(p);
+		gui.getMainFrame().setText(p);
 	}
 
 	@Override
@@ -484,7 +481,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 	@Override
 	public void mouseExited(MouseEvent me) {
-		gui.getMainFrame().getText().resetText();
+		gui.getMainFrame().setText(null);
 	}
 
 	private void resetItemCombo() {

@@ -34,11 +34,6 @@ public interface ControlUnit extends ActionSpecifier {
 	 */
 	public void setFigure(FigureInfo f);
 	
-	/**
-	 * Tells the ControlUnit that its figure is on turn. Can be used for GUI
-	 * rendering for instance.
-	 */
-	public void onTurn();
 
 	/**
 	 * Provides feedback about an executed action. In particular, if an invalid
@@ -60,10 +55,7 @@ public interface ControlUnit extends ActionSpecifier {
 	public void tellPercept(Percept p);
 	
 	
-	/**
-	 * Handles the end of the game. GUIs for instance can show Game-Over screen.
-	 */
-	public void gameOver();
+
 	
 	/**
 	 * 

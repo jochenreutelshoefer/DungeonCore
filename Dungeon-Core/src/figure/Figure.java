@@ -84,6 +84,7 @@ import game.ControlUnit;
 import game.DungeonGame;
 import game.InfoEntity;
 import game.JDEnv;
+import game.JDGUI;
 import game.Turnable;
 import gui.Paragraph;
 import gui.Paragraphable;
@@ -1049,7 +1050,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	protected abstract boolean layDown(Item it);
 
 	protected void gameOver() {
-		control.gameOver();
+		if (control instanceof JDGUI) {
+			((JDGUI) control).gameOver();
+		}
 	}
 
 	private ActionResult handleAttackAction(AttackAction a, boolean doIt) {
@@ -2412,7 +2415,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	protected Action retrieveMovementActionFromControl() {
-		control.onTurn();
+		if (control instanceof JDGUI) {
+			((JDGUI) control).onTurn();
+		}
 		return retrieveAction();
 	}
 

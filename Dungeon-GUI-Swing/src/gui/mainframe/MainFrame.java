@@ -5,6 +5,7 @@ import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import game.JDEnv;
 import gui.JDBackgroundPanel;
+import gui.JDGUISwing;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
 import gui.JPanelNoRepaint;
@@ -62,6 +63,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import test.Logger;
+import control.MainFrameI;
 import dungeon.JDPoint;
 
 //import javax.swing.text.*;
@@ -75,7 +77,7 @@ import dungeon.JDPoint;
  *         Window>Preferences>Java>Code Generation.
  */
 public class MainFrame extends JFrame implements ActionListener, ItemListener,
-		MouseListener, ChangeListener {
+		MouseListener, ChangeListener, MainFrameI {
 
 	public static final int UPDATE_ALL = 0;
 
@@ -174,13 +176,14 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 
 	Applet applet;
 
-	private final MyJDGui gui;
+	private final JDGUISwing gui;
 
 	public static Font ButtonFont;
 
 	public static AWTImageLoader imageSource;
 
-	public MainFrame(StartView listenerx, String name, Applet a, MyJDGui gui,
+	public MainFrame(StartView listenerx, String name, Applet a,
+			JDGUISwing gui,
 			String title) {
 
 		super(title);
@@ -195,7 +198,7 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 		east.setBackground(JDJPanel.bgColor);
 
 		ButtonFont = new Font("Arial", Font.BOLD, 17);
-		amatur = new ShowPanel(this, gui);
+		amatur = new ShowPanel(gui);
 		playerName = name;
 		this.appletRunning = a != null;
 		applet = a;
@@ -474,7 +477,8 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 	// }
 
 	private Map makeInfoString(String comment, boolean reg, boolean liga) {
-		return gui.getHighScoreString(this.playerName, comment, reg, liga);
+		return ((MyJDGui) gui).getHighScoreString(this.playerName, comment,
+				reg, liga);
 
 	}
 
@@ -815,13 +819,19 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 	/**
 	 * @return Returns the gui.
 	 */
-	public MyJDGui getGui() {
+	public JDGUISwing getGui() {
 		return gui;
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setText(Paragraph[] p) {
+		getText().setText(p);
 
 	}
 

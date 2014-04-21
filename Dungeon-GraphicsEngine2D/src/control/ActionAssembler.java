@@ -6,6 +6,20 @@
  */
 package control;
 
+import item.ItemInfo;
+import item.quest.LuziasBall;
+
+import java.util.Iterator;
+import java.util.List;
+
+import shrine.ShrineInfo;
+import spell.SpellInfo;
+import dungeon.ChestInfo;
+import dungeon.Dir;
+import dungeon.DoorInfo;
+import dungeon.JDPoint;
+import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -24,25 +38,10 @@ import figure.action.TakeItemAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.hero.HeroInfo;
-import game.JDGUI;
-import item.ItemInfo;
-import item.quest.LuziasBall;
-
-import java.util.Iterator;
-import java.util.List;
-
-import shrine.ShrineInfo;
-import spell.SpellInfo;
-import dungeon.ChestInfo;
-import dungeon.Dir;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
 
 public class ActionAssembler {
 
-	private JDGUI gui;
+	private JDGUIEngine2D gui;
 	private boolean useWithTarget = false;
 	private boolean spellMeta = false;
 
@@ -51,7 +50,7 @@ public class ActionAssembler {
 				.get(index).getFighterID());
 	}
 
-	public void setGui(JDGUI gui) {
+	public void setGui(JDGUIEngine2D gui) {
 		this.gui = gui;
 	}
 

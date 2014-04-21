@@ -3,7 +3,6 @@ package de.jdungeon.androidapp;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
-import game.JDGUI;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 
@@ -19,16 +18,14 @@ import dungeon.RoomInfo;
 
 public class Control {
 
-	private final JDungeonApp app;
-	private final JDGUI gui;
+	private final AndroidScreenJDGUI gui;
 	private final ActionAssembler actionAssembler;
 
 	public ActionAssembler getActionAssembler() {
 		return actionAssembler;
 	}
 
-	public Control(JDungeonApp game, JDGUI gui) {
-		this.app = game;
+	public Control(JDungeonApp game, AndroidScreenJDGUI gui) {
 		this.gui = gui;
 		actionAssembler = new ActionAssembler();
 		actionAssembler.setGui(gui);

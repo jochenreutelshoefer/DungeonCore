@@ -3,9 +3,9 @@ package gui.mainframe.component;
 import figure.FigureInfo;
 import figure.attribute.Attribute;
 import figure.hero.HeroInfo;
+import gui.JDGUISwing;
 import gui.JDJLabel;
 import gui.JDJPanel;
-import gui.MyJDGui;
 import gui.Paragraph;
 import item.ItemInfo;
 
@@ -75,7 +75,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 	
 	ActionAssembler control;
 
-	public CharacterView(MyJDGui gui) {
+	public CharacterView(JDGUISwing gui) {
 		super(gui);
 		control = gui.getControl();
 		levelV = new SkillExpView(0, 1, gui);
@@ -534,7 +534,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setSize(12);
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 		} else if (sc == creaturet) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Kreaturenkenntnis:");
@@ -555,7 +555,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setSize(12);
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 		} else if (sc == undeadt) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Untotenkenntnis:");
@@ -576,7 +576,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setSize(12);
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 		} else if (sc == axet) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Axtfertigkeit:");
@@ -598,7 +598,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
 
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 		} else if (sc == clubt) {
 			Paragraph[] p = new Paragraph[3];
 			p[0] = new Paragraph("Knüppelfertigkeit:");
@@ -620,7 +620,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
 
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 
 		} else if (sc == lancet) {
 			Paragraph[] p = new Paragraph[3];
@@ -643,7 +643,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
 
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 
 		} else if (sc == swordt) {
 			Paragraph[] p = new Paragraph[3];
@@ -666,7 +666,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
 
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 
 		} else if (sc == wolfknifet) {
 			Paragraph[] p = new Paragraph[3];
@@ -689,7 +689,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			p[2].setCentered();
 			p[2].setColor(JDColor.black);
 
-			gui.getMainFrame().getText().setText(p);
+			gui.getMainFrame().setText(p);
 		}
 	}
 

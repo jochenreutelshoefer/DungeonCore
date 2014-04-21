@@ -42,11 +42,6 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 	}
 
 	@Override
-	public void onTurn() {
-
-	}
-
-	@Override
 	public void notifyVisbilityStatusDecrease(JDPoint p) {
 
 	}
@@ -57,11 +52,6 @@ public class SimpleHeroBehavior extends AI implements ControlUnit {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void gameOver() {
-
 	}
 
 	@Override

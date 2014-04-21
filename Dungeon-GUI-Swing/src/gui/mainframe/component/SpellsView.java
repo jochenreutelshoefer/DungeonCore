@@ -9,9 +9,9 @@ package gui.mainframe.component;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.JDEnv;
+import gui.JDGUISwing;
 import gui.JDJLabel;
 import gui.JDJPanel;
-import gui.MyJDGui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -33,15 +33,11 @@ import spell.SpellInfo;
  */
 public class SpellsView extends JDJPanel implements ActionListener {
 
-	// Hero h;
-
 	private JButton[] butts;
 
 	private List<SpellInfo> spells;
 	
-	// private ActionAssembler control;
-
-	public SpellsView(MyJDGui gui) {
+	public SpellsView(JDGUISwing gui) {
 		super(gui);
 		gui.getControl();
 	}

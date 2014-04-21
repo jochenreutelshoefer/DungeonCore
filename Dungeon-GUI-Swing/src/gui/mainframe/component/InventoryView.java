@@ -8,10 +8,10 @@ import figure.FigureInfo;
 import figure.action.EquipmentChangeAction;
 import figure.hero.HeroInfo;
 import game.JDEnv;
+import gui.JDGUISwing;
 import gui.JDJButton;
 import gui.JDJPanel;
 import gui.JDJRadioButton;
-import gui.MyJDGui;
 import gui.Paragraph;
 import gui.engine2D.DrawUtils;
 import item.ItemInfo;
@@ -174,7 +174,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 	String takeItem = "-";
 	String layDown = "-";
 
-	public InventoryView(MyJDGui gui) {
+	public InventoryView(JDGUISwing gui) {
 		super(gui);
 		takeItem = JDEnv.getResourceBundle().getString("gui_take");
 		layDown = JDEnv.getResourceBundle().getString("gui_layDown");
@@ -241,13 +241,6 @@ public class InventoryView extends JDJPanel implements ActionListener,
 				"gui_items")));
 		panelR6.setBorder(new TitledBorder(JDEnv.getResourceBundle().getString(
 				"gui_room")));
-
-		// panelR1.setPreferredSize(new Dimension(160,160));
-		// panelR2.setPreferredSize(new Dimension(160,160));
-		// panelR3.setPreferredSize(new Dimension(160,160));
-		// panelR4.setPreferredSize(new Dimension(160,160));
-		// panelR5.setPreferredSize(new Dimension(160,160));
-		// panelR6.setPreferredSize(new Dimension(160,160));
 
 		panelR1.setLayout(new BorderLayout());
 		panelR2.setLayout(new BorderLayout());
@@ -520,7 +513,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 			}
 		}
 
-		gui.getMainFrame().getText().setText(p);
+		gui.getMainFrame().setText(p);
 	}
 
 	@Override
@@ -530,16 +523,16 @@ public class InventoryView extends JDJPanel implements ActionListener,
 
 	@Override
 	public void mouseExited(MouseEvent me) {
-		gui.getMainFrame().getText().resetText();
+		/*
+		 * reset text
+		 */
+		gui.getMainFrame().setText(null);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object quelle = ae.getSource();
 
-		if (gui.getMainFrame().isNoControl()) {
-			quelle = null;
-		}
 		if (quelle == layDownWeapon) {
 
 			gui.getControl().wannaLayDownEquipmentItem(
@@ -574,8 +567,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 				ItemInfo info = itemsH.get(i);
 				gui.getControl().useButtonClicked(info, false);
 
-				gui.getMainFrame().getGesundheit().itemCombo
-						.setSelectedIndex(i);
+				gui.setSelectedItemIndex(i);
 			}
 
 		}
@@ -613,11 +605,10 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		int i = list.getSelectedIndex();
 		if (i != -1) {
 			if (list == roomItemL) {
-				gui.getMainFrame().getText()
-						.setText(((ItemInfo) items.get(i)).getParagraphs());
+				gui.getMainFrame().setText(
+						((ItemInfo) items.get(i)).getParagraphs());
 			} else if (list == heroItemL) {
-				gui.getMainFrame().getText()
-						.setText(itemsH.get(i).getParagraphs());
+				gui.getMainFrame().setText(itemsH.get(i).getParagraphs());
 			}
 
 		}

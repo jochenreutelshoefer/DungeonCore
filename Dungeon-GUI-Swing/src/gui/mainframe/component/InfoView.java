@@ -1,7 +1,7 @@
 package gui.mainframe.component;
 
+import gui.JDGUISwing;
 import gui.JDJPanel;
-import gui.MyJDGui;
 import gui.Paragraph;
 import gui.engine2D.DrawUtils;
 import gui.mainframe.MainFrame;
@@ -57,7 +57,7 @@ public class InfoView extends JDJPanel {
 
 	MainFrame m;
 
-	public InfoView(MyJDGui gui, MainFrame m) {
+	public InfoView(JDGUISwing gui, MainFrame m) {
 		super(gui);
 		this.m = m;
 		this.setLayout(new BorderLayout());
@@ -159,7 +159,7 @@ public class InfoView extends JDJPanel {
 
 	}
 
-	public InfoView(int x, int y, boolean emptyLine, MyJDGui gui) {
+	public InfoView(int x, int y, boolean emptyLine, JDGUISwing gui) {
 		super(gui);
 		this.emptyLine = emptyLine;
 		verlauftxt2 = new JTextPane(doc);
@@ -197,7 +197,6 @@ public class InfoView extends JDJPanel {
 	 * 
 	 */
 	public void setText(Paragraph[] p) {
-		// System.out.println("setText()");
 
 		if (p != null) {
 			
@@ -205,9 +204,10 @@ public class InfoView extends JDJPanel {
 				if(!Paragraph.areEqual(x, this.actualP)) {
 					this.actualP = x;
 					repaint();
-					//System.out.println("repaint info");
 				}
 
+		} else {
+			resetText();
 		}
 	}
 	

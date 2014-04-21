@@ -1,15 +1,25 @@
 package gui.mainframe.component;
 //import JDGuiJDJPanel;
 
-import gui.MyJDGui;
+import gui.JDGUISwing;
 import gui.JDJPanel;
 
-import javax.swing.*;
-import javax.swing.text.*;
-
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 //import java.util.*;
-import java.awt.*;
-import java.awt.event.AdjustmentListener;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.JViewport;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 
 /**
@@ -36,7 +46,7 @@ public class TextView extends JDJPanel {
 	
 	//agame game;
 	
-	public TextView(int x, int y, MyJDGui gui) {
+	public TextView(int x, int y, JDGUISwing gui) {
 		super(gui);
 		verlauftxt2 = new JTextPane(new DefaultStyledDocument());
 		verlauftxt2.setEditable(false);

@@ -6,17 +6,17 @@ import figure.action.result.ActionResult;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.Percept;
-import game.JDGUI;
 import item.ItemInfo;
 
 import java.util.Vector;
 
+import control.JDGUIEngine2D;
 import spell.SpellInfo;
 import text.StatementManager;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 
-public class AndroidScreenJDGUI implements JDGUI {
+public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	private final Vector<Action> actionQueue = new Vector<Action>();
 

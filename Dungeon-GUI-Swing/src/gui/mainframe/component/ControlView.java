@@ -2,7 +2,7 @@ package gui.mainframe.component;
 //import JDGuimainFrame;
 //import JDGuiJDJPanel;
 
-import gui.MyJDGui;
+import gui.JDGUISwing;
 import gui.JDJPanel;
 import gui.mainframe.MainFrame;
 
@@ -33,16 +33,16 @@ public class ControlView extends JDJPanel implements ActionListener {
 	
 	public JButton round = new JButton("...");
 
-	public JButton scoutNorth = new JButton("Spähen");
+	public JButton scoutNorth = new JButton("Spï¿½hen");
 
 	
-	public JButton scoutEast = new JButton("Spähen");
+	public JButton scoutEast = new JButton("Spï¿½hen");
 
 	
-	public JButton scoutSouth = new JButton("Spähen");
+	public JButton scoutSouth = new JButton("Spï¿½hen");
 
 	
-	public JButton scoutWest = new JButton("Spähen");
+	public JButton scoutWest = new JButton("Spï¿½hen");
 
 	
 	public JButton north = new JButton("Norden");
@@ -54,15 +54,14 @@ public class ControlView extends JDJPanel implements ActionListener {
 	public JButton west = new JButton("Westen");
 
 	
-	public JButton south = new JButton("Süden");
+	public JButton south = new JButton("Sï¿½den");
 	
 	JPanel inner = new JPanel();
 
 	MainFrame main;
 
-	//Game game;
 	
-	public ControlView(MainFrame m, MyJDGui gui) {
+	public ControlView(MainFrame m, JDGUISwing gui) {
 		super(gui);
 		main = m;
 		this.setLayout(new BorderLayout());
@@ -120,6 +119,7 @@ public class ControlView extends JDJPanel implements ActionListener {
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		Object quelle = e.getSource();

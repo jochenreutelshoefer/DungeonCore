@@ -524,6 +524,8 @@ public class ImageManager {
 	public static JDImageProxy<?> inventory_club1;
 	public static JDImageProxy<?> inventory_helmet1;
 
+	public static JDImageProxy<?> lebenskugel;
+
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern, int cnt) {
 		System.gc();
@@ -932,6 +934,8 @@ public class ImageManager {
 			inventory_helmet1 = new JDImageProxy(a, "guiItems/helmet1.gif");
 
 			deathImage = new JDImageProxy(a, "tot1.gif");
+
+			lebenskugel = new JDImageProxy(a, "lebenskugel.gif");
 
 		}
 

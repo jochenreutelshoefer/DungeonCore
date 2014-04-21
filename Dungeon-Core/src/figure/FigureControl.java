@@ -41,10 +41,6 @@ public class FigureControl implements ControlUnit {
 		brain.notifyVisbilityStatusDecrease(p);
 	}
 
-	@Override
-	public void onTurn() {
-
-	}
 
 	@Override
 	public boolean isHostileTo(FigureInfo f) {
@@ -53,15 +49,6 @@ public class FigureControl implements ControlUnit {
 
 	@Override
 	public void actionDone(Action a, ActionResult res) {
-
-	}
-
-	@Override
-	public void gameOver() {
-
-	}
-
-	public void repaint() {
 
 	}
 

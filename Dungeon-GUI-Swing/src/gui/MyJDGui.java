@@ -38,7 +38,6 @@ import figure.percept.TextPercept;
 import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
-import game.JDGUI;
 import gui.engine2D.GraphBoard;
 import gui.engine2D.animation.Animation;
 import gui.engine2D.animation.AnimationReal;
@@ -50,6 +49,7 @@ import item.ItemInfo;
 
 import java.applet.Applet;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,7 +76,7 @@ import dungeon.RoomInfo;
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class MyJDGui implements JDGUI {
+public class MyJDGui implements JDGUISwing {
 
 	public final static int BUTTON_SLAP = 1;
 
@@ -422,6 +422,7 @@ public class MyJDGui implements JDGUI {
 		frame = m;
 	}
 
+	@Override
 	public MainFrame getMainFrame() {
 		return frame;
 	}
@@ -469,6 +470,7 @@ public class MyJDGui implements JDGUI {
 		}
 	}
 
+	@Override
 	public void stopAllAnimation() {
 		Collection<RoomInfo> c = masterAnis.keySet();
 		for (Iterator<RoomInfo> iter = c.iterator(); iter.hasNext();) {
@@ -490,10 +492,6 @@ public class MyJDGui implements JDGUI {
 			ani.myStop();
 		}
 
-	}
-
-	public void disableControl() {
-		frame.disableControl();
 	}
 
 
@@ -738,14 +736,22 @@ public class MyJDGui implements JDGUI {
 	/**
 	 * @return Returns the control.
 	 */
+	@Override
 	public ActionAssembler getControl() {
 		return control;
 	}
 
+	@Override
 	public void repaintPicture() {
 		this.getMainFrame().repaint();
 	}
 
+	@Override
+	public Point getViewportPosition() {
+		return getMainFrame().getSpielfeld().getViewport().getViewPosition();
+	}
+
+	@Override
 	public void updateGui() {
 
 		getMainFrame().updateGUI2(MainFrame.UPDATE_ALL, false);
@@ -823,5 +829,10 @@ public class MyJDGui implements JDGUI {
 				.getItemCombo().getSelectedItem();
 	}
 
+	@Override
+	public void setSelectedItemIndex(int i) {
+		getMainFrame().getGesundheit().getItemCombo().setSelectedIndex(i);
+
+	}
 
 }

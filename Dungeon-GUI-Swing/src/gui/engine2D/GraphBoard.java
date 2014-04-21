@@ -7,8 +7,8 @@ import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
 import graphics.util.JDRectangle;
+import gui.JDGUISwing;
 import gui.JDJPanel;
-import gui.MyJDGui;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
@@ -96,7 +96,8 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		return toolkit.createCustomCursor((Image) image.getImage(), p, label);
 	}
 
-	public GraphBoard(Applet a, MyJDGui gui) {
+
+	public GraphBoard(Applet a, JDGUISwing gui) {
 		super(gui);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
@@ -211,8 +212,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 				int xcoord = offset + (roomSize * i);
 				int ycoord = offset + (roomSize * j);
-				Point portPoint = gui.getMainFrame().getSpielfeld()
-						.getViewport().getViewPosition();
+				Point portPoint = gui.getViewportPosition();
 				Rectangle rect = new Rectangle(portPoint.x - roomSize,
 						portPoint.y - roomSize, 760 + roomSize, 525 + roomSize);
 				if (!rect.contains(xcoord, ycoord)) {
@@ -344,10 +344,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			return;
 		}
 
-		if (gui.getMainFrame().isNoControl()) {
-			p = new JDPoint(-1, -1);
-		}
-
 		boolean found = false;
 
 		for (int i = 0; i < renderer.items.size(); i++) {
@@ -358,9 +354,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						right);
 				if ((ob.getClickedObject()) != null) {
 					// Wenn kein Fragezeichen....
-					gui.getMainFrame()
-							.getText()
-							.setText(
+					gui.getMainFrame().setText(
 									((Paragraphable) (ob
 											.getClickedObject()))
 											.getParagraphs());
@@ -380,7 +374,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						gui.getControl().monsterClicked((FigureInfo) f, right);
 					}
 					gui.getMainFrame()
-							.getText()
 							.setText(
 									((Paragraphable) (ob
 											.getClickedObject()))
@@ -413,7 +406,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					if ((ob.getClickedObject()) != null)
 						gui.getControl().shrineClicked(right);
 					gui.getMainFrame()
-							.getText()
 							.setText(
 									((Paragraphable) (ob
 											.getClickedObject()))
@@ -435,7 +427,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					Paragraphable pa = ((Paragraphable) (ob
 							.getClickedObject()));
 					if (pa != null) {
-						gui.getMainFrame().getText()
+						gui.getMainFrame()
 								.setText(pa.getParagraphs());
 					}
 					found = true;
@@ -451,7 +443,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					if ((ob.getClickedObject()) != null)
 						gui.getControl().spotClicked(ob.getClickedObject());
 					gui.getMainFrame()
-							.getText()
 							.setText(
 									((Paragraphable) (ob
 											.getClickedObject()))
@@ -472,7 +463,6 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 						gui.getControl().chestClicked(ob.getClickedObject(),
 								right);
 						gui.getMainFrame()
-								.getText()
 								.setText(
 										((Paragraphable) (ob
 												.getClickedObject()))
@@ -543,7 +533,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		this.setCursor(cursor1);
 		Object o = getRoom(p);
 		if (o == null) {
-			gui.getMainFrame().getText().setText(new Paragraph[0]);
+			gui.getMainFrame().setText(new Paragraph[0]);
 			return;
 		}
 
@@ -676,7 +666,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void doorCrossed(DoorInfo o) {
 		if (o instanceof DoorInfo) {
-			gui.getMainFrame().getText()
+			gui.getMainFrame()
 					.setText(o.getParagraphs());
 			if (o.hasLock().booleanValue()) {
 				if (gui.getFigure().hasKey(o).booleanValue()) {
@@ -690,14 +680,14 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void chestCrossed(Object o) {
 		if (o instanceof ChestInfo) {
-			gui.getMainFrame().getText()
+			gui.getMainFrame()
 					.setText(((ChestInfo) o).getParagraphs());
 		}
 	}
 
 	private void spotCrossed(Object o) {
 		if (o instanceof HiddenSpot) {
-			gui.getMainFrame().getText()
+			gui.getMainFrame()
 					.setText(((HiddenSpot) o).getParagraphs());
 		}
 	}
@@ -712,7 +702,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			} else {
 				this.setCursor(cursor2);
 			}
-			gui.getMainFrame().getText()
+			gui.getMainFrame()
 					.setText(((ItemInfo) o).getParagraphs());
 
 		}
@@ -721,7 +711,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void heroCrossed() {
 		this.setCursor(cursor6);
-		gui.getMainFrame().getText().setText((gui.getFigure()).getParagraphs());
+		gui.getMainFrame().setText((gui.getFigure()).getParagraphs());
 	}
 
 	private boolean spellMetaDown = false;
@@ -756,7 +746,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	private void shrineCrossed(Object o) {
 		if (o instanceof ShrineInfo) {
-			gui.getMainFrame().getText()
+			gui.getMainFrame()
 					.setText(((ShrineInfo) o).getParagraphs());
 		}
 
@@ -765,7 +755,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	private void monsterCrossed(Object o) {
 		if (o instanceof FigureInfo) {
 
-			gui.getMainFrame().getText()
+			gui.getMainFrame()
 					.setText(((MonsterInfo) o).getParagraphs());
 			if (this.spellMetaDown) {
 				this.setCursor(cursor_wand);
@@ -780,7 +770,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	private void roomCrossed(Object o) {
 		if (o != null) {
 			if (o instanceof RoomInfo) {
-				gui.getMainFrame().getText()
+				gui.getMainFrame()
 						.setText(((RoomInfo) o).getParagraphs());
 				if (((RoomInfo) o).getConnectionTo(gui.getFigure()
 						.getRoomInfo()) != null) {
@@ -790,7 +780,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				}
 			} else if (o instanceof Point) {
 				Point p = (Point) o;
-				gui.getMainFrame().getText().setText(new Paragraph[0]);
+				gui.getMainFrame().setText(new Paragraph[0]);
 				int dir = Dir.getDirFromToIfNeighbour(gui.getFigure()
 						.getRoomNumber(), new JDPoint(p.getX(), p.getY()));
 				if (dir != -1) {

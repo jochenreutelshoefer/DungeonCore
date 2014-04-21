@@ -1,10 +1,10 @@
 package gui.mainframe.component;
 
 
+import gui.JDGUISwing;
 import gui.JDJLabel;
 import gui.JDJPanel;
 import gui.JDJViewport;
-import gui.MyJDGui;
 import gui.engine2D.GraphBoard;
 
 import java.applet.Applet;
@@ -33,21 +33,21 @@ import dungeon.JDPoint;
 public class BoardView extends JDJPanel implements MouseListener,
 		AdjustmentListener {
 
-	private JScrollPane scrollPane;
+	private final JScrollPane scrollPane;
 
-	private GraphBoard drawingArea;
+	private final GraphBoard drawingArea;
 
-	private JDJViewport v;
+	private final JDJViewport v;
 
 	private Point viewPortPoint;
 
-	private JLabel scale = new JDJLabel("+-");
+	private final JLabel scale = new JDJLabel("+-");
 
-	private JScrollBar bar1;
+	private final JScrollBar bar1;
 
-	private JScrollBar bar2;
+	private final JScrollBar bar2;
 
-	public BoardView(Applet a, MyJDGui gui) {
+	public BoardView(Applet a, JDGUISwing gui) {
 		super(gui);
 		scale.addMouseListener(this);
 		
@@ -95,6 +95,7 @@ public class BoardView extends JDJPanel implements MouseListener,
 
 	}
 
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		gui.stopAllAnimation();
 	}
@@ -145,7 +146,7 @@ public class BoardView extends JDJPanel implements MouseListener,
 		int diffX = roomCoordinateX - viewportPositionX;
 		int roomCoordinateY = roomNumberY * currentRoomSize + offset;
 		int diffY = roomCoordinateY - viewportPositionY;
-		int threshold = (int) (currentRoomSize * 1);
+		int threshold = currentRoomSize * 1;
 		Dimension d  = this.getSize();
 		if(diffX < threshold || diffY < threshold*1.2 || diffX > d.width - threshold || diffY > d.height - threshold) {
 			v.setViewPosition(new Point((currentRoomSize * roomNumberX) - 200 + offset, (currentRoomSize * roomNumberY) - 220
@@ -159,6 +160,7 @@ public class BoardView extends JDJPanel implements MouseListener,
 		v.setViewPosition(new Point(xcoord, ycoord));
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		if (!me.isMetaDown()) {
 			drawingArea.incSize();
@@ -167,18 +169,22 @@ public class BoardView extends JDJPanel implements MouseListener,
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me) {
 
 	}

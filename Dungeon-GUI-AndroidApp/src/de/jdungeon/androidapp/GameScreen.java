@@ -9,7 +9,6 @@ import figure.hero.Zodiac;
 import game.DungeonGame;
 import game.InfoEntity;
 import game.JDEnv;
-import game.JDGUI;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
@@ -101,7 +100,7 @@ public class GameScreen extends Screen {
 	private long lastDoubleTapEventTime = -1;
 	private long lastTouchEventTime = -1;
 
-	private final JDGUI gui;
+	private final AndroidScreenJDGUI gui;
 
 	private final JDDimension screenSize = new JDDimension(800, 400);
 
@@ -898,11 +897,11 @@ public class GameScreen extends Screen {
 		Pair<Float, Float> targetViewCenterRoomCoordinattes = new Pair<Float, Float>(
 				new Float(number.getX()), new Float(number.getY()));
 
-		System.out.println("scroll from "
-				+ currentViewCenterRoomCoordinates.first + "/"
-				+ currentViewCenterRoomCoordinates.second + " to "
-				+ targetViewCenterRoomCoordinattes.first + "/"
-				+ targetViewCenterRoomCoordinattes.second);
+		// System.out.println("scroll from "
+		// + currentViewCenterRoomCoordinates.first + "/"
+		// + currentViewCenterRoomCoordinates.second + " to "
+		// + targetViewCenterRoomCoordinattes.first + "/"
+		// + targetViewCenterRoomCoordinattes.second);
 
 		MovieSequence sequence = new DefaultMovieSequence(
 				new TrivialScaleSequence(this.roomSize),
