@@ -7,11 +7,10 @@
  * Window>Preferences>Java>Code Generation.
  */
 package gui.mainframe.dialog;
-import gui.StartView;
+import gui.init.StartView;
 import gui.mainframe.MainFrame;
 
 import javax.swing.*;
-
 
 import java.awt.event.*;
 import java.awt.*;
@@ -106,7 +105,7 @@ public class FtpSendView extends JDialog implements ActionListener, KeyListener{
 		//System.out.println("keyTyped: "+ke.toString());
 		int o = ke.getKeyCode();
 		if(o == KeyEvent.VK_ENTER) {
-			//System.out.println("Enter gedrückt!");
+			//System.out.println("Enter gedrï¿½ckt!");
 			actionPerformed(null);	
 		}
 		

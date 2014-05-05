@@ -1,22 +1,18 @@
-package gui.mainframe.component;
+package gui.init;
 
-import gui.JDGUISwing;
 import gui.JDJPanel;
 import gui.Paragraph;
 import gui.engine2D.DrawUtils;
-import gui.mainframe.MainFrame;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.MediaTracker;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
 
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.BadLocationException;
@@ -33,7 +29,7 @@ import util.JDColor;
  * Window>Preferences>Java>Templates. To enable and disable the creation of type
  * comments go to Window>Preferences>Java>Code Generation.
  */
-public class InfoView extends JDJPanel {
+public class NewHeroInfoView extends JPanel {
 
 	String newline = "\n";
 
@@ -55,32 +51,30 @@ public class InfoView extends JDJPanel {
 
 	int sizey = 150;
 
+	private final JDialog gui;
 
-	public InfoView(JDGUISwing gui) {
-		super(gui);
-		this.setLayout(new BorderLayout());
-		if (MainFrame.imageSource != null) {
-			MediaTracker tracker = new MediaTracker(gui.getMainFrame());
-			
-			bgImage = MainFrame.imageSource.loadImage("tafel3.gif");
-			tracker.addImage(bgImage, 1);
-		
-			try {
-				tracker.waitForAll();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
 
+
+	public NewHeroInfoView(int x, int y, boolean emptyLine, JDialog gui) {
+		this.emptyLine = emptyLine;
+		this.gui = gui;
 		verlauftxt2 = new JTextPane(doc);
+		verlauftxt2.setEditable(false);
+		verlauftxt2.setBorder(new EtchedBorder());
+		verlauftxt2.setBackground(Color.lightGray);
+		verlauftxt2.setMargin(new Insets(5, 5, 5, 5));
 
-		this.setPreferredSize(new Dimension(sizex, sizey));
-		this.setOpaque(false);
-		
+		this.add(verlauftxt2);
 
+		verlauftxt2.setPreferredSize(new Dimension(x, y));
+		verlauftxt2.setMinimumSize(new Dimension(x, y));
+		SimpleAttributeSet set = new SimpleAttributeSet();
+		try {
+			doc.insertString(doc.getLength(), "", set);
+		} catch (Exception e) {
+		}
 	}
+
 	private static final int texSizeX = 96;
 
 	private static final int texSizeY = 96;
@@ -90,7 +84,7 @@ public class InfoView extends JDJPanel {
 	public void paint(Graphics g) {
 			if (offscreenImage == null) {
 
-				offscreenImage = gui.getMainFrame().createImage(
+				offscreenImage = gui.createImage(
 						this.getWidth(), this
 						.getHeight());
 			}
@@ -155,25 +149,6 @@ public class InfoView extends JDJPanel {
 
 	}
 
-	public InfoView(int x, int y, boolean emptyLine, JDGUISwing gui) {
-		super(gui);
-		this.emptyLine = emptyLine;
-		verlauftxt2 = new JTextPane(doc);
-		verlauftxt2.setEditable(false);
-		verlauftxt2.setBorder(new EtchedBorder());
-		verlauftxt2.setBackground(Color.lightGray);
-		verlauftxt2.setMargin(new Insets(5, 5, 5, 5));
-
-		this.add(verlauftxt2);
-
-		verlauftxt2.setPreferredSize(new Dimension(x, y));
-		verlauftxt2.setMinimumSize(new Dimension(x, y));
-		SimpleAttributeSet set = new SimpleAttributeSet();
-		try {
-			doc.insertString(doc.getLength(), "", set);
-		} catch (Exception e) {
-		}
-	}
 
 	public void resetText2() {
 
@@ -185,54 +160,8 @@ public class InfoView extends JDJPanel {
 		}
 	}
 
-	public void resetText() {
-		actualP = null;
-	}
-
-	/**
-	 * 
-	 */
-	public void setText(Paragraph[] p) {
-
-		if (p != null) {
-			
-				Paragraph []x = processParagraph(p);
-				if(!Paragraph.areEqual(x, this.actualP)) {
-					this.actualP = x;
-					repaint();
-				}
-
-		} else {
-			resetText();
-		}
-	}
 	
-	private Paragraph[] processParagraph(Paragraph [] p) {
-		
-		LinkedList list = new LinkedList();
-		for (int i = 0; i < p.length; i++) {
-			if (p[i] != null && p[i].getText() != null) {
 
-				StringTokenizer tokenizer = new StringTokenizer(p[i]
-						.getText(), "\n");
-				while (tokenizer.hasMoreTokens()) {
-					String s = tokenizer.nextToken();
-					Paragraph sub = new Paragraph(s);
-					sub.setC(p[i].getC());
-					sub.setSize(p[i].getSize());
-					sub.setFont(p[i].getFont());
-					list.add(sub);
-				}
-
-			}
-		}
-		Paragraph[] b = new Paragraph[list.size()];
-		for (int j = 0; j < list.size(); j++) {
-			b[j] = ((Paragraph) (list.get(j)));
-
-		}
-		return b;
-	}
 
 	public void setText2(Paragraph[] pars) {
 

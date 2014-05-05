@@ -47,8 +47,6 @@ public class HeroBotStarter {
 		Dungeon derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
 				dungeonGame);
 
-		HeroInfo figureInfo = DungeonManager.enterDungeon(h, derDungeon,
-				new JDPoint(18, 39));
 
 		try {
 			dungeonGame.fillDungeon(derDungeon);
@@ -57,6 +55,8 @@ public class HeroBotStarter {
 			e.printStackTrace();
 		}
 
+		HeroInfo figureInfo = DungeonManager.enterDungeon(h, derDungeon,
+				new JDPoint(18, 39));
 		/*
 		 * load Bot AI for hero
 		 */
@@ -82,13 +82,13 @@ public class HeroBotStarter {
 			 * init GUI
 			 */
 			MyJDGui gui = new MyJDGui(figureInfo);
+			gui.initGui(null, null, h.getName());
 			HeroControlWithSpectator control = new HeroControlWithSpectator(
 					figureInfo, (AI) newBotInstance, gui);
 			h.setControl(control);
 			((AI) newBotInstance).setFigure(figureInfo);
 			dungeonGame.putGuiFigure(h, gui);
 			// new StartView(h.getName(), 0, null, false)
-			gui.initGui(null, null, h.getName());
 
 			/*
 			 * start game

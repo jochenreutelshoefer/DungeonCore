@@ -10,6 +10,7 @@ import figure.action.EquipmentChangeAction;
 import figure.attribute.Attribute;
 import figure.hero.HeroInfo;
 import game.JDEnv;
+import graphics.ImageManager;
 import gui.JDGUISwing;
 import gui.JDJButton;
 import gui.JDJPanel;
@@ -18,7 +19,6 @@ import gui.JDJTitledBorder;
 import gui.MyComboRenderer;
 import gui.Paragraph;
 import gui.engine2D.DrawUtils;
-import gui.mainframe.MainFrame;
 import item.HealPotion;
 //import item.Item;
 import item.ItemInfo;
@@ -48,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import util.JDColor;
+import control.AbstractSwingMainFrame;
 import control.ActionAssembler;
 
 /**
@@ -62,7 +63,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 	HealthPot pot;
 
-	JDJButton memoryB = new JDJButton("Gedächtnis");
+	JDJButton memoryB = new JDJButton("Gedaechtnis");
 
 	JDJButton bigHeal = new JDJButton(" H ");
 
@@ -89,8 +90,6 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 	
 
-	MainFrame main;
-
 	String empty = "";
 	
 	ActionAssembler control;
@@ -99,7 +98,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 		return itemCombo.getSelectedIndex();
 	}
 
-	public HealthView(MainFrame mf, JDGUISwing gui) {
+	public HealthView(JDGUISwing gui) {
 
 		super(gui);
 		this.control = gui.getControl();
@@ -120,7 +119,6 @@ public class HealthView extends JDJPanel implements ActionListener,
 		comboPanel = new JDJPanel(gui);
 
 	
-		main = mf;
 		this.setLayout(null);
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -247,10 +245,11 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 	private void makePotPanel() {
 		
-		MediaTracker tracker = new MediaTracker(main);
+		AbstractSwingMainFrame mainFrame = gui.getMainFrame();
+		MediaTracker tracker = new MediaTracker(mainFrame);
 
-		Image d = main.imageSource.loadImage("tot1.gif");
-		Image potI = main.imageSource.loadImage("lebenskugel.gif");
+		Image d = (Image) ImageManager.deathImage.getImage();
+		Image potI = (Image) ImageManager.lebenskugel.getImage();
 		tracker.addImage(d, 1);
 		tracker.addImage(potI, 1);
 		try {

@@ -1,4 +1,4 @@
-package gui;
+package gui.init;
 
 //import JDGuimainFrame;
 
@@ -8,6 +8,8 @@ import figure.hero.HeroInfo;
 import game.DungeonGame;
 import game.JDEnv;
 import graphics.ImageManager;
+import gui.AbstractStartWindow;
+import gui.MyJDGui;
 import gui.audio.AppletAudioLoader;
 import gui.audio.AudioSet;
 import gui.audio.DefaultSwingAudioLoader;

@@ -1,5 +1,6 @@
 
  import gui.*;
+import gui.init.StartView;
 
 import javax.swing.*;
 

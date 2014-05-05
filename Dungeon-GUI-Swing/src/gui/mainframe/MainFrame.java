@@ -11,9 +11,9 @@ import gui.JDJRadioButton;
 import gui.JPanelNoRepaint;
 import gui.MyJDGui;
 import gui.Paragraph;
-import gui.StartView;
 import gui.Texts;
 import gui.engine2D.AWTImageLoader;
+import gui.init.StartView;
 import gui.mainframe.component.BoardView;
 import gui.mainframe.component.CharacterView;
 import gui.mainframe.component.DustView;
@@ -52,7 +52,6 @@ import java.util.Map;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -63,6 +62,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import test.Logger;
+import control.AbstractSwingMainFrame;
 import control.MainFrameI;
 import dungeon.JDPoint;
 
@@ -76,7 +76,8 @@ import dungeon.JDPoint;
  *         disable the creation of type comments go to
  *         Window>Preferences>Java>Code Generation.
  */
-public class MainFrame extends JFrame implements ActionListener, ItemListener,
+public class MainFrame extends AbstractSwingMainFrame implements
+		ActionListener, ItemListener,
 		MouseListener, ChangeListener, MainFrameI {
 
 	public static final int UPDATE_ALL = 0;
@@ -193,17 +194,50 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 			this.autoZoom = listenerx.autoZoom();
 			this.soundEffects = listenerx.soundEffects();
 		}
+		playerName = name;
+		applet = a;
+		final StartView listener = listenerx;
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			/**
+			 * Die Methode windowClosing gibt an, was passiert wenn "this" ge-
+			 * geschlossen wird
+			 * 
+			 * @param windowEvent
+			 *            Datentyp WindowEvent
+			 */
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+				int end = JOptionPane.showConfirmDialog(cp, JDEnv
+						.getResourceBundle().getString("gui_really_quit_game"),
+						JDEnv.getResourceBundle().getString("gui_quit_game"),
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.INFORMATION_MESSAGE);
+				if (end == 0) {
 
+					sendScoreData(listener.registeredPlayer(),
+							listener.ligaGame());
+					dispose();
+					signOff();
+					listener.setVisible(true);
+
+				}
+
+			}
+		});
+
+
+
+	}
+
+	public void init() {
 		east = new JPanel();
 		east.setBackground(JDJPanel.bgColor);
 
 		ButtonFont = new Font("Arial", Font.BOLD, 17);
 		amatur = new ShowPanel(gui);
-		playerName = name;
-		this.appletRunning = a != null;
-		applet = a;
-		imageSource = new AWTImageLoader(a);
-		final StartView listener = listenerx;
+		this.appletRunning = applet != null;
+		imageSource = new AWTImageLoader(applet);
 		for (int i = 0; i < 4; i++) {
 			Benemy[i] = new JDJRadioButton("Kein Feind");
 			bgenemy.add(Benemy[i]);
@@ -258,8 +292,8 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 		BorderLayout fl = new BorderLayout();
 		southPanel.setLayout(fl);
 		southPanel.setBorder(new EmptyBorder(0, 50, 0, 50));
-		gesundheit = new HealthView(this, gui);
-		text = new InfoView(gui, this);
+		gesundheit = new HealthView(gui);
+		text = new InfoView(gui);
 		staub = new DustView(gui);
 		southPanel.add(gesundheit, BorderLayout.WEST);
 		southPanel.add(text, BorderLayout.CENTER);
@@ -318,34 +352,6 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 
 		final MainFrame mf = this;
 
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			/**
-			 * Die Methode windowClosing gibt an, was passiert wenn "this" ge-
-			 * geschlossen wird
-			 * 
-			 * @param windowEvent
-			 *            Datentyp WindowEvent
-			 */
-			@Override
-			public void windowClosing(WindowEvent windowEvent) {
-				int end = JOptionPane.showConfirmDialog(cp, JDEnv
-						.getResourceBundle().getString("gui_really_quit_game"),
-						JDEnv.getResourceBundle().getString("gui_quit_game"),
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.INFORMATION_MESSAGE);
-				if (end == 0) {
-
-					sendScoreData(listener.registeredPlayer(),
-							listener.ligaGame());
-					dispose();
-					signOff();
-					listener.setVisible(true);
-
-				}
-
-			}
-		});
 
 	}
 
@@ -505,13 +511,6 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 
 	}
 
-	// public void setGame(Game game) {
-	// dasSpiel = game;
-	// }
-	//
-	// public Game getGame() {
-	// return dasSpiel;
-	// }
 
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
@@ -551,6 +550,7 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 
 	}
 
+	@Override
 	public void newStatement(String s, int code) {
 		if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
 			kampfVerlauf.newStatement(s, code);
@@ -559,6 +559,7 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 		}
 	}
 
+	@Override
 	public void newStatement(String s, int code, int to) {
 		if (to == 0) {
 			kampfVerlauf.newStatement(s, code);
@@ -569,6 +570,7 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 			verlauf.newStatement(s, code);
 		}
 	}
+
 
 	public void log(String text, int align) {
 		if (logging) {
@@ -694,14 +696,6 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 				northEast.setForegroundAt(4, Color.BLACK);
 			}
 		}
-		// this.getSpielfeld().getSpielfeldBild().repaint();
-		// if(getSpielfeld().getSpielfeldBild().offscreenImage != null) {
-		// System.out.println("MALE!");
-		// this.getSpielfeld().getSpielfeldBild().malen();
-		// }
-		// if(!repaint) {
-		// northEast.getSelectedComponent().repaint();
-		// }
 		if (repaint) {
 			this.repaint();
 		}
@@ -711,32 +705,6 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 	public void gameOver() {
 
 	}
-
-	// public void setVerlauf() {
-	// northEast.setSelectedComponent(east);
-	// }
-
-	// public void fightBegins() {
-	// System.out.println("mainFrame fightBegins");
-	// kampfVerlauf.cls();
-	// //inFight = true;
-	// this.updateGUI(this.UPDATE_FIGHT,true);
-	// }
-
-	// public void fightEnded() {
-	// //inFight = false;
-	// this.updateGUI(this.UPDATE_FIGHT,true);
-	// }
-
-	/**
-	 * Returns the steuerung.
-	 * 
-	 * @return steuerungView
-	 * 
-	 */
-	// public ControlView getSteuerung() {
-	// return steuerung;
-	// }
 
 	/**
 	 * Returns the choosenEnemy.
@@ -779,18 +747,6 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 		return applet;
 	}
 
-	/**
-	 * @return
-	 */
-	public void positionieren() {
-		Dimension dimension = new Dimension(getToolkit().getScreenSize());
-		int screenWidth = (int) dimension.getWidth();
-		int screenHeight = (int) dimension.getHeight();
-		int width = this.getWidth();
-		int height = this.getHeight();
-		setLocation((screenWidth / 2) - (width / 2), (screenHeight / 2)
-				- (height / 2));
-	}
 
 	/**
 	 * @return Returns the noControl.
@@ -833,6 +789,17 @@ public class MainFrame extends JFrame implements ActionListener, ItemListener,
 	public void setText(Paragraph[] p) {
 		getText().setText(p);
 
+	}
+
+	@Override
+	public void clearFightLog() {
+		this.getKampfVerlauf().cls();
+
+	}
+
+	@Override
+	public void updateHealth() {
+		this.gesundheit.updateView();
 	}
 
 }

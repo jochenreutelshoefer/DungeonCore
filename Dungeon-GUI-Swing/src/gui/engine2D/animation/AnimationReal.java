@@ -22,7 +22,7 @@ import figure.monster.MonsterInfo;
 import graphics.GraphicObject;
 import graphics.JDImageProxy;
 import graphics.util.JDRectangle;
-import gui.MyJDGui;
+import gui.AbstractJDGUIEngine2D;
 import gui.engine2D.DrawUtils;
 
 /**
@@ -33,13 +33,13 @@ import gui.engine2D.DrawUtils;
  */
 public class AnimationReal extends Animation {
 
-	private AnimationSet set;
+	private final AnimationSet set;
 	private int fromPosIndex = -1;
 	private int toPosIndex = -1;
-	private JDPoint startFigurePositionInRoom;
+	private final JDPoint startFigurePositionInRoom;
 
 	public AnimationReal(AnimationSet set, FigureInfo o, int type, RoomInfo r,
-			MyJDGui gui) {
+			AbstractJDGUIEngine2D gui) {
 		super(r);
 		if (o == null) {
 			throw new NullPointerException("FigureInfo was null");
@@ -48,12 +48,13 @@ public class AnimationReal extends Animation {
 		time = 35;
 		aniType = type;
 		this.o = o;
-		bild = gui.getMainFrame().getSpielfeld().getSpielfeldBild();
+		bild = gui.getBoard().getSpielfeldBild();
 		startFigurePositionInRoom = bild.getPositionCoordModified(o
 				.getPositionInRoomIndex());
 		roomSize = bild.getRoomSize();
 	}
 
+	@Override
 	public int getLength() {
 		if (set == null) {
 			return 0;
@@ -61,6 +62,7 @@ public class AnimationReal extends Animation {
 		return set.getLength();
 	}
 
+	@Override
 	public void paintPic(int num, Graphics g) {
 		if (o.isDead() != null && o.isDead().booleanValue()
 				&& !this.deathAnimation)
@@ -76,11 +78,11 @@ public class AnimationReal extends Animation {
 		if (!roomInfo.fightRunning().booleanValue()) {
 			point = this.startFigurePositionInRoom;
 		}
-		int x = (int) (point.getX()) + getMoveModX(num);
-		int y = (int) (point.getY()) + getMoveModY(num);
+		int x = (point.getX()) + getMoveModX(num);
+		int y = (point.getY()) + getMoveModY(num);
 		if (toPosIndex == -1 || fromPosIndex == -1) {
-			x = (int) (getPointInRoom().getX());
-			y = (int) (getPointInRoom().getY());
+			x = (getPointInRoom().getX());
+			y = (getPointInRoom().getY());
 		}
 
 		/*
@@ -95,8 +97,8 @@ public class AnimationReal extends Animation {
 			}
 		}
 
-		JDPoint p = new JDPoint((int) (x - (d.getWidth() / 2)),
-				(int) (y - (d.getHeight() / 2)));
+		JDPoint p = new JDPoint(x - (d.getWidth() / 2),
+				y - (d.getHeight() / 2));
 		GraphicObject c = new GraphicObject(null, new JDRectangle(p, getSize()),
 				JDColor.WHITE, im);
 		DrawUtils.fillGraphicObject(c, g);

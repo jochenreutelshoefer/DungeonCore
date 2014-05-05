@@ -14,28 +14,29 @@ public interface JDGUIEngine2D extends JDGUI {
 	 * 
 	 * @param a
 	 */
-	public void plugAction(Action a);
+	void plugAction(Action a);
 
-	public boolean currentAnimationThreadRunning(RoomInfo r);
+	boolean currentAnimationThreadRunning(RoomInfo r);
 
 	int getSelectedItemIndex();
 
 	void setSelectedItemIndex(int i);
 
-	public ItemInfo getSelectedItem();
+	ItemInfo getSelectedItem();
 
-	public SpellInfo getSelectedSpellInfo();
+	SpellInfo getSelectedSpellInfo();
 
-	public void setSpellMetaDown(boolean b);
+	void setSpellMetaDown(boolean b);
 
-	public FigureInfo getFigure();
+	FigureInfo getFigure();
 
-	public void setUseWithTarget(boolean b);
+	void setUseWithTarget(boolean b);
 
-	public void stopAllAnimation();
+	void stopAllAnimation();
 
-	public ActionAssembler getControl();
+	ActionAssembler getControl();
 
-	MainFrameI getMainFrame();
+	AbstractSwingMainFrame getMainFrame();
+
 
 }

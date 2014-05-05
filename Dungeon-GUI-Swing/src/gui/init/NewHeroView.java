@@ -1,4 +1,4 @@
-package gui;
+package gui.init;
 
 import item.HealPotion;
 import item.Item;
@@ -48,8 +48,8 @@ import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
 import game.JDEnv;
+import gui.Paragraph;
 import gui.mainframe.MainFrame;
-import gui.mainframe.component.InfoView;
 
 public class NewHeroView extends JDialog implements ItemListener,
 		ActionListener, MouseListener {
@@ -90,7 +90,7 @@ public class NewHeroView extends JDialog implements ItemListener,
 	int dust;
 	double dustReg;
 
-	InfoView view;
+	NewHeroInfoView view;
 
 	Hero held;
 
@@ -298,7 +298,7 @@ public class NewHeroView extends JDialog implements ItemListener,
 
 		JPanel info = new JPanel();
 		info.setBorder(new TitledBorder("Info"));
-		view = new InfoView(250, 120, false, null);
+		view = new NewHeroInfoView(250, 120, false, this);
 		info.add(view);
 
 		attr2.setLayout(grid2);

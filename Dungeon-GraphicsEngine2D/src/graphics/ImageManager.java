@@ -62,6 +62,9 @@ public class ImageManager {
 		return instance;
 	}
 
+
+	public static JDImageProxy<?> button1;
+
 	public static JDImageProxy<?> woodTextureImage;
 
 	public static JDImageProxy<?> fieldImage;
@@ -936,6 +939,8 @@ public class ImageManager {
 			deathImage = new JDImageProxy(a, "tot1.gif");
 
 			lebenskugel = new JDImageProxy(a, "lebenskugel.gif");
+
+			button1 = new JDImageProxy(a, "button1.gif");
 
 		}
 

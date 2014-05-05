@@ -8,7 +8,7 @@ package gui.engine2D.animation;
 
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
-import gui.MyJDGui;
+import gui.AbstractJDGUIEngine2D;
 import gui.engine2D.GraphBoard;
 
 import java.awt.Graphics;
@@ -41,7 +41,7 @@ public class MasterAnimation extends Thread implements Runnable {
 
 	private RoomInfo r;
 
-	private final MyJDGui gui;
+	private final AbstractJDGUIEngine2D gui;
 
 	private final Graphics g;
 
@@ -53,7 +53,8 @@ public class MasterAnimation extends Thread implements Runnable {
 	
 	private final List<AnimationTask> oldAnis = new LinkedList<AnimationTask>();
 
-	public MasterAnimation(int size, GraphBoard bord, RoomInfo r, MyJDGui gui) {
+	public MasterAnimation(int size, GraphBoard bord, RoomInfo r,
+			AbstractJDGUIEngine2D gui) {
 		roomSize = size;
 		this.gui = gui;
 		bild = bord;

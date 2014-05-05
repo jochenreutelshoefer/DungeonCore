@@ -6,19 +6,17 @@
  */
 package dungeon.generate;
 
-import item.quest.Rune;
-
-import java.util.*;
-
-import dungeon.Dungeon;
-import dungeon.JDPoint;
-import dungeon.Room;
-import dungeon.RouteInstruction;
-
 import figure.Figure;
 import figure.monster.Monster;
 import game.DungeonGame;
 import game.JDEnv;
+import item.quest.Rune;
+
+import java.util.List;
+
+import dungeon.Dungeon;
+import dungeon.Room;
+import dungeon.RouteInstruction;
 
 public class SectorDungeonFiller1 extends DungeonFiller {
 
@@ -37,6 +35,7 @@ public class SectorDungeonFiller1 extends DungeonFiller {
 	/**
 	 * @see DungeonFiller#getMap()
 	 */
+	@Override
 	protected int[][] getMap() {
 		return null;
 	}
@@ -44,6 +43,7 @@ public class SectorDungeonFiller1 extends DungeonFiller {
 	/**
 	 * @see DungeonFiller#fillDungeon()
 	 */
+	@Override
 	public void fillDungeon() throws DungeonGenerationFailedException {
 
 		Sector s1 = new Sector1(d, d.getPoint(18, 39), 1, 800, 24, game, this);
@@ -56,6 +56,7 @@ public class SectorDungeonFiller1 extends DungeonFiller {
 
 	}
 
+	@Override
 	protected Monster getMonsterIn(int sector, int nope) {
 		for (int i = 0; i < 1000; i++) {
 			Room r = d.getRoom(d.getRandomPoint());
