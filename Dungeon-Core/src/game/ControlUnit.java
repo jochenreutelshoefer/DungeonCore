@@ -10,7 +10,6 @@ import dungeon.JDPoint;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
-import figure.percept.Percept;
 
 
 
@@ -23,7 +22,7 @@ import figure.percept.Percept;
  * @author Jochen
  * 
  */
-public interface ControlUnit extends ActionSpecifier {
+public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	
 
 	/**
@@ -47,13 +46,7 @@ public interface ControlUnit extends ActionSpecifier {
 	 */
 	public void actionDone(Action a, ActionResult res);
 	
-	/**
-	 * Processes a percept that the figure observed from the world.
-	 * 
-	 * @param p
-	 */
-	public void tellPercept(Percept p);
-	
+
 	
 
 	

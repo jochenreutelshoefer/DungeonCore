@@ -337,7 +337,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		}
 		if (o instanceof Point) {
 			Point point = (Point) o;
-			gui.getControl().roomClicked(new JDPoint(point.x, point.y), right);
+			gui.getActionAssembler().roomClicked(new JDPoint(point.x, point.y), right);
 			return;
 		}
 		if (r == null) {
@@ -350,7 +350,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			GraphicObject ob = (renderer.items.get(i));
 
 			if ((ob != null) && ob.hasPoint(p)) {
-				gui.getControl().itemClicked((ItemInfo) ob.getClickedObject(),
+				gui.getActionAssembler().itemClicked((ItemInfo) ob.getClickedObject(),
 						right);
 				if ((ob.getClickedObject()) != null) {
 					// Wenn kein Fragezeichen....
@@ -371,7 +371,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				if (ob.hasPoint(p)) {
 					Object f = ob.getClickedObject();
 					if (f != null && f instanceof FigureInfo) {
-						gui.getControl().monsterClicked((FigureInfo) f, right);
+						gui.getActionAssembler().monsterClicked((FigureInfo) f, right);
 					}
 					gui.getMainFrame()
 							.setText(
@@ -390,7 +390,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				GraphicObject ob = renderer.positions.get(i);
 				if (ob.hasPoint(p)) {
 					if ((ob.getClickedObject()) != null)
-						gui.getControl().positionClicked(
+						gui.getActionAssembler().positionClicked(
 								(PositionInRoomInfo) ob.getClickedObject(),
 								right);
 					found = true;
@@ -404,7 +404,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				GraphicObject ob = (renderer.shrines.get(i));
 				if (ob.hasPoint(p)) {
 					if ((ob.getClickedObject()) != null)
-						gui.getControl().shrineClicked(right);
+						gui.getActionAssembler().shrineClicked(right);
 					gui.getMainFrame()
 							.setText(
 									((Paragraphable) (ob
@@ -422,7 +422,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				GraphicObject ob = (renderer.doors.get(i));
 				if (ob.hasPoint(p)) {
 					if ((ob.getClickedObject()) != null)
-						gui.getControl().doorClicked(ob.getClickedObject(),
+						gui.getActionAssembler().doorClicked(ob.getClickedObject(),
 								right);
 					Paragraphable pa = ((Paragraphable) (ob
 							.getClickedObject()));
@@ -441,7 +441,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				GraphicObject ob = (renderer.spots.get(i));
 				if (ob.hasPoint(p)) {
 					if ((ob.getClickedObject()) != null)
-						gui.getControl().spotClicked(ob.getClickedObject());
+						gui.getActionAssembler().spotClicked(ob.getClickedObject());
 					gui.getMainFrame()
 							.setText(
 									((Paragraphable) (ob
@@ -460,7 +460,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 				if (ob.hasPoint(p)) {
 					if ((ob.getClickedObject()) != null) {
 
-						gui.getControl().chestClicked(ob.getClickedObject(),
+						gui.getActionAssembler().chestClicked(ob.getClickedObject(),
 								right);
 						gui.getMainFrame()
 								.setText(
@@ -478,7 +478,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		if (!found) {
 
 			if (renderer.hero.hasPoint(p)) {
-				gui.getControl().heroClicked();
+				gui.getActionAssembler().heroClicked();
 				found = true;
 
 			}
@@ -487,7 +487,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 			for (int i = 0; i < renderer.rooms.size(); i++) {
 				GraphicObject ob = (renderer.rooms.get(i));
 				if (ob.hasPoint(p)) {
-					gui.getControl().roomClicked(ob.getClickedObject(), right);
+					gui.getActionAssembler().roomClicked(ob.getClickedObject(), right);
 					found = true;
 					break;
 				}

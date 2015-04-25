@@ -19,6 +19,28 @@ import dungeon.JDPoint;
 
 public class FigureControl implements ControlUnit {
 
+	private boolean paused = false;
+
+	public void pause() {
+		paused = true;
+
+	}
+
+	public void run() {
+		paused = false;
+
+	}
+
+	private int delay = 0;
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
 	private FigureInfo f;
 
 	private final AI brain;
@@ -62,8 +84,26 @@ public class FigureControl implements ControlUnit {
 		return perceptList;
 	}
 
+	private void delay() {
+		try {
+			Thread.sleep(this.delay);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public Action getAction() {
+		/*
+		 * artificial delay to enable smooth visual display of action in the gui
+		 */
+		delay();
+
+		while (this.paused) {
+			delay();
+		}
+
 		Action a = null;
 		if (f.getRoomInfo().fightRunning().booleanValue()) {
 			a = brain.chooseFightAction();
@@ -73,7 +113,5 @@ public class FigureControl implements ControlUnit {
 		perceptList = new LinkedList<Percept>();
 		return a;
 	}
-
-
 
 }

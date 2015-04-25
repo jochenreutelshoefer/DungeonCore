@@ -70,7 +70,7 @@ public class ShowPanel extends JDJPanel implements MouseListener {
 				HeroInfo info = ((HeroInfo) f);
 
 				if (info.hasLuziaBall().booleanValue()) {
-					gui.getControl().wannaUseLuziaBall();
+					gui.getActionAssembler().wannaUseLuziaBall();
 					// frame.getGame().getHero().getLuziasBall().use(frame.getGame().getHero());
 
 				}

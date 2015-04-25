@@ -9,12 +9,17 @@ import graphics.ImageManager;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 
 import javax.swing.JPanel;
 
 public class JDJPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3312764915549053922L;
 	/**
 	 * @param layout
 	 * @param isDoubleBuffered
@@ -30,6 +35,7 @@ public class JDJPanel extends JPanel {
 
 	public static final int texSizeY = 96;
 	
+
 	/**
 	 * 
 	 */
@@ -38,6 +44,16 @@ public class JDJPanel extends JPanel {
 		this.gui = gui;
 		this.setBackground(bgColor);
 		this.setOpaque(false);
+	}
+
+	public void updateView() {
+		Component[] components = this.getComponents();
+
+		for (Component child : components) {
+			if (child instanceof JDJPanel) {
+				((JDJPanel) child).updateView();
+			}
+		}
 	}
 
 }

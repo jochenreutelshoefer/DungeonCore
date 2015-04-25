@@ -39,7 +39,7 @@ public class SpellsView extends JDJPanel implements ActionListener {
 	
 	public SpellsView(JDGUISwing gui) {
 		super(gui);
-		gui.getControl();
+		gui.getActionAssembler();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class SpellsView extends JDJPanel implements ActionListener {
 
 			for (int i = 0; i < butts.length; i++) {
 				if (sc == butts[i]) {
-					gui.getControl().wannaLernSpell(spells.get(i));
+					gui.getActionAssembler().wannaLernSpell(spells.get(i));
 				}
 			}
 		}

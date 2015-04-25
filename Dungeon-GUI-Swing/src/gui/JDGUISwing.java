@@ -11,4 +11,5 @@ public interface JDGUISwing extends JDGUIEngine2D {
 	void repaintPicture();
 	
 	Point getViewportPosition();
+
 }

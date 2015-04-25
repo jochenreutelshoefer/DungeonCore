@@ -17,6 +17,7 @@ import figure.percept.Percept;
 
 public class MyDemoBot extends AI {
 
+	private static final int _300 = 300;
 	private HeroInfo hero;
 
 	@Override
@@ -41,24 +42,14 @@ public class MyDemoBot extends AI {
 
 	@Override
 	public Action chooseFightAction() {
-		delay();
 		List<MonsterInfo> monsterInfos = hero.getRoomInfo().getMonsterInfos();
-
 		return new AttackAction(monsterInfos.get(0).getFighterID());
 	}
 
-	private void delay() {
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 
 	@Override
 	public Action chooseMovementAction() {
-		delay();
 		int[] roomDoors = hero.getRoomDoors();
 		int dir = 0;
 		for (int i : roomDoors) {

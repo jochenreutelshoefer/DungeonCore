@@ -1,14 +1,22 @@
 package gui.bot;
 
 import figure.FigureInfo;
+import figure.HeroControlWithSpectator;
 import figure.action.Action;
 import figure.action.LearnSpellAction;
 import figure.action.TakeItemAction;
 import figure.action.result.ActionResult;
+import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import figure.percept.Percept;
-import gui.JDGUISwing;
+import game.DungeonGame;
+import game.JDEnv;
+import graphics.AbstractImageLoader;
+import gui.AbstractJDGUIEngine2D;
+import gui.engine2D.AWTImageLoader;
 import gui.engine2D.animation.MasterAnimation;
 import gui.mainframe.MainFrame;
+import gui.mainframe.component.BoardView;
 import item.ItemInfo;
 
 import java.awt.Point;
@@ -16,7 +24,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
@@ -24,22 +34,107 @@ import javax.swing.JComboBox;
 import spell.SpellInfo;
 import text.Statement;
 import text.StatementManager;
+import ai.AI;
 import control.AbstractSwingMainFrame;
 import control.ActionAssembler;
+import dungeon.DungeonFactory;
+import dungeon.DungeonManager;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 
-public class BotJDGUISwing implements JDGUISwing {
+public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 
 	private BotGUIMainframe frame;
 	private FigureInfo figure;
 	private final Vector<Action> actionQueue = new Vector<Action>();
 	protected final Map<RoomInfo, MasterAnimation> masterAnis = new HashMap<RoomInfo, MasterAnimation>();
+	private final AbstractImageLoader imageLoader;
+	private HeroControlWithSpectator control;
+	private ResourceBundle res;
+	private final DungeonFactory dungeonFactory;
+	private boolean initialized = false;
 
+	private Thread th;
+	private Hero h;
+
+	public BotJDGUISwing(DungeonFactory dungeonFactory) {
+		this.dungeonFactory = dungeonFactory;
+		imageLoader = new AWTImageLoader(null);
+		if (JDEnv.isEnglish()) {
+			res = ResourceBundle.getBundle("texts_bot", Locale.ENGLISH);
+		} else {
+			res = ResourceBundle.getBundle("texts_bot", Locale.GERMAN);
+
+		}
+	}
+
+	public void startGame(Hero h) {
+
+		this.h = h;
+		DungeonGame dungeon = dungeonFactory.createDungeon();
+
+		HeroInfo figureInfo = DungeonManager.enterDungeon(h,
+				dungeon.getDungeon(), new JDPoint(18, 39));
+		this.setFigure(figureInfo);
+
+		frame = new BotGUIMainframe(MainFrame.clearString(h.getName()), this,
+				"Java Dungeon Bot GUI");
+		frame.initMainframe();
+
+		AI botInstance = getCurrentlySelectedAIInstance();
+		HeroControlWithSpectator control = new HeroControlWithSpectator(
+				figureInfo, botInstance, this);
+		this.setControl(control);
+		h.setControl(control);
+		botInstance.setFigure(figureInfo);
+		dungeon.putGuiFigure(h, this);
+		// new StartView(h.getName(), 0, null, false)
+
+		th = new Thread(dungeon);
+		th.start();
+
+
+		initialized = true;
+	}
+
+	private AI getCurrentlySelectedAIInstance() {
+		Class<? extends AI> aiClass = frame.getSelectedBotAIClass();
+		try {
+			return aiClass.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void restartGame() {
+		th.stop();
+
+		this.frame.dispose();
+		actionQueue.clear();
+		masterAnis.clear();
+		initialized = false;
+		startGame(h);
+		initGui();
+		initialized = true;
+	}
+
+	public void initGui() {
+
+	}
 
 	@Override
 	public FigureInfo getFigure() {
 		return figure;
+	}
+
+	@Override
+	public BoardView getBoard() {
+		return this.frame.getSpielfeld();
 	}
 
 	/**
@@ -70,8 +165,7 @@ public class BotJDGUISwing implements JDGUISwing {
 				combo.setSelectedItem(((LearnSpellAction) a).getSpell());
 			}
 			if (a instanceof TakeItemAction) {
-				JComboBox combo = frame.getGesundheit()
-						.getItemCombo();
+				JComboBox combo = frame.getGesundheit().getItemCombo();
 				combo.setSelectedItem(((TakeItemAction) a).getItem());
 			}
 		}
@@ -80,7 +174,14 @@ public class BotJDGUISwing implements JDGUISwing {
 
 	@Override
 	public void tellPercept(Percept p) {
+		if (!this.isInitialized())
+			return;
+		super.tellPercept(p);
 		frame.updateGUI(MainFrame.UPDATE_ALL, false);
+	}
+
+	private boolean isInitialized() {
+		return initialized;
 	}
 
 	@Override
@@ -120,23 +221,28 @@ public class BotJDGUISwing implements JDGUISwing {
 
 	@Override
 	public void gameRoundEnded() {
+		if (isInitialized()) {
 		newStatement("--------", 0);
-		this.updateGui();
+			this.updateGui();
+		}
 
 	}
 
+	@Override
 	public void newStatement(String s, int k) {
 		if (frame != null) {
 			frame.newStatement(s, k);
 		}
 	}
 
+	@Override
 	public void newStatement(Statement s) {
 		if (s != null) {
 			newStatement(s.getText(), s.getFormat());
 		}
 	}
 
+	@Override
 	public void newStatements(List<Statement> l) {
 		for (Iterator<Statement> iter = l.iterator(); iter.hasNext();) {
 			Statement element = iter.next();
@@ -145,16 +251,9 @@ public class BotJDGUISwing implements JDGUISwing {
 		}
 	}
 
+	@Override
 	public void newStatement(String s, int code, int to) {
 		frame.newStatement(s, code, to);
-	}
-
-	public void initGui(String name) {
-		frame = new BotGUIMainframe(
-				MainFrame.clearString(name), this,
-				"Java Dungeon Bot GUI");
-		frame.initMainframe();
-
 	}
 
 
@@ -216,7 +315,7 @@ public class BotJDGUISwing implements JDGUISwing {
 	}
 
 	@Override
-	public ActionAssembler getControl() {
+	public ActionAssembler getActionAssembler() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -240,6 +339,23 @@ public class BotJDGUISwing implements JDGUISwing {
 	@Override
 	public Point getViewportPosition() {
 		return frame.getSpielfeld().getViewport().getViewPosition();
+	}
+
+	@Override
+	public AbstractImageLoader getImageSource() {
+		return imageLoader;
+	}
+
+	public void setControl(HeroControlWithSpectator control) {
+		this.control = control;
+	}
+
+	public HeroControlWithSpectator getControl() {
+		return control;
+	}
+
+	public ResourceBundle getResourceBundle() {
+		return res;
 	}
 
 }

@@ -77,7 +77,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 
 	public CharacterView(JDGUISwing gui) {
 		super(gui);
-		control = gui.getControl();
+		control = gui.getActionAssembler();
 		levelV = new SkillExpView(0, 1, gui);
 
 	
@@ -303,7 +303,7 @@ public class CharacterView extends JDJPanel implements MouseMotionListener,
 			key = Attribute.PSYCHO;
 		}
 		if(key != -1) {
-			gui.getControl().wannaSkillUp(key);
+			gui.getActionAssembler().wannaSkillUp(key);
 		}
 		
 	}

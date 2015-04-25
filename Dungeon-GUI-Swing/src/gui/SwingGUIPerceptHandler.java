@@ -43,19 +43,21 @@ import text.StatementManager;
 import animation.AnimationSet;
 import animation.AnimationUtils;
 import audio.AudioEffectsManager;
+import control.AnimationPerceptHandler;
 import control.MainFrameI;
 import dungeon.RoomInfo;
 
-public class PerceptHandler {
+public class SwingGUIPerceptHandler implements AnimationPerceptHandler {
 
 	private final AbstractJDGUIEngine2D gui;
 	private final Map<RoomInfo, MasterAnimation> masterAnis = new HashMap<RoomInfo, MasterAnimation>();
 
-	public PerceptHandler(AbstractJDGUIEngine2D gui) {
+	public SwingGUIPerceptHandler(AbstractJDGUIEngine2D gui) {
 		this.gui = gui;
 	}
 
-	void tellPercept(Percept p) {
+	@Override
+	public void tellPercept(Percept p) {
 		if (p instanceof WaitPercept) {
 			handleWaitPercept((WaitPercept) p);
 		}
@@ -505,6 +507,7 @@ public class PerceptHandler {
 
 	}
 
+	@Override
 	public void stopAllAnimtation() {
 		Collection<RoomInfo> c = masterAnis.keySet();
 		for (Iterator<RoomInfo> iter = c.iterator(); iter.hasNext();) {
@@ -515,6 +518,7 @@ public class PerceptHandler {
 
 	}
 
+	@Override
 	public boolean currentAnimationThreadRunning(RoomInfo r) {
 		MasterAnimation ani = masterAnis.get(r);
 

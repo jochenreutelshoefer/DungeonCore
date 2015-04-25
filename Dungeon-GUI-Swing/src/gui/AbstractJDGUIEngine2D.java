@@ -5,23 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import text.Statement;
+import control.AnimationPerceptHandler;
 import figure.percept.Percept;
 import gui.mainframe.component.BoardView;
 
 public abstract class AbstractJDGUIEngine2D implements JDGUISwing {
 	
-	protected final PerceptHandler perceptHandler;
+	protected final AnimationPerceptHandler perceptHandler;
 
 	public AbstractJDGUIEngine2D() {
-		perceptHandler = new PerceptHandler(this);
+		perceptHandler = new SwingGUIPerceptHandler(this);
 	}
 
 
 	@Override
 	public void tellPercept(Percept p) {
 		perceptHandler.tellPercept(p);
-
-
 	}
 
 	public Graphics getGraphics() {
@@ -53,4 +52,5 @@ public abstract class AbstractJDGUIEngine2D implements JDGUISwing {
 	public void newStatement(String s, int code, int to) {
 		getMainFrame().newStatement(s, code, to);
 	}
+
 }

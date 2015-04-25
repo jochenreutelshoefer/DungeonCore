@@ -14,7 +14,6 @@ import gui.mainframe.component.DustView;
 import gui.mainframe.component.HealthView;
 import gui.mainframe.component.InfoView;
 import gui.mainframe.component.InventoryView;
-import gui.mainframe.component.ShowPanel;
 import gui.mainframe.component.SpellsView;
 import gui.mainframe.component.TextView;
 
@@ -33,6 +32,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -41,6 +41,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ai.AI;
 import control.AbstractSwingMainFrame;
 
 public class BotGUIMainframe extends AbstractSwingMainFrame implements
@@ -48,12 +49,12 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 
 	private final BotJDGUISwing gui;
 	private Font ButtonFont;
-	private ShowPanel amatur;
+	private JDJPanel amatur;
 
 	private final String playerName; // necessary ?
 
 	private AWTImageLoader imageSource;
-	private Container cp1;
+	private Container mainPane;
 	private JDBackgroundPanel cp;
 	private CharacterView character;
 	private BoardView spielfeld;
@@ -66,7 +67,12 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	private SpellsView zauberP;
 	private TextView kampfVerlauf;
 
-	private final JTabbedPane northEast = new JTabbedPane();
+	private JTabbedPane northEast;
+	private BotGameControlPanel botGameControlPanel;
+	
+	enum GameRunState {
+		RUNNING, PAUSED
+	};
 
 	public BotGUIMainframe(String clearString, BotJDGUISwing gui, String name) {
 		super("Dungeon Bot Spectator GUI");
@@ -76,34 +82,69 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	}
 
 	public void initMainframe() {
-
-		JPanel east = new JPanel();
-		east.setBackground(JDJPanel.bgColor);
-
-		ButtonFont = new Font("Arial", Font.BOLD, 17);
-		amatur = new ShowPanel(gui);
-		imageSource = new AWTImageLoader(null);
-
-		cp1 = this.getContentPane();
-
+		mainPane = this.getContentPane();
 		cp = new JDBackgroundPanel();
-		BorderLayout b = new BorderLayout();
-
-		cp.setLayout(b);
-		cp1.add(cp);
-
-		character = new CharacterView(gui);
-
+		cp.setLayout(new BorderLayout());
+		mainPane.add(cp);
 		spielfeld = new BoardView(null, gui);
-
 		cp.add(spielfeld, BorderLayout.CENTER);
 
-		verlauf = new TextView(380, 250, gui);
+		ButtonFont = new Font("Arial", Font.BOLD, 17);
+		imageSource = new AWTImageLoader(null);
 
+		/*
+		 * east panel
+		 */
+		JPanel east = new JPanel();
+		east.setOpaque(true);
 		east.setLayout(new BorderLayout());
-		east.add(verlauf, BorderLayout.NORTH);
+		east.setBackground(JDJPanel.bgColor);
+
+
+		northEast = new JTabbedPane();
+		northEast.setOpaque(true);
+		northEast.addChangeListener(this);
+
+		amatur = new JDJPanel(gui);
 		amatur.setSize(100, 20);
 		east.add(amatur, BorderLayout.CENTER);
+		final JButton playButton = new PlayPauseButton(gui);
+		amatur.add(playButton);
+
+
+		verlauf = new TextView(380, 250, gui);
+		east.add(verlauf, BorderLayout.NORTH);
+
+
+		fightPanel = new JPanelNoRepaint();
+		fightPanel.setBackground(JDJPanel.bgColor);
+		fightPanel.setLayout(new BorderLayout());
+		kampfVerlauf = new TextView(380, 250, gui);
+		fightPanel.add(kampfVerlauf, BorderLayout.NORTH);
+
+
+
+		northEast.addTab(JDEnv.getResourceBundle().getString("movement"), east);
+		northEast.addTab(JDEnv.getResourceBundle().getString("fight"),
+				fightPanel);
+		fightPanel.setOpaque(true);
+		northEast.addTab(JDEnv.getResourceBundle().getString("gui_inventory"),
+				inventory);
+		inventory = new InventoryView(gui);
+		inventory.setOpaque(true);
+		zauberP = new SpellsView(gui);
+		northEast.addTab(JDEnv.getResourceBundle().getString("spelling"),
+				zauberP);
+		zauberP.setOpaque(true);
+		northEast.setBackground(JDJPanel.bgColor);
+		northEast.setOpaque(true);
+		northEast.setPreferredSize(new Dimension(390, 340));
+
+		character = new CharacterView(gui);
+		northEast.addTab("Char", character);
+		character.setOpaque(true);
+
+		cp.add(northEast, BorderLayout.EAST);
 
 		/*
 		 * South panel
@@ -114,47 +155,18 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		southPanel.setBorder(new EmptyBorder(0, 50, 0, 50));
 		gesundheit = new HealthView(gui);
 		text = new InfoView(gui);
-		staub = new DustView(gui);
+		botGameControlPanel = new BotGameControlPanel(gui);
+		staub = new DustView(gui, botGameControlPanel);
 		southPanel.add(gesundheit, BorderLayout.WEST);
 		southPanel.add(text, BorderLayout.CENTER);
 		southPanel.add(staub, BorderLayout.EAST);
 
-		fightPanel = new JPanelNoRepaint();
-		fightPanel.setBackground(JDJPanel.bgColor);
-		fightPanel.setLayout(new BorderLayout());
+
 		JDJPanel fightButtonP = new JDJPanel(gui);
 		JDJPanel centerPanel = new JDJPanel(gui);
 		centerPanel.setLayout(new GridLayout(2, 1));
 		fightButtonP.setLayout(new BorderLayout());
 		fightButtonP.add(centerPanel, BorderLayout.CENTER);
-
-		inventory = new InventoryView(gui);
-		zauberP = new SpellsView(gui);
-		kampfVerlauf = new TextView(380, 250, gui);
-
-		fightPanel.add(kampfVerlauf, BorderLayout.NORTH);
-
-		northEast.setOpaque(true);
-		northEast.addChangeListener(this);
-
-		northEast.addTab(JDEnv.getResourceBundle().getString("movement"), east);
-		east.setOpaque(true);
-		northEast.addTab(JDEnv.getResourceBundle().getString("fight"),
-				fightPanel);
-		fightPanel.setOpaque(true);
-		northEast.addTab("Char", character);
-		character.setOpaque(true);
-		northEast.addTab(JDEnv.getResourceBundle().getString("gui_inventory"),
-				inventory);
-		inventory.setOpaque(true);
-		northEast.addTab(JDEnv.getResourceBundle().getString("spelling"),
-				zauberP);
-		zauberP.setOpaque(true);
-		northEast.setBackground(JDJPanel.bgColor);
-		northEast.setOpaque(true);
-		northEast.setPreferredSize(new Dimension(390, 340));
-
-		cp.add(northEast, BorderLayout.EAST);
 
 		cp.add(southPanel, BorderLayout.SOUTH);
 
@@ -269,9 +281,8 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+	public void mouseExited(MouseEvent me) {
+		text.resetText();
 	}
 
 	@Override
@@ -350,6 +361,11 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	public void updateHealth() {
 		gesundheit.updateView();
 
+	}
+
+	public Class<? extends AI> getSelectedBotAIClass() {
+		// TODO Auto-generated method stub
+		return botGameControlPanel.getSelectedBotAIClass();
 	}
 
 }

@@ -15,6 +15,7 @@ public class FigureControlWithSpectator extends FigureControl {
 
 	@Override
 	public void tellPercept(Percept p) {
+		// Log.info("telling percept: " + p.toString());
 		spectator.tellPercept(p);
 		super.tellPercept(p);
 	}

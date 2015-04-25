@@ -15,6 +15,7 @@ import figure.hero.HeroInfo;
 import figure.memory.Memory;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
+import graphics.AbstractImageLoader;
 import gui.init.StartView;
 import gui.mainframe.MainFrame;
 import gui.mainframe.component.BoardView;
@@ -213,7 +214,7 @@ public class MyJDGui extends AbstractJDGUIEngine2D {
 	 * @return Returns the control.
 	 */
 	@Override
-	public ActionAssembler getControl() {
+	public ActionAssembler getActionAssembler() {
 		return control;
 	}
 
@@ -292,13 +293,17 @@ public class MyJDGui extends AbstractJDGUIEngine2D {
 	@Override
 	public void setSelectedItemIndex(int i) {
 		getMainFrame().getGesundheit().getItemCombo().setSelectedIndex(i);
-
 	}
 
 
 	@Override
 	public BoardView getBoard() {
 		return this.frame.getSpielfeld();
+	}
+
+	@Override
+	public AbstractImageLoader getImageSource() {
+		return MainFrame.imageSource;
 	}
 
 }

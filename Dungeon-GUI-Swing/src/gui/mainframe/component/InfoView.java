@@ -3,8 +3,8 @@ package gui.mainframe.component;
 import gui.JDGUISwing;
 import gui.JDJPanel;
 import gui.Paragraph;
+import gui.engine2D.AWTImageLoader;
 import gui.engine2D.DrawUtils;
-import gui.mainframe.MainFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,14 +24,16 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import log.Log;
 import util.JDColor;
 
 /**
  * @author Duke1
  * 
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates. To enable and disable the creation of type
- * comments go to Window>Preferences>Java>Code Generation.
+ *         To change this generated comment edit the template variable
+ *         "typecomment": Window>Preferences>Java>Templates. To enable and
+ *         disable the creation of type comments go to
+ *         Window>Preferences>Java>Code Generation.
  */
 public class InfoView extends JDJPanel {
 
@@ -55,88 +57,87 @@ public class InfoView extends JDJPanel {
 
 	int sizey = 150;
 
-
 	public InfoView(JDGUISwing gui) {
 		super(gui);
 		this.setLayout(new BorderLayout());
-		if (MainFrame.imageSource != null) {
+		if (gui.getImageSource() != null
+				&& gui.getImageSource() instanceof AWTImageLoader) {
 			MediaTracker tracker = new MediaTracker(gui.getMainFrame());
-			
-			bgImage = MainFrame.imageSource.loadImage("tafel3.gif");
+
+			bgImage = ((AWTImageLoader) gui.getImageSource())
+					.loadImage("tafel3.gif");
 			tracker.addImage(bgImage, 1);
-		
+
 			try {
 				tracker.waitForAll();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				Log.error("failed to load image for InfoView");
 				e.printStackTrace();
 			}
-			
+
 		}
 
 		verlauftxt2 = new JTextPane(doc);
 
 		this.setPreferredSize(new Dimension(sizex, sizey));
 		this.setOpaque(false);
-		
 
 	}
+
 	private static final int texSizeX = 96;
 
 	private static final int texSizeY = 96;
-	
 
 	@Override
 	public void paint(Graphics g) {
-			if (offscreenImage == null) {
+		if (offscreenImage == null) {
 
-				offscreenImage = gui.getMainFrame().createImage(
-						this.getWidth(), this
-						.getHeight());
-			}
-			if (actualP != null) {
-				if (!Paragraph.areEqual(paintedP, actualP)) {
-					if (bgImage != null) {
-						Graphics g2 = offscreenImage.getGraphics();
-						int i = 0;
-						int j = 0;
-						while (i * texSizeX < this.getWidth()) {
-							j = 0;
-							while (j * texSizeY < this.getHeight()) {
+			offscreenImage = gui.getMainFrame().createImage(this.getWidth(),
+					this.getHeight());
+		}
+		if (actualP != null) {
+			if (!Paragraph.areEqual(paintedP, actualP)) {
 
-								g2.drawImage(JDJPanel.getBackGroundImage(), i * texSizeX, j
-										* texSizeY, texSizeX, texSizeY, null);
-								j++;
-							}
-							i++;
+				Graphics g2 = offscreenImage.getGraphics();
+				int i = 0;
+				int j = 0;
+				while (i * texSizeX < this.getWidth()) {
+					j = 0;
+					while (j * texSizeY < this.getHeight()) {
+
+						g2.drawImage(JDJPanel.getBackGroundImage(), i
+								* texSizeX, j * texSizeY, texSizeX, texSizeY,
+								null);
+						j++;
+					}
+					i++;
+				}
+				if (bgImage != null) {
+					g2.drawImage(bgImage, 0, 0, this.getWidth(),
+							this.getHeight(), null);
+				}
+
+				for (i = 0; i < actualP.length; i++) {
+					if (actualP[i] != null) {
+
+						String text = actualP[i].getText();
+						g2.setFont(new Font(actualP[i].getFont(), 0, actualP[i]
+								.getSize()));
+						g2.setColor(DrawUtils.convertColor(actualP[i].getC()));
+						if (text != null) {
+
+							g2.drawString(text, calcx(actualP[i], i),
+									calcy(actualP[i], i));
 						}
-						g2.drawImage(bgImage, 0, 0, this.getWidth(), this
-								.getHeight(), null);
-						
-						
-
-						for (i = 0; i < actualP.length; i++) {
-							if (actualP[i] != null) {
-
-								String text = actualP[i].getText();
-								g2.setFont(new Font(actualP[i].getFont(), 0,
-										actualP[i].getSize()));
-								g2.setColor(DrawUtils.convertColor(actualP[i]
-										.getC()));
-								if (text != null) {
-
-									g2.drawString(text, calcx(actualP[i], i),
-											calcy(actualP[i], i));
-								}
-							}
-						}
-						paintedP = actualP;
 					}
 				}
-			}
+				paintedP = actualP;
 
-			g.drawImage(offscreenImage, 0, 0, null);
+			}
 		}
+
+		g.drawImage(offscreenImage, 0, 0, null);
+	}
 
 	public int calcx(Paragraph p, int i) {
 		int l = 0;
@@ -195,26 +196,26 @@ public class InfoView extends JDJPanel {
 	public void setText(Paragraph[] p) {
 
 		if (p != null) {
-			
-				Paragraph []x = processParagraph(p);
-				if(!Paragraph.areEqual(x, this.actualP)) {
-					this.actualP = x;
-					repaint();
-				}
+
+			Paragraph[] x = processParagraph(p);
+			if (!Paragraph.areEqual(x, this.actualP)) {
+				this.actualP = x;
+				repaint();
+			}
 
 		} else {
 			resetText();
 		}
 	}
-	
-	private Paragraph[] processParagraph(Paragraph [] p) {
-		
+
+	private Paragraph[] processParagraph(Paragraph[] p) {
+
 		LinkedList list = new LinkedList();
 		for (int i = 0; i < p.length; i++) {
 			if (p[i] != null && p[i].getText() != null) {
 
-				StringTokenizer tokenizer = new StringTokenizer(p[i]
-						.getText(), "\n");
+				StringTokenizer tokenizer = new StringTokenizer(p[i].getText(),
+						"\n");
 				while (tokenizer.hasMoreTokens()) {
 					String s = tokenizer.nextToken();
 					Paragraph sub = new Paragraph(s);
@@ -248,7 +249,6 @@ public class InfoView extends JDJPanel {
 
 			for (int i = 0; i < pars.length; i++) {
 				SimpleAttributeSet style = new SimpleAttributeSet();
-				
 
 				boolean bold = pars[i].isBold();
 				boolean just = pars[i].isJustified();
@@ -265,7 +265,7 @@ public class InfoView extends JDJPanel {
 				JDColor color = pars[i].getC();
 				if (color != null) {
 
-				StyleConstants.setForeground(style,
+					StyleConstants.setForeground(style,
 							DrawUtils.convertColor(color));
 				}
 				String font = pars[i].getFont();
@@ -276,7 +276,7 @@ public class InfoView extends JDJPanel {
 				if (size != 0) {
 					StyleConstants.setFontSize(style, size);
 				}
-				
+
 				String s = pars[i].getText();
 				if (s == null) {
 					s = new String();

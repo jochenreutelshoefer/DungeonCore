@@ -528,7 +528,7 @@ public class MainFrame extends AbstractSwingMainFrame implements
 
 			if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
 
-				gui.getControl().wannaAttack(choosenEnemy);
+				gui.getActionAssembler().wannaAttack(choosenEnemy);
 
 			} else {
 				newStatement("...ja, aber wen?", 0);

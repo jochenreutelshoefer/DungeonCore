@@ -125,39 +125,39 @@ public class ControlView extends JDJPanel implements ActionListener {
 		Object quelle = e.getSource();
 		////System.out.println("ActionPerformed! "+e.toString());
 		if (quelle == north) {
-			gui.getControl().wannaWalk(RouteInstruction.NORTH);
+			gui.getActionAssembler().wannaWalk(RouteInstruction.NORTH);
 			
 		}
 		if (quelle == east) {
 
-			gui.getControl().wannaWalk(RouteInstruction.EAST);
+			gui.getActionAssembler().wannaWalk(RouteInstruction.EAST);
 
 		}
 
 		if (quelle == south) {
 
-			gui.getControl().wannaWalk(RouteInstruction.SOUTH);
+			gui.getActionAssembler().wannaWalk(RouteInstruction.SOUTH);
 
 				}
 		if (quelle == west) {
 
-			gui.getControl().wannaWalk(RouteInstruction.WEST);
+			gui.getActionAssembler().wannaWalk(RouteInstruction.WEST);
 
 		}
 		if (quelle == round) {
-			gui.getControl().wannaEndRound();
+			gui.getActionAssembler().wannaEndRound();
 		}
 		if (quelle == scoutSouth) {
-			gui.getControl().wannaScout(RouteInstruction.SOUTH);
+			gui.getActionAssembler().wannaScout(RouteInstruction.SOUTH);
 		}
 		if (quelle == scoutEast) {
-			gui.getControl().wannaScout(RouteInstruction.EAST);
+			gui.getActionAssembler().wannaScout(RouteInstruction.EAST);
 		}
 		if (quelle == scoutNorth) {
-			gui.getControl().wannaScout(RouteInstruction.NORTH);
+			gui.getActionAssembler().wannaScout(RouteInstruction.NORTH);
 		}
 		if (quelle == scoutWest) {
-			gui.getControl().wannaScout(RouteInstruction.WEST);
+			gui.getActionAssembler().wannaScout(RouteInstruction.WEST);
 		}
 		
 	}
@@ -171,7 +171,7 @@ public class ControlView extends JDJPanel implements ActionListener {
 	
 	
 	public void scout(int direction) {
-		gui.getControl().wannaScout(direction);
+		gui.getActionAssembler().wannaScout(direction);
 	}
 
 }

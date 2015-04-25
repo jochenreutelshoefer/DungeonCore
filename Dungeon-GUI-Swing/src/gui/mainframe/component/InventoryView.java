@@ -178,7 +178,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		super(gui);
 		takeItem = JDEnv.getResourceBundle().getString("gui_take");
 		layDown = JDEnv.getResourceBundle().getString("gui_layDown");
-		this.control = gui.getControl();
+		this.control = gui.getActionAssembler();
 		take = new JDJButton(takeItem);
 
 		use = new JDJButton(JDEnv.getResourceBundle().getString("gui_use"));
@@ -415,13 +415,13 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		if (heroInfo != null) {
 			for (int i = 0; i < Bshield.length; i++) {
 				if (quelle == Bshield[i]) {
-					gui.getControl().wannaSwitchEquipmentItem(
+					gui.getActionAssembler().wannaSwitchEquipmentItem(
 							EquipmentChangeAction.EQUIPMENT_TYPE_SHIELD, i);
 				}
 			}
 			for (int i = 0; i < Barmor.length; i++) {
 				if (quelle == Barmor[i]) {
-					gui.getControl().wannaSwitchEquipmentItem(
+					gui.getActionAssembler().wannaSwitchEquipmentItem(
 							EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR, i);
 
 				}
@@ -429,14 +429,14 @@ public class InventoryView extends JDJPanel implements ActionListener,
 
 			for (int i = 0; i < Bweapon.length; i++) {
 				if (quelle == Bweapon[i]) {
-					gui.getControl().wannaSwitchEquipmentItem(
+					gui.getActionAssembler().wannaSwitchEquipmentItem(
 							EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON, i);
 
 				}
 			}
 			for (int i = 0; i < Bhelmet.length; i++) {
 				if (quelle == Bhelmet[i]) {
-					gui.getControl().wannaSwitchEquipmentItem(
+					gui.getActionAssembler().wannaSwitchEquipmentItem(
 							EquipmentChangeAction.EQUIPMENT_TYPE_HELMET, i);
 
 				}
@@ -535,29 +535,29 @@ public class InventoryView extends JDJPanel implements ActionListener,
 
 		if (quelle == layDownWeapon) {
 
-			gui.getControl().wannaLayDownEquipmentItem(
+			gui.getActionAssembler().wannaLayDownEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON);
 
 		}
 		if (quelle == layDownArmor) {
-			gui.getControl().wannaLayDownEquipmentItem(
+			gui.getActionAssembler().wannaLayDownEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR);
 
 		}
 		if (quelle == layDownHelmet) {
-			gui.getControl().wannaLayDownEquipmentItem(
+			gui.getActionAssembler().wannaLayDownEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_HELMET);
 
 		}
 		if (quelle == layDownShield) {
-			gui.getControl().wannaLayDownEquipmentItem(
+			gui.getActionAssembler().wannaLayDownEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_SHIELD);
 		}
 		if (quelle == layDownItem) {
 
 			int i = heroItemL.getSelectedIndex();
 			if (i != -1) {
-				gui.getControl().wannaLayDownItem(i);
+				gui.getActionAssembler().wannaLayDownItem(i);
 			}
 
 		}
@@ -565,7 +565,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 			int i = heroItemL.getSelectedIndex();
 			if (i != -1) {
 				ItemInfo info = itemsH.get(i);
-				gui.getControl().useButtonClicked(info, false);
+				gui.getActionAssembler().useButtonClicked(info, false);
 
 				gui.setSelectedItemIndex(i);
 			}
@@ -577,7 +577,7 @@ public class InventoryView extends JDJPanel implements ActionListener,
 				ItemInfo[] items = gui.getFigure().getRoomInfo().getItems();
 				ItemInfo it = items[i];
 
-				gui.getControl().itemClicked(it, false);
+				gui.getActionAssembler().itemClicked(it, false);
 			}
 
 		}

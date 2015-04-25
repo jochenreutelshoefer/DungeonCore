@@ -81,6 +81,11 @@ public class DungeonGame implements Runnable {
 		return instance;
 	}
 
+	public static DungeonGame createNewInstance() {
+		instance = new DungeonGame();
+		return instance;
+	}
+
 
 
 	private DungeonGame() {

@@ -101,7 +101,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 	public HealthView(JDGUISwing gui) {
 
 		super(gui);
-		this.control = gui.getControl();
+		this.control = gui.getActionAssembler();
 		memoryB = new JDJButton(JDEnv.getResourceBundle().getString(
 				"gui_memory"));
 		benutzen = new JDJButton(JDEnv.getResourceBundle().getString("gui_use"));
@@ -192,7 +192,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 			if (i != -1) {
 				List<ItemInfo> l = gui.getFigure().getFigureItemList();
 				ItemInfo info = l.get(i);
-				gui.getControl().useButtonClicked(info,meta);
+				gui.getActionAssembler().useButtonClicked(info,meta);
 			}
 		
 
@@ -215,7 +215,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 			}
 			if (index != -1) {
 				ItemInfo seft = (ItemInfo) l.get(index);
-				gui.getControl().wannaUseItem(seft,null,false);
+				gui.getActionAssembler().wannaUseItem(seft,null,false);
 			}
 		}
 
@@ -394,17 +394,17 @@ public class HealthView extends JDJPanel implements ActionListener,
 	public void mouseClicked(MouseEvent me) {
 		Object quelle = me.getSource();
 		if (quelle == weap1) {
-			gui.getControl().wannaSwitchEquipmentItem(
+			gui.getActionAssembler().wannaSwitchEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON, 0);
 
 			
 		} else if (quelle == weap2) {
-			gui.getControl().wannaSwitchEquipmentItem(
+			gui.getActionAssembler().wannaSwitchEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON, 1);
 
 			
 		} else if (quelle == weap3) {
-			gui.getControl().wannaSwitchEquipmentItem(
+			gui.getActionAssembler().wannaSwitchEquipmentItem(
 					EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON, 2);
 
 		}
