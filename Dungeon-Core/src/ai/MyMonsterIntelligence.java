@@ -8,7 +8,7 @@ package ai;
 
 import java.util.List;
 
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.action.Action;
 import figure.hero.HeroInfo;

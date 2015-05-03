@@ -60,7 +60,6 @@ public class DungeonGame implements Runnable {
 
 	private final String[] word = { "JAVA", "CLUB", "BEAR" };
 
-	private Rune[] runen;
 
 	private final boolean visibility = false;
 
@@ -194,7 +193,7 @@ public class DungeonGame implements Runnable {
 	}
 
 	private Rune[] runeCreater(int k) {
-		runen = new Rune[word[k].length()];
+		Rune[] runen = new Rune[word[k].length()];
 		for (int i = 0; i < word[k].length(); i++) {
 			runen[i] = new Rune(word[k].charAt(i));
 		}

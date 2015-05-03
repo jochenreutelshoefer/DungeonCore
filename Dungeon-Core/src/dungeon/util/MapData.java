@@ -1,5 +1,8 @@
-package dungeon;
+package dungeon.util;
 
+import dungeon.Dungeon;
+import dungeon.JDPoint;
+import dungeon.RoomInfo;
 import figure.DungeonVisibilityMap;
 
 public  class MapData {

@@ -6,9 +6,6 @@
  */
 package dungeon;
 
-
-
-
 public class Dir {
 	
 	public static final int NORTH = 1;

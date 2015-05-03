@@ -16,20 +16,17 @@ import java.util.List;
 
 import dungeon.Dungeon;
 import dungeon.Room;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 
 public class SectorDungeonFiller1 extends DungeonFiller {
 
 	public boolean succes = true;
+	private final DungeonGame game;
 
-	// dungeonView view;
-	public SectorDungeonFiller1(Dungeon d, int value, DungeonGame game, Rune[] runen,
-
-	int level) {
-
-		super(d, value, game, runen, level);
-		// view = new dungeonView(d);
-
+	public SectorDungeonFiller1(Dungeon d, int value, DungeonGame game,
+			Rune[] runen, int level) {
+		super(d, runen);
+		this.game = game;
 	}
 
 	/**
@@ -50,7 +47,8 @@ public class SectorDungeonFiller1 extends DungeonFiller {
 
 		if (!JDEnv.isBeginnerGame()) {
 			Sector s2 = new Sector2(d, (d.getRoomAt(s1.getConnectionRoom(),
-					RouteInstruction.NORTH).getNumber()), 2, 1400, 40, game,
+							RouteInstruction.direction(RouteInstruction.NORTH))
+							.getNumber()), 2, 1400, 40, game,
 					this);
 		}
 

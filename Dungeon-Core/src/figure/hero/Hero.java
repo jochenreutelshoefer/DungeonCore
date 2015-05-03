@@ -22,7 +22,7 @@ import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RoomInfo;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 import fight.Frightening;
 import fight.Slap;
 import fight.SlapResult;
@@ -1028,7 +1028,7 @@ public class Hero extends Figure implements InfoProvider {
 			// System.out.println("FLEEDIRECTION ERRRROR!");
 		}
 
-		Room toGo = game.getDungeon().getRoomAt(getRoom(), dir);
+		Room toGo = game.getDungeon().getRoomAt(getRoom(), RouteInstruction.direction(dir));
 		Room from = getRoom();
 		Door d = game.getDungeon().getRoom(getLocation()).getConnectionTo(toGo);
 

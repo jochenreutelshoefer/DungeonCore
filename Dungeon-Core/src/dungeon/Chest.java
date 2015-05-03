@@ -16,6 +16,7 @@ import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +32,7 @@ import util.JDColor;
  */
 public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
-	private final LinkedList items;
+	private final List<Item> items;
 
 	private String lock = new String("unlockable");
 
@@ -44,7 +45,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	public Chest() {
 
-		items = new LinkedList();
+		items = new LinkedList<Item>();
 		// this.game = game;
 
 	}
@@ -59,7 +60,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	public Chest(Item i) {
 
-		items = new LinkedList();
+		items = new LinkedList<Item>();
 		this.takeItem(i, null);
 		// this.game = game;
 
@@ -67,7 +68,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	@Override
 	public Item getItemNumber(int i) {
-		return (Item) items.get(i);
+		return items.get(i);
 	}
 
 	@Override
@@ -82,8 +83,8 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	@Override
 	public Item getItem(ItemInfo it) {
-		for (Iterator iter = items.iterator(); iter.hasNext();) {
-			Item element = (Item) iter.next();
+		for (Iterator<Item> iter = items.iterator(); iter.hasNext();) {
+			Item element = iter.next();
 			if (ItemInfo.makeItemInfo(element, null).equals(it)) {
 				return element;
 			}
@@ -93,15 +94,15 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	}
 
 	public Chest(String lock) {
-		items = new LinkedList();
+		items = new LinkedList<Item>();
 		this.lock = lock;
 	}
 
-	public Chest(LinkedList list) {
+	public Chest(List<Item> list) {
 		// items = list;
-		items = new LinkedList();
+		items = new LinkedList<Item>();
 		for (int i = 0; i < list.size(); i++) {
-			this.takeItem((Item) list.get(i), null);
+			this.takeItem(list.get(i), null);
 		}
 	}
 
@@ -109,25 +110,24 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[items.size()];
 		for (int i = 0; i < items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo((Item) items.get(i), map);
+			array[i] = ItemInfo.makeItemInfo(items.get(i), map);
 		}
 		return array;
 	}
 
 	@Override
-	public boolean addItems(List l, ItemOwner o) {
+	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
-			Item it = (Item) (l.get(i));
+			Item it = (l.get(i));
 			this.takeItem(it, o);
 		}
 		return true;
 	}
 
-	public Chest(LinkedList list, String lock) {
-		// items = list;
-		items = new LinkedList();
+	public Chest(List<Item> list, String lock) {
+		items = new ArrayList<Item>();
 		for (int i = 0; i < list.size(); i++) {
-			this.takeItem((Item) list.get(i), null);
+			this.takeItem(list.get(i), null);
 		}
 		this.lock = lock;
 	}
@@ -166,7 +166,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 			if (right) {
 				if (items.size() > 0) {
 
-					Item it = ((Item) items.get(itemPointer));
+					Item it = (items.get(itemPointer));
 					// items.remove(it);
 					itemPointer = 0;
 					boolean taken = f.takeItem(it, this);
@@ -220,7 +220,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		String itemS = new String("");
 		// System.out.println("in Kiste; "+items.size());
 		for (int i = 0; i < items.size(); i++) {
-			Item it = ((Item) items.get(i));
+			Item it = (items.get(i));
 			// System.out.println(it.toString());
 			itemS += it.toString() + ",  ";
 		}
@@ -231,7 +231,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		String s = "";
 		if (items.size() > 0) {
 			s = JDEnv.getString("take") + ": "
-					+ ((Item) items.get(itemPointer)).toString();
+					+ items.get(itemPointer).toString();
 		}
 		p[3] = new Paragraph(s);
 		p[3].setCentered();
@@ -254,7 +254,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return true;
 	}
 
-	public LinkedList getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 

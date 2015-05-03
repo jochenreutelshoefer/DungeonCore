@@ -7,18 +7,19 @@
 package figure.monster;
 
 //import game.Game;
+import item.ItemInfo;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.JDPoint;
 import dungeon.Room;
-
+import dungeon.util.DungeonUtils;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.other.Fir;
-import item.ItemInfo;
 
 /**
  * 
@@ -30,7 +31,7 @@ import item.ItemInfo;
 public class MonsterInfo extends FigureInfo {
 	
 	
-	private Monster m;
+	private final Monster m;
 	
 	
 	/**
@@ -43,6 +44,7 @@ public class MonsterInfo extends FigureInfo {
 		this.m = m;
 	}
 	
+	@Override
 	public int getMight() {
 		return m.getWorth()/100;
 	}
@@ -54,11 +56,14 @@ public class MonsterInfo extends FigureInfo {
 		return new MonsterInfo(m,map);
 	}
 	
+	@Override
 	public List<JDPoint> getShortestWayFromTo(JDPoint p1, JDPoint p2) {
 		if(!map.getFigure().equals(m)) {
 			return null;
 		}
-		List<Room> l = m.getGame().derDungeon.findShortestWayFromTo(p1,p2,DungeonVisibilityMap.getAllVisMap(m.getGame().derDungeon));
+		List<Room> l = DungeonUtils.findShortestWayFromTo(
+				m.getGame().derDungeon, p1, p2,
+				DungeonVisibilityMap.getAllVisMap(m.getGame().derDungeon));
 		List<JDPoint> l2 = new LinkedList<JDPoint>();
 		for (Iterator<Room> iter = l.iterator(); iter.hasNext();) {
 			Room element = iter.next();
@@ -153,6 +158,7 @@ public class MonsterInfo extends FigureInfo {
 	}
 	
 	
+	@Override
 	public List<ItemInfo> getAllItems() {
 		return this.getFigureItemList();
 	}

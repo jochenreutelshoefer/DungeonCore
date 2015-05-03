@@ -1,7 +1,10 @@
-package dungeon;
+package dungeon.util;
 
 import game.DungeonGame;
 //import dungeon.*;
+import dungeon.JDPoint;
+import dungeon.Room;
+import dungeon.RoomInfo;
 
 /**
  * Stellt einen Ort oder eine Richtung als Ziel einer Bewegung dar
@@ -9,11 +12,40 @@ import game.DungeonGame;
  */
 public class RouteInstruction {
 
+	@Deprecated
 	public static final int NORTH = 1;
+	@Deprecated
 	public static final int EAST = 2;
+	@Deprecated
 	public static final int SOUTH = 3;
+	@Deprecated
 	public static final int WEST = 4;
 
+	public static Direction direction(int value) {
+		if (value == Direction.North.val)
+			return Direction.North;
+		if (value == Direction.South.val)
+			return Direction.South;
+		if (value == Direction.West.val)
+			return Direction.West;
+		if (value == Direction.East.val)
+			return Direction.East;
+
+		return null;
+	}
+
+	public enum Direction {
+
+		North(1), East(2), South(3), West(4);
+		
+		int val;
+		Direction(int val) {this.val = val;}
+
+		public int getValue() {
+			return val;
+		}
+		
+		};
 	
 	private Room destination;
 
@@ -32,7 +64,8 @@ public class RouteInstruction {
 
 	public int getWay(Room start) {
 		if(destination != null) {
-			int i = start.getDungeon().getFirstStepFromTo2(start,destination);
+			int i = DungeonUtils.getFirstStepFromTo2(start.getDungeon(), start,
+					destination);
 			
 			return i;
 		}
@@ -193,6 +226,7 @@ public class RouteInstruction {
 		return destination;
 	}
 
+	@Override
 	public String toString() {
 		if(destination != null) {
 			return("RouteInstruction To : "+destination.toString());

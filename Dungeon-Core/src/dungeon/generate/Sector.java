@@ -7,46 +7,46 @@
  */
 package dungeon.generate;
 
-import java.util.*;
+import figure.monster.Monster;
+import game.DungeonGame;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import shrine.DarkMasterShrine;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.RouteInstruction;
-
-import shrine.DarkMasterShrine;
-
-import figure.monster.Monster;
-import game.DungeonGame;
+import dungeon.util.RouteInstruction;
 
 
 
 public class Sector {
 
 	
-	Hall mainHall;
+	protected Hall mainHall;
 
 	
-	LinkedList halls = new LinkedList();
+	protected final List<Hall> halls = new LinkedList<Hall>();
 
 	public int number;
 
 	
-	JDPoint startRoom;
+	protected JDPoint startRoom;
 
 	
-	Dungeon d;
+	protected Dungeon d;
 
 	
-	DungeonGame game;
+	protected DungeonGame game;
 
 	
 	DungeonFiller df;
 
 	
-	Room dark_master_room;
+	private Room dark_master_room;
 
-	boolean master_activated = false;
+	private boolean master_activated = false;
 
 	public Sector(
 		Dungeon d,

@@ -2,7 +2,7 @@ package gui.bot;
 
 import game.DungeonGame;
 import dungeon.Dungeon;
-import dungeon.DungeonFactory;
+import dungeon.generate.DungeonFactory;
 import dungeon.generate.DungeonGenerationFailedException;
 
 public class DefaultBotRunDungeonFactory implements DungeonFactory {

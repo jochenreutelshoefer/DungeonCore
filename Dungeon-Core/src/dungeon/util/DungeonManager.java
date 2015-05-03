@@ -1,5 +1,7 @@
-package dungeon;
+package dungeon.util;
 
+import dungeon.Dungeon;
+import dungeon.JDPoint;
 import figure.DungeonVisibilityMap;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;

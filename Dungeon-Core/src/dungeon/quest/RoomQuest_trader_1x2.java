@@ -8,28 +8,29 @@
  */
 package dungeon.quest;
 
+import item.Item;
 import item.Key;
 
-import java.util.*;
-
-import dungeon.Door;
-import dungeon.JDPoint;
-import dungeon.RouteInstruction;
-import dungeon.generate.DungeonFiller;
+import java.util.List;
 
 import shrine.Trader;
+import dungeon.Door;
+import dungeon.JDPoint;
+import dungeon.generate.DungeonFiller;
+import dungeon.util.RouteInstruction;
 public class RoomQuest_trader_1x2 extends RoomQuest {
 
 
-	public RoomQuest_trader_1x2( JDPoint p, DungeonFiller df, LinkedList toPutIn){
+	public RoomQuest_trader_1x2(JDPoint p, DungeonFiller df, List<Item> toPutIn) {
 		super(p,df,2,1,toPutIn);	
 	}
 	/**
 	 * @see RoomQuest#setUp()
 	 */
+	@Override
 	public boolean setUp() {
 		if (!accessible(rooms[0][0], RouteInstruction.WEST)) {
-			////System.out.println("rq nicht zugänglich - abbruch!");
+			////System.out.println("rq nicht zugï¿½nglich - abbruch!");
 			return false;
 		}
 		claimRooms();

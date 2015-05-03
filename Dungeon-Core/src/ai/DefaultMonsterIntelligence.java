@@ -22,7 +22,7 @@ import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -109,8 +109,6 @@ public class DefaultMonsterIntelligence extends AI {
 		for (Iterator<ItemInfo> iter = l.iterator(); iter.hasNext();) {
 			ItemInfo element = iter.next();
 			if (element.getItemClass() == LuziaAmulett.class) {
-				Action a = LuziaRunner.getAction(monster);
-
 				return true;
 
 			}
@@ -266,21 +264,7 @@ public class DefaultMonsterIntelligence extends AI {
 		}
 	}
 
-	private int stepRight(int pos) {
-		if (pos == 7) {
-			return 0;
-		} else {
-			return pos + 1;
-		}
-	}
 
-	private int stepLeft(int pos) {
-		if (pos == 0) {
-			return 7;
-		} else {
-			return pos - 1;
-		}
-	}
 
 	private static StepAction getStepActionToDoor(FigureInfo monster) {
 		DoorStep[] stepsA = getDoorSteps(monster);

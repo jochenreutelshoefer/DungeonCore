@@ -7,7 +7,7 @@ import figure.hero.Zodiac;
 import game.JDEnv;
 import graphics.ImageManager;
 import gui.engine2D.AWTImageLoader;
-import dungeon.DungeonFactory;
+import dungeon.generate.DungeonFactory;
 
 public class HeroBotStarterSwing {
 

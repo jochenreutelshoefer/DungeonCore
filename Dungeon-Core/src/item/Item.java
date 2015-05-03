@@ -6,6 +6,7 @@ import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
+import item.quest.Rune;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -96,9 +97,6 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 	
 	@Override
 	public ItemOwner getOwner() {
-//		if(owner == null) {
-//			System.out.println("ItemOwner ist null! : "+this.toString());
-//		}
 		return owner;
 	}
 	
@@ -137,6 +135,10 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 	}
 	
 	public static void notifyItem(Item i, ItemOwner newOwner ) {
+		if (i instanceof Rune) {
+			int k = 0;
+			k++;
+		}
 		if(i instanceof Locatable) {
 			((Locatable)i).setOwner(newOwner);	
 		}	

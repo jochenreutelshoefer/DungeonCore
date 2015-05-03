@@ -7,7 +7,6 @@ import gui.JDBackgroundPanel;
 import gui.JDJPanel;
 import gui.JPanelNoRepaint;
 import gui.Paragraph;
-import gui.engine2D.AWTImageLoader;
 import gui.mainframe.component.BoardView;
 import gui.mainframe.component.CharacterView;
 import gui.mainframe.component.DustView;
@@ -21,7 +20,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,13 +45,14 @@ import control.AbstractSwingMainFrame;
 public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		ActionListener, ItemListener, MouseListener, ChangeListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final BotJDGUISwing gui;
-	private Font ButtonFont;
 	private JDJPanel amatur;
 
-	private final String playerName; // necessary ?
 
-	private AWTImageLoader imageSource;
 	private Container mainPane;
 	private JDBackgroundPanel cp;
 	private CharacterView character;
@@ -77,7 +76,6 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	public BotGUIMainframe(String clearString, BotJDGUISwing gui, String name) {
 		super("Dungeon Bot Spectator GUI");
 		this.gui = gui;
-		playerName = name;
 
 	}
 
@@ -89,8 +87,8 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		spielfeld = new BoardView(null, gui);
 		cp.add(spielfeld, BorderLayout.CENTER);
 
-		ButtonFont = new Font("Arial", Font.BOLD, 17);
-		imageSource = new AWTImageLoader(null);
+		// ButtonFont = new Font("Arial", Font.BOLD, 17);
+		// imageSource = new AWTImageLoader(null);
 
 		/*
 		 * east panel
@@ -185,7 +183,7 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 			 */
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
-				int end = JOptionPane.showConfirmDialog(cp, JDEnv
+				JOptionPane.showConfirmDialog(cp, JDEnv
 						.getResourceBundle().getString("gui_really_quit_game"),
 						JDEnv.getResourceBundle().getString("gui_quit_game"),
 						JOptionPane.YES_NO_OPTION,
@@ -197,7 +195,7 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 
 		// newStatement(Texts.begin(), 0);
 
-		updateGUI(this.UPDATE_ALL, false);
+		updateGUI(AbstractSwingMainFrame.UPDATE_ALL, false);
 
 		this.repaint();
 		spielfeld.getSpielfeldBild().setGameStarted();

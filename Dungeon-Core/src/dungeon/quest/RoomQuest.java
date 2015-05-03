@@ -4,25 +4,30 @@
  */
 package dungeon.quest;
 
-import java.util.*;
+import item.Item;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import shrine.Shrine;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.RouteInstruction;
 import dungeon.generate.DungeonFiller;
 import dungeon.generate.Hall;
-import game.JDEnv;
-
-import shrine.Shrine;
-
+import dungeon.util.DungeonUtils;
+import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
-import figure.monster.Spider;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
+import figure.monster.Spider;
 import figure.monster.Wolf;
 public abstract class RoomQuest /*extends JDEnv */{
 
@@ -40,31 +45,31 @@ public abstract class RoomQuest /*extends JDEnv */{
 	public static final int TYPE_BEAR = 10;
 	public static final int TYPE_GHUL = 11;
 	
-	Room[][] rooms;
-	int sizeX;
-	int sizeY;
+	protected final Room[][] rooms;
+	protected final int sizeX;
+	protected final int sizeY;
 
 	
-	JDPoint entrenceRoom;
+	protected JDPoint entrenceRoom;
 
-	int entrenceDirection;
+	protected int entrenceDirection;
 
-	DungeonFiller df;
-
-	
-	JDPoint location;
+	protected final DungeonFiller df;
 
 	
-	boolean valid = true;
-
-	boolean doorsRemoved = false;
-	boolean wallMade = false;
+	protected final JDPoint location;
 
 	
-	LinkedList toPutIn = new LinkedList();
+	protected boolean valid = true;
+
+	protected boolean doorsRemoved = false;
+	protected final boolean wallMade = false;
 
 	
-	Hall halle;
+	protected List<Item> toPutIn = new LinkedList<Item>();
+
+	
+	protected final Hall halle;
 
 
 	public RoomQuest(
@@ -72,7 +77,7 @@ public abstract class RoomQuest /*extends JDEnv */{
 		DungeonFiller df,
 		int x,
 		int y,
-		LinkedList toPutIn) {
+			List<Item> toPutIn) {
 			
 		sizeX = x;
 		sizeY = y;
@@ -140,8 +145,7 @@ public abstract class RoomQuest /*extends JDEnv */{
 	public static RoomQuest newRoomQuest(
 		String type,
 		JDPoint rq_point,
-		LinkedList restItems,
-		LinkedList toPutIn,
+			List<Item> restItems, List<Item> toPutIn,
 		Shrine s,
 		DungeonFiller df) {
 
@@ -188,7 +192,8 @@ public abstract class RoomQuest /*extends JDEnv */{
 
 	protected boolean accessible(Room r, int dir) {
 		boolean b = false;
-		Room entrance = df.getDungeon().getRoomAt(r, dir);
+		Room entrance = df.getDungeon().getRoomAt(r,
+				RouteInstruction.direction(dir));
 		if (entrance == null) {
 			return false;
 		}
@@ -334,10 +339,12 @@ public abstract class RoomQuest /*extends JDEnv */{
 			}
 				
 		}
-		Map ways = new HashMap();
+		Map<List<Room>, Room> ways = new HashMap<List<Room>, Room>();
 		for(int i = 0 ; i < roomList.size(); i++) {
-			Room to = (Room)roomList.get(i);
-			List<Room> way = df.getDungeon().findShortestWayFromTo(df.getDungeon().getRoom(this.entrenceRoom),to,DungeonVisibilityMap.getAllVisMap(df.getDungeon()));
+			Room to = roomList.get(i);
+			List<Room> way = DungeonUtils.findShortestWayFromTo(df.getDungeon()
+					.getRoom(this.entrenceRoom), to, DungeonVisibilityMap
+					.getAllVisMap(df.getDungeon()));
 			
 			if(way != null) {
 			ways.put(way,roomList.get(i));
@@ -347,12 +354,12 @@ public abstract class RoomQuest /*extends JDEnv */{
 			}
 			
 		}
-		Set set = ways.keySet();
-		Iterator it  = set.iterator();
+		Set<List<Room>> set = ways.keySet();
+		Iterator<List<Room>> it = set.iterator();
 		int maxWay = -1;
-		LinkedList longest=null;
+		List<Room> longest = null;
 		while(it.hasNext()) {
-			LinkedList way = (LinkedList)it.next();
+			List<Room> way = it.next();
 			if(way.size() > maxWay) {
 					longest = way;
 					maxWay = way.size();
@@ -360,7 +367,7 @@ public abstract class RoomQuest /*extends JDEnv */{
 			
 		}
 		//System.out.println("laengster Weg: "+longest.size());
-		Room farest = (Room)ways.get(longest);
+		Room farest = ways.get(longest);
 		//System.out.println("Setze Schrein auf: "+farest.toString());
 		farest.setShrine(s,true);
 		

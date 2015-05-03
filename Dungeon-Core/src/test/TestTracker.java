@@ -12,9 +12,10 @@
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package test;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
-import dungeon.*;
+import dungeon.Room;
 
 public class TestTracker {
 
@@ -23,14 +24,14 @@ public class TestTracker {
 	 * @uml.property name="location"
 	 * @uml.associationEnd multiplicity="(0 1)"
 	 */
-	Room location;
+	private Room location;
 
 	/**
 	 * 
 	 * @uml.property name="way"
 	 * @uml.associationEnd multiplicity="(0 -1)" elementType="dungeon.Room"
 	 */
-	LinkedList way = new LinkedList();
+	List<Room> way = new LinkedList<Room>();
 
 	public TestTracker(Room r) {
 		location = r;
@@ -65,7 +66,7 @@ public class TestTracker {
 	 * 
 	 * @uml.property name="way"
 	 */
-	public LinkedList getWay() {
+	public List<Room> getWay() {
 		return way;
 	}
 

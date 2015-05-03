@@ -13,7 +13,7 @@ import game.JDEnv;
 import item.Item;
 import util.JDColor;
 import dungeon.Room;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 
 public class Brood extends Shrine {
 

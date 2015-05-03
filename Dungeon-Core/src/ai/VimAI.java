@@ -6,10 +6,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import dungeon.Dungeon;
 import dungeon.JDPoint;
-import dungeon.Room;
 import dungeon.RoomInfo;
+import dungeon.util.DungeonUtils;
 import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.hero.HeroInfo;
@@ -21,7 +20,8 @@ import figure.percept.ScoutPercept;
 public class VimAI extends DefaultMonsterIntelligence {
 
 	JDPoint lastHeroLocation = null;
-	List perceptList = new LinkedList();
+	List<Percept> perceptList = new LinkedList<Percept>();
+	@Override
 	public Action chooseFightAction() {
 		
 		Action a = this.stepToEnemy();
@@ -38,14 +38,15 @@ public class VimAI extends DefaultMonsterIntelligence {
 		
 	}
 	
+	@Override
 	public void processPercept(Percept p) {
 		perceptList.add(p);
 	}
 	
 	protected void processPercepts() {
 		Collections.sort(perceptList, new PerceptComparator());
-		for (Iterator iter = perceptList.iterator(); iter.hasNext();) {
-			Percept element = (Percept) iter.next();
+		for (Iterator<Percept> iter = perceptList.iterator(); iter.hasNext();) {
+			Percept element = iter.next();
 			if(element instanceof MovePercept) {
 				if(((MovePercept)element).getFigure() instanceof HeroInfo) {
 					this.lastHeroLocation = ((MovePercept)element).getTo().getPoint();
@@ -73,12 +74,13 @@ public class VimAI extends DefaultMonsterIntelligence {
 		perceptList.clear();
 	}
 	
+	@Override
 	public Action chooseMovementAction() {
 		
 		processPercepts();
 		
 		if (actionQueue.size() > 0) {
-			Action a = (Action) actionQueue.remove(0);
+			Action a = actionQueue.remove(0);
 			lastAction = a;
 			return a;
 		}
@@ -90,24 +92,27 @@ public class VimAI extends DefaultMonsterIntelligence {
 			return new EndRoundAction();
 		}
 		
-		List l = monster.getShortestWayFromTo(monster.getRoomNumber(),lastHeroLocation);
+		List<JDPoint> l = monster.getShortestWayFromTo(monster.getRoomNumber(),
+				lastHeroLocation);
 		if(l.size() > 1) {
-		JDPoint p = (JDPoint)l.get(1);
+		JDPoint p = l.get(1);
 		
 		//System.out.println(p.toString());
-		int dir = Dungeon.getNeighbourDirectionFromTo(monster.getRoomNumber(),p);
+			int dir = DungeonUtils.getNeighbourDirectionFromTo(
+					monster.getRoomNumber(), p).getValue();
 		return walk(dir);
 		}
 		
 		return new EndRoundAction();
 	}
 	
-	class PerceptComparator implements Comparator {
+	class PerceptComparator implements Comparator<Percept> {
 		
-		public int compare(Object o1, Object o2) {
+		@Override
+		public int compare(Percept o1, Percept o2) {
 			if(o1 instanceof Percept && o2 instanceof Percept) {
-				Percept p1 = ((Percept)o1);
-				Percept p2 = ((Percept)o2);
+				Percept p1 = (o1);
+				Percept p2 = (o2);
 				if(p1.getRound() < p2.getRound()) {
 					return 1;
 				}else if(p1.getRound() > p2.getRound()) {

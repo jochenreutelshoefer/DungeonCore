@@ -8,14 +8,18 @@
  */
 package dungeon.quest;
 
+import item.Item;
 import item.Key;
 
-import java.util.*;
+import java.util.List;
 
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFiller;
+import dungeon.util.RouteInstruction;
+
+;
 public class RoomQuest_XxY extends RoomQuest{
 	
 	
@@ -28,7 +32,8 @@ public class RoomQuest_XxY extends RoomQuest{
 	Key theKey;
 
 	
-	public RoomQuest_XxY(int x, int y, JDPoint p, DungeonFiller df, LinkedList toPutIn, boolean locked) {
+	public RoomQuest_XxY(int x, int y, JDPoint p, DungeonFiller df,
+			List<Item> toPutIn, boolean locked) {
 		
 		super(p,df,x,y,toPutIn);
 		
@@ -53,6 +58,7 @@ public class RoomQuest_XxY extends RoomQuest{
 	}
 
 	
+	@Override
 	public boolean setUp() {
 		JDPoint p = this.getRimRoom();
 		int k = this.isPossibleEntrance(p);
@@ -90,7 +96,9 @@ public class RoomQuest_XxY extends RoomQuest{
 		entrenceDirection = k;
 		if(locked) {
 			theKey = df.getNextKey();
-			Room other = df.getDungeon().getRoomAt(df.getDungeon().getRoom(entrenceRoom),k);
+			Room other = df.getDungeon().getRoomAt(
+					df.getDungeon().getRoom(entrenceRoom),
+					RouteInstruction.direction(k));
 			Door d = new Door(df.getDungeon().getRoom(entrenceRoom),other,theKey);
 			df.getDungeon().getRoom(entrenceRoom).setDoor(d,k,true);
 			

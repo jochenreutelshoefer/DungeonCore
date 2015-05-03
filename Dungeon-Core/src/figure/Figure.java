@@ -28,6 +28,8 @@ import dungeon.DungeonWorldObject;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.Room;
+import dungeon.util.DungeonUtils;
+import dungeon.util.RouteInstruction;
 import fight.Frightening;
 import fight.Poisoning;
 import fight.Slap;
@@ -2361,7 +2363,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	 */
 	public void setLocation(JDPoint location) {
 		this.location = location;
-		room = game.getDungeon().getRoom(location);
+		if (location == null) {
+			room = null;
+		} else {
+			room = game.getDungeon().getRoom(location);
+		}
 	}
 
 	@Override
@@ -2460,7 +2466,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	protected boolean wayPassable(int dir) {
 		Room toGo = getRoom().getDungeon().getRoomAt(
-				getRoom().getDungeon().getRoom(getLocation()), dir);
+				getRoom().getDungeon().getRoom(getLocation()),
+				RouteInstruction.direction(dir));
 
 		Door d = getRoom().getDungeon().getRoom(getLocation())
 				.getConnectionTo(toGo);
@@ -2482,7 +2489,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (toLeave == null) {
 			dir = Dir.NORTH;
 		} else {
-			dir = Dungeon.getNeighbourDirectionFromTo(toLeave, r);
+			dir = DungeonUtils.getNeighbourDirectionFromTo(toLeave, r)
+					.getValue();
 		}
 
 		r.figureEnters(this, dir);
@@ -2495,7 +2503,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 		Room oldRoom = getRoom();
 		Room toGo = getRoom().getDungeon().getRoomAt(
-				getRoom().getDungeon().getRoom(getLocation()), dir);
+				getRoom().getDungeon().getRoom(getLocation()),
+				RouteInstruction.direction(dir));
 
 		if (passable) {
 			// System.out.println("moving");

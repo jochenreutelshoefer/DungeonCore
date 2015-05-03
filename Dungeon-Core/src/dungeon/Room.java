@@ -38,6 +38,7 @@ import dungeon.generate.Hall;
 import dungeon.generate.Sector;
 import dungeon.quest.Quest;
 import dungeon.quest.RoomQuest;
+import dungeon.util.RouteInstruction;
 
 
 /**
@@ -49,7 +50,7 @@ import dungeon.quest.RoomQuest;
  * gespeichert.
  * 
  */
-public class Room /* extends JDEnv */extends DungeonWorldObject implements
+public class Room extends DungeonWorldObject implements
 		ItemOwner {
 
 	public static final int NO = 0;
@@ -574,7 +575,8 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 	}
 
 	public void setDoor(Dungeon dun, int dir, boolean otherRoom) {
-		Door d = new Door(this, dun.getRoomAt(this, dir));
+		Door d = new Door(this, dun.getRoomAt(this,
+				RouteInstruction.direction(dir)));
 		if (dir == RouteInstruction.NORTH) {
 			doors[0] = d;
 		}
@@ -661,14 +663,18 @@ public class Room /* extends JDEnv */extends DungeonWorldObject implements
 
 	}
 
-	public boolean leaveable(int dir) {
+	public boolean leaveable(RouteInstruction.Direction dir) {
 		// System.out.println("isLeavable : "+dir);
 
-		if (doors[dir - 1] != null) {
-			if (doors[dir - 1].isPassable(null))
+		if (doors[dir.getValue() - 1] != null) {
+			if (doors[dir.getValue() - 1].isPassable(null))
 				// System.out.println("JA");
-				if (d.getRoomAt(this, dir - 1).getShrine() != null
-						&& d.getRoomAt(this, dir - 1).getShrine() instanceof Statue) {
+				if (d.getRoomAt(this,
+						RouteInstruction.direction(dir.getValue() - 1))
+						.getShrine() != null
+						&& d.getRoomAt(this,
+								RouteInstruction.direction(dir.getValue() - 1))
+								.getShrine() instanceof Statue) {
 					return false;
 				}
 			return true;

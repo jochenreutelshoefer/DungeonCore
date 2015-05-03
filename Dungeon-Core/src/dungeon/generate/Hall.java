@@ -20,8 +20,9 @@ import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.RouteInstruction;
 import dungeon.quest.RoomQuest_XxY;
+import dungeon.util.DungeonUtils;
+import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.monster.Monster;
 
@@ -30,32 +31,34 @@ public class Hall {
 	public final static int SPOT_SHRINE = 1;
 	public final static int SPOT_CHEST = 2;
 
-	int preferredSize;
-	int avMonsterStrength;
-	//LinkedList subHalls = new LinkedList();
+	private final int preferredSize;
+	private final int avMonsterStrength;
 
 	
-	JDPoint startPoint;
+	private final JDPoint startPoint;
 
-	int direction;
-
-	
-	Sector sec;
+	private final int direction;
 
 	
-	LinkedList<Room> rooms = new LinkedList<Room>();
+	private final Sector sec;
 
 	
-	Dungeon d;
+	private final List<Room> rooms = new LinkedList<Room>();
 
 	
-	String name;
+	private final Dungeon d;
 
 	
-	List<Figure> monsters = new LinkedList<Figure>();
+	private final String name;
 
 	
-	int floorIndex;
+	private final List<Figure> monsters = new LinkedList<Figure>();
+
+	
+	/*
+	 * some eye candy for rendering only
+	 */
+	private final int floorIndex;
 
 	
 	public JDPoint getStartPoint() {
@@ -377,14 +380,10 @@ public class Hall {
 			rq.plugShrine(s);
 
 		}
-		
 		return rq;
-
 	}
 	
 	public Room getRandomRoomForShrineNonRQ() {
-		
-		
 		Room r = null;
 		while(true) {
 			r = getRandomRoomForShrine();
@@ -427,7 +426,8 @@ public class Hall {
 				if (dir == 0) {
 					return true;
 				} else {
-					int theDir = Dungeon.getNeighbourDirectionFromTo(r, n);
+					int theDir = DungeonUtils.getNeighbourDirectionFromTo(r, n)
+							.getValue();
 					if (theDir == dir) {
 						return true;
 					}
@@ -453,7 +453,8 @@ public class Hall {
 				if (dir == 0) {
 					return true;
 				} else {
-					int theDir = Dungeon.getNeighbourDirectionFromTo(r, n);
+					int theDir = DungeonUtils.getNeighbourDirectionFromTo(r, n)
+							.getValue();
 					if (theDir == dir) {
 						return true;
 					}
@@ -464,7 +465,8 @@ public class Hall {
 				if (dir == 0) {
 					return true;
 				} else {
-					int theDir = Dungeon.getNeighbourDirectionFromTo(r, n);
+					int theDir = DungeonUtils.getNeighbourDirectionFromTo(r, n)
+							.getValue();
 					if (theDir == dir) {
 						return true;
 					}
@@ -475,7 +477,8 @@ public class Hall {
 				if (dir == 0) {
 					return true;
 				} else {
-					int theDir = Dungeon.getNeighbourDirectionFromTo(r, n);
+					int theDir = DungeonUtils.getNeighbourDirectionFromTo(r, n)
+							.getValue();
 					if (theDir == dir) {
 						return true;
 					}
@@ -576,7 +579,8 @@ public class Hall {
 				if ((n != null) && (n.isClaimed()) && n.getHall() == this) {
 					Door d = new Door(r, n);
 					////System.out.println("Setze Tuer nach: "+n.toString());
-					int dir = Dungeon.getNeighbourDirectionFromTo(r, n);
+					int dir = DungeonUtils.getNeighbourDirectionFromTo(r, n)
+							.getValue();
 					r.setDoor(d, dir, true);
 				}
 			}
@@ -1024,11 +1028,11 @@ JDDimension dim,
 	private int walkTo(JDPoint start, int dir) {
 		Room startRoom = d.getRoom(start);
 		int k = 0;
-		Room toTest = d.getRoomAt(startRoom, dir);
+		Room toTest = d.getRoomAt(startRoom, RouteInstruction.direction(dir));
 		boolean valid = testRoom(toTest);
 		while (valid) {
 			k++;
-			toTest = d.getRoomAt(toTest, dir);
+			toTest = d.getRoomAt(toTest, RouteInstruction.direction(dir));
 			valid = testRoom(toTest);
 
 		}
@@ -1052,7 +1056,9 @@ JDDimension dim,
 			Room r = rooms.get(i);
 			int y = r.getNumber().getY();
 			if (y < n
-				&& (!d.getRoomAt(r, RouteInstruction.NORTH).isClaimed())) {
+					&& (!d.getRoomAt(r,
+							RouteInstruction.direction(RouteInstruction.NORTH))
+							.isClaimed())) {
 				n = y;
 				northest = r;
 			}
@@ -1068,6 +1074,10 @@ JDDimension dim,
 	 */
 	public String getName() {
 		return name;
+	}
+
+	public List<Room> getRooms() {
+		return rooms;
 	}
 
 }

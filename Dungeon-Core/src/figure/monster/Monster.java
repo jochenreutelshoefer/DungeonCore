@@ -18,7 +18,7 @@ import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.Position;
 import dungeon.Room;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 import fight.Frightening;
 import fight.Slap;
 import fight.SlapResult;

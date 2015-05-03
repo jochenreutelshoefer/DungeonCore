@@ -13,27 +13,30 @@ import item.Item;
 import item.ItemPool;
 import item.Key;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;
-import dungeon.RouteInstruction;
 import dungeon.generate.DungeonFiller;
+import dungeon.util.RouteInstruction;
 public class RoomQuest_2x2_1 extends RoomQuest {
 
-	LinkedList items;
+	List<Item> items;
 
-	public RoomQuest_2x2_1(JDPoint p, DungeonFiller df, LinkedList items, LinkedList toPutIn) {
+	public RoomQuest_2x2_1(JDPoint p, DungeonFiller df, List<Item> items,
+			List<Item> toPutIn) {
 		super(p, df, 2, 2, toPutIn);
 		this.items = items;
 
 	}
 
+	@Override
 	public boolean setUp() {
 		////System.out.println("setting up roomQuest");
 		if (!accessible(rooms[0][0], RouteInstruction.NORTH)) {
-			////System.out.println("rq nicht zugänglich - abbruch!");
+			////System.out.println("rq nicht zugï¿½nglich - abbruch!");
 			return false;
 		}
 		claimRooms();
@@ -61,7 +64,7 @@ public class RoomQuest_2x2_1 extends RoomQuest {
 		Door keyDoor = new Door(rooms[1][0], rooms[0][0], k);
 		rooms[1][0].setDoor(keyDoor, RouteInstruction.NORTH, true);
 		Chest ch1 = new Chest(k);
-		LinkedList itemsL = new LinkedList();
+		List<Item> itemsL = new LinkedList<Item>();
 		if (items.size() >= 2) {
 			itemsL.add(items.remove(0));
 			itemsL.add(items.remove(0));

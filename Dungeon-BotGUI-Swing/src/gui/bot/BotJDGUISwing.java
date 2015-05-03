@@ -8,6 +8,9 @@ import figure.action.TakeItemAction;
 import figure.action.result.ActionResult;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.hero.HeroUtil;
+import figure.hero.Profession;
+import figure.hero.Zodiac;
 import figure.percept.Percept;
 import game.DungeonGame;
 import game.JDEnv;
@@ -19,6 +22,7 @@ import gui.mainframe.MainFrame;
 import gui.mainframe.component.BoardView;
 import item.ItemInfo;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,10 +41,10 @@ import text.StatementManager;
 import ai.AI;
 import control.AbstractSwingMainFrame;
 import control.ActionAssembler;
-import dungeon.DungeonFactory;
-import dungeon.DungeonManager;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
+import dungeon.generate.DungeonFactory;
+import dungeon.util.DungeonManager;
 
 public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 
@@ -48,7 +52,7 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 	private FigureInfo figure;
 	private final Vector<Action> actionQueue = new Vector<Action>();
 	protected final Map<RoomInfo, MasterAnimation> masterAnis = new HashMap<RoomInfo, MasterAnimation>();
-	private final AbstractImageLoader imageLoader;
+	private final AbstractImageLoader<Image> imageLoader;
 	private HeroControlWithSpectator control;
 	private ResourceBundle res;
 	private final DungeonFactory dungeonFactory;
@@ -111,14 +115,17 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void restartGame() {
 		th.stop();
+		
 
 		this.frame.dispose();
 		actionQueue.clear();
 		masterAnis.clear();
 		initialized = false;
-		startGame(h);
+		startGame(HeroUtil.getBasicHero(1, "BotStarterBot", Zodiac.Taurus,
+				Profession.Nobleman));
 		initGui();
 		initialized = true;
 	}
@@ -342,7 +349,7 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 	}
 
 	@Override
-	public AbstractImageLoader getImageSource() {
+	public AbstractImageLoader<Image> getImageSource() {
 		return imageLoader;
 	}
 

@@ -1,16 +1,8 @@
 package ai;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import ai.VimAI.PerceptComparator;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
-
 import figure.FigureInfo;
-import figure.hero.HeroInfo;
 import figure.percept.DiePercept;
 import figure.percept.FleePercept;
 import figure.percept.MovePercept;
@@ -19,8 +11,7 @@ import figure.percept.ScoutPercept;
 
 public class FigureTracker extends Tracker {
 	
-	private FigureInfo target;
-	private List percepts = new LinkedList();
+	private final FigureInfo target;
 	private TrackingInfo sureInfo = null;
 	
 	public FigureTracker(FigureInfo f) {

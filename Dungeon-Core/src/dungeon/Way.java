@@ -1,6 +1,7 @@
 package dungeon;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Eine Liste von Raeumen die einen Weg darstellt
@@ -8,33 +9,29 @@ import java.util.*;
  */
 public class Way {
 
-	LinkedList<RoomInfo> RoomInfos;
+	private final List<RoomInfo> roomInfos;
 
-	boolean blocked;
+	private final boolean blocked;
 
 	public Way(LinkedList<RoomInfo> r, boolean blocked) {
-		if (r == null) {
-			System.out.println("way mit nullliste erzeugt!");
-			System.exit(0);
-		}
-		RoomInfos = r;
+		roomInfos = r;
 		this.blocked = blocked;
 	}
 
 	public RoomInfo getStartRoomInfo() {
-		return ( RoomInfos.get(0));
+		return ( roomInfos.get(0));
 	}
 
 	public int size() {
-		return RoomInfos.size();
+		return roomInfos.size();
 	}
 
 	public RoomInfo get(int i) {
-		return ((RoomInfo) RoomInfos.get(i));
+		return (roomInfos.get(i));
 	}
 
 	public RoomInfo getDestinationRoomInfo() {
-		return ((RoomInfo) RoomInfos.getLast());
+		return (roomInfos.get(roomInfos.size() - 1));
 	}
 
 	/**
@@ -51,13 +48,13 @@ public class Way {
 	 * 
 	 * @uml.property name="RoomInfos"
 	 */
-	public LinkedList<RoomInfo> getRoomInfos() {
-		return RoomInfos;
+	public List<RoomInfo> getRoomInfos() {
+		return roomInfos;
 	}
 	
-	public LinkedList<Room> getRooms() {
-		LinkedList<Room> result = new LinkedList<Room>();
-		for (RoomInfo room : RoomInfos) {
+	public List<Room> getRooms() {
+		List<Room> result = new LinkedList<Room>();
+		for (RoomInfo room : roomInfos) {
 			result.add(room.getRoom());
 		}
 		return result;

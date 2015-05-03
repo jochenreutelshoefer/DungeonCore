@@ -12,21 +12,21 @@ import item.Item;
 import item.ItemPool;
 import item.Key;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
+import shrine.Shrine;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFiller;
-
-import shrine.Shrine;
-
+import dungeon.util.RouteInstruction;
 import figure.monster.Monster;
 public class RoomQuest_1x1_1 extends RoomQuest {
 	
-	LinkedList sector_items;
-	boolean locked = false;
+	private final List<Item> sector_items;
+	private boolean locked = false;
 	/**
 	 * 
 	 * @uml.property name="s"
@@ -35,7 +35,8 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 	Shrine s;
 	
 	
-	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df,boolean locked, boolean chest, Shrine s, LinkedList restItems, LinkedList toPutIn) {
+	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df, boolean locked,
+			boolean chest, Shrine s, List<Item> restItems, List<Item> toPutIn) {
 		super(p,df,1,1, toPutIn);
 		this.s = s;
 		sector_items = restItems;
@@ -43,14 +44,16 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 		
 	}
 	
-	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df,boolean locked, Chest ch, Shrine s, LinkedList restItems, LinkedList toPutIn) {
+	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df, boolean locked,
+			Chest ch, Shrine s, List<Item> restItems, List<Item> toPutIn) {
 		super(p,df,1,1, toPutIn);
 		this.s = s;
 		sector_items = restItems;
 		this.locked = locked;
 	}
 	
-	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df,boolean locked, LinkedList items, Shrine s, LinkedList restItems, LinkedList toPutIn) {
+	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df, boolean locked,
+			List<Item> items, Shrine s, List<Item> restItems, List<Item> toPutIn) {
 		super(p,df,1,1, toPutIn);
 		this.s = s;
 		sector_items = restItems;
@@ -60,12 +63,13 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 	/**
 	 * @see RoomQuest#setUp()
 	 */
+	@Override
 	public boolean setUp() {
 		//System.out.println("setting up roomQuest");
 		int dir = (int)(Math.random()*4) +1;
 		
 		if (!accessible(rooms[0][0], dir)) {
-			//System.out.println("rq nicht zugänglich - abbruch!");
+			//System.out.println("rq nicht zugï¿½nglich - abbruch!");
 			return false;
 		}
 		claimRooms();
@@ -87,7 +91,8 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 				if(k == null) {
 					//System.out.println("k ist null !");
 				}
-				Room entrance = df.getDungeon().getRoomAt(rooms[0][0],dir);
+				Room entrance = df.getDungeon().getRoomAt(rooms[0][0],
+						RouteInstruction.direction(dir));
 				if(entrance == null) {
 					//System.out.println("entrance ist null !");
 				}
@@ -103,7 +108,7 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 				
 		}
 		
-		LinkedList itemsL = new LinkedList();
+		List<Item> itemsL = new LinkedList<Item>();
 		if (sector_items.size() >= 2) {
 			itemsL.add(sector_items.remove((int)(Math.random()*sector_items.size())));
 			//itemsL.add(sector_items.remove((int)(Math.random()*sector_items.size())));

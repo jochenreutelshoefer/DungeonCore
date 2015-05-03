@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.JDPoint;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 
 public class RoomObservationStatus {
 	

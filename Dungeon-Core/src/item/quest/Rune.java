@@ -1,28 +1,30 @@
 package item.quest;
-import java.util.HashMap;
-
-import shrine.RuneShrine;
-import shrine.Shrine;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
-import item.interfaces.*;
 import item.Item;
+import item.interfaces.Locatable;
+import item.interfaces.Usable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import shrine.RuneShrine;
+import shrine.Shrine;
 
 
 
-public class Rune extends Item implements Usable,Locatable{
+public class Rune extends Item implements Usable, Locatable {
 
 	
-	private char c;
+	private final char c;
 
 	private static int index = 0;
 	
-	boolean solved = false;
+	private boolean solved = false;
 
-	private static HashMap runeMap = new HashMap();
+	private static Map<Character, Integer> runeMap = new HashMap<Character, Integer>();
 	
-	ItemOwner owner = null;
 
     
     public Rune(char s){
@@ -38,27 +40,21 @@ public class Rune extends Item implements Usable,Locatable{
     }
 
     public static int getRuneIndex(char c) {
-    	return ((Integer)runeMap.get(new Character(c))).intValue();
+    	return runeMap.get(new Character(c)).intValue();
     }
 	
-	public ItemOwner getOwner() {
-		return owner;
-	}
-	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 
     
+	@Override
 	public void getsRemoved() {
 		
-		}
-
-	
-	public void setOwner(ItemOwner o) {
-		owner = o;
 	}
 
+	
 	
 	public boolean getSolved() {
 		return solved;
@@ -74,6 +70,7 @@ public class Rune extends Item implements Usable,Locatable{
 		return null;
 	}
 	
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}
@@ -83,21 +80,25 @@ public class Rune extends Item implements Usable,Locatable{
 		return c;
 	}
 
-    public String toString(){
+    @Override
+	public String toString(){
 	return ("Rune: "+c);
     }
 
-    public String getText(){
+    @Override
+	public String getText(){
 	return toString();
     }
 
-    public boolean canBeUsedBy(Figure f) {
+    @Override
+	public boolean canBeUsedBy(Figure f) {
     	return f instanceof Hero;
     }
-    public boolean use(Figure f,Object target,boolean meta){
+    @Override
+	public boolean use(Figure f,Object target,boolean meta){
 		Shrine s = ((Hero)f).getRoom().getShrine(); 
 		if(s instanceof RuneShrine){
-	    	if (((RuneShrine)s).takeItem((Item)this,f)) {
+	    	if (((RuneShrine)s).takeItem(this,f)) {
 	    	 ((Hero)f).getInventory().removeItem(this);
 	    	}
 		}

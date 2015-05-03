@@ -1,6 +1,5 @@
 package dungeon;
 
-import figure.memory.MemoryObject;
 import figure.memory.MemoryProvider;
 import game.InfoProvider;
 

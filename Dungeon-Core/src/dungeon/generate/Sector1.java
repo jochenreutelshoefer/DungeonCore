@@ -7,13 +7,9 @@ package dungeon.generate;
 
 import figure.DungeonVisibilityMap;
 import figure.Figure;
-import figure.FigureControl;
-import figure.FigureInfo;
 import figure.attribute.Attribute;
 import figure.monster.Dwarf;
 import figure.monster.Monster;
-import figure.monster.MonsterInfo;
-import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Wolf;
@@ -45,10 +41,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import ai.AI;
-import ai.AttitudeMonsterDefault;
-import ai.DefaultMonsterIntelligence;
-import ai.VimAI;
 import shrine.Angel;
 import shrine.Corpse;
 import shrine.HealthFountain;
@@ -60,6 +52,8 @@ import shrine.Statue;
 import spell.Discover;
 import spell.Prayer;
 import spell.conjuration.FirConjuration;
+import ai.AI;
+import ai.VimAI;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.DoorCountRoomComparator;
@@ -67,19 +61,19 @@ import dungeon.Dungeon;
 import dungeon.HiddenSpot;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.RoomInfo;
-import dungeon.RouteInstruction;
 import dungeon.quest.RoomQuest;
 import dungeon.quest.RoomQuest_1x1_1;
 import dungeon.quest.RoomQuest_2x2_1;
+import dungeon.util.DungeonUtils;
+import dungeon.util.RouteInstruction;
 
 public class Sector1 extends Sector {
 
-	LinkedList<Item> restItems = new LinkedList<Item>();
+	private final List<Item> restItems = new LinkedList<Item>();
 
-	LinkedList<Item> rareItems = new LinkedList<Item>();
+	private final List<Item> rareItems = new LinkedList<Item>();
 
-	Room con_room = null;
+	private Room con_room = null;
 
 	public Sector1(Dungeon d, JDPoint startRoom, int number,
 			int avMonsterStrength, int mainSize, DungeonGame game, DungeonFiller df) throws DungeonGenerationFailedException{
@@ -114,7 +108,7 @@ public class Sector1 extends Sector {
 
 		
 
-		boolean b = normalRaum.plugChest((Chest) chests.removeFirst());
+		boolean b = normalRaum.plugChest(chests.removeFirst());
 		int bigmonster = 5;
 		int smallmonster = 8;
 		LinkedList normal = new LinkedList();
@@ -147,7 +141,7 @@ public class Sector1 extends Sector {
 				.getNextKey(), 0, "Wolf", 1);
 		halls.add(wolfRaum);
 		wolfRaum.removeDoors(2);
-		Chest wolfChest = (Chest) chests.removeFirst();
+		Chest wolfChest = chests.removeFirst();
 		wolfChest.takeItem(new BookAttr(Attribute.NATURE_KNOWLEDGE, 1), null);
 		b = wolfRaum.plugChest(wolfChest);
 		// System.out.println("Chest gesetzt: " + b);
@@ -157,7 +151,7 @@ public class Sector1 extends Sector {
 				0, "Ork", 2);
 		halls.add(orcRaum);
 		orcRaum.removeDoors(2);
-		Chest orcChest = (Chest) chests.removeFirst();
+		Chest orcChest = chests.removeFirst();
 		orcChest.takeItem(new BookAttr(Attribute.CREATURE_KNOWLEDGE, 1), null);
 		b = orcRaum.plugChest(orcChest);
 		// System.out.println("Chest gesetzt: " + b);
@@ -167,7 +161,7 @@ public class Sector1 extends Sector {
 				.getNextKey(), 0, "Skelett", 4);
 		halls.add(skeletonRaum);
 		skeletonRaum.removeDoors(2);
-		Chest skelChest = (Chest) chests.removeFirst();
+		Chest skelChest = chests.removeFirst();
 		skelChest.takeItem(new BookAttr(Attribute.UNDEAD_KNOWLEDGE, 1), null);
 		b = skeletonRaum.plugChest(skelChest);
 		// System.out.println("Chest gesetzt: " + b);
@@ -184,7 +178,7 @@ public class Sector1 extends Sector {
 		}
 		setRoomQuest("1x1_1 ", mainHall, hf);
 
-		b = mainHall.plugChest((Chest) chests.removeFirst());
+		b = mainHall.plugChest(chests.removeFirst());
 		// //System.out.println("Chest gesetzt: " + b);
 		// mainHall.removeDoors(5);
 		Monster s = new Skeleton(800, false);
@@ -280,7 +274,8 @@ public class Sector1 extends Sector {
 		Hall vimHall = makeVimHome(rimHome, vimKey);
 		
 		JDPoint home = vimHall.getStartPoint();
-		int dir = Dungeon.getNeighbourDirectionFromTo(location,home);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(location, home)
+				.getValue();
 		String dirString = RouteInstruction.dirToString(dir);
 		str2 += " "+location.toString();
 		
@@ -361,7 +356,7 @@ public class Sector1 extends Sector {
 			restItems.add(sec2Key);
 		}
 		Door d1 = new Door(con_room, d.getRoomAt(con_room,
-				RouteInstruction.NORTH), sec2Key);
+				RouteInstruction.direction(RouteInstruction.NORTH)), sec2Key);
 		con_room.setDoor(d1, RouteInstruction.NORTH, true);
 
 		// trader_shrine trader = new trader_shrine(70,d);
@@ -379,21 +374,22 @@ public class Sector1 extends Sector {
 		Room r1 = mainHall.getRandomRoomForShrineNonRQ();
 		Room r2 = normalRaum.getRandomRoom();
 		
-		List<Room> way = d.findShortestWayFromTo(r1, r2,DungeonVisibilityMap.getAllVisMap(this.d));
+		List<Room> way = DungeonUtils.findShortestWayFromTo(r1, r2,
+				DungeonVisibilityMap.getAllVisMap(this.d));
 		
 
 	}
 
 	private Room getRandomRimRoom(Hall wolfRaum, Hall orcRaum,
 			Hall skeletonRaum, Hall mainHall) {
-		LinkedList possibleRooms = new LinkedList();
+		List<Room> possibleRooms = new LinkedList<Room>();
 		possibleRooms.add(wolfRaum.getRimRoom(0));
 		possibleRooms.add(orcRaum.getRimRoom(0));
 		possibleRooms.add(skeletonRaum.getRimRoom(0));
 		possibleRooms.add(mainHall.getRimRoom(0));
 		int k = (int) (Math.random() * possibleRooms.size());
 
-		Room res = (Room) (possibleRooms.get(k));
+		Room res = (possibleRooms.get(k));
 		return res;
 	}
 
@@ -406,10 +402,10 @@ public class Sector1 extends Sector {
 		// LinkedList l = d.getNeighbourRooms((room) neighbours.get(i));
 		// possibles.addAll(l);
 		// }
-		List<Room> possibles = this.mainHall.rooms;
+		List<Room> possibles = this.mainHall.getRooms();
 		List<Room> good = new LinkedList<Room>();
 		for (int i = 0; i < possibles.size(); i++) {
-			Room r = (Room) possibles.get(i);
+			Room r = possibles.get(i);
 			if (r.isClaimed() && (r.getRoomQuest() == null)
 					&& (!good.contains(r)) && (r.getShrine() == null)) {
 				good.add(r);
@@ -421,7 +417,7 @@ public class Sector1 extends Sector {
 		int i = 0;
 		boolean bs = false;
 		while (i < good.size()) {
-			bs = statueHelp(((Room) good.get(i)));
+			bs = statueHelp((good.get(i)));
 			if (bs)
 				break;
 
@@ -433,11 +429,10 @@ public class Sector1 extends Sector {
 
 	private Room getXmasRoom() {
 
-		Room start = d.getRoom(startRoom);
-		LinkedList<Room> possibles = this.mainHall.rooms;
-		LinkedList<Room> good = new LinkedList<Room>();
+		List<Room> possibles = this.mainHall.getRooms();
+		List<Room> good = new LinkedList<Room>();
 		for (int i = 0; i < possibles.size(); i++) {
-			Room r = (Room) possibles.get(i);
+			Room r = possibles.get(i);
 			if (r.isClaimed() && (r.getRoomQuest() == null)
 					&& (!good.contains(r)) && r.getShrine() == null) {
 				good.add(r);
@@ -447,7 +442,7 @@ public class Sector1 extends Sector {
 		Collections.sort(good, new DoorCountRoomComparator());
 		printList(good);
 
-		return ((Room) good.getLast());
+		return (good.get(good.size() - 1));
 
 	}
 
@@ -487,14 +482,14 @@ public class Sector1 extends Sector {
 		for (int i = 0; i < k; i++) {
 			Monster m = df.getMonsterIn(1, 0);
 			if (m != null) {
-				m.takeItem((Item) restItems.removeFirst(), null);
+				m.takeItem(restItems.remove(0), null);
 			}
 		}
 		k = rareItems.size();
 		for (int i = 0; i < k; i++) {
 			Monster m = df.getMonsterIn(1, 0);
 			if (m != null) {
-				m.takeItem((Item) rareItems.removeFirst(), null);
+				m.takeItem(rareItems.remove(0), null);
 			}
 		}
 		// System.out.println("sector 1: ");
@@ -505,6 +500,7 @@ public class Sector1 extends Sector {
 
 	}
 
+	@Override
 	public Room getConnectionRoom() {
 		return con_room;
 	}
@@ -514,9 +510,9 @@ public class Sector1 extends Sector {
 		LinkedList<Chest> chests = new LinkedList<Chest>();
 		for (int i = 0; i < k; i++) {
 			LinkedList<Item> items = new LinkedList<Item>();
-			Item it1 = (Item) itemList.remove((int) (Math.random() * itemList
+			Item it1 = itemList.remove((int) (Math.random() * itemList
 					.size()));
-			Item it2 = (Item) itemList.remove((int) (Math.random() * itemList
+			Item it2 = itemList.remove((int) (Math.random() * itemList
 					.size()));
 			items.add(it1);
 			items.add(it2);
@@ -576,7 +572,7 @@ public class Sector1 extends Sector {
 		List<Room> neighbours = d.getNeighbourRooms(r1);
 
 		for (int i = 0; i < neighbours.size(); i++) {
-			Room n = (Room) neighbours.get(i);
+			Room n = neighbours.get(i);
 			if ((!n.isClaimed())) {
 				toMake = n;
 				break;
@@ -594,7 +590,8 @@ public class Sector1 extends Sector {
 		toMake.addItem(ItemPool.getGoodItem(40 + (int) (Math.random() * 20),
 				1.5 + Math.random()));
 		
-		int dir = Dungeon.getNeighbourDirectionFromTo(r1, toMake);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(r1, toMake)
+				.getValue();
 
 		Hall halle1 = new Hall(d, 1, 0, 0, toMake.getNumber(), dir, 0, this,
 				"Vim", 5);
@@ -606,7 +603,8 @@ public class Sector1 extends Sector {
 
 		hallDoor.setHallDoor(true);
 
-		r1.setDoor(hallDoor, Dungeon.getNeighbourDirectionFromTo(r1, toMake),
+		r1.setDoor(hallDoor,
+				DungeonUtils.getNeighbourDirectionFromTo(r1, toMake).getValue(),
 				true);
 
 		return halle1;
@@ -618,7 +616,7 @@ public class Sector1 extends Sector {
 		List<Room> neighbours = d.getNeighbourRooms(r1);
 
 		for (int i = 0; i < neighbours.size(); i++) {
-			Room n = (Room) neighbours.get(i);
+			Room n = neighbours.get(i);
 			if ((!n.isClaimed())) {
 				toMake = n;
 				break;
@@ -638,7 +636,8 @@ public class Sector1 extends Sector {
 		toMake.addItem(ItemPool.getGoodItem(40 + (int) (Math.random() * 20),
 				1.5 + Math.random()));
 		c.takeItem(ItemPool.getRandomBookSpell(), null);
-		int dir = Dungeon.getNeighbourDirectionFromTo(r1, toMake);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(r1, toMake)
+				.getValue();
 		// System.out.println("Richtung : " + dir);
 		// System.out.println(routeInstruction.dirToString(dir));
 		Hall halle1 = new Hall(d, 1, 0, 0, toMake.getNumber(), dir, 0, this,
@@ -658,7 +657,8 @@ public class Sector1 extends Sector {
 		// + r1.toString()
 		// + " nach: "
 		// + toMake.toString());
-		r1.setDoor(hallDoor, Dungeon.getNeighbourDirectionFromTo(r1, toMake),
+		r1.setDoor(hallDoor,
+				DungeonUtils.getNeighbourDirectionFromTo(r1, toMake).getValue(),
 				true);
 
 		// System.out.println("Jetzt halle: " + name);
@@ -678,7 +678,7 @@ public class Sector1 extends Sector {
 		if (direction == 0) {
 
 			for (int i = 0; i < neighbours.size(); i++) {
-				Room n = (Room) neighbours.get(i);
+				Room n = neighbours.get(i);
 				if ((!n.isClaimed())) {
 					toMake = n;
 					break;
@@ -687,9 +687,10 @@ public class Sector1 extends Sector {
 		} else {
 			// System.out.println("Richtung: " + direction);
 			// System.out.println("Gefundener RimRoom: " + r1.toString());
-			toMake = d.getRoomAt(r1, direction);
+			toMake = d.getRoomAt(r1, RouteInstruction.direction(direction));
 		}
-		int dir = Dungeon.getNeighbourDirectionFromTo(r1, toMake);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(r1, toMake)
+				.getValue();
 		// System.out.println("Richtung : " + dir);
 		// System.out.println(routeInstruction.dirToString(dir));
 		Hall halle1 = new Hall(d, hallSize, monsterValue, subHalls, toMake
@@ -748,7 +749,8 @@ public class Sector1 extends Sector {
 		// + r1.toString()
 		// + " nach: "
 		// + toMake.toString());
-		r1.setDoor(hallDoor, Dungeon.getNeighbourDirectionFromTo(r1, toMake),
+		r1.setDoor(hallDoor,
+				DungeonUtils.getNeighbourDirectionFromTo(r1, toMake).getValue(),
 				true);
 
 		// System.out.println("Jetzt halle: " + name);

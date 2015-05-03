@@ -5,6 +5,8 @@
  */
 package dungeon.generate;
 
+import figure.monster.Monster;
+import game.DungeonGame;
 import item.HealPotion;
 import item.Item;
 import item.ItemPool;
@@ -14,17 +16,9 @@ import item.equipment.Helmet;
 import item.equipment.Shield;
 import item.quest.Rune;
 
-import java.util.*;
-
-import dungeon.Chest;
-import dungeon.Door;
-import dungeon.Dungeon;
-import dungeon.JDPoint;
-import dungeon.Room;
-import dungeon.RouteInstruction;
-import dungeon.quest.RoomQuest;
-import dungeon.quest.RoomQuest_XxY;
-import dungeon.quest.RoomQuest_trader_1x2;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import shrine.Brood;
 import shrine.HealthFountain;
@@ -33,28 +27,26 @@ import shrine.RepairShrine;
 import shrine.RuneFinder;
 import shrine.RuneShrine;
 import shrine.Shrine;
-
-import figure.monster.Monster;
-import game.DungeonGame;
+import dungeon.Chest;
+import dungeon.Door;
+import dungeon.Dungeon;
+import dungeon.JDPoint;
+import dungeon.Room;
+import dungeon.quest.RoomQuest;
+import dungeon.quest.RoomQuest_XxY;
+import dungeon.quest.RoomQuest_trader_1x2;
+import dungeon.util.DungeonUtils;
+import dungeon.util.RouteInstruction;
 
 
 public class Sector2 extends Sector {
 
 	
-	LinkedList<Item> restItems = new LinkedList<Item>();
-
-	
-	LinkedList<Item> rareItems = new LinkedList<Item>();
-
-	
-	LinkedList<Shrine> shrinesInRQ = new LinkedList<Shrine>();
-
-	
-	LinkedList<Shrine> shrinesNonRQ = new LinkedList<Shrine>();
-
-	
-	Room con_room = null;
-
+	private final List<Item> restItems = new LinkedList<Item>();
+	private final List<Item> rareItems = new LinkedList<Item>();
+	private final List<Shrine> shrinesInRQ = new LinkedList<Shrine>();
+	private final List<Shrine> shrinesNonRQ = new LinkedList<Shrine>();
+	private final Room con_room = null;
 
 	public Sector2(
 		Dungeon d,
@@ -209,13 +201,13 @@ public class Sector2 extends Sector {
 		//room runeShrine3Room = mainHall.getRandomRoomForShrine();
 		//room runeShrine4Room = mainHall.getRandomRoomForShrine();
 
-		Rune rune1 = df.runen[0];
+		Rune rune1 = df.getRunes()[0];
 		RuneShrine rs1 = new RuneShrine(1, rune1.getChar());
-		Rune rune2 = df.runen[1];
+		Rune rune2 = df.getRunes()[1];
 		RuneShrine rs2 = new RuneShrine(2, rune2.getChar());
-		Rune rune3 = df.runen[2];
+		Rune rune3 = df.getRunes()[2];
 		RuneShrine rs3 = new RuneShrine(3, rune3.getChar());
-		Rune rune4 = df.runen[3];
+		Rune rune4 = df.getRunes()[3];
 		RuneShrine rs4 = new RuneShrine(4, rune4.getChar());
 
 		//runeShrine1Room.setShrine(rs1, true);
@@ -317,9 +309,9 @@ public class Sector2 extends Sector {
 			
 			//System.out.println();
 			int k = (int)(Math.random() * halls.size());
-			Hall h = (Hall)halls.get(k);	
+			Hall h = halls.get(k);	
 			Room r = h.getRandomRoomForShrineNonRQ();
-			Shrine s = (Shrine)shrinesNonRQ.remove(0);
+			Shrine s = shrinesNonRQ.remove(0);
 			//System.out.println(i+s.getClass().getName());
 			r.setShrine(s,true);
 			//shrinesNonRQ.remove(s);
@@ -380,7 +372,7 @@ public class Sector2 extends Sector {
 		for (int i = 0; i < k; i++) {
 			Monster m = df.getMonsterIn(2, 0);
 			if (m != null) {
-				m.takeItem((Item) restItems.removeFirst(), null);
+				m.takeItem(restItems.remove(0), null);
 			} else {
 				//System.out.println("kein Monster fuer Gegenstand gefunden!");
 			}
@@ -392,7 +384,7 @@ public class Sector2 extends Sector {
 			secCnt++;
 			Monster m = df.getMonsterIn(2, 0);
 			if (m != null) {
-				Item it = (Item) rareItems.getFirst();
+				Item it = rareItems.get(0);
 				if (it instanceof Rune) {
 					//System.out.println(
 					//	"Gebe: " + it.toString() + " an: " + m.toString());
@@ -420,19 +412,20 @@ public class Sector2 extends Sector {
 	 * 
 	 * @uml.property name="con_room"
 	 */
+	@Override
 	public Room getConnectionRoom() {
 		return con_room;
 	}
 
-	private LinkedList getChests(int k, LinkedList itemList) {
+	private List<Chest> getChests(int k, List<Item> itemList) {
 
-		LinkedList chests = new LinkedList();
+		List<Chest> chests = new LinkedList<Chest>();
 		for (int i = 0; i < k; i++) {
-			LinkedList items = new LinkedList();
+			List<Item> items = new ArrayList<Item>();
 			Item it1 =
-				(Item) itemList.remove((int) (Math.random() * itemList.size()));
+				itemList.remove((int) (Math.random() * itemList.size()));
 			Item it2 =
-				(Item) itemList.remove((int) (Math.random() * itemList.size()));
+				itemList.remove((int) (Math.random() * itemList.size()));
 			items.add(it1);
 			items.add(it2);
 			Chest c = new Chest(items);
@@ -444,9 +437,9 @@ public class Sector2 extends Sector {
 	}
 
 	private void makeRareItems() {
-		for (int i = 0; i < df.runen.length; i++) {
+		for (int i = 0; i < df.getRunes().length; i++) {
 			////System.out.println("adding: " + df.runen[i].toString());
-			rareItems.add(df.runen[i]);
+			rareItems.add(df.getRunes()[i]);
 		}
 		rareItems.add(ItemPool.getUnique(80, 0));
 		for (int i = 0; i < 6; i++) {
@@ -529,9 +522,10 @@ public class Sector2 extends Sector {
 		} else {
 			//System.out.println("Richtung: " + direction);
 			//System.out.println("Gefundener RimRoom: " + r1.toString());
-			toMake = d.getRoomAt(r1, direction);
+			toMake = d.getRoomAt(r1, RouteInstruction.direction(direction));
 		}
-		int dir = Dungeon.getNeighbourDirectionFromTo(r1, toMake);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(r1, toMake)
+				.getValue();
 		//System.out.println("Richtung : " + dir);
 		//System.out.println(routeInstruction.dirToString(dir));
 		Hall halle1 =
@@ -554,7 +548,7 @@ public class Sector2 extends Sector {
 			neighbours = d.getNeighbourRooms(r1);
 			//if (direction == 0) {
 			for (int i = 0; i < neighbours.size(); i++) {
-				Room n = (Room) neighbours.get(i);
+				Room n = neighbours.get(i);
 				if ((!n.isClaimed())) {
 					toMake = n;
 					break;
@@ -564,7 +558,8 @@ public class Sector2 extends Sector {
 			//	//System.out.println("Gefundener RimRoom: " + r1.toString());
 			//	toMake = d.getRoomAt(r1, direction);
 			//}
-			dir = Dungeon.getNeighbourDirectionFromTo(r1, toMake);
+			dir = DungeonUtils.getNeighbourDirectionFromTo(r1, toMake)
+					.getValue();
 			halle1 =
 				new Hall(
 					d,
@@ -599,7 +594,7 @@ public class Sector2 extends Sector {
 		//		+ toMake.toString());
 		r1.setDoor(
 			hallDoor,
-			Dungeon.getNeighbourDirectionFromTo(r1, toMake),
+				DungeonUtils.getNeighbourDirectionFromTo(r1, toMake).getValue(),
 			true);
 
 		//System.out.println("Jetzt halle: " + name);
@@ -797,7 +792,7 @@ public class Sector2 extends Sector {
 	private Shrine getRandomRQShrine() {
 		if(shrinesInRQ.size() > 0) {
 			int k = (int)(Math.random() * shrinesInRQ.size());
-			return (Shrine)shrinesInRQ.get(k);			
+			return shrinesInRQ.get(k);			
 		}	
 		else {
 			return null;	

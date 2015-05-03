@@ -1,5 +1,7 @@
 package dungeon;
 
+import dungeon.util.RouteInstruction;
+
 /**
  * Eine Klasse fuer X und Y Koordinate mit einigen Zusatzmethoden 
  * bzgl. Richtungen und Entfernungen

@@ -33,11 +33,6 @@ public class DungeonVisibilityMap {
 
 	}
 
-	public DungeonVisibilityMap(RoomObservationStatus[][] r, Dungeon d) {
-		dungeon = d;
-		rooms = r;
-	}
-
 	public void setOtherDungeon(Dungeon d) {
 		dungeon = d;
 		RoomObservationStatus[][] stats = d.getNewRoomVisibilityMap(this);

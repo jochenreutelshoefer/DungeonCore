@@ -4,7 +4,7 @@ package figure.monster;
 import java.util.LinkedList;
 
 import dungeon.Room;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 import fight.Slap;
 import figure.Figure;
 import figure.action.Action;

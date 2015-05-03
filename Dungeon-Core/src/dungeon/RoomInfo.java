@@ -43,10 +43,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public static RoomInfo makeRoomInfo(Room r, DungeonVisibilityMap stats) {
-		if (r != null) {
 			return new RoomInfo(r, stats);
-		}
-		return null;
 	}
 	
 	@Override

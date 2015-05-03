@@ -18,6 +18,7 @@ import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,9 @@ import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
+import dungeon.Room;
 import dungeon.RoomInfo;
+import dungeon.util.DungeonUtils;
 
 /**
  * Abstrakte Klasse - Soll fuer eine Steuerung die Informationen einer Figur
@@ -49,8 +52,15 @@ public abstract class FigureInfo extends InfoEntity {
 	
 	public abstract int getMight();
 	
-	public List getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		return f.getGame().getDungeon().findShortestWayFromTo(p1,p2,map);
+	public List<JDPoint> getShortestWayFromTo(JDPoint p1, JDPoint p2) {
+		
+		List<Room> wayFromTo = DungeonUtils.findShortestWayFromTo(
+				this.getRoomInfo(p1), this.getRoomInfo(p2));
+		List<JDPoint> result = new ArrayList<JDPoint>();
+		for (Room room : wayFromTo) {
+			result.add(room.getPoint());
+		}
+		return result;
 	}
 	
 
@@ -290,9 +300,6 @@ public abstract class FigureInfo extends InfoEntity {
 	}
 	
 	public RoomInfo getRoomInfo(int x, int y) {
-		if(this.map.getDiscoveryStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND) {
-			return null;
-		}
 		return f.getGame().getDungeon().getRoomInfoNr(x, y, map);
 	}
 	public RoomInfo getRoomInfo(JDPoint p) {

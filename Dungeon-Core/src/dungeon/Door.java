@@ -5,9 +5,7 @@ import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.memory.DoorMemory;
-import figure.memory.MemoryObject;
 import figure.monster.Monster;
-import figure.monster.MonsterInfo;
 import game.InfoEntity;
 import game.InfoProvider;
 import item.Key;
@@ -16,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import shrine.Statue;
+import dungeon.util.DungeonUtils;
 
 /**
  * Eine Tuer stellt die Verbindung zwischen zwei Raeumen dar. Tueren koennen
@@ -35,13 +34,13 @@ public class Door implements  InfoProvider {
 
 	public static final int DOOR_LOCK_LOCKED = 3;
 
-	private Room[] rooms = new Room[2];
+	private final Room[] rooms = new Room[2];
 
-	private boolean passable = true;
+	private final boolean passable = true;
 
-	private LinkedList blockings = new LinkedList();
+	private final LinkedList blockings = new LinkedList();
 
-	private List escapeRoutes = new LinkedList();
+	private final List escapeRoutes = new LinkedList();
 	
 	private String lock = "unlockable";
 
@@ -93,6 +92,7 @@ public class Door implements  InfoProvider {
 		return isHidden;
 	}
 
+	@Override
 	public JDPoint getLocation() {
 		return rooms[0].getLocation();
 	}
@@ -102,6 +102,7 @@ public class Door implements  InfoProvider {
 		this.isHidden = isHidden;
 	}
 
+	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		JDPoint point = map.getSuperiorPoint(this);
 		return new DoorInfo(this, map);
@@ -133,7 +134,8 @@ public class Door implements  InfoProvider {
 		}
 		Room otherRoom = rooms[roomTo];
 		//System.out.println("otherRomm: "+otherRoom.toString());
-		int dir = Dungeon.getNeighbourDirectionFromTo(r, otherRoom);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(r, otherRoom)
+				.getValue();
 		int index = -1;
 		if (dir == Dir.NORTH) {
 			index = 5;
@@ -244,6 +246,7 @@ public class Door implements  InfoProvider {
 		return rooms;
 	}
 
+	@Override
 	public String toString() {
 		return "Tür von: " + rooms[0].toString() + " nach: "
 				+ rooms[1].toString();

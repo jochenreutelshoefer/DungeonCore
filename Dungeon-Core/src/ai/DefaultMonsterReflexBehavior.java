@@ -3,9 +3,9 @@ package ai;
 import java.util.LinkedList;
 import java.util.List;
 
-import dungeon.Dungeon;
 import dungeon.Position;
 import dungeon.Room;
+import dungeon.util.DungeonUtils;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -16,12 +16,9 @@ import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 
 public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
-	
-	
-	
+
 	private final Monster m;
-	
-	
+
 	public DefaultMonsterReflexBehavior(Monster m) {
 		super(m);
 		this.m = m;
@@ -45,7 +42,8 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 	private Action stepAwayFromDoor() {
 		Room other = m.getLastFrighener().getRoom();
 		Room here = m.getRoom();
-		int dir = Dungeon.getNeighbourDirectionFromTo(here,other);
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(here, other)
+				.getValue();
 		int pos = getDoorPos(dir);
 		if(m.getPositionInRoom() == pos) {
 			Position p = getRandomFreePos();

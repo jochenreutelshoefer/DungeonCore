@@ -6,7 +6,7 @@ import java.util.List;
 import ai.AI;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
-import dungeon.RouteInstruction;
+import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
