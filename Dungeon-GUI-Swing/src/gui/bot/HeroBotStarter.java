@@ -13,9 +13,9 @@ import gui.MyJDGui;
 import gui.engine2D.AWTImageLoader;
 import ai.AI;
 import dungeon.Dungeon;
-import dungeon.DungeonManager;
 import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
+import dungeon.util.DungeonManager;
 
 public class HeroBotStarter {
 

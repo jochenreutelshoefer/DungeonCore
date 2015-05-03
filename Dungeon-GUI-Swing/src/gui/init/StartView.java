@@ -49,9 +49,9 @@ import audio.AudioEffectsManager;
 import audio.AudioLoader;
 import control.ActionAssembler;
 import dungeon.Dungeon;
-import dungeon.DungeonManager;
 import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
+import dungeon.util.DungeonManager;
 
 public class StartView extends AbstractStartWindow implements ActionListener,
 		KeyListener, ItemListener {

@@ -14,9 +14,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import dungeon.RouteInstruction;
-//import javax.swing.border.*;
-//import java.awt.BorderLayout;
+import dungeon.util.RouteInstruction;
 
 /**
  * @author Duke1

@@ -3,6 +3,7 @@ package control;
 import figure.FigureInfo;
 import figure.action.Action;
 import game.JDGUI;
+import graphics.AbstractImageLoader;
 import item.ItemInfo;
 import spell.SpellInfo;
 import dungeon.RoomInfo;
@@ -34,9 +35,11 @@ public interface JDGUIEngine2D extends JDGUI {
 
 	void stopAllAnimation();
 
-	ActionAssembler getControl();
+	ActionAssembler getActionAssembler();
 
 	AbstractSwingMainFrame getMainFrame();
+
+	AbstractImageLoader getImageSource();
 
 
 }

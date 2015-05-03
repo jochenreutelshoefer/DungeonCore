@@ -1,16 +1,29 @@
 package gui.mainframe.dialog;
 
-import item.*;
+import item.Item;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.util.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.DefaultDesktopManager;
+import javax.swing.DefaultListModel;
+import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import dungeon.Chest;
-
 import figure.Figure;
 import gui.mainframe.MainFrame;
 
@@ -29,71 +42,76 @@ public class ItemChoiceChestView
 
 	/**
 	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
 	 * @uml.property name="cp"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	JDesktopPane cp = new JDesktopPane();
+	private final JDesktopPane cp = new JDesktopPane();
 
 	/**
 	 * 
 	 * @uml.property name="p"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	JPanel p = new JPanel();
+	private final JPanel p = new JPanel();
 
 	/**
 	 * 
 	 * @uml.property name="rec"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	Figure rec;
+	private final Figure rec;
 
 	/**
 	 * 
 	 * @uml.property name="f"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	MainFrame f;
+	private final MainFrame f;
 
 
-	boolean takeAway;
+	private final boolean takeAway;
 
 	/**
 	 * 
 	 * @uml.property name="scPane1"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	JScrollPane scPane1;
+	private final JScrollPane scPane1;
 
 	/**
 	 * 
 	 * @uml.property name="itemsH"
 	 * @uml.associationEnd multiplicity="(0 -1)" elementType="item.Item"
 	 */
-	LinkedList itemsH;
+	private List<Item> itemsH;
 
 	/**
 	 * 
 	 * @uml.property name="heroItemL"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	JList heroItemL;
+	private final JList heroItemL;
 
 	/**
 	 * 
 	 * @uml.property name="listModel"
 	 * @uml.associationEnd multiplicity="(0 -1)" elementType="java.lang.String"
 	 */
-	DefaultListModel listModel = new DefaultListModel();
+	private final DefaultListModel listModel = new DefaultListModel();
 
 	/**
 	 * 
 	 * @uml.property name="cool"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	JTextArea cool = new JTextArea(8, 25);
+	private final JTextArea cool = new JTextArea(8, 25);
 
-	Button ok = new Button("Ok");
+	private final Button ok = new Button("Ok");
 
 	/**
 	 * 
@@ -144,12 +162,13 @@ public class ItemChoiceChestView
 		positionieren();
 	}
 
+	@Override
 	public void valueChanged(ListSelectionEvent lse) {
 		JList list = (JList) lse.getSource();
 		int i = list.getSelectedIndex();
 		if (i != -1) {
 			if (list == heroItemL) {
-				Item u = ((Item) itemsH.get(i));
+				Item u = (itemsH.get(i));
 				cool.setText(u.getText());
 				//if (takeAway) {
 				//	x.giveAwayItem(u, null);
@@ -162,11 +181,12 @@ public class ItemChoiceChestView
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		int i = heroItemL.getSelectedIndex();
 		if (i != -1) {
-			if(rec.takeItem((Item) itemsH.get(i),x)) {
-				x.removeItem((Item)itemsH.get(i))	;
+			if(rec.takeItem(itemsH.get(i),x)) {
+				x.removeItem(itemsH.get(i))	;
 			}
 			
 			setVisible(false);
@@ -175,6 +195,7 @@ public class ItemChoiceChestView
 		}
 	}
 
+	@Override
 	public void repaint() {
 		//System.out.println("repaint()");
 		itemsH = x.getItems();
@@ -184,11 +205,11 @@ public class ItemChoiceChestView
 		listModel.removeAllElements();
 
 		for (int i = 0; i < b; i++) {
-			Item ite = ((Item) itemsH.get(i));
+			Item ite = (itemsH.get(i));
 			//System.out.println(ite.toString());
 			listModel.addElement(ite.toString());
 		}
-		//Hier werden Stringrepräsentationen der Items in die listModels gefüllt
+		//Hier werden Stringreprï¿½sentationen der Items in die listModels gefï¿½llt
 	}
 	
 	public void positionieren()

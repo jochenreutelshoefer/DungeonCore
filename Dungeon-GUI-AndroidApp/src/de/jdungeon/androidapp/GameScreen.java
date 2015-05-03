@@ -58,12 +58,12 @@ import de.jdungeon.util.ScrollMotion;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
-import dungeon.DungeonManager;
 import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.SpotInfo;
 import dungeon.generate.DungeonGenerationFailedException;
+import dungeon.util.DungeonManager;
 
 public class GameScreen extends Screen {
 
