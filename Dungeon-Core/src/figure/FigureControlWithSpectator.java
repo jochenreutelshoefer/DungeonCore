@@ -2,13 +2,13 @@ package figure;
 
 import figure.percept.Percept;
 import game.JDGUI;
-import ai.AI;
+import ai.GuiAI;
 
 public class FigureControlWithSpectator extends FigureControl {
 
 	private final JDGUI spectator;
 
-	public FigureControlWithSpectator(FigureInfo info, AI ai, JDGUI spectator) {
+	public FigureControlWithSpectator(FigureInfo info, GuiAI ai, JDGUI spectator) {
 		super(info, ai);
 		this.spectator = spectator;
 	}

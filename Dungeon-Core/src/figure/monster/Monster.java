@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import ai.AI;
+import ai.GuiAI;
 import ai.DefaultMonsterIntelligence;
 import ai.DefaultMonsterReflexBehavior;
 import dungeon.Door;
@@ -257,7 +257,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 		construcHelp(value);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this, this.roomVisibility);
-		AI ai = new DefaultMonsterIntelligence();
+		GuiAI ai = new DefaultMonsterIntelligence();
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);
 

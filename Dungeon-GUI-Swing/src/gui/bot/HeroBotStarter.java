@@ -11,7 +11,7 @@ import game.JDEnv;
 import graphics.ImageManager;
 import gui.MyJDGui;
 import gui.engine2D.AWTImageLoader;
-import ai.AI;
+import ai.GuiAI;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
@@ -77,16 +77,16 @@ public class HeroBotStarter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (newBotInstance instanceof AI) {
+		if (newBotInstance instanceof GuiAI) {
 			/*
 			 * init GUI
 			 */
 			MyJDGui gui = new MyJDGui(figureInfo);
 			gui.initGui(null, null, h.getName());
 			HeroControlWithSpectator control = new HeroControlWithSpectator(
-					figureInfo, (AI) newBotInstance, gui);
+					figureInfo, (GuiAI) newBotInstance, gui);
 			h.setControl(control);
-			((AI) newBotInstance).setFigure(figureInfo);
+			((GuiAI) newBotInstance).setFigure(figureInfo);
 			dungeonGame.putGuiFigure(h, gui);
 			// new StartView(h.getName(), 0, null, false)
 

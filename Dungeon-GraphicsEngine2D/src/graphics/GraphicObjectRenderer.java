@@ -1,5 +1,13 @@
 package graphics;
 
+import figure.RoomObservationStatus;
+import figure.hero.Hero;
+import figure.hero.HeroInfo;
+import figure.monster.Monster;
+import figure.monster.MonsterInfo;
+import game.JDGUI;
+import graphics.util.JDRectangle;
+import graphics.util.RoomSize;
 import item.AttrPotion;
 import item.DustItem;
 import item.Item;
@@ -40,14 +48,6 @@ import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
-import figure.FigureInfo;
-import figure.RoomObservationStatus;
-import figure.hero.Hero;
-import figure.hero.HeroInfo;
-import figure.monster.Monster;
-import figure.monster.MonsterInfo;
-import graphics.util.JDRectangle;
-import graphics.util.RoomSize;
 
 public class GraphicObjectRenderer {
 
@@ -103,14 +103,17 @@ public class GraphicObjectRenderer {
 
 	public GraphicObject hero;
 
-	private final FigureInfo figure;
+	private final JDGUI gui;
 
 	private JDPoint[] getPositionCoord() {
 		return positionCoord;
 	}
 
-	public GraphicObjectRenderer(int roomSize, FigureInfo info) {
-		this.figure = info;
+	public GraphicObjectRenderer(int roomSize, JDGUI gui) {
+		this.gui = gui;
+		if (gui == null) {
+			throw new NullPointerException();
+		}
 		this.roomSize = roomSize;
 		ROOMSIZE_BY_36 = RoomSize.by(36, roomSize);
 		ROOMSIZE_BY_24 = RoomSize.by(24, roomSize);
@@ -1018,7 +1021,7 @@ public class GraphicObjectRenderer {
 
 		if ((status >= RoomObservationStatus.VISIBILITY_SHRINE)) {
 
-			if (r.equals(figure.getRoomInfo())) {
+			if (r.equals(gui.getFigure().getRoomInfo())) {
 				JDPoint[] positionCoord = getPositionCoord();
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
@@ -1159,7 +1162,7 @@ public class GraphicObjectRenderer {
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
 			JDPoint[] positionCoord = getPositionCoord();
-			if (r.equals(figure.getRoomInfo())) {
+			if (r.equals(gui.getFigure().getRoomInfo())) {
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
 

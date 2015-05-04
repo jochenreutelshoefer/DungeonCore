@@ -61,17 +61,17 @@ import control.ActionAssembler;
 public class HealthView extends JDJPanel implements ActionListener,
 		ItemListener, MouseListener {
 
-	HealthPot pot;
+	private HealthPot pot;
 
-	JDJButton memoryB = new JDJButton("Gedaechtnis");
+	// JDJButton memoryB = new JDJButton("Gedaechtnis");
 
-	JDJButton bigHeal = new JDJButton(" H ");
+	private final JDJButton bigHeal = new JDJButton(" H ");
 
-	boolean mem = false;
+	private final boolean mem = false;
 
-	JDJButton benutzen = new JDJButton("Benutzen");
+	private JDJButton benutzen = new JDJButton("Benutzen");
 
-	JComboBox itemCombo = new JComboBox();
+	private final JComboBox itemCombo = new JComboBox();
 
 
 	JPanel itemsPanel;
@@ -102,8 +102,7 @@ public class HealthView extends JDJPanel implements ActionListener,
 
 		super(gui);
 		this.control = gui.getActionAssembler();
-		memoryB = new JDJButton(JDEnv.getResourceBundle().getString(
-				"gui_memory"));
+
 		benutzen = new JDJButton(JDEnv.getResourceBundle().getString("gui_use"));
 		empty = JDEnv.getResourceBundle().getString("gui_empty");
 		weap1 = new JDJRadioButton(empty);
@@ -166,12 +165,10 @@ public class HealthView extends JDJPanel implements ActionListener,
 		pot.repaint();
 
 		benutzen.addActionListener(this);
-		memoryB.addActionListener(this);
 
 		bigHeal.addMouseListener(this);
 		bigHeal.addActionListener(this);
 		benutzen.addMouseListener(this);
-		memoryB.addMouseListener(this);
 
 		this.setAlignmentX(this.LEFT_ALIGNMENT);
 
@@ -196,9 +193,6 @@ public class HealthView extends JDJPanel implements ActionListener,
 			}
 		
 
-		}
-		if (quelle == memoryB) {
-			
 		}
 
 		if (quelle == bigHeal) {
@@ -326,11 +320,11 @@ public class HealthView extends JDJPanel implements ActionListener,
 		gl.setHgap(5);
 		buttonPanel.setLayout(gl);
 		itemsPanel.add(buttonPanel);
-		buttonPanel.add(memoryB);
 		buttonPanel.add(benutzen);
 
 	}
 
+	@Override
 	public void updateView() {
 		
 		resetItemCombo();
@@ -445,13 +439,6 @@ public class HealthView extends JDJPanel implements ActionListener,
 			p = new Paragraph[1];
 			p[0] = new Paragraph(JDEnv.getResourceBundle().getString(
 					"gui_use_button_alt"));
-			p[0].setSize(12);
-			p[0].setColor(new JDColor(255, 255, 255));
-			p[0].setCentered();
-		} else if (quelle == memoryB) {
-			p = new Paragraph[1];
-			
-			p[0] = new Paragraph("feature not available yet!");
 			p[0].setSize(12);
 			p[0].setColor(new JDColor(255, 255, 255));
 			p[0].setCentered();

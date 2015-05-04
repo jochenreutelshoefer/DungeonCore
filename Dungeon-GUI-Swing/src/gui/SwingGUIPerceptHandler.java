@@ -58,6 +58,9 @@ public class SwingGUIPerceptHandler implements AnimationPerceptHandler {
 
 	@Override
 	public void tellPercept(Percept p) {
+		if (this.gui.getFigure() == null)
+			return;
+
 		if (p instanceof WaitPercept) {
 			handleWaitPercept((WaitPercept) p);
 		}

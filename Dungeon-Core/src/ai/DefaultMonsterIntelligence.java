@@ -38,7 +38,7 @@ import figure.percept.Percept;
 /**
  * Standard-verhalten der Monster.
  */
-public class DefaultMonsterIntelligence extends AI {
+public class DefaultMonsterIntelligence extends GuiAI {
 
 	protected MonsterInfo monster;
 
@@ -47,7 +47,7 @@ public class DefaultMonsterIntelligence extends AI {
 	protected Action lastAction = null;
 
 	public DefaultMonsterIntelligence() {
-		att = new AttitudeMonsterDefault();
+		super(new AttitudeMonsterDefault());
 	}
 
 	@Override

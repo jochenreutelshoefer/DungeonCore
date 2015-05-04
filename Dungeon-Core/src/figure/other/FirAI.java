@@ -3,7 +3,8 @@ package figure.other;
 import java.util.LinkedList;
 import java.util.List;
 
-import ai.AI;
+import ai.AttitudeDefaultHero;
+import ai.GuiAI;
 import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
@@ -17,13 +18,14 @@ import figure.percept.FightEndedPercept;
 import figure.percept.FleePercept;
 import figure.percept.Percept;
 
-public class FirAI  extends AI{
+public class FirAI extends GuiAI {
 	
 	FigureInfo info;
 	List<FigureInfo> attackers = new LinkedList<FigureInfo>();
 	boolean fightEnded = false;
 	
 	public FirAI(FigureInfo firInfo) {
+		super(new AttitudeDefaultHero());
 		this.info = firInfo;
 	}
 

@@ -6,7 +6,7 @@ import javax.swing.JComboBox;
 
 import net.sf.corn.cps.CPScanner;
 import net.sf.corn.cps.ClassFilter;
-import ai.AI;
+import ai.GuiAI;
 
 public class BotAISelectionBox extends JComboBox {
 
@@ -17,20 +17,21 @@ public class BotAISelectionBox extends JComboBox {
 
 	public BotAISelectionBox() {
 		List<Class<?>> aiClasses = CPScanner.scanClasses(new ClassFilter()
-				.superClass(AI.class));
+				.superClass(AbstractHeroBotAI.class));
 		Class<?> demoBot = null;
 		for (Class<?> clazz : aiClasses) {
 			this.addItem(clazz);
-			if (clazz.getName().contains("MyDemoBot")) {
+			if (clazz.getName().endsWith("DemoBot")) {
 				demoBot = clazz;
 			}
 		}
+
 		this.setSelectedItem(demoBot);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Class<? extends AI> getSelectedBotAIClass() {
-		return (Class<? extends AI>) this.getSelectedItem();
+	public Class<? extends GuiAI> getSelectedBotAIClass() {
+		return (Class<? extends GuiAI>) this.getSelectedItem();
 	}
 
 }

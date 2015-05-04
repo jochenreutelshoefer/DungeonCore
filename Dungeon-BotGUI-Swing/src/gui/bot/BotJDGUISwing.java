@@ -38,7 +38,7 @@ import javax.swing.JComboBox;
 import spell.SpellInfo;
 import text.Statement;
 import text.StatementManager;
-import ai.AI;
+import ai.GuiAI;
 import control.AbstractSwingMainFrame;
 import control.ActionAssembler;
 import dungeon.JDPoint;
@@ -48,7 +48,7 @@ import dungeon.util.DungeonManager;
 
 public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 
-	private BotGUIMainframe frame;
+	private final BotGUIMainframe frame;
 	private FigureInfo figure;
 	private final Vector<Action> actionQueue = new Vector<Action>();
 	protected final Map<RoomInfo, MasterAnimation> masterAnis = new HashMap<RoomInfo, MasterAnimation>();
@@ -59,7 +59,6 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 	private boolean initialized = false;
 
 	private Thread th;
-	private Hero h;
 
 	public BotJDGUISwing(DungeonFactory dungeonFactory) {
 		this.dungeonFactory = dungeonFactory;
@@ -70,22 +69,22 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 			res = ResourceBundle.getBundle("texts_bot", Locale.GERMAN);
 
 		}
+		frame = new BotGUIMainframe(this,
+				"Java Dungeon Bot GUI");
+		frame.initMainframe();
+
 	}
 
 	public void startGame(Hero h) {
 
-		this.h = h;
 		DungeonGame dungeon = dungeonFactory.createDungeon();
 
 		HeroInfo figureInfo = DungeonManager.enterDungeon(h,
 				dungeon.getDungeon(), new JDPoint(18, 39));
 		this.setFigure(figureInfo);
 
-		frame = new BotGUIMainframe(MainFrame.clearString(h.getName()), this,
-				"Java Dungeon Bot GUI");
-		frame.initMainframe();
 
-		AI botInstance = getCurrentlySelectedAIInstance();
+		GuiAI botInstance = getCurrentlySelectedAIInstance();
 		HeroControlWithSpectator control = new HeroControlWithSpectator(
 				figureInfo, botInstance, this);
 		this.setControl(control);
@@ -101,8 +100,8 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 		initialized = true;
 	}
 
-	private AI getCurrentlySelectedAIInstance() {
-		Class<? extends AI> aiClass = frame.getSelectedBotAIClass();
+	private GuiAI getCurrentlySelectedAIInstance() {
+		Class<? extends GuiAI> aiClass = frame.getSelectedBotAIClass();
 		try {
 			return aiClass.newInstance();
 		} catch (InstantiationException e) {
@@ -120,18 +119,13 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 		th.stop();
 		
 
-		this.frame.dispose();
+		// this.frame.dispose();
 		actionQueue.clear();
 		masterAnis.clear();
 		initialized = false;
 		startGame(HeroUtil.getBasicHero(1, "BotStarterBot", Zodiac.Taurus,
 				Profession.Nobleman));
-		initGui();
 		initialized = true;
-	}
-
-	public void initGui() {
-
 	}
 
 	@Override

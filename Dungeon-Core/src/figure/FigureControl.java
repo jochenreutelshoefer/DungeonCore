@@ -14,7 +14,7 @@ import game.ControlUnit;
 import java.util.LinkedList;
 import java.util.List;
 
-import ai.AI;
+import ai.GuiAI;
 import dungeon.JDPoint;
 
 public class FigureControl implements ControlUnit {
@@ -43,11 +43,11 @@ public class FigureControl implements ControlUnit {
 
 	private FigureInfo f;
 
-	private final AI brain;
+	private final GuiAI brain;
 
 	private List<Percept> perceptList = new LinkedList<Percept>();
 
-	public FigureControl(FigureInfo f, AI ai) {
+	public FigureControl(FigureInfo f, GuiAI ai) {
 		this.f = f;
 		this.brain = ai;
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 import dungeon.Dungeon;
 
-import ai.AI;
+import ai.GuiAI;
 
 public class Lioness extends ConjuredMagicFigure {
 
@@ -20,7 +20,7 @@ public class Lioness extends ConjuredMagicFigure {
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
 				this.roomVisibility);
-		AI ai = new LionessAI(info, master);
+		GuiAI ai = new LionessAI(info, master);
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);
 		// TODO: factor out - bilingual

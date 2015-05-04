@@ -17,7 +17,7 @@ import shrine.Shrine;
 import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
-import ai.AI;
+import ai.GuiAI;
 import ai.AbstractReflexBehavior;
 import ai.DefaultMonsterIntelligence;
 import dungeon.Chest;
@@ -469,7 +469,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (f instanceof Monster) {
 				MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(f,
 						f.getRoomVisibility());
-				AI ai = new DefaultMonsterIntelligence();
+				GuiAI ai = new DefaultMonsterIntelligence();
 				if (f.getSpecifiedAI() != null) {
 					ai = f.getSpecifiedAI();
 
@@ -482,7 +482,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 	}
 
-	AI specifiedAI = null;
+	GuiAI specifiedAI = null;
 
 	public static void removeFigure(Figure f) {
 		allFigures.remove(new Integer(f.getFighterID()));
@@ -2680,11 +2680,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		return lastSpell;
 	}
 
-	public AI getSpecifiedAI() {
+	public GuiAI getSpecifiedAI() {
 		return specifiedAI;
 	}
 
-	public void setSpecifiedAI(AI specifiedAI) {
+	public void setSpecifiedAI(GuiAI specifiedAI) {
 		this.specifiedAI = specifiedAI;
 	}
 

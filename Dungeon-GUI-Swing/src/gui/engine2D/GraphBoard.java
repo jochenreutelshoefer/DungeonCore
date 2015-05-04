@@ -102,7 +102,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		initCursors();
-		this.renderer = new GraphicObjectRenderer(roomSize, gui.getFigure());
+		this.renderer = new GraphicObjectRenderer(roomSize, gui);
 		this.setPreferredSize(new Dimension(screenSize, screenSize));
 	}
 
@@ -132,7 +132,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	private void sizeChanged() {
-		this.renderer = new GraphicObjectRenderer(roomSize, gui.getFigure());
+		this.renderer = new GraphicObjectRenderer(roomSize, gui);
 	}
 	
 	public JDDimension getMonsterSize(MonsterInfo m) {
@@ -141,8 +141,10 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 	}
 
 	public void repaintRoomSmall(Graphics g, RoomInfo r, Object obj) {
+		if (gui.getFigure() == null)
+			return;
 		GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize,
-				gui.getFigure());
+				gui);
 
 		int xcoord = 0;
 		int ycoord = 0;
@@ -185,6 +187,10 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 
 	@Override
 	public void paint(Graphics g) {
+
+		FigureInfo figure = gui.getFigure();
+		if (figure == null)
+			return;
 		Graphics g2 = g;
 
 		this.renderer.clear();
@@ -194,7 +200,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 		g2.fillRect(0, 0, (int) getSize().getHeight(), (int) getSize()
 				.getWidth());
 
-		JDPoint p = gui.getFigure().getDungeonSize();
+		JDPoint p = figure.getDungeonSize();
 		int xrooms = p.getX();
 		int yrooms = p.getY();
 
@@ -207,7 +213,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					// r = gui.getFigure().getMemory(i, j);
 
 				} else {
-					r = gui.getFigure().getRoomInfo(i, j);
+					r = figure.getRoomInfo(i, j);
 				}
 
 				int xcoord = offset + (roomSize * i);
@@ -280,8 +286,7 @@ public class GraphBoard extends JDJPanel implements MouseListener,
 					(renderer.lastWalls.get(i)), g2);
 		}
 
-		boolean animationRunning = gui.currentAnimationThreadRunning(gui
-				.getFigure().getRoomInfo());
+		boolean animationRunning = gui.currentAnimationThreadRunning(figure.getRoomInfo());
 
 		if (!animationRunning) {
 			if (renderer.hero != null) {

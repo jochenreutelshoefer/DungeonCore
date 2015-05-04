@@ -52,7 +52,7 @@ import shrine.Statue;
 import spell.Discover;
 import spell.Prayer;
 import spell.conjuration.FirConjuration;
-import ai.AI;
+import ai.GuiAI;
 import ai.VimAI;
 import dungeon.Chest;
 import dungeon.Door;
@@ -255,7 +255,7 @@ public class Sector1 extends Sector {
 		
 		
 		
-		AI vimAI = new VimAI();
+		GuiAI vimAI = new VimAI();
 		vim.setSpecifiedAI(vimAI);
 		RoomQuest rq = mainHall.insertRQXY(1, 1, false, null);
 		rq.getEntrenceRoom().figureEnters(vim, 0);

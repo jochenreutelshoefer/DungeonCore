@@ -1,6 +1,5 @@
 package control;
 
-import figure.FigureInfo;
 import figure.action.Action;
 import game.JDGUI;
 import graphics.AbstractImageLoader;
@@ -29,7 +28,7 @@ public interface JDGUIEngine2D extends JDGUI {
 
 	void setSpellMetaDown(boolean b);
 
-	FigureInfo getFigure();
+
 
 	void setUseWithTarget(boolean b);
 

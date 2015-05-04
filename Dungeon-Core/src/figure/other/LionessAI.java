@@ -3,7 +3,8 @@ package figure.other;
 import java.util.Iterator;
 import java.util.List;
 
-import ai.AI;
+import ai.AttitudeDefaultHero;
+import ai.GuiAI;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
@@ -15,12 +16,13 @@ import figure.action.MoveAction;
 import figure.percept.MovePercept;
 import figure.percept.Percept;
 
-public class LionessAI extends AI {
+public class LionessAI extends GuiAI {
 
 	FigureInfo master;
 	RoomInfo currentWalkTarget = null;
 	
 	public LionessAI(FigureInfo info, FigureInfo master) {
+		super(new AttitudeDefaultHero());
 		this.info = info;
 		this.master = master;
 	}

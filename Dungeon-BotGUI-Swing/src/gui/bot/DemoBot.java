@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ai.AI;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -12,36 +11,20 @@ import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
 import dungeon.util.RouteInstruction.Direction;
 import figure.Figure;
-import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
-import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import figure.percept.Percept;
 
-public class MyDemoBot extends AI {
-
-	// private static final int _300 = 300;
-	private HeroInfo hero;
+public class DemoBot extends AbstractHeroBotAI {
 
 	private final Set<RoomInfo> knownRooms = new HashSet<RoomInfo>();
 	private RoomInfo currentTarget = null;
 
-	@Override
-	public void setFigure(FigureInfo f) {
-		if (f instanceof HeroInfo) {
-			this.hero = ((HeroInfo) f);
-		}
 
-	}
-
-	@Override
-	public boolean isHostileTo(FigureInfo f) {
-		return f instanceof MonsterInfo;
-	}
 
 	@Override
 	public void notifyVisbilityStatusDecrease(JDPoint p) {

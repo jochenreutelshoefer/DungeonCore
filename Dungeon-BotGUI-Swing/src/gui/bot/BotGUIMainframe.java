@@ -39,7 +39,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ai.AI;
+import ai.GuiAI;
 import control.AbstractSwingMainFrame;
 
 public class BotGUIMainframe extends AbstractSwingMainFrame implements
@@ -73,8 +73,8 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		RUNNING, PAUSED
 	};
 
-	public BotGUIMainframe(String clearString, BotJDGUISwing gui, String name) {
-		super("Dungeon Bot Spectator GUI");
+	public BotGUIMainframe(BotJDGUISwing gui, String name) {
+		super(name);
 		this.gui = gui;
 
 	}
@@ -205,6 +205,9 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	}
 
 	public void updateGUI(int code, boolean repaint) {
+		FigureInfo f = gui.getFigure();
+		if (f == null)
+			return;
 
 		if (code == UPDATE_CHARACTER) {
 			character.updateView();
@@ -220,7 +223,7 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		}
 
 		if (code == UPDATE_FIGHT) {
-			if (gui.getFigure().getRoomInfo().fightRunning().booleanValue()) {
+			if (f.getRoomInfo().fightRunning().booleanValue()) {
 				northEast.setSelectedComponent(fightPanel);
 			} else {
 				if (northEast.getSelectedComponent() == fightPanel) {
@@ -243,7 +246,6 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		if (code == UPDATE_SPELLS) {
 			zauberP.updateView();
 			int points = 0;
-			FigureInfo f = gui.getFigure();
 			if (f instanceof HeroInfo) {
 				points = ((HeroInfo) f).getSpellPoints();
 
@@ -361,7 +363,7 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 
 	}
 
-	public Class<? extends AI> getSelectedBotAIClass() {
+	public Class<? extends GuiAI> getSelectedBotAIClass() {
 		// TODO Auto-generated method stub
 		return botGameControlPanel.getSelectedBotAIClass();
 	}

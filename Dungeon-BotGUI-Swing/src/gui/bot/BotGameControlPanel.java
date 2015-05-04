@@ -1,7 +1,7 @@
 package gui.bot;
 
 import gui.JDJPanel;
-import ai.AI;
+import ai.GuiAI;
 
 public class BotGameControlPanel extends JDJPanel {
 
@@ -20,7 +20,7 @@ public class BotGameControlPanel extends JDJPanel {
 		this.add(botSelectionBox);
 	}
 
-	public Class<? extends AI> getSelectedBotAIClass() {
+	public Class<? extends GuiAI> getSelectedBotAIClass() {
 		// TODO Auto-generated method stub
 		return botSelectionBox.getSelectedBotAIClass();
 	}
