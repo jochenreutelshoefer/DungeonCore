@@ -30,7 +30,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -96,7 +95,6 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		JPanel east = new JPanel();
 		east.setOpaque(true);
 		east.setLayout(new BorderLayout());
-		east.setBackground(JDJPanel.bgColor);
 
 
 		northEast = new JTabbedPane();
@@ -106,8 +104,6 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		amatur = new JDJPanel(gui);
 		amatur.setSize(100, 20);
 		east.add(amatur, BorderLayout.CENTER);
-		final JButton playButton = new PlayPauseButton(gui);
-		amatur.add(playButton);
 
 
 		verlauf = new TextView(380, 250, gui);
@@ -115,7 +111,6 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 
 
 		fightPanel = new JPanelNoRepaint();
-		fightPanel.setBackground(JDJPanel.bgColor);
 		fightPanel.setLayout(new BorderLayout());
 		kampfVerlauf = new TextView(380, 250, gui);
 		fightPanel.add(kampfVerlauf, BorderLayout.NORTH);
@@ -134,7 +129,6 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 		northEast.addTab(JDEnv.getResourceBundle().getString("spelling"),
 				zauberP);
 		zauberP.setOpaque(true);
-		northEast.setBackground(JDJPanel.bgColor);
 		northEast.setOpaque(true);
 		northEast.setPreferredSize(new Dimension(390, 340));
 
@@ -366,6 +360,13 @@ public class BotGUIMainframe extends AbstractSwingMainFrame implements
 	public Class<? extends GuiAI> getSelectedBotAIClass() {
 		// TODO Auto-generated method stub
 		return botGameControlPanel.getSelectedBotAIClass();
+	}
+
+	@Override
+	public void clearGUI() {
+		kampfVerlauf.clearGUI();
+		verlauf.clearGUI();
+
 	}
 
 }

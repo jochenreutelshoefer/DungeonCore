@@ -51,4 +51,6 @@ public abstract class AbstractSwingMainFrame extends JFrame implements
 
 	public abstract void updateHealth();
 
+	public abstract void clearGUI();
+
 }

@@ -120,6 +120,7 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 		
 
 		// this.frame.dispose();
+		frame.clearGUI();
 		actionQueue.clear();
 		masterAnis.clear();
 		initialized = false;

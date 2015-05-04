@@ -15,13 +15,13 @@ package gui;
 
 import java.awt.Graphics;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 public class JDBackgroundPanel extends JPanel {
 
 	public JDBackgroundPanel() {
 		super();
-		this.setBackground(JDJPanel.bgColor);
+		// this.setBackground(JDJPanel.bgColor);
 	}
 
 	// public void paint(Graphics g) {
@@ -33,6 +33,7 @@ public class JDBackgroundPanel extends JPanel {
 
 	private static final int texSizeY = 96;
 
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int i = 0;

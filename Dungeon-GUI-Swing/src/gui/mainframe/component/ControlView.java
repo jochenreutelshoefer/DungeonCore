@@ -95,16 +95,17 @@ public class ControlView extends JDJPanel implements ActionListener {
 		west.setOpaque(false);
 		south.setOpaque(false);
 		
-		
-		round.setBackground(JDJPanel.bgColor);
-		scoutNorth.setBackground(JDJPanel.bgColor);
-		scoutSouth.setBackground(JDJPanel.bgColor);
-		scoutWest.setBackground(JDJPanel.bgColor);
-		scoutEast.setBackground(JDJPanel.bgColor);
-		north.setBackground(JDJPanel.bgColor);
-		east.setBackground(JDJPanel.bgColor);
-		west.setBackground(JDJPanel.bgColor);
-		south.setBackground(JDJPanel.bgColor);
+		/*
+		 * round.setBackground(JDJPanel.bgColor);
+		 * scoutNorth.setBackground(JDJPanel.bgColor);
+		 * scoutSouth.setBackground(JDJPanel.bgColor);
+		 * scoutWest.setBackground(JDJPanel.bgColor);
+		 * scoutEast.setBackground(JDJPanel.bgColor);
+		 * north.setBackground(JDJPanel.bgColor);
+		 * east.setBackground(JDJPanel.bgColor);
+		 * west.setBackground(JDJPanel.bgColor);
+		 * south.setBackground(JDJPanel.bgColor);
+		 */
 		
 		this.setPreferredSize(new Dimension(330,180));
 		

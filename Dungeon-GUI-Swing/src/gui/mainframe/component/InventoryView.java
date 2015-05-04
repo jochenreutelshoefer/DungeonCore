@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -182,6 +181,9 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		take = new JDJButton(takeItem);
 
 		use = new JDJButton(JDEnv.getResourceBundle().getString("gui_use"));
+		Dimension buttonSize = new Dimension(100, 35);
+		use.setSize(buttonSize);
+		use.setPreferredSize(buttonSize);
 
 		layDownWeapon = new JDJButton(layDown);
 
@@ -190,6 +192,8 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		layDownHelmet = new JDJButton(layDown);
 
 		layDownItem = new JDJButton(layDown);
+		layDownItem.setSize(buttonSize);
+		layDownItem.setPreferredSize(buttonSize);
 
 		layDownShield = new JDJButton(layDown);
 
@@ -308,12 +312,12 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		scPane1.setMaximumSize(new Dimension(10, 10));
 
 		JScrollBar bar1 = scPane1.getVerticalScrollBar();
-		bar1.setBackground(JDJPanel.bgColor);
+		// bar1.setBackground(JDJPanel.bgColor);
 		if (bar1.getComponentCount() > 1) {
 			Component c = bar1.getComponent(0);
-			c.setBackground(JDJPanel.bgColor);
+			// c.setBackground(JDJPanel.bgColor);
 			Component c2 = bar1.getComponent(1);
-			c2.setBackground(JDJPanel.bgColor);
+			// c2.setBackground(JDJPanel.bgColor);
 		}
 		scPane2 = new JScrollPane(heroItemL,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -321,29 +325,30 @@ public class InventoryView extends JDJPanel implements ActionListener,
 		JScrollBar bar2 = scPane2.getVerticalScrollBar();
 
 		if (bar2.getComponentCount() > 1) {
-			bar2.setBackground(JDJPanel.bgColor);
+			// bar2.setBackground(JDJPanel.bgColor);
 			Component c3 = bar2.getComponent(0);
-			c3.setBackground(JDJPanel.bgColor);
+			// c3.setBackground(JDJPanel.bgColor);
 			Component c4 = bar2.getComponent(1);
-			c4.setBackground(JDJPanel.bgColor);
+			// c4.setBackground(JDJPanel.bgColor);
 		}
 		scPane1.setPreferredSize(new Dimension(160, 70));
 		scPane2.setPreferredSize(new Dimension(160, 70));
 
 		panelR6.add(scPane1, BorderLayout.CENTER);
+		panelR6.add(take, BorderLayout.SOUTH);
 
 		JPanel knopfPanel = new JDJPanel(gui);
 
-		knopfPanel.setLayout(new BoxLayout(knopfPanel, BoxLayout.Y_AXIS));
+		knopfPanel.setLayout(new BorderLayout());
 		panelR5.add(scPane2, BorderLayout.CENTER);
 		panelR5.add(knopfPanel, BorderLayout.SOUTH);
 
-		knopfPanel.add(layDownItem);
-		knopfPanel.add(use);
-		panelR6.add(take, BorderLayout.SOUTH);
+		knopfPanel.add(layDownItem, BorderLayout.CENTER);
+		knopfPanel.add(use, BorderLayout.SOUTH);
 
 	}
 
+	@Override
 	public void updateView() {
 		// if (game != null) {
 

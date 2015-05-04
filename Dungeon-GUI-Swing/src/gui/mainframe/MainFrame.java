@@ -29,6 +29,7 @@ import gui.mainframe.dialog.WaitView;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -215,8 +216,10 @@ public class MainFrame extends AbstractSwingMainFrame implements
 						JOptionPane.INFORMATION_MESSAGE);
 				if (end == 0) {
 
-					sendScoreData(listener.registeredPlayer(),
-							listener.ligaGame());
+					/*
+					 * sendScoreData(listener.registeredPlayer(),
+					 * listener.ligaGame());
+					 */
 					dispose();
 					signOff();
 					listener.setVisible(true);
@@ -232,7 +235,7 @@ public class MainFrame extends AbstractSwingMainFrame implements
 
 	public void init() {
 		east = new JPanel();
-		east.setBackground(JDJPanel.bgColor);
+		// east.setBackground(JDJPanel.bgColor);
 
 		ButtonFont = new Font("Arial", Font.BOLD, 17);
 		amatur = new ShowPanel(gui);
@@ -254,13 +257,14 @@ public class MainFrame extends AbstractSwingMainFrame implements
 		slap.addActionListener(this);
 		threat.addActionListener(this);
 
-		fleeNorth.setBackground(JDJPanel.bgColor);
-		fleeSouth.setBackground(JDJPanel.bgColor);
-		fleeEast.setBackground(JDJPanel.bgColor);
-		fleeWest.setBackground(JDJPanel.bgColor);
-		slap.setBackground(JDJPanel.bgColor);
-		threat.setBackground(JDJPanel.bgColor);
-
+		/*
+		 * fleeNorth.setBackground(JDJPanel.bgColor);
+		 * fleeSouth.setBackground(JDJPanel.bgColor);
+		 * fleeEast.setBackground(JDJPanel.bgColor);
+		 * fleeWest.setBackground(JDJPanel.bgColor);
+		 * slap.setBackground(JDJPanel.bgColor);
+		 * threat.setBackground(JDJPanel.bgColor);
+		 */
 		cp1 = this.getContentPane();
 
 		cp = new JDBackgroundPanel();
@@ -300,7 +304,7 @@ public class MainFrame extends AbstractSwingMainFrame implements
 		southPanel.add(staub, BorderLayout.EAST);
 
 		fightPanel = new JPanelNoRepaint();
-		fightPanel.setBackground(JDJPanel.bgColor);
+		// fightPanel.setBackground(JDJPanel.bgColor);
 		fightPanel.setLayout(new BorderLayout());
 		JDJPanel fightButtonP = new JDJPanel(gui);
 		JDJPanel centerPanel = new JDJPanel(gui);
@@ -338,7 +342,7 @@ public class MainFrame extends AbstractSwingMainFrame implements
 		northEast.addTab(JDEnv.getResourceBundle().getString("spelling"),
 				zauberP);
 		zauberP.setOpaque(true);
-		northEast.setBackground(JDJPanel.bgColor);
+		// northEast.setBackground(JDJPanel.bgColor);
 		northEast.setOpaque(true);
 		northEast.setPreferredSize(new Dimension(390, 340));
 
@@ -800,6 +804,13 @@ public class MainFrame extends AbstractSwingMainFrame implements
 	@Override
 	public void updateHealth() {
 		this.gesundheit.updateView();
+	}
+
+	@Override
+	public void clearGUI() {
+		kampfVerlauf.clearGUI();
+		verlauf.clearGUI();
+
 	}
 
 }

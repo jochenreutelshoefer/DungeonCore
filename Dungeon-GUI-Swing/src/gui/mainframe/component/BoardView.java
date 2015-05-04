@@ -53,35 +53,35 @@ public class BoardView extends JDJPanel implements MouseListener,
 		
 		scrollPane = new JScrollPane();
 
-		scrollPane.setBackground(JDJPanel.bgColor);
+		// scrollPane.setBackground(JDJPanel.bgColor);
 		bar1 = scrollPane.getHorizontalScrollBar();
 		bar1.addAdjustmentListener(this);
 		
 		if(bar1.getComponentCount() > 0) {
 			Component c = bar1.getComponent(0);
-			c.setBackground(JDJPanel.bgColor);
+			// c.setBackground(JDJPanel.bgColor);
 		}
 		if(bar1.getComponentCount() > 1) {
 			Component c2 = bar1.getComponent(1);
-			c2.setBackground(JDJPanel.bgColor);
+			// c2.setBackground(JDJPanel.bgColor);
 		}
-		bar1.setBackground(JDJPanel.bgColor);
+		// bar1.setBackground(JDJPanel.bgColor);
 		bar1.setOpaque(false);
 
 		bar2 = scrollPane.getVerticalScrollBar();
 		bar2.addAdjustmentListener(this);
-		bar2.setBackground(JDJPanel.bgColor);
+		// bar2.setBackground(JDJPanel.bgColor);
 		if(bar2.getComponentCount() > 0) {
 			Component c3 = bar2.getComponent(0);
-			c3.setBackground(JDJPanel.bgColor);
+			// c3.setBackground(JDJPanel.bgColor);
 			
 		}
 		if(bar2.getComponentCount() > 1) {
 		Component c4 = bar2.getComponent(1);
-		c4.setBackground(JDJPanel.bgColor);
+			// c4.setBackground(JDJPanel.bgColor);
 		}
 
-		bar2.setForeground(JDJPanel.bgColor);
+		// bar2.setForeground(JDJPanel.bgColor);
 
 		drawingArea = new GraphBoard(a,gui);
 		v = new JDJViewport();

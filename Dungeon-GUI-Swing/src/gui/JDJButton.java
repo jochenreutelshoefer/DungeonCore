@@ -4,7 +4,6 @@ package gui;
 //import javax.swing.Icon;
 //import javax.swing.JButton;
 
-import graphics.ImageManager;
 import gui.mainframe.MainFrame;
 
 import java.awt.Dimension;
@@ -15,22 +14,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * @author Jochen
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-import javax.swing.JComponent;
+import javax.swing.JButton;
 /*
  * Created on 06.08.2004
  *
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-import javax.swing.border.EtchedBorder;
+/**
+ * @author Jochen
+ *
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
 
-public class JDJButton extends JComponent implements MouseListener {
+public class JDJButton extends JButton implements MouseListener {
 
 	ActionListener listener;
 
@@ -44,13 +42,12 @@ public class JDJButton extends JComponent implements MouseListener {
 	 * @param text
 	 */
 
-	@Override
-	public void paintComponent(Graphics g) {
-
-		g.drawImage(JDJPanel.getBackGroundImage(), 0, 0, this.getWidth(),
-				this.getHeight(), null);
-		super.paintComponent(g);
-	}
+	/*
+	 * @Override public void paintComponent(Graphics g) {
+	 * 
+	 * g.drawImage(JDJPanel.getBackGroundImage(), 0, 0, this.getWidth(),
+	 * this.getHeight(), null); super.paintComponent(g); }
+	 */
 
 	boolean logo = true;
 
@@ -59,22 +56,12 @@ public class JDJButton extends JComponent implements MouseListener {
 	}
 
 	public JDJButton(String text, boolean b) {
-
-		super();
+		super(text);
 		logo = b;
 
 		this.addMouseListener(this);
 		this.setPreferredSize((new Dimension(10 * text.length() + 16, 34)));
 		this.text = text;
-		if (!b) {
-			this.setBackground(JDJPanel.bgColor);
-			this.setBorder(new EtchedBorder());
-		}
-		if (icon == null) {
-
-			icon = (Image) ImageManager.button1.getImage();
-
-		}
 
 	}
 
@@ -82,27 +69,29 @@ public class JDJButton extends JComponent implements MouseListener {
 	 * 
 	 * @uml.property name="text"
 	 */
+	@Override
 	public void setText(String t) {
 		text = t;
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		int x = (int) this.getSize().getWidth();
-		int y = (int) this.getSize().getHeight();
-		if (logo) {
+		super.paint(g);
 
-			if (down) {
-				g.drawImage(icon, -2, -2, x + 4, y + 4, null);
-			} else {
-
-				g.drawImage(icon, 0, 0, x, y, null);
-			}
-		}
+		int x = (int)
+	 this.getSize().getWidth(); int y = (int) this.getSize().getHeight();
+	  
+	  if (false && logo) {
+	  
+	  if (false && down) { g.drawImage(icon, -2, -2, x + 4, y + 4, null); } else {
+	  
+	  g.drawImage(icon, 0, 0, x, y, null); } }
+	  
 		g.setFont(MainFrame.ButtonFont);
 		g.drawString(text, (this.getWidth() - 10 * text.length()) / 2,
 				y / 2 + 5);
-	}
+	  }
+
 
 	/**
 	 * @param a
@@ -113,6 +102,7 @@ public class JDJButton extends JComponent implements MouseListener {
 	// super(a);
 	// // TODO Auto-generated constructor stub
 	// }
+	@Override
 	public void addActionListener(ActionListener l) {
 		listener = l;
 	}

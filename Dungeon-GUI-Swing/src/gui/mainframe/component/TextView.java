@@ -18,6 +18,7 @@ import javax.swing.JTextPane;
 import javax.swing.JViewport;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -65,12 +66,12 @@ public class TextView extends JDJPanel {
 		
 		scrollPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
 		JScrollBar bar = scrollPane.getVerticalScrollBar();
-		bar.setBackground(JDJPanel.bgColor);
+		// bar.setBackground(JDJPanel.bgColor);
 		if(bar.getComponentCount() > 1) {
 			Component c = bar.getComponent(0);
-			c.setBackground(JDJPanel.bgColor);
+			// c.setBackground(JDJPanel.bgColor);
 			Component c2 = bar.getComponent(1);
-			c2.setBackground(JDJPanel.bgColor);
+			// c2.setBackground(JDJPanel.bgColor);
 		}
 		
 		this.add(scrollPane);
@@ -184,6 +185,18 @@ public class TextView extends JDJPanel {
 //		}
 		
 		
+
+	}
+
+	public void clearGUI() {
+
+		Document document = verlauftxt2.getDocument();
+		try {
+			document.remove(0, document.getLength());
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
