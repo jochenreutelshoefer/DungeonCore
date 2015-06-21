@@ -5,6 +5,22 @@ import item.DustItem;
 import item.HealPotion;
 import item.Item;
 import item.paper.Scroll;
+
+/*
+ * Created on 04.08.2004
+ *
+ * To change the template for this generated file go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+/**
+ * @author Jochen
+ *
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+import java.util.LinkedList;
+import java.util.List;
+
 import spell.Discover;
 import spell.Repair;
 import spell.Spell;
@@ -20,20 +36,6 @@ import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
 import gui.Texts;
-/*
- * Created on 04.08.2004
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-/**
- * @author Jochen
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-import java.util.LinkedList;
-import java.util.List;
 
 public class SorcerLab extends Shrine implements VisibilityModifier {
 
@@ -55,16 +57,16 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 
 	Figure owner;
 
-	LinkedList actions = new LinkedList();
+	List<SorcerLabAction> actions = new LinkedList<SorcerLabAction>();
 
 	public SorcerLab(Room p) {
 
 		super(p);
 		for (int i = 0; i < 2; i++) {
-			actions.add(new sorcer_lab_action(i));
+			actions.add(new SorcerLabAction(i));
 		}
-		actions.add(new sorcer_lab_action(4));
-		actions.add(new sorcer_lab_action(5));
+		actions.add(new SorcerLabAction(4));
+		actions.add(new SorcerLabAction(5));
 	}
 
 	@Override
@@ -98,11 +100,6 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	@Override
 	public void turn(int round) {
 		int k = location.getRoomFigures().size();
-		if(k >= 2) {
-			int klsd = 235;
-			klsd--;
-			
-		}
 		boolean containsOwner = false;
 		if (owner != null) {
 			containsOwner = location.getRoomFigures().contains(owner);
@@ -209,7 +206,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 			Percept p = new UsePercept(f, this);
 			this.getRoom()
 					.distributePercept(p);
-			((sorcer_lab_action) (actions.get(actionPointer))).fire((Hero) f);
+			(actions.get(actionPointer)).fire((Hero) f);
 		} else {
 			use(f, null, false);
 		}
@@ -282,10 +279,10 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		int l = h.getCharacter().getLevel();
 		if (l > heroLevel) {
 			if (l >= 1 && heroLevel < 1) {
-				actions.add(new sorcer_lab_action(2));
-				actions.add(new sorcer_lab_action(3));
-				actions.add(new sorcer_lab_action(4));
-				actions.add(new sorcer_lab_action(5));
+				actions.add(new SorcerLabAction(2));
+				actions.add(new SorcerLabAction(3));
+				actions.add(new SorcerLabAction(4));
+				actions.add(new SorcerLabAction(5));
 			}
 			heroLevel = l;
 		}
@@ -316,7 +313,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 					+ JDEnv.getResourceBundle().getString(
 							"sorcLab_setup_action");
 		} else {
-			sorcer_lab_action ac = ((sorcer_lab_action) actions
+			SorcerLabAction ac = (actions
 					.get(actionPointer));
 			return JDEnv.getResourceBundle().getString("action") + ": "
 					+ ac.getString();
@@ -342,7 +339,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 
 }
 
-class sorcer_lab_action {
+class SorcerLabAction {
 
 	int key;
 
@@ -357,7 +354,7 @@ class sorcer_lab_action {
 	String[] strings = { "Heiltrank", "Elexir: Geschicklichkeit",
 			"Elexir: Stärke", "Elexir: Psyche", "Zauberrolle: Reparieren", "Zauberrolle: Entdecken" };
 
-	public sorcer_lab_action(int key) {
+	public SorcerLabAction(int key) {
 		this.key = key;
 		switch (key) {
 
@@ -409,25 +406,24 @@ class sorcer_lab_action {
 				sp.fire(h, null, true);
 			} else {
 				if (key == 0) {
-					h.takeItem(new HealPotion(20), null);
+					h.takeItem(new HealPotion(20));
 				}
 				if (key == 1) {
 					h.takeItem(
-							new AttrPotion(Attribute.DEXTERITY, 25), null);
+							new AttrPotion(Attribute.DEXTERITY, 25));
 				}
 				if (key == 2) {
 					h.takeItem(
-							new AttrPotion(Attribute.STRENGTH, 25), null);
+							new AttrPotion(Attribute.STRENGTH, 25));
 				}
 				if (key == 3) {
-					h.takeItem(new AttrPotion(Attribute.PSYCHO, 25),
-							null);
+					h.takeItem(new AttrPotion(Attribute.PSYCHO, 25));
 				}
 				if (key == 4) {
-					h.takeItem(new Scroll(new Repair(1), 5), null);
+					h.takeItem(new Scroll(new Repair(1), 5));
 				}
 				if (key == 5) {
-					h.takeItem(new Scroll(new Discover(1), 5), null);
+					h.takeItem(new Scroll(new Discover(1), 5));
 				}
 			}
 			String s = JDEnv.getResourceBundle().getString(

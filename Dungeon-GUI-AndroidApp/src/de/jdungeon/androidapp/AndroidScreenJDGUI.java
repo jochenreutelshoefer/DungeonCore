@@ -1,20 +1,23 @@
 package de.jdungeon.androidapp;
 
+import item.ItemInfo;
+
+import java.util.Vector;
+
+import spell.SpellInfo;
+import text.StatementManager;
+import control.AbstractSwingMainFrame;
+import control.ActionAssembler;
+import control.JDGUIEngine2D;
+import dungeon.JDPoint;
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.Percept;
-import item.ItemInfo;
-
-import java.util.Vector;
-
-import control.JDGUIEngine2D;
-import spell.SpellInfo;
-import text.StatementManager;
-import dungeon.JDPoint;
-import dungeon.RoomInfo;
+import graphics.AbstractImageLoader;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
@@ -27,6 +30,12 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 		this.screen = screen;
 		this.perceptHandler = new PerceptHandler(screen);
 
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public AbstractImageLoader getImageSource() {
+		return Assets.getLoader();
 	}
 
 	@Override
@@ -128,7 +137,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public void setFigure(FigureInfo f) {
-		// TODO Auto-generated method stub
+		this.screen.setFigure(f);
 
 	}
 
@@ -136,5 +145,29 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public void notifyVisbilityStatusDecrease(JDPoint p) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void setSelectedItemIndex(int i) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void stopAllAnimation() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ActionAssembler getActionAssembler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractSwingMainFrame getMainFrame() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

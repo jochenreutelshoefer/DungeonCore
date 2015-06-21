@@ -1,10 +1,13 @@
 package dungeon.quest;
-import dungeon.*;
-import dungeon.generate.DungeonFiller;
-import item.*;
-import shrine.*;
 import figure.monster.Monster;
 import game.DungeonGame;
+import item.Item;
+import item.ItemPool;
+import shrine.InfoShrine;
+import dungeon.Dungeon;
+import dungeon.JDPoint;
+import dungeon.Room;
+import dungeon.generate.AbstractDungeonFiller;
 
 /**
  * Ein Quest, bei dem starke Monster einen Schatz umzingeln, bis auf eine Luecke,
@@ -23,12 +26,14 @@ public class Encompass_quest extends Quest {
 	/**
 	 * @see Quest#turn()
 	 */
+	@Override
 	public void turn() {
 	}
 
 	/**
 	 * @see Quest#action()
 	 */
+	@Override
 	public void action() {
 	}
 
@@ -40,8 +45,8 @@ public class Encompass_quest extends Quest {
 				Room raum = d.getRoomNr(p.getX() + i, p.getY() +j);
 				r.addQuest(this);
 				if(c == 0) {
-					Monster m = DungeonFiller.getBigMonster(12000,game);
-					DungeonFiller.equipAMonster(m);
+					Monster m = AbstractDungeonFiller.getBigMonster(12000,game);
+					AbstractDungeonFiller.equipAMonster(m);
 					raum.figureEnters(m,0);
 				}
 				if(c == 1) {
@@ -51,7 +56,7 @@ public class Encompass_quest extends Quest {
 					String s = "Hier befindet sich die letzte Ruhest�tte des";
 					s += " grossen Merianor, dem einstigen Herrscher des Dungeon.";
 					s += " Seine Rache wird die treffen, die seine Ruhe st�ren.";
-					raum.setShrine((Shrine)(new InfoShrine(s, raum)),true);
+					raum.setShrine((new InfoShrine(s, raum)),true);
 				}
 				if(c == 3) {
 					String s = "Dies ist das Grab des Merianor, und all derer";
@@ -62,7 +67,7 @@ public class Encompass_quest extends Quest {
 					for(int o = 0; o < 5; o++) {
 						Item it = ItemPool.getRandomItem((int)(Math.random() * 100), 2.1);
 						if(it != null) {
-							raum.takeItem(it, null);
+							raum.takeItem(it);
 						}
 					}
 				}

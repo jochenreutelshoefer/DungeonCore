@@ -17,9 +17,9 @@ import shrine.Shrine;
 import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
-import ai.GuiAI;
 import ai.AbstractReflexBehavior;
 import ai.DefaultMonsterIntelligence;
+import ai.GuiAI;
 import dungeon.Chest;
 import dungeon.Dir;
 import dungeon.Door;
@@ -278,7 +278,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
 			Item it = (l.get(i));
-			this.takeItem(it, o);
+			this.takeItem(it);
 		}
 		return true;
 	}
@@ -1348,7 +1348,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					if (this.getRoom().hasItem(it)) {
 						if (this.canTakeItem(it)) {
 							if (doIt) {
-								this.takeItem(it, this.getRoom());
+								this.takeItem(it);
 								this.payFightActionPoint();
 								// this.getRoom().removeItem(it);
 								return ActionResult.DONE;
@@ -1376,7 +1376,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				if (this.getRoom().hasItem(it)) {
 					if (this.canTakeItem(it)) {
 						if (doIt) {
-							this.takeItem(it, this.getRoom());
+							this.takeItem(it);
 							return ActionResult.DONE;
 						} else {
 							return ActionResult.POSSIBLE;
@@ -2039,7 +2039,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	@Override
-	public abstract boolean takeItem(Item i, ItemOwner o);
+	public abstract boolean takeItem(Item i);
 
 	/**
 	 * Sets the spellbook.

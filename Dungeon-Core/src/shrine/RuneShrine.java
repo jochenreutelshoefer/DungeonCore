@@ -11,7 +11,6 @@ import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import item.quest.Rune;
 
-import java.awt.Color;
 import java.util.List;
 
 import util.JDColor;
@@ -114,10 +113,10 @@ public void metaClick(Figure f) {
 	}
 	
 	@Override
-	public boolean addItems(List l, ItemOwner o) {
+	public boolean addItems(List<Item> l, ItemOwner o) {
 		for(int i = 0; i < l.size();i++) {
-			Item it = (Item)(l.get(i));
-			this.takeItem(it,o);
+			Item it = (l.get(i));
+			this.takeItem(it);
 		}
 		return true;
 	}
@@ -144,7 +143,7 @@ public void metaClick(Figure f) {
 	}
 
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
+	public boolean takeItem(Item i) {
 		if ((r == null)) {
 			r = i;
 			if (r instanceof Rune) {

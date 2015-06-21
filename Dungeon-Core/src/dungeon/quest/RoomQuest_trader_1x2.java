@@ -16,12 +16,12 @@ import java.util.List;
 import shrine.Trader;
 import dungeon.Door;
 import dungeon.JDPoint;
-import dungeon.generate.DungeonFiller;
+import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
 public class RoomQuest_trader_1x2 extends RoomQuest {
 
 
-	public RoomQuest_trader_1x2(JDPoint p, DungeonFiller df, List<Item> toPutIn) {
+	public RoomQuest_trader_1x2(JDPoint p, AbstractDungeonFiller df, List<Item> toPutIn) {
 		super(p,df,2,1,toPutIn);	
 	}
 	/**

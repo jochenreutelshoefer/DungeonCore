@@ -16,7 +16,7 @@ import java.util.List;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.generate.DungeonFiller;
+import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
 
 ;
@@ -32,7 +32,7 @@ public class RoomQuest_XxY extends RoomQuest{
 	Key theKey;
 
 	
-	public RoomQuest_XxY(int x, int y, JDPoint p, DungeonFiller df,
+	public RoomQuest_XxY(int x, int y, JDPoint p, AbstractDungeonFiller df,
 			List<Item> toPutIn, boolean locked) {
 		
 		super(p,df,x,y,toPutIn);

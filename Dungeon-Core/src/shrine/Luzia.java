@@ -52,12 +52,12 @@ public class Luzia extends Shrine implements ItemOwner {
 	/**
 	 * 
 	 */
-	LinkedList goodItems = new LinkedList();
+	List<Item> goodItems = new LinkedList<Item>();
 
 	/**
 	 * 
 	 */
-	LinkedList items = new LinkedList();
+	List<Item> items = new LinkedList<Item>();
 
 	public static final int UNSOLVED = 1;
 
@@ -93,7 +93,7 @@ public class Luzia extends Shrine implements ItemOwner {
 
 	@Override
 	public Item getItemNumber(int i) {
-		return (Item) items.get(i);
+		return items.get(i);
 	}
 
 	public void setReqItem(Item req) {
@@ -106,15 +106,15 @@ public class Luzia extends Shrine implements ItemOwner {
 	}
 
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
+	public boolean takeItem(Item i) {
 		items.add(i);
 		return true;
 	}
 
 	@Override
 	public Item getItem(ItemInfo it) {
-		for (Iterator iter = items.iterator(); iter.hasNext();) {
-			Item element = (Item) iter.next();
+		for (Iterator<Item> iter = items.iterator(); iter.hasNext();) {
+			Item element = iter.next();
 			if (ItemInfo.makeItemInfo(element, null).equals(it)) {
 				return element;
 			}
@@ -142,10 +142,10 @@ public class Luzia extends Shrine implements ItemOwner {
 	}
 
 	@Override
-	public boolean addItems(List l, ItemOwner o) {
+	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
-			Item it = (Item) (l.get(i));
-			this.takeItem(it, o);
+			Item it = (l.get(i));
+			this.takeItem(it);
 		}
 		return true;
 	}
@@ -160,7 +160,7 @@ public class Luzia extends Shrine implements ItemOwner {
 
 	private boolean hasBall() {
 		for (int i = 0; i < items.size(); i++) {
-			if (((Item) items.get(i)) instanceof LuziasBall) {
+			if ((items.get(i)) instanceof LuziasBall) {
 				return true;
 			}
 		}
@@ -268,14 +268,14 @@ public class Luzia extends Shrine implements ItemOwner {
 				((Hero) f).removeItem(this.requestedItem);
 				Percept p = new UsePercept(f, this);
 				f.getRoom().distributePercept(p);
-				f.takeItem(ball, null);
+				f.takeItem(ball);
 				solve(f);
 				return true;
 			} else {
 				
 				items.remove(ball);
 				figure = f;
-				f.takeItem(ball,null);
+				f.takeItem(ball);
 				Percept p = new UsePercept(f, this);
 				f.getRoom().distributePercept(p);
 				String s = JDEnv.getResourceBundle().getString(

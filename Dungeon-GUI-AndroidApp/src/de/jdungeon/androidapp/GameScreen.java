@@ -63,6 +63,7 @@ import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.SpotInfo;
 import dungeon.generate.DungeonGenerationFailedException;
+import dungeon.generate.SectorDungeonFiller1;
 import dungeon.util.DungeonManager;
 
 public class GameScreen extends Screen {
@@ -70,7 +71,7 @@ public class GameScreen extends Screen {
 	private final Dungeon derDungeon;
 	private final DungeonGame dungeonGame;
 	private final Hero hero;
-	private final HeroInfo figureInfo;
+	private HeroInfo figureInfo;
 	private GraphicObjectRenderer dungeonRenderer;
 	public int DungeonSizeX = 30;
 
@@ -129,7 +130,7 @@ public class GameScreen extends Screen {
 		figureInfo = DungeonManager.enterDungeon(hero, derDungeon,
 				heroEntryPoint);
 
-		resetDungeonRenderer();
+
 
 		JDPoint heroRoomNumber = figureInfo.getRoomNumber();
 		centerOnRoom(heroRoomNumber);
@@ -226,6 +227,8 @@ public class GameScreen extends Screen {
 		hero.setControl(gui);
 		control = new Control((JDungeonApp) game, gui);
 
+		resetDungeonRenderer();
+
 		Thread th = new Thread(dungeonGame);
 		th.start();
 
@@ -240,7 +243,7 @@ public class GameScreen extends Screen {
 	}
 
 	private void resetDungeonRenderer() {
-		this.dungeonRenderer = new GraphicObjectRenderer(roomSize, figureInfo);
+		this.dungeonRenderer = new GraphicObjectRenderer(roomSize, gui);
 	}
 
 	private void centerOnRoom(JDPoint roomNumber) {
@@ -262,21 +265,25 @@ public class GameScreen extends Screen {
 				* roomSize - (screenSize.getHeight() / 2) + (this.roomSize / 2));
 	}
 
+	private void fillDungeon(Dungeon derDungeon)
+			throws DungeonGenerationFailedException {
+		SectorDungeonFiller1 filler = new SectorDungeonFiller1(derDungeon,
+				SectorDungeonFiller1.getValueForDungeon(1), dungeonGame, 1);
+		filler.fillDungeon();
+	}
+
 	private Dungeon createDungeon() {
 		Dungeon derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
 				dungeonGame);
+		dungeonGame.setDungeon(derDungeon);
 		try {
-			dungeonGame.fillDungeon(derDungeon);
+			fillDungeon(derDungeon);
 		} catch (DungeonGenerationFailedException e) {
-			derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
-					dungeonGame);
 			try {
-				dungeonGame.fillDungeon(derDungeon);
+				fillDungeon(derDungeon);
 			} catch (DungeonGenerationFailedException e1) {
-				derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
-						dungeonGame);
 				try {
-					dungeonGame.fillDungeon(derDungeon);
+					fillDungeon(derDungeon);
 				} catch (DungeonGenerationFailedException e2) {
 					System.out
 							.println("Cound not generate Dungeon - check Dungeon Generator!");
@@ -287,7 +294,7 @@ public class GameScreen extends Screen {
 			}
 
 		}
-
+		dungeonGame.init(derDungeon);
 		derDungeon.getRoom(heroEntryPoint).addItem(new Club(40, false));
 		return derDungeon;
 	}
@@ -933,6 +940,11 @@ public class GameScreen extends Screen {
 
 	public void clearAnimationManager() {
 		AnimationManager.getInstance().clear();
+
+	}
+
+	public void setFigure(FigureInfo f) {
+		this.figureInfo = (HeroInfo) f;
 
 	}
 

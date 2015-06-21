@@ -41,7 +41,7 @@ public class Sector {
 	protected DungeonGame game;
 
 	
-	DungeonFiller df;
+	AbstractDungeonFiller df;
 
 	
 	private Room dark_master_room;
@@ -55,7 +55,7 @@ public class Sector {
 		int avMonsterStrength,
 		int mainSize,
 		DungeonGame game,
-		DungeonFiller df) {
+		AbstractDungeonFiller df) {
 		this.df = df;
 		this.d = d;
 		this.game = game;

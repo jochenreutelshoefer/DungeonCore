@@ -76,7 +76,7 @@ public class Sector1 extends Sector {
 	private Room con_room = null;
 
 	public Sector1(Dungeon d, JDPoint startRoom, int number,
-			int avMonsterStrength, int mainSize, DungeonGame game, DungeonFiller df) throws DungeonGenerationFailedException{
+			int avMonsterStrength, int mainSize, DungeonGame game, AbstractDungeonFiller df) throws DungeonGenerationFailedException{
 
 		this.df = df;
 		this.game = game;
@@ -111,7 +111,7 @@ public class Sector1 extends Sector {
 		boolean b = normalRaum.plugChest(chests.removeFirst());
 		int bigmonster = 5;
 		int smallmonster = 8;
-		LinkedList normal = new LinkedList();
+		List<Figure> normal = new LinkedList<Figure>();
 		for (int i = 0; i < bigmonster; i++) {
 			Monster m = df.getBigMonster(1800);
 			df.equipMonster(m, 2);
@@ -142,7 +142,7 @@ public class Sector1 extends Sector {
 		halls.add(wolfRaum);
 		wolfRaum.removeDoors(2);
 		Chest wolfChest = chests.removeFirst();
-		wolfChest.takeItem(new BookAttr(Attribute.NATURE_KNOWLEDGE, 1), null);
+		wolfChest.takeItem(new BookAttr(Attribute.NATURE_KNOWLEDGE, 1));
 		b = wolfRaum.plugChest(wolfChest);
 		// System.out.println("Chest gesetzt: " + b);
 		// ((SectorDungeonFiller1) df).updateView();
@@ -152,7 +152,7 @@ public class Sector1 extends Sector {
 		halls.add(orcRaum);
 		orcRaum.removeDoors(2);
 		Chest orcChest = chests.removeFirst();
-		orcChest.takeItem(new BookAttr(Attribute.CREATURE_KNOWLEDGE, 1), null);
+		orcChest.takeItem(new BookAttr(Attribute.CREATURE_KNOWLEDGE, 1));
 		b = orcRaum.plugChest(orcChest);
 		// System.out.println("Chest gesetzt: " + b);
 		// ((SectorDungeonFiller1) df).updateView();
@@ -162,7 +162,7 @@ public class Sector1 extends Sector {
 		halls.add(skeletonRaum);
 		skeletonRaum.removeDoors(2);
 		Chest skelChest = chests.removeFirst();
-		skelChest.takeItem(new BookAttr(Attribute.UNDEAD_KNOWLEDGE, 1), null);
+		skelChest.takeItem(new BookAttr(Attribute.UNDEAD_KNOWLEDGE, 1));
 		b = skeletonRaum.plugChest(skelChest);
 		// System.out.println("Chest gesetzt: " + b);
 		// ((SectorDungeonFiller1) df).updateView();
@@ -263,7 +263,7 @@ public class Sector1 extends Sector {
 		Room rimHome = this.getRandomRimRoom(wolfRaum, orcRaum, skeletonRaum,
 				mainHall);
 		Key vimKey = new Key(vim.getName());
-		vim.takeItem(vimKey, null);
+		vim.takeItem(vimKey);
 		
 		Scroll disc2 = new Scroll(new Discover(1), 5);
 		String str2 = JDEnv.getString("vim_document_part1");
@@ -282,8 +282,8 @@ public class Sector1 extends Sector {
 		str2 += " "+dirString;
 		str2 += JDEnv.getString("vim_document_part2");
 		InfoScroll textVim = new InfoScroll(JDEnv.getResourceBundle().getString("vim_document_title"), str2);
-		vim.takeItem(disc2,null);
-		vim.takeItem(textVim,null);
+		vim.takeItem(disc2);
+		vim.takeItem(textVim);
 
 		// STATUE
 		mainHall.removeDoors(4);
@@ -302,7 +302,7 @@ public class Sector1 extends Sector {
 		LuziasBall ball = new LuziasBall(100, false);
 		Luzia witch = new Luzia(witchLabRoom, ball);
 		ball.setLuzia(witch);
-		witch.takeItem(ball, null);
+		witch.takeItem(ball);
 		Thing amulet = new LuziaAmulett(witch);
 		game.addTurnableItem(amulet);
 		witch.setReqItem(amulet);
@@ -310,7 +310,7 @@ public class Sector1 extends Sector {
 		d.addShrine(witch);
 		Monster m = normalRaum.getRandomMonster();
 		// System.out.println("Amulettmonster: "+m.toString());
-		m.takeItem(amulet, null);
+		m.takeItem(amulet);
 		// ball.solved();
 		// d.getRoom(new point(18,39)).addItem(ball);
 		// m.setMissionIndex(m.MISSION_FLEE);
@@ -320,8 +320,8 @@ public class Sector1 extends Sector {
 		Dwarf pax = new Dwarf();
 
 		Key dwarfKey = new Key(pax.getName());
-		pax.takeItem(dwarfKey, null);
-		pax.takeItem(new Scroll(new Prayer(),1),null);
+		pax.takeItem(dwarfKey);
+		pax.takeItem(new Scroll(new Prayer(), 1));
 		dwarfRoom.figureEnters(pax, 0);
 		Monster infoMonster = normalRaum.getRandomMonster();
 		int y = paxTreasure.getNumber().getY();
@@ -334,7 +334,7 @@ public class Sector1 extends Sector {
 						.getString("shrine_corpse_rest_text") + " ##" + " - "
 				+ y + " ###";
 		InfoScroll info2 = new InfoScroll(title, textInfo);
-		infoMonster.takeItem(info2, null);
+		infoMonster.takeItem(info2);
 
 		Hall halle = paxTreasure.getHall();
 		Hall treasureHall = makeTreasureRoom(paxTreasure, dwarfKey);
@@ -482,14 +482,14 @@ public class Sector1 extends Sector {
 		for (int i = 0; i < k; i++) {
 			Monster m = df.getMonsterIn(1, 0);
 			if (m != null) {
-				m.takeItem(restItems.remove(0), null);
+				m.takeItem(restItems.remove(0));
 			}
 		}
 		k = rareItems.size();
 		for (int i = 0; i < k; i++) {
 			Monster m = df.getMonsterIn(1, 0);
 			if (m != null) {
-				m.takeItem(rareItems.remove(0), null);
+				m.takeItem(rareItems.remove(0));
 			}
 		}
 		// System.out.println("sector 1: ");
@@ -582,7 +582,7 @@ public class Sector1 extends Sector {
 		Chest c = new Chest(ItemPool.getGift(50 + (int) (Math.random() * 15),
 				1.5 + Math.random()));
 		c.takeItem(ItemPool.getGift(50 + (int) (Math.random() * 15),
-				1.5 + Math.random()),null);
+				1.5 + Math.random()));
 		toMake.setChest(c);
 
 		toMake.addItem(ItemPool.getHigherItem(40 + (int) (Math.random() * 20),
@@ -635,7 +635,7 @@ public class Sector1 extends Sector {
 				1.5 + Math.random()));
 		toMake.addItem(ItemPool.getGoodItem(40 + (int) (Math.random() * 20),
 				1.5 + Math.random()));
-		c.takeItem(ItemPool.getRandomBookSpell(), null);
+		c.takeItem(ItemPool.getRandomBookSpell());
 		int dir = DungeonUtils.getNeighbourDirectionFromTo(r1, toMake)
 				.getValue();
 		// System.out.println("Richtung : " + dir);
@@ -738,7 +738,7 @@ public class Sector1 extends Sector {
 			hallDoor = new Door(r1, toMake, hallKey);
 			Monster m = Monster.createMonster(monsterType, monsterValue, game);
 			df.equipMonster(m, 2);
-			m.takeItem(hallKey, null);
+			m.takeItem(hallKey);
 			mainHall.addMonsterToList(m);
 		} else {
 			hallDoor = new Door(r1, toMake);

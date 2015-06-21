@@ -72,7 +72,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 	public boolean addItems(List l, ItemOwner o) {
 		for(int i = 0; i < l.size();i++) {
 			Item it = (Item)(l.get(i));
-			this.takeItem(it,o);
+			this.takeItem(it);
 		}
 		return true;
 	}
@@ -167,7 +167,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 	
 	
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
+	public boolean takeItem(Item i) {
 		items.add(i);
 		Item.notifyItem(i,this);
 		return true;

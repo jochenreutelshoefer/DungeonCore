@@ -1,8 +1,11 @@
 package item;
-import item.interfaces.ItemOwner;
-import item.interfaces.Locatable;
 import figure.attribute.Attribute;
 import game.JDEnv;
+import item.interfaces.ItemOwner;
+import item.interfaces.Locatable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Duke1
@@ -14,29 +17,43 @@ import game.JDEnv;
  */
 public class Key extends Item implements Locatable{
 
+	public static String[] keyStrings = { "Kupfer", "Eisen", "Silber",
+			"Gold", "Platin", "Bronze", "Blech", "Stahl", "Piponium" };
 	
-	String type;
+	private final String type;
 
 	
-	ItemOwner owner;
+	private ItemOwner owner;
 
 	
+	public static List<Key> generateKeylist() {
+		List<Key> result = new ArrayList<Key>();
+		for (int i = 0; i < Key.keyStrings.length; i++) {
+			result.add(new Key(Key.keyStrings[i] + " groß"));
+			result.add(new Key(Key.keyStrings[i] + " klein"));
+		}
+		return result;
+	}
+
 	public Key(String type) {
 		super(100, false);
 		this.type = type;	
 	}
 
 
+	@Override
 	public ItemOwner getOwner() {
 		return owner;
 	}
 
 	
+	@Override
 	public void setOwner(ItemOwner o) {
 		owner = o;
 	}
 
 	
+	@Override
 	public void getsRemoved() {
 		owner = null;
 	}
@@ -51,6 +68,7 @@ public class Key extends Item implements Locatable{
 	}
 
 	
+	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("key")+": "+type;	
 	}
@@ -59,6 +77,7 @@ public class Key extends Item implements Locatable{
 		return null;	
 	}
 	
+	@Override
 	public String getText() {
 		return JDEnv.getResourceBundle().getString("key")+": "+type;	
 	}

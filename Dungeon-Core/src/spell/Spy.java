@@ -105,10 +105,10 @@ public class Spy extends NoTargetSpell {
 	@Override
 	public void sorcer(Figure mage) {
 				
-				List rooms = mage.getRoom().getNeighboursWithDoor();
+		List<Room> rooms = mage.getRoom().getNeighboursWithDoor();
 				
 				for(int i = 0; i < rooms.size(); i++) {
-					Room toView = (Room)rooms.get(i);
+					Room toView = rooms.get(i);
 					mage.getRoomObservationStatus(toView.getLocation()).setVisibilityStatus(RoomObservationStatus.VISIBILITY_FIGURES);
 					mage.addScoutedRoom(toView);
 				}

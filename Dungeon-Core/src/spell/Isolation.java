@@ -34,7 +34,7 @@ public class Isolation extends TimedSpell {
 	
 	private final boolean isPossibleNormal;
 	private final boolean isPossibleInFight;
-	List doors = new LinkedList();
+	List<Door> doors = new LinkedList<Door>();
 	
 	public Isolation(int level){
 		super(level, values[level-1]);
@@ -108,7 +108,7 @@ public class Isolation extends TimedSpell {
 
 	public void stopEffect(){
 		for(int i =0 ; i < doors.size(); i++) {
-			((Door)doors.get(i)).removeBlocking(this);
+			doors.get(i).removeBlocking(this);
 		}
 		
 	}

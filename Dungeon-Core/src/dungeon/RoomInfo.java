@@ -29,7 +29,7 @@ import java.util.List;
 import shrine.ShrineInfo;
 import util.JDColor;
 
-public class RoomInfo extends InfoEntity  {
+public class RoomInfo extends InfoEntity {
 
 	private final Room r;
 
@@ -43,27 +43,30 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public static RoomInfo makeRoomInfo(Room r, DungeonVisibilityMap stats) {
-			return new RoomInfo(r, stats);
+		if (r == null)
+			return null;
+
+		return new RoomInfo(r, stats);
 	}
-	
+
 	@Override
 	public RoomMemory getMemoryObject(FigureInfo info) {
-		return (RoomMemory)r.getMemoryObject(info);
+		return (RoomMemory) r.getMemoryObject(info);
 	}
-	
+
 	public DoorInfo getDoor(int dir) {
-		return new DoorInfo(r.getDoor(dir),map);
+		return new DoorInfo(r.getDoor(dir), map);
 	}
 
 	public Boolean hasHero() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return new Boolean(r.hasHero());
 		}
 		return null;
 
 	}
-	
+
 	public Boolean hasConnectionTo(RoomInfo r1) {
 		return r.hasConnectionTo(r1.getLocation());
 	}
@@ -71,13 +74,11 @@ public class RoomInfo extends InfoEntity  {
 	public int getConnectionDirectionTo(RoomInfo r1) {
 		return r.getConnectionDirectionTo(r1);
 	}
-	
+
 	@Override
 	public String toString() {
 		return r.toString();
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -106,7 +107,7 @@ public class RoomInfo extends InfoEntity  {
 
 	@Override
 	public Paragraph[] getParagraphs() {
-		
+
 		String room = new String();
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FOUND
 				|| JDEnv.visCheat) {
@@ -167,7 +168,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	private int cntEntrys(Object[] a) {
-		if(a == null) {
+		if (a == null) {
 			return 0;
 		}
 		int cnt = 0;
@@ -180,7 +181,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public Boolean fightRunning() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return new Boolean(r.fightRunning());
 		}
@@ -188,7 +189,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public List<MonsterInfo> getMonsterInfos() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			List<Figure> l = r.getRoomFigures();
@@ -196,8 +197,7 @@ public class RoomInfo extends InfoEntity  {
 			for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
 				Figure element = iter.next();
 				if (element instanceof Monster) {
-					res.add(MonsterInfo.makeMonsterInfo((Monster) element,
-									map));
+					res.add(MonsterInfo.makeMonsterInfo((Monster) element, map));
 
 				}
 			}
@@ -211,7 +211,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public List<FigureInfo> getFigureInfos() {
-	
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			List<FigureInfo> res = new LinkedList<FigureInfo>();
@@ -233,22 +233,20 @@ public class RoomInfo extends InfoEntity  {
 	public JDPoint getPoint() {
 		return r.getPoint();
 	}
-	
-	
 
 	public int getVisibilityStatus() {
-		
+
 		return map.getVisibilityStatus(r.getLocation());
 
 	}
-	
+
 	public List getNeighboursWithDoor() {
 		List l = r.getNeighboursWithDoor();
 		List res = new LinkedList();
 		for (Iterator iter = l.iterator(); iter.hasNext();) {
 			Room element = (Room) iter.next();
-			res.add(RoomInfo.makeRoomInfo(element,map));
-			
+			res.add(RoomInfo.makeRoomInfo(element, map));
+
 		}
 		return res;
 	}
@@ -263,7 +261,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public Door getConnectionTo(RoomInfo otherRoom) {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND
 				&& !JDEnv.visCheat) {
 			return null;
@@ -276,7 +274,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public ShrineInfo getShrine() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
 
 			if (r.getShrine() != null) {
@@ -285,15 +283,15 @@ public class RoomInfo extends InfoEntity  {
 		}
 		return null;
 	}
-	
+
 	public ItemInfo[] getItemArray() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 
-			Item [] itArray = r.getItemArray();
+			Item[] itArray = r.getItemArray();
 			ItemInfo[] wrappedIts = new ItemInfo[itArray.length];
 			for (int i = 0; i < itArray.length; i++) {
-				if(itArray[i]!= null) {
+				if (itArray[i] != null) {
 					wrappedIts[i] = (ItemInfo) itArray[i].makeInfoObject(map);
 				}
 			}
@@ -301,16 +299,16 @@ public class RoomInfo extends InfoEntity  {
 		}
 		return null;
 	}
-	
+
 	public int getItemCnt() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 
-			Item [] itArray = r.getItemArray();
+			Item[] itArray = r.getItemArray();
 			ItemInfo[] wrappedIts = new ItemInfo[itArray.length];
 			int items = 0;
 			for (int i = 0; i < itArray.length; i++) {
-				if(itArray[i]!= null) {
+				if (itArray[i] != null) {
 					wrappedIts[i] = (ItemInfo) itArray[i].makeInfoObject(map);
 					items++;
 				}
@@ -321,13 +319,14 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public ItemInfo[] getItems() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 
 			List l = r.getItems();
 			ItemInfo[] wrappedIts = new ItemInfo[l.size()];
 			for (int i = 0; i < l.size(); i++) {
-				wrappedIts[i] = (ItemInfo) ((Item)l.get(i)).makeInfoObject(map);
+				wrappedIts[i] = (ItemInfo) ((Item) l.get(i))
+						.makeInfoObject(map);
 			}
 			return wrappedIts;
 		}
@@ -343,7 +342,7 @@ public class RoomInfo extends InfoEntity  {
 	// }
 
 	public HeroInfo getHeroInfo() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			Collection figures = getFigureInfos();
@@ -359,7 +358,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public ChestInfo getChest() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_SHRINE
 				&& !JDEnv.visCheat) {
 			return null;
@@ -377,7 +376,7 @@ public class RoomInfo extends InfoEntity  {
 	}
 
 	public DoorInfo[] getDoors() {
-		
+
 		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND
 				&& !JDEnv.visCheat) {
 			return null;

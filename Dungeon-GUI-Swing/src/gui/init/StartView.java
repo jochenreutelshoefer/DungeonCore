@@ -51,10 +51,14 @@ import control.ActionAssembler;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
+import dungeon.generate.SectorDungeonFiller1;
 import dungeon.util.DungeonManager;
 
 public class StartView extends AbstractStartWindow implements ActionListener,
 		KeyListener, ItemListener {
+
+	int dungeon_nr = 0; // hier geh�rt 0 hin
+
 
 	public static final String GODMODE = "godmode1";
 
@@ -452,6 +456,8 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 
 	}
 
+
+
 	private void initGame(StartView startView, Applet applet2,
 			String playerName, Hero held, boolean sendHighscore2,
 			MyJDGui myJDGui) {
@@ -464,18 +470,20 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 		 */
 		Dungeon derDungeon = new Dungeon(dagame.DungeonSizeX,
 				dagame.DungeonSizeY, 18, 39, dagame);
+		dagame.setDungeon(derDungeon);
+
 		try {
-			dagame.fillDungeon(derDungeon);
+			// wegen manchmal Fehler in generierung
+			tryFillDungeon(derDungeon);
+
 		} catch (DungeonGenerationFailedException e) {
-			derDungeon = new Dungeon(dagame.DungeonSizeX, dagame.DungeonSizeY,
-					18, 39, dagame);
 			try {
-				dagame.fillDungeon(derDungeon);
+				// wegen manchmal Fehler in generierung
+				tryFillDungeon(derDungeon);
 			} catch (DungeonGenerationFailedException e1) {
-				derDungeon = new Dungeon(dagame.DungeonSizeX,
-						dagame.DungeonSizeY, 18, 39, dagame);
 				try {
-					dagame.fillDungeon(derDungeon);
+					// wegen manchmal Fehler in generierung
+					tryFillDungeon(derDungeon);
 				} catch (DungeonGenerationFailedException e2) {
 					System.out
 							.println("Cound not generate Dungeon - check Dungeon Generator!");
@@ -486,6 +494,8 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 			}
 
 		}
+
+		dagame.init(derDungeon);
 
 		HeroInfo heroInfo = DungeonManager.enterDungeon(held, derDungeon,
 				new JDPoint(18, 39));
@@ -514,6 +524,14 @@ public class StartView extends AbstractStartWindow implements ActionListener,
 		Thread th = new Thread(dagame);
 		th.start();
 
+	}
+
+	private void tryFillDungeon(Dungeon derDungeon)
+			throws DungeonGenerationFailedException {
+		SectorDungeonFiller1 filler = new SectorDungeonFiller1(derDungeon,
+				SectorDungeonFiller1.getValueForDungeon(dungeon_nr + 1),
+				dagame, dungeon_nr + 1);
+		filler.fillDungeon();
 	}
 
 	public boolean isAppletRunning() {

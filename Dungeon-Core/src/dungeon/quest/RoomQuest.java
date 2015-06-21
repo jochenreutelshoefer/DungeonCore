@@ -17,7 +17,7 @@ import shrine.Shrine;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.generate.DungeonFiller;
+import dungeon.generate.AbstractDungeonFiller;
 import dungeon.generate.Hall;
 import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
@@ -54,7 +54,7 @@ public abstract class RoomQuest /*extends JDEnv */{
 
 	protected int entrenceDirection;
 
-	protected final DungeonFiller df;
+	protected final AbstractDungeonFiller df;
 
 	
 	protected final JDPoint location;
@@ -74,7 +74,7 @@ public abstract class RoomQuest /*extends JDEnv */{
 
 	public RoomQuest(
 		JDPoint p,
-		DungeonFiller df,
+		AbstractDungeonFiller df,
 		int x,
 		int y,
 			List<Item> toPutIn) {
@@ -147,7 +147,7 @@ public abstract class RoomQuest /*extends JDEnv */{
 		JDPoint rq_point,
 			List<Item> restItems, List<Item> toPutIn,
 		Shrine s,
-		DungeonFiller df) {
+		AbstractDungeonFiller df) {
 
 		RoomQuest rq = null;
 		if (type.equals("3x3_1 ")) {

@@ -4,7 +4,6 @@ import item.Item;
 import item.ItemInfo;
 import item.ItemPool;
 import item.interfaces.ItemOwner;
-import item.quest.Rune;
 
 import java.security.MessageDigest;
 import java.util.Collection;
@@ -24,8 +23,6 @@ import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.RoomInfo;
-import dungeon.generate.DungeonGenerationFailedException;
-import dungeon.generate.SectorDungeonFiller1;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
@@ -44,7 +41,6 @@ public class DungeonGame implements Runnable {
 
 	public boolean started = false;
 
-	int dungeon_nr = 0; // hier geh�rt 0 hin
 
 	private int round = 1;
 
@@ -58,14 +54,12 @@ public class DungeonGame implements Runnable {
 
 	public int DungeonSizeY = 40;
 
-	private final String[] word = { "JAVA", "CLUB", "BEAR" };
 
 
 	private final boolean visibility = false;
 
 	private boolean imortal = false;
 
-	private final List<Item> uniqueItems = new LinkedList<Item>();
 
 	private final long startTime;
 
@@ -156,49 +150,8 @@ public class DungeonGame implements Runnable {
 		return Figure.getFigure(index);
 	}
 
-	public void makeUniqueItems() {
-		// System.out.println("MAKING UNIQUE ITEMS!");
-		uniqueItems.add(ItemPool.ebertsklinge());
-		uniqueItems.add(ItemPool.zauberersWeisheit());
-		uniqueItems.add(ItemPool.glasSchild());
-		uniqueItems.add(ItemPool.atlethenhaut());
-	}
 
-	public Item selectItem(int value) {
-		LinkedList<Item> possible = new LinkedList<Item>();
-		for (int i = 0; i < uniqueItems.size(); i++) {
-			int a = (int) (value * 0.8);
-			int b = (int) (value * 1.2);
-			if ((value > a) && (value < b)) {
-				possible.add(uniqueItems.get(i));
-			}
-		}
-		// //System.out.println("selecting unique Item");
-		if (possible.size() == 0) {
-			if (uniqueItems.size() == 0) {
-				// System.out.println("Liste leer !");
-				return null;
-			}
-			int k = (int) (Math.random() * uniqueItems.size());
-			Item it = uniqueItems.get(k);
-			uniqueItems.remove(it);
-			return it;
-		} else {
 
-			int k = (int) (Math.random() * possible.size());
-			Item it = possible.get(k);
-			uniqueItems.remove(it);
-			return it;
-		}
-	}
-
-	private Rune[] runeCreater(int k) {
-		Rune[] runen = new Rune[word[k].length()];
-		for (int i = 0; i < word[k].length(); i++) {
-			runen[i] = new Rune(word[k].charAt(i));
-		}
-		return runen;
-	}
 
 	private void checkGuiFigures() {
 		Collection<Figure> l = guiFigures.keySet();
@@ -284,40 +237,17 @@ public class DungeonGame implements Runnable {
 		round++;
 	}
 
-	public void fillDungeon(Dungeon d) throws DungeonGenerationFailedException {
 
-		if (this.derDungeon == null) {
-			derDungeon = d;
-		}
 
-		// held.resetMemory(DungeonSizeX, DungeonSizeY);
-		makeUniqueItems();
-		Rune[] runen = runeCreater(dungeon_nr);
+	public void init(Dungeon d) {
 		ItemPool.setGame(this);
 
-		// wegen manchmal Fehler in generierung
-		SectorDungeonFiller1 filler = new SectorDungeonFiller1(derDungeon,
-				getValueForDungeon(dungeon_nr + 1), this, runen, dungeon_nr + 1);
 
-		filler.fillDungeon();
 		Figure.createVisibilityMaps(derDungeon);
 		Figure.setMonsterControls();
-		dungeon_nr += 1;
 
 	}
 
-	private int getValueForDungeon(int level) {
-		if (level == 1) {
-			return 40000;
-		} else if (level == 2) {
-			return 200000;
-		} else if (level == 3) {
-			return 1000000;
-		} else {
-
-			return -1;
-		}
-	}
 
 	public void setImortal(boolean b) {
 		imortal = b;

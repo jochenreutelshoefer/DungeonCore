@@ -55,7 +55,7 @@ public class Sector2 extends Sector {
 		int avMonsterStrength,
 		int mainSize,
 		DungeonGame game,
-		DungeonFiller df) {
+		AbstractDungeonFiller df) {
 
 		this.df = df;
 		this.game = game;
@@ -280,9 +280,9 @@ public class Sector2 extends Sector {
 		
 		Key h1 = df.getNextKey();
 		Hall otherHall = makeHall(0, 0, 3000, 70, 0, 0, h1, 0, "other",6);
-		LinkedList keys = fillHallWithRQ(otherHall);
+		List<Key> keys = fillHallWithRQ(otherHall);
 		rareItems.addAll(keys);
-		mainHall.getRandomMonster().takeItem(h1,null);
+		mainHall.getRandomMonster().takeItem(h1);
 		halls.add(otherHall);
 		
 //		key h2 = df.getNextKey();
@@ -330,9 +330,6 @@ public class Sector2 extends Sector {
 		Room rq_room = mainHall.getRandomRoom();
 		JDPoint rq_point = rq_room.getNumber();
 		RoomQuest rq = new RoomQuest_trader_1x2(rq_point, df, rareItems);
-		if (rq == null) {
-			return false;
-		}
 		boolean rq_ok = false;
 		if (rq.isValid()) {
 			if (rq.setUp()) {
@@ -372,7 +369,7 @@ public class Sector2 extends Sector {
 		for (int i = 0; i < k; i++) {
 			Monster m = df.getMonsterIn(2, 0);
 			if (m != null) {
-				m.takeItem(restItems.remove(0), null);
+				m.takeItem(restItems.remove(0));
 			} else {
 				//System.out.println("kein Monster fuer Gegenstand gefunden!");
 			}
@@ -394,7 +391,7 @@ public class Sector2 extends Sector {
 //					if(it instanceof Key) {
 //						System.out.println("Gebe :"+((Key)it).toString()+" an :"+m.toString()+"  - Raum: "+m.getLocation().toString()+" RQ: "+m.getRoom().getRoomQuest());
 //					}
-					m.takeItem(it, null);
+					m.takeItem(it);
 					rareItems.remove(it);
 				}
 				
@@ -581,7 +578,7 @@ public class Sector2 extends Sector {
 		if (hallKey != null) {
 			hallDoor = new Door(r1, toMake, hallKey);
 			Monster m = Monster.createMonster(1+(int)(Math.random()*6), monsterValue, game);
-			m.takeItem(hallKey, null);
+			m.takeItem(hallKey);
 			mainHall.addMonsterToList(m);
 		} else {
 			hallDoor = new Door(r1, toMake);
@@ -678,10 +675,10 @@ public class Sector2 extends Sector {
 		return rq_ok;
 	}
 	
-	private LinkedList fillHallWithRQ(Hall halle) {
+	private List<Key> fillHallWithRQ(Hall halle) {
 		//System.out.println();
 		//System.out.println("fillHallWithRQ(): "+halle.getName());
-		LinkedList keyList = new LinkedList();
+		List<Key> keyList = new LinkedList<Key>();
 		int k = halle.getSize();
 		int questCnt = k / 20;
 		//int questCnt = 1;

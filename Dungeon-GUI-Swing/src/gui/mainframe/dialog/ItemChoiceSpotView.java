@@ -180,7 +180,7 @@ public class ItemChoiceSpotView
 	public void actionPerformed(ActionEvent ae) {
 		int i = heroItemL.getSelectedIndex();
 		if (i != -1) {
-			if(rec.takeItem(itemsH.get(i),x)) {
+			if (rec.takeItem(itemsH.get(i))) {
 				x.removeItem(itemsH.get(i))	;
 			}
 			

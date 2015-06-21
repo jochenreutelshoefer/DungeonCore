@@ -17,7 +17,7 @@ import java.util.List;
 
 import dungeon.Chest;
 import dungeon.JDPoint;
-import dungeon.generate.DungeonFiller;
+import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
 public class RoomQuest_3x3_1 extends RoomQuest {
 	
@@ -33,11 +33,11 @@ public class RoomQuest_3x3_1 extends RoomQuest {
 						{1,1,1,1},
 						{1,0,0,1} };
 
-	public RoomQuest_3x3_1(JDPoint p, DungeonFiller df, List<Item> toPutIn) {
+	public RoomQuest_3x3_1(JDPoint p, AbstractDungeonFiller df, List<Item> toPutIn) {
 		super(p,df,3,3, toPutIn);
 	}
 	
-	public RoomQuest_3x3_1(JDPoint p, DungeonFiller df, List<Item> takeItems,
+	public RoomQuest_3x3_1(JDPoint p, AbstractDungeonFiller df, List<Item> takeItems,
 			List<Item> toPutIn) {
 		super(p,df,3,3, toPutIn);
 		this.takeItems = takeItems;

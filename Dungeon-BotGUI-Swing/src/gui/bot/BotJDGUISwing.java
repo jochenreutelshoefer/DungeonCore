@@ -91,7 +91,6 @@ public class BotJDGUISwing extends AbstractJDGUIEngine2D {
 		h.setControl(control);
 		botInstance.setFigure(figureInfo);
 		dungeon.putGuiFigure(h, this);
-		// new StartView(h.getName(), 0, null, false)
 
 		th = new Thread(dungeon);
 		th.start();

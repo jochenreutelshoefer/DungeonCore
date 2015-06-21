@@ -28,10 +28,13 @@ public class Assets {
 
 	public static void load(JDungeonApp game) {
 
+		if (game.getConfiguration().getValue(Configuration.AUDIO_ON)
+				.equals("true")) {
 		// audio
 		Audio audio = game.getAudio();
 		AudioLoader androidLoader = new AndroidAudioLoader(audio);
 		AudioEffectsManager.init(androidLoader);
+		}
 
 		// images
         Graphics g = game.getGraphics();

@@ -400,7 +400,7 @@ public class Room extends DungeonWorldObject implements
 	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
 			Item it = (l.get(i));
-			this.takeItem(it, o);
+			this.takeItem(it);
 		}
 		return true;
 	}
@@ -1076,11 +1076,11 @@ public class Room extends DungeonWorldObject implements
 	// }
 
 	public boolean addItem(Item i) {
-		return takeItem(i, null);
+		return takeItem(i);
 	}
 
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
+	public boolean takeItem(Item i) {
 
 		if (i instanceof DustItem) {
 			boolean foundother = false;

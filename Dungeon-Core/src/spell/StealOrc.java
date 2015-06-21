@@ -72,18 +72,18 @@ public class StealOrc extends Spell implements TargetSpell{
 		return false;
 	}
 	
-	private Item selectItem(List l) {
+	private Item selectItem(List<Item> l) {
 		if(l.size() == 0) {
 			return null;
 		}
 		Collections.sort(l, new ItemValueComparator());
 		if(Math.random() < 0.6 || l.size() == 1) {
-			return (Item)l.get(0);
+			return l.get(0);
 		}else {
 			if(Math.random() < 0.6 || l.size() == 2) {
-				return (Item)l.get(1);
+				return l.get(1);
 			}else {
-				return (Item)l.get(2);
+				return l.get(2);
 			}
 		}
 	}
@@ -91,7 +91,7 @@ public class StealOrc extends Spell implements TargetSpell{
 	@Override
 	public void sorcer(Figure mage, Object target) {
 		if (target instanceof Figure) {
-			List l = ((Figure) target).getAllItems();
+			List<Item> l = ((Figure) target).getAllItems();
 			
 			Item it = null;
 			if (target instanceof Hero) {
@@ -114,7 +114,7 @@ public class StealOrc extends Spell implements TargetSpell{
 			
 			if(it != null) {
 				((Figure)target).removeItem(it);
-				mage.takeItem(it,mage.getRoom());
+				mage.takeItem(it);
 				mage.getRoom().distributePercept(new TextPercept("Geklaut: "+it.toString()));
 			}
 

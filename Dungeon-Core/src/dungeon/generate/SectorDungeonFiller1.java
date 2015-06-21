@@ -18,19 +18,42 @@ import dungeon.Dungeon;
 import dungeon.Room;
 import dungeon.util.RouteInstruction;
 
-public class SectorDungeonFiller1 extends DungeonFiller {
+public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 
 	public boolean succes = true;
 	private final DungeonGame game;
 
+	private static final String[] word = { "JAVA", "CLUB", "BEAR" };
+
 	public SectorDungeonFiller1(Dungeon d, int value, DungeonGame game,
-			Rune[] runen, int level) {
-		super(d, runen);
+			int level) {
+		super(d, runeCreater(level));
 		this.game = game;
 	}
 
+	private static Rune[] runeCreater(int k) {
+		Rune[] runen = new Rune[word[k].length()];
+		for (int i = 0; i < word[k].length(); i++) {
+			runen[i] = new Rune(word[k].charAt(i));
+		}
+		return runen;
+	}
+
+	public static int getValueForDungeon(int level) {
+		if (level == 1) {
+			return 40000;
+		} else if (level == 2) {
+			return 200000;
+		} else if (level == 3) {
+			return 1000000;
+		} else {
+
+			return -1;
+		}
+	}
+
 	/**
-	 * @see DungeonFiller#getMap()
+	 * @see AbstractDungeonFiller#getMap()
 	 */
 	@Override
 	protected int[][] getMap() {
@@ -38,7 +61,7 @@ public class SectorDungeonFiller1 extends DungeonFiller {
 	}
 
 	/**
-	 * @see DungeonFiller#fillDungeon()
+	 * @see AbstractDungeonFiller#fillDungeon()
 	 */
 	@Override
 	public void fillDungeon() throws DungeonGenerationFailedException {

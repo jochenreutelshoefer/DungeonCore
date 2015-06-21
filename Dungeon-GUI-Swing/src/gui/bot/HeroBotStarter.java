@@ -15,6 +15,7 @@ import ai.GuiAI;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.generate.DungeonGenerationFailedException;
+import dungeon.generate.SectorDungeonFiller1;
 import dungeon.util.DungeonManager;
 
 public class HeroBotStarter {
@@ -46,14 +47,17 @@ public class HeroBotStarter {
 
 		Dungeon derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39,
 				dungeonGame);
-
+		dungeonGame.setDungeon(derDungeon);
 
 		try {
-			dungeonGame.fillDungeon(derDungeon);
+			SectorDungeonFiller1 filler = new SectorDungeonFiller1(derDungeon,
+					SectorDungeonFiller1.getValueForDungeon(1), dungeonGame, 1);
+			filler.fillDungeon();
 		} catch (DungeonGenerationFailedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dungeonGame.init(derDungeon);
 
 		HeroInfo figureInfo = DungeonManager.enterDungeon(h, derDungeon,
 				new JDPoint(18, 39));

@@ -19,13 +19,13 @@ import java.util.List;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;
-import dungeon.generate.DungeonFiller;
+import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
 public class RoomQuest_2x2_1 extends RoomQuest {
 
 	List<Item> items;
 
-	public RoomQuest_2x2_1(JDPoint p, DungeonFiller df, List<Item> items,
+	public RoomQuest_2x2_1(JDPoint p, AbstractDungeonFiller df, List<Item> items,
 			List<Item> toPutIn) {
 		super(p, df, 2, 2, toPutIn);
 		this.items = items;

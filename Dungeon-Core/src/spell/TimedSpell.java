@@ -5,8 +5,6 @@
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package spell;
-import dungeon.Door;
-import game.Turnable;
 /**
  * @author Jochen
  *

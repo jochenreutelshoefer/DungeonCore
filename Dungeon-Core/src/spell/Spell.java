@@ -197,7 +197,6 @@ public abstract class Spell {
 
 	public boolean canFire(Figure mage) {
 		int diff = getDifficulty();
-		int diffMin = getDifficultyMin();
 		double psy = mage.getPsycho().getValue();
 		double k = (Math.random() * psy);
 		if (k < diff) {

@@ -26,6 +26,10 @@ public class JDungeonApp extends AndroidGame {
 		this.state = state;
 	}
 
+	public Configuration getConfiguration() {
+		return new DefaultConfiguration();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

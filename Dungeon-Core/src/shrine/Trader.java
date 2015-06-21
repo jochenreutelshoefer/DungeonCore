@@ -31,7 +31,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	int itemsCnt = 5;
 
 	
-	LinkedList items = new LinkedList();
+	List<Item> items = new LinkedList<Item>();
 
 	int AvWorth;
 
@@ -160,7 +160,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 	
 	
-	public String setTrade(List heroItems, List traderItems) {
+	public String setTrade(List<Item> heroItems, List<Item> traderItems) {
 		int heroGives = summItems(heroItems);
 		//System.out.println(heroItems.size()+ " biete : "+heroGives);
 		
@@ -177,9 +177,9 @@ public class Trader extends Shrine /*implements itemOwner*/{
 		}
 	}
 	
-	public void makeTrade(List heroItems,List traderItems) {
+	public void makeTrade(List<Item> heroItems, List<Item> traderItems) {
 		for(int i = 0; i< heroItems.size(); i++) {
-			Item it = (Item)heroItems.get(i);
+			Item it = heroItems.get(i);
 			//[TODO] Gegenst�nde wegnehmen 
 			//System.out.println("held gibt ab; "+it.toString());
 			//boolean b = game.getHero().removeItem(it);	
@@ -198,10 +198,10 @@ public class Trader extends Shrine /*implements itemOwner*/{
 //		return true;	
 //	}
 	
-	private int summItems(List l) {
+	private int summItems(List<Item> l) {
 		int sum = 0;
 		for(int i = 0; i < l.size(); i++) {
-			sum += ((Item)l.get(i)).getWorth();	
+			sum += l.get(i).getWorth();	
 		}	
 		return sum;
 	}
@@ -216,7 +216,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	
-	public LinkedList getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 

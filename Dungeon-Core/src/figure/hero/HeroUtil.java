@@ -157,13 +157,13 @@ public class HeroUtil {
 			Scroll scroll1 = new Scroll(s, 5);
 			Scroll scroll2 = new Scroll(s, 5);
 			Scroll scroll3 = new Scroll(s, 5);
-			held.takeItem(scroll1, null);
-			held.takeItem(scroll2, null);
-			held.takeItem(scroll3, null);
+			held.takeItem(scroll1);
+			held.takeItem(scroll2);
+			held.takeItem(scroll3);
 		}
 
-		held.takeItem(waffe, null);
-		held.takeItem(new Armor(10, false), null);
+		held.takeItem(waffe);
+		held.takeItem(new Armor(10, false));
 
 		return held;
 	}
@@ -176,9 +176,9 @@ public class HeroUtil {
 			held.getAttribute(Attribute.STRENGTH).incBasic(1);
 		} else if (prof.equals(Profession.Trader)) {
 			Item unique = ItemPool.getUnique(40, 0);
-			held.takeItem(unique, null);
+			held.takeItem(unique);
 		} else if (prof.equals(Profession.Nobleman)) {
-			held.takeItem(new Armor(40, false), null);
+			held.takeItem(new Armor(40, false));
 		} else if (prof.equals(Profession.Thief)) {
 			if (held.getHeroCode() != Hero.HEROCODE_HUNTER) {
 				held.getSpellbook().addSpell(new Search(1));

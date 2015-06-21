@@ -16,16 +16,16 @@ import util.JDColor;
 
 public class Angel extends Shrine {
 	
-	List requestedItems = new LinkedList();
-	List ownedItems = new LinkedList();
-	List rewardItems = new LinkedList();
+	List<Item> requestedItems = new LinkedList<Item>();
+	List<Item> ownedItems = new LinkedList<Item>();
+	List<Item> rewardItems = new LinkedList<Item>();
 	boolean solved = false;
 	
 	public static final int UNSOLVED = 1;
 
 	public static final int SOLVED = 2;
 	
-	public List getRequestedItems() {
+	public List<Item> getRequestedItems() {
 		return requestedItems;
 	}
 
@@ -86,7 +86,7 @@ public class Angel extends Shrine {
 	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		if(target instanceof Feather) {
-			ownedItems.add(target);
+			ownedItems.add((Feather) target);
 			f.removeItem((Item)target);
 			f.tellPercept(new TextPercept(JDEnv.getString("thanks")));
 			checkCompleted();

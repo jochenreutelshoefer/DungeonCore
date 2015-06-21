@@ -497,9 +497,8 @@ public class Hero extends Figure implements InfoProvider {
 	}
 
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
-		return getInventory().takeItem(i, o);
-
+	public boolean takeItem(Item i) {
+		return getInventory().takeItem(i, i.getOwner());
 	}
 
 	@Override

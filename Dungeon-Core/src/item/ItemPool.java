@@ -31,6 +31,7 @@ import item.paper.Scroll;
 import item.paper.ScrollMagic;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import spell.Bonebreaker;
 import spell.Discover;
@@ -53,6 +54,12 @@ import spell.Thunderstorm;
 
 public class ItemPool {
 	
+	private final static List<Item> uniqueItems = new LinkedList<Item>();
+
+	static {
+		makeUniqueItems();
+	}
+
 	private static String[] spells = { "repair", "heal", "golden_hit", 
 				"escape", "thunderstorm", "bonebreaker", "fireball", "spy","key_locator","discover","isolation","escapeRoute", "fir"};
 				
@@ -327,6 +334,7 @@ public class ItemPool {
 	public static DungeonGame game = null;
 	public static void setGame(DungeonGame game) {
 		ItemPool.game = game;
+
 	}
 
 	/**
@@ -336,16 +344,45 @@ public class ItemPool {
 	 * @return item
 	 */
 	public static Item getUnique(int value, double quotient) {
-		if(ItemPool.game != null) {
-		return ItemPool.game.selectItem(value);
+		return selectItem(value);
+	}
+
+	public static void makeUniqueItems() {
+		// System.out.println("MAKING UNIQUE ITEMS!");
+		uniqueItems.add(ItemPool.ebertsklinge());
+		uniqueItems.add(ItemPool.zauberersWeisheit());
+		uniqueItems.add(ItemPool.glasSchild());
+		uniqueItems.add(ItemPool.atlethenhaut());
+	}
+
+	public static Item selectItem(int value) {
+		LinkedList<Item> possible = new LinkedList<Item>();
+		for (int i = 0; i < uniqueItems.size(); i++) {
+			int a = (int) (value * 0.8);
+			int b = (int) (value * 1.2);
+			if ((value > a) && (value < b)) {
+				possible.add(uniqueItems.get(i));
+			}
 		}
-		else {
-			////System.out.println("Unique Item");
-			return null;	
+		// //System.out.println("selecting unique Item");
+		if (possible.size() == 0) {
+			if (uniqueItems.size() == 0) {
+				// System.out.println("Liste leer !");
+				return null;
+			}
+			int k = (int) (Math.random() * uniqueItems.size());
+			Item it = uniqueItems.get(k);
+			uniqueItems.remove(it);
+			return it;
+		} else {
+
+			int k = (int) (Math.random() * possible.size());
+			Item it = possible.get(k);
+			uniqueItems.remove(it);
+			return it;
 		}
 	}
-	
-	
+
 	
 	public static Item zauberersWeisheit() {
 		Helmet weisheit = new Helmet(20,true);

@@ -146,7 +146,7 @@ public class QuestShrine extends Shrine {
 				f.getRoom().distributePercept(p);
 			//game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
 			f.removeItem(requestedItem);
-			location.takeItem(goodItem,null);	
+			location.takeItem(goodItem);
 			goodItem = null;
 			return true;
 		}

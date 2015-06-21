@@ -98,7 +98,7 @@ public class Rune extends Item implements Usable, Locatable {
 	public boolean use(Figure f,Object target,boolean meta){
 		Shrine s = ((Hero)f).getRoom().getShrine(); 
 		if(s instanceof RuneShrine){
-	    	if (((RuneShrine)s).takeItem(this,f)) {
+			if (((RuneShrine) s).takeItem(this)) {
 	    	 ((Hero)f).getInventory().removeItem(this);
 	    	}
 		}

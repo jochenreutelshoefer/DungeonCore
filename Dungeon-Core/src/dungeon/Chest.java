@@ -59,11 +59,8 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	}
 
 	public Chest(Item i) {
-
 		items = new LinkedList<Item>();
-		this.takeItem(i, null);
-		// this.game = game;
-
+		this.takeItem(i);
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		// items = list;
 		items = new LinkedList<Item>();
 		for (int i = 0; i < list.size(); i++) {
-			this.takeItem(list.get(i), null);
+			this.takeItem(list.get(i));
 		}
 	}
 
@@ -119,7 +116,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
 			Item it = (l.get(i));
-			this.takeItem(it, o);
+			this.takeItem(it);
 		}
 		return true;
 	}
@@ -127,7 +124,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	public Chest(List<Item> list, String lock) {
 		items = new ArrayList<Item>();
 		for (int i = 0; i < list.size(); i++) {
-			this.takeItem(list.get(i), null);
+			this.takeItem(list.get(i));
 		}
 		this.lock = lock;
 	}
@@ -169,7 +166,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 					Item it = (items.get(itemPointer));
 					// items.remove(it);
 					itemPointer = 0;
-					boolean taken = f.takeItem(it, this);
+					boolean taken = f.takeItem(it);
 					if (taken) {
 						Percept p = new TakePercept(f, it);
 						f.getRoom().distributePercept(p);
@@ -247,7 +244,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	}
 
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
+	public boolean takeItem(Item i) {
 
 		items.add(i);
 		Item.notifyItem(i, (this));

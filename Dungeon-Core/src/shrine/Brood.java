@@ -149,7 +149,6 @@ public class Brood extends Shrine {
 			way[2] += (int) (Math.random() * 5);
 		}
 
-		int y = (int) (Math.random() * 2);
 		if (x == 0) {
 			way[1] += (int) (Math.random() * 5);
 		} else {
@@ -187,7 +186,7 @@ public class Brood extends Shrine {
 	}
 
 	private void addItem(Monster m) {
-		m.takeItem(Item.newItem(m.getWorth() / 50), null);
+		m.takeItem(Item.newItem(m.getWorth() / 50));
 	}
 	
 	

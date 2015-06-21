@@ -8,16 +8,18 @@ package item.interfaces;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-import item.*;
-
-import java.util.*;
-
-import dungeon.*;
 import figure.DungeonVisibilityMap;
+import item.Item;
+import item.ItemInfo;
+
+import java.util.List;
+
+import dungeon.JDPoint;
+import dungeon.Room;
 
 public interface ItemOwner {
 	
-	public boolean takeItem(Item i, ItemOwner o);
+	public boolean takeItem(Item i);
 	
 	public boolean addItems(List<Item> l, ItemOwner donator);
 	

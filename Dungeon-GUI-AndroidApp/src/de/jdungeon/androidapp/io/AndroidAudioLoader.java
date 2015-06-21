@@ -7,7 +7,6 @@ import de.jdungeon.game.Sound;
 
 public class AndroidAudioLoader implements AudioLoader {
 
-
 	private final Audio audio;
 
 	public AndroidAudioLoader(Audio audio) {
@@ -21,7 +20,9 @@ public class AndroidAudioLoader implements AudioLoader {
 		for (String file : files) {
 			String fullFilename = "sounds/" + file;
 			Sound sound = audio.createSound(fullFilename);
-			set.addSound(sound);
+			if (sound != null) {
+				set.addSound(sound);
+			}
 		}
 		return set;
 	}

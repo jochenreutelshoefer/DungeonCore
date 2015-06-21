@@ -27,6 +27,7 @@ public class Dungeon implements Turnable {
 
 	private final JDPoint size;
 
+	// TODO: remove this field
 	private JDPoint heroPosition;
 
 	private final List<Shrine> shrines = new LinkedList<Shrine>();

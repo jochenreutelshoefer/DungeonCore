@@ -109,7 +109,7 @@ public boolean needsTarget() {
 			// master!");
 			Monster master = new DarkMaster(location.getDungeon().getGame(),
 					location);
-			master.takeItem(ItemPool.getGift(60, 2), null);
+			master.takeItem(ItemPool.getGift(60, 2));
 			location.figureEnters(master,0);
 			masterOut= true;
 //			newStatement(

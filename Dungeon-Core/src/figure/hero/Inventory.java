@@ -444,7 +444,7 @@ public class Inventory /*implements ItemOwner*/ {
 				if (o != null) {
 					o.removeItem(ding);
 					if (rest > 0.5) {
-						o.takeItem(j, owner);
+						o.takeItem(j);
 					}
 				}
 
@@ -496,7 +496,7 @@ public class Inventory /*implements ItemOwner*/ {
 				for (int i = 0; i < 3; i++) {
 					if (getWeapon(i) == it) {
 						if (o != null) {
-							o.takeItem(it, null);
+							o.takeItem(it);
 						}
 						if ((it.isMagic()) && (weaponIndex == i)) {
 
@@ -512,7 +512,7 @@ public class Inventory /*implements ItemOwner*/ {
 				for (int i = 0; i < 3; i++) {
 					if (getArmor(i) == it) {
 						if (o != null) {
-							o.takeItem(it, null);
+							o.takeItem(it);
 						}
 						if ((it.isMagic()) && (armorIndex == i)) {
 							owner.getCharacter().makeModifications(
@@ -527,7 +527,7 @@ public class Inventory /*implements ItemOwner*/ {
 				for (int i = 0; i < 3; i++) {
 					if (getShield(i) == it) {
 						if (o != null) {
-							o.takeItem(it, null);
+							o.takeItem(it);
 						}
 						if ((it.isMagic()) && (shieldIndex == i)) {
 							owner.getCharacter().makeModifications(
@@ -542,7 +542,7 @@ public class Inventory /*implements ItemOwner*/ {
 				for (int i = 0; i < 3; i++) {
 					if (getHelmet(i) == it) {
 						if (o != null) {
-							o.takeItem(it, null);
+							o.takeItem(it);
 						}
 						if ((it.isMagic()) && (helmetIndex == i)) {
 							owner.getCharacter().makeModifications(
@@ -560,7 +560,7 @@ public class Inventory /*implements ItemOwner*/ {
 				for (int i = 0; i < k; i++) {
 					if (it == (l.get(i))) {
 						if (o != null) {
-							o.takeItem(it, null);
+							o.takeItem(it);
 						}
 						l.remove(it);
 

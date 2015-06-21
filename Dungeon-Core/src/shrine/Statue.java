@@ -45,9 +45,9 @@ public void metaClick(Figure f){
 	@Override
 	public void turn(int round) {
 		//System.out.println(location.toString());
-		List l = location.getRoomFigures();
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+		List<Figure> l = location.getRoomFigures();
+		for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
+			Figure element = iter.next();
 			if(element instanceof Hero) {
 				element.heal(3);
 			}

@@ -9,8 +9,8 @@ import dungeon.DoorBlock;
 
 public class IsolationInstance extends TimedSpellInstance {
 	
-	private List doors = new LinkedList();
-	private int duration;
+	private final List<Door> doors = new LinkedList<Door>();
+	private final int duration;
 	
 	public IsolationInstance(int time, Door [] d) {
 		this.duration = time;
@@ -23,15 +23,17 @@ public class IsolationInstance extends TimedSpellInstance {
 		}
 	}
 
+	@Override
 	public void stopEffect() {
-		for (Iterator iter = doors.iterator(); iter.hasNext();) {
-			Door element = (Door) iter.next();
+		for (Iterator<Door> iter = doors.iterator(); iter.hasNext();) {
+			Door element = iter.next();
 			element.removeBlocking(this);
 			
 		}
 
 	}
 
+	@Override
 	public int getDuration() {
 		// TODO Auto-generated method stub
 		return duration;

@@ -238,8 +238,10 @@ public class Door implements  InfoProvider {
 		return false;
 	}
 
-	public void setLock(String lock) {
-		this.lock = lock;
+
+
+	public void setLock(Key key) {
+		this.lock = key.getType();
 	}
 
 	public Room[] getRooms() {

@@ -11,9 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import ai.GuiAI;
 import ai.DefaultMonsterIntelligence;
 import ai.DefaultMonsterReflexBehavior;
+import ai.GuiAI;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.Position;
@@ -805,7 +805,9 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	public boolean takeItem(Item i, ItemOwner o) {
+	public boolean takeItem(Item i) {
+		if (i == null)
+			return false;
 		items.add(i);
 		ItemOwner before = i.getOwner();
 		if(before != null) {
@@ -856,7 +858,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	public boolean giveAwayItem(Item i, ItemOwner o) {
 		if (items.contains(i)) {
-			o.takeItem(i, this);
+			o.takeItem(i);
 			items.remove(i);
 			return true;
 		} else {
@@ -1151,13 +1153,13 @@ public abstract class Monster extends Figure implements Paragraphable,
 		while(iterator.hasNext()) {
 			Item j = iterator.next();
 			iterator.remove();
-			actualDungeon.getRoom(location).takeItem(j, null);
+			actualDungeon.getRoom(location).takeItem(j);
 		}
 		
 	}
 	@Override
 	protected boolean layDown(Item i) {
-		actualDungeon.getRoom(location).takeItem(i, null);
+		actualDungeon.getRoom(location).takeItem(i);
 		items.remove(i);
 		return true;
 	}

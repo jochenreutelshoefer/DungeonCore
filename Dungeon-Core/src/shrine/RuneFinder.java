@@ -71,10 +71,6 @@ public class RuneFinder extends Shrine {
 	 */
 	@Override
 	public void turn(int round) {
-		ItemOwner o = r.getOwner();
-		JDPoint p = o.getLocation();
-		// System.out.println("Die Rune befindet sich im Moment in Raum:
-		// "+p.toString());
 
 	}
 
