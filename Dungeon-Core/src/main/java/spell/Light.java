@@ -75,9 +75,6 @@ public class Light extends Spell implements TargetSpell{
 		return FigureInfo.class;
 	}
 
-	/**
-	 * @see Spell#sorcer(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
 
