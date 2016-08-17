@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.jdungeon.androidapp.Control;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
 import de.jdungeon.game.Image;
 import figure.hero.HeroInfo;

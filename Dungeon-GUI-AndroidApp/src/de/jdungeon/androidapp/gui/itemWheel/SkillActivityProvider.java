@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import spell.SpellInfo;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.gui.SkillImageManager;
 import de.jdungeon.game.Image;
 import dungeon.Dir;
@@ -46,11 +46,15 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 	@Override
 	public List<ItemWheelActivity> getActivities() {
 		Boolean currentFightstate = info.getRoomInfo().fightRunning();
-		if (currentFightstate == fightState) {
+		if (currentFightstate != null && currentFightstate == fightState) {
 			return activityCache;
 		}
-		fightState = currentFightstate;
-		updateActivityList(currentFightstate);
+		if(currentFightstate == null) {
+			 fightState = false;
+		} else {
+			fightState = currentFightstate;
+		}
+		updateActivityList(fightState);
 		return activityCache;
 	}
 
@@ -94,18 +98,20 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		InfoEntity highlightedEntity = screen.getHighlightedEntity();
 		if (o.equals(ATTACK)) {
 			List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
-			if (figureInfos.size() == 2
-					&& (highlightedEntity == null || !(highlightedEntity instanceof FigureInfo))) {
-				// remove player
-				figureInfos.remove(info);
-				// enemy remains
-				FigureInfo target = figureInfos.get(0);
+			List<FigureInfo> hostileFigures = new ArrayList<>();
+			for (FigureInfo figureInfo : figureInfos) {
+				if(figureInfo.isHostile(info)) {
+					hostileFigures.add(figureInfo);
+				}
+			}
+			if (hostileFigures.size() == 1
+					&& (!(highlightedEntity instanceof FigureInfo))) {
+				FigureInfo target = hostileFigures.get(0);
 				screen.getControl().getActionAssembler().wannaAttack(target);
 				screen.setHighlightedEntity(target);
 				screen.setInfoEntity(target);
 			}
-			if (highlightedEntity != null
-					&& highlightedEntity instanceof FigureInfo) {
+			if (highlightedEntity instanceof FigureInfo) {
 				screen.getControl().getActionAssembler()
 						.wannaAttack((FigureInfo) highlightedEntity);
 			}
@@ -119,8 +125,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 					screen.getControl().getActionAssembler()
 							.wannaScout(possibleFleeDirection);
 				}
-			} else if (highlightedEntity != null
-					&& highlightedEntity instanceof RoomInfo) {
+			} else if (highlightedEntity instanceof RoomInfo) {
 				int directionToScout = Dir.getDirFromToIfNeighbour(
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());

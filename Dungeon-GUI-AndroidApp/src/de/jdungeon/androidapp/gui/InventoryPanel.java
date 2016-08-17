@@ -3,7 +3,7 @@ package de.jdungeon.androidapp.gui;
 import item.equipment.EquipmentItemInfo;
 import util.JDDimension;
 import android.view.MotionEvent;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;

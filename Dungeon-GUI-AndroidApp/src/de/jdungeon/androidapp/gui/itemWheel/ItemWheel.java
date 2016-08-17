@@ -3,7 +3,7 @@ package de.jdungeon.androidapp.gui.itemWheel;
 import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -75,20 +75,28 @@ public class ItemWheel extends AbstractGUIElement {
 		return true;
 	}
 
+	long lastEvent =0;
+
 	@Override
 	public void handleScrollEvent(ScrollMotion scrolling) {
+		long timeSinceLastEvent = System.currentTimeMillis() - lastEvent;
 		FloatDimension movement = scrolling.getMovement();
 		float movementX = movement.getX();
-		changeRotation(movementX / 500);
+		float rotation = movementX / 400;
+
+			changeRotation(rotation);
+
 		if (movementX > maxVelocity) {
 			velocity = maxVelocity;
 		} else {
 			velocity = movementX;
 
 		}
+		//System.out.println("setting velocity to: "+velocity);
 		startVelocity = velocity;
 		startVelocityTenth = 0.1 * startVelocity;
 		justRotated = true;
+
 	}
 
 	@Override
@@ -114,16 +122,16 @@ public class ItemWheel extends AbstractGUIElement {
 	}
 
 	private void centerOnIndex(int i) {
-		int previousIndex = this.markedPointIndex;
-		int diff = previousIndex - i;
-		rotationState = (float) (rotationState + (diff * PI_EIGHTEENTH));
+		//int previousIndex = this.markedPointIndex;
+		//int diff = previousIndex - i;
+		//rotationState = (float) (rotationState + (diff * PI_EIGHTEENTH));
+		//System.out.println("Centered on index" +i+": Rotation state: "+rotationState);
+
 		setMarkedIndex(i);
 	}
 
-	private void changeRotation(float rotationChange) {
-
-		this.rotationState += rotationChange;
-
+	private synchronized void changeRotation(float rotationChange) {
+			this.rotationState += rotationChange;
 	}
 
 	private void setMarkedIndex(int i) {
@@ -149,9 +157,8 @@ public class ItemWheel extends AbstractGUIElement {
 			/*
 			 * calc user motion
 			 */
-			if (rotationState >= TWO_PI) {
-				rotationState = (float) ((rotationState) % TWO_PI);
-			}
+			//rotationState = (float) ((rotationState) % TWO_PI);
+			System.out.println("Calculating for rotation state: "+rotationState);
 			for (int i = 0; i < points.length; i++) {
 				double degreeRad = i * PI_EIGHTEENTH + rotationState;
 				int x = (int) (this.position.getX() + (Math.sin(degreeRad) * radius));
@@ -165,16 +172,18 @@ public class ItemWheel extends AbstractGUIElement {
 			/*
 			 * calc movement due to inertia-velocity
 			 */
+
 			if (velocity > 0) {
 				if (timer > 20000f) {
 					velocity *= 0.9;
 					timer = 0;
 				}
 				changeRotation(velocity);
-				if (velocity < startVelocityTenth) {
+				if (Math.abs(velocity) < 0.1) {
 					velocity = 0;
 				}
 			}
+
 		}
 
 		binding.update(time);

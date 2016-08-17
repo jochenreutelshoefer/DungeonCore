@@ -2,6 +2,7 @@ package de.jdungeon.androidapp.gui;
 
 import figure.FigureInfo;
 import graphics.ImageManager;
+import graphics.JDImageProxy;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
@@ -10,7 +11,7 @@ import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -81,7 +82,7 @@ public class InfoPanel extends SlidingGUIElement {
 				int posCounterY = 35;
 				for (Paragraph paragraph : paragraphs) {
 					Paint p = new Paint();
-					p.setColor(ColorConverter.getColor(paragraph.getC()));
+					p.setColor(ColorConverter.getColor(paragraph.getColor()));
 					p.setTextAlign(Align.CENTER);
 					p.setStyle(p.getStyle());
 					p.setTextSize(13);
@@ -119,8 +120,9 @@ public class InfoPanel extends SlidingGUIElement {
 			} catch (NullPointerException e) {
 				return null;
 			}
-			return (Image) ImageManager.getImage((FigureInfo) content, 3)
-					.getImage();
+			JDImageProxy<?> image = ImageManager.getImage((FigureInfo) content, 3);
+			return image != null ? (Image) image
+					.getImage() : null;
 		}
 		if (content instanceof ItemInfo) {
 			Image image = InventoryImageManager.getImage((ItemInfo) content,

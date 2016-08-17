@@ -1,5 +1,5 @@
 package de.jdungeon.androidapp.io;
-import graphics.AbstractImageLoader;
+import io.AbstractImageLoader;
 
 import java.io.IOException;
 
@@ -17,7 +17,11 @@ public class AndroidImageLoader implements AbstractImageLoader<Image> {
 	
 	@Override
 	public Image loadImage(String filename) {
-		String fullFilename = "pics/" + filename;
+
+		String fullFilename = filename;
+		if(! filename.startsWith("pics/")) {
+			fullFilename = "pics/" + filename;
+		}
 		if (fileExists(fullFilename)) {
 			return game.getGraphics()
 					.newImage(fullFilename, ImageFormat.RGB565);

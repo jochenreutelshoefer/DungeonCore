@@ -2,7 +2,7 @@ package de.jdungeon.androidapp.gui;
 
 import spell.Spell;
 import spell.SpellInfo;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
 import de.jdungeon.game.Image;

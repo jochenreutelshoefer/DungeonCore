@@ -1,6 +1,6 @@
 package de.jdungeon.androidapp.gui;
 
-import graphics.AbstractImageLoader;
+import io.AbstractImageLoader;
 import graphics.JDImageProxy;
 import de.jdungeon.androidapp.io.AndroidImageLoader;
 import de.jdungeon.game.Game;

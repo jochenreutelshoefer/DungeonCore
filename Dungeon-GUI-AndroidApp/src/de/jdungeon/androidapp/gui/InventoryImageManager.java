@@ -16,7 +16,7 @@ import item.equipment.weapon.Wolfknife;
 import item.paper.Book;
 import item.paper.InfoScroll;
 import item.paper.Scroll;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;
 
 public class InventoryImageManager {

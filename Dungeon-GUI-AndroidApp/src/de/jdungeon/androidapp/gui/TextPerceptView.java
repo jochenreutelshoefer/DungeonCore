@@ -8,8 +8,9 @@ import text.Statement;
 import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
-import de.jdungeon.androidapp.GameScreen;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Input;
 import de.jdungeon.util.FloatDimension;
 import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
@@ -76,6 +77,11 @@ public class TextPerceptView extends AbstractGUIElement {
 	@Override
 	public boolean isVisible() {
 		return true;
+	}
+
+	@Override
+	public void handleTouchEvent(Input.TouchEvent touch) {
+
 	}
 
 	@Override

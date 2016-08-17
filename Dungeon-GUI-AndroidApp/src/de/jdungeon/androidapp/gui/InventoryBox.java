@@ -4,6 +4,8 @@ import item.equipment.EquipmentItemInfo;
 import util.JDDimension;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
+import de.jdungeon.game.Input;
+
 import dungeon.JDPoint;
 
 public class InventoryBox extends AbstractGUIElement {
@@ -33,6 +35,10 @@ public class InventoryBox extends AbstractGUIElement {
 		return true;
 	}
 
+	@Override
+	public void handleTouchEvent(Input.TouchEvent touch) {
+
+	}
 
 	@Override
 	public void paint(Graphics g, JDPoint parentPosition) {

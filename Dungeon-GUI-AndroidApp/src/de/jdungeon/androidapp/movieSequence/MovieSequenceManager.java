@@ -1,25 +1,27 @@
 package de.jdungeon.androidapp.movieSequence;
 
-import java.util.Stack;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MovieSequenceManager {
 
-	private final Stack<MovieSequence> sequences = new Stack<MovieSequence>();
+	private final List<MovieSequence> sequences = new LinkedList<MovieSequence>();
 
 	public void addSequence(MovieSequence movie) {
-		this.sequences.push(movie);
+		this.sequences.add(movie);
 	}
 
-	public MovieSequence getCurrentSequence(float time) {
-		while (!sequences.isEmpty()) {
-			MovieSequence top = sequences.peek();
-			if (top.isFinished(time)) {
+	public synchronized MovieSequence getCurrentSequence(float time) {
+		Iterator<MovieSequence> iterator = sequences.iterator();
+		while (iterator.hasNext()) {
+			MovieSequence head = iterator.next();
+			if (head.isFinished(time)) {
 				// remove completed sequence
-				sequences.pop();
+				iterator.remove();
 			} else {
-				return top;
+				return head;
 			}
-
 		}
 		return null;
 	}

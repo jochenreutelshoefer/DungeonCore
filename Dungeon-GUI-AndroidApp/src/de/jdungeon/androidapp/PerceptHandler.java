@@ -33,6 +33,8 @@ import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 
+import de.jdungeon.androidapp.screen.GameScreen;
+
 public class PerceptHandler {
 
 	private final GameScreen screen;
@@ -46,7 +48,6 @@ public class PerceptHandler {
 	}
 
 	public void handlePercept(Percept p) {
-		// System.out.println("receiving Percept: " + p.toString());
 		if (p instanceof WaitPercept) {
 			handleWaitPercept((WaitPercept) p);
 		}
@@ -62,7 +63,6 @@ public class PerceptHandler {
 		if (p instanceof ShieldBlockPercept) {
 			handleShieldBlockPercept((ShieldBlockPercept) p);
 		}
-
 
 		if (p instanceof ItemDroppedPercept) {
 			handleItemDroppedPercept((ItemDroppedPercept) p);
@@ -133,22 +133,32 @@ public class PerceptHandler {
 			handleFightEndedPercept((FightEndedPercept) p);
 		}
 		if (p instanceof FightBeginsPercept) {
-			newStatement(StatementManager.getStatement((FightBeginsPercept) p));
+			handleFightBeginsPercept((FightBeginsPercept)p);
 		}
+	}
+
+	private void handleFightBeginsPercept(FightBeginsPercept p) {
+		newStatement(StatementManager.getStatement(p));
+		screen.enterFightMode();
+
 	}
 
 	private void handleFightEndedPercept(FightEndedPercept p) {
 		newStatement(StatementManager.getStatement(p));
 		screen.clearAnimationManager();
+		screen.exitFightMode();
 	}
 
 	private void handleFleePercept(FleePercept p) {
+
 		FigureInfo fleeingFigure = p.getFigure();
 		AnimationSet set = AnimationUtils.getFigure_running(fleeingFigure);
 		if (set != null) {
 			screen.startAnimation(set, fleeingFigure);
 		}
-
+		if (fleeingFigure.equals(this.figure) && p.isSuccess()) {
+			screen.exitFightMode();
+		}
 	}
 
 	private void handleUsePercept(UsePercept p) {
@@ -206,14 +216,13 @@ public class PerceptHandler {
 		RoomInfo info = fig.getRoomInfo();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
-		RoomInfo from = p.getFrom();
-		RoomInfo to = p.getTo();
-
 		if (set != null) {
 			screen.startAnimation(set, fig);
 		}
 
-		if (fig.equals(this.figure)) {
+		if (fig.equals(this.figure)
+				&& // check whether a fight has just started
+				!figure.getRoomInfo().fightRunning()) {
 			screen.scrollTo(info.getNumber(), 50f);
 		}
 
@@ -267,18 +276,12 @@ public class PerceptHandler {
 		FigureInfo victim = p.getVictim();
 		newStatement(StatementManager.getStatement(p, figure));
 		if (p.getValue() > 0) {
-
-			RoomInfo info = victim.getRoomInfo();
-
 			int damage = p.getValue();
-
 			AnimationSet set = AnimationUtils.getFigure_been_hit(victim);
-
 			if (set != null) {
 				screen.startAnimation(set, victim, "-" + damage);
 			}
 		}
-
 	}
 
 	private void handleWaitPercept(WaitPercept p) {
@@ -287,30 +290,22 @@ public class PerceptHandler {
 		if (set != null) {
 			screen.startAnimation(set, user);
 		}
-
 	}
 
 	private void handleHitPercept(HitPercept p) {
 		FigureInfo victim = p.getVictim();
 		newStatements(StatementManager.getStatements(p, figure));
 		if (p.getDamage() > 0) {
-
-			RoomInfo info = victim.getRoomInfo();
-
 			int damage = p.getDamage();
-
 			AnimationSet set = AnimationUtils.getFigure_been_hit(victim);
-
 			if (set != null) {
 				screen.startAnimation(set, victim, "-" + damage);
 			}
 		}
-
 	}
 
 	private void handleAttackPercept(AttackPercept p) {
 		FigureInfo fig = p.getAttacker();
-		RoomInfo info = fig.getRoomInfo();
 		AnimationSet set = AnimationUtils.getFigure_slays(fig);
 		if (set != null) {
 			screen.startAnimation(set, fig);

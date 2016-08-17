@@ -17,7 +17,9 @@ import figure.action.result.ActionResult;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.Percept;
-import graphics.AbstractImageLoader;
+import io.AbstractImageLoader;
+
+import de.jdungeon.androidapp.screen.GameScreen;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
@@ -29,7 +31,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public AndroidScreenJDGUI(GameScreen screen) {
 		this.screen = screen;
 		this.perceptHandler = new PerceptHandler(screen);
-
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -142,9 +143,13 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	}
 
 	@Override
-	public void notifyVisbilityStatusDecrease(JDPoint p) {
+	public void notifyVisibilityStatusDecrease(JDPoint p) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void notifyVisibilityStatusIncrease(JDPoint p) {
+		this.screen.showVisibilityIncreaseEvent(p);
 	}
 
 	@Override
