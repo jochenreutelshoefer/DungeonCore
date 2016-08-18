@@ -1,6 +1,6 @@
 package item;
 
-//Wann und wieviel gesetzt werden soll - Bei Tränken und Elixieren
+//Wann und wieviel gesetzt werden soll - Bei TrÃ¤nken und Elixieren
 
 public class PotionMod {
 

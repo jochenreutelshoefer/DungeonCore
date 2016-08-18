@@ -6,7 +6,7 @@ import gui.Texts;
 
 /**
  * Hilfsklasse zum Modifizieren von Attributwerten
- * Welches Attribut und um wieviel ver‰ndert werden soll. - Bei magischen Gegenst‰nden
+ * Welches Attribut und um wieviel ver√§ndert werden soll. - Bei magischen Gegenst√§nden
  */
 public class ItemModification {
 

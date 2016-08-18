@@ -54,7 +54,6 @@ public class ArmorItem extends EquipmentItem{
 		
 
  public String getText(){
-	//System.out.println("Rüstung armor Type: "+Type);
 	return ("\n"+JDEnv.getResourceBundle().getString("gui_armor")+": "+getArmorValue()+"/"+armorValue+"\n"+ JDEnv.getResourceBundle().getString("state")+": "
 	+ (int) hitPoints.getValue()
 	+ "/"

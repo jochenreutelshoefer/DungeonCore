@@ -81,8 +81,6 @@ public class LuziaRunner {
 				if (newDir!= dir) {
 					int posIndex = Room.getDoorPosIndex(newDir);
 					if (!roomInfo.getPositionInRoom(posIndex).isOccupied() || roomInfo.getPositionInRoom(posIndex).getFigure().equals(m)) {
-						
-						//System.out.println("Richtung möglich: "+newDir);
 						dirs.add(new Integer(newDir));
 					}
 				}

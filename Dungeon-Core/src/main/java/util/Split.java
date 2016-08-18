@@ -2,7 +2,7 @@ package util;
 public class Split {
 
 
-    //zerteilt value zufällig in pieces Teile
+    //zerteilt value zufÃ¤llig in pieces Teile
    public static int [] split_equal(int value, int pieces) {
 	int a [] = new int[pieces];
 	int b;
@@ -16,7 +16,7 @@ public class Split {
 	
     }
 
-    //teilt value ganz zufällig in 2 Teile
+    //teilt value ganz zufï¿½llig in 2 Teile
     public static int[] split2_random(int value) {
 	int [] a = new int[2];
 	a[0] = (int)(Math.random() * value);
@@ -24,7 +24,7 @@ public class Split {
 	return a;
     }
 
-    //teilt value zufällig in 2 Teile, jedoch Varianz höchstens ein viertel
+    //teilt value zufï¿½llig in 2 Teile, jedoch Varianz hï¿½chstens ein viertel
     public static int[] split2_middle(int value) {
 	int[] a = new int[2];
 	a[0] = (value/2) + ((int)(Math.random() * (value/4)));

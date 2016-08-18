@@ -12,7 +12,7 @@ import figure.attribute.Attribute;
 
 
 /**
- * Zwerg Alberich, Hüter des Schatzes. Soll nur einmal vorkommen.
+ * Zwerg Alberich, HÃ¼ter des Schatzes. Soll nur einmal vorkommen.
  */
 public class Dwarf extends Monster {
 	
