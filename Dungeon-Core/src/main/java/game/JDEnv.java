@@ -1,6 +1,7 @@
 package game;
 
 import gui.Texts;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,8 +66,7 @@ public class JDEnv {
 			e.printStackTrace();
 		}
 		if (res == null) {
-			System.out.println("Bundle ist null");
-			System.exit(0);
+			Logger.getLogger(JDEnv.class).error("Texts ResourceBundle ist null");
 		}
 		Texts.init();
 

@@ -67,7 +67,7 @@
 								<platform>21</platform>
 								<path>/Applications/sdk</path>
 							</sdk>
-							<deleteConflictingFiles>true</deleteConflictingFiles>
+							<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 							<undeployBeforeDeploy>true</undeployBeforeDeploy>
 						</configuration>
 						<extensions>true</extensions>

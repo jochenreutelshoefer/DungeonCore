@@ -177,7 +177,7 @@ public class DungeonUtils {
 
 		dungeonGame.setDungeon(derDungeon);
 		h.setActualDungeon(derDungeon);
-		h.move(derDungeon.getRoomNr(p.getX(), p.getY()));
+		derDungeon.getRoomNr(p.getX(), p.getY()).figureEnters(h, 0);
 		DungeonVisibilityMap heroVisMap = h.getRoomVisibility();
 
 		return new HeroInfo(h, heroVisMap);

@@ -19,7 +19,7 @@ public class Lioness extends ConjuredMagicFigure {
 		super(value, 100);
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
-				this.roomVisibility);
+				this.getRoomVisibility());
 		GuiAI ai = new LionessAI(info, master);
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);

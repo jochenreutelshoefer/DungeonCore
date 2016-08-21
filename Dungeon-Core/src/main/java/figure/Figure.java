@@ -173,7 +173,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	protected boolean dead = false;
 
 	// TODO: make a Map<Dungeon, VisMap> to enable different dungeons
-	protected DungeonVisibilityMap roomVisibility;
+	//protected DungeonVisibilityMap roomVisibility;
+
+	protected Map<Dungeon, DungeonVisibilityMap> visibilities = new HashMap<>();
 
 	protected List<Room> scoutedRooms = new LinkedList<Room>();
 
@@ -570,7 +572,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		for (Iterator<Room> iter = scoutedRooms.iterator(); iter.hasNext();) {
 			Room element = iter.next();
 			if (element != null) {
-				roomVisibility.getStatusObject(element.getLocation())
+				getRoomVisibility().getStatusObject(element.getLocation())
 						.resetVisibilityStatus();
 			}
 
@@ -945,7 +947,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	private Item getItemForInfo(ItemInfo item) {
 		List<Item> allItems = this.getAllItems();
 		for (Item it : allItems) {
-			ItemInfo itemInfo = ItemInfo.makeItemInfo(it, this.roomVisibility);
+			ItemInfo itemInfo = ItemInfo.makeItemInfo(it, getRoomVisibility());
 			if (itemInfo.equals(item)) {
 				return it;
 			}
@@ -1582,7 +1584,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		actualDungeon = d;
 		createVisibilityMap(d);
 		if(ai != null) {
-			FigureInfo info = FigureInfo.makeFigureInfo(this, this.roomVisibility);
+			FigureInfo info = FigureInfo.makeFigureInfo(this, getRoomVisibility());
 			ai.setFigure(info);
 			this.control = new FigureControl(info, ai);
 		}
@@ -1590,15 +1592,16 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	public void createVisibilityMap(Dungeon d) {
 
+		DungeonVisibilityMap roomVisibility = visibilities.get(d);
+
 		if (roomVisibility == null) {
 			roomVisibility = new DungeonVisibilityMap(d);
 			roomVisibility.setFigure(this);
 			RoomObservationStatus[][] stats = d
 					.getNewRoomVisibilityMap(roomVisibility);
 			roomVisibility.setMap(stats);
+			visibilities.put(d, roomVisibility);
 
-		} else if (!roomVisibility.getDungeon().equals(d)) {
-			roomVisibility.setOtherDungeon(d);
 		}
 	}
 
@@ -1653,7 +1656,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	public RoomObservationStatus getRoomObservationStatus(JDPoint p) {
-		return roomVisibility.getStatusObject(p);
+		return getRoomVisibility().getStatusObject(p);
 	}
 
 
@@ -1898,7 +1901,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	public DungeonVisibilityMap getRoomVisibility() {
-		return roomVisibility;
+		return visibilities.get(this.getActualDungeon());
 	}
 
 	public int getPositionInRoom() {

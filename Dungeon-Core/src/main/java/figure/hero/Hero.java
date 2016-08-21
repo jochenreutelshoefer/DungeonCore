@@ -1009,7 +1009,7 @@ public class Hero extends Figure implements InfoProvider {
 
 				if (monsters.isEmpty()) {
 					s += "Du siehst dort niemanden.";
-					roomVisibility.setVisibilityStatus(toScout.getNumber(),
+					getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 							RoomObservationStatus.VISIBILITY_FIGURES);
 
 				} else {
@@ -1019,7 +1019,7 @@ public class Hero extends Figure implements InfoProvider {
 				}
 			} else if (scoutlevel == 3) {
 				s += ("... aber Du kannst leider nichts rauskriegen");
-				roomVisibility.setVisibilityStatus(toScout.getNumber(),
+				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 						RoomObservationStatus.VISIBILITY_FOUND);
 
 			} else if (scoutlevel == 4) {
@@ -1036,13 +1036,13 @@ public class Hero extends Figure implements InfoProvider {
 						s += ("hmm..Du glaubst da ist niemand");
 					}
 				}
-				roomVisibility.setVisibilityStatus(toScout.getNumber(),
+				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 						RoomObservationStatus.VISIBILITY_SHRINE);
 
 			} else if (scoutlevel == 5) {
 				if (toScout.getRoomFigures().isEmpty()) {
 					s += ("In diesem Raum ist niemand!");
-					roomVisibility.setVisibilityStatus(toScout.getNumber(),
+					getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 							RoomObservationStatus.VISIBILITY_FIGURES);
 
 				} else {
@@ -1058,7 +1058,7 @@ public class Hero extends Figure implements InfoProvider {
 				} else {
 					s += ("Wenn da jemand gewesen wäre hättest Du es raugekriegt.");
 				}
-				roomVisibility.setVisibilityStatus(toScout.getNumber(),
+				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 						RoomObservationStatus.VISIBILITY_FIGURES);
 
 			} else if (scoutlevel >= 8) {
@@ -1072,7 +1072,7 @@ public class Hero extends Figure implements InfoProvider {
 				} else {
 					s += "keine Gegenstände dort\n";
 				}
-				roomVisibility.setVisibilityStatus(toScout.getNumber(),
+				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 						RoomObservationStatus.VISIBILITY_ITEMS);
 			} else {
 				s += ("Scout Level Error: " + scoutlevel);

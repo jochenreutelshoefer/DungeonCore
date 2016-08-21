@@ -16,9 +16,25 @@
 
 		<dependencies>
 			<dependency>
+				<groupId>de.mindpipe.android</groupId>
+				<artifactId>android-logging-log4j</artifactId>
+				<version>1.0.3</version>
+			</dependency>
+			<dependency>
 				<groupId>de.reutelshoefer.dungeon</groupId>
 				<artifactId>Dungeon-App-Core</artifactId>
 				<version>0.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>de.reutelshoefer.dungeon</groupId>
+				<artifactId>Dungeon-GraphicsEngine2D</artifactId>
+				<version>0.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>android</artifactId>
+				<version>jo</version>
+				<scope>provided</scope>
 			</dependency>
 	</dependencies>
 	<build>
@@ -38,8 +54,8 @@
 				<version>3.9.0-rc.1</version>
 				<configuration>
 					<sdk>
-						<platform>21</platform>
-						<path>/Applications/sdk</path>
+						<platform>23</platform>
+						<path>/Users/jochenreutelshofer/Library/Android/sdk</path>
 					</sdk>
 					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
