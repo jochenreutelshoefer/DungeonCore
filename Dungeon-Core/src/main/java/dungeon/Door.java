@@ -170,7 +170,9 @@ public class Door implements  InfoProvider {
 	public Door(Room r1, Room r2, Key k) {
 		rooms[0] = r1;
 		rooms[1] = r2;
-		setKey(k);
+		if(k != null) {
+			setKey(k);
+		}
 	}
 
 	public Key getKey() {
@@ -184,7 +186,9 @@ public class Door implements  InfoProvider {
 	public Door(Door d, Key k) {
 		rooms[0] = d.getRooms()[0];
 		rooms[1] = d.getRooms()[1];
-		setKey(k);
+		if(k != null) {
+			setKey(k);
+		}
 	}
 
 	private void setKey(Key k) {

@@ -62,13 +62,35 @@ public class Hero extends Figure implements InfoProvider {
 	int timeDelay = 2000;
 	public static int hero_index_counter = -1;
 
+
+	@Deprecated
 	public final static int HEROCODE_WARRIOR = 1;
 
+	@Deprecated
 	public final static int HEROCODE_HUNTER = 2;
 
+	@Deprecated
 	public final static int HEROCODE_DRUID = 3;
 
+	@Deprecated
 	public final static int HEROCODE_MAGE = 4;
+
+
+	public enum HeroCategory {
+		Warrior(1),
+		Thief(2),
+		Druid(3),
+		Mage(4);
+
+		public int getCode() {
+			return code;
+		}
+
+		private int code;
+		HeroCategory(int value) {
+			this.code = value;
+		}
+	}
 
 
 	private int sanctions = 0;

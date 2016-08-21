@@ -6,6 +6,9 @@
  */
 package graphics;
 
+import animation.Motion;
+import dungeon.util.RouteInstruction;
+import figure.hero.Hero;
 import io.AbstractImageLoader;
 import item.AttrPotion;
 import item.DustItem;
@@ -31,9 +34,12 @@ import item.quest.LuziasBall;
 import item.quest.Rune;
 import item.quest.Thing;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import shrine.Brood;
 import shrine.Luzia;
@@ -944,6 +950,11 @@ public class ImageManager {
 
 			button1 = new JDImageProxy(a, "button1.gif");
 
+			createItemClassMap();
+			createFigureClassMap();
+			createShrineClassMap();
+			createHeroAnimationMap();
+
 		}
 
 		imagesLoaded = true;
@@ -1078,6 +1089,64 @@ public class ImageManager {
 		floorImage_darkArray[6] = floor_darkImage7;
 		floorImage_darkArray[7] = null;
 
+	}
+
+	private static Map<Hero.HeroCategory, Map<Motion, AnimationSetDirections>> heroAnimationMap = new HashMap<>();
+	
+	private static void createHeroAnimationMap() {
+		heroAnimationMap.put(Hero.HeroCategory.Warrior, new HashMap<Motion, AnimationSetDirections>());
+		heroAnimationMap.put(Hero.HeroCategory.Thief, new HashMap<Motion, AnimationSetDirections>());
+		heroAnimationMap.put(Hero.HeroCategory.Druid, new HashMap<Motion, AnimationSetDirections>());
+		heroAnimationMap.put(Hero.HeroCategory.Mage, new HashMap<Motion, AnimationSetDirections>());
+		
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.BeingHit, ImageManager.warrior_been_hit);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Pause, ImageManager.warrior_pause);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.TippingOver, ImageManager.warrior_tipping_over);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Walking, ImageManager.warrior_walking);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Running, ImageManager.warrior_running);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Using, ImageManager.warrior_using);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Slaying, ImageManager.warrior_slays);
+		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Sorcering, ImageManager.warrior_sorcering);
+
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.BeingHit, ImageManager.thief_been_hit);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Pause, ImageManager.thief_pause);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.TippingOver, ImageManager.thief_tipping_over);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Walking, ImageManager.thief_walking);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Running, ImageManager.thief_running);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Using, ImageManager.thief_using);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Slaying, ImageManager.thief_slays);
+		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Sorcering, ImageManager.thief_sorcering);
+
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.BeingHit, ImageManager.druid_been_hit);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Pause, ImageManager.druid_pause);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.TippingOver, ImageManager.druid_tipping_over);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Walking, ImageManager.druid_walking);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Running, ImageManager.druid_running);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Using, ImageManager.druid_using);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Slaying, ImageManager.druid_slays);
+		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Sorcering, ImageManager.druid_sorcering);
+
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.BeingHit, ImageManager.mage_been_hit);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Pause, ImageManager.mage_pause);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.TippingOver, ImageManager.mage_tipping_over);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Walking, ImageManager.mage_walking);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Running, ImageManager.mage_running);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Using, ImageManager.mage_using);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Slaying, ImageManager.mage_slays);
+		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Sorcering, ImageManager.mage_sorcering);
+
+
+	}
+	
+	public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
+		if(heroAnimationMap.containsKey(heroCategory)) {
+			Map<Motion, AnimationSetDirections> motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
+			if(motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsKey(motion)) {
+				AnimationSetDirections animationSetDirections = motionAnimationSetDirectionsMap.get(motion);
+				return animationSetDirections.get(direction.getValue() -1);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -1346,21 +1415,33 @@ public class ImageManager {
 		}
 	}
 
-	public static JDImageProxy<?> getImage(ShrineInfo s) {
-		// TODO: factor out, shrine image should be provided by the shrine
-		// use class objects to compare
-		JDImageProxy<?> im = null;
-		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
-			im = ImageManager.fountainImage;
-		} else if (s.getShrineIndex() == Shrine.SHRINE_REPAIR) {
-			im = 	ImageManager.repairImage;
-		} else if (s.getShrineIndex() == Shrine.SHRINE_STATUE) {
-			im = 	ImageManager.statueImage; 
-		} else if (s.getShrineIndex() == Shrine.SHRINE_ANGEL) {
-			im = ImageManager.engelImage;
-		} else if (s.getShrineIndex() == Shrine.SHRINE_SORCER_LAB) {
-			im = ImageManager.sorcLabImage;
-		} else if (s.getShrineIndex() == Shrine.SHRINE_BROOD) {
+	public static Map<Integer, JDImageProxy<?>> shrineMap = new HashMap<>();
+
+	private void createShrineClassMap() {
+		shrineMap.put(Shrine.SHRINE_HEALTH_FOUNTAIN, ImageManager.fountainImage);
+		shrineMap.put(Shrine.SHRINE_REPAIR, ImageManager.repairImage);
+		shrineMap.put(Shrine.SHRINE_STATUE, ImageManager.statueImage);
+		shrineMap.put(Shrine.SHRINE_ANGEL, ImageManager.engelImage);
+		shrineMap.put(Shrine.SHRINE_SORCER_LAB, ImageManager.sorcLabImage);
+		shrineMap.put(Shrine.SHRINE_TRADER, ImageManager.traderImage);
+		shrineMap.put(Shrine.SHRINE_QUEST, ImageManager.shrine_blackImage);
+		shrineMap.put(Shrine.SHRINE_REVEALMAP, ImageManager.shrine_blackImage);
+		shrineMap.put(Shrine.SHRINE_XMAS, ImageManager.xmasImage);
+		shrineMap.put(Shrine.SHRINE_DARK_MASTER, ImageManager.pentagrammImage);
+		shrineMap.put(Shrine.SHRINE_EXIT, ImageManager.falltuerImage);
+	}
+
+
+		public static JDImageProxy<?> getImage(ShrineInfo s) {
+		// todo: use class objects to compare
+
+			int shrineIndex = s.getShrineIndex();
+			if(shrineMap.containsKey(shrineIndex)) {
+				return shrineMap.get(shrineIndex);
+			}
+
+			JDImageProxy<?> im = null;
+		if (shrineIndex == Shrine.SHRINE_BROOD) {
 			if ((s).getType() == Brood.BROOD_NATURE) {
 				im = 	ImageManager.caveImage;
 			} else if ((s).getType() == Brood.BROOD_CREATURE) {
@@ -1368,10 +1449,7 @@ public class ImageManager {
 			} else if ((s).getType() == Brood.BROOD_UNDEAD) {
 				im = ImageManager.graveImage;
 			}
-		} else if (s.getShrineIndex() == Shrine.SHRINE_TRADER) {
-			im = 	ImageManager.traderImage;
-		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNE) {
-			
+		} else if (shrineIndex == Shrine.SHRINE_RUNE) {
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_yellowImage;
 			} else if ((s).getType() == 2) {
@@ -1380,7 +1458,7 @@ public class ImageManager {
 				im = ImageManager.shrine_redImage;
 			}
 			
-		} else if (s.getShrineIndex() == Shrine.SHRINE_CORPSE) {
+		} else if (shrineIndex == Shrine.SHRINE_CORPSE) {
 			
 			if ((s).getType() == 0) {
 				im = ImageManager.dead_dwarfImage;
@@ -1394,16 +1472,7 @@ public class ImageManager {
 			} else if ((s).getType() == 4) {
 				im = ImageManager.dead_mageImage;
 			}
-		} else if (s.getShrineIndex() == Shrine.SHRINE_QUEST) {
-			
-			im = ImageManager.shrine_blackImage;
-
-		} else if (s.getShrineIndex() == Shrine.SHRINE_XMAS) {
-			
-			im = ImageManager.xmasImage;
-
-
-		} else if (s.getShrineIndex() == Shrine.SHRINE_RUNEFINDER) {
+		} else if (shrineIndex == Shrine.SHRINE_RUNEFINDER) {
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_small_yellowImage;
 			} else if ((s).getType() == 2) {
@@ -1412,52 +1481,84 @@ public class ImageManager {
 				im = ImageManager.shrine_small_redImage;
 			}
 
-		} else if (s.getShrineIndex() == Shrine.SHRINE_DARK_MASTER) {
-			im = ImageManager.pentagrammImage;
-		} else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
+		} else if (shrineIndex == Shrine.SHRINE_LUZIA) {
 			im = ImageManager.luziaImage;
 			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
 				im = ImageManager.luzia_hutImage;
 			}
-		}else if (s.getShrineIndex() == Shrine.SHRINE_EXIT) {
-			im = ImageManager.falltuerImage;
-		}else if (s.getShrineIndex() == Shrine.SHRINE_REVEALMAP) {
-			im = ImageManager.shrine_blackImage;
 		}
 		return im;
 	}
+	public static Map<Integer, JDImageProxy<?>[]> figureMap = new HashMap<>();
 
-	public static JDImageProxy<?> getImage(FigureInfo figure, int dir) {
-		JDImageProxy<?> im = null;
+	private void createFigureClassMap() {
+		figureMap.put(Monster.WOLF, ImageManager.wolfImage);
+		figureMap.put(Monster.ORC, ImageManager.orcImage);
+		figureMap.put(Monster.SKELETON, ImageManager.skelImage);
+		figureMap.put(Monster.GHUL, ImageManager.ghulImage);
+		figureMap.put(Monster.OGRE, ImageManager.ogreImage);
+		figureMap.put(Monster.BEAR, ImageManager.bearImage);
+		figureMap.put(Monster.BEAR, ImageManager.bearImage);
+	}
+
+
+		public static JDImageProxy<?> getImage(FigureInfo figure, int dir) {
 		if (figure instanceof MonsterInfo) {
 			MonsterInfo m = (MonsterInfo) figure;
 			int mClass = m.getMonsterClass();
-			if (mClass == Monster.WOLF) {
-				im = ImageManager.wolfImage[dir - 1];
-			} else if (mClass == Monster.ORC) {
-				im = ImageManager.orcImage[dir - 1];
-			} else if (mClass == Monster.SKELETON) {
-				im = ImageManager.skelImage[dir - 1];
-			} else if (mClass == Monster.GHUL) {
-				im = ImageManager.ghulImage[dir - 1];
-			} else if (mClass == Monster.OGRE) {
-				im = ImageManager.ogreImage[dir - 1];
-			} else if (mClass == Monster.BEAR) {
-				im = ImageManager.bearImage[dir - 1];
-			} else if (mClass == Monster.DARKMASTER) {
-				im = ImageManager.darkMasterImage;
+			if(figureMap.containsKey(mClass)) {
+				return figureMap.get(mClass)[dir-1];
+			}
+
+			// todo: create animations
+				JDImageProxy<?> im = null;
+			if  (mClass == Monster.DARKMASTER) {
+				return ImageManager.darkMasterImage;
 			} else if (mClass == Monster.DWARF) {
-				im = ImageManager.dark_dwarfImage;
+				return ImageManager.dark_dwarfImage;
 			} else if (mClass == Monster.FIR) {
-				im = ImageManager.finImage;
+				return ImageManager.finImage;
 			} else {
-				im = ImageManager.engelImage;
+				return ImageManager.engelImage;
 			}
 		}
-		return im;
+		return null;
 	}
 
+	public static Map<Class<? extends Item>, JDImageProxy<?>> itemMap = new HashMap<>();
+
+	private void createItemClassMap() {
+		itemMap.put(DustItem.class, ImageManager.dustImage);
+		itemMap.put(Sword.class, ImageManager.swordImage);
+		itemMap.put(Axe.class, ImageManager.axeImage);
+		itemMap.put(Club.class, ImageManager.clubImage);
+		itemMap.put(Lance.class, ImageManager.lanceImage);
+		itemMap.put(Wolfknife.class, ImageManager.wolfknifeImage);
+		itemMap.put(Armor.class, ImageManager.armorImage);
+		itemMap.put(Shield.class, ImageManager.shieldImage);
+		itemMap.put(Helmet.class, ImageManager.helmetImage);
+		itemMap.put(InfoScroll.class, ImageManager.documentImage);
+		itemMap.put(AncientMapFragment.class, ImageManager.documentImage);
+		itemMap.put(Feather.class, ImageManager.featherImage);
+		itemMap.put(Incense.class, ImageManager.potion_greenImage);
+		itemMap.put(Key.class, ImageManager.keyImage);
+		itemMap.put(DarkMasterKey.class, ImageManager.cristall_redImage);
+		itemMap.put(LuziasBall.class, ImageManager.kugelImage);
+		itemMap.put(Book.class, ImageManager.bookImage);
+		itemMap.put(Thing.class, ImageManager.amulettImage);
+	}
 	public static JDImageProxy<?> getImage(ItemInfo item) {
+		Class itemClazz = item.getItemClass();
+		if(itemMap.get(itemClazz) != null) {
+			return itemMap.get(itemClazz);
+		}
+
+		Set<Class<? extends Item>> classes = itemMap.keySet();
+		for (Class<? extends Item> aClass : classes) {
+			if(aClass.isAssignableFrom(itemClazz)) {
+				return itemMap.get(aClass);
+			}
+		}
 		JDImageProxy<?> im = null;
 		if (AttrPotion.class.isAssignableFrom(item.getItemClass())) {
 			if (((item).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
@@ -1465,35 +1566,6 @@ public class ImageManager {
 			} else {
 				im = ImageManager.potion_blueImage;
 			}
-		} else if (item.getItemClass().equals(DustItem.class)) {
-			im = ImageManager.dustImage;
-		} else if (item.getItemClass().equals(Sword.class)) {
-			im = ImageManager.swordImage;
-		} else if (item.getItemClass().equals(Axe.class)) {
-			im = ImageManager.axeImage;
-		} else if (item.getItemClass().equals(Club.class)) {
-			im = ImageManager.clubImage;
-		} else if (item.getItemClass().equals(Lance.class)) {
-			im = ImageManager.lanceImage;
-		} else if (item.getItemClass().equals(Wolfknife.class)) {
-			im = ImageManager.wolfknifeImage;
-		} else if (item.getItemClass().equals(Armor.class)) {
-			im = ImageManager.armorImage;
-		} else if (item.getItemClass().equals(Shield.class)) {
-			im = ImageManager.shieldImage;
-		} else if (item.getItemClass().equals(Helmet.class)) {
-			im = ImageManager.helmetImage;
-		} else if (Scroll.class.isAssignableFrom(item.getItemClass())) {
-			im = ImageManager.scrollImage;
-		} else if (item.getItemClass().equals(InfoScroll.class)
-				|| item.getItemClass().equals(AncientMapFragment.class)) {
-			im = ImageManager.documentImage;
-		} else if (item.getItemClass().equals(Feather.class)) {
-			im = ImageManager.featherImage;
-		} else if (item.getItemClass().equals(Incense.class)) {
-			im = ImageManager.potion_greenImage;
-		} else if (item.getItemClass().equals(Key.class)) {
-			im = ImageManager.keyImage;
 		} else if (item.getItemClass().equals(Rune.class)) {
 			if ((item).toString().indexOf('J') != -1) {
 				im = ImageManager.rune_yellowImage;
@@ -1502,14 +1574,6 @@ public class ImageManager {
 			} else if ((item).toString().indexOf('V') != -1) {
 				im = ImageManager.rune_redImage;
 			}
-		} else if (item.getItemClass().equals(DarkMasterKey.class)) {
-			im = ImageManager.cristall_redImage;
-		} else if (item.getClass().equals(LuziasBall.class)) {
-			im = ImageManager.kugelImage;
-		} else if (item.getClass().equals(Book.class)) {
-			im = ImageManager.bookImage;
-		} else if (Thing.class.isAssignableFrom(item.getItemClass())) {
-			im = ImageManager.amulettImage;
 		} else {
 			im = ImageManager.questionmark;
 		}

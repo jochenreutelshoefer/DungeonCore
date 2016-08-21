@@ -1,5 +1,6 @@
 package animation;
 
+import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -445,15 +446,19 @@ public class AnimationUtils {
 			int heroClass = ((HeroInfo) info).getHeroCode();
 			if (heroClass == Hero.HEROCODE_WARRIOR) {
 				return ImageManager.getWarrior_slays(dir);
+				//return ImageManager.getAnimationSet(Hero.HeroCategory.Warrior, Motion.Slaying, RouteInstruction.direction(dir));
 			}
 			if (heroClass == Hero.HEROCODE_DRUID) {
 				return ImageManager.getDruid_slays(dir);
+				//return ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Slaying, RouteInstruction.direction(dir));
 			}
 			if (heroClass == Hero.HEROCODE_HUNTER) {
 				return ImageManager.getThief_slays(dir);
+				//return ImageManager.getAnimationSet(Hero.HeroCategory.Thief, Motion.Slaying, RouteInstruction.direction(dir));
 			}
 			if (heroClass == Hero.HEROCODE_MAGE) {
 				return ImageManager.getMage_slays(dir);
+				//return ImageManager.getAnimationSet(Hero.HeroCategory.Mage, Motion.Slaying, RouteInstruction.direction(dir));
 			}
 		}
 		return null;
