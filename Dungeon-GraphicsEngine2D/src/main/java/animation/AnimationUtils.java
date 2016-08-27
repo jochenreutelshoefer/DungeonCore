@@ -17,7 +17,6 @@ public class AnimationUtils {
 			int mClass = ((MonsterInfo) info).getMonsterClass();
 			if (mClass == Monster.WOLF) {
 				if (info.getLevel() == 1) {
-
 					return ImageManager.wolf1_pause.get(dir - 1);
 				}
 			}
@@ -49,19 +48,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_pause(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_pause(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_pause(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_pause(dir);
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.Pause, RouteInstruction.direction(dir));
 		}
 		return null;
 
@@ -104,19 +91,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_been_hit(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_been_hit(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_been_hit(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_been_hit(dir);
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.BeingHit, RouteInstruction.direction(dir));
 		}
 		return null;
 
@@ -160,20 +135,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_walking(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_walking(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_walking(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_walking(dir);
-			}
-
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.Walking, RouteInstruction.direction(dir));
 		}
 		return null;
 
@@ -216,19 +178,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_running(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_running(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_running(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_running(dir);
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.Running, RouteInstruction.direction(dir));
 		}
 		return null;
 
@@ -259,19 +209,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_tipping_over(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_tipping_over(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_tipping_over(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_tipping_over(dir);
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.TippingOver, RouteInstruction.direction(dir));
 		}
 		return null;
 
@@ -314,19 +252,8 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_sorcering(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_sorcering(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_sorcering(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_sorcering(dir);
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.Sorcering, RouteInstruction.direction(dir));
+
 		}
 		return null;
 
@@ -388,19 +315,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_using(dir);
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_using(dir);
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_using(dir);
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_using(dir);
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.Using, RouteInstruction.direction(dir));
 		}
 		return null;
 
@@ -443,23 +358,7 @@ public class AnimationUtils {
 			}
 		}
 		if (info instanceof HeroInfo) {
-			int heroClass = ((HeroInfo) info).getHeroCode();
-			if (heroClass == Hero.HEROCODE_WARRIOR) {
-				return ImageManager.getWarrior_slays(dir);
-				//return ImageManager.getAnimationSet(Hero.HeroCategory.Warrior, Motion.Slaying, RouteInstruction.direction(dir));
-			}
-			if (heroClass == Hero.HEROCODE_DRUID) {
-				return ImageManager.getDruid_slays(dir);
-				//return ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Slaying, RouteInstruction.direction(dir));
-			}
-			if (heroClass == Hero.HEROCODE_HUNTER) {
-				return ImageManager.getThief_slays(dir);
-				//return ImageManager.getAnimationSet(Hero.HeroCategory.Thief, Motion.Slaying, RouteInstruction.direction(dir));
-			}
-			if (heroClass == Hero.HEROCODE_MAGE) {
-				return ImageManager.getMage_slays(dir);
-				//return ImageManager.getAnimationSet(Hero.HeroCategory.Mage, Motion.Slaying, RouteInstruction.direction(dir));
-			}
+			return ImageManager.getAnimationSet(((HeroInfo) info), Motion.Slaying, RouteInstruction.direction(dir));
 		}
 		return null;
 

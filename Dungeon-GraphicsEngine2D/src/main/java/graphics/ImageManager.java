@@ -9,6 +9,7 @@ package graphics;
 import animation.Motion;
 import dungeon.util.RouteInstruction;
 import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import io.AbstractImageLoader;
 import item.AttrPotion;
 import item.DustItem;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import log.Log;
 import shrine.Brood;
 import shrine.Luzia;
 import shrine.Shrine;
@@ -1137,8 +1139,28 @@ public class ImageManager {
 
 
 	}
-	
-	public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
+
+	public static AnimationSet getAnimationSet(HeroInfo hero, Motion motion, RouteInstruction.Direction direction) {
+		Hero.HeroCategory heroClass = ((HeroInfo) hero).getHeroCategory();
+
+		if (heroClass == Hero.HeroCategory.Warrior) {
+			return ImageManager.getAnimationSet(Hero.HeroCategory.Warrior, motion, direction);
+		}
+		if (heroClass == Hero.HeroCategory.Druid) {
+			return ImageManager.getAnimationSet(Hero.HeroCategory.Druid, motion, direction);
+		}
+		if (heroClass == Hero.HeroCategory.Thief) {
+			return ImageManager.getAnimationSet(Hero.HeroCategory.Thief, motion, direction);
+		}
+		if (heroClass == Hero.HeroCategory.Mage) {
+			return ImageManager.getAnimationSet(Hero.HeroCategory.Mage, motion, direction);
+		}
+		Log.severe("Invalid hero category: "+heroClass);
+		return null;
+	}
+
+
+		public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
 		if(heroAnimationMap.containsKey(heroCategory)) {
 			Map<Motion, AnimationSetDirections> motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
 			if(motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsKey(motion)) {

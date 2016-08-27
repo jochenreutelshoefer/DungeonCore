@@ -41,6 +41,7 @@ import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
+import log.Log;
 import shrine.Shrine;
 import spell.Spell;
 
@@ -86,6 +87,22 @@ public class Hero extends Figure implements InfoProvider {
 			return code;
 		}
 
+		public static HeroCategory fromValue(int value) {
+			if(value == Warrior.code) {
+				return Warrior;
+			}
+			if(value == Thief.code) {
+				return Thief;
+			}
+			if(value == Druid.code) {
+				return Druid;
+			}
+			if(value == Mage.code) {
+				return Mage;
+			}
+			Log.severe("Invalid hero category code: "+value);
+			return null;
+		}
 		private int code;
 		HeroCategory(int value) {
 			this.code = value;

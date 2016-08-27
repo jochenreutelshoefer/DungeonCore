@@ -113,6 +113,10 @@ public class HeroInfo extends FigureInfo {
 		return -1;
 	}
 
+	public Hero.HeroCategory getHeroCategory() {
+		return Hero.HeroCategory.fromValue(getHeroCode());
+	}
+
 	public EquipmentItemInfo getActualHelmet() {
 		if (map.getFigure().equals(h)) {
 			EquipmentItem i = h.getInventory().getHelmet1();
