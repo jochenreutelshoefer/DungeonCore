@@ -6,6 +6,7 @@ import dungeon.generate.DungeonGenerationFailedException;
 import dungeon.generate.SectorDungeonFiller1;
 import game.DungeonGame;
 import item.equipment.weapon.Club;
+import log.Log;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -59,9 +60,7 @@ public class StandardDungeonFactory implements DungeonFactory {
 					fillDungeon(derDungeon);
 				}
 				catch (DungeonGenerationFailedException e2) {
-					System.out
-							.println("Cound not generate Dungeon - check Dungeon Generator!");
-					e1.printStackTrace();
+					Log.severe("Cound not generate Dungeon - check Dungeon Generator!"+e1);
 					System.exit(0);
 				}
 				e1.printStackTrace();

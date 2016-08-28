@@ -6,10 +6,31 @@
  */
 package graphics;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import animation.AnimationSet;
+import animation.AnimationSetDirections;
 import animation.Motion;
+import audio.AudioEffectsManager;
+import dungeon.Dir;
+import dungeon.DoorInfo;
 import dungeon.util.RouteInstruction;
+import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.monster.Ghul;
+import figure.monster.Monster;
+import figure.monster.MonsterInfo;
+import figure.monster.Ogre;
+import figure.monster.Orc;
+import figure.monster.Skeleton;
+import figure.monster.Spider;
+import figure.monster.Wolf;
 import io.AbstractImageLoader;
 import item.AttrPotion;
 import item.DustItem;
@@ -27,34 +48,17 @@ import item.equipment.weapon.Wolfknife;
 import item.map.AncientMapFragment;
 import item.paper.Book;
 import item.paper.InfoScroll;
-import item.paper.Scroll;
 import item.quest.DarkMasterKey;
 import item.quest.Feather;
 import item.quest.Incense;
 import item.quest.LuziasBall;
 import item.quest.Rune;
 import item.quest.Thing;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import log.Log;
 import shrine.Brood;
 import shrine.Luzia;
 import shrine.Shrine;
 import shrine.ShrineInfo;
-import animation.AnimationSet;
-import animation.AnimationSetDirections;
-import audio.AudioEffectsManager;
-import dungeon.Dir;
-import dungeon.DoorInfo;
-import figure.FigureInfo;
-import figure.monster.Monster;
-import figure.monster.MonsterInfo;
 
 public class ImageManager {
 
@@ -71,7 +75,6 @@ public class ImageManager {
 		}
 		return instance;
 	}
-
 
 	public static JDImageProxy<?> button1;
 
@@ -764,198 +767,199 @@ public class ImageManager {
 			ogreImage = makePics(ogre1_walking);
 			bearImage = makePics(spider1_walking);
 
-			dead_dwarfImage = new JDImageProxy(a, "dead_dwarf.gif");
-			dead_warriorImage = new JDImageProxy(a, "dead_stan.gif");
-			dead_thiefImage = new JDImageProxy(a, "dead_blue_pirate.gif");
-			dead_druidImage = new JDImageProxy(a, "dead_white_mage.gif");
-			dead_mageImage = new JDImageProxy(a, "dead_black_mage.gif");
+			dead_dwarfImage = new JDImageProxy<>(a, "dead_dwarf.gif");
+			dead_warriorImage = new JDImageProxy<>(a, "dead_stan.gif");
+			dead_thiefImage = new JDImageProxy<>(a, "dead_blue_pirate.gif");
+			dead_druidImage = new JDImageProxy<>(a, "dead_white_mage.gif");
+			dead_mageImage = new JDImageProxy<>(a, "dead_black_mage.gif");
 
-			chestImage = new JDImageProxy(a, "chest_cut_trans.gif");
-			floorImage = new JDImageProxy(a, "boden5.gif");
-			floor_darkImage = new JDImageProxy(a, "boden5_dark.gif");
-			floor_mediumImage = new JDImageProxy(a, "boden5_dark1.gif");
+			chestImage = new JDImageProxy<>(a, "chest_cut_trans.gif");
+			floorImage = new JDImageProxy<>(a, "boden5.gif");
+			floor_darkImage = new JDImageProxy<>(a, "boden5_dark.gif");
+			floor_mediumImage = new JDImageProxy<>(a, "boden5_dark1.gif");
 
-			floorImage2 = new JDImageProxy(a, "boden3.gif");
-			floor_darkImage2 = new JDImageProxy(a, "boden3_dark.gif");
-			floor_mediumImage2 = new JDImageProxy(a, "boden3_dark1.gif");
+			floorImage2 = new JDImageProxy<>(a, "boden3.gif");
+			floor_darkImage2 = new JDImageProxy<>(a, "boden3_dark.gif");
+			floor_mediumImage2 = new JDImageProxy<>(a, "boden3_dark1.gif");
 
-			floorImage3 = new JDImageProxy(a, "boden4.gif");
-			floor_darkImage3 = new JDImageProxy(a, "boden4_dark.gif");
-			floor_mediumImage3 = new JDImageProxy(a, "boden4_dark1.gif");
+			floorImage3 = new JDImageProxy<>(a, "boden4.gif");
+			floor_darkImage3 = new JDImageProxy<>(a, "boden4_dark.gif");
+			floor_mediumImage3 = new JDImageProxy<>(a, "boden4_dark1.gif");
 
-			floorImage4 = new JDImageProxy(a, "boden6.gif");
-			floor_darkImage4 = new JDImageProxy(a, "boden6_dark.gif");
-			floor_mediumImage4 = new JDImageProxy(a, "boden6_dark1.gif");
+			floorImage4 = new JDImageProxy<>(a, "boden6.gif");
+			floor_darkImage4 = new JDImageProxy<>(a, "boden6_dark.gif");
+			floor_mediumImage4 = new JDImageProxy<>(a, "boden6_dark1.gif");
 
-			floorImage5 = new JDImageProxy(a, "boden7.gif");
-			floor_darkImage5 = new JDImageProxy(a, "boden7_dark.gif");
-			floor_mediumImage5 = new JDImageProxy(a, "boden7_dark1.gif");
+			floorImage5 = new JDImageProxy<>(a, "boden7.gif");
+			floor_darkImage5 = new JDImageProxy<>(a, "boden7_dark.gif");
+			floor_mediumImage5 = new JDImageProxy<>(a, "boden7_dark1.gif");
 
-			floorImage6 = new JDImageProxy(a, "boden8.gif");
-			floor_darkImage6 = new JDImageProxy(a, "boden8_dark.gif");
-			floor_mediumImage6 = new JDImageProxy(a, "boden8_dark1.gif");
+			floorImage6 = new JDImageProxy<>(a, "boden8.gif");
+			floor_darkImage6 = new JDImageProxy<>(a, "boden8_dark.gif");
+			floor_mediumImage6 = new JDImageProxy<>(a, "boden8_dark1.gif");
 
-			floorImage7 = new JDImageProxy(a, "boden9.gif");
-			floor_darkImage7 = new JDImageProxy(a, "boden9_dark.gif");
-			floor_mediumImage7 = new JDImageProxy(a, "boden9_dark1.gif");
+			floorImage7 = new JDImageProxy<>(a, "boden9.gif");
+			floor_darkImage7 = new JDImageProxy<>(a, "boden9_dark.gif");
+			floor_mediumImage7 = new JDImageProxy<>(a, "boden9_dark1.gif");
 
 			makeFloorArrays();
 
-			wall_sidesImage = new JDImageProxy(a, "wand_seiten.gif");
-			wall_northImage = new JDImageProxy(a, "wand_nord.gif");
-			wall_southImage = new JDImageProxy(a, "wall_south.gif");
+			wall_sidesImage = new JDImageProxy<>(a, "wand_seiten.gif");
+			wall_northImage = new JDImageProxy<>(a, "wand_nord.gif");
+			wall_southImage = new JDImageProxy<>(a, "wall_south.gif");
 
-			door_north = new JDImageProxy(a, "tuer_nord.gif");
+			door_north = new JDImageProxy<>(a, "tuer_nord.gif");
 
-			door_north_none = new JDImageProxy(a, "tuer_nord_keine.gif");
+			door_north_none = new JDImageProxy<>(a, "tuer_nord_keine.gif");
 
-			door_east = new JDImageProxy(a, "tuer_ost.gif");
+			door_east = new JDImageProxy<>(a, "tuer_ost.gif");
 
-			door_east_none = new JDImageProxy(a, "tuer_ost_keine.gif");
+			door_east_none = new JDImageProxy<>(a, "tuer_ost_keine.gif");
 
-			door_west = new JDImageProxy(a, "tuer_west.gif");
+			door_west = new JDImageProxy<>(a, "tuer_west.gif");
 
-			door_west_none = new JDImageProxy(a, "tuer_west_keine.gif");
-			door_south_none = new JDImageProxy(a, "tuer_sued_keine.gif");
-			door_south = new JDImageProxy(a, "tuer_sued.gif");
-			door_south_lock = new JDImageProxy(a, "tuer_sued_schloss.gif");
+			door_west_none = new JDImageProxy<>(a, "tuer_west_keine.gif");
+			door_south_none = new JDImageProxy<>(a, "tuer_sued_keine.gif");
+			door_south = new JDImageProxy<>(a, "tuer_sued.gif");
+			door_south_lock = new JDImageProxy<>(a, "tuer_sued_schloss.gif");
 
-			axeImage = new JDImageProxy(a, "axt.gif");
-			swordImage = new JDImageProxy(a, "schwert.gif");
-			lanceImage = new JDImageProxy(a, "lanze.gif");
-			wolfknifeImage = new JDImageProxy(a, "wolfsmesser.gif");
-			clubImage = new JDImageProxy(a, "knueppel.gif");
-			scrollImage = new JDImageProxy(a, "scroll_blue.gif");
-			documentImage = new JDImageProxy(a, "scroll_white.gif");
-			potion_redImage = new JDImageProxy(a, "potion_rot.gif");
-			potion_blueImage = new JDImageProxy(a, "potion_blue.gif");
-			dustImage = new JDImageProxy(a, "dust.gif");
-			armorImage = new JDImageProxy(a, "ruestung.gif");
-			shieldImage = new JDImageProxy(a, "shield2.gif");
-			helmetImage = new JDImageProxy(a, "helm.gif");
-			bookImage = new JDImageProxy(a, "book_yellow.gif");
-			keyImage = new JDImageProxy(a, "key.gif");
-			falltuerImage = new JDImageProxy(a, "falltuer.gif");
-			engelImage = new JDImageProxy(a, "engel2.gif");
-			shrine_blueImage = new JDImageProxy(a, "shrine_blue.gif");
-			shrine_redImage = new JDImageProxy(a, "shrine_red.gif");
-			shrine_greenImage = new JDImageProxy(a, "shrine_green.gif");
-			shrine_yellowImage = new JDImageProxy(a, "shrine_yellow.gif");
-			shrine_whiteImage = new JDImageProxy(a, "shrine_white.gif");
-			shrine_blackImage = new JDImageProxy(a, "shrine_black.gif");
-			shrine_lilaImage = new JDImageProxy(a, "shrine_lila.gif");
-			shrine_turkisImage = new JDImageProxy(a, "shrine_tuerkis.gif");
-			shrine_small_redImage = new JDImageProxy(a, "shrine_small_red.gif");
-			shrine_small_blueImage = new JDImageProxy(a,
+			axeImage = new JDImageProxy<>(a, "axt.gif");
+			swordImage = new JDImageProxy<>(a, "schwert.gif");
+			lanceImage = new JDImageProxy<>(a, "lanze.gif");
+			wolfknifeImage = new JDImageProxy<>(a, "wolfsmesser.gif");
+			clubImage = new JDImageProxy<>(a, "knueppel.gif");
+			scrollImage = new JDImageProxy<>(a, "scroll_blue.gif");
+			documentImage = new JDImageProxy<>(a, "scroll_white.gif");
+			potion_redImage = new JDImageProxy<>(a, "potion_rot.gif");
+			potion_blueImage = new JDImageProxy<>(a, "potion_blue.gif");
+			dustImage = new JDImageProxy<>(a, "dust.gif");
+			armorImage = new JDImageProxy<>(a, "ruestung.gif");
+			shieldImage = new JDImageProxy<>(a, "shield2.gif");
+			helmetImage = new JDImageProxy<>(a, "helm.gif");
+			bookImage = new JDImageProxy<>(a, "book_yellow.gif");
+			keyImage = new JDImageProxy<>(a, "key.gif");
+			falltuerImage = new JDImageProxy<>(a, "falltuer.gif");
+			engelImage = new JDImageProxy<>(a, "engel2.gif");
+			shrine_blueImage = new JDImageProxy<>(a, "shrine_blue.gif");
+			shrine_redImage = new JDImageProxy<>(a, "shrine_red.gif");
+			shrine_greenImage = new JDImageProxy<>(a, "shrine_green.gif");
+			shrine_yellowImage = new JDImageProxy<>(a, "shrine_yellow.gif");
+			shrine_whiteImage = new JDImageProxy<>(a, "shrine_white.gif");
+			shrine_blackImage = new JDImageProxy<>(a, "shrine_black.gif");
+			shrine_lilaImage = new JDImageProxy<>(a, "shrine_lila.gif");
+			shrine_turkisImage = new JDImageProxy<>(a, "shrine_tuerkis.gif");
+			shrine_small_redImage = new JDImageProxy<>(a, "shrine_small_red.gif");
+			shrine_small_blueImage = new JDImageProxy<>(a,
 					"shrine_small_blue.gif");
-			shrine_small_yellowImage = new JDImageProxy(a,
+			shrine_small_yellowImage = new JDImageProxy<>(a,
 					"shrine_small_yellow.gif");
-			shrine_small_greenImage = new JDImageProxy(a,
+			shrine_small_greenImage = new JDImageProxy<>(a,
 					"shrine_small_green.gif");
-			sorcLabImage = new JDImageProxy(a, "zauberlabor1.gif");
-			amulettImage = new JDImageProxy(a, "amulett.gif");
+			sorcLabImage = new JDImageProxy<>(a, "zauberlabor1.gif");
+			amulettImage = new JDImageProxy<>(a, "amulett.gif");
 
-			repairImage = new JDImageProxy(a, "amboss.gif");
-			fountainImage = new JDImageProxy(a, "fountain.gif");
-			statueImage = new JDImageProxy(a, "statue.gif");
-			chest_lockImage = new JDImageProxy(a, "chest_schloss.gif");
-			door_north_lock = new JDImageProxy(a, "tuer_nord_schloss.gif");
-			door_east_lock = new JDImageProxy(a, "tuer_ost_schloss.gif");
-			door_west_lock = new JDImageProxy(a, "tuer_west_schloss.gif");
-			graveImage = new JDImageProxy(a, "grave.gif");
-			caveImage = new JDImageProxy(a, "cave.gif");
-			traderImage = new JDImageProxy(a, "haendler2.gif");
-			rune_redImage = new JDImageProxy(a, "rune_red.gif");
-			rune_greenImage = new JDImageProxy(a, "rune_green.gif");
-			rune_blueImage = new JDImageProxy(a, "rune_blue.gif");
-			rune_yellowImage = new JDImageProxy(a, "rune_yellow.gif");
-			cristall_redImage = new JDImageProxy(a, "kristall_rot.gif");
-			cristall_greenImage = new JDImageProxy(a, "kristall_gruen.gif");
-			cristall_blueImage = new JDImageProxy(a, "kristall_blau.gif");
-			cristall_yellowImage = new JDImageProxy(a, "kristall_gelb.gif");
-			spotImage = new JDImageProxy(a, "versteck.gif");
-			hand_zeigt1_Image = new JDImageProxy(a, "zeigerhand-zeigt1.gif");
-			cursor_go_Image = new JDImageProxy(a, "zeigerhand_go.gif");
-			hand_greift1_Image = new JDImageProxy(a, "zeigerhand-greift1.gif");
-			cursor_key_Image = new JDImageProxy(a, "zeiger_key.gif");
-			cursor_key_not_Image = new JDImageProxy(a, "zeiger_key_nicht.gif");
-			cursor_sword = new JDImageProxy(a, "zeigerhand-schwert.gif");
-			cursor_clock = new JDImageProxy(a, "zeigerhand-sanduhr.gif");
-			cursor_scout = new JDImageProxy(a, "zeigerhand-go_scout.gif");
-			cursor_go_not_Image = new JDImageProxy(a, "zeigerhand_go_not.gif");
-			cursor_wand = new JDImageProxy(a, "zeiger_zauberstab.gif");
-			cursor_use_Image = new JDImageProxy(a, "zeigerhand_faust.gif");
+			repairImage = new JDImageProxy<>(a, "amboss.gif");
+			fountainImage = new JDImageProxy<>(a, "fountain.gif");
+			statueImage = new JDImageProxy<>(a, "statue.gif");
+			chest_lockImage = new JDImageProxy<>(a, "chest_schloss.gif");
+			door_north_lock = new JDImageProxy<>(a, "tuer_nord_schloss.gif");
+			door_east_lock = new JDImageProxy<>(a, "tuer_ost_schloss.gif");
+			door_west_lock = new JDImageProxy<>(a, "tuer_west_schloss.gif");
+			graveImage = new JDImageProxy<>(a, "grave.gif");
+			caveImage = new JDImageProxy<>(a, "cave.gif");
+			traderImage = new JDImageProxy<>(a, "haendler2.gif");
+			rune_redImage = new JDImageProxy<>(a, "rune_red.gif");
+			rune_greenImage = new JDImageProxy<>(a, "rune_green.gif");
+			rune_blueImage = new JDImageProxy<>(a, "rune_blue.gif");
+			rune_yellowImage = new JDImageProxy<>(a, "rune_yellow.gif");
+			cristall_redImage = new JDImageProxy<>(a, "kristall_rot.gif");
+			cristall_greenImage = new JDImageProxy<>(a, "kristall_gruen.gif");
+			cristall_blueImage = new JDImageProxy<>(a, "kristall_blau.gif");
+			cristall_yellowImage = new JDImageProxy<>(a, "kristall_gelb.gif");
+			spotImage = new JDImageProxy<>(a, "versteck.gif");
+			hand_zeigt1_Image = new JDImageProxy<>(a, "zeigerhand-zeigt1.gif");
+			cursor_go_Image = new JDImageProxy<>(a, "zeigerhand_go.gif");
+			hand_greift1_Image = new JDImageProxy<>(a, "zeigerhand-greift1.gif");
+			cursor_key_Image = new JDImageProxy<>(a, "zeiger_key.gif");
+			cursor_key_not_Image = new JDImageProxy<>(a, "zeiger_key_nicht.gif");
+			cursor_sword = new JDImageProxy<>(a, "zeigerhand-schwert.gif");
+			cursor_clock = new JDImageProxy<>(a, "zeigerhand-sanduhr.gif");
+			cursor_scout = new JDImageProxy<>(a, "zeigerhand-go_scout.gif");
+			cursor_go_not_Image = new JDImageProxy<>(a, "zeigerhand_go_not.gif");
+			cursor_wand = new JDImageProxy<>(a, "zeiger_zauberstab.gif");
+			cursor_use_Image = new JDImageProxy<>(a, "zeigerhand_faust.gif");
 
-			pentagrammImage = new JDImageProxy(a, "pentagramm.gif");
-			darkMasterImage = new JDImageProxy(a, "mister_death.gif");
-			luziaImage = new JDImageProxy(a, "luzia.gif");
-			luzia_hutImage = new JDImageProxy(a, "luzia_hut.gif");
-			kugelImage = new JDImageProxy(a, "kugel.gif");
-			questionmark = new JDImageProxy(a, "fragezeichen.gif");
-			xmasImage = new JDImageProxy(a, "xmas.gif");
-			dark_dwarfImage = new JDImageProxy(a, "dark_dwarf.gif");
-			finImage = new JDImageProxy(a, "growing n0007c.gif");
-			luzia_ball_greyImage = new JDImageProxy(a, "kugel_grau.gif");
+			pentagrammImage = new JDImageProxy<>(a, "pentagramm.gif");
+			darkMasterImage = new JDImageProxy<>(a, "mister_death.gif");
+			luziaImage = new JDImageProxy<>(a, "luzia.gif");
+			luzia_hutImage = new JDImageProxy<>(a, "luzia_hut.gif");
+			kugelImage = new JDImageProxy<>(a, "kugel.gif");
+			questionmark = new JDImageProxy<>(a, "fragezeichen.gif");
+			xmasImage = new JDImageProxy<>(a, "xmas.gif");
+			dark_dwarfImage = new JDImageProxy<>(a, "dark_dwarf.gif");
+			finImage = new JDImageProxy<>(a, "growing n0007c.gif");
+			luzia_ball_greyImage = new JDImageProxy<>(a, "kugel_grau.gif");
 
-			luzia_ball_redImage = new JDImageProxy(a, "kugel_rot.gif");
+			luzia_ball_redImage = new JDImageProxy<>(a, "kugel_rot.gif");
 
-			fieldImage = new JDImageProxy(a, "field3.gif");
-			woodTextureImage = new JDImageProxy(a, "theWood3.gif");
+			fieldImage = new JDImageProxy<>(a, "field3.gif");
+			woodTextureImage = new JDImageProxy<>(a, "theWood3.gif");
 
-			featherImage = new JDImageProxy(a, "feder.gif");
-			potion_greenImage = new JDImageProxy(a, "potion_green.gif");
+			featherImage = new JDImageProxy<>(a, "feder.gif");
+			potion_greenImage = new JDImageProxy<>(a, "potion_green.gif");
 
-			paperBackground = new JDImageProxy(a, "paper_background.gif");
+			paperBackground = new JDImageProxy<>(a, "paper_background.gif");
 
-			border_double_left_upper_corner = new JDImageProxy(a,
+			border_double_left_upper_corner = new JDImageProxy<>(a,
 					"border_double_left_upper_corner.gif");
-			border_double_left_lower_corner = new JDImageProxy(a,
+			border_double_left_lower_corner = new JDImageProxy<>(a,
 					"border_double_left_lower_corner.gif");
-			border_double_right_upper_corner = new JDImageProxy(a,
+			border_double_right_upper_corner = new JDImageProxy<>(a,
 					"border_double_right_upper_corner.gif");
-			border_double_right_lower_corner = new JDImageProxy(a,
+			border_double_right_lower_corner = new JDImageProxy<>(a,
 					"border_double_right_lower_corner.gif");
-			border_double_top = new JDImageProxy(a, "border_double_top.gif");
-			border_double_bottom = new JDImageProxy(a,
+			border_double_top = new JDImageProxy<>(a, "border_double_top.gif");
+			border_double_bottom = new JDImageProxy<>(a,
 					"border_double_bottom.gif");
-			border_double_left = new JDImageProxy(a, "border_double_left.gif");
-			border_double_right = new JDImageProxy(a, "border_double_right.gif");
+			border_double_left = new JDImageProxy<>(a, "border_double_left.gif");
+			border_double_right = new JDImageProxy<>(a, "border_double_right.gif");
 
-			health_bar_empty = new JDImageProxy(a, "health_bar_empty.gif");
-			health_bar_red = new JDImageProxy(a, "health_bar_red.gif");
-			health_bar_yellow = new JDImageProxy(a, "health_bar_yellow.gif");
+			health_bar_empty = new JDImageProxy<>(a, "health_bar_empty.gif");
+			health_bar_red = new JDImageProxy<>(a, "health_bar_red.gif");
+			health_bar_yellow = new JDImageProxy<>(a, "health_bar_yellow.gif");
 
-			inventory_figure_background = new JDImageProxy(a,
+			inventory_figure_background = new JDImageProxy<>(a,
 					"figure-shadow1.gif");
 
-			inventory_box_select = new JDImageProxy(a, "boxSelect.gif");
-			inventory_box_hover = new JDImageProxy(a, "boxHover.gif");
-			inventory_box_normal = new JDImageProxy(a, "boxNormal.gif");
+			inventory_box_select = new JDImageProxy<>(a, "boxSelect.gif");
+			inventory_box_hover = new JDImageProxy<>(a, "boxHover.gif");
+			inventory_box_normal = new JDImageProxy<>(a, "boxNormal.gif");
 
-			inventory_empty_helmet = new JDImageProxy(a, "guiItems/helmet.gif");
-			inventory_empty_armor = new JDImageProxy(a, "guiItems/armor.gif");
-			inventory_empty_shield = new JDImageProxy(a, "guiItems/shield.gif");
-			inventory_empty_weapon = new JDImageProxy(a, "guiItems/weapon.gif");
+			inventory_empty_helmet = new JDImageProxy<>(a, "guiItems/helmet.gif");
+			inventory_empty_armor = new JDImageProxy<>(a, "guiItems/armor.gif");
+			inventory_empty_shield = new JDImageProxy<>(a, "guiItems/shield.gif");
+			inventory_empty_weapon = new JDImageProxy<>(a, "guiItems/weapon.gif");
 
-			inventory_sword1 = new JDImageProxy(a, "guiItems/shortsword.gif");
-			inventory_armor1 = new JDImageProxy(a, "guiItems/cloth_chest1.gif");
-			inventory_knife1 = new JDImageProxy(a, "guiItems/dagger.gif");
-			inventory_shield1 = new JDImageProxy(a, "guiItems/buckler.gif");
-			inventory_lance1 = new JDImageProxy(a, "guiItems/wand.gif");
-			inventory_axe1 = new JDImageProxy(a, "guiItems/axe1.gif");
-			inventory_club1 = new JDImageProxy(a, "guiItems/club1.gif");
-			inventory_helmet1 = new JDImageProxy(a, "guiItems/helmet1.gif");
+			inventory_sword1 = new JDImageProxy<>(a, "guiItems/shortsword.gif");
+			inventory_armor1 = new JDImageProxy<>(a, "guiItems/cloth_chest1.gif");
+			inventory_knife1 = new JDImageProxy<>(a, "guiItems/dagger.gif");
+			inventory_shield1 = new JDImageProxy<>(a, "guiItems/buckler.gif");
+			inventory_lance1 = new JDImageProxy<>(a, "guiItems/wand.gif");
+			inventory_axe1 = new JDImageProxy<>(a, "guiItems/axe1.gif");
+			inventory_club1 = new JDImageProxy<>(a, "guiItems/club1.gif");
+			inventory_helmet1 = new JDImageProxy<>(a, "guiItems/helmet1.gif");
 
-			deathImage = new JDImageProxy(a, "tot1.gif");
+			deathImage = new JDImageProxy<>(a, "tot1.gif");
 
-			lebenskugel = new JDImageProxy(a, "lebenskugel.gif");
+			lebenskugel = new JDImageProxy<>(a, "lebenskugel.gif");
 
-			button1 = new JDImageProxy(a, "button1.gif");
+			button1 = new JDImageProxy<>(a, "button1.gif");
 
 			createItemClassMap();
 			createFigureClassMap();
 			createShrineClassMap();
 			createHeroAnimationMap();
+			createMonsterAnimationMap();
 
 		}
 
@@ -972,17 +976,17 @@ public class ImageManager {
 	}
 
 	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a,
-			String path, int cnt) {
+											   String path, int cnt) {
 		JDImageProxy<?>[] ims = new JDImageProxy[cnt];
 		for (int i = 0; i < cnt; i++) {
 
-			JDImageProxy<?> im = new JDImageProxy(path + Integer.toString(i)
+			JDImageProxy<?> im = new JDImageProxy<>(path + Integer.toString(i)
 					+ ".GIF", a);
 
 			ims[i] = im;
 			if (ims[i] == null) {
 
-				System.out.println("Bild nicht geladen: " + path
+				Log.warning("Bild nicht geladen: " + path
 						+ Integer.toString(i) + ".GIF");
 				return null;
 			}
@@ -992,7 +996,7 @@ public class ImageManager {
 	}
 
 	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a,
-			String path, String fileNamePrefix, int dir, int cnt) {
+											   String path, String fileNamePrefix, int dir, int cnt) {
 
 		List<JDImageProxy<?>> imageList = new LinkedList<JDImageProxy<?>>();
 		String dirChar = "";
@@ -1019,7 +1023,7 @@ public class ImageManager {
 
 		while (i < 15) {
 
-			JDImageProxy<?> im = new JDImageProxy(path + fileNamePrefix
+			JDImageProxy<?> im = new JDImageProxy<>(path + fileNamePrefix
 					+ dirChar + suffix + "_trans.GIF", a);
 			if (im.fileExists()) {
 				imageList.add(im);
@@ -1037,7 +1041,7 @@ public class ImageManager {
 		JDImageProxy<?>[] ims = new JDImageProxy<?>[imageList.size()];
 		int k = 0;
 		for (Iterator<JDImageProxy<?>> iter = imageList.iterator(); iter
-				.hasNext();) {
+				.hasNext(); ) {
 			JDImageProxy<?> element = iter.next();
 			ims[k] = element;
 			k++;
@@ -1093,14 +1097,97 @@ public class ImageManager {
 
 	}
 
-	private static Map<Hero.HeroCategory, Map<Motion, AnimationSetDirections>> heroAnimationMap = new HashMap<>();
-	
+	public static AnimationSet getAnimationSet(MonsterInfo monster, Motion motion, RouteInstruction.Direction direction) {
+		Class<? extends Monster> monsterClass = monster.getMonsterClass();
+		if(monsterAnimationMap.containsKey(monsterClass)) {
+			AnimationSetDirections animationSetDirections = monsterAnimationMap.get(monsterClass).get(motion);
+			if(animationSetDirections != null) {
+				return animationSetDirections.get(direction.getValue());
+			} else {
+				Log.severe("No animation set found for monster class: "+monsterClass+ " and motion: "+motion);
+				return null;
+			}
+		} else {
+			Log.severe("No animation set found for monster class: "+monsterClass);
+			return null;
+		}
+	}
+
+	private static final Map<Class<? extends Monster>, Map<Motion, AnimationSetDirections>> monsterAnimationMap = new HashMap<>();
+
+	private static void createMonsterAnimationMap() {
+		monsterAnimationMap.put(Skeleton.class, new HashMap<Motion, AnimationSetDirections>());
+		monsterAnimationMap.put(Orc.class, new HashMap<Motion, AnimationSetDirections>());
+		monsterAnimationMap.put(Wolf.class, new HashMap<Motion, AnimationSetDirections>());
+		monsterAnimationMap.put(Ogre.class, new HashMap<Motion, AnimationSetDirections>());
+		monsterAnimationMap.put(Ghul.class, new HashMap<Motion, AnimationSetDirections>());
+		monsterAnimationMap.put(Spider.class, new HashMap<Motion, AnimationSetDirections>());
+
+
+		monsterAnimationMap.get(Skeleton.class).put(Motion.BeingHit, ImageManager.skel1_been_hit);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.Pause, ImageManager.skel1_pause);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.TippingOver, ImageManager.skel1_tipping_over);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.Walking, ImageManager.skel1_walking);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.Running, ImageManager.skel1_running);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.Using, ImageManager.skel1_using);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.Slaying, ImageManager.skel1_slays);
+		monsterAnimationMap.get(Skeleton.class).put(Motion.Sorcering, ImageManager.skel1_sorcering);
+
+		monsterAnimationMap.get(Orc.class).put(Motion.BeingHit, ImageManager.orc1_been_hit);
+		monsterAnimationMap.get(Orc.class).put(Motion.Pause, ImageManager.orc1_pause);
+		monsterAnimationMap.get(Orc.class).put(Motion.TippingOver, ImageManager.orc1_tipping_over);
+		monsterAnimationMap.get(Orc.class).put(Motion.Walking, ImageManager.orc1_walking);
+		monsterAnimationMap.get(Orc.class).put(Motion.Running, ImageManager.orc1_running);
+		monsterAnimationMap.get(Orc.class).put(Motion.Using, ImageManager.orc1_using);
+		monsterAnimationMap.get(Orc.class).put(Motion.Slaying, ImageManager.orc1_slays);
+		monsterAnimationMap.get(Orc.class).put(Motion.Sorcering, ImageManager.orc1_sorcering);
+
+		monsterAnimationMap.get(Wolf.class).put(Motion.BeingHit, ImageManager.wolf1_been_hit);
+		monsterAnimationMap.get(Wolf.class).put(Motion.Pause, ImageManager.wolf1_pause);
+		monsterAnimationMap.get(Wolf.class).put(Motion.TippingOver, ImageManager.wolf1_tipping_over);
+		monsterAnimationMap.get(Wolf.class).put(Motion.Walking, ImageManager.wolf1_walking);
+		monsterAnimationMap.get(Wolf.class).put(Motion.Running, ImageManager.wolf1_running);
+		monsterAnimationMap.get(Wolf.class).put(Motion.Using, ImageManager.wolf1_using);
+		monsterAnimationMap.get(Wolf.class).put(Motion.Slaying, ImageManager.wolf1_slays);
+		monsterAnimationMap.get(Wolf.class).put(Motion.Sorcering, ImageManager.wolf1_sorcering);
+
+		monsterAnimationMap.get(Ogre.class).put(Motion.BeingHit, ImageManager.ogre1_been_hit);
+		monsterAnimationMap.get(Ogre.class).put(Motion.Pause, ImageManager.ogre1_pause);
+		monsterAnimationMap.get(Ogre.class).put(Motion.TippingOver, ImageManager.ogre1_tipping_over);
+		monsterAnimationMap.get(Ogre.class).put(Motion.Walking, ImageManager.ogre1_walking);
+		monsterAnimationMap.get(Ogre.class).put(Motion.Running, ImageManager.ogre1_running);
+		monsterAnimationMap.get(Ogre.class).put(Motion.Using, ImageManager.ogre1_using);
+		monsterAnimationMap.get(Ogre.class).put(Motion.Slaying, ImageManager.ogre1_slays);
+		monsterAnimationMap.get(Ogre.class).put(Motion.Sorcering, ImageManager.ogre1_sorcering);
+
+		monsterAnimationMap.get(Ghul.class).put(Motion.BeingHit, ImageManager.ghul1_been_hit);
+		monsterAnimationMap.get(Ghul.class).put(Motion.Pause, ImageManager.ghul1_pause);
+		monsterAnimationMap.get(Ghul.class).put(Motion.TippingOver, ImageManager.ghul1_tipping_over);
+		monsterAnimationMap.get(Ghul.class).put(Motion.Walking, ImageManager.ghul1_walking);
+		monsterAnimationMap.get(Ghul.class).put(Motion.Running, ImageManager.ghul1_running);
+		monsterAnimationMap.get(Ghul.class).put(Motion.Using, ImageManager.ghul1_using);
+		monsterAnimationMap.get(Ghul.class).put(Motion.Slaying, ImageManager.ghul1_slays);
+		monsterAnimationMap.get(Ghul.class).put(Motion.Sorcering, ImageManager.ghul1_sorcering);
+
+		monsterAnimationMap.get(Spider.class).put(Motion.BeingHit, ImageManager.spider1_been_hit);
+		monsterAnimationMap.get(Spider.class).put(Motion.Pause, ImageManager.spider1_pause);
+		monsterAnimationMap.get(Spider.class).put(Motion.TippingOver, ImageManager.spider1_tipping_over);
+		monsterAnimationMap.get(Spider.class).put(Motion.Walking, ImageManager.spider1_walking);
+		monsterAnimationMap.get(Spider.class).put(Motion.Running, ImageManager.spider1_running);
+		monsterAnimationMap.get(Spider.class).put(Motion.Using, ImageManager.spider1_using);
+		monsterAnimationMap.get(Spider.class).put(Motion.Slaying, ImageManager.spider1_slays);
+		monsterAnimationMap.get(Spider.class).put(Motion.Sorcering, ImageManager.spider1_sorcering);
+
+	}
+
+	private static final Map<Hero.HeroCategory, Map<Motion, AnimationSetDirections>> heroAnimationMap = new HashMap<>();
+
 	private static void createHeroAnimationMap() {
 		heroAnimationMap.put(Hero.HeroCategory.Warrior, new HashMap<Motion, AnimationSetDirections>());
 		heroAnimationMap.put(Hero.HeroCategory.Thief, new HashMap<Motion, AnimationSetDirections>());
 		heroAnimationMap.put(Hero.HeroCategory.Druid, new HashMap<Motion, AnimationSetDirections>());
 		heroAnimationMap.put(Hero.HeroCategory.Mage, new HashMap<Motion, AnimationSetDirections>());
-		
+
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.BeingHit, ImageManager.warrior_been_hit);
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Pause, ImageManager.warrior_pause);
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.TippingOver, ImageManager.warrior_tipping_over);
@@ -1137,7 +1224,6 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Slaying, ImageManager.mage_slays);
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Sorcering, ImageManager.mage_sorcering);
 
-
 	}
 
 	public static AnimationSet getAnimationSet(HeroInfo hero, Motion motion, RouteInstruction.Direction direction) {
@@ -1155,286 +1241,30 @@ public class ImageManager {
 		if (heroClass == Hero.HeroCategory.Mage) {
 			return ImageManager.getAnimationSet(Hero.HeroCategory.Mage, motion, direction);
 		}
-		Log.severe("Invalid hero category: "+heroClass);
+		Log.severe("Invalid hero category: " + heroClass);
 		return null;
 	}
 
+	public static AnimationSet getAnimationSet(FigureInfo info, Motion motion, RouteInstruction.Direction direction) {
+		if (info instanceof MonsterInfo) {
+			return ImageManager.getAnimationSet((MonsterInfo) info, motion, direction);
+		}
+		if (info instanceof HeroInfo) {
+			return ImageManager.getAnimationSet(((HeroInfo) info), motion, direction);
+		}
+		Log.severe("Unknown FigureInfo for AnimationSet: "+info);
+		return null;
+	}
 
-		public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
-		if(heroAnimationMap.containsKey(heroCategory)) {
+	public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
+		if (heroAnimationMap.containsKey(heroCategory)) {
 			Map<Motion, AnimationSetDirections> motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
-			if(motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsKey(motion)) {
+			if (motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsKey(motion)) {
 				AnimationSetDirections animationSetDirections = motionAnimationSetDirectionsMap.get(motion);
-				return animationSetDirections.get(direction.getValue() -1);
+				return animationSetDirections.get(direction.getValue() - 1);
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * @return Returns the druid_been_hit.
-	 * 
-	 */
-	public static AnimationSet getDruid_been_hit(int dir) {
-		return ImageManager.druid_been_hit.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_pause.
-	 * 
-	 */
-	public static AnimationSet getDruid_pause(int dir) {
-		return ImageManager.druid_pause.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_running.
-	 * 
-	 */
-	public static AnimationSet getDruid_running(int dir) {
-		return ImageManager.druid_running.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_slays.
-	 * 
-	 */
-	public static AnimationSet getDruid_slays(int dir) {
-		return ImageManager.druid_slays.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_sorcering.
-	 * 
-	 */
-	public static AnimationSet getDruid_sorcering(int dir) {
-		return ImageManager.druid_sorcering.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_tipping_over.
-	 * 
-	 */
-	public static AnimationSet getDruid_tipping_over(int dir) {
-		return ImageManager.druid_tipping_over.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_using.
-	 * 
-	 */
-	public static AnimationSet getDruid_using(int dir) {
-		return ImageManager.druid_using.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the druid_walking.
-	 * 
-	 */
-	public static AnimationSet getDruid_walking(int dir) {
-		return ImageManager.druid_walking.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_been_hit.
-	 * 
-	 */
-	public static AnimationSet getMage_been_hit(int dir) {
-		return ImageManager.mage_been_hit.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_pause.
-	 * 
-	 */
-	public static AnimationSet getMage_pause(int dir) {
-		return ImageManager.mage_pause.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_running.
-	 * 
-	 */
-	public static AnimationSet getMage_running(int dir) {
-		return ImageManager.mage_running.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_slays.
-	 * 
-	 */
-	public static AnimationSet getMage_slays(int dir) {
-		return ImageManager.mage_slays.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_sorcering.
-	 * 
-	 */
-	public static AnimationSet getMage_sorcering(int dir) {
-		return ImageManager.mage_sorcering.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_tipping_over.
-	 * 
-	 */
-	public static AnimationSet getMage_tipping_over(int dir) {
-		return ImageManager.mage_tipping_over.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_using.
-	 * 
-	 */
-	public static AnimationSet getMage_using(int dir) {
-		return ImageManager.mage_using.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the mage_walking.
-	 * 
-	 * @uml.property name="mage_walking"
-	 */
-	public static AnimationSet getMage_walking(int dir) {
-		return ImageManager.mage_walking.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_been_hit.
-	 * 
-	 */
-	public static AnimationSet getThief_been_hit(int dir) {
-		return ImageManager.thief_been_hit.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_pause.
-	 * 
-	 */
-	public static AnimationSet getThief_pause(int dir) {
-		return ImageManager.thief_pause.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_running.
-	 * 
-	 */
-	public static AnimationSet getThief_running(int dir) {
-		return ImageManager.thief_running.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_slays.
-	 * 
-	 */
-	public static AnimationSet getThief_slays(int dir) {
-		return ImageManager.thief_slays.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_sorcering.
-	 * 
-	 */
-	public static AnimationSet getThief_sorcering(int dir) {
-		return ImageManager.thief_sorcering.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_tipping_over.
-	 * 
-	 */
-	public static AnimationSet getThief_tipping_over(int dir) {
-		return ImageManager.thief_tipping_over.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_using.
-	 * 
-	 */
-	public static AnimationSet getThief_using(int dir) {
-		return ImageManager.thief_using.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the thief_walking.
-	 * 
-	 * @uml.property name="thief_walking"
-	 */
-	public static AnimationSet getThief_walking(int dir) {
-		return ImageManager.thief_walking.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_been_hit.
-	 * 
-	 */
-	public static AnimationSet getWarrior_been_hit(int dir) {
-		return ImageManager.warrior_been_hit.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_pause.
-	 * 
-	 */
-	public static AnimationSet getWarrior_pause(int dir) {
-		return ImageManager.warrior_pause.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_running.
-	 * 
-	 */
-	public static AnimationSet getWarrior_running(int dir) {
-		return ImageManager.warrior_running.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_sorcering.
-	 * 
-	 */
-	public static AnimationSet getWarrior_sorcering(int dir) {
-		return ImageManager.warrior_sorcering.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_tipping_over.
-	 * 
-	 */
-	public static AnimationSet getWarrior_tipping_over(int dir) {
-		return ImageManager.warrior_tipping_over.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_using.
-	 * 
-	 */
-	public static AnimationSet getWarrior_using(int dir) {
-		return ImageManager.warrior_using.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_walking.
-	 * 
-	 */
-	public static AnimationSet getWarrior_walking(int dir) {
-		return ImageManager.warrior_walking.get(dir - 1);
-	}
-
-	/**
-	 * @return Returns the warrior_slays.
-	 * 
-	 */
-	public static AnimationSet getWarrior_slays(int dir) {
-		return ImageManager.warrior_slays.get(dir - 1);
-	}
-
-	public static JDImageProxy<?> getImage(DoorInfo s) {
-		if (s.hasLock()) {
-			return ImageManager.door_north_lock;
-		} else {
-			return ImageManager.door_north;
-		}
 	}
 
 	public static Map<Integer, JDImageProxy<?>> shrineMap = new HashMap<>();
@@ -1453,57 +1283,79 @@ public class ImageManager {
 		shrineMap.put(Shrine.SHRINE_EXIT, ImageManager.falltuerImage);
 	}
 
+	public static JDImageProxy<?> getImage(DoorInfo s) {
+		if (s.hasLock()) {
+			return ImageManager.door_north_lock;
+		} else {
+			return ImageManager.door_north;
+		}
+	}
 
-		public static JDImageProxy<?> getImage(ShrineInfo s) {
+
+	public static JDImageProxy<?> getImage(ShrineInfo s) {
 		// todo: use class objects to compare
 
-			int shrineIndex = s.getShrineIndex();
-			if(shrineMap.containsKey(shrineIndex)) {
-				return shrineMap.get(shrineIndex);
-			}
+		int shrineIndex = s.getShrineIndex();
+		if (shrineMap.containsKey(shrineIndex)) {
+			return shrineMap.get(shrineIndex);
+		}
 
-			JDImageProxy<?> im = null;
+		JDImageProxy<?> im = null;
 		if (shrineIndex == Shrine.SHRINE_BROOD) {
 			if ((s).getType() == Brood.BROOD_NATURE) {
-				im = 	ImageManager.caveImage;
-			} else if ((s).getType() == Brood.BROOD_CREATURE) {
-				im =		ImageManager.falltuerImage;
-			} else if ((s).getType() == Brood.BROOD_UNDEAD) {
+				im = ImageManager.caveImage;
+			}
+			else if ((s).getType() == Brood.BROOD_CREATURE) {
+				im = ImageManager.falltuerImage;
+			}
+			else if ((s).getType() == Brood.BROOD_UNDEAD) {
 				im = ImageManager.graveImage;
 			}
-		} else if (shrineIndex == Shrine.SHRINE_RUNE) {
+		}
+		else if (shrineIndex == Shrine.SHRINE_RUNE) {
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_yellowImage;
-			} else if ((s).getType() == 2) {
+			}
+			else if ((s).getType() == 2) {
 				im = ImageManager.shrine_greenImage;
-			} else if (s.getType() == 3) {
+			}
+			else if (s.getType() == 3) {
 				im = ImageManager.shrine_redImage;
 			}
-			
-		} else if (shrineIndex == Shrine.SHRINE_CORPSE) {
-			
+
+		}
+		else if (shrineIndex == Shrine.SHRINE_CORPSE) {
+
 			if ((s).getType() == 0) {
 				im = ImageManager.dead_dwarfImage;
-			} else if ((s).getType() == 1) {
+			}
+			else if ((s).getType() == 1) {
 				im = ImageManager.dead_warriorImage;
-			} else if ((s).getType() == 2) {
+			}
+			else if ((s).getType() == 2) {
 				im = ImageManager.dead_thiefImage;
 
-			} else if ((s).getType() == 3) {
+			}
+			else if ((s).getType() == 3) {
 				im = ImageManager.dead_druidImage;
-			} else if ((s).getType() == 4) {
+			}
+			else if ((s).getType() == 4) {
 				im = ImageManager.dead_mageImage;
 			}
-		} else if (shrineIndex == Shrine.SHRINE_RUNEFINDER) {
+		}
+		else if (shrineIndex == Shrine.SHRINE_RUNEFINDER) {
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_small_yellowImage;
-			} else if ((s).getType() == 2) {
+			}
+			else if ((s).getType() == 2) {
 				im = ImageManager.shrine_small_greenImage;
-			} else if ((s).getType() == 3) {
+			}
+			else if ((s).getType() == 3) {
 				im = ImageManager.shrine_small_redImage;
 			}
 
-		} else if (shrineIndex == Shrine.SHRINE_LUZIA) {
+		}
+		else if (shrineIndex == Shrine.SHRINE_LUZIA) {
 			im = ImageManager.luziaImage;
 			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
 				im = ImageManager.luzia_hutImage;
@@ -1511,6 +1363,7 @@ public class ImageManager {
 		}
 		return im;
 	}
+
 	public static Map<Integer, JDImageProxy<?>[]> figureMap = new HashMap<>();
 
 	private void createFigureClassMap() {
@@ -1523,24 +1376,26 @@ public class ImageManager {
 		figureMap.put(Monster.BEAR, ImageManager.bearImage);
 	}
 
-
-		public static JDImageProxy<?> getImage(FigureInfo figure, int dir) {
+	public static JDImageProxy<?> getImage(FigureInfo figure, int dir) {
 		if (figure instanceof MonsterInfo) {
 			MonsterInfo m = (MonsterInfo) figure;
-			int mClass = m.getMonsterClass();
-			if(figureMap.containsKey(mClass)) {
-				return figureMap.get(mClass)[dir-1];
+			int mClass = m.getMonsterClassCode();
+			if (figureMap.containsKey(mClass)) {
+				return figureMap.get(mClass)[dir - 1];
 			}
 
 			// todo: create animations
-				JDImageProxy<?> im = null;
-			if  (mClass == Monster.DARKMASTER) {
+			JDImageProxy<?> im = null;
+			if (mClass == Monster.DARKMASTER) {
 				return ImageManager.darkMasterImage;
-			} else if (mClass == Monster.DWARF) {
+			}
+			else if (mClass == Monster.DWARF) {
 				return ImageManager.dark_dwarfImage;
-			} else if (mClass == Monster.FIR) {
+			}
+			else if (mClass == Monster.FIR) {
 				return ImageManager.finImage;
-			} else {
+			}
+			else {
 				return ImageManager.engelImage;
 			}
 		}
@@ -1569,15 +1424,16 @@ public class ImageManager {
 		itemMap.put(Book.class, ImageManager.bookImage);
 		itemMap.put(Thing.class, ImageManager.amulettImage);
 	}
+
 	public static JDImageProxy<?> getImage(ItemInfo item) {
 		Class itemClazz = item.getItemClass();
-		if(itemMap.get(itemClazz) != null) {
+		if (itemMap.get(itemClazz) != null) {
 			return itemMap.get(itemClazz);
 		}
 
 		Set<Class<? extends Item>> classes = itemMap.keySet();
 		for (Class<? extends Item> aClass : classes) {
-			if(aClass.isAssignableFrom(itemClazz)) {
+			if (aClass.isAssignableFrom(itemClazz)) {
 				return itemMap.get(aClass);
 			}
 		}
@@ -1585,18 +1441,23 @@ public class ImageManager {
 		if (AttrPotion.class.isAssignableFrom(item.getItemClass())) {
 			if (((item).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
 				im = ImageManager.potion_redImage;
-			} else {
+			}
+			else {
 				im = ImageManager.potion_blueImage;
 			}
-		} else if (item.getItemClass().equals(Rune.class)) {
+		}
+		else if (item.getItemClass().equals(Rune.class)) {
 			if ((item).toString().indexOf('J') != -1) {
 				im = ImageManager.rune_yellowImage;
-			} else if ((item).toString().indexOf('A') != -1) {
+			}
+			else if ((item).toString().indexOf('A') != -1) {
 				im = ImageManager.rune_greenImage;
-			} else if ((item).toString().indexOf('V') != -1) {
+			}
+			else if ((item).toString().indexOf('V') != -1) {
 				im = ImageManager.rune_redImage;
 			}
-		} else {
+		}
+		else {
 			im = ImageManager.questionmark;
 		}
 		return im;

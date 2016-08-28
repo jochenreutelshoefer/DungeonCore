@@ -1,6 +1,7 @@
 package de.jdungeon.androidapp.screen.start;
 
 import event.EventManager;
+import figure.hero.Hero;
 import user.DefaultDungeonSession;
 import util.JDDimension;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
@@ -18,9 +19,15 @@ public class HeroChoiceButton extends ImageGUIElement {
 
 	private final int heroType;
 
+	@Deprecated
 	public HeroChoiceButton(JDPoint position, int heroType, Image im, Game game) {
 		super(position, new JDDimension(120, 120), im, game);
 		this.heroType = heroType;
+	}
+
+	public HeroChoiceButton(JDPoint position, Hero.HeroCategory category, Image im, Game game) {
+		super(position, new JDDimension(120, 120), im, game);
+		this.heroType = category.getCode();
 	}
 
 	@Override

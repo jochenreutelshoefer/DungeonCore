@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import log.Log;
 import spell.Spell;
 import spell.SpellInfo;
 import ai.DefaultMonsterIntelligence;
@@ -120,10 +121,9 @@ public abstract class FigureInfo extends InfoEntity {
 		if(visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return f.getLookDir();
 		}
-		else {
-			int bla = 6;
-		}
-		return -1;
+		// todo: handle this situation reasonable
+		Log.warning("No look direction found for: "+this);
+		return (int) (Math.random()* 4 +1);
 	}
 	
 	public boolean isHostile(FigureInfo fig) {

@@ -28,6 +28,7 @@ import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import gui.Paragraphable;
 import item.ItemInfo;
+import log.Log;
 import shrine.ShrineInfo;
 import text.Statement;
 import user.DefaultDungeonSession;
@@ -142,7 +143,7 @@ public class GameScreen extends Screen {
 			this.session = ((DefaultDungeonSession)session);
 		}
 		else {
-			System.out.println("Invalid session object, DungeonSession expected.");
+			Log.severe("Invalid session object, DungeonSession expected.");
 			System.exit(0);
 		}
 	}

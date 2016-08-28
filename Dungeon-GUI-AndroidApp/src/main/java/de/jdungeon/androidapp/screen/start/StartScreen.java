@@ -1,7 +1,10 @@
 package de.jdungeon.androidapp.screen.start;
 
+import animation.Motion;
 import dungeon.JDPoint;
+import dungeon.util.RouteInstruction;
 import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import graphics.ImageManager;
 
 import de.jdungeon.androidapp.screen.StandardScreen;
@@ -14,24 +17,22 @@ public class StartScreen extends StandardScreen {
 	public StartScreen(Game game) {
 		super(game);
 
+		RouteInstruction.Direction south = RouteInstruction.Direction.South;
+
 		HeroChoiceButton warriorButton = new HeroChoiceButton(new JDPoint(150,
-				200), Hero.HEROCODE_WARRIOR, (Image) ImageManager
-				.getWarrior_walking(3).getImagesNr(0).getImage(), this.game);
+				200), Hero.HeroCategory.Warrior, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Warrior, Motion.Walking, south).getImagesNr(0).getImage(), this.game);
 		this.guiElements.add(warriorButton);
 
 		HeroChoiceButton thiefButton = new HeroChoiceButton(new JDPoint(300,
-				200), Hero.HEROCODE_HUNTER, (Image) ImageManager
-				.getThief_walking(3).getImagesNr(0).getImage(), this.game);
+				200), Hero.HeroCategory.Thief, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Thief, Motion.Walking, south).getImagesNr(0).getImage(), this.game);
 		this.guiElements.add(thiefButton);
 
 		HeroChoiceButton druidButton = new HeroChoiceButton(new JDPoint(500,
-				200), Hero.HEROCODE_DRUID, (Image) ImageManager
-				.getDruid_walking(3).getImagesNr(0).getImage(), this.game);
+				200), Hero.HeroCategory.Druid, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, south).getImagesNr(0).getImage(), this.game);
 		this.guiElements.add(druidButton);
 
 		HeroChoiceButton mageButton = new HeroChoiceButton(
-				new JDPoint(650, 200), Hero.HEROCODE_MAGE, (Image) ImageManager
-						.getMage_walking(3).getImagesNr(0).getImage(), this.game);
+				new JDPoint(650, 200), Hero.HeroCategory.Mage, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Mage, Motion.Walking, south).getImagesNr(0).getImage(), this.game);
 		this.guiElements.add(mageButton);
 	}
 

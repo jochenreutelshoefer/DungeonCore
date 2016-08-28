@@ -6,6 +6,7 @@ import java.util.List;
 
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import log.Log;
 import test.TestTracker;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
@@ -139,7 +140,7 @@ public class DungeonUtils {
 			int cnt) {
 		cnt++;
 		if (cnt > 2000) {
-			System.out.println("Endlosschleife in dungeon.explore2()");
+			Log.severe("Endlosschleife in dungeon.explore2()");
 			System.exit(0);
 		}
 	

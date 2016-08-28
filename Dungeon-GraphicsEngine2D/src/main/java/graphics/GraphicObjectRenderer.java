@@ -1,6 +1,5 @@
 package graphics;
 
-import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -549,7 +548,7 @@ public class GraphicObjectRenderer {
 	}
 
 	public JDDimension getMonsterSize(MonsterInfo m) {
-		int mClass = m.getMonsterClass();
+		int mClass = m.getMonsterClassCode();
 		if (mClass == Monster.WOLF) {
 			return new JDDimension((int) (roomSize / 2.5),
 					(int) (roomSize / 2.5));
