@@ -1,9 +1,12 @@
 package figure.other;
 
+import ai.AI;
+import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
 import figure.monster.MonsterInfo;
+import figure.npc.RescuedNPCAI;
 import item.Item;
 import item.interfaces.ItemOwner;
 
@@ -15,17 +18,26 @@ import ai.GuiAI;
 
 public class Lioness extends ConjuredMagicFigure {
 
-	public Lioness(int value, Dungeon d, FigureInfo master) {
-		super(value, 100);
+	private Lioness(int value, Dungeon d, FigureInfo master, AI ai) {
+		super(value, 100, ai);
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
-				this.getRoomVisibility());
-		GuiAI ai = new LionessAI(info, master);
+				new DungeonVisibilityMap(d));
+		// todo: create AI which has its leader set on creation
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);
 		// TODO: factor out - bilingual
 		this.name = "Löwin";
 	}
+
+
+
+	public static Lioness createLioness(int value, Dungeon d, FigureInfo master) {
+		AI ai = new RescuedNPCAI();
+		return new Lioness(value, d, master, ai);
+	}
+
+
 
 	@Override
 	public boolean addItems(List<Item> l, ItemOwner donator) {
@@ -34,26 +46,22 @@ public class Lioness extends ConjuredMagicFigure {
 
 	@Override
 	public boolean disappearAtEndOfFight() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	protected int getCHANCE_TO_HIT() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 30;
 	}
 
 	@Override
 	protected int getSCATTER() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 3;
 	}
 
 	@Override
 	protected int getHEALTH_DAMAGE_BALANCE() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -63,13 +71,11 @@ public class Lioness extends ConjuredMagicFigure {
 
 	@Override
 	protected double getAntiFleeFactor() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected boolean makeSpecialAttack(Figure target) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

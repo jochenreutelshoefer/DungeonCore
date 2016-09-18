@@ -1584,6 +1584,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		actualDungeon = d;
 		createVisibilityMap(d);
 		if(ai != null) {
+			// TODO: this ai field should nou be used
 			FigureInfo info = FigureInfo.makeFigureInfo(this, getRoomVisibility());
 			ai.setFigure(info);
 			this.control = new FigureControl(info, ai);
@@ -1911,6 +1912,16 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		return 0;
 	}
 
+	public RouteInstruction.Direction getLookDirection() {
+
+		if(lookDir < 1 || lookDir > 4) {
+			return RouteInstruction.Direction.fromInteger(1);
+		} else {
+			return RouteInstruction.Direction.fromInteger(lookDir);
+		}
+	}
+
+	@Deprecated
 	public int getLookDir() {
 		return lookDir;
 	}

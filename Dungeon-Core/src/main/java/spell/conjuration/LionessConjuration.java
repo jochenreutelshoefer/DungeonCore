@@ -1,26 +1,19 @@
 package spell.conjuration;
 
-import spell.Spell;
-import spell.TargetSpell;
 import dungeon.Position;
-import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.other.Lioness;
 import game.InfoEntity;
+import spell.Spell;
 
-public class LionessConjuration extends Spell implements TargetSpell  {
+public class LionessConjuration extends Spell {
 
-private final int level;
-	
+	private final int level;
+
 	public LionessConjuration(int lvl) {
 		this.level = lvl;
-	}
-	
-	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
-		return true;
 	}
 
 	@Override
@@ -35,12 +28,16 @@ private final int level;
 
 	@Override
 	public boolean isApplicable(Figure mage, Object target) {
-		if(target instanceof Position) {
-			if(((Position)target).getFigure() == null) {
-				return true;
+		Room roomInfo = mage.getRoomInfo();
+		Position[] positions = roomInfo.getPositions();
+		boolean freePositionAvailable = false;
+		for (Position position : positions) {
+			if (position.getFigure() == null) {
+				freePositionAvailable = true;
+				break;
 			}
 		}
-		return false;
+		return freePositionAvailable;
 	}
 
 	@Override
@@ -55,15 +52,16 @@ private final int level;
 
 	@Override
 	public void sorcer(Figure mage, Object target) {
-				Lioness lioness = new Lioness(600 * level, mage.getRoom().getDungeon(),FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility()));
-				Room room = mage.getRoom();
-				int pos = ((Position)target).getIndex();
-				room.figureEntersAtPosition(lioness, pos);
+		Lioness lioness = Lioness.createLioness(600 * level, mage.getRoom()
+				.getDungeon(), FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility()));
+		Room room = mage.getRoom();
+		int targetPosition = Position.getFreePositionNear(mage.getRoom(), mage.getPositionInRoom());
+		room.figureEntersAtPosition(lioness, targetPosition);
 	}
 
 	@Override
 	public Class<? extends InfoEntity> getTargetClass() {
-		return PositionInRoomInfo.class;
+		return null;
 	}
 
 	@Override

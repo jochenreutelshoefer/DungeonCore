@@ -32,12 +32,14 @@ import item.ItemPool;
 import item.Key;
 import item.VisibilityCheatBall;
 import item.map.AncientMapFragmentUtils;
+import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
 //import org.apache.log4j.Logger;
 import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;
 import shrine.Statue;
+import spell.conjuration.LionessConjuration;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -148,6 +150,7 @@ public class StartLevel extends AbstractDungeonFactory {
 
 		// for testing only
 		entryRoom.addItem(new VisibilityCheatBall());
+		entryRoom.addItem(new ScrollMagic(new LionessConjuration(1)));
 		// TODO: remove
 		entryRoom.addItem(AncientMapFragmentUtils.createMap(dungeon, getHeroEntryPoint(), 7));
 
@@ -181,6 +184,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			Door door = exitRoom.getDoor(dir);
 			Position positionToGuard = door.getPositionBehind(exitRoom);
 			Monster monster = gateKeepers.get(i);
+			// todo: use setControl!
 			monster.setAI(new GuardPositionBehaviour(positionToGuard));
 			Room guardRoom = positionToGuard.getRoom();
 			if (guardRoom == null) return false;
@@ -208,6 +212,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			filler.addAllocatedRoom(preGuardRoom);
 			preGuardRoom.setFloorIndex(FLOOR_INDEX_EXIT);
 			Monster preGuardMonster = filler.getSmallMonster(800);
+			// TODO: use setControl!
 			preGuardMonster.setAI(new PreGuardBehaviour(preGuardRoom));
 			preGuardRoom.figureEnters(preGuardMonster, RouteInstruction.direction(random(4) + 1).getValue());
 			exitRoom.setDoor(new Door(exitRoom, doorDirection, exitKey), doorDirection, true);

@@ -7,6 +7,7 @@
 package figure.monster;
 
 //import game.Game;
+import figure.other.Lioness;
 import item.ItemInfo;
 
 import java.util.Iterator;
@@ -80,87 +81,10 @@ public class MonsterInfo extends FigureInfo {
 		return -1;
 	}
 	
-	public final static int MONSTER_CLASS_INDEX_ORC = 1;
-	public final static int MONSTER_CLASS_INDEX_OGRE = 2;
-	public final static int MONSTER_CLASS_INDEX_WOLF = 3;
-	public final static int MONSTER_CLASS_INDEX_SPIDER = 4;
-	public final static int MONSTER_CLASS_INDEX_GHUL = 5;
-	public final static int MONSTER_CLASS_INDEX_SKEL = 6;
-	public final static int MONSTER_CLASS_INDEX_DWARF = 7;
-	public final static int MONSTER_CLASS_INDEX_MASTER = 8;
-	
-	public int getMonsterClassIndex() {
-		if(map.getVisibilityStatus(monster.getLocation())>= RoomObservationStatus.VISIBILITY_FIGURES) {
-			if(monster instanceof Wolf) {
-				return MONSTER_CLASS_INDEX_WOLF;
-			}
-			if(monster instanceof Spider) {
-				return MONSTER_CLASS_INDEX_SPIDER;
-			}
-			if(monster instanceof Ghul) {
-				return MONSTER_CLASS_INDEX_GHUL;
-			}
-			if(monster instanceof Skeleton) {
-				return MONSTER_CLASS_INDEX_SKEL;
-			}
-			
-			if(monster instanceof Orc) {
-				return MONSTER_CLASS_INDEX_ORC;
-			}
-			if(monster instanceof Ogre) {
-				return MONSTER_CLASS_INDEX_OGRE;
-			}
-			if(monster instanceof DarkMaster) {
-				return MONSTER_CLASS_INDEX_MASTER;
-			}
-			if(monster instanceof Dwarf) {
-				return MONSTER_CLASS_INDEX_DWARF;
-			}
-		
-			else return 0;
-		}
-		return -1;
-	}
 
 	public Class<? extends Monster> getMonsterClass() {
 		return this.monster.getClass();
 	}
-	
-	public int getMonsterClassCode() {
-		if(map.getVisibilityStatus(monster.getLocation())>= RoomObservationStatus.VISIBILITY_FIGURES) {
-		if(monster instanceof Wolf) {
-			return Monster.WOLF;
-		}
-		if(monster instanceof Spider) {
-			return Monster.BEAR;
-		}
-		if(monster instanceof Ghul) {
-			return Monster.GHUL;
-		}
-		if(monster instanceof Skeleton) {
-			return Monster.SKELETON;
-		}
-		if(monster instanceof Orc) {
-			return Monster.ORC;
-		}
-		if(monster instanceof Ogre) {
-			return Monster.OGRE;
-		}
-		if(monster instanceof DarkMaster) {
-			return Monster.DARKMASTER;
-		}
-		if(monster instanceof Dwarf) {
-			return Monster.DWARF;
-		}
-		if(monster instanceof Fir) {
-			return Monster.FIR;
-		}
-	
-		else return 0;
-	}
-	return -1;
-	}
-	
 	
 	@Override
 	public List<ItemInfo> getAllItems() {

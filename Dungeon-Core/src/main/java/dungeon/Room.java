@@ -86,6 +86,10 @@ public class Room extends DungeonWorldObject implements
 		boolean fight = false;
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
+			if(element.equals(movedIn)) {
+				// should not start fight with himself
+				continue;
+			}
 			ControlUnit c = element.getControl();
 			if (c != null
 					&& (c.isHostileTo(FigureInfo.makeFigureInfo(movedIn,

@@ -84,16 +84,6 @@ public class Spider extends NatureMonster {
 		}
 		
 		
-		String[] lvl_names =
-			{
-				JDEnv.getString("spider1"),
-				JDEnv.getString("spider2"),
-				JDEnv.getString("spider3"),
-				JDEnv.getString("spider4"),
-				JDEnv.getString("spider5"),
-				JDEnv.getString("spider6") };
-		this.lvl_names = lvl_names;
-		Mclass = getLvlName(value, lvl_names);
 		name = Texts.getName("bear");
 	}
 	

@@ -7,6 +7,7 @@
 package figure;
 
 import dungeon.Dungeon;
+import dungeon.util.RouteInstruction;
 import figure.action.Action;
 import figure.action.result.ActionResult;
 import figure.hero.Hero;
@@ -111,20 +112,25 @@ public abstract class FigureInfo extends InfoEntity {
 		return f.getMemoryObject(info);
 	}
 	
-	
-	
-	
-	public int getLookDir() {
-		if(f.getLocation() == null) return -1;
+
+	public RouteInstruction.Direction getLookDirection() {
+		if(f.getLocation() == null) {
+			// should not happen
+			return RouteInstruction.Direction.South;
+		}
 		int visStat = map.getVisibilityStatus(f.getLocation());
-		
+
 		if(visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return f.getLookDir();
+			return f.getLookDirection();
 		}
 		// todo: handle this situation reasonable
 		Log.warning("No look direction found for: "+this);
-		return (int) (Math.random()* 4 +1);
+		return RouteInstruction.Direction.fromInteger((int) (Math.random()* 4 +1));
+
 	}
+	
+	
+
 	
 	public boolean isHostile(FigureInfo fig) {
 		return f.getControl().isHostileTo(fig);

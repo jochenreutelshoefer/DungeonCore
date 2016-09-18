@@ -1,5 +1,6 @@
 package de.jdungeon.androidapp;
 
+import figure.other.Lioness;
 import item.ItemInfo;
 
 import java.util.Vector;
@@ -65,7 +66,9 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public boolean isHostileTo(FigureInfo f) {
-		if (f.getFigureClass().equals(Fir.class)) {
+		// TODO: how to treat self conjured figures better?
+		if (f.getFigureClass().equals(Fir.class)
+				|| f.getFigureClass().equals(Lioness.class)) {
 			return false;
 		}
 		if (f instanceof MonsterInfo) {

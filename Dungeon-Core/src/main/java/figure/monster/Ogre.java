@@ -44,7 +44,6 @@ public class Ogre extends CreatureMonster {
 				JDEnv.getString("ogre5"),
 				JDEnv.getString("ogre6") };
 		
-		Mclass = getLvlName(value, lvl_names);
 		this.lvl_names = lvl_names;
 
 		name = (Texts.getName("ogre"));

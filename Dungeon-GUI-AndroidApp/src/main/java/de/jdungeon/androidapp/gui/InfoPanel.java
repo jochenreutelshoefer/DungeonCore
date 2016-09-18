@@ -1,5 +1,6 @@
 package de.jdungeon.androidapp.gui;
 
+import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
@@ -87,9 +88,13 @@ public class InfoPanel extends SlidingGUIElement {
 					p.setStyle(p.getStyle());
 					p.setTextSize(13);
 					// paragraph.getFont();
-					g.drawString(paragraph.getText(),
-							x + (this.dimension.getWidth() / 2),
-							position.getY() + posCounterY, p);
+					String text = paragraph.getText();
+					if(text == null) {
+						text = "null";
+					}
+					g.drawString(text,
+								x + (this.dimension.getWidth() / 2),
+								position.getY() + posCounterY, p);
 					posCounterY += 30;
 				}
 			}
@@ -120,7 +125,7 @@ public class InfoPanel extends SlidingGUIElement {
 			} catch (NullPointerException e) {
 				return null;
 			}
-			JDImageProxy<?> image = ImageManager.getImage((FigureInfo) content, 3);
+			JDImageProxy<?> image = ImageManager.getImage((FigureInfo) content, RouteInstruction.Direction.South);
 			return image != null ? (Image) image
 					.getImage() : null;
 		}

@@ -28,15 +28,6 @@ public class Ghul extends UndeadMonster {
 			this.spellbook.addSpell(new Poison(1));
 		}
 		
-		String[] lvl_names =
-			{
-				JDEnv.getString("ghul1"),
-				JDEnv.getString("ghul2"),
-				JDEnv.getString("ghul3"),
-				JDEnv.getString("ghul4"),
-				JDEnv.getString("ghul5"),
-				JDEnv.getString("ghul6") };
-		Mclass = getLvlName(value, lvl_names);
 		this.lvl_names = lvl_names;
 		name = (Texts.getName("ghul"));
 	}

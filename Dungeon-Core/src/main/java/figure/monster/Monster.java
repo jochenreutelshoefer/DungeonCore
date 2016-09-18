@@ -51,23 +51,35 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	public final static int DT_FIRE = 1;
 
+	@Deprecated
 	public final static int BEAR = 1;
 
+	@Deprecated
 	public final static int GHUL = 2;
 
+	@Deprecated
 	public final static int OGRE = 3;
 
+	@Deprecated
 	public final static int ORC = 4;
 
+	@Deprecated
 	public final static int SKELETON = 5;
 
+	@Deprecated
 	public final static int WOLF = 6;
 
+	@Deprecated
 	public final static int DARKMASTER = 7;
 
+	@Deprecated
 	public final static int DWARF = 8;
-	
+
+	@Deprecated
 	public final static int FIR = 9;
+
+	@Deprecated
+	public final static int LIONESS = 10;
 
 	public final static int BEAR_HUNTING = 1;
 
@@ -182,7 +194,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected int healthRecover = 1;
 
-	protected String Mclass;
+	//protected String Mclass;
 
 	@Override
 	public Item getItem(ItemInfo it) {
@@ -275,6 +287,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return tumbleValue;
 	}
 
+	@Deprecated
 	public static Monster createMonster(int type, int value, DungeonGame game) {
 		if (type == WOLF) {
 			return new Wolf(value);
@@ -412,7 +425,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public String getMclass() {
-		return Mclass;
+		return this.getClass().getSimpleName();
 	}
 
 	@Override
@@ -977,7 +990,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public String toString() {
-		return (this.getMclass() + " " + this.getName());
+		return (this.getClass().getSimpleName() + " " + this.getName());
 	}
 
 	@Override

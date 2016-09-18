@@ -45,7 +45,6 @@ public class Dwarf extends Monster {
 //		//(100));
 
 		
-		Mclass = "";
 	}
 	
 	public double getAntiFleeFactor() {

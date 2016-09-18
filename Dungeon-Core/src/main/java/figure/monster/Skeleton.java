@@ -50,7 +50,6 @@ public class Skeleton extends UndeadMonster {
 	protected void construcHelpSkeleton(int value) {
 		String[] lvl_names = { JDEnv.getString("skel1"), JDEnv.getString("skel2"), JDEnv.getString("skel3"),
 				JDEnv.getString("skel4"), JDEnv.getString("skel5"), JDEnv.getString("skel6") };
-		Mclass = getLvlName(value, lvl_names);
 		this.lvl_names = lvl_names;
 		this.antiTumbleValue = 20;
 		this.strength = new Attribute(Attribute.STRENGTH,7);

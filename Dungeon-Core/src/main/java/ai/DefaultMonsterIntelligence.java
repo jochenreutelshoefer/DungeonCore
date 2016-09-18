@@ -6,6 +6,15 @@
  */
 package ai;
 
+import figure.monster.DarkMaster;
+import figure.monster.Dwarf;
+import figure.monster.Ghul;
+import figure.monster.Monster;
+import figure.monster.Ogre;
+import figure.monster.Orc;
+import figure.monster.Skeleton;
+import figure.monster.Spider;
+import figure.monster.Wolf;
 import item.ItemInfo;
 import item.quest.LuziaAmulett;
 
@@ -74,30 +83,30 @@ public class DefaultMonsterIntelligence extends GuiAI {
 	}
 
 	private int getRandomWalkFactor() {
-		int type = monster.getMonsterClassIndex();
+		Class<? extends Monster> monsterClass = monster.getMonsterClass();
 		int factor = 0;
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_ORC) {
+		if (monsterClass == Orc.class) {
 			factor = 25;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_OGRE) {
+		if (monsterClass == Ogre.class) {
 			factor = 3;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_WOLF) {
+		if (monsterClass == Wolf.class) {
 			factor = 40;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_SPIDER) {
+		if (monsterClass == Spider.class) {
 			factor = 5;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_GHUL) {
+		if (monsterClass == Ghul.class) {
 			factor = 3;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_SKEL) {
+		if (monsterClass == Skeleton.class) {
 			factor = 30;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_DWARF) {
+		if (monsterClass == Dwarf.class) {
 			factor = 0;
 		}
-		if (type == MonsterInfo.MONSTER_CLASS_INDEX_MASTER) {
+		if (monsterClass == DarkMaster.class) {
 			factor = 30;
 		}
 

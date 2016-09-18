@@ -123,6 +123,29 @@ public class Position extends DungeonWorldObject{
 		return distMatrix[index][otherIndex];
 	}
 
+
+	public static int getFreePositionNear(Room room, int positionIndex) {
+		if(room.getPositions()[positionIndex].getFigure() == null) {
+			return positionIndex;
+		}
+		int counter = 0;
+		while(counter < 5) {
+			int nextIndexRight = Position.getNextIndex(positionIndex + counter, true);
+			if(room.getPositions()[nextIndexRight].getFigure() == null) {
+				return nextIndexRight;
+			}
+			int nextIndexLeft = Position.getNextIndex(positionIndex - counter, false);
+
+			if(room.getPositions()[nextIndexLeft].getFigure() == null) {
+				return nextIndexLeft;
+			}
+			counter ++;
+
+		}
+
+		return -1;
+	}
+
 	public static int getMinDistanceFromTo(int from, int to) {
 		int right = getDistanceFromTo(from, to, true);
 		int left = getDistanceFromTo(from, to, false);

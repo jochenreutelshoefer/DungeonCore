@@ -50,7 +50,6 @@ public class DarkMaster extends Monster {
 		//(100));
 
 		base = baseRoom;
-		Mclass = "";
 	}
 
 	/* (non-Javadoc)

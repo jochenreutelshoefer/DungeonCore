@@ -1,10 +1,17 @@
 package graphics;
 
+import dungeon.util.RouteInstruction;
 import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
+import figure.monster.Ogre;
+import figure.monster.Orc;
+import figure.monster.Skeleton;
+import figure.monster.Spider;
+import figure.monster.Wolf;
 import game.JDGUI;
 import graphics.util.JDRectangle;
 import graphics.util.RoomSize;
@@ -530,8 +537,7 @@ public class GraphicObjectRenderer {
 		int sizeY = (getMonsterSize(m).getHeight());
 		JDRectangle rect = new JDRectangle(new JDPoint(p.getX() - (sizeX / 2),
 				p.getY() - (sizeY / 2)), sizeX, sizeY);
-		int dir = m.getLookDir();
-		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, dir), rect);
+		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, m.getLookDirection()), rect);
 
 		if (m.isDead() != null && m.isDead().booleanValue()) {
 			AnimationSet set = AnimationUtils.getFigure_tipping_over(m);
@@ -548,26 +554,26 @@ public class GraphicObjectRenderer {
 	}
 
 	public JDDimension getMonsterSize(MonsterInfo m) {
-		int mClass = m.getMonsterClassCode();
-		if (mClass == Monster.WOLF) {
+		Class<? extends Monster> mClass = m.getMonsterClass();
+		if (mClass == Wolf.class) {
 			return new JDDimension((int) (roomSize / 2.5),
 					(int) (roomSize / 2.5));
 		}
-		if (mClass == Monster.ORC) {
+		if (mClass == Orc.class) {
 			return new JDDimension((int) (roomSize / 2.5),
 					(int) (roomSize / 2.5));
 		}
-		if (mClass == Monster.SKELETON) {
+		if (mClass == Skeleton.class) {
 			return new JDDimension((int) (roomSize / 2.5),
 					(int) (roomSize / 2.5));
 		}
-		if (mClass == Monster.GHUL) {
+		if (mClass == Ghul.class) {
 			return new JDDimension(ROOMSIZE_BY_2, ROOMSIZE_BY_2);
 		}
-		if (mClass == Monster.OGRE) {
+		if (mClass == Ogre.class) {
 			return new JDDimension(ROOMSIZE_BY_2, ROOMSIZE_BY_2);
 		}
-		if (mClass == Monster.BEAR) {
+		if (mClass == Spider.class) {
 			return new JDDimension((int) (roomSize / 2.2),
 					(int) (roomSize / 2.2));
 		}
@@ -815,47 +821,44 @@ public class GraphicObjectRenderer {
 				- (ySize / 2), xSize, ySize);
 
 		int code = info.getHeroCode();
-		int dir = info.getLookDir();
-		if (dir == 0) {
-			dir = Dir.NORTH;
-		}
+		RouteInstruction.Direction direction = info.getLookDirection();
 		JDImageLocated im = null;
 		if (code == Hero.HEROCODE_WARRIOR) {
 			if (info.isDead().booleanValue()
 			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
 				im = new JDImageLocated(ImageManager.warrior_tipping_over.get(
-						dir - 1).getImages()[ImageManager.warrior_tipping_over
-						.get(dir - 1).getLength() - 1], rect);
+						direction.getValue() - 1).getImages()[ImageManager.warrior_tipping_over
+						.get(direction.getValue() - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImageLocated(ImageManager.warriorImage[dir - 1],
+				im = new JDImageLocated(ImageManager.warriorImage[direction.getValue() - 1],
 						rect);
 			}
 		} else if (code == Hero.HEROCODE_HUNTER) {
 			if (info.isDead().booleanValue()
 			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
 				im = new JDImageLocated(ImageManager.thief_tipping_over.get(
-						dir - 1).getImages()[ImageManager.thief_tipping_over
-						.get(dir - 1).getLength() - 1], rect);
+						direction.getValue() - 1).getImages()[ImageManager.thief_tipping_over
+						.get(direction.getValue() - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImageLocated(ImageManager.thiefImage[dir - 1], rect);
+				im = new JDImageLocated(ImageManager.thiefImage[direction.getValue() - 1], rect);
 			}
 		} else if (code == Hero.HEROCODE_DRUID) {
 			if (info.isDead().booleanValue()
 			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
 				im = new JDImageLocated(ImageManager.druid_tipping_over.get(
-						dir - 1).getImages()[ImageManager.druid_tipping_over
-						.get(dir - 1).getLength() - 1], rect);
+						direction.getValue() - 1).getImages()[ImageManager.druid_tipping_over
+						.get(direction.getValue() - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImageLocated(ImageManager.druidImage[dir - 1], rect);
+				im = new JDImageLocated(ImageManager.druidImage[direction.getValue() - 1], rect);
 			}
 		} else if (code == Hero.HEROCODE_MAGE) {
 			if (info.isDead().booleanValue()
 			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
 				im = new JDImageLocated(ImageManager.mage_tipping_over.get(
-						dir - 1).getImages()[ImageManager.mage_tipping_over
-						.get(dir - 1).getLength() - 1], rect);
+						direction.getValue() - 1).getImages()[ImageManager.mage_tipping_over
+						.get(direction.getValue() - 1).getLength() - 1], rect);
 			} else {
-				im = new JDImageLocated(ImageManager.mageImage[dir - 1], rect);
+				im = new JDImageLocated(ImageManager.mageImage[direction.getValue() - 1], rect);
 			}
 		}
 		return new JDGraphicObject(im, info, rect, JDColor.WHITE,

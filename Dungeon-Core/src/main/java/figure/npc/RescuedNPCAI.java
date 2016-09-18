@@ -120,7 +120,11 @@ public class RescuedNPCAI implements AI {
 		List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
 		FigureInfo target = null;
 		for (FigureInfo figureInfo : figureInfos) {
-			if(figureInfo instanceof MonsterInfo) {
+			if(figureInfo.equals(info)) {
+				// do not attack yourself
+				continue;
+			}
+			if(info.isHostile(figureInfo)) {
 				int distance = Position.getMinDistanceFromTo(this.info.getPositionInRoomIndex(), figureInfo.getPositionInRoomIndex());
 				if(distance < minDistanceToEnemy) {
 					minDistanceToEnemy = distance;

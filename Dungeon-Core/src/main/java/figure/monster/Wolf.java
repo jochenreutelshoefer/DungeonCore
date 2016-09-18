@@ -76,7 +76,6 @@ public class Wolf extends NatureMonster {
 		this.dexterity = new Attribute(Attribute.DEXTERITY,11);
 		String[] lvl_names = { JDEnv.getString("wolf1"), JDEnv.getString("wolf2"), JDEnv.getString("wolf3"),
 				JDEnv.getString("wolf4"), JDEnv.getString("wolf5"), JDEnv.getString("wolf6") };
-		Mclass = getLvlName(value, lvl_names);
 		this.lvl_names = lvl_names;
 
 		name = (Texts.getName("wolf"));
@@ -84,8 +83,6 @@ public class Wolf extends NatureMonster {
 		if(level >= 2) {
 			spellbook.addSpell(new TripleAttack(1));
 		}
-		
-		
 	}
 	
 	protected int getSCATTER() {

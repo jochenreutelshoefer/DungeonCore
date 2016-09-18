@@ -1,5 +1,6 @@
 package figure.other;
 
+import ai.AI;
 import figure.Figure;
 import figure.monster.Monster;
 import figure.percept.DisappearPercept;
@@ -10,6 +11,11 @@ public abstract class ConjuredMagicFigure extends Monster {
 	
 	private int numberOfRoundsToLive = -1;
 	private int numberOfRoundsLived = 0;
+
+	public ConjuredMagicFigure(int value, int numberOfRounds, AI ai) {
+		super(value, ai);
+		numberOfRoundsToLive = numberOfRounds;
+	}
 
 	public ConjuredMagicFigure(int value, int numberOfRounds) {
 		super(value);

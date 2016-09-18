@@ -23,6 +23,8 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.monster.DarkMaster;
+import figure.monster.Dwarf;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
@@ -31,6 +33,8 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
+import figure.other.Fir;
+import figure.other.Lioness;
 import io.AbstractImageLoader;
 import item.AttrPotion;
 import item.DustItem;
@@ -352,7 +356,25 @@ public class ImageManager {
 
 	public static AnimationSetDirections orc1_walking = null;
 
+	public static AnimationSetDirections lioness_been_hit;
+
+	public static AnimationSetDirections lioness_pause = null;
+
+	public static AnimationSetDirections lioness_running = null;
+
+	public static AnimationSetDirections lioness_slays;
+
+	public static AnimationSetDirections lioness_sorcering = null;
+
+	public static AnimationSetDirections lioness_tipping_over;
+
+	public static AnimationSetDirections lioness_using = null;
+
+	public static AnimationSetDirections lioness_walking = null;
+
+
 	public static JDImageProxy<?>[] ogreImage;
+	public static JDImageProxy<?>[] lionessImage;
 
 	public static JDImageProxy<?>[] orcImage;
 
@@ -756,6 +778,28 @@ public class ImageManager {
 			spider1_running = spider1_walking;
 			spider1_pause = spider1_walking;
 
+
+			lioness_been_hit = load4Animations(a, "animation/" + "lioness/",
+					"been hit", 9);
+			lioness_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			lioness_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
+
+			lioness_tipping_over = load4Animations(a, "animation/" + "lioness/",
+					"tipping over", 11);
+			lioness_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES,0);
+
+			lioness_slays = load4Animations(a, "animation/" + "lioness/",
+					"attack", 9);
+			lioness_slays.addAudioClip(AudioEffectsManager.WOLF_ATTACKS, 0);
+
+			lioness_walking = load4Animations(a, "animation/" + "lioness/",
+					"walking", 11);
+			lioness_running =  load4Animations(a, "animation/" + "lioness/",
+					"running", 11);;
+			lioness_pause = load4Animations(a, "animation/" + "lioness/",
+					"roaring", 7);;
+
+			
 			warriorImage = makePics(warrior_walking);
 			thiefImage = makePics(thief_walking);
 			druidImage = makePics(druid_walking);
@@ -766,6 +810,7 @@ public class ImageManager {
 			skelImage = makePics(skel1_walking);
 			ogreImage = makePics(ogre1_walking);
 			bearImage = makePics(spider1_walking);
+			lionessImage = makePics(lioness_walking);
 
 			dead_dwarfImage = new JDImageProxy<>(a, "dead_dwarf.gif");
 			dead_warriorImage = new JDImageProxy<>(a, "dead_stan.gif");
@@ -1021,12 +1066,21 @@ public class ImageManager {
 		}
 		suffix += numberStr;
 
+		// we iterate to 15 to be safe as the longest sequences are up to 12
 		while (i < 15) {
 
+			// old file format
 			JDImageProxy<?> im = new JDImageProxy<>(path + fileNamePrefix
 					+ dirChar + suffix + "_trans.GIF", a);
 			if (im.fileExists()) {
 				imageList.add(im);
+			} else {
+				// new simple file name format
+				im = new JDImageProxy<>(path + fileNamePrefix
+						+" "+ dirChar + suffix + ".gif", a);
+				if (im.fileExists()) {
+					imageList.add(im);
+				}
 			}
 			i++;
 
@@ -1122,6 +1176,7 @@ public class ImageManager {
 		monsterAnimationMap.put(Ogre.class, new HashMap<Motion, AnimationSetDirections>());
 		monsterAnimationMap.put(Ghul.class, new HashMap<Motion, AnimationSetDirections>());
 		monsterAnimationMap.put(Spider.class, new HashMap<Motion, AnimationSetDirections>());
+		monsterAnimationMap.put(Lioness.class, new HashMap<Motion, AnimationSetDirections>());
 
 
 		monsterAnimationMap.get(Skeleton.class).put(Motion.BeingHit, ImageManager.skel1_been_hit);
@@ -1177,6 +1232,15 @@ public class ImageManager {
 		monsterAnimationMap.get(Spider.class).put(Motion.Using, ImageManager.spider1_using);
 		monsterAnimationMap.get(Spider.class).put(Motion.Slaying, ImageManager.spider1_slays);
 		monsterAnimationMap.get(Spider.class).put(Motion.Sorcering, ImageManager.spider1_sorcering);
+
+		monsterAnimationMap.get(Lioness.class).put(Motion.BeingHit, ImageManager.lioness_been_hit);
+		monsterAnimationMap.get(Lioness.class).put(Motion.Pause, ImageManager.lioness_pause);
+		monsterAnimationMap.get(Lioness.class).put(Motion.TippingOver, ImageManager.lioness_tipping_over);
+		monsterAnimationMap.get(Lioness.class).put(Motion.Walking, ImageManager.lioness_walking);
+		monsterAnimationMap.get(Lioness.class).put(Motion.Running, ImageManager.lioness_running);
+		monsterAnimationMap.get(Lioness.class).put(Motion.Using, ImageManager.lioness_using);
+		monsterAnimationMap.get(Lioness.class).put(Motion.Slaying, ImageManager.lioness_slays);
+		monsterAnimationMap.get(Lioness.class).put(Motion.Sorcering, ImageManager.lioness_sorcering);
 
 	}
 
@@ -1364,40 +1428,44 @@ public class ImageManager {
 		return im;
 	}
 
-	public static Map<Integer, JDImageProxy<?>[]> figureMap = new HashMap<>();
+	public static Map<Class<? extends Monster>, JDImageProxy<?>[]> figureMap = new HashMap<>();
 
 	private void createFigureClassMap() {
-		figureMap.put(Monster.WOLF, ImageManager.wolfImage);
-		figureMap.put(Monster.ORC, ImageManager.orcImage);
-		figureMap.put(Monster.SKELETON, ImageManager.skelImage);
-		figureMap.put(Monster.GHUL, ImageManager.ghulImage);
-		figureMap.put(Monster.OGRE, ImageManager.ogreImage);
-		figureMap.put(Monster.BEAR, ImageManager.bearImage);
-		figureMap.put(Monster.BEAR, ImageManager.bearImage);
+		figureMap.put(Wolf.class, ImageManager.wolfImage);
+		figureMap.put(Orc.class, ImageManager.orcImage);
+		figureMap.put(Skeleton.class, ImageManager.skelImage);
+		figureMap.put(Ghul.class, ImageManager.ghulImage);
+		figureMap.put(Ogre.class, ImageManager.ogreImage);
+		figureMap.put(Spider.class, ImageManager.bearImage);
+		figureMap.put(Lioness.class, ImageManager.lionessImage);
 	}
 
-	public static JDImageProxy<?> getImage(FigureInfo figure, int dir) {
+	public static JDImageProxy<?> getImage(FigureInfo figure, RouteInstruction.Direction dir) {
 		if (figure instanceof MonsterInfo) {
 			MonsterInfo m = (MonsterInfo) figure;
-			int mClass = m.getMonsterClassCode();
-			if (figureMap.containsKey(mClass)) {
-				return figureMap.get(mClass)[dir - 1];
+			Class<? extends Monster> monsterClass = m.getMonsterClass();
+			if (figureMap.containsKey(monsterClass)) {
+				return figureMap.get(monsterClass)[dir.getValue() - 1];
 			}
 
 			// todo: create animations
 			JDImageProxy<?> im = null;
-			if (mClass == Monster.DARKMASTER) {
+			if (monsterClass == DarkMaster.class) {
 				return ImageManager.darkMasterImage;
 			}
-			else if (mClass == Monster.DWARF) {
+			else if (monsterClass == Dwarf.class) {
 				return ImageManager.dark_dwarfImage;
 			}
-			else if (mClass == Monster.FIR) {
+			else if (monsterClass == Fir.class) {
 				return ImageManager.finImage;
 			}
-			else {
-				return ImageManager.engelImage;
+			else if (monsterClass == Lioness.class) {
+				AnimationSet animationSet = ImageManager.lioness_walking.get(dir.getValue() - 1);
+				if(animationSet != null) {
+					return animationSet.getImagesNr(0);
+				}
 			}
+				return ImageManager.engelImage;
 		}
 		return null;
 	}
