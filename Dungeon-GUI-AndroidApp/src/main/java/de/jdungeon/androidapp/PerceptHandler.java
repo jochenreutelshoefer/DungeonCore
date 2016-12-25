@@ -2,6 +2,7 @@ package de.jdungeon.androidapp;
 
 import java.util.List;
 
+import dungeon.Position;
 import text.Statement;
 import text.StatementManager;
 import animation.AnimationSet;
@@ -184,11 +185,12 @@ public class PerceptHandler {
 		RoomInfo info = fig.getRoomInfo();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
+
 		int fromIndex = p.getFromIndex();
 		int toIndex = p.getToIndex();
 
 		if (set != null) {
-			screen.startAnimation(set, fig);
+			screen.startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()));
 		}
 
 	}

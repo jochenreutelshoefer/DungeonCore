@@ -13,63 +13,48 @@ import graphics.util.JDRectangle;
  */
 public class JDImageLocated {
 
-	
-	private JDImageProxy<?> image;
-	private int sizeX;
-	private int sizeY;
-	private int posY;
-	
-	public JDImageLocated(JDImageProxy<?> i, int posX, int posY,int sizeX, int sizeY) {
-		image = i;		
+
+	private final JDImageProxy<?> image;
+	private final int sizeX;
+	private final int sizeY;
+	private final int posY;
+	private final int posX;
+
+	public JDImageLocated(JDImageProxy<?> i, int posX, int posY, int sizeX, int sizeY) {
+		image = i;
 		this.posX = posX;
 		this.posY = posY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-	
+
 	}
-	
+
 	public JDImageLocated(JDImageProxy<?> i, JDRectangle r) {
-		image = i;		
+		image = i;
 		this.posX = r.getX();
 		this.posY = r.getY();
 		this.sizeX = r.getWidth();
 		this.sizeY = r.getHeight();
-	
+
 	}
-	
 	public int getPosX() {
 		return posX;
 	}
+
 	public int getPosY() {
 		return posY;
 	}
-	
-	private int posX;
 
 
 
-	/**
-	 * 
-	 * @uml.property name="sizeX"
-	 */
 	public int getWidth() {
 		return sizeX;
 	}
 
-	/**
-	 * 
-	 * @uml.property name="sizeY"
-	 */
 	public int getHeight() {
 		return sizeY;
 	}
 
-	/**
-	 * Returns the image.
-	 * @return Image
-	 * 
-	 * @uml.property name="image"
-	 */
 	public JDImageProxy<?> getImage() {
 		return image;
 	}

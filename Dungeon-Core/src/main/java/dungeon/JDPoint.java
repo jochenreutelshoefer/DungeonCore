@@ -70,12 +70,11 @@ public class JDPoint{
 	return (" "+Integer.toString(x)+" - "+Integer.toString(y));
     }
 
-	
+
 	public int getX() {
 		return this.x;
 	}
 
-	
 	public int getY() {
 		return this.y;
 	}

@@ -7,34 +7,46 @@ import java.util.Set;
 
 import animation.AnimationSet;
 import audio.AbstractAudioSet;
-import de.jdungeon.game.Image;
 import dungeon.JDPoint;
+import dungeon.Position;
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import graphics.JDImageProxy;
+
+import de.jdungeon.game.Image;
 
 public class AnimationTask {
 
 	private final AnimationSet ani;
 	private long startTime;
-	private final Collection<AbstractAudioSet> soundsPlayed = new HashSet<AbstractAudioSet>();
+	private final Collection<AbstractAudioSet> soundsPlayed = new HashSet<>();
 	private final String text;
 	boolean wasStarted = false;
-	private final FigureInfo info;
+	private final Position.Pos from;
+	private final RoomInfo room;
 
-	public AnimationTask(AnimationSet ani, long timestemp, FigureInfo info) {
-		this(ani, timestemp, null, info);
-
+	public RoomInfo getRoom() {
+		return room;
 	}
+
+	private final Position.Pos to;
+	private final FigureInfo info;
 
 	public FigureInfo getFigure() {
 		return info;
 	}
 
-	public AnimationTask(AnimationSet ani, long timestemp, String text,
-			FigureInfo info) {
+	public AnimationTask(AnimationSet ani, long timestemp, String text, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room) {
 		this.ani = ani;
 		this.startTime = timestemp;
 		this.text = text;
+		this.from = from;
+		this.room = room;
+		if(to == null) {
+			this.to = Position.Pos.fromValue(info.getPos().getIndex());
+		} else {
+			this.to = to;
+		}
 		this.info = info;
 	}
 
@@ -53,22 +65,28 @@ public class AnimationTask {
 		// return null;
 		// }
 		int imageNr = ani.getImageNrAtTime(timePassed);
+		int totalDuration = ani.getTotalDuration();
+		double currentProgress = ((double)timePassed)/totalDuration;
+
+		// TODO: deliver position from-to information
 
 		JDImageProxy<?> currentImage = getCurrentImage(imageNr, timePassed);
-		if (currentImage == null)
+		if (currentImage == null) {
 			return null;
+		}
 
 		if (text == null) {
 
 			/*
 			 * TODO: optimize use of AnimationFrame Objects here
 			 */
-			return new AnimationFrame(currentImage);
-		} else {
+			return new AnimationFrame(currentImage, currentProgress, from, to);
+		}
+		else {
 			Image image = (Image) currentImage.getImage();
 			return new AnimationFrame(currentImage, text, new JDPoint(
-image.getWidth() * 3 / 8,
-							(image.getHeight() / 5) - imageNr));
+					image.getWidth() * 3 / 8,
+					(image.getHeight() / 5) - imageNr), currentProgress, from, to);
 		}
 	}
 
@@ -84,7 +102,8 @@ image.getWidth() * 3 / 8,
 
 		if (timePassed > ani.getTotalDuration()) {
 			return null;
-		} else {
+		}
+		else {
 			return ani.getImageAtTime(timePassed);
 		}
 	}

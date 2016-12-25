@@ -1,11 +1,17 @@
 package de.jdungeon.androidapp.animation;
 
-import graphics.JDImageProxy;
 import dungeon.JDPoint;
+import dungeon.Position;
+import graphics.GraphicObjectRenderer;
+import graphics.JDImageLocated;
+import graphics.JDImageProxy;
 
 public class AnimationFrame {
 
 	private JDImageProxy<?> image;
+	private final double currentProgress;
+	private final Position.Pos from;
+	private final Position.Pos to;
 	private String text;
 	private JDPoint textCoordinatesOffset;
 
@@ -33,17 +39,45 @@ public class AnimationFrame {
 		this.textCoordinatesOffset = textCoordinatesOffset;
 	}
 
-	public AnimationFrame(JDImageProxy<?> image) {
+	public AnimationFrame(JDImageProxy<?> image, double currentProgress, Position.Pos from, Position.Pos to) {
 		super();
+		if(to == null) {
+			throw  new IllegalArgumentException("to-position may not be null!");
+		}
 		this.image = image;
+		this.currentProgress = currentProgress;
+		this.from = from;
+		this.to = to;
 	}
 
 	public AnimationFrame(JDImageProxy<?> image, String text,
-			JDPoint textCoordinatesOffset) {
+			JDPoint textCoordinatesOffset, double currentProgress, Position.Pos from, Position.Pos to) {
 		super();
 		this.image = image;
 		this.text = text;
 		this.textCoordinatesOffset = textCoordinatesOffset;
+		this.currentProgress = currentProgress;
+		this.from = from;
+		this.to = to;
 	}
 
+	public double getCurrentProgress() {
+		return currentProgress;
+	}
+
+	public JDImageLocated getLocatedImage(int roomOffsetX, int roomOffsetY, int figureSizeX, int figureSizeY, int roomSize) {
+		JDPoint positionFromOffset = GraphicObjectRenderer.getPositionCoordinates(from, roomSize);
+		JDPoint positionToOffset = GraphicObjectRenderer.getPositionCoordinates(to, roomSize);
+		int posSize = GraphicObjectRenderer.getPosSize(roomSize);
+		assert positionToOffset != null;
+		int coordinateX = roomOffsetX+positionToOffset.getX();
+		int coordinateY = roomOffsetY+positionToOffset.getY();
+		if(from != to && positionFromOffset != null) {
+			int diffX = (int) ((positionToOffset.getX() - positionFromOffset.getX()) * currentProgress);
+			int diffY = (int) ((positionToOffset.getY() - positionFromOffset.getY()) * currentProgress);
+			coordinateX = roomOffsetX+positionFromOffset.getX()+diffX;
+			coordinateY = roomOffsetY+positionFromOffset.getY()+diffY ;
+		}
+		return new JDImageLocated(getImage(), coordinateX + posSize/2 - figureSizeX/2 , coordinateY /*+ posSize/2*/ - figureSizeY/2 , figureSizeX, figureSizeY);
+	}
 }

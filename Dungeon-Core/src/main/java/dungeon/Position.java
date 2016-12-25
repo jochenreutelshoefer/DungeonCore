@@ -29,6 +29,36 @@ public class Position extends DungeonWorldObject{
 		this.index = index;
 	}
 
+	public enum Pos {
+		NW(0),
+		N(1),
+		NE(2),
+		E(3),
+		SE(4),
+		S(5),
+		SW(6),
+		W(7);
+
+		Pos(int value) {
+			this.value = value;
+		}
+
+		private final int value;
+
+		public int getValue() {
+			return value;
+		}
+
+		public static Pos fromValue(int value) {
+			for (Pos pos : Pos.values()) {
+				if(pos.getValue() == value) {
+					return pos;
+				}
+			}
+			return null;
+		}
+	}
+
 	/**
 	 * @return Returns the f.
 	 */

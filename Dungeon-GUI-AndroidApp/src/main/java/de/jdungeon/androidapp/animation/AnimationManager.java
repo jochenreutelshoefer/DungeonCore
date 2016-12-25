@@ -2,10 +2,13 @@ package de.jdungeon.androidapp.animation;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
 import animation.AnimationSet;
+import dungeon.Position;
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 
 public class AnimationManager {
@@ -21,72 +24,53 @@ public class AnimationManager {
 		return instance;
 	}
 
-	private final Map<FigureInfo, Queue<AnimationTask>> animations = new HashMap<FigureInfo, Queue<AnimationTask>>();
-	private final Queue<AnimationTask> singleQueue = new LinkedList<AnimationTask>();
+	//private final Map<FigureInfo, Queue<AnimationTask>> animations = new HashMap<FigureInfo, Queue<AnimationTask>>();
+	private final Map<RoomInfo, Queue<AnimationTask>> singleQueue = new HashMap<RoomInfo, Queue<AnimationTask>>();
 	private AnimationTask currentTask;
 
-	public AnimationFrame getAnimationImage(FigureInfo info) {
+	/**
+	 * Returns the AnimationFrame for a Figure that should currently
+	 * be drawn.
+	 *
+	 * @param info the figure to be drawn
+	 * @param roomInfo
+	 * @return AnimationFrame showing correct sprite of current move
+	 */
+	public AnimationFrame getAnimationImage(FigureInfo info, RoomInfo roomInfo) {
+		Queue<AnimationTask> queue = singleQueue.get(roomInfo);
 		if (currentTask == null) {
-			if (singleQueue.size() > 0) {
-				currentTask = singleQueue.remove();
-
-			} else {
+			if (queue != null && !queue.isEmpty()) {
+				currentTask = queue.remove();
+			}
+			else {
 				return null;
 			}
 		}
 		if (currentTask.isFinished()) {
-			if (singleQueue.size() > 0) {
-				currentTask = singleQueue.remove();
-			} else {
+			if (queue != null && !queue.isEmpty()) {
+				currentTask = queue.remove();
+			}
+			else {
 				currentTask = null;
 			}
 		}
 		if (currentTask != null && currentTask.getFigure().equals(info)) {
-			AnimationFrame currentAnimationFrame = currentTask
-					.getCurrentAnimationFrame();
-			return currentAnimationFrame;
+			if(currentTask.getRoom().equals(roomInfo)) {
+				return currentTask
+						.getCurrentAnimationFrame();
+			}
 		}
 		return null;
-		// Queue<AnimationTask> animationTasks = animations.get(info);
-		// if (animationTasks != null && animationTasks.size() > 0) {
-		// AnimationTask animationTask = animationTasks.element();
-		// if (animationTask.isFinished()) {
-		// animationTasks.remove();
-		// if (animationTasks.size() > 0) {
-		// animationTask = animationTasks.element();
-		// } else {
-		// return null;
-		// }
-		// }
-		// AnimationFrame currentAnimationFrame = animationTask
-		// .getCurrentAnimationFrame();
-		// return currentAnimationFrame;
-		// }
-		// return null;
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		// System.out.println("Starting animation: " + info);
-		singleQueue
-.add(new AnimationTask(ani, System.currentTimeMillis(),
-				text, info));
-
-		// Queue<AnimationTask> queue = animations.get(info);
-		// if (queue == null) {
-		// queue = new LinkedList<AnimationTask>();
-		// animations.put(info, queue);
-		// }
-		// long currentTimeMillis = System.currentTimeMillis();
-		// long animationStartTime = currentTimeMillis;
-		// long timeLatestAni = currentTimeMillis - latestAnimationStart;
-		// int delayMin = 800;
-		// if (timeLatestAni < delayMin) {
-		// long delay = delayMin - timeLatestAni;
-		// animationStartTime += delay;
-		// }
-		// queue.add(new AnimationTask(ani, currentTimeMillis, text));
-		//
-		// latestAnimationStart = animationStartTime;
+	public void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room, String text) {
+		Queue<AnimationTask> queue = singleQueue.get(room);
+		if(queue == null) {
+			queue = new LinkedList<>();
+			singleQueue.put(room, queue);
+		}
+		queue.add(new AnimationTask(ani, System.currentTimeMillis(),
+						text, info, from, to, room));
 	}
 
 	public void clear() {

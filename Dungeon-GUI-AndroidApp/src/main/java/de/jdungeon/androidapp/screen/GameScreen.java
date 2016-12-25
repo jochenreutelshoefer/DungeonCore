@@ -16,6 +16,7 @@ import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.SpotInfo;
@@ -875,11 +876,19 @@ public class GameScreen extends Screen {
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info) {
-		startAnimation(ani, info, null);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), null);
+	}
+
+	public void startAnimation(AnimationSet ani, FigureInfo info,Position.Pos from, Position.Pos to) {
+		startAnimation(ani, info, from ,to ,info.getRoomInfo(),null);
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		AnimationManager.getInstance().startAnimation(ani, info, text);
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text);
+	}
+
+	public void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room, String text) {
+		AnimationManager.getInstance().startAnimation(ani, info, from, to, room, text);
 	}
 
 	public Hero getHero() {

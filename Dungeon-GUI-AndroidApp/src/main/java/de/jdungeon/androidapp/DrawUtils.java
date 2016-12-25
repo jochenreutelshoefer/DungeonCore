@@ -3,6 +3,7 @@ package de.jdungeon.androidapp;
 import figure.FigureInfo;
 import game.InfoEntity;
 import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
@@ -23,12 +24,14 @@ import de.jdungeon.game.Image;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
+import util.JDDimension;
 
 public class DrawUtils {
 
 	public static void drawImageNormalized(Graphics g, GraphicObject ob) {
 		JDRectangle destinationRectOrig = ob.getRectangle();
 	}
+
 
 	private static void drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
@@ -42,7 +45,6 @@ public class DrawUtils {
 				if (graphicObject instanceof JDGraphicObject) {
 					JDGraphicObject jdGraphicObject = (JDGraphicObject) graphicObject;
 
-					imageProxy = jdGraphicObject.getAWTImage().getImage();
 					JDImageLocated image = jdGraphicObject.getAWTImage();
 					Image im = (Image) image.getImage().getImage();
 
@@ -51,10 +53,15 @@ public class DrawUtils {
 					String showText = null;
 					JDPoint textOffset = null;
 					if (clickedObject instanceof FigureInfo) {
+						FigureInfo figureInfo = (FigureInfo) clickedObject;
 						AnimationFrame frame = AnimationManager.getInstance()
-								.getAnimationImage((FigureInfo) clickedObject);
+								.getAnimationImage(figureInfo, roomInfo);
+						// TODO: frame should deliver a LocatedImage with offset of moves
 						if (frame != null) {
 							JDImageProxy<?> animationImage = frame.getImage();
+							JDDimension figureInfoSize = GraphicObjectRenderer.getFigureInfoSize(figureInfo, roomSize);
+							// we override the image variable here
+							image = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
 							im = (Image) animationImage.getImage();
 							if (frame.getText() != null) {
 								showText = frame.getText();
@@ -109,7 +116,7 @@ public class DrawUtils {
 					if (clickedObject instanceof FigureInfo) {
 						AnimationFrame animationFrame = AnimationManager
 								.getInstance().getAnimationImage(
-										(FigureInfo) clickedObject);
+										(FigureInfo) clickedObject, roomInfo);
 						JDImageProxy<?> animationImage = animationFrame
 								.getImage();
 						if (animationImage != null) {
