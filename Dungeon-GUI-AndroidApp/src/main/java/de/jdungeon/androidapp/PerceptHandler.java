@@ -182,17 +182,10 @@ public class PerceptHandler {
 
 	private void handleStepPercept(StepPercept p) {
 		FigureInfo fig = p.getFigure();
-		RoomInfo info = fig.getRoomInfo();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
-
-
-		int fromIndex = p.getFromIndex();
-		int toIndex = p.getToIndex();
-
 		if (set != null) {
 			screen.startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()));
 		}
-
 	}
 
 	private void handleSpellPercept(SpellPercept p) {
@@ -225,7 +218,7 @@ public class PerceptHandler {
 		if (fig.equals(this.figure)
 				&& // check whether a fight has just started
 				!figure.getRoomInfo().fightRunning()) {
-			screen.scrollTo(info.getNumber(), 50f);
+			screen.scrollTo(info.getNumber(), 30f);
 		}
 
 	}

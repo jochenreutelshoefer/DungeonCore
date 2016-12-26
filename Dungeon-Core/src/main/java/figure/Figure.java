@@ -716,6 +716,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	public SlapResult getSlap(Slap s) {
 
+		Figure attacker = s.getActor();
+		lookDir = Position.getDirFromTo(getPositionInRoom(),
+				attacker.getPositionInRoom());
+
 		int eludeValue = calcEludeValue();
 
 		int precision = s.getPrecision();
@@ -755,12 +759,12 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					gameOver();
 				}
 				res = new SlapResult(allDmg, dies, this, allDmg, s);
-				p = new HitPercept(s.getActor(), this, res);
+				p = new HitPercept(attacker, this, res);
 			}
 
 		} else {
 			res = new SlapResult(allDmg, false, this, allDmg, s);
-			p = new MissPercept(s.getActor(), this);
+			p = new MissPercept(attacker, this);
 		}
 
 		this.getRoom().distributePercept(p);
@@ -862,6 +866,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	public void attack(Figure op) {
+		// new look dir towards opponent
 		lookDir = Position.getDirFromTo(getPositionInRoom(),
 				op.getPositionInRoom());
 
@@ -1433,7 +1438,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		this.lookDir = Position.getDirFromTo(pos.getIndex(), targetFieldindex);
 		pos.figureLeaves();
 		newPos.setFigure(this);
-		Percept p = new StepPercept(this, oldPosIndex, pos.getIndex());
+		Percept p = new StepPercept(this, oldPosIndex, targetFieldindex);
 		getRoom().distributePercept(p);
 		pos = newPos;
 	}

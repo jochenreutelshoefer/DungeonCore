@@ -36,7 +36,7 @@ public class AnimationManager {
 	 * @param roomInfo
 	 * @return AnimationFrame showing correct sprite of current move
 	 */
-	public AnimationFrame getAnimationImage(FigureInfo info, RoomInfo roomInfo) {
+	public synchronized AnimationFrame getAnimationImage(FigureInfo info, RoomInfo roomInfo) {
 		Queue<AnimationTask> queue = singleQueue.get(roomInfo);
 		if (currentTask == null) {
 			if (queue != null && !queue.isEmpty()) {
@@ -63,7 +63,7 @@ public class AnimationManager {
 		return null;
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room, String text) {
+	public synchronized void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room, String text) {
 		Queue<AnimationTask> queue = singleQueue.get(room);
 		if(queue == null) {
 			queue = new LinkedList<>();

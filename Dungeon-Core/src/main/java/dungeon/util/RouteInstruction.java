@@ -40,7 +40,7 @@ public class RouteInstruction {
 
 		North(1), East(2), South(3), West(4);
 		
-		private int val;
+		private final int val;
 		Direction(int val) {this.val = val;}
 
 		public int getValue() {

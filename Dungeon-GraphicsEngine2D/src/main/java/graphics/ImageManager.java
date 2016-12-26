@@ -1156,7 +1156,7 @@ public class ImageManager {
 		if(monsterAnimationMap.containsKey(monsterClass)) {
 			AnimationSetDirections animationSetDirections = monsterAnimationMap.get(monsterClass).get(motion);
 			if(animationSetDirections != null) {
-				return animationSetDirections.get(direction.getValue());
+				return animationSetDirections.get(direction.getValue()-1);
 			} else {
 				Log.severe("No animation set found for monster class: "+monsterClass+ " and motion: "+motion);
 				return null;
