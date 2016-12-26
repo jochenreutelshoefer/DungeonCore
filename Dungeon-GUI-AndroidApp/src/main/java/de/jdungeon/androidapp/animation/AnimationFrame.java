@@ -61,10 +61,6 @@ public class AnimationFrame {
 		this.to = to;
 	}
 
-	public double getCurrentProgress() {
-		return currentProgress;
-	}
-
 	public JDImageLocated getLocatedImage(int roomOffsetX, int roomOffsetY, int figureSizeX, int figureSizeY, int roomSize) {
 		JDPoint positionFromOffset = GraphicObjectRenderer.getPositionCoordinates(from, roomSize);
 		JDPoint positionToOffset = GraphicObjectRenderer.getPositionCoordinates(to, roomSize);

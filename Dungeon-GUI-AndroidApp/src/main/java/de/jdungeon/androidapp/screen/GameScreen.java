@@ -40,6 +40,8 @@ import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.JDungeonApp;
 import de.jdungeon.androidapp.animation.AnimationManager;
+import de.jdungeon.androidapp.animation.DefaultAnimationTask;
+import de.jdungeon.androidapp.animation.DelayAnimationTask;
 import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GameOverView;
@@ -807,6 +809,8 @@ public class GameScreen extends Screen {
 		zoomToSize(30, SCALE_FIGHT_MODE);
 	}
 
+
+
 	class GraphicObjectComparator implements Comparator<GraphicObject> {
 
 		private static final int FLOOR = 0;
@@ -875,20 +879,45 @@ public class GameScreen extends Screen {
 		this.showNewTextPercept(s);
 	}
 
+	public void clearFigureAnimatation(FigureInfo figure) {
+		AnimationManager.getInstance().clearFigure(figure);
+	}
+
 	public void startAnimation(AnimationSet ani, FigureInfo info) {
-		startAnimation(ani, info, null, null, info.getRoomInfo(), null);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), null, false, false);
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info,Position.Pos from, Position.Pos to) {
-		startAnimation(ani, info, from ,to ,info.getRoomInfo(),null);
+		startAnimation(ani, info, from ,to ,info.getRoomInfo(),null, false, false);
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text);
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, false);
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room, String text) {
-		AnimationManager.getInstance().startAnimation(ani, info, from, to, room, text);
+	public void startAnimationDelayed(AnimationSet ani, FigureInfo info, String text) {
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, false);
+	}
+
+	public void startAnimationUrgent(AnimationSet ani, FigureInfo info, String text) {
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, true);
+	}
+
+	public void startAnimationUrgent(AnimationSet ani, FigureInfo fig, Position.Pos from, Position.Pos to) {
+		startAnimation(ani, fig, from, to , fig.getRoomInfo(), null, true, true);
+	}
+
+	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text) {
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true);
+	}
+
+
+	public void startAnimation(AnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent) {
+		DefaultAnimationTask task = new DefaultAnimationTask(ani,
+				text, figure, from, to, room);
+		task.setUrgent(urgent);
+
+		AnimationManager.getInstance().startAnimation(task, figure, text, delayed);
 	}
 
 	public Hero getHero() {
@@ -967,8 +996,7 @@ public class GameScreen extends Screen {
 	}
 
 	public void clearAnimationManager() {
-		AnimationManager.getInstance().clear();
-
+		AnimationManager.getInstance().clearAll();
 	}
 
 	public void setFigure(FigureInfo f) {

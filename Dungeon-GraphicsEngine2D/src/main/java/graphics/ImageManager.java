@@ -566,11 +566,10 @@ public class ImageManager {
 
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern, int cnt) {
-		System.gc();
 		AnimationSet[] set = new AnimationSet[4];
 		for (int i = 0; i < 4; i++) {
 			set[i] = new AnimationSet(loadArray(a, path, pattern, i + 1, cnt),
-					getArray(35, cnt));
+					getArray(55, cnt));
 		}
 		return new AnimationSetDirections(set);
 	}

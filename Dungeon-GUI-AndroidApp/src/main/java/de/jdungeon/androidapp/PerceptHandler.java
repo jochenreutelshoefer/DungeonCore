@@ -184,7 +184,7 @@ public class PerceptHandler {
 		FigureInfo fig = p.getFigure();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 		if (set != null) {
-			screen.startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()));
+			screen.startAnimationUrgent(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()));
 		}
 	}
 
@@ -212,6 +212,10 @@ public class PerceptHandler {
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if (set != null) {
+			// clear old queued animations if there are some
+			screen.clearFigureAnimatation(fig);
+
+			// start "walk in" animation
 			screen.startAnimation(set, fig);
 		}
 
@@ -294,7 +298,7 @@ public class PerceptHandler {
 			int damage = p.getDamage();
 			AnimationSet set = AnimationUtils.getFigure_been_hit(victim);
 			if (set != null) {
-				screen.startAnimation(set, victim, "-" + damage);
+				screen.startAnimationDelayedUrgent(set, victim, "-" + damage);
 			}
 		}
 	}

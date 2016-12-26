@@ -149,13 +149,8 @@ public abstract class FigureInfo extends InfoEntity {
 	public PositionInRoomInfo getPos() {
 		int vis = map.getVisibilityStatus(f.getLocation());
 		if(vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			Position p = f.getPos();
-			
-			//System.out.println("passt! "+ p.toString());
-			
-			return new PositionInRoomInfo(f.getPos(),map);
+			return new PositionInRoomInfo(f.getPos(), map);
 		}else {
-			//System.out.println("scheisse wars!");
 			return null;
 		}
 	}

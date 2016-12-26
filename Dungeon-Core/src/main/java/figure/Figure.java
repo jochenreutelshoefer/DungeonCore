@@ -717,8 +717,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	public SlapResult getSlap(Slap s) {
 
 		Figure attacker = s.getActor();
-		lookDir = Position.getDirFromTo(getPositionInRoom(),
-				attacker.getPositionInRoom());
 
 		int eludeValue = calcEludeValue();
 
@@ -735,6 +733,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		int random = (int) (Math.random() * 100);
 
 		if (random < chance) {
+			// we change look-dir towards opponent if slap does not miss
+			lookDir = Position.getDirFromTo(getPositionInRoom(),
+					attacker.getPositionInRoom());
+
 			if (getBlock(s.getValueStandard())) {
 				p = new ShieldBlockPercept(this);
 				res = new SlapResult(allDmg, false, this, allDmg, s);
