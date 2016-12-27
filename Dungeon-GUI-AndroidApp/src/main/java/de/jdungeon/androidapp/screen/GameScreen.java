@@ -23,10 +23,12 @@ import dungeon.SpotInfo;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.percept.Percept;
 import game.InfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
+import graphics.JDImageProxy;
 import gui.Paragraphable;
 import item.ItemInfo;
 import log.Log;
@@ -39,9 +41,9 @@ import de.jdungeon.androidapp.AndroidScreenJDGUI;
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.JDungeonApp;
-import de.jdungeon.androidapp.animation.AnimationManager;
-import de.jdungeon.androidapp.animation.DefaultAnimationTask;
-import de.jdungeon.androidapp.animation.DelayAnimationTask;
+import animation.AnimationManager;
+import animation.DefaultAnimationTask;
+
 import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GameOverView;
@@ -70,8 +72,8 @@ import de.jdungeon.util.ScrollMotion;
 
 public class GameScreen extends Screen {
 
-	public static final int SCALE_FIGHT_MODE = 300;
-	private Dungeon derDungeon;
+	public static final int SCALE_FIGHT_MODE = 250;
+	private final Dungeon derDungeon;
 	private Hero hero = null;
 	private HeroInfo figureInfo;
 	private GraphicObjectRenderer dungeonRenderer;
@@ -884,40 +886,50 @@ public class GameScreen extends Screen {
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info) {
-		startAnimation(ani, info, null, null, info.getRoomInfo(), null, false, false);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), null, false, false, false, null, null);
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info,Position.Pos from, Position.Pos to) {
-		startAnimation(ani, info, from ,to ,info.getRoomInfo(),null, false, false);
+		startAnimation(ani, info, from ,to ,info.getRoomInfo(),null, false, false, false, null, null);
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, false);
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, false, false, null, null);
 	}
 
 	public void startAnimationDelayed(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, false);
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, false, false, null, null);
 	}
 
 	public void startAnimationUrgent(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, true);
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, true, false, null, null);
 	}
 
 	public void startAnimationUrgent(AnimationSet ani, FigureInfo fig, Position.Pos from, Position.Pos to) {
-		startAnimation(ani, fig, from, to , fig.getRoomInfo(), null, true, true);
+		startAnimation(ani, fig, from, to , fig.getRoomInfo(), null, false, true, false, null, null);
 	}
 
 	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true);
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true, false, null, null);
 	}
 
 
-	public void startAnimation(AnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent) {
+
+	public void startAnimationDelayedUrgentPostDelay(AnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true, true, percept, delayImage);
+	}
+
+	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
+		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true, false, percept, delayImage);
+	}
+
+
+	public void startAnimation(AnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent, boolean postDelay, Percept percept, JDImageProxy delayImage) {
 		DefaultAnimationTask task = new DefaultAnimationTask(ani,
 				text, figure, from, to, room);
 		task.setUrgent(urgent);
-
-		AnimationManager.getInstance().startAnimation(task, figure, text, delayed);
+		task.setPercept(percept);
+		AnimationManager.getInstance().startAnimation(task, figure, text, delayed, postDelay, delayImage);
 	}
 
 	public Hero getHero() {
@@ -995,7 +1007,21 @@ public class GameScreen extends Screen {
 		}
 	}
 
-	public void clearAnimationManager() {
+	public void flushAnimationManager() {
+		long timer = 0;
+		long timeStep = 20;
+		while(!AnimationManager.getInstance().isEmpty()) {
+			timer += 20;
+			if(timer > 3000) {
+				break;
+			}
+			try {
+				Thread.sleep(timeStep);
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		AnimationManager.getInstance().clearAll();
 	}
 

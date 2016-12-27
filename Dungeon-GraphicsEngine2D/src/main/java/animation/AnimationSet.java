@@ -6,14 +6,13 @@
  */
 package animation;
 
-import graphics.JDImageProxy;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import audio.AbstractAudioSet;
+import graphics.JDImageProxy;
 
 /**
  * @author Jochen
@@ -22,12 +21,11 @@ import audio.AbstractAudioSet;
 public class AnimationSet {
 
 	private final JDImageProxy[] images;
-	private JDImageProxy defaultImage = null;
 	private final int[] times;
 	private final int length;
 	private final int totalDuration;
 
-	private final Map<Integer, Set<AbstractAudioSet>> sounds = new HashMap<Integer, Set<AbstractAudioSet>>();
+	private final Map<Integer, Set<AbstractAudioSet>> sounds = new HashMap<>();
 
 	public Map<Integer, Set<AbstractAudioSet>> getSounds() {
 		return sounds;
@@ -126,14 +124,6 @@ public class AnimationSet {
 
 	public int getLength() {
 		return length;
-	}
-
-	public JDImageProxy getDefaultImage() {
-		return defaultImage;
-	}
-
-	public void setDefaultImage(JDImageProxy defaultImage) {
-		this.defaultImage = defaultImage;
 	}
 
 }

@@ -1,5 +1,6 @@
 package graphics;
 
+import animation.Motion;
 import dungeon.Position;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
@@ -64,20 +65,20 @@ public class GraphicObjectRenderer {
 	private final boolean memory = false;
 	private final boolean visCheat = false;
 
-	private final int roomSize;
+	private  int roomSize;
 
-	private final int ROOMSIZE_BY_36;
-	private final int ROOMSIZE_BY_24;
-	private final int ROOMSIZE_BY_20;
-	private final int ROOMSIZE_BY_12;
-	private final int ROOMSIZE_BY_10;
-	private final int ROOMSIZE_BY_16;
-	private final int ROOMSIZE_BY_8;
-	private final int ROOMSIZE_BY_6;
-	private final int ROOMSIZE_BY_5;
-	private final int ROOMSIZE_BY_3;
-	private final int ROOMSIZE_BY_2;
-	private final JDPoint[] positionCoord = new JDPoint[8];
+	private  int ROOMSIZE_BY_36;
+	private  int ROOMSIZE_BY_24;
+	private  int ROOMSIZE_BY_20;
+	private  int ROOMSIZE_BY_12;
+	private  int ROOMSIZE_BY_10;
+	private  int ROOMSIZE_BY_16;
+	private  int ROOMSIZE_BY_8;
+	private  int ROOMSIZE_BY_6;
+	private  int ROOMSIZE_BY_5;
+	private  int ROOMSIZE_BY_3;
+	private  int ROOMSIZE_BY_2;
+	private  JDPoint[] positionCoord = new JDPoint[8];
 
 	public static final double HERO_POINT_QUOTIENT_X = 2.2;
 
@@ -113,11 +114,15 @@ public class GraphicObjectRenderer {
 
 	public GraphicObject hero;
 
-	private final JDGUI gui;
+	private JDGUI gui;
 	private int posSize;
 
 	private JDPoint[] getPositionCoord() {
 		return positionCoord;
+	}
+
+	public GraphicObjectRenderer(int roomSize) {
+		init(roomSize);
 	}
 
 	public GraphicObjectRenderer(int roomSize, JDGUI gui) {
@@ -125,6 +130,11 @@ public class GraphicObjectRenderer {
 		if (gui == null) {
 			throw new NullPointerException();
 		}
+		init(roomSize);
+
+	}
+
+	private void init(int roomSize) {
 		this.roomSize = roomSize;
 		ROOMSIZE_BY_36 = RoomSize.by(36, roomSize);
 		ROOMSIZE_BY_24 = RoomSize.by(24, roomSize);
@@ -144,7 +154,6 @@ public class GraphicObjectRenderer {
 		for (int i = 0; i < positionCoord.length; i++) {
 			positionCoord[i] = getPositionCoordinates(Position.Pos.fromValue(i), roomSize);
 		}
-
 	}
 
 	public static int getPosSize(int roomSize) {
@@ -391,7 +400,7 @@ public class GraphicObjectRenderer {
 	private List<GraphicObject> drawDoors(RoomInfo r, int xcoord, int ycoord) {
 		DoorInfo[] doors = r.getDoors();
 		if (doors == null) {
-			return new LinkedList<GraphicObject>();
+			return new LinkedList<>();
 		}
 		List<GraphicObject> roomDoors = new LinkedList<GraphicObject>();
 		if (doors[0] != null) {
@@ -582,7 +591,7 @@ public class GraphicObjectRenderer {
 	}
 
 
-	private GraphicObject drawAMonster(MonsterInfo m, JDPoint p) {
+	private static GraphicObject drawAMonster(MonsterInfo m, JDPoint p, int roomSize) {
 
 		JDDimension figureInfoSize = getFigureInfoSize(m, roomSize);
 		int sizeX = figureInfoSize.getWidth();
@@ -599,7 +608,7 @@ public class GraphicObjectRenderer {
 			}
 		}
 
-		int mouseSize = ROOMSIZE_BY_5;
+		int mouseSize = roomSize / 5;
 		return new JDGraphicObject(ob, m, rect, JDColor.WHITE, new JDRectangle(
 				p.getX() - mouseSize / 2, p.getY() - mouseSize / 2, mouseSize,
 				mouseSize));
@@ -653,7 +662,7 @@ public class GraphicObjectRenderer {
 
 			GraphicObject gr = drawAMonster(m, new JDPoint(
 					getPositionCoordModified(position).getX() + xcoord,
-					getPositionCoordModified(position).getY() + ycoord));
+					getPositionCoordModified(position).getY() + ycoord), roomSize);
 			if (i >= 8) {
 				break;
 			}
@@ -875,49 +884,45 @@ public class GraphicObjectRenderer {
 		JDRectangle rect = new JDRectangle(x + xpos - (xHeroSize / 2), y + ypos
 				- (yHeroSize / 2), xHeroSize, yHeroSize);
 
+
+
+		JDImageLocated im = getImage(info, rect);
+		return new JDGraphicObject(im, info, rect, JDColor.WHITE,
+				getHalfSizeRect(rect));
+	}
+
+	private JDImageLocated getImage(HeroInfo info, JDRectangle rect) {
 		int code = info.getHeroCode();
 		RouteInstruction.Direction direction = info.getLookDirection();
 		JDImageLocated im = null;
-		if (code == Hero.HEROCODE_WARRIOR) {
-			if (info.isDead().booleanValue()
-			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
-				im = new JDImageLocated(ImageManager.warrior_tipping_over.get(
-						direction.getValue() - 1).getImages()[ImageManager.warrior_tipping_over
-						.get(direction.getValue() - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageLocated(ImageManager.warriorImage[direction.getValue() - 1],
-						rect);
+		JDImageProxy imageProxy = null;
+		if(info.isDead()) {
+			AnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), Motion.TippingOver, RouteInstruction.Direction
+					.fromInteger(info.getLookDirection().getValue()));
+			// we take the last image from the tipping over animation
+			if(animationSet == null) {
+				Log.warning("No image found for dead "+info.toString());
+				return null;
 			}
-		} else if (code == Hero.HEROCODE_HUNTER) {
-			if (info.isDead().booleanValue()
-			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
-				im = new JDImageLocated(ImageManager.thief_tipping_over.get(
-						direction.getValue() - 1).getImages()[ImageManager.thief_tipping_over
-						.get(direction.getValue() - 1).getLength() - 1], rect);
+			imageProxy = animationSet.getImagesNr(animationSet.getLength() - 1);
+
+		} else {
+			Motion motion = null;
+			if(info.getRoomInfo().fightRunning()) {
+				motion = Motion.Slaying;
 			} else {
-				im = new JDImageLocated(ImageManager.thiefImage[direction.getValue() - 1], rect);
+				motion = Motion.Walking;
 			}
-		} else if (code == Hero.HEROCODE_DRUID) {
-			if (info.isDead().booleanValue()
-			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
-				im = new JDImageLocated(ImageManager.druid_tipping_over.get(
-						direction.getValue() - 1).getImages()[ImageManager.druid_tipping_over
-						.get(direction.getValue() - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageLocated(ImageManager.druidImage[direction.getValue() - 1], rect);
+			AnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), motion, RouteInstruction.Direction
+					.fromInteger(info.getLookDirection().getValue()));
+			if(animationSet == null) {
+				Log.warning("No image found for motion "+motion + " (info.toString()+");
+				return null;
 			}
-		} else if (code == Hero.HEROCODE_MAGE) {
-			if (info.isDead().booleanValue()
-			/* && !gui.currentAnimationThreadRunning(info.getRoomInfo()) */) {
-				im = new JDImageLocated(ImageManager.mage_tipping_over.get(
-						direction.getValue() - 1).getImages()[ImageManager.mage_tipping_over
-						.get(direction.getValue() - 1).getLength() - 1], rect);
-			} else {
-				im = new JDImageLocated(ImageManager.mageImage[direction.getValue() - 1], rect);
-			}
+			imageProxy = animationSet.getImagesNr(0);
 		}
-		return new JDGraphicObject(im, info, rect, JDColor.WHITE,
-				getHalfSizeRect(rect));
+		im = new JDImageLocated(imageProxy, rect);
+		return im;
 	}
 
 	private JDRectangle getHalfSizeRect(JDRectangle r) {

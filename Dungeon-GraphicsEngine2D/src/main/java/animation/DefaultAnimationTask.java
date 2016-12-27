@@ -1,17 +1,20 @@
-package de.jdungeon.androidapp.animation;
+package animation;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import animation.AnimationFrame;
 import animation.AnimationSet;
+import animation.AnimationTask;
 import audio.AbstractAudioSet;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import figure.percept.Percept;
 import graphics.JDImageProxy;
 
 import de.jdungeon.game.Image;
@@ -25,6 +28,16 @@ public class DefaultAnimationTask implements AnimationTask {
 	boolean wasStarted = false;
 	private final Position.Pos from;
 	private final RoomInfo room;
+
+	public Percept getPercept() {
+		return percept;
+	}
+
+	public void setPercept(Percept percept) {
+		this.percept = percept;
+	}
+
+	private Percept percept;
 
 	public void setUrgent(boolean urgent) {
 		this.urgent = urgent;

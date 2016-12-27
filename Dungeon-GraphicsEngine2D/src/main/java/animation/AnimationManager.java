@@ -1,12 +1,19 @@
-package de.jdungeon.androidapp.animation;
+package animation;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
+import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import graphics.JDImageProxy;
+
+import de.jdungeon.game.Image;
 
 public class AnimationManager {
 
@@ -68,48 +75,85 @@ public class AnimationManager {
 		return null;
 	}
 
-	public synchronized void startAnimation(AnimationTask task, FigureInfo figure, String text, boolean delayed) {
+	public synchronized boolean isEmpty() {
+		for (FigureInfo figureInfo : animations.keySet()) {
+			Queue<AnimationTask> queue = animations.get(figureInfo);
+			if(queue != null && !queue.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public synchronized void startAnimation(AnimationTask task, FigureInfo figure, String text, boolean delayed, boolean postDelayed, JDImageProxy delayImage) {
 		Queue<AnimationTask> queue = animations.get(figure);
 		if(queue == null) {
 			queue = new LinkedList<>();
 			animations.put(figure, queue);
 		}
-		if(multipleAnimationsRunning()) {
+
+		if(otherAnimationRunning(figure) && !delayed) {
 			// when much is going on, we delay a little,
 			// as otherwise everything happens synchronously
 			// and the time order is not visible to the user any more
-			queue.add(new DelayAnimationTask(350));
+			delay(figure, delayImage, queue, 400);
 		}
 		if(delayed) {
-			queue.add(new DelayAnimationTask(600));
+			// explicit (long) delay
+			queue.add(new DelayAnimationTask(500));
 		}
 		if(task.isUrgent()) {
 			// we clear the queue to jump to this animation instantly after the current has been finished
 			queue.clear();
+			if(delayed) {
+				// explicit (long) delay
+				delay(figure, delayImage, queue, 500);
+			}
 		}
 
 		queue.add(task);
+
+		if(postDelayed) {
+			queue.add(new DelayAnimationTask(700));
+		}
 	}
 
-	private boolean multipleAnimationsRunning() {
-		int parallelAnis = 0;
+	private void delay(FigureInfo figure, JDImageProxy delayImage, Queue<AnimationTask> queue, int duration) {
+		if(delayImage == null) {
+			queue.add(new DelayAnimationTask(duration));
+		} else {
+			queue.add(new DelayImageTask(duration, delayImage, Position.Pos.fromValue(figure.getPositionInRoomIndex())));
+		}
+	}
+
+	private boolean otherAnimationRunning(FigureInfo figure) {
 		for (FigureInfo figureInfo : animations.keySet()) {
+			if(figure.equals(figureInfo)) continue;
 			Queue<AnimationTask> queue = animations.get(figureInfo);
 			if(queue != null && !queue.isEmpty()) {
-				parallelAnis++;
-				if(parallelAnis >= 2) {
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
 	}
 
-	public void clearAll() {
+	public synchronized void clearAll() {
 		this.animations.clear();
 	}
 
-	public void clearFigure(FigureInfo figure) {
+	public synchronized void clearFigure(FigureInfo figure) {
 		this.animations.remove(figure);
+	}
+
+	public synchronized Collection<FigureInfo> getDeadFigures() {
+		Collection<FigureInfo> result = new HashSet<>();
+		for (FigureInfo figureInfo : animations.keySet()) {
+			Boolean dead = figureInfo.isDead();
+			Queue<AnimationTask> animationTasks = animations.get(figureInfo);
+			if(dead != null && dead && animationTasks != null && !animationTasks.isEmpty()) {
+				result.add(figureInfo);
+			}
+		}
+		return result;
 	}
 }

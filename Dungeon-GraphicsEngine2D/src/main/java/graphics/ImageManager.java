@@ -569,7 +569,7 @@ public class ImageManager {
 		AnimationSet[] set = new AnimationSet[4];
 		for (int i = 0; i < 4; i++) {
 			set[i] = new AnimationSet(loadArray(a, path, pattern, i + 1, cnt),
-					getArray(55, cnt));
+					getArray(45, cnt));
 		}
 		return new AnimationSetDirections(set);
 	}

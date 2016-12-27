@@ -12,12 +12,13 @@ import figure.FigureInfo;
 
 public class FightEndedPercept extends Percept {
 
-	private List<FigureInfo> figures;
+	private final List<FigureInfo> figures;
 
 	public FightEndedPercept(List<FigureInfo> figures) {
 		this.figures = figures;
 	}
 
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		return figures;
 	}

@@ -2,7 +2,11 @@ package de.jdungeon.androidapp;
 
 import java.util.List;
 
+import animation.Motion;
 import dungeon.Position;
+import dungeon.util.RouteInstruction;
+import graphics.ImageManager;
+import graphics.JDImageProxy;
 import text.Statement;
 import text.StatementManager;
 import animation.AnimationSet;
@@ -146,8 +150,18 @@ public class PerceptHandler {
 
 	private void handleFightEndedPercept(FightEndedPercept p) {
 		newStatement(StatementManager.getStatement(p));
-		screen.clearAnimationManager();
-		screen.exitFightMode();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				screen.exitFightMode();
+			}
+		}).start();
 	}
 
 	private void handleFleePercept(FleePercept p) {
@@ -230,21 +244,24 @@ public class PerceptHandler {
 	private void handleDiePercept(DiePercept p) {
 		FigureInfo deadFigure = p.getFigure();
 
-		int damage = p.getDamage();
 		AnimationSet set = AnimationUtils.getFigure_tipping_over(deadFigure);
 		if (set != null) {
+			int damage = p.getDamage();
+			String text = null;
 			if (damage != -1) {
-				screen.startAnimation(set, deadFigure, "-" + damage);
-			} else {
-				screen.startAnimation(set, deadFigure);
+				text = "-" + damage;
 			}
+			AnimationSet animationSet = ImageManager.getAnimationSet(deadFigure, Motion.Walking, deadFigure.getLookDirection());
+			JDImageProxy im = null;
+			if(animationSet != null) {
+				im = animationSet.getImagesNr(0);
+			}
+			screen.startAnimationUrgent(set, deadFigure, text);
 		}
-
 	}
 
 	private void handleTumblingPercept(TumblingPercept p) {
 		newStatement(StatementManager.getStatement(p, figure));
-
 	}
 
 	private void handleMissPercept(MissPercept p) {

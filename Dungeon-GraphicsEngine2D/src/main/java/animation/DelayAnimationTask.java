@@ -1,4 +1,7 @@
-package de.jdungeon.androidapp.animation;
+package animation;
+
+import animation.AnimationFrame;
+import animation.AnimationTask;
 
 /**
  * An animation tasks that does not show any animation,
@@ -8,9 +11,9 @@ package de.jdungeon.androidapp.animation;
  */
 public class DelayAnimationTask implements AnimationTask {
 
-	private long startTime;
-	private boolean started = false;
-	private long duration;
+	protected long startTime;
+	protected boolean started = false;
+	private final long duration;
 
 	public DelayAnimationTask(long duration) {
 		this.duration = duration;

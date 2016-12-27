@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.animation;
+package animation;
 
 /**
  *

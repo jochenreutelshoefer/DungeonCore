@@ -1184,10 +1184,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	public int getKilled(int damage) {
 		dead = true;
 
-		Percept p = new DiePercept(this, this.getRoom(), damage);
-		this.getRoom().distributePercept(p);
-		pos.figureLeaves();
-		// while(game.getGui().getCurrent() != null) {
 		try {
 			Thread.sleep(600);
 		} catch (Exception e) {
@@ -1197,6 +1193,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 			getRoom().addItems(items, null);
 		}
 
+		pos.figureLeaves();
 		Figure.removeFigure(this);
 		this.getRoom().figureLeaves(this);
 

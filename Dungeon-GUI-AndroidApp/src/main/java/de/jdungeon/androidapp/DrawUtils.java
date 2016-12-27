@@ -1,22 +1,25 @@
 package de.jdungeon.androidapp;
 
+import dungeon.PositionInRoomInfo;
 import figure.FigureInfo;
 import game.InfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
+import graphics.ImageManager;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 import graphics.util.JDRectangle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import de.jdungeon.androidapp.animation.AnimationFrame;
-import de.jdungeon.androidapp.animation.AnimationManager;
+import animation.AnimationFrame;
+import animation.AnimationManager;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Graphics;
@@ -56,12 +59,16 @@ public class DrawUtils {
 						FigureInfo figureInfo = (FigureInfo) clickedObject;
 						AnimationFrame frame = AnimationManager.getInstance()
 								.getAnimationImage(figureInfo, roomInfo);
-						// TODO: frame should deliver a LocatedImage with offset of moves
+
 						if (frame != null) {
 							JDImageProxy<?> animationImage = frame.getImage();
 							JDDimension figureInfoSize = GraphicObjectRenderer.getFigureInfoSize(figureInfo, roomSize);
 							// we override the image variable here
-							image = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
+							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
+							if(locatedImage != null) {
+								// might be null if that room is not visible
+								image = locatedImage;
+							}
 							im = (Image) animationImage.getImage();
 							if (frame.getText() != null) {
 								showText = frame.getText();
@@ -153,11 +160,47 @@ public class DrawUtils {
 				}
 			}
 		}
+
+		// some hack to get just killed figures painted (dying animation and dead bodies)
+		// this is necessary as they have already been removed from the model after their death instantly
+		// and hence are not called for being painted any more
+		// here we just flush their queued animations
+		Collection<FigureInfo> deadFigures = AnimationManager.getInstance().getDeadFigures();
+		for (FigureInfo deadFigure : deadFigures) {
+			if(roomInfo.equals(deadFigure.getRoomInfo())) {
+				AnimationFrame animationImage = AnimationManager.getInstance()
+						.getAnimationImage(deadFigure, deadFigure.getRoomInfo());
+				JDDimension figureInfoSize = GraphicObjectRenderer.getFigureInfoSize(deadFigure, roomSize);
+				int sizeX = figureInfoSize.getWidth();
+				int sizeY = figureInfoSize.getHeight();
+				GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
+				JDPoint positionCoordModified = renderer.getPositionCoordModified(deadFigure.getPositionInRoomIndex());
+				JDPoint p = new JDPoint(
+						positionCoordModified.getX() + roomOffsetX,
+						positionCoordModified.getY() + roomOffsetY);
+				JDRectangle destinationRectangle = new JDRectangle(new JDPoint(p.getX() - (sizeX / 2), p.getY() - (sizeY / 2)), sizeX, sizeY);
+				JDImageLocated locatedImage = new JDImageLocated(ImageManager.getImage(deadFigure, deadFigure.getLookDirection()), destinationRectangle);
+				if(animationImage != null) {
+					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
+				}
+				Image im = (Image) locatedImage.getImage().getImage();
+				g.drawScaledImage(im,
+						destinationRectangle.getX()
+								- viewportPosition.getX(),
+						destinationRectangle.getY()
+								- viewportPosition.getY(),
+						destinationRectangle.getWidth(),
+						destinationRectangle.getHeight(), 0, 0,
+						im.getWidth(), im.getHeight());
+			}
+		}
+		/*
 		Paint p = new Paint();
 		p.setColor(Color.RED);
 		g.drawString(roomInfo.getNumber().getX() + "/"
 				+ roomInfo.getNumber().getY(), roomOffsetX + roomSize / 2,
 				roomOffsetY + roomSize / 2, p);
+				*/
 	}
 
 	private static void drawHighlightBox(Graphics g, JDPoint viewportPosition,
@@ -217,7 +260,7 @@ public class DrawUtils {
 			RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
 		List<GraphicObject> graphicObjectsForRoom = screen.getDungeonRenderer()
 				.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
-						roomOffsetY, new ArrayList<Object>());
+						roomOffsetY, new ArrayList<>());
 		clearNulls(graphicObjectsForRoom);
 		screen.getDrawnObjects()
 				.put(roomInfo.getPoint(), graphicObjectsForRoom);
