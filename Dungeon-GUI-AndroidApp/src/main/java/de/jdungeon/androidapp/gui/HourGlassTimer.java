@@ -1,7 +1,12 @@
 package de.jdungeon.androidapp.gui;
 
+import event.EventManager;
 import util.JDDimension;
+
+import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
@@ -12,9 +17,8 @@ public class HourGlassTimer extends AbstractGUIElement {
 
 	private final HeroInfo hero;
 
-	public HourGlassTimer(JDPoint position, JDDimension dimension,
-			GameScreen screen, HeroInfo hero) {
-		super(position, dimension, screen);
+	public HourGlassTimer(JDPoint position, JDDimension dimension, StandardScreen screen, HeroInfo hero, Game game) {
+		super(position, dimension, screen, game);
 		this.hero = hero;
 	}
 
@@ -25,7 +29,8 @@ public class HourGlassTimer extends AbstractGUIElement {
 
 	@Override
 	public void handleTouchEvent(TouchEvent touch) {
-		screen.getControl().endRound();
+		EventManager.getInstance().fireEvent(new EndRoundEvent());
+
 	}
 
 	@Override
@@ -34,17 +39,17 @@ public class HourGlassTimer extends AbstractGUIElement {
 		int actionPoints = hero.getActionPoints();
 		if (actionPoints == 0) {
 			image = GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_EMPTY,
-					screen.getGame());
+					getGame());
 			// } else if (actionPoints == 1) {
 			// image =
 			// GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_THIRD,
 			// screen.getGame());
 		} else if (actionPoints == 1) {
 			image = GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_HALF,
-					screen.getGame());
+					getGame());
 		} else if (actionPoints == 2) {
 			image = GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_FULL,
-					screen.getGame());
+					getGame());
 		}
 		if (image != null) {
 

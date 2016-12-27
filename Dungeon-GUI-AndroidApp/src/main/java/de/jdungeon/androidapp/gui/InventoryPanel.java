@@ -1,8 +1,14 @@
 package de.jdungeon.androidapp.gui;
 
+import event.EventManager;
 import item.equipment.EquipmentItemInfo;
 import util.JDDimension;
 import android.view.MotionEvent;
+
+import de.jdungeon.androidapp.event.ClickType;
+import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
+import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
+import de.jdungeon.androidapp.event.ShowItemInfoEvent;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -60,7 +66,7 @@ public class InventoryPanel extends SlidingGUIElement {
 
 	public InventoryPanel(HeroInfo hero, GameScreen screen) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
-				(size.getWidth() * -1) + 20, yPosition), screen);
+				(size.getWidth() * -1) + 20, yPosition), screen, screen.getGame());
 		this.hero = hero;
 
 		helmet1 = new InventoryBox(new JDPoint(helmetX, helmetY),
@@ -265,16 +271,14 @@ public class InventoryPanel extends SlidingGUIElement {
 		}
 
 		if (item != null) {
-			this.getScreen().setInfoEntity(item);
+			EventManager.getInstance().fireEvent(new ShowInfoEntityEvent(item));
 
 			if (type != -1) {
-				if (action.equals(ItemActionType.change)) {
-					this.getScreen().getControl()
-							.inventoryItemDoubleClicked(type, item);
+				if (action == ItemActionType.change) {
+					EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Double));
 				}
-				if (action.equals(ItemActionType.drop)) {
-					this.getScreen().getControl()
-							.inventoryItemLongClicked(type, item);
+				if (action == ItemActionType.drop) {
+					EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Long));
 				}
 			}
 		}
@@ -325,7 +329,6 @@ public class InventoryPanel extends SlidingGUIElement {
 	@Override
 	public void update(float time) {
 		super.update(time);
-
 		/*
 		 * update box items
 		 */

@@ -84,7 +84,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		if (image != null) {
 			return image;
 		}
-		image = SkillImageManager.getSkillImage(a, screen);
+		image = SkillImageManager.getSkillImage(a, screen.getGame());
 		imageCache.put(a.getObject(), image);
 		return image;
 	}

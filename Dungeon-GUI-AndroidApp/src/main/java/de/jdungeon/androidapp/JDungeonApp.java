@@ -19,7 +19,7 @@ import user.DefaultDungeonSession;
 import de.jdungeon.androidapp.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.start.HeroCategorySelectedEvent;
-import de.jdungeon.androidapp.screen.start.StartScreen;
+import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
 import de.jdungeon.game.Screen;
 import de.jdungeon.implementation.AndroidGame;
 import de.jdungeon.user.User;
@@ -115,7 +115,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	            Assets.load(this);
 	            firstTimeCreate = false;
 	        }
-		return new StartScreen(this);
+		return new HeroSelectionScreen(this);
 	}
 
 }

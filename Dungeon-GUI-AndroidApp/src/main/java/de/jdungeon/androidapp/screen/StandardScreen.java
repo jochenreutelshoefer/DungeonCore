@@ -6,6 +6,7 @@ import java.util.ListIterator;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import dungeon.JDPoint;
 
 import de.jdungeon.androidapp.gui.GUIElement;
@@ -93,6 +94,22 @@ public abstract class StandardScreen extends Screen {
 		}
 
 	}
+
+	public JDPoint normalizeRawCoordinates(MotionEvent longPressEvent) {
+
+		/*
+		 * for some reason these coordinates need to be normalized from scale
+		 * 1915/1100
+		 */
+
+		int x = (int) (longPressEvent.getRawX() * (game.getScreenWidth()) / 1915);
+		// int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) /
+		// 1100);
+		int y = (int) (longPressEvent.getRawY() * (game.getScreenHeight()) / 1000);
+
+		return new JDPoint(x, y);
+	}
+
 
 
 	@Override

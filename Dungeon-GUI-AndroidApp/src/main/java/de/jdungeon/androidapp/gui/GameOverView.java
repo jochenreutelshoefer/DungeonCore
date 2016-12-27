@@ -1,19 +1,21 @@
 package de.jdungeon.androidapp.gui;
 
-import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
-import de.jdungeon.androidapp.screen.GameScreen;
-import de.jdungeon.androidapp.screen.start.StartScreen;
+import dungeon.JDPoint;
+import util.JDDimension;
+
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
-import dungeon.JDPoint;
 
 public class GameOverView extends AbstractGUIElement {
 
 	public GameOverView(JDPoint position, JDDimension dimension,
-			GameScreen screen) {
-		super(position, dimension, screen);
+						StandardScreen screen, Game game) {
+		super(position, dimension, screen, game);
 	}
 
 	private boolean show = false;
@@ -29,8 +31,7 @@ public class GameOverView extends AbstractGUIElement {
 
 	@Override
 	public void handleTouchEvent(TouchEvent touch) {
-		this.getScreen().getGame()
-				.setScreen(new StartScreen(this.getScreen().getGame()));
+		getGame().setScreen(new HeroSelectionScreen(getGame()));
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class GameOverView extends AbstractGUIElement {
 				textStartX, textStartRow + 4 * lineHeight, black);
 
 		g.drawString(
-"Scrittl, Tempest in the Aether and Ryzom Core,",
+				"Scrittl, Tempest in the Aether and Ryzom Core,",
 				textStartX, textStartRow + 5 * lineHeight, black);
 
 		g.drawString("yinakoSGA", textStartX, textStartRow + 6 * lineHeight,

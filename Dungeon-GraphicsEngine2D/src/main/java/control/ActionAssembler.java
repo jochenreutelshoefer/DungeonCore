@@ -41,9 +41,15 @@ import figure.hero.HeroInfo;
 
 public class ActionAssembler {
 
+	// TODO: refactor in a way that this ActionAssembler does not refer to JDGUIEngine2D but JDGUI
+	// then move to core classes
 	private JDGUIEngine2D gui;
 	private boolean useWithTarget = false;
 	private boolean spellMeta = false;
+
+	public ActionAssembler(JDGUIEngine2D gui) {
+		this.gui = gui;
+	}
 
 	public void wannaAttack(int index) {
 		wannaAttack(getFigure().getRoomInfo().getFigureInfos()

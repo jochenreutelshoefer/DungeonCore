@@ -2,6 +2,8 @@ package de.jdungeon.androidapp.gui;
 
 import util.JDDimension;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
@@ -13,8 +15,8 @@ public abstract class SlidingGUIElement extends AbstractGUIElement {
 	protected final JDPoint targetPos;
 
 	public SlidingGUIElement(JDPoint position, JDDimension dimension,
-			JDPoint targetPos, GameScreen screen) {
-		super(position, dimension, screen);
+							 JDPoint targetPos, StandardScreen screen, Game game) {
+		super(position, dimension, screen, game);
 		this.targetPos = targetPos;
 
 		this.slideOut();

@@ -1,35 +1,43 @@
 package de.jdungeon.androidapp;
 
+import event.Event;
+import event.EventListener;
+import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import shrine.ShrineInfo;
 import control.ActionAssembler;
+
+import de.jdungeon.androidapp.event.ClickType;
+import de.jdungeon.androidapp.event.EndRoundEvent;
+import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 
-public class Control {
+public class Control implements EventListener {
 
-	private final AndroidScreenJDGUI gui;
 	private final ActionAssembler actionAssembler;
+	private final FigureInfo figure;
 
 	public ActionAssembler getActionAssembler() {
 		return actionAssembler;
 	}
 
-	public Control(JDungeonApp game, AndroidScreenJDGUI gui) {
-		this.gui = gui;
-		actionAssembler = new ActionAssembler();
-		actionAssembler.setGui(gui);
-
+	public Control(FigureInfo figure, ActionAssembler actionAssembler) {
+		this.figure = figure;
+		this.actionAssembler = actionAssembler;
+		EventManager.getInstance().registerListener(this);
 	}
 
 	public void objectClicked(Object clickedObject, boolean doubleClick) {
@@ -93,14 +101,12 @@ public class Control {
 	}
 
 	private void handleFigureInfoClick(FigureInfo figure, boolean doubleClick) {
-		System.out.println("handleFigureClick: " + figure);
 		actionAssembler.monsterClicked(figure, doubleClick);
 
 	}
 
 	private void handleItemInfoClick(ItemInfo item, boolean doubleClick) {
 		actionAssembler.itemClicked(item, doubleClick);
-
 	}
 
 	public void inventoryItemDoubleClicked(int itemType, EquipmentItemInfo info) {
@@ -127,11 +133,11 @@ public class Control {
 	public InfoEntity getUniqueTargetEntity(
 			Class<? extends InfoEntity> targetClass) {
 		if (targetClass.equals(FigureInfo.class)) {
-			List<FigureInfo> figureInfos = gui.getFigure().getRoomInfo()
+			List<FigureInfo> figureInfos = figure.getRoomInfo()
 					.getFigureInfos();
 			if (figureInfos.size() == 2) {
 				// remove player
-				figureInfos.remove(gui.getFigure());
+				figureInfos.remove(figure);
 				// enemy remains
 				return figureInfos.get(0);
 			}
@@ -139,5 +145,31 @@ public class Control {
 
 		return null;
 
+	}
+
+	@Override
+	public Collection<Class<? extends Event>> getEvents() {
+		Collection<Class<? extends Event>> events = new ArrayList<>();
+		events.add(InventoryItemClickedEvent.class);
+		events.add(EndRoundEvent.class);
+		return events;
+	}
+
+	@Override
+	public void notify(Event event) {
+		if(event instanceof InventoryItemClickedEvent) {
+			InventoryItemClickedEvent e = ((InventoryItemClickedEvent)event);
+			if(e.getClick() == ClickType.Double) {
+				inventoryItemDoubleClicked(e.getType(), e.getItem());
+			}
+			if(e.getClick() == ClickType.Long) {
+				inventoryItemLongClicked(e.getType(), e.getItem());
+			}
+
+		}
+
+		if(event instanceof EndRoundEvent) {
+			endRound();
+		}
 	}
 }

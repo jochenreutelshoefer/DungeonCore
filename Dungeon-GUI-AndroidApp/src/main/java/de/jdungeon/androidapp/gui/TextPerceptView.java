@@ -26,7 +26,7 @@ public class TextPerceptView extends AbstractGUIElement {
 	private final Paint paint = new Paint();
 
 	public TextPerceptView(GameScreen screen) {
-		super(new JDPoint(200, -340), new JDDimension(600, 400), screen);
+		super(new JDPoint(200, -340), new JDDimension(600, 400), screen, screen.getGame());
 		paint.setColor(Color.LTGRAY);
 	}
 

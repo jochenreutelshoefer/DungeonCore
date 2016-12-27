@@ -1,9 +1,10 @@
 package de.jdungeon.androidapp.screen;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -11,7 +12,10 @@ import java.util.Map;
 import android.graphics.Color;
 import android.util.Pair;
 import android.view.MotionEvent;
+import animation.AnimationManager;
 import animation.AnimationSet;
+import animation.DefaultAnimationTask;
+import control.ActionAssembler;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
@@ -20,6 +24,9 @@ import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.SpotInfo;
+import event.Event;
+import event.EventListener;
+import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -40,10 +47,8 @@ import util.JDDimension;
 import de.jdungeon.androidapp.AndroidScreenJDGUI;
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
-import de.jdungeon.androidapp.JDungeonApp;
-import animation.AnimationManager;
-import animation.DefaultAnimationTask;
-
+import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
+import de.jdungeon.androidapp.event.ShowItemInfoEvent;
 import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GameOverView;
@@ -54,6 +59,7 @@ import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
+import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
@@ -66,22 +72,21 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.game.Screen;
 import de.jdungeon.user.Session;
 import de.jdungeon.util.ScrollMotion;
 
-public class GameScreen extends Screen {
+public class GameScreen extends StandardScreen implements EventListener {
+
 
 	public static final int SCALE_FIGHT_MODE = 250;
 	private final Dungeon derDungeon;
 	private Hero hero = null;
 	private HeroInfo figureInfo;
+
 	private GraphicObjectRenderer dungeonRenderer;
 
-	private final Map<JDPoint, List<GraphicObject>> drawnObjects = new HashMap<JDPoint, List<GraphicObject>>();
-
+	private final Map<JDPoint, List<GraphicObject>> drawnObjects = new HashMap<>();
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
-	private final List<GUIElement> guiElements = new LinkedList<GUIElement>();
 	private InfoPanel infoPanel;
 	private final TextPerceptView textPerceptView;
 	private GameOverView gameOverView = null;
@@ -105,14 +110,6 @@ public class GameScreen extends Screen {
 
 	private DefaultDungeonSession session;
 
-	/*
-	 * for developer mode only
-	 */
-	private JDPoint beacon = null;
-
-
-	private float beaconCounter = 0;
-
 	public GameScreen(Game game) {
 		super(game);
 
@@ -127,10 +124,10 @@ public class GameScreen extends Screen {
 		setSession(game);
 
 		this.hero = this.session.getCurrentHero();
-		this.gui = new AndroidScreenJDGUI(this);
-		control = new Control((JDungeonApp) game, gui);
-		hero.setControl(gui);
 		figureInfo = this.session.getHeroInfo();
+		this.gui = new AndroidScreenJDGUI(this);
+		hero.setControl(gui);
+		control = new Control(figureInfo, new ActionAssembler(gui));
 		initGUIElements();
 		this.session.startGame(gui);
 
@@ -141,6 +138,9 @@ public class GameScreen extends Screen {
 		scrollTo(heroRoomNumber, 100f);
 
 		resetDungeonRenderer();
+
+		// be event listener
+		EventManager.getInstance().registerListener(this);
 	}
 	private void setSession(Game game) {
 		Session session = game.getSession();
@@ -160,7 +160,7 @@ public class GameScreen extends Screen {
 		int quarterScreenX = (int) (game.getScreenWidth() * 0.25);
 		int halfScreenY = (int) (game.getScreenHeight() * 0.5);
 		infoPanel = new InfoPanel(new JDPoint(3 * quarterScreenX, 0),
-				new JDDimension(quarterScreenX, halfScreenY), this);
+				new JDDimension(quarterScreenX, halfScreenY), this, this.getGame());
 		this.guiElements.add(infoPanel);
 
 		/*
@@ -169,10 +169,10 @@ public class GameScreen extends Screen {
 		int posX = 22;
 		HealthBar healthView = new HealthBar(new JDPoint(posX, 5),
 				new JDDimension(160, 20), figureInfo, HealthBar.Kind.health,
-				this);
+				this, this.getGame());
 		this.guiElements.add(healthView);
 		HealthBar dustView = new HealthBar(new JDPoint(posX, 25),
-				new JDDimension(160, 20), figureInfo, HealthBar.Kind.dust, this);
+				new JDDimension(160, 20), figureInfo, HealthBar.Kind.dust, this, this.getGame());
 		this.guiElements.add(dustView);
 
 		/*
@@ -181,7 +181,7 @@ public class GameScreen extends Screen {
 		HourGlassTimer hourglass = new HourGlassTimer(new JDPoint(
 				game.getScreenWidth() - 50,
 				game.getScreenHeight() / 2 + 10), new JDDimension(36, 60),
-				this, figureInfo);
+				this, figureInfo, this.getGame());
 		this.guiElements.add(hourglass);
 
 		/*
@@ -189,7 +189,7 @@ public class GameScreen extends Screen {
 		 */
 		int selectedIndexItem = 16;
 		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, 780),
-				new JDDimension(400, 400), figureInfo, this,
+				new JDDimension(400, 400), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new ItemActivityItemProvider(figureInfo, this)),
 				selectedIndexItem, null);
@@ -200,7 +200,7 @@ public class GameScreen extends Screen {
 		 */
 		int selectedIndexSkills = 19;
 		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 780),
-				new JDDimension(400, 400), figureInfo, this,
+				new JDDimension(400, 400), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),
 				selectedIndexSkills,
@@ -216,7 +216,7 @@ public class GameScreen extends Screen {
 		/*
 		 * init inventory panel
 		 */
-		CharAttributeView charView = new CharAttributeView(figureInfo, this);
+		CharAttributeView charView = new CharAttributeView(figureInfo, this, this.getGame());
 		this.guiElements.add(charView);
 		/*
 		 * init game over view
@@ -227,7 +227,7 @@ public class GameScreen extends Screen {
 		int heightFifth = (height / 4);
 		gameOverView = new GameOverView(new JDPoint((width / 2) - widthFifth,
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
-				2 * heightFifth), this);
+				2 * heightFifth), this, this.getGame());
 		this.guiElements.add(gameOverView);
 	}
 
@@ -307,12 +307,6 @@ public class GameScreen extends Screen {
 			}
 		}
 
-		/*
-		 * paint beacon (dev-mode only)
-		 */
-		if (beacon != null) {
-			gr.drawRect(beacon.getX(), beacon.getY(), 5, 5, Color.RED);
-		}
 	}
 
 	private void drawWorld(Graphics gr) {
@@ -367,17 +361,6 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void update(float arg0) {
-
-		/*
-		 * beacon timer (for dev-mode only)
-		 */
-		if (beaconCounter > 0) {
-			beaconCounter -= arg0;
-			if (beaconCounter < 0) {
-				beaconCounter = 0;
-				this.beacon = null;
-			}
-		}
 
 		/*
 		 * trigger gui-elements
@@ -642,24 +625,6 @@ public class GameScreen extends Screen {
 		}
 	}
 
-	public JDPoint normalizeRawCoordinates(MotionEvent longPressEvent) {
-
-		/*
-		 * for some reason these coordinates need to be normalized from scale
-		 * 1915/1100
-		 */
-
-		int x = (int) (longPressEvent.getRawX() * (game.getScreenWidth()) / 1915);
-		// int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) /
-		// 1100);
-		int y = (int) (longPressEvent.getRawY() * (game.getScreenHeight()) / 1000);
-
-		JDPoint point = new JDPoint(x, y);
-		this.beacon = new JDPoint(point.getX(), point.getY());
-		this.beaconCounter = 300f;
-
-		return point;
-	}
 
 	private Pair<Float, Float> getCurrentViewCenterRoomCoordinates() {
 
@@ -729,9 +694,6 @@ public class GameScreen extends Screen {
 	private Object findClickedObject(JDPoint p) {
 
 		JDPoint screenLocation = new JDPoint(p.getX(), p.getY());
-
-		this.beaconCounter = 400f;
-		this.beacon = screenLocation;
 
 		JDPoint inGameLocation = new JDPoint(viewportPosition.getX()
 				+ screenLocation.getX(), viewportPosition.getY()
@@ -813,7 +775,7 @@ public class GameScreen extends Screen {
 
 
 
-	class GraphicObjectComparator implements Comparator<GraphicObject> {
+	static class GraphicObjectComparator implements Comparator<GraphicObject> {
 
 		private static final int FLOOR = 0;
 		private static final int SHRINE = 1;
@@ -1028,6 +990,21 @@ public class GameScreen extends Screen {
 	public void setFigure(FigureInfo f) {
 		this.figureInfo = (HeroInfo) f;
 
+	}
+
+	@Override
+	public Collection<Class<? extends Event>> getEvents() {
+		Collection<Class<? extends Event>> events = new ArrayList<>();
+		events.add(ShowInfoEntityEvent.class);
+		return events;
+	}
+
+	@Override
+	public void notify(Event event) {
+		if(event instanceof ShowInfoEntityEvent) {
+			Paragraphable infoEntity = ((ShowInfoEntityEvent) event).getInfoEntity();
+			setInfoEntity(infoEntity);
+		}
 	}
 
 }

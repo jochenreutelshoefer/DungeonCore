@@ -1,10 +1,14 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
+import event.EventManager;
 import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
-import de.jdungeon.androidapp.screen.GameScreen;
+
+import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
@@ -32,8 +36,8 @@ public class ItemWheel extends AbstractGUIElement {
 	private final int doubleImageHeight = defaultImageHeight * 2;
 	private final int backgroundPanelOffset = 7;
 	private final int doubleBackgroundPanelOffset = 2 * backgroundPanelOffset;
-	private final int screenWidth = screen.getScreenSize().getWidth();
-	private final int screenHeight = screen.getScreenSize().getHeight();
+	private final int screenWidth = getGame().getScreenWidth();
+	private final int screenHeight = getGame().getScreenHeight();
 	private final int screenPlusDefaultImageWidth = screenWidth
 			+ defaultImageWidth;
 	private final int screenPlusDefaultImageHeight = screenHeight
@@ -50,9 +54,9 @@ public class ItemWheel extends AbstractGUIElement {
 	private double startVelocityTenth;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
-			GameScreen screen, ItemWheelBindingSet binding, int selectedIndex,
-			Image background) {
-		super(position, dim, screen);
+					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
+					 Image background) {
+		super(position, dim, screen, game);
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
@@ -138,7 +142,7 @@ public class ItemWheel extends AbstractGUIElement {
 		markedPointIndex = i;
 		ItemWheelActivity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
-			this.getScreen().setInfoEntity(activity);
+			EventManager.getInstance().fireEvent(new ShowInfoEntityEvent(activity));
 		}
 	}
 

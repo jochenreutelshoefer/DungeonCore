@@ -3,6 +3,8 @@ package de.jdungeon.androidapp.gui;
 import util.JDDimension;
 import android.view.MotionEvent;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
@@ -11,14 +13,16 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	protected final JDPoint position;
 	protected final JDDimension dimension;
-	protected GameScreen screen = null;
+	protected StandardScreen screen = null;
+	protected Game game;
 
 	public AbstractGUIElement(JDPoint position, JDDimension dimension,
-			GameScreen screen) {
+			StandardScreen screen, Game game) {
 		super();
 		this.position = position;
 		this.dimension = dimension;
 		this.screen = screen;
+		this.game = game;
 	}
 
 	public AbstractGUIElement(JDPoint position, JDDimension dimension) {
@@ -36,7 +40,7 @@ public abstract class AbstractGUIElement implements GUIElement {
 	}
 
 	@Override
-	public GameScreen getScreen() {
+	public StandardScreen getScreen() {
 		return screen;
 	}
 
@@ -89,5 +93,11 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	}
 
+	public Game getGame() {
+		return game;
+	}
 
+	public void setGame(Game game) {
+		this.game = game;
+	}
 }

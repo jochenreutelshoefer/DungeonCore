@@ -7,6 +7,8 @@ import util.JDDimension;
 import android.graphics.Color;
 import android.graphics.Paint;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
 import dungeon.JDPoint;
@@ -15,6 +17,7 @@ import figure.hero.HeroInfo;
 public class CharAttributeView extends SlidingGUIElement {
 
 	private final HeroInfo info;
+	private final GameScreen screen;
 
 	private static final JDDimension size = new JDDimension(300, 360);
 
@@ -22,10 +25,11 @@ public class CharAttributeView extends SlidingGUIElement {
 
 	private final Paint black;
 
-	public CharAttributeView(HeroInfo info, GameScreen screen) {
+	public CharAttributeView(HeroInfo info, GameScreen screen, Game game) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
-				(size.getWidth() * -1) + 20, yPosition), screen);
+				(size.getWidth() * -1) + 20, yPosition), screen, game);
 		this.info = info;
+		this.screen = screen;
 		black = new Paint();
 		black.setColor(Color.BLACK);
 		black.setTextSize(12);

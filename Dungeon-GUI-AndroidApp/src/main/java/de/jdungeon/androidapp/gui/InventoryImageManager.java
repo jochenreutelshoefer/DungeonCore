@@ -16,12 +16,13 @@ import item.equipment.weapon.Wolfknife;
 import item.paper.Book;
 import item.paper.InfoScroll;
 import item.paper.Scroll;
-import de.jdungeon.androidapp.screen.GameScreen;
+
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
 public class InventoryImageManager {
 
-	public static Image getImage(ItemInfo item, GameScreen screen) {
+	public static Image getImage(ItemInfo item, Game game) {
 		if (item.getItemClass().equals(Sword.class)) {
 			return (Image) ImageManager.inventory_sword1.getImage();
 		}
@@ -56,33 +57,33 @@ public class InventoryImageManager {
 
 		if (item.getItemClass().equals(HealPotion.class)) {
 			return GUIImageManager.getImage(GUIImageManager.POTION,
-					screen.getGame());
+					game);
 		}
 		if (item.getItemClass().equals(AttrPotion.class)) {
 			return GUIImageManager.getImage(GUIImageManager.POTION_BLUE,
-					screen.getGame());
+					game);
 		}
 		if (Scroll.class.isAssignableFrom(item.getItemClass())) {
 			return GUIImageManager.getImage(GUIImageManager.SCROLL,
-					screen.getGame());
+					game);
 		}
 		if (item.getItemClass().equals(Book.class)) {
 			return GUIImageManager.getImage(GUIImageManager.BOOK,
-					screen.getGame());
+					game);
 		}
 
 		if (item.getItemClass().equals(InfoScroll.class)) {
 			return GUIImageManager.getImage(GUIImageManager.PARCHMENT,
-					screen.getGame());
+					game);
 		}
 
 		if (item.getItemClass().equals(Bunch.class)) {
 			return GUIImageManager.getImage(GUIImageManager.BUNCH,
-					screen.getGame());
+					game);
 		}
 
 		return GUIImageManager.getImage(GUIImageManager.NO_IMAGE,
-				screen.getGame());
+				game);
 	}
 
 }

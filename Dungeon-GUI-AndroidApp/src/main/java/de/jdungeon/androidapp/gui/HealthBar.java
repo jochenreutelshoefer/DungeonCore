@@ -2,6 +2,8 @@ package de.jdungeon.androidapp.gui;
 
 import util.JDDimension;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import dungeon.JDPoint;
@@ -20,8 +22,8 @@ public class HealthBar extends AbstractGUIElement {
 	};
 
 	public HealthBar(JDPoint position, JDDimension dimension, HeroInfo info,
-			Kind kind, GameScreen screen) {
-		super(position, dimension, screen);
+					 Kind kind, StandardScreen screen, Game game) {
+		super(position, dimension, screen, game);
 		this.figure = info;
 		this.kind = kind;
 	}

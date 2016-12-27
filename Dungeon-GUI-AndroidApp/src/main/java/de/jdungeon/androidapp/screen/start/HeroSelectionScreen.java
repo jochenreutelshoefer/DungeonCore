@@ -12,9 +12,9 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 
-public class StartScreen extends StandardScreen {
+public class HeroSelectionScreen extends StandardScreen {
 
-	public StartScreen(Game game) {
+	public HeroSelectionScreen(Game game) {
 		super(game);
 
 		RouteInstruction.Direction south = RouteInstruction.Direction.South;

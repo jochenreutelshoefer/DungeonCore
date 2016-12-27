@@ -44,7 +44,7 @@ public class ItemActivityItemProvider implements ItemWheelActivityProvider {
 		if (cachedImage != null) {
 			return cachedImage;
 		}
-		Image i = InventoryImageManager.getImage(item, screen);
+		Image i = InventoryImageManager.getImage(item, screen.getGame());
 		imageCache.put(itemClass, i);
 		return i;
 	}
