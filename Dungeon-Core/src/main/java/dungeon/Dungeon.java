@@ -3,19 +3,17 @@ package dungeon;
 import dungeon.util.InfoUnitUnwrapper;
 import event.Event;
 import event.EventManager;
-import event.GameOverEvent;
+import event.PlayerDiedEvent;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.monster.Monster;
-import game.DungeonGame;
 import game.Turnable;
 import event.EventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +58,6 @@ public class Dungeon implements Turnable, EventListener {
 				theDungeon[i][j] = new Room(i, j, this);
 			}
 		}
-		JDPoint.setPoints(points);
 	}
 
 	public Collection<Room> getAllRooms() {
@@ -73,7 +70,7 @@ public class Dungeon implements Turnable, EventListener {
 
 	public Dungeon(int x, int y, int xh, int yh) {
 		this(x, y);
-		heroPosition = JDPoint.getPoint(xh, yh);
+		heroPosition = new JDPoint(xh, yh);
 	}
 
 	public JDPoint getPoint(int x, int y) {
@@ -329,13 +326,13 @@ public class Dungeon implements Turnable, EventListener {
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {
 		List<Class<? extends Event>> events = new ArrayList<Class<? extends Event>>(1);
-		events.add(GameOverEvent.class);
+		events.add(PlayerDiedEvent.class);
 		return events;
 	}
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof GameOverEvent) {
+		if(event instanceof PlayerDiedEvent) {
 			this.gameOver = true;
 		}
 	}

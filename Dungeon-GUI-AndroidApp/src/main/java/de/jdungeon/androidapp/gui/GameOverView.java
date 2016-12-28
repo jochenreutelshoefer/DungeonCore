@@ -3,6 +3,8 @@ package de.jdungeon.androidapp.gui;
 import android.graphics.Color;
 import android.graphics.Paint;
 import dungeon.JDPoint;
+import event.EventManager;
+import event.PlayerDiedEvent;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.screen.StandardScreen;
@@ -31,7 +33,7 @@ public class GameOverView extends AbstractGUIElement {
 
 	@Override
 	public void handleTouchEvent(TouchEvent touch) {
-		getGame().setScreen(new HeroSelectionScreen(getGame()));
+		EventManager.getInstance().fireEvent(new PlayerDiedEvent());
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
 import item.quest.Rune;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ import gui.Paragraphable;
  * je nach Nuetzlichkeit, Seltenheit, Eigenschaften etc.
  *
  */
-public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Locatable {
+public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Locatable, Serializable {
 
 	public static final int ITEM_KEY_UNDEFINDED = -1;
 	public static final int ITEM_KEY_ATTRPOTION = 1;

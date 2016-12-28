@@ -260,9 +260,6 @@ public class Position extends DungeonWorldObject{
 	}
 
 	public void figureLeaves() {
-		if (figure != null) {
-			figure.resetScoutedRooms();
-		}
 		figure = null;
 	}
 

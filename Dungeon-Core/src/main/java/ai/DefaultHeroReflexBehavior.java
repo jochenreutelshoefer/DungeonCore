@@ -5,7 +5,7 @@ import figure.hero.Hero;
 
 public class DefaultHeroReflexBehavior extends AbstractReflexBehavior {
 
-	Hero h;
+	private final Hero h;
 	
 	public DefaultHeroReflexBehavior(Hero h) {
 		super(h);

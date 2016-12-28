@@ -21,4 +21,6 @@ public interface DungeonSession {
 	void notifyExit(LevelExit exit, Figure figure);
 
 	void initDungeon(DungeonFactory dungeon);
+
+	void revertHero();
 }

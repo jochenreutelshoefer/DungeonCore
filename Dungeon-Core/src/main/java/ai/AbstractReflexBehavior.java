@@ -1,11 +1,13 @@
 package ai;
 
+import java.io.Serializable;
+
 import figure.Figure;
 import figure.action.Action;
 import figure.action.AttackAction;
 import game.ActionSpecifier;
 
-public abstract class AbstractReflexBehavior implements ActionSpecifier {
+public abstract class AbstractReflexBehavior implements ActionSpecifier, Serializable {
 	public static final int TYPE_FLEE = 1;
 	public static final int TYPE_CONVINCED = 2;
 	Figure f;

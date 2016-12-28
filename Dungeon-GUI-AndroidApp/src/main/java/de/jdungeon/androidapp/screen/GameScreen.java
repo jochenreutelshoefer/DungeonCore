@@ -199,12 +199,13 @@ public class GameScreen extends StandardScreen implements EventListener {
 		 * init skills wheel
 		 */
 		int selectedIndexSkills = 19;
+		Image image = (Image) ImageManager.inventory_box_normal.getImage();
 		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 780),
 				new JDDimension(400, 400), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),
 				selectedIndexSkills,
-				(Image) ImageManager.inventory_box_normal.getImage());
+				image);
 		this.guiElements.add(wheelSkills);
 
 		/*

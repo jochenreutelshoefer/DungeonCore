@@ -2,6 +2,8 @@ package figure.attribute;
 
 //import java.util.*;
 
+import java.io.Serializable;
+
 /**
  * Attributwert einer Figur. Ein Attribut stellt das bezifferte Ma� fuer eine
  * Eigenschaft oder Faehigkeit der Figur dar. Eine Attribut besteht aus 2
@@ -10,7 +12,7 @@ package figure.attribute;
  * momentane auf die Umstaende angepasste Ma� dar.
  * 
  */
-public class Attribute {
+public class Attribute implements Serializable {
 
 	private final int name;
 

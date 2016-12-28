@@ -54,10 +54,6 @@ public class RoomObservationStatus {
 		return discoveryStatus;
 	}
 
-	/**
-	 * @param discoverageStatus
-	 *            The discoverageStatus to set.
-	 */
 	@Deprecated // should not be used, use setVisibilityStatus
 	public void setDiscoveryStatus(int status) {
 		if (status > this.discoveryStatus) {
@@ -102,25 +98,25 @@ public class RoomObservationStatus {
 			if(point.getY() <= 0) {
 				return null;
 			}
-			return map.getStatusObject(JDPoint.getPoint(point.getX(),point.getY()-1));
+			return map.getStatusObject(new JDPoint(point.getX(),point.getY()-1));
 		}
 		if(dir == RouteInstruction.SOUTH) {
 			if(point.getY() >= map.getSizeY()-1) {
 				return null;
 			}
-			return map.getStatusObject(JDPoint.getPoint(point.getX(),point.getY()+1));
+			return map.getStatusObject(new JDPoint(point.getX(),point.getY()+1));
 		}
 		if(dir == RouteInstruction.WEST) {
 			if(point.getX() <= 0) {
 				return null;
 			}
-			return map.getStatusObject(JDPoint.getPoint(point.getX()-1,point.getY()));
+			return map.getStatusObject(new JDPoint(point.getX()-1,point.getY()));
 		}
 		if(dir == RouteInstruction.EAST) {
 			if(point.getX() >= map.getSizeX()-1) {
 				return null;
 			}
-			return map.getStatusObject(JDPoint.getPoint(point.getX()+1,point.getY()));
+			return map.getStatusObject(new JDPoint(point.getX()+1,point.getY()));
 		}
 		return null;
 	}

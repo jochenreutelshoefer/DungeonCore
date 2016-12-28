@@ -13,6 +13,7 @@ import figure.monster.Monster;
 import game.JDEnv;
 import game.Turnable;
 
+@Deprecated
 public class LuziaAmulett extends Thing implements Turnable{
 	
 	int charge = 90;
@@ -54,7 +55,7 @@ public class LuziaAmulett extends Thing implements Turnable{
 				 Room element = (Room) iter.next();
 				if(location.hasOpenConnectionTo(element)) {
 					f.getRoomObservationStatus(element.getPoint()).setVisibilityStatus(RoomObservationStatus.VISIBILITY_FIGURES);
-					f.addScoutedRoom(element);
+					//f.addScoutedRoom(element);
 				}
 			}
 			return true;

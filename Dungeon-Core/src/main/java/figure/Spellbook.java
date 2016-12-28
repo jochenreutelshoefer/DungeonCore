@@ -4,16 +4,17 @@
  */
 
 package figure;
+import java.io.Serializable;
 import java.util.*;
 
 import spell.*;
 
 
 
-public class Spellbook {
+public class Spellbook implements Serializable {
 
 	
-	List<Spell> spells = new LinkedList<Spell>();
+	List<Spell> spells = new ArrayList<Spell>();
 
 	
 	public Spellbook() {
@@ -29,7 +30,7 @@ public class Spellbook {
 	
 	public Spell getSpell(int i) {
 		if(i>= 0 && i < spells.size()) {
-			return (Spell)spells.get(i);
+			return spells.get(i);
 		}
 		return null;
 	}

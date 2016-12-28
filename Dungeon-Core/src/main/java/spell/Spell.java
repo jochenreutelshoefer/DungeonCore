@@ -11,6 +11,7 @@ import game.JDEnv;
 import gui.Paragraph;
 import gui.Texts;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ import dungeon.Position;
  * Schwierigkeitswert (wirkt sich auf die Wahrscheinlichkeit des gelingens aus)
  * und einen Kosten-Wert (Menge an Zauberstaub).
  */
-public abstract class Spell {
+public abstract class Spell implements Serializable {
 	
 	
 	public static final int SPELL_BONEBREAKER = 1;

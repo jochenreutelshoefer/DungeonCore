@@ -462,10 +462,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return this.dexterity;
 	}
 
-	@Override
-	public void addScoutedRoom(Room r) {
-
-	}
 
 	@Override
 	public boolean hasItem(Item k) {

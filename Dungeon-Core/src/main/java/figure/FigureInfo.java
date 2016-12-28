@@ -234,7 +234,7 @@ public abstract class FigureInfo extends InfoEntity {
 	 * @return Koordinate des Raumes
 	 */
 	public JDPoint getRoomNumber() {
-		return JDPoint.getPoint(f.getRoom().getNumber().getX(), f.getRoom()
+		return new JDPoint(f.getRoom().getNumber().getX(), f.getRoom()
 				.getNumber().getY());
 	}
 

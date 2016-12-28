@@ -9,17 +9,20 @@ import event.Event;
 import event.EventListener;
 import event.EventManager;
 import event.ExitUsedEvent;
-import event.GameOverEvent;
+import event.PlayerDiedEvent;
 import level.DungeonSelectedEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import user.DungeonSession;
 import user.DefaultDungeonSession;
 
+import de.jdungeon.androidapp.event.QuitGameEvent;
+import de.jdungeon.androidapp.event.StartNewGameEvent;
 import de.jdungeon.androidapp.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.start.HeroCategorySelectedEvent;
 import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
+import de.jdungeon.androidapp.screen.start.WelcomeScreen;
 import de.jdungeon.game.Screen;
 import de.jdungeon.implementation.AndroidGame;
 import de.jdungeon.user.User;
@@ -55,7 +58,9 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	public Collection<Class<? extends Event>> getEvents() {
 		List<Class<? extends Event>> events = new ArrayList<Class<? extends Event>>();
 		events.add(ExitUsedEvent.class);
-		events.add(GameOverEvent.class);
+		events.add(PlayerDiedEvent.class);
+		events.add(StartNewGameEvent.class);
+		events.add(QuitGameEvent.class);
 		events.add(DungeonSelectedEvent.class);
 		events.add(HeroCategorySelectedEvent.class);
 		return events;
@@ -63,6 +68,13 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 
 	@Override
 	public void notify(Event event) {
+
+		if(event instanceof StartNewGameEvent) {
+			setScreen(new HeroSelectionScreen(this));
+		}
+		if(event instanceof QuitGameEvent) {
+			this.finish();
+		}
 		if(event instanceof ExitUsedEvent) {
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
@@ -72,8 +84,9 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.dungeonSession.initDungeon(((DungeonSelectedEvent)event).getDungeon());
 			setScreen(new GameScreen(this));
 		}
-		if(event instanceof GameOverEvent) {
-			// TODO: implement
+		if(event instanceof PlayerDiedEvent) {
+			this.dungeonSession.revertHero();
+			setScreen(new DungeonSelectionScreen(this, dungeonSession));
 		}
 		if(event instanceof HeroCategorySelectedEvent) {
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(((HeroCategorySelectedEvent)event).getHeroType());
@@ -115,7 +128,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	            Assets.load(this);
 	            firstTimeCreate = false;
 	        }
-		return new HeroSelectionScreen(this);
+		return new WelcomeScreen(this);
 	}
 
 }

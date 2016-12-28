@@ -1,5 +1,6 @@
 package figure.hero;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -55,8 +56,7 @@ import spell.Spell;
  * @see Character
  * @see Spellbook
  */
-// a00d058
-public class Hero extends Figure implements InfoProvider {
+public class Hero extends Figure implements InfoProvider, Serializable {
 
 	public boolean agentStarted = false;
 
@@ -904,7 +904,7 @@ public class Hero extends Figure implements InfoProvider {
 		return false;
 	}
 
-	private List threatings = new LinkedList();
+	private final List threatings = new LinkedList();
 
 	@Override
 	protected void lookInRoom() {
@@ -1008,7 +1008,6 @@ public class Hero extends Figure implements InfoProvider {
 
 		Room loc = getRoom();
 		Room toScout = loc.getNeighbourRoom(dir);
-		scoutedRooms.add(toScout);
 		Door d = loc.getConnectionTo(toScout);
 
 		boolean scoutable = ((d != null));

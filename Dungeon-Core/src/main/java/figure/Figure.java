@@ -9,6 +9,7 @@ import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -108,7 +109,7 @@ import gui.Paragraphable;
  */
 
 public abstract class Figure extends DungeonWorldObject implements ItemOwner,
-		Turnable, VisibilityModifier, Paragraphable {
+		Turnable, VisibilityModifier, Paragraphable, Serializable {
 
 	public static final int STATUS_HEALTHY = 4;
 
@@ -135,8 +136,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	protected int actionPoints = 0;
 
 	protected int fightAP = 0;
-
-	//protected DungeonGame game;
 
 	private Spell lastSpell = null;
 
@@ -172,12 +171,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	protected boolean dead = false;
 
-	// TODO: make a Map<Dungeon, VisMap> to enable different dungeons
-	//protected DungeonVisibilityMap roomVisibility;
-
 	protected Map<Dungeon, DungeonVisibilityMap> visibilities = new HashMap<>();
-
-	protected List<Room> scoutedRooms = new LinkedList<Room>();
 
 	protected JDPoint location;
 
@@ -564,25 +558,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				}
 			}
 			this.sufferPoisonings();
-		}
-	}
-
-	public void resetScoutedRooms() {
-
-		for (Iterator<Room> iter = scoutedRooms.iterator(); iter.hasNext();) {
-			Room element = iter.next();
-			if (element != null) {
-				getRoomVisibility().getStatusObject(element.getLocation())
-						.resetVisibilityStatus();
-			}
-
-		}
-		scoutedRooms = new LinkedList<Room>();
-	}
-
-	public void addScoutedRoom(Room r) {
-		if (r != null) {
-			scoutedRooms.add(r);
 		}
 	}
 
@@ -1596,6 +1571,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			ai.setFigure(info);
 			this.control = new FigureControl(info, ai);
 		}
+	}
+
+	/**
+	 * May not be called during game, but only between dungeons
+	 * for level management.
+	 */
+	public void clearVisibilityMaps() {
+		visibilities.clear();
 	}
 
 	public void createVisibilityMap(Dungeon d) {

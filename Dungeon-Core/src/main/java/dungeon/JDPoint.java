@@ -1,5 +1,7 @@
 package dungeon;
 
+import java.io.Serializable;
+
 import dungeon.util.RouteInstruction;
 
 /**
@@ -7,24 +9,13 @@ import dungeon.util.RouteInstruction;
  * bzgl. Richtungen und Entfernungen
  *
  */
-public class JDPoint{
+public class JDPoint implements Serializable{
 
 	
 	private int x;
 
 	private int y;
 	
-	public static JDPoint [][] points;
-	
-	public static void setPoints(JDPoint[][] p) {
-		points = p;
-	}
-	
-	public static JDPoint getPoint(int x, int y) {
-		return points [x][y];
-	}
-
-
 
     public JDPoint(int x, int y){
     	this.x = x;
@@ -54,16 +45,6 @@ public class JDPoint{
 		result = 31 * result + y;
 		return result;
 	}
-
-	// public boolean equals(JDPoint p){
-	// if((p.getX() == this.x) && (p.getY() == this.y)) return true;
-	// else return false;
-	// }
-	//
-	// public boolean equals(int x, int y){
-	// if((this.x == x)&&(this.y == y)) return true;
-	// else return false;
-	// }
 
 	@Override
 	public String toString() {
@@ -115,9 +96,6 @@ public class JDPoint{
     }
     
     public static JDPoint walkDir(JDPoint start, int dir, int dist) {
-    	////System.out.println("Marchieren von: "+start.toString());
-    	////System.out.println("in Richtung: "+dir);
-    	////System.out.println("Um :" +dist);
     	int x = start.x;
     	int y = start.y;
     	if(dir == RouteInstruction.NORTH) {

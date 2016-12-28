@@ -1,11 +1,13 @@
 package fight;
 
+import java.io.Serializable;
+
 import figure.Figure;
 
 /**
  * Vergiftung, die die betroffene Figur eine Anzahl von Runden lang schwaecht.
  */
-public class Poisoning {
+public class Poisoning implements Serializable {
 
 	private int time = 0;
 

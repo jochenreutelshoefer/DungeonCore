@@ -18,6 +18,7 @@ import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
+import util.DeepCopyUtil;
 
 import de.jdungeon.user.Session;
 import de.jdungeon.user.User;
@@ -33,16 +34,17 @@ import de.jdungeon.user.User;
 public class DefaultDungeonSession implements Session, DungeonSession {
 
 	private Hero currentHero;
-	private User user;
+	private Hero heroBackup;
+	private final User user;
 	private int heroType;
 	private DungeonGame dungeonGame;
 	private Dungeon derDungeon;
 	private HeroInfo heroInfo;
 
-	private DungeonManager manager;
+	private final DungeonManager manager;
 
 	private JDGUI gui;
-	private List<Dungeon> completedDungeons = new ArrayList<Dungeon>();
+	private final List<Dungeon> completedDungeons = new ArrayList<Dungeon>();
 	private Thread dungeonThread;
 
 	public DefaultDungeonSession(User user) {
@@ -56,6 +58,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		return this.gui;
 	}
 
+	@Override
 	public DungeonManager getDungeonManager() {
 		return manager;
 	}
@@ -73,7 +76,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	/**
 	 * Starts the game world's thread triggering the game rounds
 	 *
-	 * @param gui
+	 * @param gui graphical user interface controlling this session
 	 */
 	public void startGame(JDGUI gui) {
 		this.gui = gui;
@@ -98,18 +101,29 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	 * Tells the players decision for the type of hero to be played
 	 *
 	 *
-	 * @param heroType
+	 * @param heroType category of hero that has been selected
 	 */
 	public void setSelectedHeroType(int heroType) {
 		this.heroType = heroType;
 	}
 
+	@Override
 	public void initDungeon(DungeonFactory dungeon) {
 		dungeonGame = DungeonGame.getInstance();
 
 		derDungeon = dungeon.createDungeon();
-		heroInfo = DungeonUtils.enterDungeon(getCurrentHero(), derDungeon,
+		Hero currentHero = getCurrentHero();
+		// we make a copy of this hero for potential restart after death
+		this.currentHero.clearVisibilityMaps();
+		heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
+		heroInfo = DungeonUtils.enterDungeon(currentHero, derDungeon,
 				dungeon.getHeroEntryPoint());
+
+	}
+
+	@Override
+	public void revertHero() {
+		currentHero = (Hero) DeepCopyUtil.copy(heroBackup);
 	}
 
 	public HeroInfo getHeroInfo() {
@@ -136,7 +150,4 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		}
 	}
 
-	public JDGUI getGui() {
-		return gui;
-	}
 }

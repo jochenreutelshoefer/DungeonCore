@@ -8,6 +8,7 @@
  */
 package item;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,7 @@ import figure.attribute.Attribute;
 import game.JDEnv;
 
 
-public class Bunch extends Item {
+public class Bunch extends Item implements Serializable {
 
 	
 	private final Set<Key> keys = new HashSet<Key>();
@@ -27,9 +28,6 @@ public class Bunch extends Item {
 		super(0,false);	
 	}
 
-	/**
-	 * @see Item#getHitPoints()
-	 */
 	public Attribute getHitPoints() {
 		return null;
 	}

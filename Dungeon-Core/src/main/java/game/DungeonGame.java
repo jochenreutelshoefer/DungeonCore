@@ -5,11 +5,9 @@ import event.Event;
 import event.EventListener;
 import event.EventManager;
 import event.ExitUsedEvent;
-import event.GameOverEvent;
+import event.PlayerDiedEvent;
 import item.Item;
-import item.ItemInfo;
 import item.ItemPool;
-import item.interfaces.ItemOwner;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -20,17 +18,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import shrine.LevelExit;
 import spell.Spell;
 import spell.TimedSpellInstance;
 import test.TestTracker;
-import dungeon.Door;
-import dungeon.DoorInfo;
 import dungeon.Dungeon;
-import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
-import dungeon.Room;
-import dungeon.RoomInfo;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
@@ -169,9 +160,8 @@ public class DungeonGame implements Runnable, EventListener {
 	public void controlLeft(Figure f) {
 		if (guiFigures.containsKey(f)) {
 			guiFigures.remove(f);
-			if (guiFigures.size() == 0) {
-				System.out.println("Kein Gui mehr aktiv --> spiel beendet");
-				EventManager.getInstance().fireEvent(new GameOverEvent());
+			if (guiFigures.isEmpty()) {
+				EventManager.getInstance().fireEvent(new PlayerDiedEvent());
 				gameOver = true;
 			}
 		}
@@ -373,7 +363,7 @@ public class DungeonGame implements Runnable, EventListener {
 	public Collection<Class<? extends Event>> getEvents() {
 		List<Class<? extends Event>> events = new ArrayList<Class<? extends Event>>();
 		events.add(ExitUsedEvent.class);
-		events.add(GameOverEvent.class);
+		events.add(PlayerDiedEvent.class);
 		return events;
 	}
 
@@ -382,7 +372,7 @@ public class DungeonGame implements Runnable, EventListener {
 		if(event instanceof ExitUsedEvent) {
 			this.heroLeft = true;
 		}
-		if(event instanceof GameOverEvent) {
+		if(event instanceof PlayerDiedEvent) {
 			this.gameOver = true;
 		}
 	}

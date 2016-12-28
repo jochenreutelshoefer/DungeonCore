@@ -1,5 +1,11 @@
 package de.jdungeon.androidapp.screen.start;
 
+import com.apple.eawt.AppEvent;
+import dungeon.JDPoint;
+
+import de.jdungeon.androidapp.event.QuitGameEvent;
+import de.jdungeon.androidapp.event.StartNewGameEvent;
+import de.jdungeon.androidapp.gui.SimpleButton;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
@@ -12,6 +18,9 @@ public class WelcomeScreen extends StandardScreen {
 
 	public WelcomeScreen(Game game) {
 		super(game);
+		int x = game.getScreenWidth() / 2 - SimpleButton.getDefaultDimension().getWidth()/2;
+		this.guiElements.add(new SimpleButton("Neues Spiel", new StartNewGameEvent(), new JDPoint(x, 200)));
+		this.guiElements.add(new SimpleButton("Beenden", new QuitGameEvent(), new JDPoint(x, 300)));
 	}
 
 	@Override
@@ -21,6 +30,6 @@ public class WelcomeScreen extends StandardScreen {
 		super.paint(deltaTime);
 
 		gr.drawARGB(155, 0, 0, 0);
-		gr.drawString("Welcome to Untitled Dungeon Game", 165, 165, defaultPaint);
+		gr.drawString("Willkommen bei <Untitled Dungeon Game>", 300, 120, StandardScreen.defaultPaint);
 	}
 }

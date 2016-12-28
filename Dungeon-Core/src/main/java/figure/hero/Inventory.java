@@ -12,6 +12,7 @@ import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +37,7 @@ import figure.percept.TextPercept;
  * Helme, wobei jeweils immer eines aktiv ist. Enthaelt des Weiteren eine Liste
  * (unbeschraenkt) von (nicht-Ausruestungs-) Gegenstaenden
  */
-public class Inventory /*implements ItemOwner*/ {
+public class Inventory implements Serializable {
 
 	private final Figure owner;
 

@@ -29,7 +29,7 @@ public abstract class AndroidGame extends Activity implements Game {
 	private FileIO fileIO;
 	private Screen screen;
 	private WakeLock wakeLock;
-	private Logger logger = new AndroidLogger();
+	private final Logger logger = new AndroidLogger();
 
 	public AndroidGame(Session session) {
 		this.session = session;
@@ -80,11 +80,13 @@ public abstract class AndroidGame extends Activity implements Game {
     }
 
 
+	@Override
 	public int getScreenWidth() {
 		// TODO: implement properly
 		return 800;
 	}
 
+	@Override
 	public int getScreenHeight() {
 		// TODO: implement properly
 		return 400;
@@ -141,8 +143,8 @@ public abstract class AndroidGame extends Activity implements Game {
         this.screen = screen;
     }
    
-    public Screen getCurrentScreen() {
-
+    @Override
+	public Screen getCurrentScreen() {
         return screen;
     }
 }

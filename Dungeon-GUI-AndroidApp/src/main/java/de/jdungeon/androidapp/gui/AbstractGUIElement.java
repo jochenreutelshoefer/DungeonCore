@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
+import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.util.ScrollMotion;
 import dungeon.JDPoint;
@@ -99,5 +100,14 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	protected void drawBorder(Graphics g) {
+		GUIUtils.drawDoubleBorder(g, position.getX(), position.getY(), dimension, 20);
+
+	}
+
+	protected void drawBackground(Graphics g) {
+		GUIUtils.drawBackground(g,  position.getX(), position.getY(), dimension);
 	}
 }

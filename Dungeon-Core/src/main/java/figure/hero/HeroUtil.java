@@ -18,8 +18,11 @@ import spell.GoldenHit;
 import spell.Raid;
 import spell.Search;
 import spell.Spell;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class HeroUtil {
+
+
 
 	// HP, ST,DX,PY,AX, LZ, SW, KN, WM,NN,KN, UN,SC, DU, SP
 	public static final double[] warriorBasic = { 42, 8, 6, 5, 10, 10, 20, 10,

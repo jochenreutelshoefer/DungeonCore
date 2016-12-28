@@ -33,10 +33,12 @@ public abstract class StandardScreen extends Screen {
 	}
 
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
+	private long screenCreatedTime;
 
 	public StandardScreen(Game game) {
 		super(game);
 		paint = defaultPaint;
+		screenCreatedTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -63,8 +65,10 @@ public abstract class StandardScreen extends Screen {
 
 	}
 
+	private long lastTouchEvent = -1;
+
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltoTime) {
 		/*
 		 * handle touch events
 		 */
@@ -87,7 +91,16 @@ public abstract class StandardScreen extends Screen {
 			while (listIterator.hasPrevious()) {
 				GUIElement guiElement = listIterator.previous();
 				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
-					guiElement.handleTouchEvent(touchDownEvent);
+					// assert there are at least some milli seconds between touch events
+					long now = System.currentTimeMillis();
+					if(now - lastTouchEvent > 10
+							&& now - screenCreatedTime > 50) {
+						// we assume a user cannot make a serious touch action, seeing
+						// a screen for less than 50 milli seconds
+						lastTouchEvent = System.currentTimeMillis();
+						guiElement.handleTouchEvent(touchDownEvent);
+					}
+
 					break;
 				}
 			}

@@ -7,6 +7,7 @@ import item.equipment.weapon.Sword;
 import item.equipment.weapon.Weapon;
 import item.equipment.weapon.Wolfknife;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +48,7 @@ import figure.percept.TextPercept;
 /**
  * Diese Klasse verwaltet alle Charakterwerte (Attribute) eines Helden
  */
-public class Character {
+public class Character implements Serializable {
 
 	private final List<TimedAttributeModification> modifications = new LinkedList<TimedAttributeModification>();
 
