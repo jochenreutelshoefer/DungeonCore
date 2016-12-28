@@ -238,12 +238,21 @@ public class DrawUtils {
 				// int y2 = y1
 				// + image.getHeight();
 
-				g.drawLine(x1, y1, x2, y1, yellow);
-				g.drawLine(x1, y1, x1, y2, yellow);
-				g.drawLine(x1, y2, x2, y2, yellow);
-				g.drawLine(x2, y1, x2, y2, yellow);
+				drawRectangle(g, yellow, x1, y1, x2, y2);
 			}
 		}
+	}
+	public static void drawRectangle(Graphics g, int yellow, JDPoint point, JDDimension dimension) {
+		drawRectangle(g, yellow, point.getX(), point.getY(), point.getX()+dimension.getWidth(), point.getY()+dimension.getHeight());
+	}
+
+
+
+	public static void drawRectangle(Graphics g, int yellow, int x1, int y1, int x2, int y2) {
+		g.drawLine(x1, y1, x2, y1, yellow);
+		g.drawLine(x1, y1, x1, y2, yellow);
+		g.drawLine(x1, y2, x2, y2, yellow);
+		g.drawLine(x2, y1, x2, y2, yellow);
 	}
 
 	private static void clearNulls(List<?> l) {

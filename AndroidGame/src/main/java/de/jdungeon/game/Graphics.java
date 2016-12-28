@@ -17,6 +17,8 @@ public interface Graphics {
     
 	void drawOval(int x, int y, int width, int height, int color);
 
+	void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color);
+
     void drawImage(Image image, int x, int y, int srcX, int srcY,
             int srcWidth, int srcHeight);
 

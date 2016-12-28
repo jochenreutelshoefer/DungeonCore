@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import de.jdungeon.game.Graphics;
@@ -105,6 +106,25 @@ public class AndroidGraphics implements Graphics {
 		paint.setColor(color);
 		paint.setStyle(Style.FILL);
 		canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
+	}
+
+	public void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color)
+	{
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		paint.setStrokeWidth(1);
+		paint.setColor(color);
+		paint.setStyle(Paint.Style.FILL_AND_STROKE);
+		paint.setAntiAlias(true);
+
+		Path path = new Path();
+		path.setFillType(Path.FillType.EVEN_ODD);
+		path.moveTo(x1, y1);
+		path.lineTo(x2, y2);
+		path.lineTo(x3, y3);
+		path.close();
+
+		canvas.drawPath(path, paint);
 	}
 
 	@Override

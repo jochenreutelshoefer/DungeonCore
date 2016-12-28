@@ -42,7 +42,7 @@ public class SimpleButton extends AbstractGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		drawBackground(g);
 
-		g.drawString(text, this.getPositionOnScreen().getX()+85, this.getPositionOnScreen().getY()+44, StandardScreen.defaultPaint);
+		g.drawString(text, this.getPositionOnScreen().getX()+this.getDimension().getWidth()/2, this.getPositionOnScreen().getY()+44, StandardScreen.defaultPaint);
 
 		drawBorder(g);
 

@@ -14,8 +14,12 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	protected final JDPoint position;
 	protected final JDDimension dimension;
+	// TODO: remove
+	private GUIElement parent;
+	//protected GUIElement parent;
 	protected StandardScreen screen = null;
 	protected Game game;
+
 
 	public AbstractGUIElement(JDPoint position, JDDimension dimension,
 			StandardScreen screen, Game game) {
@@ -32,11 +36,13 @@ public abstract class AbstractGUIElement implements GUIElement {
 		this.dimension = dimension;
 	}
 
+	// TODO: remove this constructor
 	public AbstractGUIElement(JDPoint position, JDDimension dimension,
 			GUIElement parent) {
 		super();
 		this.position = position;
 		this.dimension = dimension;
+		this.parent = parent;
 		this.screen = parent.getScreen();
 	}
 
@@ -79,19 +85,17 @@ public abstract class AbstractGUIElement implements GUIElement {
 	@Override
 	public void handleTouchEvent(TouchEvent touch) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void update(float time) {
-		// TODO Auto-generated method stub
 
+			// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void handleScrollEvent(ScrollMotion scrolling) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public Game getGame() {

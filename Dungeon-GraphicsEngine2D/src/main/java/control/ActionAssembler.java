@@ -6,9 +6,17 @@
  */
 package control;
 
+import dungeon.Position;
+import event.Event;
+import event.EventListener;
+import event.EventManager;
+import event.WannaMoveEvent;
+import event.WannaStepEvent;
 import item.ItemInfo;
 import item.quest.LuziasBall;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +47,7 @@ import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.hero.HeroInfo;
 
-public class ActionAssembler {
+public class ActionAssembler implements EventListener {
 
 	// TODO: refactor in a way that this ActionAssembler does not refer to JDGUIEngine2D but JDGUI
 	// then move to core classes
@@ -49,6 +57,7 @@ public class ActionAssembler {
 
 	public ActionAssembler(JDGUIEngine2D gui) {
 		this.gui = gui;
+		EventManager.getInstance().registerListener(this);
 	}
 
 	public void wannaAttack(int index) {
@@ -374,6 +383,14 @@ public class ActionAssembler {
 		}
 	}
 
+	public void wannaStepToPosition(Position.Pos pos) {
+		wannaStepToPosition(gui.getFigure().getRoomInfo().getPositionInRoom(pos.getValue()));
+	}
+
+	public void wannaStepToPosition(PositionInRoomInfo pos) {
+		wannaStepToPosition(pos, false);
+	}
+
 	public void wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
 
 		FigureInfo f = getFigure();
@@ -393,9 +410,6 @@ public class ActionAssembler {
 		plugAction(new SkillUpAction(key));
 	}
 
-	public void wannaStepToPosition(PositionInRoomInfo pos) {
-		wannaStepToPosition(pos, false);
-	}
 
 	public void doorClicked(Object o, boolean right) {
 		DoorInfo d = ((DoorInfo) o);
@@ -453,6 +467,26 @@ public class ActionAssembler {
 				this.wannaUseItem(element, null, false);
 			}
 
+		}
+	}
+
+	@Override
+	public Collection<Class<? extends Event>> getEvents() {
+		Collection<Class<? extends Event>> events = new ArrayList<>();
+		events.add(WannaMoveEvent.class);
+		events.add(WannaStepEvent.class);
+		return events;
+	}
+
+	@Override
+	public void notify(Event event) {
+		if(event instanceof WannaMoveEvent) {
+			WannaMoveEvent moveEvent = ((WannaMoveEvent)event);
+			this.wannaWalk(moveEvent.getDirection().getValue());
+		}
+		if(event instanceof WannaStepEvent) {
+			WannaStepEvent moveEvent = ((WannaStepEvent)event);
+			this.wannaStepToPosition(moveEvent.getTarget());
 		}
 	}
 }

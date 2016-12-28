@@ -62,6 +62,7 @@ import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
+import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequenceManager;
@@ -167,11 +168,13 @@ public class GameScreen extends StandardScreen implements EventListener {
 		 * init health bars
 		 */
 		int posX = 22;
-		HealthBar healthView = new HealthBar(new JDPoint(posX, 5),
+		JDPoint healthBarPosition = new JDPoint(posX, 5);
+		HealthBar healthView = new HealthBar(healthBarPosition,
 				new JDDimension(160, 20), figureInfo, HealthBar.Kind.health,
 				this, this.getGame());
 		this.guiElements.add(healthView);
-		HealthBar dustView = new HealthBar(new JDPoint(posX, 25),
+		JDPoint dustBarPosition = new JDPoint(posX, 25);
+		HealthBar dustView = new HealthBar(dustBarPosition,
 				new JDDimension(160, 20), figureInfo, HealthBar.Kind.dust, this, this.getGame());
 		this.guiElements.add(dustView);
 
@@ -179,10 +182,19 @@ public class GameScreen extends StandardScreen implements EventListener {
 		 * init hour glass
 		 */
 		HourGlassTimer hourglass = new HourGlassTimer(new JDPoint(
-				game.getScreenWidth() - 50,
-				game.getScreenHeight() / 2 + 10), new JDDimension(36, 60),
+				30,
+				50), new JDDimension(36, 60),
 				this, figureInfo, this.getGame());
 		this.guiElements.add(hourglass);
+
+
+		/*
+		init smart control
+		 */
+		int smartControlSize = 180;
+		JDDimension screenSize = this.getScreenSize();
+		SmartControl smartControl = new SmartControl(new JDPoint(screenSize.getWidth()-smartControlSize,screenSize.getHeight()/2 +80 - smartControlSize/2), new JDDimension(smartControlSize, smartControlSize), this, this.getGame(), figureInfo);
+		this.guiElements.add(smartControl);
 
 		/*
 		 * init item wheel
@@ -200,7 +212,7 @@ public class GameScreen extends StandardScreen implements EventListener {
 		 */
 		int selectedIndexSkills = 19;
 		Image image = (Image) ImageManager.inventory_box_normal.getImage();
-		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 780),
+		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 820),
 				new JDDimension(400, 400), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),
