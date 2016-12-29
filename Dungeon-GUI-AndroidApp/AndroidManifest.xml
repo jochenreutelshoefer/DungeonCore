@@ -21,7 +21,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".JDungeonApp"
-            android:label="JDungeon" >
+            android:label="JDungeon"
+			android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
