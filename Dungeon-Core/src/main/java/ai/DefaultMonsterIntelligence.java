@@ -252,7 +252,7 @@ public class DefaultMonsterIntelligence extends GuiAI {
 	public static Action getFleeAction(FigureInfo monster) {
 		Action a = Action.makeActionFlee();
 		ActionResult res = monster.checkMovementAction(Action.makeActionFlee());
-		if (res.getKey1() == ActionResult.KEY_POSSIBLE) {
+		if (res.getValue() == ActionResult.VALUE_POSSIBLE) {
 			// System.out.println("flucht hier m�glich");
 			return a;
 		} else {
@@ -262,7 +262,7 @@ public class DefaultMonsterIntelligence extends GuiAI {
 			if (step != null) {
 				// System.out.println("stepping to :" + step.getTargetIndex());
 				ActionResult stepRes = monster.checkMovementAction(step);
-				if (stepRes.getKey1() == ActionResult.KEY_POSSIBLE) {
+				if (stepRes.getValue() == ActionResult.VALUE_POSSIBLE) {
 					return step;
 				} else {
 					return null;
@@ -513,7 +513,7 @@ public class DefaultMonsterIntelligence extends GuiAI {
 		if (hero != null) {
 			Action a = new SpellAction(s, hero);
 			ActionResult res = monster.checkMovementAction(a);
-			if (res.getKey1() == ActionResult.KEY_POSSIBLE) {
+			if (res.getValue() == ActionResult.VALUE_POSSIBLE) {
 				return a;
 			}
 

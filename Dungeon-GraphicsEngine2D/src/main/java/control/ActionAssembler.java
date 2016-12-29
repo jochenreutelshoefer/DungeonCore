@@ -7,6 +7,7 @@
 package control;
 
 import dungeon.Position;
+import event.ActionEvent;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -475,6 +476,7 @@ public class ActionAssembler implements EventListener {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
 		events.add(WannaMoveEvent.class);
 		events.add(WannaStepEvent.class);
+		events.add(ActionEvent.class);
 		return events;
 	}
 
@@ -482,11 +484,18 @@ public class ActionAssembler implements EventListener {
 	public void notify(Event event) {
 		if(event instanceof WannaMoveEvent) {
 			WannaMoveEvent moveEvent = ((WannaMoveEvent)event);
-			this.wannaWalk(moveEvent.getDirection().getValue());
+			if(this.getFigure().getRoomInfo().fightRunning()) {
+				this.wannaFlee();
+			} else {
+				this.wannaWalk(moveEvent.getDirection().getValue());
+			}
 		}
 		if(event instanceof WannaStepEvent) {
 			WannaStepEvent moveEvent = ((WannaStepEvent)event);
 			this.wannaStepToPosition(moveEvent.getTarget());
+		}
+		if(event instanceof ActionEvent) {
+			plugAction(((ActionEvent)event).getAction());
 		}
 	}
 }

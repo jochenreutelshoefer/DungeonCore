@@ -44,7 +44,7 @@ public class Scroll extends Item implements Usable{
 	public boolean use(Figure f,Object target,boolean meta) {
 		theSpell.setCostsAP(false);
 		ActionResult res = theSpell.fire(f,target,true);
-		if(res.getKey1() == ActionResult.KEY_DONE) {
+		if(res.getValue() == ActionResult.VALUE_DONE) {
 			return true;
 		}
 		

@@ -3,11 +3,14 @@ package de.jdungeon.androidapp.gui.smartcontrol;
 import android.graphics.Color;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
+import event.ActionEvent;
+import event.Event;
 import event.EventManager;
 import event.WannaMoveEvent;
+import figure.action.Action;
+import figure.action.MoveAction;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.game.Graphics;

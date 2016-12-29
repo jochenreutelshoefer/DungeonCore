@@ -9,6 +9,8 @@ package figure;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Room;
+import game.ControlUnit;
 
 public class DungeonVisibilityMap {
 
@@ -90,7 +92,16 @@ public class DungeonVisibilityMap {
 	}
 
 	public void setVisibilityStatus(int x, int y, int status) {
+		RoomObservationStatus currentStatus = rooms[x][y];
+		if(currentStatus.getVisibilityStatus() < status) {
+			// notify figure that new information is revealed
+			ControlUnit control = f.getControl();
+			if(control != null) {
+				control.notifyVisibilityStatusIncrease(new JDPoint(x, y));
+			}
+		}
 		rooms[x][y].setVisibilityStatus(status);
+
 	}
 
 	public void setDiscoveryStatus(int x, int y, int status) {

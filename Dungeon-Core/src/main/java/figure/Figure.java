@@ -1,6 +1,7 @@
 package figure;
 
 import ai.AI;
+import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import dungeon.util.InfoUnitUnwrapper;
 import figure.percept.DiePercept;
 import item.Item;
@@ -767,6 +768,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 				ActionResult res = processAction(a);
 
+
 				control.actionDone(a, res);
 
 				if (getRoom().getFight() != null) {
@@ -783,7 +785,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			}
 
 			if (a instanceof EndRoundAction) {
-				control.actionDone(a, new ActionResult(ActionResult.KEY_DONE));
+				control.actionDone(a, new ActionResult(ActionResult.VALUE_DONE));
 				int ap = this.getActionPoints();
 				for (int j = 0; j < ap; j++) {
 					this.getRoom().distributePercept(new WaitPercept(this));
@@ -816,7 +818,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			ActionResult res = null;
 			Action a = null;
 			int cnt = 0;
-			while (res == null || res.getKey1() != ActionResult.KEY_POSSIBLE) {
+			while (res == null || res.getValue() != ActionResult.VALUE_POSSIBLE) {
 				cnt++;
 				if (cnt > 10) {
 
@@ -827,7 +829,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				}
 				a = retrieveFightActionFromControl();
 				res = processAction(a, false);
-				if (res.getKey1() == ActionResult.KEY_IMPOSSIBLE) {
+				if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
 					if (control != null) {
 						control.actionDone(a, res);
 					}
@@ -922,7 +924,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			}
 			return ActionResult.POSSIBLE;
 		}
-		return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 				ActionResult.IMPOSSIBLE_REASON_OTHER);
 	}
 
@@ -994,7 +996,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		int targetIndex = a.getTarget();
 		Figure target = InfoUnitUnwrapper.getFighter(targetIndex);
 		if (target == null) {
-			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
 		}
 		if (getRoom().fightRunning()) {
@@ -1033,7 +1035,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (canPayFightActionPoint()) {
 
 				if (this.isPinnedToGround()) {
-					return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 							ActionResult.IMPOSSIBLE_REASON_OTHER);
 				}
 
@@ -1159,7 +1161,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				return ActionResult.POSSIBLE;
 			}
 		}
-		return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 				ActionResult.IMPOSSIBLE_REASON_OTHER);
 	}
 
@@ -1187,10 +1189,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 						}
 					}
 				}
-				return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 						ActionResult.IMPOSSIBLE_REASON_OTHER);
 			} else {
-				return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 						ActionResult.IMPOSSIBLE_REASON_NOAP);
 			}
 		} else {
@@ -1208,7 +1210,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					}
 				}
 			}
-			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_OTHER);
 		}
 	}
@@ -1220,11 +1222,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 		int dir = a.getDirectionIndex();
 		if (pos.getIndex() != getDirPos(dir)) {
-			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION);
 		}
 		if (this.isPinnedToGround()) {
-			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_OTHER);
 		}
 		if (wayPassable(dir)) {
@@ -1237,7 +1239,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			}
 
 		} else {
-			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
 		}
 	}
@@ -1261,14 +1263,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				}
 			}
 		}
-		return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 				ActionResult.IMPOSSIBLE_REASON_OTHER);
 	}
 
 	private ActionResult processAction(Action a, boolean doIt) {
 
 		if (a == null) {
-			return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_ACTIONNULL);
 		}
 		if (a instanceof DoNothingAction) {
@@ -1340,7 +1342,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			return handleSkillUpAction((SkillUpAction) a);
 		}
 
-		return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 				ActionResult.IMPOSSIBLE_REASON_INVALIDACTION);
 	}
 
@@ -1425,12 +1427,12 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (canPayFightActionPoint()) {
 
 				if (this.isPinnedToGround()) {
-					return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 							ActionResult.IMPOSSIBLE_REASON_OTHER);
 				}
 				int field = a.getTargetIndex();
 				if (field == -1) {
-					return new ActionResult(ActionResult.KEY_IMPOSSIBLE,
+					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 							ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
 				}
 				Position newPos = getRoom().getPositions()[field];
@@ -1449,9 +1451,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 						}
 						return ActionResult.POSSIBLE;
 					} else {
-						if (this instanceof Hero) {
-							this.tellPercept(new TextPercept("Kein Platz da!�"));
-						}
 						return ActionResult.TARGET;
 					}
 				}

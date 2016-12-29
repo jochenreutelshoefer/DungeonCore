@@ -7,9 +7,6 @@
 package figure.action;
 
 
-/**
- * Flieh-Aktion.
- */
 public class FleeAction extends Action {
 	
 	private boolean panic = false;

@@ -16,6 +16,6 @@ public interface ActionSpecifier {
 	 * 
 	 * @return
 	 */
-	public Action getAction();
+	Action getAction();
 
 }

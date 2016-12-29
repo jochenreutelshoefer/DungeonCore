@@ -48,7 +48,6 @@ import de.jdungeon.androidapp.AndroidScreenJDGUI;
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
-import de.jdungeon.androidapp.event.ShowItemInfoEvent;
 import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GameOverView;
@@ -59,7 +58,6 @@ import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
-import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
 import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
@@ -77,7 +75,6 @@ import de.jdungeon.user.Session;
 import de.jdungeon.util.ScrollMotion;
 
 public class GameScreen extends StandardScreen implements EventListener {
-
 
 	public static final int SCALE_FIGHT_MODE = 250;
 	private final Dungeon derDungeon;
@@ -132,7 +129,6 @@ public class GameScreen extends StandardScreen implements EventListener {
 		initGUIElements();
 		this.session.startGame(gui);
 
-
 		derDungeon = this.session.getCurrentDungeon();
 		JDPoint heroRoomNumber = figureInfo.getRoomNumber();
 		centerOn(heroRoomNumber);
@@ -143,10 +139,11 @@ public class GameScreen extends StandardScreen implements EventListener {
 		// be event listener
 		EventManager.getInstance().registerListener(this);
 	}
+
 	private void setSession(Game game) {
 		Session session = game.getSession();
 		if (session instanceof DefaultDungeonSession) {
-			this.session = ((DefaultDungeonSession)session);
+			this.session = ((DefaultDungeonSession) session);
 		}
 		else {
 			Log.severe("Invalid session object, DungeonSession expected.");
@@ -191,9 +188,10 @@ public class GameScreen extends StandardScreen implements EventListener {
 		/*
 		init smart control
 		 */
-		int smartControlSize = 180;
+		int smartControlSize = 200;
 		JDDimension screenSize = this.getScreenSize();
-		SmartControl smartControl = new SmartControl(new JDPoint(screenSize.getWidth()-smartControlSize,screenSize.getHeight()/2 +80 - smartControlSize/2), new JDDimension(smartControlSize, smartControlSize), this, this.getGame(), figureInfo);
+		SmartControl smartControl = new SmartControl(new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 80 - smartControlSize / 2), new JDDimension(smartControlSize, smartControlSize), this, this
+				.getGame(), figureInfo);
 		this.guiElements.add(smartControl);
 
 		/*
@@ -326,7 +324,6 @@ public class GameScreen extends StandardScreen implements EventListener {
 		drawnObjects.clear();
 		getDungeonRenderer().clear();
 
-
 		// at which room we have to start drawing
 		int roomCoordinateX = (int) (viewportPosition.getX() / roomSize);
 		int roomCoordinateY = (int) (viewportPosition.getY() / roomSize);
@@ -348,8 +345,6 @@ public class GameScreen extends StandardScreen implements EventListener {
 				RoomInfo roomInfo = RoomInfo.makeRoomInfo(derDungeon
 						.getRoom(new JDPoint(roomNumberX, roomNumberY)), hero
 						.getRoomVisibility());
-
-
 
 				// paint this room onto the offscreen canvas
 				if (roomInfo != null) {
@@ -392,7 +387,7 @@ public class GameScreen extends StandardScreen implements EventListener {
 				// movie running
 				Pair<Float, Float> centerViewRoomCoordinates = currentSequence
 						.getViewportPosition(arg0);
-				if(centerViewRoomCoordinates != null) {
+				if (centerViewRoomCoordinates != null) {
 					centerOn(centerViewRoomCoordinates);
 				}
 				int movieRoomSize = currentSequence.getScale(arg0);
@@ -638,7 +633,6 @@ public class GameScreen extends StandardScreen implements EventListener {
 		}
 	}
 
-
 	private Pair<Float, Float> getCurrentViewCenterRoomCoordinates() {
 
 		/*
@@ -753,10 +747,19 @@ public class GameScreen extends StandardScreen implements EventListener {
 	}
 
 	public void showVisibilityIncreaseEvent(JDPoint p) {
-		zoomToSize(30, 70);
-		scrollTo(p, 100, 70);
-		zoomToSize(30, 70, (int)this.roomSize, p);
-		scrollFromTo(p, this.getFigureInfo().getRoomNumber(), 60, (int)this.roomSize );
+		if(this.getFigureInfo().getRoomInfo().getPoint().equals(p)) {
+			// entered current room, no need to do animation
+			return;
+		}
+		if (this.getFigureInfo().getRoomInfo().getPoint().isNeighbour(p)) {
+			scrollTo(p, 70);
+		}
+		else {
+			zoomToSize(30, 70);
+			scrollTo(p, 100, 70);
+			zoomToSize(30, 70, (int) this.roomSize, p);
+			scrollFromTo(p, this.getFigureInfo().getRoomNumber(), 60, (int) this.roomSize);
+		}
 	}
 
 	/*
@@ -785,8 +788,6 @@ public class GameScreen extends StandardScreen implements EventListener {
 		preFightRoomSize = roomSize;
 		zoomToSize(30, SCALE_FIGHT_MODE);
 	}
-
-
 
 	static class GraphicObjectComparator implements Comparator<GraphicObject> {
 
@@ -864,40 +865,37 @@ public class GameScreen extends StandardScreen implements EventListener {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), null, false, false, false, null, null);
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info,Position.Pos from, Position.Pos to) {
-		startAnimation(ani, info, from ,to ,info.getRoomInfo(),null, false, false, false, null, null);
+	public void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to) {
+		startAnimation(ani, info, from, to, info.getRoomInfo(), null, false, false, false, null, null);
 	}
 
 	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, false, false, null, null);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), text, false, false, false, null, null);
 	}
 
 	public void startAnimationDelayed(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, false, false, null, null);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, false, false, null, null);
 	}
 
 	public void startAnimationUrgent(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, false, true, false, null, null);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), text, false, true, false, null, null);
 	}
 
 	public void startAnimationUrgent(AnimationSet ani, FigureInfo fig, Position.Pos from, Position.Pos to) {
-		startAnimation(ani, fig, from, to , fig.getRoomInfo(), null, false, true, false, null, null);
+		startAnimation(ani, fig, from, to, fig.getRoomInfo(), null, false, true, false, null, null);
 	}
 
 	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true, false, null, null);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, true, false, null, null);
 	}
 
-
-
 	public void startAnimationDelayedUrgentPostDelay(AnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true, true, percept, delayImage);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, true, true, percept, delayImage);
 	}
 
 	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
-		startAnimation(ani, info, null ,null ,info.getRoomInfo(), text, true, true, false, percept, delayImage);
+		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, true, false, percept, delayImage);
 	}
-
 
 	public void startAnimation(AnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent, boolean postDelay, Percept percept, JDImageProxy delayImage) {
 		DefaultAnimationTask task = new DefaultAnimationTask(ani,
@@ -985,9 +983,9 @@ public class GameScreen extends StandardScreen implements EventListener {
 	public void flushAnimationManager() {
 		long timer = 0;
 		long timeStep = 20;
-		while(!AnimationManager.getInstance().isEmpty()) {
+		while (!AnimationManager.getInstance().isEmpty()) {
 			timer += 20;
-			if(timer > 3000) {
+			if (timer > 3000) {
 				break;
 			}
 			try {
@@ -1014,7 +1012,7 @@ public class GameScreen extends StandardScreen implements EventListener {
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof ShowInfoEntityEvent) {
+		if (event instanceof ShowInfoEntityEvent) {
 			Paragraphable infoEntity = ((ShowInfoEntityEvent) event).getInfoEntity();
 			setInfoEntity(infoEntity);
 		}

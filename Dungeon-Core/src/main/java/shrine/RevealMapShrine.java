@@ -72,7 +72,7 @@ public class RevealMapShrine extends Shrine {
 				f.getRoomVisibility().setVisibilityStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
 				revealedSomething = true;
 			}
-			f.getControl().notifyVisibilityStatusIncrease(revealedRoom.getPoint());
+
 		}
 		return revealedSomething;
 	}

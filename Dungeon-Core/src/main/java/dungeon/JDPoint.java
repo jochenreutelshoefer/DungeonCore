@@ -82,6 +82,10 @@ public class JDPoint implements Serializable{
     public void decY(){
 	y--;
     }
+
+	public boolean isNeighbour(JDPoint p) {
+		return relativeTo(p) != null;
+	}
 		     
     public RouteInstruction.Direction relativeTo(JDPoint p){
 	if(p.getX() == this.x){

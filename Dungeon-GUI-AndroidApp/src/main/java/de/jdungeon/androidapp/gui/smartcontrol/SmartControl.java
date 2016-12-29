@@ -4,22 +4,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import android.graphics.Color;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
-import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
+import figure.action.Action;
+import figure.action.AttackAction;
+import figure.action.MoveAction;
+import figure.action.StepAction;
+import figure.action.result.ActionResult;
 import graphics.GraphicObjectRenderer;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -69,7 +71,7 @@ public class SmartControl extends ContainerGUIElement {
 
 	private void updateMoveElements() {
 		moveElements.clear();
-		int moveElementSize = 30;
+		int moveElementSize = 36;
 		JDDimension moveElementDimension = new JDDimension(moveElementSize, moveElementSize);
 		RoomInfo roomInfo = figure.getRoomInfo();
 		DoorInfo[] doors = roomInfo.getDoors();
@@ -104,11 +106,33 @@ public class SmartControl extends ContainerGUIElement {
 	private void updatePositionElements() {
 		positionElements.clear();
 		JDDimension dimension = this.getDimension();
-		int widthBy2 = (int) (dimension.getWidth() / 2);
-		GraphicObjectRenderer renderer = new GraphicObjectRenderer(widthBy2);
+		int positionAreaSize = (int) (dimension.getWidth() / 1.6);
+		int positionAreaOffset = (dimension.getWidth() - positionAreaSize)/2;
+		GraphicObjectRenderer renderer = new GraphicObjectRenderer(positionAreaSize);
 		for (int i = 0; i < 8; i++) {
 			JDPoint positionCoord = renderer.getPositionCoordModified(i);
-			positionElements.add(new PositionElement(new JDPoint(positionCoord.getX() + widthBy2 / 2, positionCoord.getY() + widthBy2 / 2), new JDDimension(10, 10), this, Position.Pos.fromValue(i)));
+			int positionSize = 20;
+			Action action = new StepAction(i);
+			if(figure.checkMovementAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
+				positionElements.add(
+						new PositionElement(
+								new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord.getY() + positionAreaOffset - positionSize / 2),
+								new JDDimension(positionSize, positionSize),
+								this,
+								action));
+			}
+			if(figure.getRoomInfo().fightRunning()) {
+				FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
+				if(otherFigure != null && otherFigure.isHostile(this.figure)) {
+					positionElements.add(
+							new PositionElement(
+									new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord.getY() + positionAreaOffset - positionSize / 2),
+									new JDDimension(positionSize, positionSize),
+									this,
+									new AttackAction(otherFigure.getFighterID())));
+				}
+
+			}
 		}
 	}
 

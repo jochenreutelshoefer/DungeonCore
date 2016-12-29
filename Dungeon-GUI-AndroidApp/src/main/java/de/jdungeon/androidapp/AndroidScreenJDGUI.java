@@ -1,5 +1,6 @@
 package de.jdungeon.androidapp;
 
+import figure.action.EndRoundAction;
 import figure.other.Lioness;
 import item.ItemInfo;
 
@@ -42,7 +43,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public void actionDone(Action a, ActionResult res) {
-		if (res.getKey1() == ActionResult.KEY_IMPOSSIBLE) {
+		if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
 			perceptHandler.newStatement(StatementManager.getStatement(res));
 		}
 	}
@@ -54,8 +55,12 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public void onTurn() {
-		// TODO Auto-generated method stub
-
+		// if player does not have an action point left,
+		// preemptively cause an EndRoundAction
+		// TODO: can this ever happen
+		if(this.getFigure().getActionPoints() == 0) {
+			plugAction(new EndRoundAction());
+		}
 	}
 
 	@Override

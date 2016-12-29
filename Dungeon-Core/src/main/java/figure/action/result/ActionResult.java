@@ -9,24 +9,24 @@ package figure.action.result;
 public class ActionResult {
 	
 	
-	public static final int KEY_POSSIBLE = 1;
-	public static final int KEY_IMPOSSIBLE = 2;
-	public static final int KEY_DONE = 3;
-	public static final int KEY_FAILED = 4;
+	public static final int VALUE_POSSIBLE = 1;
+	public static final int VALUE_IMPOSSIBLE = 2;
+	public static final int VALUE_DONE = 3;
+	public static final int VALUE_FAILED = 4;
 	
-	public static final ActionResult FAILED = new ActionResult(ActionResult.KEY_FAILED);
-	public static final ActionResult DONE = new ActionResult(ActionResult.KEY_DONE);
-	public static final ActionResult POSSIBLE = new ActionResult(ActionResult.KEY_POSSIBLE);
-	public static final ActionResult NOAP = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NOAP);
-	public static final ActionResult OTHER = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_OTHER);
-	public static final ActionResult TARGET = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
-	public static final ActionResult POSITION = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION);
-	public static final ActionResult INVALID = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_INVALIDACTION);
-	public static final ActionResult MODE = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_WRONGMODE);
-	public static final ActionResult KNOWLEDGE = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NOKNOWLEDGE);
-	public static final ActionResult DUST = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NODUST);
-	public static final ActionResult ITEM = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NOITEM);
-	public static final ActionResult DISTANCE = new ActionResult(ActionResult.KEY_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_DISTANCE);
+	public static final ActionResult FAILED = new ActionResult(ActionResult.VALUE_FAILED);
+	public static final ActionResult DONE = new ActionResult(ActionResult.VALUE_DONE);
+	public static final ActionResult POSSIBLE = new ActionResult(ActionResult.VALUE_POSSIBLE);
+	public static final ActionResult NOAP = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NOAP);
+	public static final ActionResult OTHER = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_OTHER);
+	public static final ActionResult TARGET = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
+	public static final ActionResult POSITION = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION);
+	public static final ActionResult INVALID = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_INVALIDACTION);
+	public static final ActionResult MODE = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_WRONGMODE);
+	public static final ActionResult KNOWLEDGE = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NOKNOWLEDGE);
+	public static final ActionResult DUST = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NODUST);
+	public static final ActionResult ITEM = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_NOITEM);
+	public static final ActionResult DISTANCE = new ActionResult(ActionResult.VALUE_IMPOSSIBLE,ActionResult.IMPOSSIBLE_REASON_DISTANCE);
 	
 	public static final int IMPOSSIBLE_REASON_OTHER = 9;
 	public static final int IMPOSSIBLE_REASON_NOAP = 10;
@@ -54,21 +54,21 @@ public class ActionResult {
 	/**
 	 * @return Returns the key2.
 	 */
-	public int getKey2() {
+	public int getReason() {
 		return key2;
 	}
 
 	/**
 	 * @param key2 The key2 to set.
 	 */
-	public void setKey2(int key2) {
+	public void setReason(int key2) {
 		this.key2 = key2;
 	}
 
 	/**
 	 * @return Returns the key1.
 	 */
-	public int getKey1() {
+	public int getValue() {
 		return key1;
 	}
 	
