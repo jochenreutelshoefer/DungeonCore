@@ -3,12 +3,8 @@ package de.jdungeon.androidapp.gui.smartcontrol;
 import android.graphics.Color;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
-import event.ActionEvent;
-import event.Event;
 import event.EventManager;
 import event.WannaMoveEvent;
-import figure.action.Action;
-import figure.action.MoveAction;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.GUIElement;
@@ -70,7 +66,7 @@ public class MoveElement extends SubGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		int parentX = parent.getPositionOnScreen().getX();
 		int parentY = parent.getPositionOnScreen().getY();
-		g.drawTriangle(
+		g.fillTriangle(
 				parentX + triangle[0].getX(),
 				parentY + triangle[0].getY(),
 				parentX + triangle[1].getX(),

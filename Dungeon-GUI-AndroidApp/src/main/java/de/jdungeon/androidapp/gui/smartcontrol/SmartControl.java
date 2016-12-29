@@ -12,6 +12,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
+import figure.action.LockAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
 import figure.action.result.ActionResult;
@@ -34,7 +35,7 @@ public class SmartControl extends ContainerGUIElement {
 	private final Collection<GUIElement> doorElements = new ArrayList<>();
 	private final Collection<GUIElement> moveElements = new ArrayList<>();
 	private final FigureInfo figure;
-	public static final int DOOR_WIDTH = 20;
+	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
 	private final int doorThickness;
 	private final JDDimension eastWest;
@@ -52,7 +53,7 @@ public class SmartControl extends ContainerGUIElement {
 		/*
 		some util variables for the door coordinates
 		 */
-		doorThickness = DOOR_WIDTH / 3;
+		doorThickness = (int) (DOOR_WIDTH / 2.8);
 		eastWest = new JDDimension(doorThickness, DOOR_WIDTH);
 		southNorth = new JDDimension(DOOR_WIDTH, doorThickness);
 		x02 = this.getDimension().getWidth() / 2 - doorThickness;
@@ -97,8 +98,9 @@ public class SmartControl extends ContainerGUIElement {
 		DoorInfo[] doors = roomInfo.getDoors();
 		for (int i = 0; i < 4; i++) {
 			DoorInfo door = doors[i];
-			if (door != null) {
-				doorElements.add(new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this));
+			if (door != null && door.hasLock()) {
+				Action action = new LockAction(door);
+				doorElements.add(new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door.isLocked(), this.figure.hasKey(door), action));
 			}
 		}
 	}

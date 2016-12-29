@@ -108,7 +108,28 @@ public class AndroidGraphics implements Graphics {
 		canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
 	}
 
-	public void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color)
+	@Override
+	public void fillRect(int x, int y, int width, int height, int color) {
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+		paint.setStrokeWidth(1);
+		paint.setColor(color);
+		paint.setStyle(Paint.Style.FILL_AND_STROKE);
+		paint.setAntiAlias(true);
+
+		Path path = new Path();
+		path.setFillType(Path.FillType.EVEN_ODD);
+		path.moveTo(x, y);
+		path.lineTo(x + width, y);
+		path.lineTo(x + width, y + height);
+		path.lineTo(x, y + height);
+		path.close();
+
+		canvas.drawPath(path, paint);
+	}
+
+	@Override
+	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color)
 	{
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 

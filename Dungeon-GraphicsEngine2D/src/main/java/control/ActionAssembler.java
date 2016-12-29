@@ -7,6 +7,7 @@
 package control;
 
 import dungeon.Position;
+import dungeon.util.RouteInstruction;
 import event.ActionEvent;
 import event.Event;
 import event.EventListener;
@@ -97,9 +98,9 @@ public class ActionAssembler implements EventListener {
 
 	public void wannaLockDoor(DoorInfo d) {
 		FigureInfo f = getFigure();
-		int dir = d.getDir(f.getRoomNumber());
-		if (dir != -1) {
-			Action a = new LockAction(dir);
+		RouteInstruction.Direction dir = d.getDirection(f.getRoomNumber());
+		if (dir != null) {
+			Action a = new LockAction(d);
 			plugAction(a);
 		}
 	}

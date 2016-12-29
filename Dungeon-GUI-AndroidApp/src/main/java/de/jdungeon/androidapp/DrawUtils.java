@@ -243,12 +243,17 @@ public class DrawUtils {
 		}
 	}
 	public static void drawRectangle(Graphics g, int yellow, JDPoint point, JDDimension dimension) {
-		drawRectangle(g, yellow, point.getX(), point.getY(), point.getX()+dimension.getWidth(), point.getY()+dimension.getHeight());
+		g.drawRect(point.getX(), point.getY(), dimension.getWidth(), dimension.getHeight(), yellow);
+	}
+
+	public static void fillRectangle(Graphics g, int yellow, JDPoint point, JDDimension dimension) {
+		g.fillRect(point.getX(), point.getY(), dimension.getWidth(), dimension.getHeight(), yellow);
 	}
 
 
 
 	public static void drawRectangle(Graphics g, int yellow, int x1, int y1, int x2, int y2) {
+		// TODO: refactor
 		g.drawLine(x1, y1, x2, y1, yellow);
 		g.drawLine(x1, y1, x1, y2, yellow);
 		g.drawLine(x1, y2, x2, y2, yellow);

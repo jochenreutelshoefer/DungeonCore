@@ -72,7 +72,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			if (currentFightstate && spell.isFight()) {
 				activityCache.add(new ItemWheelActivity(spell));
 			}
-			if (currentFightstate == false && spell.isNormal()) {
+			if (!currentFightstate && spell.isNormal()) {
 				activityCache.add(new ItemWheelActivity(spell));
 			}
 		}
@@ -131,8 +131,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 						((RoomInfo) highlightedEntity).getNumber());
 				screen.getControl().getActionAssembler()
 						.wannaScout(directionToScout);
-			} else if (highlightedEntity != null
-					&& highlightedEntity instanceof DoorInfo) {
+			} else if (highlightedEntity instanceof DoorInfo) {
 				int directionToScout = ((DoorInfo) highlightedEntity)
 						.getDir(info.getRoomNumber());
 				screen.getControl().getActionAssembler()
@@ -140,15 +139,13 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			}
 
 		} else if (o.equals(WALK)) {
-			if (highlightedEntity != null
-					&& highlightedEntity instanceof PositionInRoomInfo) {
+			if (highlightedEntity instanceof PositionInRoomInfo) {
 				screen.getControl()
 						.getActionAssembler()
 						.wannaStepToPosition(
 								((PositionInRoomInfo) highlightedEntity));
 			}
-			if (highlightedEntity != null
-					&& highlightedEntity instanceof RoomInfo) {
+			if (highlightedEntity instanceof RoomInfo) {
 				int directionToWalk = Dir.getDirFromToIfNeighbour(
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());

@@ -6,6 +6,7 @@
  */
 package dungeon;
 
+import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
@@ -36,6 +37,10 @@ public class DoorInfo extends InfoEntity {
 	
 	public int getDir(JDPoint p) {
 		return d.getDir(p);
+	}
+
+	public RouteInstruction.Direction getDirection(JDPoint p) {
+		return RouteInstruction.Direction.fromInteger(d.getDir(p));
 	}
 
 	private boolean getFoundDiscovery() {

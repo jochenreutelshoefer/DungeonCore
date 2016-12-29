@@ -25,10 +25,18 @@ import de.jdungeon.game.Input;
 public class PositionElement extends SubGUIElement {
 
 	private final Action action;
+	private final int ballWidth;
+	private final int ballHeight;
+	private final int ballOffsetX;
+	private final int ballOffsetY;
 
 	public PositionElement(JDPoint position, JDDimension dimension, GUIElement parent, Action action) {
 		super(position, dimension, parent);
 		this.action = action;
+		ballWidth = (int) (dimension.getWidth() / 1.5);
+		ballHeight = (int) (dimension.getHeight() / 1.5);
+		ballOffsetX = (dimension.getWidth() - ballWidth) / 2;
+		ballOffsetY = (dimension.getHeight() - ballHeight) / 2;
 	}
 
 	@Override
@@ -48,12 +56,11 @@ public class PositionElement extends SubGUIElement {
 		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
 		JDDimension dimension = this.getDimension();
 		DrawUtils.drawRectangle(g, Color.WHITE, absolutePosition, dimension);
-		int width = dimension.getWidth() / 2;
-		int height = dimension.getHeight() / 2;
+
 		int color = Color.WHITE;
 		if(this.action instanceof AttackAction) {
 			color = Color.RED;
 		}
-		g.drawOval(absolutePosition.getX() + width/2, absolutePosition.getY()+height/2, width, height, color);
+		g.drawOval(absolutePosition.getX() + ballOffsetX, absolutePosition.getY()+ ballOffsetY, ballWidth, ballHeight, color);
 	}
 }

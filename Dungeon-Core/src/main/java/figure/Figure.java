@@ -1,7 +1,7 @@
 package figure;
 
 import ai.AI;
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
+import dungeon.DoorInfo;
 import dungeon.util.InfoUnitUnwrapper;
 import figure.percept.DiePercept;
 import item.Item;
@@ -1978,10 +1978,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	// }
 
 	private ActionResult handleLockAction(LockAction a, boolean doIt) {
-		int dir = a.getDir();
+		DoorInfo info =  a.getDoor();
 		if (this.isAbleToLockDoor()) {
 
-			Door d = getRoom().getDoor(dir);
+			RouteInstruction.Direction direction = info.getDirection(getRoom().getLocation());
+			if(direction == null) {
+				return ActionResult.TARGET;
+			}
+			Door d = getRoom().getDoor(direction);
 			boolean wasLocked = d.getLocked();
 			boolean ok = this.tryUnlockDoor(d, doIt);
 
