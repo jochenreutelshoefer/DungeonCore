@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.MotionEvent;
+import de.jdungeon.game.MotionEvent;
 import dungeon.JDPoint;
 
 import de.jdungeon.androidapp.gui.GUIElement;
@@ -14,6 +14,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.Screen;
+import de.jdungeon.implementation.AndroidGame;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -33,12 +34,17 @@ public abstract class StandardScreen extends Screen {
 	}
 
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
-	private long screenCreatedTime;
+	private final long screenCreatedTime;
 
 	public StandardScreen(Game game) {
 		super(game);
 		paint = defaultPaint;
 		screenCreatedTime = System.currentTimeMillis();
+	}
+
+	@Override
+	public void init() {
+
 	}
 
 	@Override

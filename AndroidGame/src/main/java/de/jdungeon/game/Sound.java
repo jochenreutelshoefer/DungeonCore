@@ -1,7 +1,10 @@
 package de.jdungeon.game;
 
 public interface Sound {
-    public void play(float volume);
 
-    public void dispose();
+	void play(float volume);
+
+    void dispose();
+
+	int getId();
 }

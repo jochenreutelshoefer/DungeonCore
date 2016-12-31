@@ -4,9 +4,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Build.VERSION;
-import android.view.MotionEvent;
 import android.view.View;
 import de.jdungeon.game.Input;
+import de.jdungeon.game.MotionEvent;
 import de.jdungeon.util.ScrollMotion;
 
 public class AndroidInput implements Input {    
@@ -53,12 +53,21 @@ public class AndroidInput implements Input {
 
 	@Override
 	public MotionEvent getDoubleTapEvent() {
-		return touchHandler.getDoubleTapEvent();
+		android.view.MotionEvent doubleTapEvent = touchHandler.getDoubleTapEvent();
+		if(doubleTapEvent != null) {
+			return new AndroidMotionEvent(doubleTapEvent);
+		}
+		return null;
 	}
 
 	@Override
 	public MotionEvent getLongPressEvent() {
-		return touchHandler.getLongPressEvent();
+
+		android.view.MotionEvent longPressEvent = touchHandler.getLongPressEvent();
+		if(longPressEvent != null) {
+			return new AndroidMotionEvent(longPressEvent);
+		}
+		return null;
 	}
    
 }

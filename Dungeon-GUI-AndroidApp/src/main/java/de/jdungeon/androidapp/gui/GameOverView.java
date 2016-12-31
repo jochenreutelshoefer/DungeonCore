@@ -2,28 +2,34 @@ package de.jdungeon.androidapp.gui;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import dungeon.JDPoint;
 import event.EventManager;
 import event.PlayerDiedEvent;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.io.MusicUtils;
 import de.jdungeon.androidapp.screen.StandardScreen;
-import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
+import de.jdungeon.implementation.AndroidGame;
 
 public class GameOverView extends AbstractGUIElement {
 
 	public GameOverView(JDPoint position, JDDimension dimension,
 						StandardScreen screen, Game game) {
 		super(position, dimension, screen, game);
+
 	}
 
 	private boolean show = false;
 
 	public void setShow(boolean show) {
 		this.show = show;
+		if(show) {
+			MediaPlayer mediaPlayer = MusicUtils.playMusicFileRandom( ((AndroidGame)game).getAssets(), "Dark_Times.mp3", "For_the_Fallen.mp3");
+		}
 	}
 
 	@Override

@@ -2,8 +2,10 @@ package de.jdungeon.androidapp.gui.dungeonselection;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import control.JDGUIEngine2D;
 import dungeon.JDPoint;
 import graphics.ImageManager;
@@ -13,6 +15,7 @@ import level.DungeonManager;
 import user.DungeonSession;
 
 import de.jdungeon.androidapp.io.AndroidImageLoader;
+import de.jdungeon.androidapp.io.MusicUtils;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
@@ -64,6 +67,11 @@ public class DungeonSelectionScreen extends StandardScreen {
 			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, this.game, session.getCurrentStage() == stage));
 			innerStageIndex++;
 		}
+	}
+
+	@Override
+	public void init() {
+
 	}
 
 	@Override

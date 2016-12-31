@@ -1,8 +1,7 @@
 package de.jdungeon.androidapp.gui;
 
 import util.JDDimension;
-import android.view.MotionEvent;
-import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.MotionEvent;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;

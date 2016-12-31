@@ -2,7 +2,7 @@ package de.jdungeon.game;
 
 import java.util.List;
 
-import android.view.MotionEvent;
+import de.jdungeon.game.MotionEvent;
 import de.jdungeon.util.ScrollMotion;
 
 

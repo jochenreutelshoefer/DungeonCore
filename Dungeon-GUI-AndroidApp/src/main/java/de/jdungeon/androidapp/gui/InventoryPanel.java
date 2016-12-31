@@ -3,7 +3,6 @@ package de.jdungeon.androidapp.gui;
 import event.EventManager;
 import item.equipment.EquipmentItemInfo;
 import util.JDDimension;
-import android.view.MotionEvent;
 
 import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
@@ -13,6 +12,8 @@ import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
+import de.jdungeon.game.MotionEvent;
+
 import dungeon.JDPoint;
 import figure.action.EquipmentChangeAction;
 import figure.hero.HeroInfo;

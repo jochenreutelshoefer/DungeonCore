@@ -39,6 +39,7 @@ import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Music;
 
 public class PerceptHandler {
 
@@ -243,6 +244,10 @@ public class PerceptHandler {
 
 	private void handleDiePercept(DiePercept p) {
 		FigureInfo deadFigure = p.getFigure();
+		if(deadFigure.equals(this.figure)) {
+			Music music = screen.getGame().getAudio().createMusic("music/" + "Bad_Times.mp3");
+			music.play();
+		}
 
 		AnimationSet set = AnimationUtils.getFigure_tipping_over(deadFigure);
 		if (set != null) {

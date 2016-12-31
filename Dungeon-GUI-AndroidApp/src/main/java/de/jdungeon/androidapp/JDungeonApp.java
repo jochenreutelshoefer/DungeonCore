@@ -67,6 +67,11 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	}
 
 	@Override
+	public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
 	public void notify(Event event) {
 
 		if(event instanceof StartNewGameEvent) {

@@ -1,14 +1,17 @@
 package de.jdungeon.androidapp.screen.start;
 
-import com.apple.eawt.AppEvent;
+import android.media.MediaPlayer;
 import dungeon.JDPoint;
 
 import de.jdungeon.androidapp.event.QuitGameEvent;
 import de.jdungeon.androidapp.event.StartNewGameEvent;
 import de.jdungeon.androidapp.gui.SimpleButton;
+import de.jdungeon.androidapp.io.MusicUtils;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Music;
+import de.jdungeon.implementation.AndroidGame;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -31,5 +34,11 @@ public class WelcomeScreen extends StandardScreen {
 
 		gr.drawARGB(155, 0, 0, 0);
 		gr.drawString("Willkommen bei <Untitled Dungeon Game>", game.getScreenWidth() / 2, 120, StandardScreen.defaultPaint);
+	}
+
+	@Override
+	public void init() {
+		Music music = this.game.getAudio().createMusic("music/" + "Exciting_Trailer.mp3");
+		music.play();
 	}
 }

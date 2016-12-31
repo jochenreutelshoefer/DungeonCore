@@ -1,5 +1,9 @@
 package de.jdungeon.game;
 
+import android.app.Activity;
+
+import de.jdungeon.implementation.AndroidGame;
+
 public abstract class Screen {
     protected final Game game;
 
@@ -16,6 +20,8 @@ public abstract class Screen {
     public abstract void resume();
 
     public abstract void dispose();
+
+	public abstract void init();
    
     public abstract void backButton();
 

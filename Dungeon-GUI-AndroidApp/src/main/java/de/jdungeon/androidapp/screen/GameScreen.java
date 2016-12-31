@@ -11,7 +11,7 @@ import java.util.Map;
 
 import android.graphics.Color;
 import android.util.Pair;
-import android.view.MotionEvent;
+import de.jdungeon.game.MotionEvent;
 import animation.AnimationManager;
 import animation.AnimationSet;
 import animation.DefaultAnimationTask;
@@ -71,6 +71,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
+import de.jdungeon.game.Music;
 import de.jdungeon.user.Session;
 import de.jdungeon.util.ScrollMotion;
 
@@ -291,6 +292,12 @@ public class GameScreen extends StandardScreen implements EventListener {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void init() {
+		Music music = this.game.getAudio().createMusic("music/" + "Eyes_Gone_Wrong.mp3");
+		music.play();
 	}
 
 	@Override

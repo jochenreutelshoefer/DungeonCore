@@ -5,8 +5,8 @@ import de.jdungeon.game.Sound;
 
 
 public class AndroidSound implements Sound {
-    int soundId;
-    SoundPool soundPool;
+    private final int soundId;
+    private final SoundPool soundPool;
 
 	public AndroidSound(SoundPool soundPool, int soundId) {
         this.soundId = soundId;
@@ -23,4 +23,8 @@ public class AndroidSound implements Sound {
         soundPool.unload(soundId);
     }
 
+	@Override
+	public int getId() {
+		return soundId;
+	}
 }

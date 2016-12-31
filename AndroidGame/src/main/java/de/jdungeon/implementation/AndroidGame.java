@@ -8,6 +8,7 @@ import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 import de.jdungeon.game.Audio;
@@ -22,7 +23,7 @@ import de.jdungeon.user.User;
 
 public abstract class AndroidGame extends Activity implements Game {
 
-    private AndroidFastRenderView renderView;
+	private AndroidFastRenderView renderView;
 	private Graphics graphics;
 	private Audio audio;
 	private Input input;
@@ -30,6 +31,10 @@ public abstract class AndroidGame extends Activity implements Game {
 	private Screen screen;
 	private WakeLock wakeLock;
 	private final Logger logger = new AndroidLogger();
+	//public static final int SCREEN_WIDTH = 1920;
+	public static final int SCREEN_WIDTH = 1200;
+	//public static final int SCREEN_HEIGHT = 1104;
+	public static final int SCREEN_HEIGHT = 700;
 
 	public AndroidGame(Session session) {
 		this.session = session;
@@ -57,8 +62,11 @@ public abstract class AndroidGame extends Activity implements Game {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-        int frameBufferWidth = isPortrait ? 480: 800;
-        int frameBufferHeight = isPortrait ? 800: 480;
+		// 1920 * 1104
+		// 1824 * 1200
+		//int frameBufferWidth = isPortrait ? 480: 800;
+		int frameBufferWidth = isPortrait ? SCREEN_HEIGHT : SCREEN_WIDTH;
+        int frameBufferHeight = isPortrait ? SCREEN_WIDTH : SCREEN_HEIGHT;
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
        
@@ -73,6 +81,7 @@ public abstract class AndroidGame extends Activity implements Game {
         audio = new AndroidAudio(this);
         input = new AndroidInput(this, renderView, scaleX, scaleY);
         screen = getInitScreen();
+		screen.init();
         setContentView(renderView);
        
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -82,14 +91,24 @@ public abstract class AndroidGame extends Activity implements Game {
 
 	@Override
 	public int getScreenWidth() {
+		return SCREEN_WIDTH;
 		// TODO: implement properly
-		return 800;
+		//return 800;
+		// 1920 * 1104
+		// 1824 * 1200
 	}
 
 	@Override
 	public int getScreenHeight() {
+		return SCREEN_HEIGHT;
+		/*
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int height = displaymetrics.heightPixels;
+		int width = displaymetrics.widthPixels;
+		*/
 		// TODO: implement properly
-		return 400;
+		//return 400;
 	}
 
     @Override
@@ -131,7 +150,12 @@ public abstract class AndroidGame extends Activity implements Game {
         return audio;
     }
 
-    @Override
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
     public void setScreen(Screen screen) {
         if (screen == null)
             throw new IllegalArgumentException("Screen must not be null");
@@ -141,6 +165,7 @@ public abstract class AndroidGame extends Activity implements Game {
         screen.resume();
         screen.update(0);
         this.screen = screen;
+		screen.init();
     }
    
     @Override

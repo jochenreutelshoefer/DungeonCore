@@ -2,7 +2,6 @@ package de.jdungeon.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -106,7 +105,7 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_POINTER_UP:
 					touchEvent = touchEventPool.newObject();
-					touchEvent.motionEvent = event;
+					touchEvent.motionEvent = new AndroidMotionEvent(event);
 					touchEvent.type = TouchEvent.TOUCH_DOWN;
 					touchEvent.pointer = pointerId;
 					touchEvent.x = touchX[i] = (int) (event.getX(i) * scaleX);
@@ -117,7 +116,7 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
 					break;
                 case MotionEvent.ACTION_CANCEL:
                     touchEvent = touchEventPool.newObject();
-					touchEvent.motionEvent = event;
+					touchEvent.motionEvent = new AndroidMotionEvent(event);
                     touchEvent.type = TouchEvent.TOUCH_UP;
                     touchEvent.pointer = pointerId;
                     touchEvent.x = touchX[i] = (int) (event.getX(i) * scaleX);
@@ -129,7 +128,7 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
 
                 case MotionEvent.ACTION_MOVE:
                     touchEvent = touchEventPool.newObject();
-					touchEvent.motionEvent = event;
+					touchEvent.motionEvent = new AndroidMotionEvent(event);
                     touchEvent.type = TouchEvent.TOUCH_DRAGGED;
                     touchEvent.pointer = pointerId;
                     touchEvent.x = touchX[i] = (int) (event.getX(i) * scaleX);

@@ -1,7 +1,8 @@
 package de.jdungeon.game;
 
 public interface Audio {
-    public Music createMusic(String file);
 
-    public Sound createSound(String file);
+    Music createMusic(String file);
+
+    Sound createSound(String file);
 }
