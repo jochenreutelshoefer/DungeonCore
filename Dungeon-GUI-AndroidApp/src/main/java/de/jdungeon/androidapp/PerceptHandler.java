@@ -239,7 +239,6 @@ public class PerceptHandler {
 				!figure.getRoomInfo().fightRunning()) {
 			screen.scrollTo(info.getNumber(), 30f);
 		}
-
 	}
 
 	private void handleDiePercept(DiePercept p) {

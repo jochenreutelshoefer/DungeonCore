@@ -32,9 +32,4 @@ public class AndroidAudioSet implements AbstractAudioSet {
 
 	}
 
-	@Override
-	public List<Sound> getSounds() {
-		return sounds;
-	}
-
 }

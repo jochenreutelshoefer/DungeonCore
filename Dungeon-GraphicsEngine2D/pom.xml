@@ -10,9 +10,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>de.reutelshoefer.dungeon</groupId>
-			<artifactId>Dungeon-App-Core</artifactId>
+			<artifactId>Dungeon-Core</artifactId>
 			<version>0.1.0</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>AndroidGame</artifactId>
+			<version>0.1.0</version>
 		</dependency>
 		<!--
 		<dependency>

@@ -2,23 +2,17 @@ package de.jdungeon.androidapp.gui.dungeonselection;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.MediaPlayer;
-import control.JDGUIEngine2D;
 import dungeon.JDPoint;
-import graphics.ImageManager;
 import io.AbstractImageLoader;
 import level.DungeonFactory;
 import level.DungeonManager;
 import user.DungeonSession;
 
 import de.jdungeon.androidapp.io.AndroidImageLoader;
-import de.jdungeon.androidapp.io.MusicUtils;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.implementation.AndroidGame;
 

@@ -8,7 +8,6 @@ import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 import de.jdungeon.game.Audio;
@@ -19,7 +18,6 @@ import de.jdungeon.game.Input;
 import de.jdungeon.game.Logger;
 import de.jdungeon.game.Screen;
 import de.jdungeon.user.Session;
-import de.jdungeon.user.User;
 
 public abstract class AndroidGame extends Activity implements Game {
 
