@@ -5,8 +5,6 @@ import java.util.List;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.ScrollMotion;
-
 
 public interface TouchHandler extends OnTouchListener {
 	boolean isTouchDown(int pointer);
@@ -19,7 +17,7 @@ public interface TouchHandler extends OnTouchListener {
 
 	float getScaleEvent();
 
-	ScrollMotion getScrollEvent();
+	AndroidScrollMotion getScrollEvent();
 	
 	MotionEvent getDoubleTapEvent();
 	

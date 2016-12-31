@@ -1,7 +1,5 @@
 package de.jdungeon.game;
 
-import android.graphics.Paint;
-
 public interface Graphics {
     public static enum ImageFormat {
         ARGB8888, ARGB4444, RGB565

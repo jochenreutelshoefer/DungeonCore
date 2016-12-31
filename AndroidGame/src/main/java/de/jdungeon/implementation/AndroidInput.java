@@ -7,7 +7,6 @@ import android.os.Build.VERSION;
 import android.view.View;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.MotionEvent;
-import de.jdungeon.util.ScrollMotion;
 
 public class AndroidInput implements Input {    
     TouchHandler touchHandler;
@@ -47,7 +46,7 @@ public class AndroidInput implements Input {
 	}
 
 	@Override
-	public ScrollMotion getScrollEvent() {
+	public AndroidScrollMotion getScrollEvent() {
 		return touchHandler.getScrollEvent();
 	}
 

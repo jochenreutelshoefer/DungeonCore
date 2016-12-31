@@ -9,20 +9,20 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
+import de.jdungeon.game.Paint;
 import de.jdungeon.util.GifDecoder;
 
 public class AndroidGraphics implements Graphics {
 	AssetManager assets;
 	Bitmap frameBuffer;
 	Canvas canvas;
-	Paint paint;
+	android.graphics.Paint paint;
 	Rect srcRect = new Rect();
 	Rect dstRect = new Rect();
 
@@ -30,7 +30,7 @@ public class AndroidGraphics implements Graphics {
 		this.assets = assets;
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
-		this.paint = new Paint();
+		this.paint = new android.graphics.Paint();
 	}
 
 	@Override
@@ -110,11 +110,11 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void fillRect(int x, int y, int width, int height, int color) {
-		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
 
 		paint.setStrokeWidth(1);
 		paint.setColor(color);
-		paint.setStyle(Paint.Style.FILL_AND_STROKE);
+		paint.setStyle(android.graphics.Paint.Style.FILL_AND_STROKE);
 		paint.setAntiAlias(true);
 
 		Path path = new Path();
@@ -131,11 +131,11 @@ public class AndroidGraphics implements Graphics {
 	@Override
 	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color)
 	{
-		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
 
 		paint.setStrokeWidth(1);
 		paint.setColor(color);
-		paint.setStyle(Paint.Style.FILL_AND_STROKE);
+		paint.setStyle(android.graphics.Paint.Style.FILL_AND_STROKE);
 		paint.setAntiAlias(true);
 
 		Path path = new Path();
@@ -156,7 +156,7 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void drawString(String text, int x, int y, Paint paint) {
-		canvas.drawText(text, x, y, paint);
+		canvas.drawText(text, x, y, ((AndroidPaint)paint).getPaint());
 
 	}
 

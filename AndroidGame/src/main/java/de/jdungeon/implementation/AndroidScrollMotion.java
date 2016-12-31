@@ -1,15 +1,17 @@
-package de.jdungeon.util;
+package de.jdungeon.implementation;
 
 import android.view.MotionEvent;
 
+import de.jdungeon.game.ScrollMotion;
 import de.jdungeon.implementation.AndroidMotionEvent;
+import de.jdungeon.util.FloatDimension;
 
-public class ScrollMotion {
+public class AndroidScrollMotion implements ScrollMotion {
 
 	private final MotionEvent startEvent;
 	private final FloatDimension movement;
 
-	public ScrollMotion(MotionEvent startEvent, FloatDimension movement) {
+	public AndroidScrollMotion(MotionEvent startEvent, FloatDimension movement) {
 		super();
 		this.startEvent = startEvent;
 		this.movement = movement;

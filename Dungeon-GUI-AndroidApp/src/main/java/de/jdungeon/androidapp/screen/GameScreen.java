@@ -189,7 +189,7 @@ public class GameScreen extends StandardScreen implements EventListener {
 		/*
 		init smart control
 		 */
-		int smartControlSize = 200;
+		int smartControlSize = 300;
 		JDDimension screenSize = this.getScreenSize();
 		SmartControl smartControl = new SmartControl(new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 80 - smartControlSize / 2), new JDDimension(smartControlSize, smartControlSize), this, this
 				.getGame(), figureInfo);
@@ -198,9 +198,11 @@ public class GameScreen extends StandardScreen implements EventListener {
 		/*
 		 * init item wheel
 		 */
+		int screenWidth = getGame().getScreenWidth();
 		int selectedIndexItem = 16;
-		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, 780),
-				new JDDimension(400, 400), figureInfo, this, this.getGame(),
+		int screenWidthBy2 = screenWidth / 2;
+		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, screenWidth-20),
+				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new ItemActivityItemProvider(figureInfo, this)),
 				selectedIndexItem, null);
@@ -211,8 +213,8 @@ public class GameScreen extends StandardScreen implements EventListener {
 		 */
 		int selectedIndexSkills = 19;
 		Image image = (Image) ImageManager.inventory_box_normal.getImage();
-		ItemWheel wheelSkills = new ItemWheel(new JDPoint(800, 820),
-				new JDDimension(400, 400), figureInfo, this, this.getGame(),
+		ItemWheel wheelSkills = new ItemWheel(new JDPoint(screenWidth, screenWidth+20),
+				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),
 				selectedIndexSkills,

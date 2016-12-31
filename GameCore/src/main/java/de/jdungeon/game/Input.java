@@ -2,8 +2,6 @@ package de.jdungeon.game;
 
 import java.util.List;
 
-import de.jdungeon.game.MotionEvent;
-import de.jdungeon.util.ScrollMotion;
 
 
 public interface Input {

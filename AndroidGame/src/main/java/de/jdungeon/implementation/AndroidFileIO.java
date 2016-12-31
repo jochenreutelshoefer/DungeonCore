@@ -6,10 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -50,8 +47,10 @@ public class AndroidFileIO implements FileIO {
     public OutputStream writeFile(String file) throws IOException {
         return new FileOutputStream(externalStoragePath + file);
     }
-   
+
+	/*
     public SharedPreferences getSharedPref() {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
+    */
 }

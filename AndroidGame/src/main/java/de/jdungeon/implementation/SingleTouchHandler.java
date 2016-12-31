@@ -8,7 +8,6 @@ import android.view.View;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.Pool;
 import de.jdungeon.game.Pool.PoolObjectFactory;
-import de.jdungeon.util.ScrollMotion;
 
 public class SingleTouchHandler implements TouchHandler {
    
@@ -106,7 +105,7 @@ public class SingleTouchHandler implements TouchHandler {
 	}
 
 	@Override
-	public ScrollMotion getScrollEvent() {
+	public AndroidScrollMotion getScrollEvent() {
 		// TODO Auto-generated method stub
 		return null;
 	}
