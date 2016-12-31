@@ -16,7 +16,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.reutelshoefer.dungeon</groupId>
-			<artifactId>AndroidGame</artifactId>
+			<artifactId>Game</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<!--

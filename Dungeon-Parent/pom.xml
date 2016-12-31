@@ -9,7 +9,7 @@
 
 	<modules>
 		<module>../Dungeon-Core</module>
-		<module>../AndroidGame</module>
+		<module>../Game</module>
 		<module>../Dungeon-App-Core</module>
 		<module>../Dungeon-GraphicsEngine2D</module>
 		<module>../Dungeon-GUI-AndroidApp</module>
