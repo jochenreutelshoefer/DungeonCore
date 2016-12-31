@@ -11,7 +11,7 @@ import android.view.View;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.Pool;
 import de.jdungeon.game.Pool.PoolObjectFactory;
-import de.jdungeon.util.FloatDimension;
+import de.jdungeon.game.ScrollMotion;
 
 public class MultiTouchHandler implements TouchHandler, OnGestureListener,
 		GestureDetector.OnDoubleTapListener {
@@ -151,7 +151,7 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
 	}
 
 	public void setScrolling(MotionEvent e1, float x, float y) {
-		this.scrollDist = new AndroidScrollMotion(e1, new FloatDimension(x, y));
+		this.scrollDist = new AndroidScrollMotion(e1, new ScrollMotion.FloatDimension(x, y));
 	}
 
 	@Override

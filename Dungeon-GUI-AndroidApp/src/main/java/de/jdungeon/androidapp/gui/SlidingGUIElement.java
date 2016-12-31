@@ -1,11 +1,11 @@
 package de.jdungeon.androidapp.gui;
 
 import util.JDDimension;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.ScrollMotion;
+import de.jdungeon.game.ScrollMotion;
+
 import dungeon.JDPoint;
 
 public abstract class SlidingGUIElement extends AbstractGUIElement {

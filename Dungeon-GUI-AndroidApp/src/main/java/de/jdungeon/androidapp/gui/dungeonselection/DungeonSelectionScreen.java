@@ -28,17 +28,6 @@ public class DungeonSelectionScreen extends StandardScreen {
 	private final AbstractImageLoader imageLoader;
 	int iconIndex = 0;
 
-	public static Paint labelPaint;
-	protected Paint paint;
-
-	{
-		labelPaint = new Paint();
-		labelPaint.setTextSize(10);
-		labelPaint.setTextAlign(Paint.Align.CENTER);
-		labelPaint.setAntiAlias(true);
-		labelPaint.setColor(Color.WHITE);
-	}
-
 	public DungeonSelectionScreen(Game game, DungeonSession session) {
 		super(game);
 		this.session = session;
@@ -72,7 +61,7 @@ public class DungeonSelectionScreen extends StandardScreen {
 	public void paint(float deltaTime) {
 		super.paint(deltaTime);
 
-		game.getGraphics().drawString("Choose your next Dungeon for stage "+session.getCurrentStage(), 465, 165, defaultPaint);
+		game.getGraphics().drawString("Choose your next Dungeon for stage "+session.getCurrentStage(), 465, 165, game.getGraphics().getDefaultPaint());
 	}
 
 }

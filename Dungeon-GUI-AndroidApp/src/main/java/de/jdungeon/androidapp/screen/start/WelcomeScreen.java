@@ -33,7 +33,7 @@ public class WelcomeScreen extends StandardScreen {
 		super.paint(deltaTime);
 
 		gr.drawARGB(155, 0, 0, 0);
-		gr.drawString("Willkommen bei <Untitled Dungeon Game>", game.getScreenWidth() / 2, 120, StandardScreen.defaultPaint);
+		gr.drawString("Willkommen bei <Untitled Dungeon Game>", game.getScreenWidth() / 2, 120, gr.getDefaultPaint());
 	}
 
 	@Override

@@ -14,7 +14,6 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.Screen;
-import de.jdungeon.implementation.AndroidGame;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -22,23 +21,13 @@ import de.jdungeon.implementation.AndroidGame;
  */
 public abstract class StandardScreen extends Screen {
 
-	public static Paint defaultPaint;
-	protected Paint paint;
 
-	{
-		defaultPaint = new Paint();
-		defaultPaint.setTextSize(25);
-		defaultPaint.setTextAlign(Paint.Align.CENTER);
-		defaultPaint.setAntiAlias(true);
-		defaultPaint.setColor(Color.RED);
-	}
 
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
 	private final long screenCreatedTime;
 
 	public StandardScreen(Game game) {
 		super(game);
-		paint = defaultPaint;
 		screenCreatedTime = System.currentTimeMillis();
 	}
 

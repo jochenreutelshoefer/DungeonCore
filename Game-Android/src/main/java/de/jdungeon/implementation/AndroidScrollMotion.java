@@ -3,8 +3,6 @@ package de.jdungeon.implementation;
 import android.view.MotionEvent;
 
 import de.jdungeon.game.ScrollMotion;
-import de.jdungeon.implementation.AndroidMotionEvent;
-import de.jdungeon.util.FloatDimension;
 
 public class AndroidScrollMotion implements ScrollMotion {
 

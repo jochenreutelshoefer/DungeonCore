@@ -21,7 +21,8 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.ScrollMotion;
+import de.jdungeon.game.ScrollMotion;
+import de.jdungeon.implementation.AndroidPaint;
 
 public class InfoPanel extends SlidingGUIElement {
 
@@ -96,7 +97,7 @@ public class InfoPanel extends SlidingGUIElement {
 					}
 					g.drawString(text,
 								x + (this.dimension.getWidth() / 2),
-								position.getY() + posCounterY, p);
+								position.getY() + posCounterY, new AndroidPaint(p));
 					posCounterY += 30;
 				}
 			}

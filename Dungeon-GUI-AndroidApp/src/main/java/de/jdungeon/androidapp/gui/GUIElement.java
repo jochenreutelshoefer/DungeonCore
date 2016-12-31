@@ -5,7 +5,8 @@ import de.jdungeon.game.MotionEvent;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.ScrollMotion;
+import de.jdungeon.game.ScrollMotion;
+
 import dungeon.JDPoint;
 
 public interface GUIElement {

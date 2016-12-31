@@ -42,6 +42,8 @@ import log.Log;
 import shrine.ShrineInfo;
 import text.Statement;
 import user.DefaultDungeonSession;
+
+import de.jdungeon.game.ScrollMotion;
 import de.jdungeon.user.Session;
 import util.JDDimension;
 
@@ -73,7 +75,6 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.Music;
-import de.jdungeon.util.ScrollMotion;
 
 public class GameScreen extends StandardScreen implements EventListener {
 

@@ -33,7 +33,7 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		g.drawString(dungeon.getName(),this.getPositionOnScreen().getX(), this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , DungeonSelectionScreen.labelPaint);
+		g.drawString(dungeon.getName(),this.getPositionOnScreen().getX(), this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , g.getPaintWhite());
 		//g.drawRect(this.position.getX(), this.position.getY(),
 		//		this.dimension.getWidth(), this.dimension.getHeight(), Color.YELLOW);
 	}

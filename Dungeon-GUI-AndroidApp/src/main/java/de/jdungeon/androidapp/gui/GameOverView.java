@@ -52,11 +52,14 @@ public class GameOverView extends AbstractGUIElement {
 		int textStartX = this.position.getX() + 15;
 		int lineHeight = 20;
 
+
 		Paint red = new Paint();
 		red.setColor(Color.RED);
 		red.setTextSize(20);
 		g.drawString("Game Over", this.position.getX() + 100,
-				textStartRow - 10, red);
+				textStartRow - 10, g.getPaintBlack());
+
+				/*
 
 		Paint yellow = new Paint();
 		yellow.setColor(Color.YELLOW);
@@ -82,6 +85,8 @@ public class GameOverView extends AbstractGUIElement {
 
 		g.drawString("yinakoSGA", textStartX, textStartRow + 6 * lineHeight,
 				black);
+
+*/
 
 		GUIUtils.drawDoubleBorder(g, this, 20);
 	}

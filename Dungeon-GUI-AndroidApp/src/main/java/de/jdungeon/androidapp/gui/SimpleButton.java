@@ -8,6 +8,7 @@ import util.JDDimension;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
+import de.jdungeon.game.ScrollMotion;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -33,6 +34,8 @@ public class SimpleButton extends AbstractGUIElement {
 		EventManager.getInstance().fireEvent(event);
 	}
 
+
+
 	@Override
 	public boolean isVisible() {
 		return true;
@@ -42,7 +45,7 @@ public class SimpleButton extends AbstractGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		drawBackground(g);
 
-		g.drawString(text, this.getPositionOnScreen().getX()+this.getDimension().getWidth()/2, this.getPositionOnScreen().getY()+44, StandardScreen.defaultPaint);
+		g.drawString(text, this.getPositionOnScreen().getX()+this.getDimension().getWidth()/2, this.getPositionOnScreen().getY()+44, g.getDefaultPaint());
 
 		drawBorder(g);
 

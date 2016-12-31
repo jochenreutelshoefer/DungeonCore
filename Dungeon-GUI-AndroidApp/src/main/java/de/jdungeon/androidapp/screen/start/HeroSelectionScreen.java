@@ -53,7 +53,7 @@ public class HeroSelectionScreen extends StandardScreen {
 
 		// Darken the entire screen so you can display the Paused screen.
 		gr.drawARGB(155, 0, 0, 0);
-		gr.drawString("Held wählen", 165, 165, defaultPaint);
+		gr.drawString("Held wählen", 165, 165, gr.getDefaultPaint());
 
 	}
 

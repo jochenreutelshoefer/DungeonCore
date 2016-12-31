@@ -23,16 +23,13 @@ public class CharAttributeView extends SlidingGUIElement {
 
 	private static final int yPosition = 150;
 
-	private final Paint black;
 
 	public CharAttributeView(HeroInfo info, GameScreen screen, Game game) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
 				(size.getWidth() * -1) + 20, yPosition), screen, game);
 		this.info = info;
 		this.screen = screen;
-		black = new Paint();
-		black.setColor(Color.BLACK);
-		black.setTextSize(12);
+
 	}
 
 	@Override
@@ -55,7 +52,7 @@ public class CharAttributeView extends SlidingGUIElement {
 		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
 
 		g.drawString("Punkte: " + info.getTotalExp(), this.getCurrentX() + 15,
-				position.getY() + 25, black);
+				position.getY() + 25, g.getPaintBlack());
 
 		/*
 		 * TODO: refactor attributes to enum
@@ -110,7 +107,7 @@ public class CharAttributeView extends SlidingGUIElement {
 		if (i == 0) {
 			text = texts.get(i) + ": " + info.getName();
 		}
-		g.drawString(text, textStartX, textStartRow + i * lineHeight, black);
+		g.drawString(text, textStartX, textStartRow + i * lineHeight, g.getPaintBlack());
 
 	}
 

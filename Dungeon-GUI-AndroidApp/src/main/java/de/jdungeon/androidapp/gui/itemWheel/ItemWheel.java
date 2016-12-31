@@ -3,7 +3,6 @@ package de.jdungeon.androidapp.gui.itemWheel;
 import event.EventManager;
 import util.JDDimension;
 import android.graphics.Color;
-import android.graphics.Paint;
 
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
@@ -12,8 +11,8 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.util.FloatDimension;
-import de.jdungeon.util.ScrollMotion;
+import de.jdungeon.game.ScrollMotion;
+
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
 
@@ -84,7 +83,7 @@ public class ItemWheel extends AbstractGUIElement {
 	@Override
 	public void handleScrollEvent(ScrollMotion scrolling) {
 		long timeSinceLastEvent = System.currentTimeMillis() - lastEvent;
-		FloatDimension movement = scrolling.getMovement();
+		ScrollMotion.FloatDimension movement = scrolling.getMovement();
 		float movementX = movement.getX();
 		float rotation = movementX / 400;
 
@@ -267,10 +266,11 @@ public class ItemWheel extends AbstractGUIElement {
 			/*
 			 * dev mode only
 			 */
+			/*
 			Paint numberPain = new Paint();
 			numberPain.setColor(Color.YELLOW);
 			g.drawString("" + toDraw, x, y, numberPain);
-
+			*/
 		}
 
 	}

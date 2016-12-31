@@ -98,17 +98,10 @@ public class DrawUtils {
 					}
 
 					if (showText != null) {
-						/*
-						 * TODO: optimize (and restructure) use of paint object
-						 */
-						Paint p = new Paint();
-						p.setColor(Color.RED);
-						p.setTextSize(14);
-						p.setFakeBoldText(true);
 						g.drawString(showText, image.getPosX()
 								- viewportPosition.getX() + textOffset.getX(),
 								image.getPosY() - viewportPosition.getY()
-										+ textOffset.getY(), p);
+										+ textOffset.getY(), g.getSmallPaint());
 					}
 
 				} else {

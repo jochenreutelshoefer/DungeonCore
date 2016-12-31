@@ -13,7 +13,7 @@ import de.jdungeon.game.Sound;
 public class AndroidAudioLoader implements AudioLoader {
 
 	private final Audio audio;
-	private JDungeonApp game;
+	private final JDungeonApp game;
 
 	public AndroidAudioLoader(Audio audio, JDungeonApp game) {
 		this.audio = audio;

@@ -16,7 +16,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.reutelshoefer.dungeon</groupId>
-			<artifactId>Game</artifactId>
+			<artifactId>Game-Core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<!--

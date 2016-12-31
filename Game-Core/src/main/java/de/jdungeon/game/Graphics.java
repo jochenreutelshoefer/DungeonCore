@@ -1,9 +1,19 @@
 package de.jdungeon.game;
 
 public interface Graphics {
-    public static enum ImageFormat {
+    enum ImageFormat {
         ARGB8888, ARGB4444, RGB565
     }
+
+	// TODO: refactor use of Paint objects
+	Paint getDefaultPaint();
+
+	Paint getSmallPaint();
+
+	Paint getPaintBlack();
+
+	Paint getPaintWhite();
+	Paint getPaintGray();
 
     Image newImage(String fileName, ImageFormat format);
 

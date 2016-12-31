@@ -9,6 +9,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -26,11 +27,70 @@ public class AndroidGraphics implements Graphics {
 	Rect srcRect = new Rect();
 	Rect dstRect = new Rect();
 
+	public static android.graphics.Paint defaultPaint;
+	android.graphics.Paint smallPaint = new android.graphics.Paint();
+	android.graphics.Paint black = new android.graphics.Paint();
+	android.graphics.Paint gray = new android.graphics.Paint();
+	android.graphics.Paint labelPaint = new android.graphics.Paint();
+	{
+
+		gray.setColor(Color.LTGRAY);
+
+
+		labelPaint = new android.graphics.Paint();
+		labelPaint.setTextSize(10);
+		labelPaint.setTextAlign(android.graphics.Paint.Align.CENTER);
+		labelPaint.setAntiAlias(true);
+		labelPaint.setColor(Color.WHITE);
+
+
+
+		black.setColor(Color.BLACK);
+		black.setTextSize(12);
+
+		defaultPaint = new android.graphics.Paint();
+		defaultPaint.setTextSize(25);
+		defaultPaint.setTextAlign(android.graphics.Paint.Align.CENTER);
+		defaultPaint.setAntiAlias(true);
+		defaultPaint.setColor(Color.RED);
+
+
+		smallPaint.setColor(Color.RED);
+		smallPaint.setTextSize(14);
+		smallPaint.setFakeBoldText(true);
+
+	}
+
 	public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
 		this.assets = assets;
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
 		this.paint = new android.graphics.Paint();
+	}
+
+	@Override
+	public Paint getDefaultPaint() {
+		return new AndroidPaint(defaultPaint);
+	}
+
+	@Override
+	public Paint getSmallPaint() {
+		return new AndroidPaint(smallPaint);
+	}
+
+	@Override
+	public Paint getPaintBlack() {
+		return new AndroidPaint(black);
+	}
+
+	@Override
+	public Paint getPaintWhite() {
+		return new AndroidPaint(labelPaint);
+	}
+
+	@Override
+	public Paint getPaintGray() {
+		return new AndroidPaint(gray);
 	}
 
 	@Override

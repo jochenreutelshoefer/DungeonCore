@@ -2,8 +2,8 @@ package util;
 
 public class JDDimension {
 
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
 	public JDDimension(int w, int h) {
 		this.width = w;
