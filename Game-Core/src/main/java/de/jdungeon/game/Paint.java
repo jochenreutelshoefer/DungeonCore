@@ -5,4 +5,9 @@ package de.jdungeon.game;
  * @created 31.12.16.
  */
 public interface Paint {
+
+	enum Alignment {
+		CENTER, LEFT, RIGHT;
+	}
+
 }

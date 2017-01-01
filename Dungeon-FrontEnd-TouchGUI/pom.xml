@@ -12,4 +12,16 @@
 	<artifactId>Dungeon-FrontEnd-TouchGUI</artifactId>
 
 
+	<dependencies>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Game-Core</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Dungeon-GraphicsEngine2D</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+	</dependencies>
 </project>

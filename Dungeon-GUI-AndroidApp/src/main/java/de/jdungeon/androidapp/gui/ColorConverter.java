@@ -1,47 +1,49 @@
 package de.jdungeon.androidapp.gui;
 
 import util.JDColor;
-import android.graphics.Color;
+
+import de.jdungeon.game.Color;
+import de.jdungeon.game.Colors;
 
 public class ColorConverter {
 
-	public static int getColor(JDColor c) {
+	public static Color getColor(JDColor c) {
 		if (c == null)
-			return Color.BLACK;
+			return Colors.BLACK;
 		;
 		if (c.equals(JDColor.black) || c.equals(JDColor.BLACK)) {
-			return Color.BLACK;
+			return Colors.BLACK;
 		}
 
 		if (c.equals(JDColor.blue)) {
-			return Color.BLUE;
+			return Colors.BLUE;
 		}
 
 		if (c.equals(JDColor.DARK_GRAY)) {
-			return Color.DKGRAY;
+			return Colors.GRAY;
 		}
 
 		if (c.equals(JDColor.green)) {
-			return Color.GREEN;
+			return Colors.GREEN;
 		}
 
 		if (c.equals(JDColor.orange)) {
-			return Color.YELLOW;
+			return Colors.YELLOW;
 		}
 
 		if (c.equals(JDColor.red)) {
-			return Color.RED;
+			return Colors.RED;
 		}
 
 		if (c.equals(JDColor.WHITE)) {
-			return Color.WHITE;
+			return Colors.WHITE;
 		}
 
 		if (c.equals(JDColor.yellow) || c.equals(JDColor.YELLOW)) {
-			return Color.YELLOW;
+			return Colors.YELLOW;
 		}
 
-		return 0;
+		return null;
 	}
 
 }

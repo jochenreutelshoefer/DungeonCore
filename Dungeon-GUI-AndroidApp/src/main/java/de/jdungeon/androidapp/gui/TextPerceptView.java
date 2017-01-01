@@ -6,8 +6,8 @@ import java.util.ListIterator;
 
 import text.Statement;
 import util.JDDimension;
-import android.graphics.Color;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScrollMotion;
@@ -85,10 +85,10 @@ public class TextPerceptView extends AbstractGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		g.drawRect(this.position.getX() - 1, this.position.getY() - 1,
 				this.dimension.getWidth() + 2, this.dimension.getHeight() + 2,
-				Color.LTGRAY);
+				Colors.GRAY);
 		g.drawRect(this.position.getX(), this.position.getY(),
 				this.dimension.getWidth(), this.dimension.getHeight(),
-				Color.BLACK);
+				Colors.BLACK);
 		
 		ListIterator<Statement> listIterator = all.listIterator(all.size());
 		int yOffset = lineHeight + 2;

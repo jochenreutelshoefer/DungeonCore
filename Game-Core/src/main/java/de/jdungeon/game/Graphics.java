@@ -15,19 +15,21 @@ public interface Graphics {
 	Paint getPaintWhite();
 	Paint getPaintGray();
 
+	Paint createPaint(PaintBuilder builder);
+
     Image newImage(String fileName, ImageFormat format);
 
-    void clearScreen(int color);
+    void clearScreen(Color color);
 
-    void drawLine(int x, int y, int x2, int y2, int color);
+    void drawLine(int x, int y, int x2, int y2, Color color);
 
-    void drawRect(int x, int y, int width, int height, int color);
+    void drawRect(int x, int y, int width, int height, Color color);
 
-	void fillRect(int x, int y, int width, int height, int color);
+	void fillRect(int x, int y, int width, int height, Color color);
 
-	void drawOval(int x, int y, int width, int height, int color);
+	void drawOval(int x, int y, int width, int height, Color color);
 
-	void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color);
+	void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
 
     void drawImage(Image image, int x, int y, int srcX, int srcY,
             int srcWidth, int srcHeight);

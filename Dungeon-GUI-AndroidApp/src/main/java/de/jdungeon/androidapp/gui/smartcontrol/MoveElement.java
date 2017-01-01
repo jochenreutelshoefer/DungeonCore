@@ -9,6 +9,7 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 
@@ -72,7 +73,7 @@ public class MoveElement extends SubGUIElement {
 				parentX + triangle[1].getX(),
 				parentY + triangle[1].getY(),
 				parentX + triangle[2].getX(),
-				parentY + triangle[2].getY(), Color.WHITE);
+				parentY + triangle[2].getY(), Colors.WHITE);
 
 	}
 }

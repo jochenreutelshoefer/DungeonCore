@@ -14,9 +14,12 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Paint;
+import de.jdungeon.game.PaintBuilder;
 import de.jdungeon.util.GifDecoder;
 
 public class AndroidGraphics implements Graphics {
@@ -66,6 +69,25 @@ public class AndroidGraphics implements Graphics {
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
 		this.paint = new android.graphics.Paint();
+	}
+
+	@Override
+	public Paint createPaint(PaintBuilder builder) {
+		android.graphics.Paint paint = new android.graphics.Paint();
+		paint.setColor(AndroidGraphics.convertColor(builder.getColor()));
+		paint.setTextSize(builder.getFontSize());
+
+		Paint.Alignment alignment = builder.getAlignment();
+		if(alignment == Paint.Alignment.CENTER) {
+			paint.setTextAlign(android.graphics.Paint.Align.CENTER);
+		}
+		if(alignment == Paint.Alignment.LEFT) {
+			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
+		}
+		if(alignment == Paint.Alignment.RIGHT) {
+			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
+		}
+		return new AndroidPaint(paint);
 	}
 
 	@Override
@@ -144,36 +166,37 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public void clearScreen(int color) {
-		canvas.drawRGB((color & 0xff0000) >> 16, (color & 0xff00) >> 8,
-				(color & 0xff));
+	public void clearScreen(de.jdungeon.game.Color color) {
+		int colorCode = convertColor(color);
+		canvas.drawRGB((colorCode & 0xff0000) >> 16, (colorCode & 0xff00) >> 8,
+				(colorCode & 0xff));
 	}
 
 	@Override
-	public void drawLine(int x, int y, int x2, int y2, int color) {
-		paint.setColor(color);
+	public void drawLine(int x, int y, int x2, int y2, de.jdungeon.game.Color color) {
+		paint.setColor(convertColor(color));
 		canvas.drawLine(x, y, x2, y2, paint);
 	}
 
 	@Override
-	public void drawOval(int x, int y, int width, int height, int color) {
-		paint.setColor(color);
+	public void drawOval(int x, int y, int width, int height, de.jdungeon.game.Color color) {
+		paint.setColor(convertColor(color));
 		canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
 	}
 
 	@Override
-	public void drawRect(int x, int y, int width, int height, int color) {
-		paint.setColor(color);
+	public void drawRect(int x, int y, int width, int height, de.jdungeon.game.Color color) {
+		paint.setColor(convertColor(color));
 		paint.setStyle(Style.FILL);
 		canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
 	}
 
 	@Override
-	public void fillRect(int x, int y, int width, int height, int color) {
+	public void fillRect(int x, int y, int width, int height, de.jdungeon.game.Color color) {
 		android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
 
 		paint.setStrokeWidth(1);
-		paint.setColor(color);
+		paint.setColor(convertColor(color));
 		paint.setStyle(android.graphics.Paint.Style.FILL_AND_STROKE);
 		paint.setAntiAlias(true);
 
@@ -189,12 +212,12 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color)
+	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, de.jdungeon.game.Color color)
 	{
 		android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
 
 		paint.setStrokeWidth(1);
-		paint.setColor(color);
+		paint.setColor(convertColor(color));
 		paint.setStyle(android.graphics.Paint.Style.FILL_AND_STROKE);
 		paint.setAntiAlias(true);
 
@@ -206,6 +229,33 @@ public class AndroidGraphics implements Graphics {
 		path.close();
 
 		canvas.drawPath(path, paint);
+	}
+
+	public static int convertColor(de.jdungeon.game.Color color) {
+		if(color.equals(Colors.BLACK)) {
+			return Color.BLACK;
+		}
+		if(color.equals(Colors.BLUE)) {
+			return Color.BLUE;
+		}
+		if(color.equals(Colors.GREEN)) {
+			return Color.GREEN;
+		}
+		if(color.equals(Colors.RED)) {
+			return Color.RED;
+		}
+		if(color.equals(Colors.WHITE)) {
+			return Color.WHITE;
+		}
+		if(color.equals(Colors.YELLOW)) {
+			return Color.YELLOW;
+		}
+		if(color.equals(Colors.GRAY)) {
+			return Color.GRAY;
+		}
+
+		// color not found
+		return -1;
 	}
 
 	@Override

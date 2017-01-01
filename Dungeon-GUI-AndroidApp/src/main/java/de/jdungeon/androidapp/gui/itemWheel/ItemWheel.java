@@ -2,11 +2,11 @@ package de.jdungeon.androidapp.gui.itemWheel;
 
 import event.EventManager;
 import util.JDDimension;
-import android.graphics.Color;
 
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -195,7 +195,7 @@ public class ItemWheel extends AbstractGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		g.drawOval(position.getX(), position.getY(), dimension.getWidth(),
-				dimension.getHeight(), Color.BLUE);
+				dimension.getHeight(), Colors.BLUE);
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
 			int x = points[toDraw].getX();

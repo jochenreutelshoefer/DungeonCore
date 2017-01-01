@@ -4,8 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import android.graphics.Color;
-import android.graphics.Paint;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.MotionEvent;
 import dungeon.JDPoint;
 
@@ -127,7 +126,7 @@ public abstract class StandardScreen extends Screen {
 		 * clear background
 		 */
 		gr.drawRect(0, 0, this.game.getScreenWidth() * 2,
-				this.game.getScreenHeight() * 2, Color.BLACK);
+				this.game.getScreenHeight() * 2, Colors.BLACK);
 
 
 

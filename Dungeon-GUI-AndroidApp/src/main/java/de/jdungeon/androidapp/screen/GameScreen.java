@@ -11,6 +11,8 @@ import java.util.Map;
 
 import android.graphics.Color;
 import android.util.Pair;
+
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.MotionEvent;
 import animation.AnimationManager;
 import animation.AnimationSet;
@@ -311,7 +313,7 @@ public class GameScreen extends StandardScreen implements EventListener {
 		 * clear background
 		 */
 		gr.drawRect(0, 0, this.game.getScreenWidth() * 2,
-				this.game.getScreenHeight() * 2, Color.BLACK);
+				this.game.getScreenHeight() * 2, Colors.BLACK);
 
 		/*
 		 * draw game world

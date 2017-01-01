@@ -1,20 +1,17 @@
 package de.jdungeon.androidapp.gui.smartcontrol;
 
-import android.graphics.Color;
 import dungeon.JDPoint;
-import dungeon.Position;
 import event.ActionEvent;
 import event.EventManager;
-import event.WannaMoveEvent;
-import event.WannaStepEvent;
 import figure.action.Action;
 import figure.action.AttackAction;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.DrawUtils;
-import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
+import de.jdungeon.game.Color;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 
@@ -55,11 +52,11 @@ public class PositionElement extends SubGUIElement {
 		JDPoint posRelative = this.getPositionOnScreen();
 		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
 		JDDimension dimension = this.getDimension();
-		DrawUtils.drawRectangle(g, Color.WHITE, absolutePosition, dimension);
+		DrawUtils.drawRectangle(g, Colors.WHITE, absolutePosition, dimension);
 
-		int color = Color.WHITE;
+		Color color = Colors.WHITE;
 		if(this.action instanceof AttackAction) {
-			color = Color.RED;
+			color = Colors.RED;
 		}
 		g.drawOval(absolutePosition.getX() + ballOffsetX, absolutePosition.getY()+ ballOffsetY, ballWidth, ballHeight, color);
 	}

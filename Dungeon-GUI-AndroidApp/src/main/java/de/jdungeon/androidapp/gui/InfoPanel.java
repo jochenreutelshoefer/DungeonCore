@@ -1,8 +1,5 @@
 package de.jdungeon.androidapp.gui;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
@@ -17,12 +14,13 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
+import de.jdungeon.game.PaintBuilder;
 import de.jdungeon.game.ScrollMotion;
-import de.jdungeon.implementation.AndroidPaint;
 
 public class InfoPanel extends SlidingGUIElement {
 
@@ -67,7 +65,7 @@ public class InfoPanel extends SlidingGUIElement {
 		 */
 		int x = getCurrentX();
 		g.drawRect(x, position.getY(), dimension.getWidth(),
-				dimension.getHeight(), Color.GRAY);
+				dimension.getHeight(), Colors.GRAY);
 
 		GUIUtils.drawBackground(g, x, position.getY(), dimension);
 
@@ -85,11 +83,11 @@ public class InfoPanel extends SlidingGUIElement {
 			if (paragraphs != null) {
 				int posCounterY = 35;
 				for (Paragraph paragraph : paragraphs) {
-					Paint p = new Paint();
-					p.setColor(ColorConverter.getColor(paragraph.getColor()));
-					p.setTextAlign(Align.CENTER);
-					p.setStyle(p.getStyle());
-					p.setTextSize(13);
+
+					PaintBuilder paintBuilder = new PaintBuilder();
+					paintBuilder.setColor(ColorConverter.getColor(paragraph.getColor()));
+					paintBuilder.setAlignment(de.jdungeon.game.Paint.Alignment.CENTER);
+					paintBuilder.setFontSize(13);
 					// paragraph.getFont();
 					String text = paragraph.getText();
 					if(text == null) {
@@ -97,7 +95,7 @@ public class InfoPanel extends SlidingGUIElement {
 					}
 					g.drawString(text,
 								x + (this.dimension.getWidth() / 2),
-								position.getY() + posCounterY, new AndroidPaint(p));
+								position.getY() + posCounterY, g.createPaint(paintBuilder));
 					posCounterY += 30;
 				}
 			}
@@ -122,7 +120,7 @@ public class InfoPanel extends SlidingGUIElement {
 		}
 		if (content instanceof FigureInfo) {
 			try {
-				if (content != null && ((FigureInfo) content).isDead()) {
+				if (((FigureInfo) content).isDead()) {
 					return (Image) ImageManager.deathImage.getImage();
 				}
 			} catch (NullPointerException e) {

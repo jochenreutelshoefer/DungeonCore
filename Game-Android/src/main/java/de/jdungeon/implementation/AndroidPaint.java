@@ -1,6 +1,7 @@
 package de.jdungeon.implementation;
 
 import de.jdungeon.game.Paint;
+import de.jdungeon.game.PaintBuilder;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -17,4 +18,6 @@ public class AndroidPaint implements Paint {
 	public AndroidPaint(android.graphics.Paint paint) {
 		this.paint = paint;
 	}
+
+
 }
