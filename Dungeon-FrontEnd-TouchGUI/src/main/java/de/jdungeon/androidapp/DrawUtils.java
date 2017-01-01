@@ -26,6 +26,7 @@ import de.jdungeon.game.Image;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
+import org.apache.log4j.Logger;
 import util.JDDimension;
 
 public class DrawUtils {
@@ -175,15 +176,20 @@ public class DrawUtils {
 				if(animationImage != null) {
 					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
 				}
-				Image im = (Image) locatedImage.getImage().getImage();
-				g.drawScaledImage(im,
-						destinationRectangle.getX()
-								- viewportPosition.getX(),
-						destinationRectangle.getY()
-								- viewportPosition.getY(),
-						destinationRectangle.getWidth(),
-						destinationRectangle.getHeight(), 0, 0,
-						im.getWidth(), im.getHeight());
+				if(locatedImage != null) {
+
+					Image im = (Image) locatedImage.getImage().getImage();
+					g.drawScaledImage(im,
+							destinationRectangle.getX()
+									- viewportPosition.getX(),
+							destinationRectangle.getY()
+									- viewportPosition.getY(),
+							destinationRectangle.getWidth(),
+							destinationRectangle.getHeight(), 0, 0,
+							im.getWidth(), im.getHeight());
+				} else {
+					Logger.getLogger(DrawUtils.class).error("Could not find image for dead figure: "+ deadFigure + " (Direction: "+deadFigure.getLookDirection()+")");
+				}
 			}
 		}
 		/*

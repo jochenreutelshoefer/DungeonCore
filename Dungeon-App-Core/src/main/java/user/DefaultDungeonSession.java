@@ -89,6 +89,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	 * Returns the hero object that is currently played by this session
 	 * @return
 	 */
+	@Override
 	public Hero getCurrentHero() {
 		if(currentHero == null) {
 			currentHero = HeroUtil.getBasicHero(heroType, "Gisbert", Zodiac.Aquarius,

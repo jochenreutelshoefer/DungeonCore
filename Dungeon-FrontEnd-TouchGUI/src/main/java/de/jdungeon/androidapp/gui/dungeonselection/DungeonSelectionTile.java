@@ -21,8 +21,8 @@ import de.jdungeon.game.Input;
  */
 public class DungeonSelectionTile extends ImageGUIElement {
 
-	public static final int TILE_WIDTH = 60;
-	public static final int TILE_HEIGHT = 60;
+	public static final int TILE_WIDTH = 90;
+	public static final int TILE_HEIGHT = 90;
 
 	private final DungeonFactory dungeon;
 	private final boolean activeStage;
@@ -36,7 +36,7 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		g.drawString(dungeon.getName(), this.getPositionOnScreen().getX()+getDimension().getWidth()/2, this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , g.getPaintWhite());
+		//g.drawString(dungeon.getName(), this.getPositionOnScreen().getX()+getDimension().getWidth()/2, this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , g.getPaintWhite());
 		//g.drawRect(this.position.getX(), this.position.getY(),
 		//		this.dimension.getWidth(), this.dimension.getHeight(), Color.YELLOW);
 	}

@@ -5,6 +5,9 @@ import dungeon.Position;
 import graphics.GraphicObjectRenderer;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
+import org.apache.log4j.Logger;
+
+import de.jdungeon.game.Image;
 
 public class AnimationFrame {
 
@@ -42,6 +45,7 @@ public class AnimationFrame {
 	public AnimationFrame(JDImageProxy<?> image, double currentProgress, Position.Pos from, Position.Pos to) {
 		super();
 		if(to == null) {
+			Logger.getLogger(this.getClass()).error("Creating AnimationFrame for unknown position! "+((Image)image.getImage()).toString());
 			throw  new IllegalArgumentException("to-position may not be null!");
 		}
 		this.image = image;

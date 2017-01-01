@@ -76,7 +76,7 @@ public class RouteInstruction {
 			if(val == Direction.West.val) {
 				return Direction.West;
 			}
-			throw new IllegalArgumentException("Invalid value: "+val);
+			return null;
 		}
 
 

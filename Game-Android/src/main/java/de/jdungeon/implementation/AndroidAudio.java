@@ -8,6 +8,8 @@ import android.content.res.AssetManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import org.apache.log4j.Logger;
+
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Music;
 import de.jdungeon.game.Sound;
@@ -43,8 +45,18 @@ public class AndroidAudio implements Audio {
             AssetFileDescriptor assetDescriptor = assets.openFd(filename);
             return new AndroidMusic(assetDescriptor);
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't load music '" + filename + "'");
+			Logger.getLogger(this.getClass()).warn("Couldn't load music '" + filename + "'", e);
         }
+		String defaultFileName = "music/Eyes_Gone_Wrong.mp3";
+		try {
+			assets.openFd(defaultFileName);
+			return createMusic(defaultFileName);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			Logger.getLogger(this.getClass()).warn("Couldn't load music '" + defaultFileName + "'", e);
+			return null;
+		}
     }
 
     @Override

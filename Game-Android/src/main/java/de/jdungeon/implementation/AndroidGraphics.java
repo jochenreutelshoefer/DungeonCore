@@ -232,25 +232,25 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	public static int convertColor(de.jdungeon.game.Color color) {
-		if(color.equals(Colors.BLACK)) {
+		if(Colors.BLACK.equals(color)) {
 			return Color.BLACK;
 		}
-		if(color.equals(Colors.BLUE)) {
+		if(Colors.BLUE.equals(color)) {
 			return Color.BLUE;
 		}
-		if(color.equals(Colors.GREEN)) {
+		if(Colors.GREEN.equals(color)) {
 			return Color.GREEN;
 		}
-		if(color.equals(Colors.RED)) {
+		if(Colors.RED.equals(color)) {
 			return Color.RED;
 		}
-		if(color.equals(Colors.WHITE)) {
+		if(Colors.WHITE.equals(color)) {
 			return Color.WHITE;
 		}
-		if(color.equals(Colors.YELLOW)) {
+		if(Colors.YELLOW.equals(color)) {
 			return Color.YELLOW;
 		}
-		if(color.equals(Colors.GRAY)) {
+		if(Colors.GRAY.equals(color)) {
 			return Color.GRAY;
 		}
 

@@ -20,8 +20,6 @@ public class DefaultDungeonManager implements DungeonManager {
 	public DefaultDungeonManager() {
 		List<DungeonFactory> stageZeroList = new ArrayList<>();
 		stageZeroList.add(new StartLevel());
-		stageZeroList.add(new PreliminaryStartLevelFactory());
-		//stageZeroList.add(new PreliminaryStartLevelFactory());
 		stages.put(0 , stageZeroList);
 
 

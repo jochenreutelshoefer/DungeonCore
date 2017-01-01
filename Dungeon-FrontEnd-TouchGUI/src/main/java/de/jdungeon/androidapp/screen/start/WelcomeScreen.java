@@ -21,8 +21,10 @@ public class WelcomeScreen extends MenuScreen {
 	public WelcomeScreen(Game game) {
 		super(game);
 		int x = game.getScreenWidth() / 2 - SimpleButton.getDefaultDimension().getWidth()/2;
-		this.guiElements.add(new SimpleButton("Neues Spiel", new StartNewGameEvent(), new JDPoint(x, 200)));
-		this.guiElements.add(new SimpleButton("Beenden", new QuitGameEvent(), new JDPoint(x, 300)));
+		int screenHeight = game.getScreenHeight();
+		int startHeight = screenHeight/2 - screenHeight/8;
+		this.guiElements.add(new SimpleButton("Neues Spiel", new StartNewGameEvent(), new JDPoint(x, startHeight)));
+		this.guiElements.add(new SimpleButton("Beenden", new QuitGameEvent(), new JDPoint(x, startHeight + 110)));
 	}
 
 	@Override

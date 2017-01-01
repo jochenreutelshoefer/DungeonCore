@@ -1,6 +1,7 @@
 package user;
 
 import figure.Figure;
+import figure.hero.Hero;
 import game.JDGUI;
 import level.DungeonFactory;
 import level.DungeonManager;
@@ -23,4 +24,6 @@ public interface DungeonSession {
 	void initDungeon(DungeonFactory dungeon);
 
 	void revertHero();
+
+	Hero getCurrentHero();
 }

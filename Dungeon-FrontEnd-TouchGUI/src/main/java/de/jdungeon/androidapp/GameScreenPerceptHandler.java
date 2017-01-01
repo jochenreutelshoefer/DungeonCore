@@ -242,7 +242,7 @@ public class GameScreenPerceptHandler {
 	private void handleDiePercept(DiePercept p) {
 		FigureInfo deadFigure = p.getFigure();
 		if(deadFigure.equals(this.figure)) {
-			Music music = screen.getGame().getAudio().createMusic("music/" + "Bad_Times.mp3");
+			Music music = screen.getGame().getAudio().createMusic("music/" + "Dark_Times.mp3");
 			music.play();
 		}
 
