@@ -24,6 +24,8 @@ public interface Game {
 
 		int getScreenHeight();
 
+	Configuration getConfiguration();
+
 	/**
 	 * Returns the current session of the player.
 	 *

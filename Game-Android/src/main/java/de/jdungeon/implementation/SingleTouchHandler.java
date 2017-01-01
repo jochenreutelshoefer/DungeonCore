@@ -6,8 +6,8 @@ import java.util.List;
 import android.view.MotionEvent;
 import android.view.View;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.game.Pool;
-import de.jdungeon.game.Pool.PoolObjectFactory;
+import de.jdungeon.util.Pool;
+import de.jdungeon.util.Pool.PoolObjectFactory;
 
 public class SingleTouchHandler implements TouchHandler {
    

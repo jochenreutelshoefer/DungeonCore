@@ -1,4 +1,6 @@
-package de.jdungeon.androidapp;
+package de.jdungeon.util;
+
+import de.jdungeon.game.Configuration;
 
 public class DefaultConfiguration implements Configuration {
 

@@ -10,7 +10,7 @@ import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.game.PaintBuilder;
+import de.jdungeon.util.PaintBuilder;
 
 public class GameOverView extends AbstractGUIElement {
 

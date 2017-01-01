@@ -23,6 +23,8 @@ import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.start.HeroCategorySelectedEvent;
 import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
 import de.jdungeon.androidapp.screen.start.WelcomeScreen;
+import de.jdungeon.game.Configuration;
+import de.jdungeon.util.DefaultConfiguration;
 import de.jdungeon.game.Screen;
 import de.jdungeon.implementation.AndroidGame;
 import de.jdungeon.user.User;
@@ -89,7 +91,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.dungeonSession.initDungeon(((DungeonSelectedEvent)event).getDungeon());
 
 			// TODO: solve this wierd bidirectional dependency in a better way..
-			AndroidScreenJDGUI gui = new AndroidScreenJDGUI();
+			AndroidScreenJDGUI gui = new AndroidScreenJDGUI(this);
 			GameScreen screen = new GameScreen(this, gui);
 			gui.setPerceptHandler(screen);
 			setScreen(screen);

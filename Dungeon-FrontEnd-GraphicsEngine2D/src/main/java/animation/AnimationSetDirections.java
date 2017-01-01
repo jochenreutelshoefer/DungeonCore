@@ -1,6 +1,6 @@
 package animation;
 
-import audio.AbstractAudioSet;
+import de.jdungeon.game.AbstractAudioSet;
 
 public class AnimationSetDirections {
 

@@ -1,21 +1,20 @@
-package de.jdungeon.androidapp.io;
+package de.jdungeon.implementation;
 
 import java.io.IOException;
 
 import android.content.res.AssetManager;
-import audio.AbstractAudioSet;
-import audio.AudioLoader;
+import de.jdungeon.game.AbstractAudioSet;
+import de.jdungeon.game.AudioLoader;
 
-import de.jdungeon.androidapp.JDungeonApp;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Sound;
 
 public class AndroidAudioLoader implements AudioLoader {
 
 	private final Audio audio;
-	private final JDungeonApp game;
+	private final AndroidGame game;
 
-	public AndroidAudioLoader(Audio audio, JDungeonApp game) {
+	public AndroidAudioLoader(Audio audio, AndroidGame game) {
 		this.audio = audio;
 		this.game = game;
 	}

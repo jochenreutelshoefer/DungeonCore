@@ -19,7 +19,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.game.PaintBuilder;
+import de.jdungeon.util.PaintBuilder;
 import de.jdungeon.game.ScrollMotion;
 
 public class InfoPanel extends SlidingGUIElement {

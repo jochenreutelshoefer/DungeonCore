@@ -1,5 +1,7 @@
 package de.jdungeon.game;
 
+import de.jdungeon.util.PaintBuilder;
+
 public interface Graphics {
     enum ImageFormat {
         ARGB8888, ARGB4444, RGB565

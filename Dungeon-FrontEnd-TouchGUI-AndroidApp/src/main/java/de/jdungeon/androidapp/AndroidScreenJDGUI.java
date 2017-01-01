@@ -29,18 +29,20 @@ import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	private final Vector<Action> actionQueue = new Vector<Action>();
+	private final JDungeonApp app;
 
 	private FigureInfo figure;
 
 	private PerceptHandler perceptHandler;
 
-	public AndroidScreenJDGUI() {
+	public AndroidScreenJDGUI(JDungeonApp app) {
+		this.app = app;
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public AbstractImageLoader getImageSource() {
-		return Assets.getLoader();
+		return app.getFileIO().getImageLoader();
 	}
 
 	@Override
@@ -171,7 +173,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	@Override
 	public void stopAllAnimation() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package de.jdungeon.game;
+package de.jdungeon.util;
 
 import java.util.ArrayList;
 import java.util.List;

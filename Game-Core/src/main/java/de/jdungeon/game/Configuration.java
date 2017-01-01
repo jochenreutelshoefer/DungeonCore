@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp;
+package de.jdungeon.game;
 
 public interface Configuration {
 	

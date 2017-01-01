@@ -1,4 +1,4 @@
-package audio;
+package de.jdungeon.game;
 
 public interface AudioLoader {
 

@@ -1,5 +1,8 @@
 package audio;
 
+import de.jdungeon.game.AbstractAudioSet;
+import de.jdungeon.game.AudioLoader;
+
 public class AudioEffectsManager {
 
 	private static boolean initialized = false;

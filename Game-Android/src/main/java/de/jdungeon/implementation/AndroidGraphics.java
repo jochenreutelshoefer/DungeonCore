@@ -19,7 +19,7 @@ import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Paint;
-import de.jdungeon.game.PaintBuilder;
+import de.jdungeon.util.PaintBuilder;
 import de.jdungeon.util.GifDecoder;
 
 public class AndroidGraphics implements Graphics {

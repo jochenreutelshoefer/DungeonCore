@@ -5,10 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import animation.AnimationFrame;
-import animation.AnimationSet;
-import animation.AnimationTask;
-import audio.AbstractAudioSet;
+import de.jdungeon.game.AbstractAudioSet;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;

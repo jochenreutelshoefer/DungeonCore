@@ -9,8 +9,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import de.jdungeon.game.Input.TouchEvent;
-import de.jdungeon.game.Pool;
-import de.jdungeon.game.Pool.PoolObjectFactory;
+import de.jdungeon.util.Pool;
+import de.jdungeon.util.Pool.PoolObjectFactory;
 import de.jdungeon.game.ScrollMotion;
 
 public class MultiTouchHandler implements TouchHandler, OnGestureListener,

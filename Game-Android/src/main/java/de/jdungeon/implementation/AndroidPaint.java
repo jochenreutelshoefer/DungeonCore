@@ -1,7 +1,6 @@
 package de.jdungeon.implementation;
 
 import de.jdungeon.game.Paint;
-import de.jdungeon.game.PaintBuilder;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

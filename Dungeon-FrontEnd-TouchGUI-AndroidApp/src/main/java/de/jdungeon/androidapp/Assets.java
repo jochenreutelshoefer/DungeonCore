@@ -1,6 +1,5 @@
 package de.jdungeon.androidapp;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,43 +7,37 @@ import java.util.List;
 import android.content.res.AssetManager;
 import android.media.SoundPool;
 import android.util.Log;
-import de.jdungeon.game.AbstractImageLoader;
-import graphics.ImageManager;
 import audio.AudioEffectsManager;
-import audio.AudioLoader;
+import graphics.ImageManager;
 
 import de.jdungeon.androidapp.gui.dungeonselection.LevelIconImageManager;
-import de.jdungeon.androidapp.io.AndroidAudioLoader;
-import de.jdungeon.androidapp.io.AndroidImageLoader;
 import de.jdungeon.game.Audio;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.Music;
-import de.jdungeon.game.Sound;
+import de.jdungeon.game.AudioLoader;
+import de.jdungeon.game.Configuration;
 import de.jdungeon.implementation.AndroidAudio;
+import de.jdungeon.implementation.AndroidAudioLoader;
+import de.jdungeon.implementation.AndroidGame;
 
 public class Assets {
-	   
-    public static Image tiledirt, tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight, characterJump, characterDown;
-    public static Image button;
-    public static Sound click;
-    public static Music theme;
-    
-    private static ImageManager imageManager = null;
-    private static AbstractImageLoader<Image> loader = null;
-   	private static boolean audioLoaded = false;
 
-	public static void load(JDungeonApp game) {
+	private static ImageManager imageManager = null;
+	private static boolean audioLoaded = false;
+
+	public static void load(AndroidGame game) {
+
+		// TODO: refactor this class and move it to Game-Android
 
 		if (game.getConfiguration().getValue(Configuration.AUDIO_ON)
 				.equals("true")) {
-		// audio
-		Audio audio = game.getAudio();
-		AudioLoader androidLoader = new AndroidAudioLoader(audio, game);
-		AudioEffectsManager.init(androidLoader);
+			// audio
+			Audio audio = game.getAudio();
+
+			AudioLoader androidLoader = new AndroidAudioLoader(audio, game);
+			AudioEffectsManager.init(androidLoader);
+
 			SoundPool soundPool = ((AndroidAudio) audio).getSoundPool();
 			soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-				public void onLoadComplete(SoundPool soundPool, int sampleId,int status) {
+				public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 					audioLoaded = true;
 				}
 			});
@@ -55,10 +48,11 @@ public class Assets {
 			List<String> filenames = game.getFileIO().readFileNamesOfFolder(levelIconsPath);
 			List<String> fullFilenames = new ArrayList<String>();
 			for (String filename : filenames) {
-				String fullFileName = levelIconsPath+"/"+filename;
-				if(! fileExists(game, fullFileName)) {
-					Log.w("warning", "file not found: "+fullFileName);
-				} else {
+				String fullFileName = levelIconsPath + "/" + filename;
+				if (!fileExists(game, fullFileName)) {
+					Log.w("warning", "file not found: " + fullFileName);
+				}
+				else {
 					fullFilenames.add(fullFileName);
 				}
 			}
@@ -69,32 +63,20 @@ public class Assets {
 		}
 
 		// images
-        Graphics g = game.getGraphics();
-        loader = new AndroidImageLoader(game);
-        imageManager = ImageManager.getInstance(loader);
-        imageManager.loadImages();
-    }
+		imageManager = ImageManager.getInstance(game.getFileIO().getImageLoader());
+		imageManager.loadImages();
+	}
 
-	public static boolean fileExists(JDungeonApp game, String file) {
+	public static boolean fileExists(AndroidGame game, String file) {
 		AssetManager mg = game.getResources().getAssets();
 		try {
 			mg.open(file);
 
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			return false;
 		}
 		return true;
 	}
-   
-	public static ImageManager getImageManager() {
-		return imageManager;
-	}
 
-	public static AbstractImageLoader<Image> getLoader() {
-		return loader;
-	}
-
-	public static boolean isAudioLoaded() {
-		return audioLoaded;
-	}
 }

@@ -1,4 +1,8 @@
-package de.jdungeon.game;
+package de.jdungeon.util;
+
+import de.jdungeon.game.Color;
+import de.jdungeon.game.Colors;
+import de.jdungeon.game.Paint;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

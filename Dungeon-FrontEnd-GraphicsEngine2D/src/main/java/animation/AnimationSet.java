@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import audio.AbstractAudioSet;
+import de.jdungeon.game.AbstractAudioSet;
 import graphics.JDImageProxy;
 
 /**
