@@ -1,6 +1,6 @@
 package graphics;
 
-import io.AbstractImageLoader;
+import de.jdungeon.game.AbstractImageLoader;
 
 public class JDImageProxy<T extends Object> {
 

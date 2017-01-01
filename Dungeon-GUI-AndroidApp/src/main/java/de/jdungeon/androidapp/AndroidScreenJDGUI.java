@@ -1,7 +1,10 @@
 package de.jdungeon.androidapp;
 
+import event.EventManager;
 import figure.action.EndRoundAction;
 import figure.other.Lioness;
+import figure.percept.TextPercept;
+import game.PerceptHandler;
 import item.ItemInfo;
 
 import java.util.Vector;
@@ -19,20 +22,19 @@ import figure.action.result.ActionResult;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.Percept;
-import io.AbstractImageLoader;
+import de.jdungeon.game.AbstractImageLoader;
 
-import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	private final Vector<Action> actionQueue = new Vector<Action>();
 
-	private final GameScreen screen;
-	private final PerceptHandler perceptHandler;
+	private FigureInfo figure;
 
-	public AndroidScreenJDGUI(GameScreen screen) {
-		this.screen = screen;
-		this.perceptHandler = new PerceptHandler(screen);
+	private PerceptHandler perceptHandler;
+
+	public AndroidScreenJDGUI() {
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -44,13 +46,13 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	@Override
 	public void actionDone(Action a, ActionResult res) {
 		if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
-			perceptHandler.newStatement(StatementManager.getStatement(res));
+			perceptHandler.tellPercept(new TextPercept(StatementManager.getStatement(res).getText()));
 		}
 	}
 
 	@Override
 	public void tellPercept(Percept p) {
-		perceptHandler.handlePercept(p);
+		perceptHandler.tellPercept(p);
 	}
 
 	@Override
@@ -85,7 +87,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public Action getAction() {
-		if (actionQueue.size() > 0) {
+		if (!actionQueue.isEmpty()) {
 			return actionQueue.remove(0);
 		}
 		return null;
@@ -128,7 +130,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public FigureInfo getFigure() {
-		return this.screen.getFigureInfo();
+		return figure;
 	}
 
 	@Override
@@ -146,8 +148,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public void setFigure(FigureInfo f) {
-		this.screen.setFigure(f);
-
+		this.figure = f;
 	}
 
 	@Override
@@ -156,8 +157,9 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	}
 
+	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
-		this.screen.showVisibilityIncreaseEvent(p);
+		EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(p));
 	}
 
 	@Override
@@ -182,5 +184,9 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public AbstractSwingMainFrame getMainFrame() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setPerceptHandler(PerceptHandler perceptHandler) {
+		this.perceptHandler = perceptHandler;
 	}
 }

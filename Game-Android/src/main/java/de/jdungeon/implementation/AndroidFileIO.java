@@ -14,6 +14,9 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+
+import de.jdungeon.androidapp.io.AndroidImageLoader;
+import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.FileIO;
 
 public class AndroidFileIO implements FileIO {
@@ -28,12 +31,24 @@ public class AndroidFileIO implements FileIO {
                 .getAbsolutePath() + File.separator;
     }
 
+
+
     @Override
     public InputStream readAsset(String file) throws IOException {
         return assets.open(file);
     }
 
-    @Override
+	public static AbstractImageLoader<?> loader;
+
+	@Override
+	public AbstractImageLoader<?> getImageLoader() {
+		if (loader == null) {
+			loader = new AndroidImageLoader((AndroidGame) context);
+		}
+		return loader;
+	}
+
+	@Override
     public InputStream readFile(String file) throws IOException {
         return new FileInputStream(externalStoragePath + file);
     }

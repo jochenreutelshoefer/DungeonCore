@@ -2,7 +2,7 @@ package control;
 
 import figure.action.Action;
 import game.JDGUI;
-import io.AbstractImageLoader;
+import de.jdungeon.game.AbstractImageLoader;
 import item.ItemInfo;
 import spell.SpellInfo;
 import dungeon.RoomInfo;

@@ -10,6 +10,8 @@ import event.EventListener;
 import event.EventManager;
 import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
+import game.DungeonApp;
+import game.JDGUIFactory;
 import level.DungeonSelectedEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -28,7 +30,7 @@ import de.jdungeon.implementation.AndroidGame;
 import de.jdungeon.user.User;
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
-public class JDungeonApp extends AndroidGame implements EventListener {
+public class JDungeonApp extends AndroidGame implements EventListener, DungeonApp {
 
 	private boolean firstTimeCreate = true;
 	private final DungeonSession dungeonSession;
@@ -87,7 +89,12 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		}
 		if(event instanceof DungeonSelectedEvent) {
 			this.dungeonSession.initDungeon(((DungeonSelectedEvent)event).getDungeon());
-			setScreen(new GameScreen(this));
+
+			// TODO: solve this wierd bidirectional dependency in a better way..
+			AndroidScreenJDGUI gui = new AndroidScreenJDGUI();
+			GameScreen screen = new GameScreen(this, gui);
+			gui.setPerceptHandler(screen);
+			setScreen(screen);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();
@@ -99,6 +106,11 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.setScreen(screen);
 			//setScreen(new GameScreen(this));
 		}
+	}
+
+	@Override
+	public JDGUIFactory getGUIFactory() {
+		return null;
 	}
 
 	enum GameState {

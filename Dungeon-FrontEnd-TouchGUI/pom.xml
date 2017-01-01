@@ -11,6 +11,10 @@
 
 	<artifactId>Dungeon-FrontEnd-TouchGUI</artifactId>
 
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -21,6 +25,11 @@
 		<dependency>
 			<groupId>de.reutelshoefer.dungeon</groupId>
 			<artifactId>Dungeon-GraphicsEngine2D</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Dungeon-App-Core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 	</dependencies>

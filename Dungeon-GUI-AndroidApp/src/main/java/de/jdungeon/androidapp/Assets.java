@@ -2,15 +2,13 @@ package de.jdungeon.androidapp;
 
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.res.AssetManager;
 import android.media.SoundPool;
 import android.util.Log;
-import io.AbstractImageLoader;
+import de.jdungeon.game.AbstractImageLoader;
 import graphics.ImageManager;
 import audio.AudioEffectsManager;
 import audio.AudioLoader;
@@ -20,7 +18,6 @@ import de.jdungeon.androidapp.io.AndroidAudioLoader;
 import de.jdungeon.androidapp.io.AndroidImageLoader;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Graphics.ImageFormat;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Music;
 import de.jdungeon.game.Sound;

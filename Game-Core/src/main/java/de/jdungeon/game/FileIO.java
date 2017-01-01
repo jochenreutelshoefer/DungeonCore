@@ -16,6 +16,8 @@ public interface FileIO {
 
     InputStream readAsset(String file) throws IOException;
 
+	AbstractImageLoader<?> getImageLoader();
+
 	/*
     SharedPreferences getSharedPref();
     */

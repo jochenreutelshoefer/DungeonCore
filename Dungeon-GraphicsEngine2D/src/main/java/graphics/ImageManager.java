@@ -35,7 +35,7 @@ import figure.monster.Spider;
 import figure.monster.Wolf;
 import figure.other.Fir;
 import figure.other.Lioness;
-import io.AbstractImageLoader;
+import de.jdungeon.game.AbstractImageLoader;
 import item.AttrPotion;
 import item.DustItem;
 import item.Item;

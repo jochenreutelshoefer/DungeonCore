@@ -8,6 +8,6 @@ public interface PerceptHandler {
 	 * 
 	 * @param p
 	 */
-	public void tellPercept(Percept p);
+	void tellPercept(Percept p);
 
 }
