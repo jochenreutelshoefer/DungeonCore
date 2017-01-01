@@ -178,15 +178,22 @@ public class DrawUtils {
 				}
 				if(locatedImage != null) {
 
-					Image im = (Image) locatedImage.getImage().getImage();
-					g.drawScaledImage(im,
-							destinationRectangle.getX()
-									- viewportPosition.getX(),
-							destinationRectangle.getY()
-									- viewportPosition.getY(),
-							destinationRectangle.getWidth(),
-							destinationRectangle.getHeight(), 0, 0,
-							im.getWidth(), im.getHeight());
+					JDImageProxy<?> imagePraxy = locatedImage.getImage();
+					if(imagePraxy != null) {
+
+
+						Image im = (Image) imagePraxy.getImage();
+						g.drawScaledImage(im,
+								destinationRectangle.getX()
+										- viewportPosition.getX(),
+								destinationRectangle.getY()
+										- viewportPosition.getY(),
+								destinationRectangle.getWidth(),
+								destinationRectangle.getHeight(), 0, 0,
+								im.getWidth(), im.getHeight());
+					} else {
+						Logger.getLogger(DrawUtils.class).error("ImageProxy of LocatedImage is null: "+locatedImage);
+					}
 				} else {
 					Logger.getLogger(DrawUtils.class).error("Could not find image for dead figure: "+ deadFigure + " (Direction: "+deadFigure.getLookDirection()+")");
 				}

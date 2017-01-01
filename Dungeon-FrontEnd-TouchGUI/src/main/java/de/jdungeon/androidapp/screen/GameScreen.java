@@ -199,7 +199,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		/*
 		init smart control
 		 */
-		int smartControlSize = 300;
+		int smartControlSize = 220;
 		JDDimension screenSize = this.getScreenSize();
 		SmartControl smartControl = new SmartControl(new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 80 - smartControlSize / 2), new JDDimension(smartControlSize, smartControlSize), this, this
 				.getGame(), figureInfo);

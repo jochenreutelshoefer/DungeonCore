@@ -46,7 +46,6 @@ public class AnimationFrame {
 		super();
 		if(to == null) {
 			Logger.getLogger(this.getClass()).error("Creating AnimationFrame for unknown position! "+((Image)image.getImage()).toString());
-			throw  new IllegalArgumentException("to-position may not be null!");
 		}
 		this.image = image;
 		this.currentProgress = currentProgress;

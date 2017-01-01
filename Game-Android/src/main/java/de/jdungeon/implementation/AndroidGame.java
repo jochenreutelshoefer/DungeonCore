@@ -30,9 +30,9 @@ public abstract class AndroidGame extends Activity implements Game {
 	private WakeLock wakeLock;
 	private final Logger logger = new AndroidLogger();
 	//public static final int SCREEN_WIDTH = 1920;
-	public static final int SCREEN_WIDTH = 1200;
+	public static final int SCREEN_WIDTH = 1000;
 	//public static final int SCREEN_HEIGHT = 1104;
-	public static final int SCREEN_HEIGHT = 700;
+	public static final int SCREEN_HEIGHT = 550;
 
 	public AndroidGame(Session session) {
 		this.session = session;

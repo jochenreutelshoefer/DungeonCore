@@ -70,7 +70,7 @@ public class SmartControl extends ContainerGUIElement {
 
 	private void updateMoveElements() {
 		moveElements.clear();
-		int moveElementSize = 36;
+		int moveElementSize = 40;
 		JDDimension moveElementDimension = new JDDimension(moveElementSize, moveElementSize);
 		RoomInfo roomInfo = figure.getRoomInfo();
 		DoorInfo[] doors = roomInfo.getDoors();

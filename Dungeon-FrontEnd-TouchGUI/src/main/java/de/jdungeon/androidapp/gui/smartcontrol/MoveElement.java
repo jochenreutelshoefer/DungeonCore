@@ -30,25 +30,26 @@ public class MoveElement extends SubGUIElement {
 		triangle = new JDPoint[3];
 		int sizeY = dimension.getHeight();
 		int sizeX = dimension.getWidth();
+		int sizeBy10 = dimension.getWidth()/10;
 		if(direction == RouteInstruction.Direction.West) {
 			triangle[0] = new JDPoint(position.getX() + sizeX/3, position.getY()+ sizeY / 2); // peak to left
-			triangle[1] = new JDPoint(position.getX()+ sizeX, position.getY()); // right upper
-			triangle[2] = new JDPoint(position.getX()+ sizeX, position.getY()+ sizeY); // right lower
+			triangle[1] = new JDPoint(position.getX()+ sizeX - sizeBy10, position.getY()); // right upper
+			triangle[2] = new JDPoint(position.getX()+ sizeX - sizeBy10, position.getY()+ sizeY); // right lower
 		}
 		if(direction == RouteInstruction.Direction.East) {
 			triangle[0] = new JDPoint(position.getX()+ sizeX - sizeX/3, position.getY()+ sizeY / 2); // peak to right
-			triangle[1] = new JDPoint(position.getX(), position.getY()); // left upper
-			triangle[2] = new JDPoint(position.getX(), position.getY()+ sizeY); // left lower
+			triangle[1] = new JDPoint(position.getX() + sizeBy10, position.getY()); // left upper
+			triangle[2] = new JDPoint(position.getX() + sizeBy10, position.getY()+ sizeY); // left lower
 		}
 		if(direction == RouteInstruction.Direction.North) {
 			triangle[0] = new JDPoint(position.getX()+ sizeX /2, position.getY() + sizeY/3); // peak to top
-			triangle[1] = new JDPoint(position.getX()+ sizeX, position.getY()+ sizeY); // lower right
-			triangle[2] = new JDPoint(position.getX(), position.getY()+ sizeY); // lower left
+			triangle[1] = new JDPoint(position.getX()+ sizeX, position.getY()+ sizeY -   sizeBy10); // lower right
+			triangle[2] = new JDPoint(position.getX(), position.getY()+ sizeY - sizeBy10); // lower left
 		}
 		if(direction == RouteInstruction.Direction.South) {
 			triangle[0] = new JDPoint(position.getX()+ sizeX /2, position.getY() + sizeY - sizeY/3); // peak downwards
-			triangle[1] = new JDPoint(position.getX()+ sizeX, position.getY()); // upper right
-			triangle[2] = new JDPoint(position.getX(), position.getY()); // upper left
+			triangle[1] = new JDPoint(position.getX()+ sizeX, position.getY()+  sizeBy10); // upper right
+			triangle[2] = new JDPoint(position.getX(), position.getY() +  sizeBy10); // upper left
 		}
 	}
 
