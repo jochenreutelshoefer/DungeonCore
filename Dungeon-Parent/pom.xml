@@ -12,8 +12,8 @@
 		<module>../Game-Core</module>
 		<module>../Game-Android</module>
 		<module>../Dungeon-App-Core</module>
-		<module>../Dungeon-GraphicsEngine2D</module>
-		<module>../Dungeon-GUI-AndroidApp</module>
+		<module>../Dungeon-FrontEnd-GraphicsEngine2D</module>
+		<module>../Dungeon-FrontEnd-TouchGUI-AndroidApp</module>
 		<module>../Dungeon-FrontEnd-TouchGUI</module>
 	</modules>
 

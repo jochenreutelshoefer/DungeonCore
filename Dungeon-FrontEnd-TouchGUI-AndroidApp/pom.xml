@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.reutelshoefer.dungeon</groupId>
-	<artifactId>Dungeon-GUI-AndroidApp</artifactId>
+	<artifactId>Dungeon-FrontEnd-TouchGUI-AndroidApp</artifactId>
 	<packaging>apk</packaging>
 	<version>0.1.0</version>
 
@@ -37,7 +37,7 @@
 			</dependency>
 			<dependency>
 				<groupId>de.reutelshoefer.dungeon</groupId>
-				<artifactId>Dungeon-GraphicsEngine2D</artifactId>
+				<artifactId>Dungeon-FrontEnd-GraphicsEngine2D</artifactId>
 				<version>0.1.0</version>
 			</dependency>
 			<dependency>

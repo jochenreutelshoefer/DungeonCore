@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.reutelshoefer.dungeon</groupId>
-			<artifactId>Dungeon-GraphicsEngine2D</artifactId>
+			<artifactId>Dungeon-FrontEnd-GraphicsEngine2D</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<dependency>
