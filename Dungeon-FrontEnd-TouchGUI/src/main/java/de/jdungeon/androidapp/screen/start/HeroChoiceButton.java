@@ -15,14 +15,16 @@ public class HeroChoiceButton extends ImageGUIElement {
 
 	private final int heroType;
 
+	private static final int SIZE = 150;
+
 	@Deprecated
-	public HeroChoiceButton(JDPoint position, int heroType, Image im, Game game) {
-		super(position, new JDDimension(120, 120), im, game);
+	public HeroChoiceButton(JDPoint position, int heroType, Image im) {
+		super(position, new JDDimension(SIZE, SIZE), im);
 		this.heroType = heroType;
 	}
 
-	public HeroChoiceButton(JDPoint position, Hero.HeroCategory category, Image im, Game game) {
-		super(position, new JDDimension(120, 120), im, game);
+	public HeroChoiceButton(JDPoint position, Hero.HeroCategory category, Image im) {
+		super(position, new JDDimension(SIZE, SIZE), im);
 		this.heroType = category.getCode();
 	}
 

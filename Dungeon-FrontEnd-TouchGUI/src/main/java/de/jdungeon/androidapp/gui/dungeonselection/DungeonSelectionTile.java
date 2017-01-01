@@ -2,11 +2,14 @@ package de.jdungeon.androidapp.gui.dungeonselection;
 
 import dungeon.JDPoint;
 import event.EventManager;
+import graphics.ImageManager;
 import level.DungeonFactory;
 import level.DungeonSelectedEvent;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
+import de.jdungeon.androidapp.gui.InventoryImageManager;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -25,7 +28,7 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	private final boolean activeStage;
 
 	public DungeonSelectionTile(DungeonFactory dungeon, JDPoint position, Image im, Game dungeonGame, boolean activeStage) {
-		super(position, new JDDimension(TILE_WIDTH, TILE_HEIGHT), im, dungeonGame);
+		super(position, new JDDimension(TILE_WIDTH, TILE_HEIGHT), im, (Image) ImageManager.inventory_box_normal.getImage());
 		this.dungeon = dungeon;
 		this.activeStage = activeStage;
 	}
@@ -33,7 +36,7 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		g.drawString(dungeon.getName(),this.getPositionOnScreen().getX(), this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , g.getPaintWhite());
+		g.drawString(dungeon.getName(), this.getPositionOnScreen().getX()+getDimension().getWidth()/2, this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , g.getPaintWhite());
 		//g.drawRect(this.position.getX(), this.position.getY(),
 		//		this.dimension.getWidth(), this.dimension.getHeight(), Color.YELLOW);
 	}

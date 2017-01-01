@@ -1,5 +1,7 @@
 package de.jdungeon.androidapp.screen.start;
 
+import java.awt.*;
+
 import dungeon.JDPoint;
 
 import de.jdungeon.androidapp.event.QuitGameEvent;
@@ -14,7 +16,7 @@ import de.jdungeon.game.Music;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 27.12.16.
  */
-public class WelcomeScreen extends StandardScreen {
+public class WelcomeScreen extends MenuScreen {
 
 	public WelcomeScreen(Game game) {
 		super(game);
@@ -24,13 +26,8 @@ public class WelcomeScreen extends StandardScreen {
 	}
 
 	@Override
-	public void paint(float deltaTime) {
-		Graphics gr = game.getGraphics();
-
-		super.paint(deltaTime);
-
-		gr.drawARGB(155, 0, 0, 0);
-		gr.drawString("Willkommen bei <Untitled Dungeon Game>", game.getScreenWidth() / 2, 120, gr.getDefaultPaint());
+	protected String getHeaderString() {
+		return "Willkommen bei <Untitled Dungeon Game>";
 	}
 
 	@Override

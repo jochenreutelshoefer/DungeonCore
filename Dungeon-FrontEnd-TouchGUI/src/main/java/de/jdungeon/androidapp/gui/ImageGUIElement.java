@@ -15,13 +15,16 @@ import de.jdungeon.game.Image;
 public abstract class ImageGUIElement extends AbstractGUIElement {
 
 	protected Image im;
-	protected Game game;
+	private final Image backGround;
 
+	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im) {
+		this(position, dimension, im, null);
+	}
 
-	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Game g) {
+	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Image backGround) {
 		super(position, dimension);
 		this.im = im;
-		this.game = g;
+		this.backGround = backGround;
 	}
 
 	@Override
@@ -31,8 +34,19 @@ public abstract class ImageGUIElement extends AbstractGUIElement {
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
-		g.drawScaledImage(im, this.position.getX(), this.position.getY(),
-				this.dimension.getWidth(), this.dimension.getHeight(), 0, 0,
+		int x = this.position.getX();
+		int y = this.position.getY();
+		int width = this.dimension.getWidth();
+		int height = this.dimension.getHeight();
+
+		if(backGround != null) {
+			g.drawScaledImage(backGround, x, y,
+					width, height, 0, 0,
+					backGround.getHeight(), backGround.getWidth());
+		}
+
+		g.drawScaledImage(im, x+width/8, y+height/8,
+				width - width/4 , height - height / 4, 0, 0,
 				im.getHeight(), im.getWidth());
 
 	}
