@@ -10,8 +10,6 @@ import event.EventListener;
 import event.EventManager;
 import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
-import game.DungeonApp;
-import game.JDGUIFactory;
 import level.DungeonSelectedEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -30,7 +28,7 @@ import de.jdungeon.implementation.AndroidGame;
 import de.jdungeon.user.User;
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
-public class JDungeonApp extends AndroidGame implements EventListener, DungeonApp {
+public class JDungeonApp extends AndroidGame implements EventListener {
 
 	private boolean firstTimeCreate = true;
 	private final DungeonSession dungeonSession;
@@ -106,11 +104,6 @@ public class JDungeonApp extends AndroidGame implements EventListener, DungeonAp
 			this.setScreen(screen);
 			//setScreen(new GameScreen(this));
 		}
-	}
-
-	@Override
-	public JDGUIFactory getGUIFactory() {
-		return null;
 	}
 
 	enum GameState {

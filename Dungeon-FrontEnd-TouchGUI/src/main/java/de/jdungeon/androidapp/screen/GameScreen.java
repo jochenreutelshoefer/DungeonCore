@@ -29,7 +29,6 @@ import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
-import game.DungeonApp;
 import game.InfoEntity;
 import game.PerceptHandler;
 import graphics.GraphicObject;
@@ -119,12 +118,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 
 
-	public GameScreen(DungeonApp game, JDGUIEngine2D gui) {
+	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
-
-
-
-
 		setSession(game.getSession());
 
 		this.hero = this.session.getCurrentHero();
