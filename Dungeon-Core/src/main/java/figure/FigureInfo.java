@@ -385,7 +385,7 @@ public abstract class FigureInfo extends InfoEntity {
 		return f.getFighterID();
 	}
 
-	public ActionResult checkMovementAction(Action a) {
+	public ActionResult checkAction(Action a) {
 		return f.checkAction(a);
 	}
 

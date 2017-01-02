@@ -5,7 +5,6 @@ import dungeon.Position;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
-import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Ghul;
 import figure.monster.Monster;
@@ -55,7 +54,6 @@ import util.JDColor;
 import util.JDDimension;
 import animation.AnimationSet;
 import animation.AnimationUtils;
-import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -908,7 +906,8 @@ public class GraphicObjectRenderer {
 
 		} else {
 			Motion motion = null;
-			if(info.getRoomInfo().fightRunning()) {
+			Boolean fightRunning = info.getRoomInfo().fightRunning();
+			if(fightRunning != null && fightRunning) {
 				motion = Motion.Slaying;
 			} else {
 				motion = Motion.Walking;
@@ -1156,9 +1155,9 @@ public class GraphicObjectRenderer {
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						boolean contains = animatedObs.contains(monsterObs[i]
-								.getClickedObject());
+								.getClickableObject());
 						if (!contains) {
-							if (!(monsterObs[i].getClickedObject().equals(obj))) {
+							if (!(monsterObs[i].getClickableObject().equals(obj))) {
 								graphObs.add(monsterObs[i]);
 							}
 						}

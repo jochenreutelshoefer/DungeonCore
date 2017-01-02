@@ -5,9 +5,11 @@ import event.ActionEvent;
 import event.EventManager;
 import figure.action.Action;
 import figure.action.AttackAction;
+import game.InfoEntity;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.DrawUtils;
+import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.game.Color;
@@ -22,14 +24,18 @@ import de.jdungeon.game.Input;
 public class PositionElement extends SubGUIElement {
 
 	private final Action action;
+	private final Color color;
+	private final InfoEntity clickableObject;
 	private final int ballWidth;
 	private final int ballHeight;
 	private final int ballOffsetX;
 	private final int ballOffsetY;
 
-	public PositionElement(JDPoint position, JDDimension dimension, GUIElement parent, Action action) {
+	public PositionElement(JDPoint position, JDDimension dimension, GUIElement parent, Action action, Color color, InfoEntity clickableObject) {
 		super(position, dimension, parent);
 		this.action = action;
+		this.color = color;
+		this.clickableObject = clickableObject;
 		ballWidth = (int) (dimension.getWidth() / 1.5);
 		ballHeight = (int) (dimension.getHeight() / 1.5);
 		ballOffsetX = (dimension.getWidth() - ballWidth) / 2;
@@ -42,8 +48,14 @@ public class PositionElement extends SubGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
-		EventManager.getInstance().fireEvent(new ActionEvent(action));
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		if(action != null) {
+			EventManager.getInstance().fireEvent(new ActionEvent(action));
+			if(clickableObject != null) {
+				EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -52,12 +64,7 @@ public class PositionElement extends SubGUIElement {
 		JDPoint posRelative = this.getPositionOnScreen();
 		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
 		JDDimension dimension = this.getDimension();
-		DrawUtils.drawRectangle(g, Colors.WHITE, absolutePosition, dimension);
-
-		Color color = Colors.WHITE;
-		if(this.action instanceof AttackAction) {
-			color = Colors.RED;
-		}
+		//DrawUtils.drawRectangle(g, Colors.BLUE, absolutePosition, dimension);
 		g.drawOval(absolutePosition.getX() + ballOffsetX, absolutePosition.getY()+ ballOffsetY, ballWidth, ballHeight, color);
 	}
 }

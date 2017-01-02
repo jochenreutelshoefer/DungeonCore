@@ -34,15 +34,15 @@ public abstract class SlidingGUIElement extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(TouchEvent touch) {
+	public boolean handleTouchEvent(TouchEvent touch) {
 
 		/*
 		 * if it is out of screen a touch on the visible border will open it
 		 */
 		if (getCurrentX() == targetPos.getX()) {
 			this.slideStep = -1;
-			return;
 		}
+		return true;
 	}
 
 	protected void slideIn() {

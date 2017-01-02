@@ -84,8 +84,8 @@ public abstract class AbstractGUIElement implements GUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(TouchEvent touch) {
-		// TODO Auto-generated method stub
+	public boolean handleTouchEvent(TouchEvent touch) {
+		return false;
 	}
 
 	@Override

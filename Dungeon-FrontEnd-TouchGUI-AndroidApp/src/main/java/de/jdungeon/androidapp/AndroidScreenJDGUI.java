@@ -22,6 +22,8 @@ import figure.action.result.ActionResult;
 import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.Percept;
+
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.game.AbstractImageLoader;
 
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
@@ -49,6 +51,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public void actionDone(Action a, ActionResult res) {
 		if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
 			perceptHandler.tellPercept(new TextPercept(StatementManager.getStatement(res).getText()));
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 	}
 
@@ -103,6 +106,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public void plugAction(Action a) {
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionQueue.add(a);
 	}
 

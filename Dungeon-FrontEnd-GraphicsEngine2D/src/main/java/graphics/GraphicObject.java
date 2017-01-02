@@ -72,7 +72,7 @@ public class GraphicObject {
 		return rim;
 	}
 
-	public Object getClickedObject() {
+	public Object getClickableObject() {
 		return clickedObject;
 	}
 

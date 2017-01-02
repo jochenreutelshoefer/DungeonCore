@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import user.DungeonSession;
 import user.DefaultDungeonSession;
 
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.event.QuitGameEvent;
 import de.jdungeon.androidapp.event.StartNewGameEvent;
 import de.jdungeon.androidapp.gui.dungeonselection.DungeonSelectionScreen;
@@ -76,6 +77,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	@Override
 	public void notify(Event event) {
 
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		if(event instanceof StartNewGameEvent) {
 			setScreen(new HeroSelectionScreen(this));
 		}

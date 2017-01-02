@@ -5,6 +5,7 @@ import event.Event;
 import event.EventManager;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 
@@ -28,8 +29,10 @@ public class SimpleButton extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		EventManager.getInstance().fireEvent(event);
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		return true;
 	}
 
 

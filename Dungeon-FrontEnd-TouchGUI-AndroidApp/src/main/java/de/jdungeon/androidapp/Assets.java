@@ -10,6 +10,7 @@ import android.util.Log;
 import audio.AudioEffectsManager;
 import graphics.ImageManager;
 
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.AudioLoader;
@@ -34,6 +35,7 @@ public class Assets {
 
 			AudioLoader androidLoader = new AndroidAudioLoader(audio, game);
 			AudioEffectsManager.init(androidLoader);
+			AudioManagerTouchGUI.init(androidLoader);
 
 			SoundPool soundPool = ((AndroidAudio) audio).getSoundPool();
 			soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

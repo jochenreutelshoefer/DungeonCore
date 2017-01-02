@@ -54,8 +54,9 @@ public class MoveElement extends SubGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		EventManager.getInstance().fireEvent(new WannaMoveEvent(direction));
+		return true;
 	}
 
 	@Override

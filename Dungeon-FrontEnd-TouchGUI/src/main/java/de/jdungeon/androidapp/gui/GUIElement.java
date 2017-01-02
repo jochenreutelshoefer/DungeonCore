@@ -19,7 +19,7 @@ public interface GUIElement {
 	
 	boolean hasPoint(JDPoint p);
 	
-	void handleTouchEvent(TouchEvent touch);
+	boolean handleTouchEvent(TouchEvent touch);
 
 	void handleDoubleTapEvent(MotionEvent touch);
 

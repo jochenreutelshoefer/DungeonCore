@@ -133,12 +133,12 @@ public class SimpleHeroBehavior extends GuiAI implements ControlUnit {
 		Action a = null;
 		if (this.h.getHealthLevel() <= 2 && Math.random() < 0.3) {
 			a = Action.makeActionFlee();
-			this.h.checkMovementAction(a);
+			this.h.checkAction(a);
 
 			return a;
 		}
 		a = Action.makeActionAttack(0);
-		this.h.checkMovementAction(a);
+		this.h.checkAction(a);
 
 		return a;
 	}

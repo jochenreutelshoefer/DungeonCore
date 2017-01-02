@@ -39,8 +39,8 @@ public class InventoryBox extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
-
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		return false;
 	}
 
 	@Override

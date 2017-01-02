@@ -11,6 +11,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
+import figure.action.FleeAction;
 import figure.action.LockAction;
 import figure.action.StepAction;
 import figure.action.result.ActionResult;
@@ -20,6 +21,7 @@ import util.JDDimension;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 
 /**
@@ -75,19 +77,65 @@ public class SmartControl extends ContainerGUIElement {
 		RoomInfo roomInfo = figure.getRoomInfo();
 		DoorInfo[] doors = roomInfo.getDoors();
 
-		if (doors[0] != null && doors[0].isPassable()) {
-			moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North));
+		if(figure.getRoomInfo().fightRunning()) {
+			int positionInRoomIndex = figure.getPositionInRoomIndex();
+			if(positionInRoomIndex == 1) {
+				if(checkFleeAction()) {
+					addDoorNorth(moveElementSize, moveElementDimension);
+				}
+			}
+			if(positionInRoomIndex == 3) {
+				if(checkFleeAction()) {
+					addDoorEast(moveElementSize, moveElementDimension);
+				}
+			}
+			if(positionInRoomIndex == 5) {
+				if(checkFleeAction()) {
+					addDoorSouth(moveElementSize, moveElementDimension);
+				}
+			}
+			if(positionInRoomIndex == 7) {
+				if(checkFleeAction()) {
+					addDoorWest(moveElementSize, moveElementDimension);
+				}
+			}
+		} else {
+
+			if (doors[0] != null && doors[0].isPassable()) {
+				addDoorNorth(moveElementSize, moveElementDimension);
+			}
+			if (doors[1] != null && doors[1].isPassable()) {
+				addDoorEast(moveElementSize, moveElementDimension);
+			}
+			if (doors[2] != null && doors[2].isPassable()) {
+				addDoorSouth(moveElementSize, moveElementDimension);
+			}
+			if (doors[3] != null && doors[3].isPassable()) {
+				addDoorWest(moveElementSize, moveElementDimension);
+			}
 		}
-		if (doors[1] != null && doors[1].isPassable()) {
-			moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East));
-		}
-		if (doors[2] != null && doors[2].isPassable()) {
-			moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
-					.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South));
-		}
-		if (doors[3] != null && doors[3].isPassable()) {
-			moveElements.add(new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West));
-		}
+	}
+
+	private boolean checkFleeAction() {
+		return figure.checkAction(new FleeAction(false)).getValue() == ActionResult.VALUE_POSSIBLE;
+	}
+
+	private void addDoorWest(int moveElementSize, JDDimension moveElementDimension) {
+		moveElements.add(new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West));
+	}
+
+	private void addDoorNorth(int moveElementSize, JDDimension moveElementDimension) {
+		moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North));
+	}
+
+	private void addDoorEast(int moveElementSize, JDDimension moveElementDimension) {
+		moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension()
+				.getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East));
+	}
+
+	private void addDoorSouth(int moveElementSize, JDDimension moveElementDimension) {
+		moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
+				.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South));
 	}
 
 	private void updateDoorElements() {
@@ -98,7 +146,8 @@ public class SmartControl extends ContainerGUIElement {
 			DoorInfo door = doors[i];
 			if (door != null && door.hasLock()) {
 				Action action = new LockAction(door);
-				doorElements.add(new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door.isLocked(), this.figure.hasKey(door), action));
+				doorElements.add(new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
+						.isLocked(), this.figure.hasKey(door), action, door));
 			}
 		}
 	}
@@ -107,31 +156,53 @@ public class SmartControl extends ContainerGUIElement {
 		positionElements.clear();
 		JDDimension dimension = this.getDimension();
 		int positionAreaSize = (int) (dimension.getWidth() / 1.6);
-		int positionAreaOffset = (dimension.getWidth() - positionAreaSize)/2;
+		int positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
 		GraphicObjectRenderer renderer = new GraphicObjectRenderer(positionAreaSize);
 		for (int i = 0; i < 8; i++) {
 			JDPoint positionCoord = renderer.getPositionCoordModified(i);
-			int positionSize = 20;
+			int positionSize = 26;
 			Action action = new StepAction(i);
-			if(figure.checkMovementAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
+			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
+			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
 				positionElements.add(
 						new PositionElement(
 								new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord.getY() + positionAreaOffset - positionSize / 2),
 								new JDDimension(positionSize, positionSize),
 								this,
-								action));
+								action, Colors.WHITE, null));
 			}
-			if(figure.getRoomInfo().fightRunning()) {
-				FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
-				if(otherFigure != null && otherFigure.isHostile(this.figure)) {
+			else if (otherFigure != null) {
+				// show other figures
+				if (otherFigure.isHostile(this.figure)) {
 					positionElements.add(
 							new PositionElement(
-									new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord.getY() + positionAreaOffset - positionSize / 2),
+									new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord
+											.getY() + positionAreaOffset - positionSize / 2),
 									new JDDimension(positionSize, positionSize),
 									this,
-									new AttackAction(otherFigure.getFighterID())));
+									new AttackAction(otherFigure.getFighterID()), Colors.RED, otherFigure));
 				}
-
+				else {
+					de.jdungeon.game.Color color = Colors.GREEN;
+					if (otherFigure.equals(figure)) {
+						color = Colors.YELLOW;
+					}
+					positionElements.add(
+							new PositionElement(
+									new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord
+											.getY() + positionAreaOffset - positionSize / 2),
+									new JDDimension(positionSize, positionSize),
+									this,
+									null, color, otherFigure));
+				}
+			} else {
+				positionElements.add(
+						new PositionElement(
+								new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord
+										.getY() + positionAreaOffset - 1),
+								new JDDimension(3, 3),
+								this,
+								null, Colors.GRAY, null));
 			}
 		}
 	}

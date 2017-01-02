@@ -103,7 +103,7 @@ public class ItemWheel extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(TouchEvent touch) {
+	public boolean handleTouchEvent(TouchEvent touch) {
 		for (int i = 0; i < points.length; i++) {
 			double distance = Math.hypot(touch.x - points[i].getX(), touch.y
 					- points[i].getY());
@@ -112,7 +112,7 @@ public class ItemWheel extends AbstractGUIElement {
 				break;
 			}
 		}
-		super.handleTouchEvent(touch);
+		return super.handleTouchEvent(touch);
 	}
 
 	private void iconTouched(int i) {

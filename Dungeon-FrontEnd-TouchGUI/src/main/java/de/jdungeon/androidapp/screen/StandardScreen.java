@@ -95,14 +95,15 @@ public abstract class StandardScreen extends Screen {
 					// assert there are at least some milli seconds between touch events
 					long now = System.currentTimeMillis();
 					if(now - lastTouchEvent > 10
-							&& now - screenCreatedTime > 50) {
+							&& now - screenCreatedTime > 100) {
 						// we assume a user cannot make a serious touch action, seeing
 						// a screen for less than 50 milli seconds
-						lastTouchEvent = System.currentTimeMillis();
-						guiElement.handleTouchEvent(touchDownEvent);
+						boolean handleEvent = guiElement.handleTouchEvent(touchDownEvent);
+						if(handleEvent) {
+							lastTouchEvent = System.currentTimeMillis();
+							break;
+						}
 					}
-
-					break;
 				}
 			}
 		}

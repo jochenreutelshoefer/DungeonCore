@@ -4,9 +4,11 @@ import dungeon.JDPoint;
 import event.ActionEvent;
 import event.EventManager;
 import figure.action.Action;
+import game.InfoEntity;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.DrawUtils;
+import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.game.Color;
@@ -23,17 +25,23 @@ public class DoorElement extends SubGUIElement {
 	private final boolean locked;
 	private final boolean hasKey;
 	private final Action action;
+	private final InfoEntity clickableObject;
 
-	public DoorElement(JDPoint position, JDDimension dimension, GUIElement parent, boolean locked, boolean hasKey, Action action) {
+	public DoorElement(JDPoint position, JDDimension dimension, GUIElement parent, boolean locked, boolean hasKey, Action action, InfoEntity clickableObject) {
 		super(position, dimension, parent);
 		this.locked = locked;
 		this.hasKey = hasKey;
 		this.action = action;
+		this.clickableObject = clickableObject;
 	}
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		EventManager.getInstance().fireEvent(new ActionEvent(action));
+		if(clickableObject != null) {
+			EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
+		}
+		return true;
 	}
 
 

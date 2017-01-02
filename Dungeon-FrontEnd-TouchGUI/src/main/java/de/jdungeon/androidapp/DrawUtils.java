@@ -52,7 +52,7 @@ public class DrawUtils {
 					Image im = (Image) image.getImage().getImage();
 
 					// check for animation image
-					Object clickedObject = jdGraphicObject.getClickedObject();
+					Object clickedObject = jdGraphicObject.getClickableObject();
 					String showText = null;
 					JDPoint textOffset = null;
 					if (clickedObject instanceof FigureInfo) {
@@ -112,7 +112,7 @@ public class DrawUtils {
 					Image image = (Image) imageProxy.getImage();
 
 					// check for animation image
-					Object clickedObject = graphicObject.getClickedObject();
+					Object clickedObject = graphicObject.getClickableObject();
 					if (clickedObject instanceof FigureInfo) {
 						AnimationFrame animationFrame = AnimationManager
 								.getInstance().getAnimationImage(

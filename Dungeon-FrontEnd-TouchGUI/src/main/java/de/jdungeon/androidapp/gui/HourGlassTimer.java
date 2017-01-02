@@ -28,9 +28,9 @@ public class HourGlassTimer extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(TouchEvent touch) {
+	public boolean handleTouchEvent(TouchEvent touch) {
 		EventManager.getInstance().fireEvent(new EndRoundEvent());
-
+		return true;
 	}
 
 	@Override

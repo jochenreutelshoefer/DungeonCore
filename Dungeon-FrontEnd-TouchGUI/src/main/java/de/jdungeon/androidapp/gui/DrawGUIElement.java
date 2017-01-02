@@ -35,8 +35,8 @@ public abstract class DrawGUIElement implements GUIElement{
 	}
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
-
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		return false;
 	}
 
 	@Override

@@ -60,8 +60,8 @@ public class InfoPanel extends SlidingGUIElement {
 	}
 
 	@Override
-	public void handleTouchEvent(TouchEvent touch) {
-		setContent(content);
+	public boolean handleTouchEvent(TouchEvent touch) {
+		return false;
 	}
 
 	@Override

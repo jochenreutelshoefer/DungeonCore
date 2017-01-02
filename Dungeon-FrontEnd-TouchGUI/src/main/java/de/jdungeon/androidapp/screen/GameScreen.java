@@ -46,11 +46,11 @@ import util.JDDimension;
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.GameScreenPerceptHandler;
+import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
-import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.GameOverView;
 import de.jdungeon.androidapp.gui.HealthBar;
 import de.jdungeon.androidapp.gui.HourGlassTimer;
@@ -747,7 +747,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (roomObjects != null) {
 			for (GraphicObject graphicObject : roomObjects) {
 				if (graphicObject.hasPoint(inGameLocation)) {
-					clickedObject = graphicObject.getClickedObject();
+					clickedObject = graphicObject.getClickableObject();
 					break;
 				}
 			}
@@ -832,11 +832,11 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			if (arg1 == null) {
 				return -1;
 			}
-			Object clickedObject0 = arg0.getClickedObject();
+			Object clickedObject0 = arg0.getClickableObject();
 			if (clickedObject0 == null) {
 				return 1;
 			}
-			Object clickedObject1 = arg1.getClickedObject();
+			Object clickedObject1 = arg1.getClickableObject();
 			if (clickedObject1 == null) {
 				return -1;
 			}
@@ -1031,6 +1031,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	public Collection<Class<? extends Event>> getEvents() {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
 		events.add(ShowInfoEntityEvent.class);
+		events.add(InfoObjectClickedEvent.class);
 		events.add(VisibilityIncreasedEvent.class);
 		return events;
 	}
@@ -1040,6 +1041,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (event instanceof ShowInfoEntityEvent) {
 			Paragraphable infoEntity = ((ShowInfoEntityEvent) event).getInfoEntity();
 			setInfoEntity(infoEntity);
+		}
+		if (event instanceof InfoObjectClickedEvent) {
+			setInfoEntity(((InfoObjectClickedEvent)event).getClickedEntity());
+			setHighlightedEntity(((InfoObjectClickedEvent)event).getClickedEntity());
 		}
 		if (event instanceof VisibilityIncreasedEvent) {
 			showVisibilityIncreaseEvent(((VisibilityIncreasedEvent)event).getPoint());

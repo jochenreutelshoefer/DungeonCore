@@ -107,7 +107,7 @@ public class DungeonSelectionScreen extends MenuScreen {
 			//Image image = (Image)ImageManager.engelImage.getImage();
 			//int x = xDistance + (innerStageIndex * stageHeightOffset);
 			JDPoint tilePosition = new JDPoint(x-DungeonSelectionTile.TILE_WIDTH/2, y);
-			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, this.game, session.getCurrentStage() == stage));
+			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage));
 
 
 

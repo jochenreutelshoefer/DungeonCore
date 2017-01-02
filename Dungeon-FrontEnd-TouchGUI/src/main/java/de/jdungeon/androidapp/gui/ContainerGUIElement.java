@@ -23,13 +23,19 @@ public abstract class ContainerGUIElement extends AbstractGUIElement {
 	protected abstract List<GUIElement> getAllSubElements();
 
 	@Override
-	public void handleTouchEvent(Input.TouchEvent touch) {
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		JDPoint coordinates = new JDPoint(touch.x, touch.y);
+		boolean handles = false;
 		for (GUIElement guiElement : getAllSubElements()) {
 			if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
-				guiElement.handleTouchEvent(touch);
+				boolean taken = guiElement.handleTouchEvent(touch);
+				if(taken) {
+					handles = true;
+					break;
+				}
 			}
 		}
+		return handles;
 	}
 
 	@Override
