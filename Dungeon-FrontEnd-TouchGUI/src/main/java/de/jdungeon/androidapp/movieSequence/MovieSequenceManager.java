@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MovieSequenceManager {
 
-	private final List<MovieSequence> sequences = new LinkedList<MovieSequence>();
+	private final List<MovieSequence> sequences = new LinkedList<>();
 
 	public void addSequence(MovieSequence movie) {
 		this.sequences.add(movie);
@@ -19,9 +19,9 @@ public class MovieSequenceManager {
 			if (head.isFinished(time)) {
 				// remove completed sequence
 				iterator.remove();
-			} else {
-				return head;
 			}
+			return head;
+
 		}
 		return null;
 	}

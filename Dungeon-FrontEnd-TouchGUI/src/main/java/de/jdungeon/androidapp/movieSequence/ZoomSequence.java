@@ -21,6 +21,7 @@ public class ZoomSequence implements ChangeScaleSequence {
 	}
 
 
+	@Override
 	public int getScale(float timePassed) {
 		timeCounter += timePassed;
 

@@ -58,7 +58,7 @@ public class DungeonSelectionScreen extends MenuScreen {
 		for(int i = 0; i < dungeonManager.getNumberOfStages(); i++) {
 			addGUIElementsForStage(i, dungeonManager.getDungeonOptions(i));
 			if(i == currentStage) {
-				JDDimension heroDimension = new JDDimension(180, 180);
+				JDDimension heroDimension = new JDDimension(140, 140);
 				guiElements.add(new SimpleImageGUIElement(new JDPoint(xCenterValue-heroDimension.getWidth()/2, getDotY(getY(i)) + dotSize - heroDimension.getHeight()*2/3 ), heroDimension, (Image)heroImage.getImage()));
 			}
 		}

@@ -16,14 +16,17 @@ public class DefaultMovieSequence implements MovieSequence {
 		this.duration = duration;
 	}
 
+	@Override
 	public int getScale(float timePassed) {
 		return scaler.getScale(timePassed);
 	}
 
+	@Override
 	public Pair<Float, Float> getViewportPosition(float timePassed) {
 		return scroller.getViewportPosition(timePassed);
 	}
 
+	@Override
 	public boolean isFinished(float timePassed) {
 		timeCounter += timePassed;
 		return timeCounter > duration;

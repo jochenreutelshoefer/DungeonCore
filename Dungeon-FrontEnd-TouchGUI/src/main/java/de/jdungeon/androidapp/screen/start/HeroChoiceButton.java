@@ -16,7 +16,7 @@ public class HeroChoiceButton extends ImageGUIElement {
 
 	private final int heroType;
 
-	private static final int SIZE = 150;
+	private static final int SIZE = 120;
 
 	@Deprecated
 	public HeroChoiceButton(JDPoint position, int heroType, Image im) {

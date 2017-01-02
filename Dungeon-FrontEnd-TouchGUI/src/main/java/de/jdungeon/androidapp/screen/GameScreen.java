@@ -51,12 +51,15 @@ import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
+import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.GameOverView;
 import de.jdungeon.androidapp.gui.HealthBar;
 import de.jdungeon.androidapp.gui.HourGlassTimer;
+import de.jdungeon.androidapp.gui.ImageGUIElement;
 import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.gui.TextPerceptView;
+import de.jdungeon.androidapp.gui.ZoomButton;
 import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
@@ -100,7 +103,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private float roomSize = 180;
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
-	private final int minRoomsize = 100;
+	private final int minRoomSize = 100;
 	private final Control control;
 	private InfoEntity highlightedEntity = null;
 
@@ -114,9 +117,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private DefaultDungeonSession session;
 
 	GameScreenPerceptHandler perceptHandler;
-
-
-
 
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
@@ -143,8 +143,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		JDPoint heroRoomNumber = figureInfo.getRoomNumber();
 		centerOn(heroRoomNumber);
 		scrollTo(heroRoomNumber, 100f);
-
-
 
 		resetDungeonRenderer();
 
@@ -197,6 +195,23 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 
 		/*
+		add +/- magnifier
+		 */
+		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(
+				26,
+				156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE)) {
+
+			@Override
+			public boolean handleTouchEvent(TouchEvent touch) {
+				scrollTo(figureInfo.getRoomNumber(), 30);
+				return true;
+			}
+		};
+		this.guiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), this, getGUIImage(GUIImageManager.PLUS), true));
+		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), this, getGUIImage(GUIImageManager.MINUS), false));
+		this.guiElements.add(magnifier);
+
+		/*
 		init smart control
 		 */
 		int smartControlSize = 220;
@@ -211,7 +226,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		int screenWidth = getGame().getScreenWidth();
 		int selectedIndexItem = 16;
 		int screenWidthBy2 = screenWidth / 2;
-		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, screenWidth-20),
+		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, screenWidth - 20),
 				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new ItemActivityItemProvider(figureInfo, this)),
@@ -223,7 +238,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		int selectedIndexSkills = 19;
 		Image image = (Image) ImageManager.inventory_box_normal.getImage();
-		ItemWheel wheelSkills = new ItemWheel(new JDPoint(screenWidth, screenWidth+20),
+		ItemWheel wheelSkills = new ItemWheel(new JDPoint(screenWidth, screenWidth + 20),
 				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),
@@ -238,10 +253,15 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.guiElements.add(inventory);
 
 		/*
-		 * init inventory panel
+		 * init charactter panel
 		 */
+
+		//switch off
+		/*
 		CharAttributeView charView = new CharAttributeView(figureInfo, this, this.getGame());
 		this.guiElements.add(charView);
+		*/
+
 		/*
 		 * init game over view
 		 */
@@ -253,6 +273,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
 				2 * heightFifth), this, this.getGame());
 		this.guiElements.add(gameOverView);
+	}
+
+	private Image getGUIImage(String filename) {
+		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
 	}
 
 	public Game getGame() {
@@ -404,14 +428,15 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 					.getCurrentSequence(arg0);
 			if (currentSequence != null) {
 				// movie running
+				int movieRoomSize = currentSequence.getScale(arg0);
+				if (movieRoomSize != this.roomSize) {
+					this.changeRoomSize(movieRoomSize);
+				}
+
 				Pair<Float, Float> centerViewRoomCoordinates = currentSequence
 						.getViewportPosition(arg0);
 				if (centerViewRoomCoordinates != null) {
 					centerOn(centerViewRoomCoordinates);
-				}
-				int movieRoomSize = currentSequence.getScale(arg0);
-				if (movieRoomSize != this.roomSize) {
-					this.changeRoomSize(movieRoomSize);
 				}
 
 				// flush events and quit processing
@@ -520,7 +545,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 			int newRoomSize = (int) (roomSize * scaleFactor);
 
-			newRoomSize = Math.max(minRoomsize,
+			newRoomSize = Math.max(minRoomSize,
 					Math.min(maxRoomSize, newRoomSize));
 			viewportPosition = new JDPoint(viewportPosition.getX() * scaleFactor, viewportPosition.getY() * scaleFactor);
 			changeRoomSize(newRoomSize);
@@ -766,7 +791,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	public void showVisibilityIncreaseEvent(JDPoint p) {
-		if(this.getFigureInfo().getRoomInfo().getPoint().equals(p)) {
+		if (this.getFigureInfo().getRoomInfo().getPoint().equals(p)) {
 			// entered current room, no need to do animation
 			return;
 		}
@@ -797,6 +822,28 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				new ZoomSequence(startScale, targetScale, duration),
 				new StraightLineScroller(getCurrentViewCenterRoomCoordinates(), floatPair(position), duration), duration);
 		this.sequenceManager.addSequence(sequence);
+	}
+
+	public void zoomIn() {
+		float newScale = roomSize;
+		if (newScale < maxRoomSize) {
+			newScale = roomSize + 20;
+			if (newScale > maxRoomSize) {
+				newScale = maxRoomSize;
+			}
+		}
+		zoomToSize(1, newScale);
+	}
+
+	public void zoomOut() {
+		float newScale = roomSize;
+		if (newScale > minRoomSize) {
+			newScale = roomSize - 20;
+			if (newScale < minRoomSize) {
+				newScale = minRoomSize;
+			}
+		}
+		zoomToSize(1, newScale);
 	}
 
 	public void exitFightMode() {
@@ -1043,11 +1090,11 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			setInfoEntity(infoEntity);
 		}
 		if (event instanceof InfoObjectClickedEvent) {
-			setInfoEntity(((InfoObjectClickedEvent)event).getClickedEntity());
-			setHighlightedEntity(((InfoObjectClickedEvent)event).getClickedEntity());
+			setInfoEntity(((InfoObjectClickedEvent) event).getClickedEntity());
+			setHighlightedEntity(((InfoObjectClickedEvent) event).getClickedEntity());
 		}
 		if (event instanceof VisibilityIncreasedEvent) {
-			showVisibilityIncreaseEvent(((VisibilityIncreasedEvent)event).getPoint());
+			showVisibilityIncreaseEvent(((VisibilityIncreasedEvent) event).getPoint());
 		}
 	}
 

@@ -7,6 +7,7 @@ import level.DungeonFactory;
 import level.DungeonSelectedEvent;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
@@ -46,6 +47,10 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		if(activeStage) {
 			EventManager.getInstance().fireEvent(new DungeonSelectedEvent(dungeon));
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+
+		} else {
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 		return true;
 	}

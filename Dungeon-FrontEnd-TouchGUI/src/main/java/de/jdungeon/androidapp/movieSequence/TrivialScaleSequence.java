@@ -8,6 +8,7 @@ public class TrivialScaleSequence implements ChangeScaleSequence {
 		this.scale = scale;
 	}
 
+	@Override
 	public int getScale(float timePassed) {
 		return scale;
 	}

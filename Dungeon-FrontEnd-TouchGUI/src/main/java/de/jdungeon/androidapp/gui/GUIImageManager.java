@@ -1,7 +1,8 @@
 package de.jdungeon.androidapp.gui;
 
-import de.jdungeon.game.AbstractImageLoader;
 import graphics.JDImageProxy;
+
+import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Image;
 
 public class GUIImageManager {
@@ -21,6 +22,11 @@ public class GUIImageManager {
 	public static final String ATTACK_SWORD = "guiItems/attack-sword.gif";
 	public static final String SPY_ICON = "guiItems/spy-icon.gif";
 	public static final String LUPE = "guiItems/lupe.gif";
+	public static final String LUPE2 = "guiItems/lupe2.gif";
+	public static final String LUPE2a = "guiItems/lupe2a.gif";
+	public static final String LUPE3 = "guiItems/lupe3.gif";
+	public static final String PLUS = "guiItems/plus.gif";
+	public static final String MINUS = "guiItems/minus.gif";
 	public static final String SWORD_ICON = "guiItems/sword_icon.gif";
 	public static final String FOOT_ICON = "guiItems/foot_icon.gif";
 	public static final String HEART_ICON = "guiItems/heart_icon.gif";
