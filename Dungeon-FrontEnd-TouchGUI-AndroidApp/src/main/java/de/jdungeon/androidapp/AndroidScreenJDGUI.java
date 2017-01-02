@@ -7,6 +7,8 @@ import figure.percept.TextPercept;
 import game.PerceptHandler;
 import item.ItemInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import spell.SpellInfo;
@@ -62,6 +64,13 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public void onTurn() {
+
+		if(!visibilityIncreasedRooms.isEmpty()) {
+			EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(visibilityIncreasedRooms));
+			visibilityIncreasedRooms.clear();
+		}
+
+
 		// if player does not have an action point left,
 		// preemptively cause an EndRoundAction
 		// TODO: can this ever happen
@@ -163,9 +172,12 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	}
 
+	private final List<JDPoint> visibilityIncreasedRooms = new ArrayList<>();
+
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
-		EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(p));
+		visibilityIncreasedRooms.add(p);
+		//EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(p));
 	}
 
 	@Override

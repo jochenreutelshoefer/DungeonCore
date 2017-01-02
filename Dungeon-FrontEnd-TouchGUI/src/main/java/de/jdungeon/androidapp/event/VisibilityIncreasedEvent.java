@@ -1,5 +1,8 @@
 package de.jdungeon.androidapp.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dungeon.JDPoint;
 import event.Event;
 
@@ -9,13 +12,17 @@ import event.Event;
  */
 public class VisibilityIncreasedEvent extends Event {
 
-	public JDPoint getPoint() {
-		return point;
+	public List<JDPoint> getPoints() {
+		return points;
 	}
 
-	private final JDPoint point;
+	private final List<JDPoint> points = new ArrayList<>();
 
 	public VisibilityIncreasedEvent(JDPoint point) {
-		this.point = point;
+		this.points.add(point);
+	}
+
+	public VisibilityIncreasedEvent( List<JDPoint> points) {
+		this.points.addAll(points);
 	}
 }

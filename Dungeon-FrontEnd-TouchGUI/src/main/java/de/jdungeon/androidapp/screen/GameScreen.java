@@ -49,7 +49,6 @@ import de.jdungeon.androidapp.GameScreenPerceptHandler;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
-import de.jdungeon.androidapp.gui.CharAttributeView;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.GameOverView;
@@ -197,9 +196,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		/*
 		add +/- magnifier
 		 */
-		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(
-				26,
-				156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE)) {
+		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE2)) {
 
 			@Override
 			public boolean handleTouchEvent(TouchEvent touch) {
@@ -790,20 +787,30 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return new JDDimension(dx, dy);
 	}
 
-	public void showVisibilityIncreaseEvent(JDPoint p) {
-		if (this.getFigureInfo().getRoomInfo().getPoint().equals(p)) {
+	public void showVisibilityIncrease(List<JDPoint> points) {
+		JDPoint heroRoom = this.getFigureInfo().getRoomInfo().getPoint();
+		if(points.contains(heroRoom)) {
 			// entered current room, no need to do animation
+			points.remove(heroRoom);
+		}
+		if(points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
+			scrollTo(points.get(0), 50);
 			return;
 		}
-		if (this.getFigureInfo().getRoomInfo().getPoint().isNeighbour(p)) {
-			scrollTo(p, 70);
+
+		// zoom out
+		zoomToSize(30, 70);
+		JDPoint last = getCurrentViewCenterRoomCoordinatesPoint();
+		for (JDPoint p : points) {
+			// center on each discovered room
+			scrollFromTo(last, p, 30, 70);
+			last = p;
 		}
-		else {
-			zoomToSize(30, 70);
-			scrollTo(p, 100, 70);
-			zoomToSize(30, 70, (int) this.roomSize, p);
-			scrollFromTo(p, this.getFigureInfo().getRoomNumber(), 60, (int) this.roomSize);
+		if(points.size() == 1) {
+			zoomToSize(30, 70, (int) this.roomSize, last);
 		}
+		// scroll back to hero
+		scrollFromTo(last, this.getFigureInfo().getRoomNumber(), 60, (int) this.roomSize);
 	}
 
 	/*
@@ -1094,7 +1101,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			setHighlightedEntity(((InfoObjectClickedEvent) event).getClickedEntity());
 		}
 		if (event instanceof VisibilityIncreasedEvent) {
-			showVisibilityIncreaseEvent(((VisibilityIncreasedEvent) event).getPoint());
+			showVisibilityIncrease(((VisibilityIncreasedEvent) event).getPoints());
 		}
 	}
 
