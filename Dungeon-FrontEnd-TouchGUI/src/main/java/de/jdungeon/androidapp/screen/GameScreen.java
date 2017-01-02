@@ -792,6 +792,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if(points.contains(heroRoom)) {
 			// entered current room, no need to do animation
 			points.remove(heroRoom);
+			if(points.size() == 0) {
+				return;
+			}
 		}
 		if(points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
 			scrollTo(points.get(0), 50);
