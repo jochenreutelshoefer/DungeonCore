@@ -15,7 +15,6 @@ import de.jdungeon.game.FileIO;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
-import de.jdungeon.game.Logger;
 import de.jdungeon.game.Screen;
 import de.jdungeon.user.Session;
 
@@ -28,7 +27,6 @@ public abstract class AndroidGame extends Activity implements Game {
 	private FileIO fileIO;
 	private Screen screen;
 	private WakeLock wakeLock;
-	private final Logger logger = new AndroidLogger();
 	//public static final int SCREEN_WIDTH = 1920;
 	public static final int SCREEN_WIDTH = 1000;
 	//public static final int SCREEN_HEIGHT = 1104;
@@ -37,11 +35,6 @@ public abstract class AndroidGame extends Activity implements Game {
 	public AndroidGame(Session session) {
 		this.session = session;
 
-	}
-
-	@Override
-	public Logger getLogger() {
-		return logger;
 	}
 
 	@Override

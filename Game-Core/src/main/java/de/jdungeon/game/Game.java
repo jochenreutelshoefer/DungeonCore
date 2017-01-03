@@ -18,8 +18,6 @@ public interface Game {
 
 	    Screen getInitScreen();
 
-		Logger getLogger();
-
 		int getScreenWidth();
 
 		int getScreenHeight();
