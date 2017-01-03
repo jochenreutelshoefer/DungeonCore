@@ -40,17 +40,24 @@ public class ItemInfo extends InfoEntity {
 	public InfoEntity getOwner() {
 		return Item.wrappItemOwner(it.getOwner(),map);
 	}
-	
+
+	@Override
 	public boolean equals(Object o) {
-		if(o instanceof ItemInfo) {
-			if(((ItemInfo)o).it == this.it) {
-				return true;
-			}
-		}
-		return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ItemInfo itemInfo = (ItemInfo) o;
+
+		return !(it != null ? !it.equals(itemInfo.it) : itemInfo.it != null);
+
 	}
-	
-	public static ItemInfo makeItemInfo(Item it,DungeonVisibilityMap map)  {
+
+	@Override
+	public int hashCode() {
+		return it != null ? it.hashCode() : 0;
+	}
+
+	public static ItemInfo makeItemInfo(Item it, DungeonVisibilityMap map)  {
 		if(it != null) {
 			return new ItemInfo(it,map);
 		}

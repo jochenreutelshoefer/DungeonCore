@@ -150,10 +150,8 @@ public class ActionAssembler implements EventListener {
 
 
 	public void wannaUseItem(ItemInfo it, Object target, boolean meta) {
-
 		Action a = new UseItemAction(it, target, meta);
 		plugAction(a);
-
 	}
 
 	public void wannaUseShrine(Object target, boolean right) {
@@ -164,16 +162,13 @@ public class ActionAssembler implements EventListener {
 	}
 
 	public void wannaSwitchEquipmentItem(int type, int index) {
-
 		Action a = new EquipmentChangeAction(type, index);
 		plugAction(a);
 	}
 
 	public void wannaLayDownItem(ItemInfo it) {
-
 		Action a = new LayDownItemAction(it);
 		plugAction(a);
-
 	}
 
 	@Deprecated

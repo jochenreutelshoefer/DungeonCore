@@ -28,17 +28,23 @@ public class SpellInfo extends InfoEntity{
 	public int getType() {
 		return s.getType();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof SpellInfo) {
-			if(((SpellInfo)o).s.equals(this.s)) {
-				return true;
-			}
-		}
-		return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		SpellInfo spellInfo = (SpellInfo) o;
+
+		return !(s != null ? !s.equals(spellInfo.s) : spellInfo.s != null);
+
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return s != null ? s.hashCode() : 0;
+	}
+
 	public boolean needsTarget() {
 		return s instanceof TargetSpell;
 	}

@@ -1,5 +1,8 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import event.EventManager;
 import util.JDDimension;
 
@@ -12,6 +15,7 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
+import de.jdungeon.util.PaintBuilder;
 
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
@@ -21,7 +25,8 @@ public class ItemWheel extends AbstractGUIElement {
 	private static final double PI_EIGHTEENTH = Math.PI / 18;
 	private static final double TWO_PI = Math.PI * 2;
 	private final JDPoint[] points = new JDPoint[36];
-	private float rotationState = (float) TWO_PI;
+	private final int hightlightItemPosition;
+	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
 	private int markedPointIndex;
 	private final Image backgroundImage;
@@ -50,12 +55,13 @@ public class ItemWheel extends AbstractGUIElement {
 	private float velocity = 0;
 	private float startVelocity = 0;
 	private final float maxVelocity = 50;
-	private double startVelocityTenth;
+//	private double startVelocityTenth;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
 					 Image background) {
 		super(position, dim, screen, game);
+		this.hightlightItemPosition = selectedIndex;
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
@@ -66,9 +72,9 @@ public class ItemWheel extends AbstractGUIElement {
 		 * init points
 		 */
 		for (int i = 0; i < points.length; i++) {
-			double degreeRad = i * PI_EIGHTEENTH + rotationState;
-			int x = (int) (this.position.getX() + (Math.sin(degreeRad) * radius));
-			int y = (int) (this.position.getY() + (Math.cos(degreeRad) * radius));
+			double degreeRad = i * PI_EIGHTEENTH + currentRotationState;
+			int x = calcXCoordinate(degreeRad);
+			int y = calcYCoordinate(degreeRad);
 			points[i] = new JDPoint(x, y);
 		}
 	}
@@ -87,17 +93,16 @@ public class ItemWheel extends AbstractGUIElement {
 		float movementX = movement.getX();
 		float rotation = movementX / 400;
 
-			changeRotation(rotation);
+		// instant rotation
+		changeRotation(rotation);
 
-		if (movementX > maxVelocity) {
+		float initialRotationVelocity = movementX / 50;
+		if (initialRotationVelocity > maxVelocity) {
 			velocity = maxVelocity;
 		} else {
-			velocity = movementX;
-
+			velocity = initialRotationVelocity;
 		}
-		//System.out.println("setting velocity to: "+velocity);
 		startVelocity = velocity;
-		startVelocityTenth = 0.1 * startVelocity;
 		justRotated = true;
 
 	}
@@ -112,6 +117,7 @@ public class ItemWheel extends AbstractGUIElement {
 				break;
 			}
 		}
+		velocity = 0;
 		return super.handleTouchEvent(touch);
 	}
 
@@ -125,20 +131,24 @@ public class ItemWheel extends AbstractGUIElement {
 	}
 
 	private void centerOnIndex(int i) {
-		//int previousIndex = this.markedPointIndex;
-		//int diff = previousIndex - i;
-		//rotationState = (float) (rotationState + (diff * PI_EIGHTEENTH));
-		//System.out.println("Centered on index" +i+": Rotation state: "+rotationState);
-
 		setMarkedIndex(i);
 	}
 
 	private synchronized void changeRotation(float rotationChange) {
-			this.rotationState += rotationChange;
+		this.currentRotationState += rotationChange;
+		updatePointCoordinates();
 	}
 
 	private void setMarkedIndex(int i) {
+		// set touched element as highlighted element
 		markedPointIndex = i;
+
+		// scroll element to center position
+		int diff = hightlightItemPosition - i;
+		this.currentRotationState = (float) PI_EIGHTEENTH * diff;
+		updatePointCoordinates();
+
+		// show info about element
 		ItemWheelActivity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
 			EventManager.getInstance().fireEvent(new ShowInfoEntityEvent(activity));
@@ -160,71 +170,98 @@ public class ItemWheel extends AbstractGUIElement {
 			/*
 			 * calc user motion
 			 */
-			//rotationState = (float) ((rotationState) % TWO_PI);
-			System.out.println("Calculating for rotation state: "+rotationState);
-			for (int i = 0; i < points.length; i++) {
-				double degreeRad = i * PI_EIGHTEENTH + rotationState;
-				int x = (int) (this.position.getX() + (Math.sin(degreeRad) * radius));
-				int y = (int) (this.position.getY() + (Math.cos(degreeRad) * radius));
-				points[i].setX(x);
-				points[i].setY(y);
-
-			}
+			updatePointCoordinates();
 			justRotated = false;
 		} else {
 			/*
 			 * calc movement due to inertia-velocity
 			 */
-
-			if (velocity > 0) {
-				if (timer > 20000f) {
-					velocity *= 0.9;
+			if (Math.abs(velocity) > 0) {
+				if (timer > 100f) {
+					velocity *= 0.8;
 					timer = 0;
 				}
-				changeRotation(velocity);
+				changeRotation(velocity/10);
 				if (Math.abs(velocity) < 0.1) {
 					velocity = 0;
 				}
 			}
+		}
+		binding.update(time);
+	}
+
+	private void updatePointCoordinates() {
+		for (int i = 0; i < points.length; i++) {
+			double degreeRad = i * PI_EIGHTEENTH + currentRotationState;
+			int x = calcXCoordinate(degreeRad);
+			int y = calcYCoordinate(degreeRad);
+			points[i].setX(x);
+			points[i].setY(y);
 
 		}
+	}
 
-		binding.update(time);
+	private int calcYCoordinate(double degreeRad) {
+		return (int) (this.position.getY() + (Math.cos(degreeRad) * radius));
+	}
+
+	private int calcXCoordinate(double degreeRad) {
+		return (int) (this.position.getX() + (Math.sin(degreeRad) * radius));
 	}
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		g.drawOval(position.getX(), position.getY(), dimension.getWidth(),
 				dimension.getHeight(), Colors.BLUE);
+		this.binding.getSize();
+		Collection<ItemWheelActivity> painted = new HashSet();
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
 			int x = points[toDraw].getX();
 			int y = points[toDraw].getY();
+
+
 			if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
 					|| y > screenPlusDefaultImageHeight
 					|| y < 0 - doubleImageHeight) {
 				continue;
 			}
+
+
+			PaintBuilder numberPaint = new PaintBuilder();
+			numberPaint.setColor(Colors.RED);
+			//g.drawOval(x, y, 2, 2, Colors.GRAY);
+			g.drawString("" + toDraw, x, y, g.createPaint(numberPaint) );
+
 			ItemWheelActivity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
-				Image im = binding.getProvider().getActivityImage(activity);
-				if (im == null) {
-					System.out.println("Activity image is null: "
-							+ activity.toString());
+				if(painted.contains(activity)) {
+					continue;
 				}
+				painted.add(activity);
 				int yMinusDefaultHeight = y - defaultImageHeight;
 				int xMinusDefaultWidth = x - defaultImageWidth;
 				int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
 				int yMinusDefaultHeightHalf = y - defaultImageHeightHalf;
+
+				Image im = binding.getProvider().getActivityImage(activity);
+				if (im == null) {
+					System.out.println("Activity image is null: "
+							+ activity);
+				}
+
 				if (toDraw == this.markedPointIndex) {
 					/*
 					 * draw background if existing
 					 */
 					if (backgroundImage != null) {
-						g.drawScaledImage(backgroundImage, xMinusDefaultWidth
-								- backgroundPanelOffset, yMinusDefaultHeight
-								- backgroundPanelOffset, doubleWidthPlusOffset,
-								doubleHeightPlusOffset, 0, 0,
+						g.drawScaledImage(
+								backgroundImage,
+								xMinusDefaultWidth - backgroundPanelOffset,
+								yMinusDefaultHeight - backgroundPanelOffset,
+								doubleWidthPlusOffset,
+								doubleHeightPlusOffset,
+								0, 0,
 								backgroundImage.getWidth(),
 								backgroundImage.getHeight());
 					}
@@ -232,6 +269,7 @@ public class ItemWheel extends AbstractGUIElement {
 					/*
 					 * draw actual item
 					 */
+
 					g.drawScaledImage(im, xMinusDefaultWidth,
 							yMinusDefaultHeight, doubleImageWidth,
 							doubleImageHeight, 0, 0, im.getWidth(),
@@ -247,8 +285,8 @@ public class ItemWheel extends AbstractGUIElement {
 								xMinusDefaultWidthHalf - backgroundPanelOffset,
 								yMinusDefaultHeightHalf - backgroundPanelOffset,
 								defaultImageWidth + doubleBackgroundPanelOffset,
-								defaultImageHeight
-										+ doubleBackgroundPanelOffset, 0, 0,
+								defaultImageHeight + doubleBackgroundPanelOffset,
+								0, 0,
 								backgroundImage.getWidth(),
 								backgroundImage.getHeight());
 					}
@@ -263,14 +301,7 @@ public class ItemWheel extends AbstractGUIElement {
 				}
 			}
 
-			/*
-			 * dev mode only
-			 */
-			/*
-			Paint numberPain = new Paint();
-			numberPain.setColor(Color.YELLOW);
-			g.drawString("" + toDraw, x, y, numberPain);
-			*/
+
 		}
 
 	}

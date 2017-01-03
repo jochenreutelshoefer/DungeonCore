@@ -16,10 +16,13 @@ import java.util.List;
 import shrine.ShrineInfo;
 import control.ActionAssembler;
 
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
+import de.jdungeon.game.Audio;
+
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
@@ -61,6 +64,7 @@ public class Control implements EventListener {
 	}
 
 	public void inventoryItemClicked(ItemInfo item, InfoEntity target) {
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionAssembler.wannaUseItem(item, target, false);
 	}
 

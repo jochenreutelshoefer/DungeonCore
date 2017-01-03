@@ -10,9 +10,10 @@ import java.util.Set;
 
 public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
-	private final int size;
+	private final int itemWheelSize;
 	private final int initValue;
 	private final Map<Integer, ItemWheelActivity> mapping = new HashMap<Integer, ItemWheelActivity>();
+	private final Map<Integer, ItemWheelActivity> completedMapping = new HashMap<>();
 	private final ItemWheelActivityProvider provider;
 
 	@Override
@@ -20,27 +21,54 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		return provider;
 	}
 
-	public ItemWheelBindingSetSimple(int initialValue, int size,
+	@Override
+	public int getSize() {
+		return mapping.size();
+	}
+
+	public ItemWheelBindingSetSimple(int initialValue, int itemWheelSize,
 			ItemWheelActivityProvider provider) {
 		this.initValue = initialValue;
-		this.size = size;
+		this.itemWheelSize = itemWheelSize;
 		this.provider = provider;
 
+		initMapping();
+	}
+
+	private void initMapping() {
 		List<ItemWheelActivity> activities = provider.getActivities();
-		if (activities.size() > this.size) {
+		if (activities.size() > this.itemWheelSize) {
 			throw new IllegalArgumentException(
 					"Item wheel binding set not implemented for this case: too many items!");
 		}
+		mapping.clear();
 		int index = initValue;
 		for (ItemWheelActivity itemInfo : activities) {
 			mapping.put(index, itemInfo);
-			index = (index + 1) % this.size;
+			index = (index + 1) % this.itemWheelSize;
+		}
+		completeMapping();
+
+	}
+
+	private void completeMapping() {
+		// complete mapping to simplify drawing of itemwheel
+		List<ItemWheelActivity> activities = provider.getActivities();
+		completedMapping.clear();
+		int completionIndex = initValue + activities.size();
+		completedMapping.putAll(mapping);
+		int activityCounter = 0;
+		while(!completedMapping.containsKey(completionIndex % itemWheelSize)) {
+			completedMapping.put(completionIndex % itemWheelSize, activities.get(activityCounter % activities.size()));
+			activityCounter++;
+			completionIndex++;
 		}
 	}
 
 	@Override
 	public ItemWheelActivity getActivity(int index) {
 		return mapping.get(index);
+		//return completedMapping.get(index);
 	}
 
 	@Override
@@ -62,9 +90,15 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 				toRemove.add(itemInfo);
 			}
 		}
+		if(!toRemove.isEmpty()) {
+			initMapping();
+			return;
+		}
+		/*
 		for (ItemWheelActivity itemInfo : toRemove) {
 			removeBinding(itemInfo);
 		}
+		*/
 
 		/*
 		 * bind new items
@@ -74,7 +108,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 				insertItem(itemInfo);
 			}
 		}
-
+		completeMapping();
 	}
 
 	private void insertItem(ItemWheelActivity itemInfo) {
@@ -82,14 +116,14 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		boolean inserted = false;
 		int index = initValue;
 		int iteration = 0;
-		while (iteration < this.size) {
+		while (iteration < this.itemWheelSize) {
 			if (!mapping.containsKey(index)) {
 				mapping.put(index, itemInfo);
 				inserted = true;
 				break;
 			}
 			iteration++;
-			index = (index + 1) % this.size;
+			index = (index + 1) % this.itemWheelSize;
 		}
 
 		if (!inserted) {

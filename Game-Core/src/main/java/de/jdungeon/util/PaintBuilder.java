@@ -8,7 +8,7 @@ import de.jdungeon.game.Paint;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 01.01.17.
  */
-public class PaintBuilder {
+public class PaintBuilder implements Paint{
 
 	private int fontSize = 15;
 	private Color color = Colors.BLACK;
@@ -38,5 +38,6 @@ public class PaintBuilder {
 	}
 
 	private Paint.Alignment alignment = Paint.Alignment.CENTER;
+
 
 }

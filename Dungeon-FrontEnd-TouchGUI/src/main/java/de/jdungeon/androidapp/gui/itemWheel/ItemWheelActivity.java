@@ -7,6 +7,21 @@ public class ItemWheelActivity implements Paragraphable {
 
 	private final Object object;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ItemWheelActivity that = (ItemWheelActivity) o;
+
+		return !(object != null ? !object.equals(that.object) : that.object != null);
+	}
+
+	@Override
+	public int hashCode() {
+		return object != null ? object.hashCode() : 0;
+	}
+
 	public Object getObject() {
 		return object;
 	}

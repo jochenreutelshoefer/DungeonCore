@@ -8,4 +8,6 @@ public interface ItemWheelBindingSet {
 	void update(float time);
 
 	ItemWheelActivityProvider getProvider();
+
+	int getSize();
 }

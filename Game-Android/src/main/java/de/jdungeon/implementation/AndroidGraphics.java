@@ -14,6 +14,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import org.apache.log4j.Logger;
 
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
@@ -151,6 +152,7 @@ public class AndroidGraphics implements Graphics {
 				try {
 					in.close();
 				} catch (IOException e) {
+					Logger.getLogger(this.getClass()).warn("Could close InputStream of bitmap loading from asset", e);
 				}
 			}
 		}
@@ -271,14 +273,18 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void drawARGB(int a, int r, int g, int b) {
-		//android.graphics.Paint paint = new android.graphics.Paint();
-		//paint.setStyle(Style.FILL);
 		canvas.drawARGB(a, r, g, b);
 	}
 
 	@Override
 	public void drawString(String text, int x, int y, Paint paint) {
-		canvas.drawText(text, x, y, ((AndroidPaint)paint).getPaint());
+		Paint p;
+		if(paint instanceof PaintBuilder) {
+			p = createPaint(((PaintBuilder) paint));
+		} else {
+			p = paint;
+		}
+		canvas.drawText(text, x, y, ((AndroidPaint)p).getPaint() );
 
 	}
 
