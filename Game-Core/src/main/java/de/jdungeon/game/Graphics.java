@@ -31,6 +31,8 @@ public interface Graphics {
 
 	void drawOval(int x, int y, int width, int height, Color color);
 
+	void fillOval(int x, int y, int width, int height, Color color);
+
 	void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
 
     void drawImage(Image image, int x, int y, int srcX, int srcY,

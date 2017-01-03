@@ -26,7 +26,8 @@ public class AndroidGraphics implements Graphics {
 	AssetManager assets;
 	Bitmap frameBuffer;
 	Canvas canvas;
-	android.graphics.Paint paint;
+
+
 	Rect srcRect = new Rect();
 	Rect dstRect = new Rect();
 
@@ -68,7 +69,6 @@ public class AndroidGraphics implements Graphics {
 		this.assets = assets;
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
-		this.paint = new android.graphics.Paint();
 	}
 
 	@Override
@@ -174,18 +174,29 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void drawLine(int x, int y, int x2, int y2, de.jdungeon.game.Color color) {
+		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
 		canvas.drawLine(x, y, x2, y2, paint);
 	}
 
 	@Override
 	public void drawOval(int x, int y, int width, int height, de.jdungeon.game.Color color) {
+		android.graphics.Paint paint = new android.graphics.Paint();
+		paint.setStyle(Style.STROKE);
+		paint.setColor(convertColor(color));
+		canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
+	}
+
+	@Override
+	public void fillOval(int x, int y, int width, int height, de.jdungeon.game.Color color) {
+		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
 		canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
 	}
 
 	@Override
 	public void drawRect(int x, int y, int width, int height, de.jdungeon.game.Color color) {
+		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
 		paint.setStyle(Style.FILL);
 		canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
@@ -260,7 +271,8 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void drawARGB(int a, int r, int g, int b) {
-		paint.setStyle(Style.FILL);
+		//android.graphics.Paint paint = new android.graphics.Paint();
+		//paint.setStyle(Style.FILL);
 		canvas.drawARGB(a, r, g, b);
 	}
 

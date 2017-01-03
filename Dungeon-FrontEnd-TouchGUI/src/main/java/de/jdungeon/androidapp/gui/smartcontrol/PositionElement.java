@@ -3,6 +3,7 @@ package de.jdungeon.androidapp.gui.smartcontrol;
 import dungeon.JDPoint;
 import event.ActionEvent;
 import event.EventManager;
+import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
 import game.InfoEntity;
@@ -65,6 +66,13 @@ public class PositionElement extends SubGUIElement {
 		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
 		JDDimension dimension = this.getDimension();
 		//DrawUtils.drawRectangle(g, Colors.BLUE, absolutePosition, dimension);
-		g.drawOval(absolutePosition.getX() + ballOffsetX, absolutePosition.getY()+ ballOffsetY, ballWidth, ballHeight, color);
+		int x = absolutePosition.getX() + ballOffsetX;
+		int y = absolutePosition.getY() + ballOffsetY;
+		if(clickableObject instanceof FigureInfo) {
+			g.fillOval(x, y, ballWidth, ballHeight, color);
+		} else {
+			g.drawOval(x, y, ballWidth, ballHeight, color);
+		}
+
 	}
 }

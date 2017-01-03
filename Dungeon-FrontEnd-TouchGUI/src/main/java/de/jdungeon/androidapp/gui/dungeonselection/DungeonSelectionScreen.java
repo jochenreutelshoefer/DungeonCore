@@ -85,7 +85,7 @@ public class DungeonSelectionScreen extends MenuScreen {
 		this.guiElements.add(new DrawGUIElement() {
 			@Override
 			public void paint(Graphics g, JDPoint viewportPosition) {
-				g.drawOval(dotX - dotSize /2, dotY - dotSize /2, dotSize, dotSize, Colors.WHITE);
+				g.fillOval(dotX - dotSize /2, dotY - dotSize /2, dotSize, dotSize, Colors.WHITE);
 			}
 		});
 
