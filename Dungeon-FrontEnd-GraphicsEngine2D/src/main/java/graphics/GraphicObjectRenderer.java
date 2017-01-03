@@ -40,6 +40,8 @@ import item.quest.LuziasBall;
 import item.quest.Rune;
 import item.quest.Thing;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -1002,51 +1004,52 @@ public class GraphicObjectRenderer {
 
 	private GraphicObject drawWallSouth(int xcoord, int ycoord, RoomInfo r) {
 		GraphicObject ob = null;
-		if (r.getVisibilityStatus() >= 2 && r.isClaimed()) {
-			ob = new GraphicObject(null, new JDRectangle(new JDPoint(xcoord,
-					ycoord
-							+ roomSize
-							- GraphicObjectRenderer.getDoorDimension(true,
-									roomSize).getWidth()), new JDDimension(
-					roomSize, roomSize)), null, ImageManager.wall_southImage);
+		if (r.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FOUND) {
+			JDDimension doorDimension = GraphicObjectRenderer.getDoorDimension(true,
+					roomSize);
+			ob = new GraphicObject(null,
+					new JDRectangle(new JDPoint(xcoord, ycoord + roomSize - doorDimension.getWidth()),
+							new JDDimension(roomSize, roomSize)), null, ImageManager.wall_southImage);
 			lastWalls.add(ob);
 		}
 		return ob;
 	}
 
-	private GraphicObject drawWall(int xcoord, int ycoord, RoomInfo r) {
+	private Collection<GraphicObject> drawWall(int xcoord, int ycoord, RoomInfo r) {
 		JDColor bg = null;
 
-		GraphicObject ob = null;
+
+		Collection<GraphicObject>  result = new ArrayList<>();
 		int status = r.getVisibilityStatus();
 		if (status >= RoomObservationStatus.VISIBILITY_FOUND) {
 			if (memory) {
+				// TODO: what is that?
 				bg = JDColor.DARK_GRAY;
-				ob = new GraphicObject(r, new JDRectangle(new JDPoint(xcoord,
+				lastWalls.add(new GraphicObject(r, new JDRectangle(new JDPoint(xcoord,
 						ycoord - getDoorDimension(true, roomSize).getWidth()),
 						new JDDimension(roomSize, roomSize)), bg,
-						ImageManager.wall_northImage);
+						ImageManager.wall_northImage));
 				lastWalls.add(new GraphicObject(r, new JDRectangle(new JDPoint(
 						xcoord, ycoord
 								- getDoorDimension(true, roomSize).getWidth()),
 						new JDDimension(roomSize, roomSize)), bg,
 						ImageManager.wall_sidesImage));
 			} else {
-				lastWalls.add(new GraphicObject(r, new JDRectangle(new JDPoint(
+				result.add(new GraphicObject(r, new JDRectangle(new JDPoint(
 						xcoord, ycoord
 								- getDoorDimension(true, roomSize).getWidth()),
 						new JDDimension(roomSize, roomSize)), bg,
 						ImageManager.wall_sidesImage));
 
-				ob = new GraphicObject(r, new JDRectangle(new JDPoint(xcoord,
+				result.add(new GraphicObject(r, new JDRectangle(new JDPoint(xcoord,
 						ycoord - getDoorDimension(true, roomSize).getWidth()),
 						new JDDimension(roomSize, roomSize)), bg,
-						ImageManager.wall_northImage);
+						ImageManager.wall_northImage));
 			}
 
 		}
 
-		return ob;
+		return result;
 	}
 
 	private JDDimension getSpotDimension() {
@@ -1080,9 +1083,9 @@ public class GraphicObjectRenderer {
 		/*
 		 * wall
 		 */
-		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
+		Collection<GraphicObject> wallOb = drawWall(xcoord, ycoord, r);
 		if (wallOb != null) {
-			graphObs.add(wallOb);
+			graphObs.addAll(wallOb);
 		}
 
 		/*
@@ -1208,11 +1211,11 @@ public class GraphicObjectRenderer {
 	public void drawRoom(int xcoord, int ycoord, RoomInfo r) {
 
 		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, this);
-		GraphicObject wallOb = drawWall(xcoord, ycoord, r);
+		Collection<GraphicObject> wallOb = drawWall(xcoord, ycoord, r);
 
 		rooms.add(roomOb);
 		if (wallOb != null) {
-			walls.add(wallOb);
+			walls.addAll(wallOb);
 		}
 
 		int status = r.getVisibilityStatus();
