@@ -21,7 +21,7 @@ public class Pool<T> {
     public T newObject() {
         T object = null;
 
-        if (freeObjects.size() == 0)
+        if (freeObjects.isEmpty())
             object = factory.createObject();
         else
             object = freeObjects.remove(freeObjects.size() - 1);
@@ -30,7 +30,8 @@ public class Pool<T> {
     }
 
     public void free(T object) {
-        if (freeObjects.size() < maxSize)
-            freeObjects.add(object);
+        if (freeObjects.size() < maxSize) {
+			freeObjects.add(object);
+		}
     }
 }

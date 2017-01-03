@@ -408,7 +408,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	@Override
-	public void update(float arg0) {
+	public synchronized void update(float arg0) {
 
 		/*
 		 * trigger gui-elements

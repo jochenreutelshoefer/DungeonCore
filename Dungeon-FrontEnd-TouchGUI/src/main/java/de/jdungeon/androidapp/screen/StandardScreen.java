@@ -69,7 +69,7 @@ public abstract class StandardScreen extends Screen {
 	private long lastTouchEvent = -1;
 
 	@Override
-	public void update(float deltoTime) {
+	public synchronized void update(float deltoTime) {
 		/*
 		 * handle touch events
 		 */
@@ -94,8 +94,9 @@ public abstract class StandardScreen extends Screen {
 				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
 					// assert there are at least some milli seconds between touch events
 					long now = System.currentTimeMillis();
+					long timeSinceScreenCreated = now - screenCreatedTime;
 					if(now - lastTouchEvent > 10
-							&& now - screenCreatedTime > 100) {
+							&& timeSinceScreenCreated > 100) {
 						// we assume a user cannot make a serious touch action, seeing
 						// a screen for less than 50 milli seconds
 						boolean handleEvent = guiElement.handleTouchEvent(touchDownEvent);

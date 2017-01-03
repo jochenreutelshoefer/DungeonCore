@@ -1,6 +1,7 @@
 package de.jdungeon.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
@@ -22,7 +23,7 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
     int[] touchY = new int[MAX_TOUCHPOINTS];
     int[] id = new int[MAX_TOUCHPOINTS];
     Pool<TouchEvent> touchEventPool;
-    List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
+    //List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
     List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
     float scaleX;
     float scaleY;
@@ -98,11 +99,10 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
                     continue;
                 }
                 switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_POINTER_DOWN:
-
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_POINTER_UP:
+					//case MotionEvent.ACTION_POINTER_UP:
+					//case MotionEvent.ACTION_UP:
+					case MotionEvent.ACTION_DOWN:
+					case MotionEvent.ACTION_POINTER_DOWN:
 					touchEvent = touchEventPool.newObject();
 					touchEvent.motionEvent = new AndroidMotionEvent(event);
 					touchEvent.type = TouchEvent.TOUCH_DOWN;
@@ -187,16 +187,27 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
         }
     }
 
+	private List<TouchEvent> touchEventsResult = new ArrayList<>();
+
     @Override
     public List<TouchEvent> getTouchEvents() {
         synchronized (this) {
-            int len = touchEvents.size();
-            for (int i = 0; i < len; i++)
-                touchEventPool.free(touchEvents.get(i));
-            touchEvents.clear();
-            touchEvents.addAll(touchEventsBuffer);
+            int len = touchEventsBuffer.size();
+            if(len == 0) {
+				return Collections.emptyList();
+			}
+			// recycle objects for further use (necessary ?)
+			for (int i = 0; i < len; i++) {
+				touchEventPool.free(touchEventsBuffer.get(i));
+			}
+			// clear result container
+			touchEventsResult.clear();
+			// fill result container
+            touchEventsResult.addAll(touchEventsBuffer);
+			// clear buffer
             touchEventsBuffer.clear();
-            return touchEvents;
+			// return result container
+            return touchEventsResult;
         }
     }
    

@@ -30,8 +30,8 @@ public class SimpleButton extends AbstractGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
-		EventManager.getInstance().fireEvent(event);
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		EventManager.getInstance().fireEvent(event);
 		return true;
 	}
 
