@@ -13,6 +13,7 @@ import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,9 +105,10 @@ public class Inventory implements Serializable {
 	}
 
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
-		ItemInfo[] array = new ItemInfo[items.size()];
-		for (int i = 0; i < items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo(items.get(i),map);
+		List<Item> syncList = Collections.synchronizedList(items);
+		ItemInfo[] array = new ItemInfo[syncList.size()];
+		for (int i = 0; i < syncList.size(); i++) {
+			array[i] = ItemInfo.makeItemInfo(syncList.get(i),map);
 		}
 		return array;
 	}

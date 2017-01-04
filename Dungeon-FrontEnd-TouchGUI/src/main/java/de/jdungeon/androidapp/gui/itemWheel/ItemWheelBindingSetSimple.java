@@ -57,9 +57,22 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		completedMapping.clear();
 		int completionIndex = initValue + activities.size();
 		completedMapping.putAll(mapping);
-		int activityCounter = 0;
+		int activityCounter = activities.size();
+		int reoccurrenceCycleSize = 3;
+		// its less than 3 items, we fill up mapping with empty entries
+		// for not rendering an item multiple times on the display
+		if(activities.size() > reoccurrenceCycleSize ) {
+			reoccurrenceCycleSize = activities.size();
+		}
 		while(!completedMapping.containsKey(completionIndex % itemWheelSize)) {
-			completedMapping.put(completionIndex % itemWheelSize, activities.get(activityCounter % activities.size()));
+			int activityIndex = activityCounter % reoccurrenceCycleSize;
+			ItemWheelActivity activity = null;
+			if(activityIndex < activities.size()) {
+				activity = activities.get(activityIndex);
+			}
+			// else: we insert null as placeholder into mapping
+			int itemwheelIndex = completionIndex % itemWheelSize;
+			completedMapping.put(itemwheelIndex, activity);
 			activityCounter++;
 			completionIndex++;
 		}
@@ -67,8 +80,8 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
 	@Override
 	public ItemWheelActivity getActivity(int index) {
-		return mapping.get(index);
-		//return completedMapping.get(index);
+		//return mapping.get(index);
+		return completedMapping.get(index);
 	}
 
 	@Override

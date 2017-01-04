@@ -124,7 +124,9 @@ public class ItemWheel extends AbstractGUIElement {
 	private void iconTouched(int i) {
 		if (i == markedPointIndex) {
 			ItemWheelActivity infoEntity = binding.getActivity(i);
-			binding.getProvider().activityPressed(infoEntity);
+			if(infoEntity != null) {
+				binding.getProvider().activityPressed(infoEntity);
+			}
 		} else {
 			centerOnIndex(i);
 		}
@@ -178,11 +180,14 @@ public class ItemWheel extends AbstractGUIElement {
 			 */
 			if (Math.abs(velocity) > 0) {
 				if (timer > 100f) {
-					velocity *= 0.8;
+					// slow down on 70% velocity every 100ms
+					velocity *= 0.7;
 					timer = 0;
 				}
 				changeRotation(velocity/10);
-				if (Math.abs(velocity) < 0.1) {
+
+				// at some very low velocity -> stop
+				if (Math.abs(velocity) < 0.07) {
 					velocity = 0;
 				}
 			}
@@ -214,12 +219,18 @@ public class ItemWheel extends AbstractGUIElement {
 		g.drawOval(position.getX(), position.getY(), dimension.getWidth(),
 				dimension.getHeight(), Colors.BLUE);
 		this.binding.getSize();
-		Collection<ItemWheelActivity> painted = new HashSet();
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
 			int x = points[toDraw].getX();
 			int y = points[toDraw].getY();
 
+
+			/*
+			PaintBuilder numberPaint = new PaintBuilder();
+			numberPaint.setColor(Colors.RED);
+			//g.drawOval(x, y, 2, 2, Colors.GRAY);
+			g.drawString("" + toDraw, x, y, g.createPaint(numberPaint) );
+			*/
 
 			if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
 					|| y > screenPlusDefaultImageHeight
@@ -228,17 +239,9 @@ public class ItemWheel extends AbstractGUIElement {
 			}
 
 
-			PaintBuilder numberPaint = new PaintBuilder();
-			numberPaint.setColor(Colors.RED);
-			//g.drawOval(x, y, 2, 2, Colors.GRAY);
-			g.drawString("" + toDraw, x, y, g.createPaint(numberPaint) );
 
 			ItemWheelActivity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
-				if(painted.contains(activity)) {
-					continue;
-				}
-				painted.add(activity);
 				int yMinusDefaultHeight = y - defaultImageHeight;
 				int xMinusDefaultWidth = x - defaultImageWidth;
 				int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
