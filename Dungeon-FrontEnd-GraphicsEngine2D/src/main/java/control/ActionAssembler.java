@@ -14,6 +14,7 @@ import event.EventListener;
 import event.EventManager;
 import event.WannaMoveEvent;
 import event.WannaStepEvent;
+import event.WannaTakeItemEvent;
 import item.ItemInfo;
 import item.quest.LuziasBall;
 
@@ -192,6 +193,10 @@ public class ActionAssembler implements EventListener {
 		Action a = new UseChestAction(right);
 		plugAction(a);
 
+	}
+
+	public void wannaTakeItem(ItemInfo item) {
+		plugAction(new TakeItemAction(item));
 	}
 
 	public void wannaWalk(int dir) {
@@ -472,6 +477,7 @@ public class ActionAssembler implements EventListener {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
 		events.add(WannaMoveEvent.class);
 		events.add(WannaStepEvent.class);
+		events.add(WannaTakeItemEvent.class);
 		events.add(ActionEvent.class);
 		return events;
 	}
@@ -489,6 +495,10 @@ public class ActionAssembler implements EventListener {
 		if(event instanceof WannaStepEvent) {
 			WannaStepEvent moveEvent = ((WannaStepEvent)event);
 			this.wannaStepToPosition(moveEvent.getTarget());
+		}
+		if(event instanceof WannaTakeItemEvent) {
+			WannaTakeItemEvent takeEvent = ((WannaTakeItemEvent)event);
+			this.wannaTakeItem(takeEvent.getItem());
 		}
 		if(event instanceof ActionEvent) {
 			plugAction(((ActionEvent)event).getAction());

@@ -8,6 +8,7 @@ import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
+import event.EventManager;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
@@ -16,13 +17,21 @@ import figure.action.LockAction;
 import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import graphics.GraphicObjectRenderer;
+import item.ItemInfo;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.DrawUtils;
+import de.jdungeon.androidapp.event.ClickedTakeItemButton;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
+import de.jdungeon.androidapp.gui.DrawGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
+import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
+import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Input;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -34,6 +43,7 @@ public class SmartControl extends ContainerGUIElement {
 	private final Collection<GUIElement> positionElements = new ArrayList<>();
 	private final Collection<GUIElement> doorElements = new ArrayList<>();
 	private final Collection<GUIElement> moveElements = new ArrayList<>();
+	private final Collection<GUIElement> takeItemElements = new ArrayList<>();
 	private final FigureInfo figure;
 	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
@@ -65,9 +75,14 @@ public class SmartControl extends ContainerGUIElement {
 				new JDPoint(doorOuterBorderWidth, y13)
 		};
 
+		updateAllElements();
+	}
+
+	private void updateAllElements() {
 		updatePositionElements();
 		updateDoorElements();
 		updateMoveElements();
+		updateTakeElement();
 	}
 
 	private void updateMoveElements() {
@@ -152,6 +167,36 @@ public class SmartControl extends ContainerGUIElement {
 		}
 	}
 
+	private void updateTakeElement() {
+		takeItemElements.clear();
+		RoomInfo roomInfo = figure.getRoomInfo();
+		List<ItemInfo> items = roomInfo.getItems();
+		int takeElementSize = 25;
+		if (!items.isEmpty()) {
+			final JDDimension dimension = new JDDimension(takeElementSize, takeElementSize);
+			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 2 - takeElementSize/2, getDimension().getHeight() / 2 - takeElementSize/2);
+			takeItemElements.add(new SubGUIElement(posRelative, dimension, this) {
+					@Override
+					public void paint(Graphics g, JDPoint viewportPosition) {
+						JDPoint parentPosition = parent.getPositionOnScreen();
+						JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
+						g.fillRect(absolutePosition.getX(), absolutePosition.getY(), dimension.getWidth(), dimension.getHeight(), Colors.WHITE);
+					}
+
+				@Override
+				public boolean isVisible() {
+					return true;
+				}
+
+				@Override
+				public boolean handleTouchEvent(Input.TouchEvent touch) {
+					EventManager.getInstance().fireEvent(new ClickedTakeItemButton());
+					return true;
+				}
+			});
+		}
+	}
+
 	private void updatePositionElements() {
 		positionElements.clear();
 		JDDimension dimension = this.getDimension();
@@ -214,14 +259,13 @@ public class SmartControl extends ContainerGUIElement {
 
 	@Override
 	public void update(float time) {
-		updateDoorElements();
-		updatePositionElements();
-		updateMoveElements();
+		updateAllElements();
 
 		allGuiElements.clear();
 		allGuiElements.addAll(doorElements);
 		allGuiElements.addAll(positionElements);
 		allGuiElements.addAll(moveElements);
+		allGuiElements.addAll(takeItemElements);
 	}
 
 	@Override

@@ -55,7 +55,9 @@ public class ItemWheel extends AbstractGUIElement {
 	private float velocity = 0;
 	private float startVelocity = 0;
 	private final float maxVelocity = 50;
-//	private double startVelocityTenth;
+
+
+	private boolean visible = true;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
@@ -81,8 +83,13 @@ public class ItemWheel extends AbstractGUIElement {
 
 	@Override
 	public boolean isVisible() {
-		return true;
+		return visible;
 	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
 
 	long lastEvent =0;
 

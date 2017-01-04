@@ -1,26 +1,27 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
-import item.ItemInfo;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dungeon.ItemInfoOwner;
+import item.ItemInfo;
+
 import de.jdungeon.androidapp.Control;
-import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;
-import figure.hero.HeroInfo;
 
-public class ItemActivityItemProvider implements ItemWheelActivityProvider {
+public abstract class ItemActivityItemProvider implements ItemWheelActivityProvider {
 
-	private final HeroInfo info;
-	private final GameScreen screen;
+	private final ItemInfoOwner info;
+	protected final GameScreen screen;
 	private final Map<Class, Image> imageCache = new HashMap<Class, Image>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public ItemActivityItemProvider(HeroInfo info, GameScreen screen) {
+	public ItemActivityItemProvider(ItemInfoOwner info, GameScreen screen) {
 		this.info = info;
 		this.screen = screen;
 		inventoryImageManager = new InventoryImageManager(screen.getGuiImageManager());
@@ -29,12 +30,13 @@ public class ItemActivityItemProvider implements ItemWheelActivityProvider {
 	@Override
 	public List<ItemWheelActivity> getActivities() {
 		List<ItemWheelActivity> result = new ArrayList<ItemWheelActivity>();
-		List<ItemInfo> figureItemList = info.getFigureItemList();
+		List<ItemInfo> figureItemList = info.getItems();
 		for (ItemInfo itemInfo : figureItemList) {
-			result.add(new ItemWheelActivity(itemInfo));
+			if(itemInfo != null) {
+				result.add(new ItemWheelActivity(itemInfo));
+			}
 		}
 		return result;
-
 	}
 
 	@Override
@@ -51,12 +53,6 @@ public class ItemActivityItemProvider implements ItemWheelActivityProvider {
 		return i;
 	}
 
-	@Override
-	public void activityPressed(ItemWheelActivity infoEntity) {
 
-		Control control = screen.getControl();
-		control.itemWheelActivityClicked(infoEntity,
-				screen.getHighlightedEntity());
-	}
 
 }

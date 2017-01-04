@@ -77,7 +77,7 @@ public class Room extends DungeonWorldObject implements
 
 	private List<Figure> roomFigures;
 
-	private List<Item> Items;
+	private List<Item> items;
 
 	private final JDPoint number;
 
@@ -197,7 +197,7 @@ public class Room extends DungeonWorldObject implements
 	public Room(int x, int y, Dungeon d) {
 		this.d = d;
 		roomFigures = new LinkedList<Figure>();
-		Items = new LinkedList<Item>();
+		items = new LinkedList<Item>();
 		number = d.getPoint(x, y);
 		oldInfos = new String("");
 		for (int i = 0; i < positions.length; i++) {
@@ -290,9 +290,9 @@ public class Room extends DungeonWorldObject implements
 
 	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
-		ItemInfo[] array = new ItemInfo[Items.size()];
-		for (int i = 0; i < Items.size(); i++) {
-			array[i] = ItemInfo.makeItemInfo(Items.get(i), map);
+		ItemInfo[] array = new ItemInfo[items.size()];
+		for (int i = 0; i < items.size(); i++) {
+			array[i] = ItemInfo.makeItemInfo(items.get(i), map);
 		}
 		return array;
 	}
@@ -316,7 +316,7 @@ public class Room extends DungeonWorldObject implements
 
 	@Override
 	public Item getItemNumber(int i) {
-		return Items.get(i);
+		return items.get(i);
 	}
 
 	public boolean directionPassable(int dir) {
@@ -326,7 +326,7 @@ public class Room extends DungeonWorldObject implements
 	@Override
 	public boolean removeItem(Item i) {
 		boolean b = false;
-		if (Items.remove(i)) {
+		if (items.remove(i)) {
 			this.remItemFromArray(i);
 			b = true;
 		}
@@ -334,7 +334,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public boolean hasItem(Item i) {
-		return Items.contains(i);
+		return items.contains(i);
 	}
 
 	public Room getNeighbourRoom(RouteInstruction.Direction direction) {
@@ -439,12 +439,17 @@ public class Room extends DungeonWorldObject implements
 		return s + " ";
 	}
 
+	public List<Item> getItems() {
+		return Collections.unmodifiableList(items);
+	}
+
+	@Deprecated
 	public Item[] getItemArray() {
-		LinkedList<Item> workList = new LinkedList<Item>(Items);
+		LinkedList<Item> workList = new LinkedList<Item>(items);
 		for (int i = 0; i < 4; i++) {
 			boolean b;
 			if (itemArray[i] != null) {
-				b = Items.contains(itemArray[i]);
+				b = items.contains(itemArray[i]);
 
 				if (b) {
 					workList.remove(itemArray[i]);
@@ -517,8 +522,8 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public int getItemNumber(Item it) {
-		for (int i = 0; i < Items.size(); i++) {
-			if (it == Items.get(i)) {
+		for (int i = 0; i < items.size(); i++) {
+			if (it == items.get(i)) {
 				return i;
 			}
 		}
@@ -956,12 +961,8 @@ public class Room extends DungeonWorldObject implements
 		roomFigures = l;
 	}
 
-	public List<Item> getItems() {
-		return Items;
-	}
-
 	private void setItems(List<Item> l) {
-		Items = l;
+		items = l;
 	}
 
 	public void addQuest(Quest q) {
@@ -1072,13 +1073,13 @@ public class Room extends DungeonWorldObject implements
 
 		if (i instanceof DustItem) {
 			boolean foundOther = false;
-			for (int k = 0; k < Items.size(); k++) {
-				Item a = (Items.get(k));
+			for (int k = 0; k < items.size(); k++) {
+				Item a = (items.get(k));
 				if (a instanceof DustItem) {
 					this.removeItem(a);
 					DustItem newDust = new DustItem(((DustItem) a).getCount()
 							+ ((DustItem) i).getCount());
-					Items.add(newDust);
+					items.add(newDust);
 					Item.notifyItem(newDust, this);
 
 					foundOther = true;
@@ -1086,13 +1087,13 @@ public class Room extends DungeonWorldObject implements
 				}
 			}
 			if (!foundOther) {
-				Items.add(i);
+				items.add(i);
 				Item.notifyItem(i, this);
 			}
 		}
 		else {
 
-			Items.add(i);
+			items.add(i);
 			Item.notifyItem(i, this);
 		}
 		return true;
@@ -1164,11 +1165,11 @@ public class Room extends DungeonWorldObject implements
 			}
 		}
 		if (c == ALL) {
-			int k = Items.size();
+			int k = items.size();
 			if (k != 0) {
 				info += ("\nGegenstande: " + "\n");
 				for (int j = 0; j < k; j++) {
-					info += ("  " + Items.get(j) + "\n");
+					info += ("  " + items.get(j) + "\n");
 				}
 			}
 			else {
@@ -1263,7 +1264,7 @@ public class Room extends DungeonWorldObject implements
 
 		String itemS = new String();
 		if (status.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_ITEMS) {
-			itemS = "Gegenstände: " + Items.size();
+			itemS = "Gegenstände: " + items.size();
 		}
 		p[3] = new Paragraph(itemS);
 		p[3].setSize(14);

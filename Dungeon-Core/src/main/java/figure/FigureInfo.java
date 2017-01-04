@@ -7,6 +7,7 @@
 package figure;
 
 import dungeon.Dungeon;
+import dungeon.ItemInfoOwner;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -19,9 +20,11 @@ import game.DungeonGame;
 import game.InfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
+import item.Item;
 import item.ItemInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +45,7 @@ import dungeon.util.DungeonUtils;
  * Abstrakte Klasse - Soll fuer eine Steuerung die Informationen einer Figur
  * liefern.
  */
-public abstract class FigureInfo extends InfoEntity {
+public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 
 	private final Figure f;
 	public FigureInfo(Figure f, DungeonVisibilityMap stats) {
@@ -400,13 +403,18 @@ public abstract class FigureInfo extends InfoEntity {
 		return f.getItemInfos(map);
 	}
 
+	@Override
+	public ItemInfo[] getItemArray() {
+		return getFigureItems();
+	}
+
+	@Override
+	public List<ItemInfo> getItems() {
+		return getFigureItemList();
+	}
+
 	public List<ItemInfo> getFigureItemList() {
-		List<ItemInfo> l = new LinkedList<ItemInfo>();
-		ItemInfo o[] = getFigureItems();
-		for (int i = 0; i < o.length; i++) {
-			l.add(o[i]);
-		}
-		return l;
+		return Arrays.asList(getFigureItems());
 	}
 
 	public String getName() {

@@ -22,6 +22,7 @@ import item.Item;
 import item.ItemInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ import java.util.List;
 import shrine.ShrineInfo;
 import util.JDColor;
 
-public class RoomInfo extends InfoEntity {
+public class RoomInfo extends InfoEntity implements ItemInfoOwner {
 
 	private final Room r;
 
@@ -159,7 +160,7 @@ public class RoomInfo extends InfoEntity {
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 
 			itemS = JDEnv.getResourceBundle().getString("items") + ": "
-					+ cntEntrys(getItems());
+					+ cntEntrys(getItemArray());
 
 		}
 		p[3] = new Paragraph(itemS);
@@ -287,6 +288,8 @@ public class RoomInfo extends InfoEntity {
 		return null;
 	}
 
+	@Deprecated
+	@Override
 	public ItemInfo[] getItemArray() {
 
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
@@ -302,6 +305,20 @@ public class RoomInfo extends InfoEntity {
 		}
 		return null;
 	}
+
+	@Override
+	public List<ItemInfo> getItems() {
+		List<ItemInfo> result = null;
+		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
+			result = new ArrayList<>();
+			List<Item> items = r.getItems();
+			for (Item item : items) {
+				result.add((ItemInfo)item.makeInfoObject(this.map));
+			}
+		}
+		return result;
+	}
+
 
 	public int getItemCnt() {
 
@@ -321,20 +338,6 @@ public class RoomInfo extends InfoEntity {
 		return -1;
 	}
 
-	public ItemInfo[] getItems() {
-
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
-
-			List l = r.getItems();
-			ItemInfo[] wrappedIts = new ItemInfo[l.size()];
-			for (int i = 0; i < l.size(); i++) {
-				wrappedIts[i] = (ItemInfo) ((Item) l.get(i))
-						.makeInfoObject(map);
-			}
-			return wrappedIts;
-		}
-		return null;
-	}
 
 	public JDPoint getLocation() {
 		return r.getLocation();

@@ -46,6 +46,7 @@ import util.JDDimension;
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.GameScreenPerceptHandler;
+import de.jdungeon.androidapp.event.ClickedTakeItemButton;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
@@ -63,6 +64,8 @@ import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
+import de.jdungeon.androidapp.gui.itemWheel.TakeItemActivityProvider;
+import de.jdungeon.androidapp.gui.itemWheel.UseItemActivityProvider;
 import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
 import de.jdungeon.androidapp.movieSequence.MovieSequence;
@@ -116,6 +119,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private DefaultDungeonSession session;
 
 	GameScreenPerceptHandler perceptHandler;
+
+	private boolean roomItemWheelShowing = false;
+	private ItemWheel itemWheelRoomItems;
+	private ItemWheel itemWheelSkills;
 
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
@@ -218,30 +225,47 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.guiElements.add(smartControl);
 
 		/*
-		 * init item wheel
+		 * init hero item wheel
 		 */
 		int screenWidth = getGame().getScreenWidth();
 		int selectedIndexItem = 16;
 		int screenWidthBy2 = screenWidth / 2;
-		ItemWheel wheelItems = new ItemWheel(new JDPoint(0 - 20, screenWidth),
-				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
+		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
+		ItemWheel itemWheelHeroItems = new ItemWheel(new JDPoint(0 - 20, screenWidth),
+				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
-						new ItemActivityItemProvider(figureInfo, this)),
+						new UseItemActivityProvider(figureInfo, this)),
 				selectedIndexItem, null);
-		this.guiElements.add(wheelItems);
+		this.guiElements.add(itemWheelHeroItems);
 
+
+		JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth + 20, screenWidth);
 		/*
 		 * init skills wheel
 		 */
 		int selectedIndexSkills = 19;
-		Image image = (Image) ImageManager.inventory_box_normal.getImage();
-		ItemWheel wheelSkills = new ItemWheel(new JDPoint(screenWidth + 20, screenWidth),
-				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
+		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
+		itemWheelSkills = new ItemWheel(itemWheelPositionRightSide,
+				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),
 				selectedIndexSkills,
-				image);
-		this.guiElements.add(wheelSkills);
+				skillBackgroundImage);
+		this.guiElements.add(itemWheelSkills);
+
+		/*
+		init room item wheel
+		it shares position with the skill wheel, toggled on/off by the user
+		 */
+		int selectedIndexRoomItems = 19;
+		itemWheelRoomItems = new ItemWheel(itemWheelPositionRightSide,
+				itemWheelSize, figureInfo, this, this.getGame(),
+				new ItemWheelBindingSetSimple(selectedIndexRoomItems, 36,
+						new TakeItemActivityProvider(figureInfo.getRoomInfo(), this)),
+				selectedIndexRoomItems,
+				null);
+		itemWheelRoomItems.setVisible(false);
+		this.guiElements.add(itemWheelRoomItems);
 
 		/*
 		 * init inventory panel
@@ -409,6 +433,12 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	@Override
 	public synchronized void update(float arg0) {
+
+		if(this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().size() == 0) {
+			// we need to switch back to skills mode as user has not the respective button in this case
+			toggleSkillVersusRoomItemWheel();
+		}
+
 
 		/*
 		 * trigger gui-elements
@@ -1090,6 +1120,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		events.add(ShowInfoEntityEvent.class);
 		events.add(InfoObjectClickedEvent.class);
 		events.add(VisibilityIncreasedEvent.class);
+		events.add(ClickedTakeItemButton.class);
 		return events;
 	}
 
@@ -1105,6 +1136,24 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 		if (event instanceof VisibilityIncreasedEvent) {
 			showVisibilityIncrease(((VisibilityIncreasedEvent) event).getPoints());
+		}
+		if (event instanceof ClickedTakeItemButton) {
+			toggleSkillVersusRoomItemWheel();
+		}
+	}
+
+	/**
+	 * Switch/toggle between skill- and room-items ItemWheel
+	 */
+	private void toggleSkillVersusRoomItemWheel() {
+		if(roomItemWheelShowing) {
+			itemWheelRoomItems.setVisible(false);
+			itemWheelSkills.setVisible(true);
+			roomItemWheelShowing = false;
+		} else {
+			itemWheelRoomItems.setVisible(true);
+			itemWheelSkills.setVisible(false);
+			roomItemWheelShowing = true;
 		}
 	}
 
