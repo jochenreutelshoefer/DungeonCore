@@ -31,6 +31,9 @@ public abstract class ItemActivityItemProvider implements ItemWheelActivityProvi
 	public List<ItemWheelActivity> getActivities() {
 		List<ItemWheelActivity> result = new ArrayList<ItemWheelActivity>();
 		List<ItemInfo> figureItemList = info.getItems();
+		if(figureItemList == null) {
+			return result;
+		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
 				result.add(new ItemWheelActivity(itemInfo));
