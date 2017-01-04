@@ -203,16 +203,20 @@ public class SmartControl extends ContainerGUIElement {
 		int positionAreaSize = (int) (dimension.getWidth() / 1.6);
 		int positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
 		GraphicObjectRenderer renderer = new GraphicObjectRenderer(positionAreaSize);
+		int correctionX = 3;
+		int correctionY = -3;
 		for (int i = 0; i < 8; i++) {
 			JDPoint positionCoord = renderer.getPositionCoordModified(i);
 			int positionSize = 26;
 			Action action = new StepAction(i);
 			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
+			JDPoint position = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionSize / 2, correctionY + positionCoord.getY() + positionAreaOffset - positionSize / 2);
+			JDDimension positionDimension = new JDDimension(positionSize, positionSize);
 			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
 				positionElements.add(
 						new PositionElement(
-								new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord.getY() + positionAreaOffset - positionSize / 2),
-								new JDDimension(positionSize, positionSize),
+								position,
+								positionDimension,
 								this,
 								action, Colors.WHITE, null));
 			}
@@ -221,9 +225,8 @@ public class SmartControl extends ContainerGUIElement {
 				if (otherFigure.isHostile(this.figure)) {
 					positionElements.add(
 							new PositionElement(
-									new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord
-											.getY() + positionAreaOffset - positionSize / 2),
-									new JDDimension(positionSize, positionSize),
+									position,
+									positionDimension,
 									this,
 									new AttackAction(otherFigure.getFighterID()), Colors.RED, otherFigure));
 				}
@@ -234,9 +237,8 @@ public class SmartControl extends ContainerGUIElement {
 					}
 					positionElements.add(
 							new PositionElement(
-									new JDPoint(positionCoord.getX() + positionAreaOffset - positionSize / 2, positionCoord
-											.getY() + positionAreaOffset - positionSize / 2),
-									new JDDimension(positionSize, positionSize),
+									position,
+									positionDimension,
 									this,
 									null, color, otherFigure));
 				}
