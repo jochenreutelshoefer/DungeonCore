@@ -223,7 +223,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		int screenWidth = getGame().getScreenWidth();
 		int selectedIndexItem = 16;
 		int screenWidthBy2 = screenWidth / 2;
-		ItemWheel wheelItems = new ItemWheel(new JDPoint(0, screenWidth - 20),
+		ItemWheel wheelItems = new ItemWheel(new JDPoint(0 - 20, screenWidth),
 				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new ItemActivityItemProvider(figureInfo, this)),
@@ -235,7 +235,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		int selectedIndexSkills = 19;
 		Image image = (Image) ImageManager.inventory_box_normal.getImage();
-		ItemWheel wheelSkills = new ItemWheel(new JDPoint(screenWidth, screenWidth),
+		ItemWheel wheelSkills = new ItemWheel(new JDPoint(screenWidth + 20, screenWidth),
 				new JDDimension(screenWidthBy2, screenWidthBy2), figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexSkills, 36,
 						new SkillActivityProvider(figureInfo, this)),

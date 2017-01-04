@@ -56,7 +56,7 @@ public class SmartControl extends ContainerGUIElement {
 		doorThickness = (int) (DOOR_WIDTH / 2.8);
 		eastWest = new JDDimension(doorThickness, DOOR_WIDTH);
 		southNorth = new JDDimension(DOOR_WIDTH, doorThickness);
-		x02 = this.getDimension().getWidth() / 2 - doorThickness;
+		x02 = this.getDimension().getWidth() / 2 - DOOR_WIDTH / 2;
 		y13 = this.getDimension().getHeight() / 2 - DOOR_WIDTH / 2;
 		doorCoordinates = new JDPoint[] {
 				new JDPoint(x02, doorOuterBorderWidth),
