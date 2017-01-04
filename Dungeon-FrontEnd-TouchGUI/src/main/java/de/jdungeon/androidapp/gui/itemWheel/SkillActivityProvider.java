@@ -172,7 +172,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				screen.getControl().getActionAssembler()
 						.wannaSpell(spell, uniqueTargetEntity);
 			} else {
-				if (targetClass.isAssignableFrom(highlightedEntity.getClass())) {
+				if (highlightedEntity != null && targetClass.isAssignableFrom(highlightedEntity.getClass())) {
 					screen.getControl().getActionAssembler()
 							.wannaSpell(spell, highlightedEntity);
 				} else {

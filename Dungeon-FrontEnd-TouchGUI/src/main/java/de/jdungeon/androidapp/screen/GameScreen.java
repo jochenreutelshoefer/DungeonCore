@@ -239,7 +239,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.guiElements.add(itemWheelHeroItems);
 
 
-		JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth + 20, screenWidth);
+		JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth, screenWidth);
 		/*
 		 * init skills wheel
 		 */
@@ -261,7 +261,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		itemWheelRoomItems = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexRoomItems, 36,
-						new TakeItemActivityProvider(figureInfo.getRoomInfo(), this)),
+						new TakeItemActivityProvider(figureInfo, this)),
 				selectedIndexRoomItems,
 				null);
 		itemWheelRoomItems.setVisible(false);
