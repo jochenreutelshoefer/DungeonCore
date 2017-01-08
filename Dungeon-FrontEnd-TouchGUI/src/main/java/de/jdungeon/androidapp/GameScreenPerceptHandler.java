@@ -226,7 +226,7 @@ public class GameScreenPerceptHandler {
 
 		if (set != null) {
 			// clear old queued animations if there are some
-			screen.clearFigureAnimatation(fig);
+			screen.clearFigureAnimation(fig);
 
 			// start "walk in" animation
 			screen.startAnimation(set, fig);

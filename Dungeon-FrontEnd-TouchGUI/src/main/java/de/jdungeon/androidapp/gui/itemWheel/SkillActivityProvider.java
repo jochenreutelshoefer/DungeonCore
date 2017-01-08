@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import spell.SpellInfo;
-import de.jdungeon.androidapp.screen.GameScreen;
-import de.jdungeon.androidapp.gui.SkillImageManager;
-import de.jdungeon.game.Image;
 import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
@@ -16,6 +12,12 @@ import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
+import spell.SpellInfo;
+
+import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.androidapp.gui.SkillImageManager;
+import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Image;
 
 public class SkillActivityProvider implements ItemWheelActivityProvider {
 
@@ -52,9 +54,10 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		if (currentFightstate != null && currentFightstate == fightState) {
 			return activityCache;
 		}
-		if(currentFightstate == null) {
-			 fightState = false;
-		} else {
+		if (currentFightstate == null) {
+			fightState = false;
+		}
+		else {
 			fightState = currentFightstate;
 		}
 		updateActivityList(fightState);
@@ -66,7 +69,8 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		if (currentFightstate != null && currentFightstate) {
 			activityCache.add(attack);
 			activityCache.add(flee);
-		} else {
+		}
+		else {
 			activityCache.add(scout);
 		}
 
@@ -103,7 +107,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
 			List<FigureInfo> hostileFigures = new ArrayList<>();
 			for (FigureInfo figureInfo : figureInfos) {
-				if(figureInfo.isHostile(info)) {
+				if (figureInfo.isHostile(info)) {
 					hostileFigures.add(figureInfo);
 				}
 			}
@@ -115,34 +119,43 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				screen.setInfoEntity(target);
 			}
 			if (highlightedEntity instanceof FigureInfo) {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler()
 						.wannaAttack((FigureInfo) highlightedEntity);
 			}
-		} else if (o.equals(SCOUT)) {
+		}
+		else if (o.equals(SCOUT)) {
 			PositionInRoomInfo pos = info.getPos();
 			int possibleFleeDirection = pos.getPossibleFleeDirection();
 			if (possibleFleeDirection > 0) {
 				DoorInfo door = info.getRoomInfo().getDoor(
 						possibleFleeDirection);
 				if (door != null) {
+					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 					screen.getControl().getActionAssembler()
 							.wannaScout(possibleFleeDirection);
 				}
-			} else if (highlightedEntity instanceof RoomInfo) {
+			}
+			else if (highlightedEntity instanceof RoomInfo) {
 				int directionToScout = Dir.getDirFromToIfNeighbour(
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler()
 						.wannaScout(directionToScout);
-			} else if (highlightedEntity instanceof DoorInfo) {
+			}
+			else if (highlightedEntity instanceof DoorInfo) {
 				int directionToScout = ((DoorInfo) highlightedEntity)
 						.getDir(info.getRoomNumber());
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler()
 						.wannaScout(directionToScout);
 			}
 
-		} else if (o.equals(WALK)) {
+		}
+		else if (o.equals(WALK)) {
 			if (highlightedEntity instanceof PositionInRoomInfo) {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl()
 						.getActionAssembler()
 						.wannaStepToPosition(
@@ -152,16 +165,20 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				int directionToWalk = Dir.getDirFromToIfNeighbour(
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler()
 						.wannaWalk(directionToWalk);
 			}
-		} else if (o.equals(FLEE)) {
+		}
+		else if (o.equals(FLEE)) {
 			PositionInRoomInfo pos = info.getPos();
 			int possibleFleeDirection = pos.getPossibleFleeDirection();
 			if (possibleFleeDirection > 0) {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler().wannaFlee();
 			}
-		} else if (o instanceof SpellInfo) {
+		}
+		else if (o instanceof SpellInfo) {
 			SpellInfo spell = ((SpellInfo) o);
 			Class<? extends InfoEntity> targetClass = spell.getTargetClass();
 			InfoEntity uniqueTargetEntity = screen.getControl()
@@ -169,17 +186,20 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			if (uniqueTargetEntity != null) {
 				screen.setHighlightedEntity(uniqueTargetEntity);
 				screen.setInfoEntity(uniqueTargetEntity);
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler()
 						.wannaSpell(spell, uniqueTargetEntity);
-			} else {
+			}
+			else {
 				if (highlightedEntity != null && targetClass.isAssignableFrom(highlightedEntity.getClass())) {
+					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 					screen.getControl().getActionAssembler()
 							.wannaSpell(spell, highlightedEntity);
-				} else {
+				}
+				else {
 					// TODO: screen.highlightOptions(targetClass);
 				}
 			}
-
 		}
 	}
 

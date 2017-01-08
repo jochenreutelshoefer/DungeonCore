@@ -15,6 +15,7 @@ public class GUIImageManager {
 	public static final String SCROLL = "guiItems/Scroll.gif";
 	public static final String BOOK = "guiItems/Book.gif";
 	public static final String PARCHMENT = "guiItems/Parchment.gif";
+	public static final String MANA_BATTERY = "guiItems/ManaBattery.gif";
 	public static final String POTION = "guiItems/Potion.gif";
 	public static final String KEY = "guiItems/key.gif";
 	public static final String BUNCH = "guiItems/bunch2.gif";
@@ -53,5 +54,9 @@ public class GUIImageManager {
 
 	public Image getImage(String file) {
 		return (Image) new JDImageProxy(loader, file).getImage();
+	}
+
+	public JDImageProxy getJDImageProxy(String file) {
+		return new JDImageProxy(loader, file);
 	}
 }

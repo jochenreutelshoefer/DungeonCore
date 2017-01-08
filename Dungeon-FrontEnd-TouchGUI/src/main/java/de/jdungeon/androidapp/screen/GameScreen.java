@@ -968,7 +968,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.showNewTextPercept(s);
 	}
 
-	public void clearFigureAnimatation(FigureInfo figure) {
+	public void clearFigureAnimation(FigureInfo figure) {
 		AnimationManager.getInstance().clearFigure(figure);
 	}
 
