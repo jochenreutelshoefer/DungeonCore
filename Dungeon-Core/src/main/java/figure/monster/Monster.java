@@ -1,6 +1,8 @@
 package figure.monster;
 
 import ai.AI;
+import figure.action.ScoutAction;
+import figure.action.ScoutResult;
 import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
@@ -429,9 +431,9 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected boolean scout(int dir) {
-		// TODO
-		return false;
+	protected ScoutResult scout(ScoutAction action) {
+		// by default monster cannot scout
+		return new ScoutResult(action, this, 0, "");
 	}
 
 	@Override
@@ -1070,13 +1072,13 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected boolean flee(int dir) {
+	protected boolean flee(RouteInstruction.Direction dir) {
 		Room from = getRoom();
 		if (Math.random() < calcFleeChance()) {
 			boolean done = walk(dir);
 			if (done) {
 				// [TODO] SUCCESSFULL?
-				FleePercept p = new FleePercept(this, from, dir, false);
+				FleePercept p = new FleePercept(this, from, dir.getValue(), false);
 				from.distributePercept(p);
 			}
 			return done;
@@ -1084,6 +1086,10 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 		return false;
 
+	}
+
+	public RouteInstruction.Direction getFleeDirection() {
+		return RouteInstruction.Direction.fromInteger(getFleeDir());
 	}
 
 	public int getFleeDir(/* Fight w */) {

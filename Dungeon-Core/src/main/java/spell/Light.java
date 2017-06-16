@@ -16,7 +16,7 @@ import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class Light extends Spell implements TargetSpell{
+public class Light extends AbstractTargetSpell implements TargetSpell{
 
 	public static int[][] values = { { 8, 5, 5, 4 ,1}, { 12, 12, 9, 8 ,2} };
 
@@ -59,7 +59,7 @@ public class Light extends Spell implements TargetSpell{
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_LIGHT;
+		return AbstractSpell.SPELL_LIGHT;
 	}
 
 	public boolean fightModus() {
@@ -108,7 +108,7 @@ public class Light extends Spell implements TargetSpell{
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

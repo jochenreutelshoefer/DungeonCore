@@ -10,16 +10,11 @@ import figure.Figure;
 public class SlapResult {
 
 	
-	private int exp;
-
-	
-	private boolean lethal;
-
-	
-	private Figure victim;
-
-	private Slap s;
-	private int value;
+	private final int exp;
+	private final boolean lethal;
+	private final Figure victim;
+	private final Slap s;
+	private final int value;
 	
 	public SlapResult(int exp, boolean lethal,Figure victim, int value, Slap s) {
 		this.exp = exp;

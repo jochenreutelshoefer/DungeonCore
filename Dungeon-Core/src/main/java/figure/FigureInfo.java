@@ -6,7 +6,6 @@
  */
 package figure;
 
-import dungeon.Dungeon;
 import dungeon.ItemInfoOwner;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
@@ -20,7 +19,6 @@ import game.DungeonGame;
 import game.InfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
-import item.Item;
 import item.ItemInfo;
 
 import java.util.ArrayList;
@@ -30,12 +28,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import log.Log;
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.SpellInfo;
 import ai.DefaultMonsterIntelligence;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
-import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.RoomInfo;
@@ -429,7 +426,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 			List<SpellInfo> res = new LinkedList<SpellInfo>();
 			List l = f.getSpellbook().getSpells();
 			for (Iterator iter = l.iterator(); iter.hasNext();) {
-				Spell element = (Spell) iter.next();
+				AbstractSpell element = (AbstractSpell) iter.next();
 				res.add(new SpellInfo(element, map));
 			}
 			return res;

@@ -102,30 +102,6 @@ public class Wolf extends NatureMonster {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 
-//	public Action turnElse(int c) {
-//		//System.out.println("wolf macht was");
-//		recover();
-//		int a = (int) (Math.random() * 100);
-//		if (c == 1) {
-//			a = (int) (Math.random() * 40) + 60;
-//		}
-//		if (a <= 60) {
-//			return null;
-//		} else if (a <= 70) {
-//			return new ActionMove(RouteInstruction.SOUTH);
-//			//goSouth(); //////System.out.println(name+" geht suedlich");
-//		} else if (a <= 80) {
-//			return new ActionMove(RouteInstruction.EAST);
-//			//goEast();//////System.out.println(name+" get oestlich");
-//		} else if (a <= 90) {
-//			return new ActionMove(RouteInstruction.NORTH);
-//			//goNorth();//////System.out.println(name+" get noerdlich");
-//		} else {
-//			return new ActionMove(RouteInstruction.WEST);
-//			//goWest();//////System.out.println(name+" get westlich");
-//		}
-//	}
-
 	public double getAntiFleeFactor() {
 		return 1.0;
 	}

@@ -20,7 +20,7 @@ import game.JDEnv;
 
 
 
-public class Search extends Spell {
+public class Search extends AbstractTargetSpell {
 	
 	public static int [][] values = { {5,1,2,10,1},
 								{15,13,12,25,2}
@@ -39,7 +39,7 @@ public class Search extends Spell {
 	}
 	@Override
 	public int getType() {
-		return Spell.SPELL_SEARCH;
+		return AbstractSpell.SPELL_SEARCH;
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public class Search extends Spell {
 		isPossibleInFight = true;
 	}
 	/**
-	 * @see Spell#sorcer(fighter, Object, int)
+	 * @see AbstractSpell#sorcer(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
@@ -117,7 +117,7 @@ public class Search extends Spell {
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

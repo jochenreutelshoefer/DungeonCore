@@ -92,8 +92,7 @@ public class Orc extends CreatureMonster {
 			op.tellPercept(new TextPercept(getName() + " beklaut Dich und verschwindet durch die Tür.. "));
 
 		}
-		int dir = this.getFleeDir();
-		flee(dir);
+		flee(getFleeDirection());
 		this.specialAttackCounter = 50;
 		return true;
 

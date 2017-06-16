@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ai.AI;
 import ai.GuardPositionBehaviour;
 import ai.PreGuardBehaviour;
+import ai.SteppingBehaviour;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.Dungeon;
@@ -23,6 +25,7 @@ import dungeon.quest.RoomQuest1x1;
 import dungeon.quest.RoomQuest2x2;
 import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
+import figure.FigureInfo;
 import figure.monster.Monster;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
@@ -39,6 +42,7 @@ import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;
 import shrine.Statue;
+import spell.conjuration.FirConjuration;
 import spell.conjuration.LionessConjuration;
 
 /**
@@ -151,6 +155,7 @@ public class StartLevel extends AbstractDungeonFactory {
 		// for testing only
 		entryRoom.addItem(new VisibilityCheatBall());
 		entryRoom.addItem(new ScrollMagic(new LionessConjuration(1)));
+		entryRoom.addItem(new ScrollMagic(new FirConjuration(1)));
 		// TODO: remove
 		entryRoom.addItem(AncientMapFragmentUtils.createMap(dungeon, getHeroEntryPoint(), 7));
 
@@ -174,9 +179,11 @@ public class StartLevel extends AbstractDungeonFactory {
 	private boolean setGuards(Room exitRoom, Set<RouteInstruction.Direction> doorDirections) {
 		exitRoom.setFloorIndex(FLOOR_INDEX_EXIT);
 		List<Monster> gateKeepers = new ArrayList<Monster>();
+
 		gateKeepers.add(new Orc(900));
 		gateKeepers.add(new Wolf(900));
 		gateKeepers.add(new Skeleton(900));
+
 
 		Iterator<RouteInstruction.Direction> directionsIterator = doorDirections.iterator();
 		for (int i = 0; i < 3; i++) {
@@ -214,6 +221,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			Monster preGuardMonster = filler.getSmallMonster(800);
 			// TODO: use setControl!
 			preGuardMonster.setAI(new PreGuardBehaviour(preGuardRoom));
+
 			preGuardRoom.figureEnters(preGuardMonster, RouteInstruction.direction(random(4) + 1).getValue());
 			exitRoom.setDoor(new Door(exitRoom, doorDirection, exitKey), doorDirection, true);
 		}

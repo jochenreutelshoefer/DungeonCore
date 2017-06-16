@@ -6,14 +6,18 @@
  */
 package figure.action;
 
-/**
- * Klasse
- *
- */
+import dungeon.PositionInRoomInfo;
+import figure.FigureInfo;
+
 public class ScoutAction extends Action{
-	private int dir;
-	public ScoutAction(/*int fighterID, */int dir) {
-		super(/*fighterID*/);
+	private final FigureInfo figure;
+	private final int dir;
+	private final PositionInRoomInfo position;
+
+	public ScoutAction(FigureInfo figure, int dir) {
+		super();
+		position = figure.getPos();
+		this.figure = figure;
 		this.dir = dir;
 	}
 	

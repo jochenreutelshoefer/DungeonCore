@@ -5,7 +5,7 @@ import figure.FigureInfo;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class Cobweb extends Spell implements TargetSpell{
+public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
 	public static int[][] values = { { 1, 1, 10, 30,1 }, { 15, 13, 12, 25,1 } };
 	
@@ -63,7 +63,7 @@ public class Cobweb extends Spell implements TargetSpell{
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_COBWEB;
+		return AbstractSpell.SPELL_COBWEB;
 	}
 	
 	@Override

@@ -22,6 +22,7 @@ import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.SpotInfo;
+import event.ActionEvent;
 import event.Event;
 import event.EventListener;
 import event.EventManager;

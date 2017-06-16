@@ -6,10 +6,18 @@
  */
 package figure;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Position;
 import dungeon.Room;
+import dungeon.util.RouteInstruction;
+import figure.action.ScoutResult;
 import game.ControlUnit;
 
 public class DungeonVisibilityMap {
@@ -23,6 +31,8 @@ public class DungeonVisibilityMap {
 	private Dungeon dungeon;
 
 	private static DungeonVisibilityMap allVis;
+
+	public Set<RoomObservationStatus> cache = new HashSet<>();
 
 	public static DungeonVisibilityMap getAllVisMap(Dungeon d) {
 		if (allVis == null) {
@@ -101,7 +111,7 @@ public class DungeonVisibilityMap {
 			}
 		}
 		rooms[x][y].setVisibilityStatus(status);
-
+		cache.add(rooms[x][y]);
 	}
 
 	public void setDiscoveryStatus(int x, int y, int status) {
@@ -185,4 +195,42 @@ public class DungeonVisibilityMap {
 		return rooms;
 	}
 
+	public void resetTemporalVisibilities() {
+		for (RoomObservationStatus roomObservationStatus : cache) {
+			roomObservationStatus.resetVisibilityStatus();
+		}
+		cache.clear();
+
+	}
+
+	public void removeScoutedVisibility(Position position) {
+		RouteInstruction.Direction possibleScoutDirection = position.getPossibleFleeDirection();
+		if(possibleScoutDirection != null) {
+			Room room = position.getRoom();
+			if (room != null) {
+				Room neighbourRoom = room.getNeighbourRoom(possibleScoutDirection);
+				if (neighbourRoom != null) {
+					JDPoint scoutedRoomNumber = neighbourRoom.getLocation();
+					if (scoutedRoomNumber != null) {
+						RoomObservationStatus visStatus = getStatusObject(scoutedRoomNumber);
+						List<VisibilityModifier> visibilityModifier = visStatus.getVisibilityModifier();
+						List<VisibilityModifier> toRemove = new ArrayList<>();
+						for (VisibilityModifier modifier : visibilityModifier) {
+							if (modifier instanceof ScoutResult) {
+								ScoutResult scoutResult = ((ScoutResult) modifier);
+								if (scoutResult.getScoutingFigure().equals(this.getFigure())
+										&& scoutResult.getPosition().equals(position)) {
+									// we actually found a scout result which now needs to be removed
+									toRemove.add(scoutResult);
+								}
+							}
+						}
+						for (VisibilityModifier scoutResultToRemove : toRemove) {
+							visStatus.removeVisibilityModifier(scoutResultToRemove);
+						}
+					}
+				}
+			}
+		}
+	}
 }

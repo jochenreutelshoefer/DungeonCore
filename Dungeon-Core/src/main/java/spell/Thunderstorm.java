@@ -43,7 +43,7 @@ public class Thunderstorm extends NoTargetSpell {
 	}
 	@Override
 	public int getType() {
-		return Spell.SPELL_THUNDERSTORM;
+		return AbstractSpell.SPELL_THUNDERSTORM;
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class Thunderstorm extends NoTargetSpell {
 	}
 
 	/**
-	 * @see Spell#getDifficulty(int)
+	 * @see AbstractSpell#getDifficulty(int)
 	 */
 //	public int getDifficulty(int level) {
 //		return diff[level - 1];
@@ -98,7 +98,7 @@ public class Thunderstorm extends NoTargetSpell {
 //	}
 
 	/**
-	 * @see Spell#fire(fighter, Object, int)
+	 * @see AbstractSpell#fire(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage) {

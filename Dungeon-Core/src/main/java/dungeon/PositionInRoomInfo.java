@@ -6,6 +6,7 @@
  */
 package dungeon;
 
+import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.MemoryObject;
@@ -32,7 +33,7 @@ public class PositionInRoomInfo extends InfoEntity{
 		return pos.equals(((PositionInRoomInfo) obj).pos);
 	}
 	
-	public int getPossibleFleeDirection() {
+	public RouteInstruction.Direction getPossibleFleeDirection() {
 		return pos.getPossibleFleeDirection();
 	}
 	

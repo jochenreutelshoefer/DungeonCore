@@ -14,7 +14,7 @@ import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class StealOrc extends Spell implements TargetSpell{
+public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 
 	public static int[][] values = { { 1, 1, 10, 25, 1 }, { 15, 13, 12, 25, 2 } };
 
@@ -51,12 +51,12 @@ public class StealOrc extends Spell implements TargetSpell{
 	
 	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
-		return Spell.distanceMax(mage,target,2);
+		return AbstractSpell.distanceMax(mage,target,2);
 	}
 
 	@Override
 	public int getType() {
-		return Spell.SPELL_STEALORC;
+		return AbstractSpell.SPELL_STEALORC;
 	}
 
 	@Override

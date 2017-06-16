@@ -1,6 +1,7 @@
 package spell.conjuration;
 
-import spell.Spell;
+import spell.AbstractSpell;
+import spell.AbstractTargetSpell;
 import spell.TargetSpell;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
@@ -9,7 +10,7 @@ import figure.Figure;
 import figure.other.Fir;
 import game.InfoEntity;
 
-public class FirConjuration extends Spell implements TargetSpell{
+public class FirConjuration extends AbstractTargetSpell {
 
 	private final int level;
 	

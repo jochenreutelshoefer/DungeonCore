@@ -1,9 +1,14 @@
 package spell;
 
 import figure.Figure;
+import game.InfoEntity;
 
-public interface TargetSpell  {
+public interface TargetSpell extends Spell {
 	
-	public boolean distanceOkay(Figure mage, Object target);
+	boolean distanceOkay(Figure mage, Object target);
+
+	Class<? extends InfoEntity> getTargetClass();
+
+	TargetScope getTargetScope();
 
 }

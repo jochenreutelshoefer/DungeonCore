@@ -14,19 +14,30 @@ import gui.Paragraph;
 
 public class SpellInfo extends InfoEntity{
 	
-	private final Spell s;
-	public SpellInfo(Spell s, DungeonVisibilityMap map) {
+	private final AbstractSpell spell;
+	public SpellInfo(AbstractSpell s, DungeonVisibilityMap map) {
 		super(map);
-		this.s = s;
-		
+		this.spell = s;
 	}
 	
 	public Class<? extends InfoEntity> getTargetClass() {
-		return s.getTargetClass();
+		if(spell instanceof TargetSpell) {
+			return ((TargetSpell) spell).getTargetClass();
+		} else {
+			return null;
+		}
+	}
+
+	public TargetScope getTargetScope() {
+		if(spell instanceof TargetSpell) {
+			return ((TargetSpell) spell).getTargetScope();
+		} else {
+			return null;
+		}
 	}
 
 	public int getType() {
-		return s.getType();
+		return spell.getType();
 	}
 
 	@Override
@@ -36,58 +47,58 @@ public class SpellInfo extends InfoEntity{
 
 		SpellInfo spellInfo = (SpellInfo) o;
 
-		return !(s != null ? !s.equals(spellInfo.s) : spellInfo.s != null);
+		return !(spell != null ? !spell.equals(spellInfo.spell) : spellInfo.spell != null);
 
 	}
 
 	@Override
 	public int hashCode() {
-		return s != null ? s.hashCode() : 0;
+		return spell != null ? spell.hashCode() : 0;
 	}
 
 	public boolean needsTarget() {
-		return s instanceof TargetSpell;
+		return spell instanceof TargetSpell;
 	}
 	
 	public int getLernCost() {
-		return s.getLernCost();
+		return spell.getLernCost();
 	}
 	@Override
 	public String toString()  {
-		return s.toString();
+		return spell.toString();
 	}
 	public int getLevel() {
-		return s.getLevel();
+		return spell.getLevel();
 	}
 	
 	public boolean isFight() {
-		return s.isPossibleFight();
+		return spell.isPossibleFight();
 	}
 	
 	public boolean isNormal() {
-		return s.isPossibleNormal();
+		return spell.isPossibleNormal();
 		
 	}
 	
 	@Override
 	public Paragraph[] getParagraphs() {
-		return s.getParagraphs();
+		return spell.getParagraphs();
 	}
 	
 	public int getCost() {
-		return s.getCost();
+		return spell.getCost();
 	}
 	
 	public int getDifficulty() {
-		return s.getDifficulty();
+		return spell.getDifficulty();
 	}
 	
 	public String getText() {
-		return s.getText();
+		return spell.getText();
 	}
 	
 	public String getName(){
-		return s.getName();
+		return spell.getName();
 	}
 
 	@Override

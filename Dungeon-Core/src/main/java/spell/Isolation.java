@@ -22,7 +22,7 @@ import java.util.List;
 
 import dungeon.Door;
 import dungeon.Room;
-public class Isolation extends TimedSpell {
+public class Isolation extends AbstractSpell {
 	
 //	public static int[] diffArray = { 5, 13 };
 //	public static int[] diffMinArray = { 9, 15 };
@@ -65,7 +65,7 @@ public class Isolation extends TimedSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_ISOLATION;
+		return AbstractSpell.SPELL_ISOLATION;
 	}
 	
 	@Override
@@ -95,17 +95,12 @@ public class Isolation extends TimedSpell {
 		Room r = sorcerer.getRoom();
 		Door[] d = r.getDoors();
 		IsolationInstance instance = new IsolationInstance(this.getStrength(),d);
-		Spell.addTimedSpell(instance);
+		AbstractSpell.addTimedSpell(instance);
 		String str = JDEnv.getResourceBundle().getString("spell_isolation_cast");
 		sorcerer.tellPercept(new TextPercept(str));
 		
 	}
 	
-	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
-		return null;
-	}
-
 	public void stopEffect(){
 		for(int i =0 ; i < doors.size(); i++) {
 			doors.get(i).removeBlocking(this);

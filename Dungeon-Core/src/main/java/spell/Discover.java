@@ -63,7 +63,7 @@ public class Discover extends NoTargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_DISCOVER;
+		return AbstractSpell.SPELL_DISCOVER;
 	}
 	
 	public boolean fightModus(){
@@ -77,28 +77,28 @@ public class Discover extends NoTargetSpell {
 	
 	
 	/**
-	 * @see Spell#getDifficulty(int)
+	 * @see AbstractSpell#getDifficulty(int)
 	 */
 //	public int getDifficulty(int level) {
 //		return diff[level-1];
 //	}
 
 	/**
-	 * @see Spell#getDifficultyMin(int)
+	 * @see AbstractSpell#getDifficultyMin(int)
 	 */
 //	public int getDifficultyMin(int level) {
 //		return diff[level-1];
 //	}
 
 	/**
-	 * @see Spell#getCost(int)
+	 * @see AbstractSpell#getCost(int)
 	 */
 //	public int getCost(int level) {
 //		return level * 5;
 //	}
 
 	/**
-	 * @see Spell#sorcer(fighter, Object, int)
+	 * @see AbstractSpell#sorcer(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage) {
@@ -131,7 +131,7 @@ public class Discover extends NoTargetSpell {
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

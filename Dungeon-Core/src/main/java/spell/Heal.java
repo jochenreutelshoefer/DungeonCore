@@ -58,7 +58,7 @@ public class Heal extends NoTargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_HEAL;
+		return AbstractSpell.SPELL_HEAL;
 	}
 	
 	@Override
@@ -94,7 +94,7 @@ public class Heal extends NoTargetSpell {
 	
 
 	/**
-	 * @see Spell#fire(fighter, Object, int)
+	 * @see AbstractSpell#fire(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage) {

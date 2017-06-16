@@ -3,8 +3,6 @@ package figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
-import spell.Spell;
-import spell.SpellInfo;
 import figure.Figure;
 import figure.FigureInfo;
 

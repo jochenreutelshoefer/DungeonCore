@@ -6,9 +6,9 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.other.Lioness;
 import game.InfoEntity;
-import spell.Spell;
+import spell.AbstractSpell;
 
-public class LionessConjuration extends Spell {
+public class LionessConjuration extends AbstractSpell {
 
 	private final int level;
 
@@ -57,11 +57,6 @@ public class LionessConjuration extends Spell {
 		Room room = mage.getRoom();
 		int targetPosition = Position.getFreePositionNear(mage.getRoom(), mage.getPositionInRoom());
 		room.figureEntersAtPosition(lioness, targetPosition);
-	}
-
-	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
-		return null;
 	}
 
 	@Override

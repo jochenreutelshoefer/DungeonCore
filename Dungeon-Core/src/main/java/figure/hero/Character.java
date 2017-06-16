@@ -27,7 +27,7 @@ import spell.Light;
 import spell.Raid;
 import spell.Repair;
 import spell.Search;
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.Spy;
 import spell.Steal;
 import spell.Thunderstorm;
@@ -116,7 +116,7 @@ public class Character implements Serializable {
 
 	private final Figure owner;
 
-	private final List<Spell> spellBuffer = new LinkedList<Spell>();
+	private final List<AbstractSpell> spellBuffer = new LinkedList<AbstractSpell>();
 
 	private final int weaponLearning[][] = { { 15, 20, 14, 12, 19 }, { 17, 11, 15, 16, 13 },
 			{ 14, 15, 15, 16, 11 }, { 16, 14, 12, 17, 14 } };
@@ -282,7 +282,7 @@ public class Character implements Serializable {
 	}
 
 	
-	public List<Spell> getSpellBuffer() {
+	public List<AbstractSpell> getSpellBuffer() {
 		return this.spellBuffer;
 	}
 
@@ -466,7 +466,7 @@ public class Character implements Serializable {
 		return res;
 	}
 
-	public void addSpell(Spell s) {
+	public void addSpell(AbstractSpell s) {
 		owner.getSpellbook().addSpell(s);
 	}
 
@@ -483,7 +483,7 @@ public class Character implements Serializable {
 		owner.tellPercept(new InfoPercept(InfoPercept.LEVEL_UP));
 
 		spellPoints++;
-		Spell s = getSpellForLevelUp(level);
+		AbstractSpell s = getSpellForLevelUp(level);
 		threat.incBasic();
 	}
 
@@ -614,7 +614,7 @@ public class Character implements Serializable {
 		skillPoints++;
 	}
 
-	private Spell getSpellForLevelUp(int level) {
+	private AbstractSpell getSpellForLevelUp(int level) {
 		if (level > 4) {
 			return null;
 		}

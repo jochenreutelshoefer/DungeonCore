@@ -10,7 +10,7 @@ public abstract void stopEffect();
 	
 	public void expire() {
 		stopEffect();
-		Spell.removeTimedSpell(this);
+		AbstractSpell.removeTimedSpell(this);
 	}
 	
 	public void turn(int k) {

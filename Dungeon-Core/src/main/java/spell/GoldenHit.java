@@ -16,7 +16,7 @@ import figure.FigureInfo;
 import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
-public class GoldenHit extends Spell implements TargetSpell{
+public class GoldenHit extends AbstractTargetSpell implements TargetSpell{
 	
 	public int [] diff = { 1 , 4 };
 	public int [] diffMin = { 5 , 8};
@@ -67,7 +67,7 @@ public class GoldenHit extends Spell implements TargetSpell{
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_GOLDENHIT;
+		return AbstractSpell.SPELL_GOLDENHIT;
 	}
 	
 	@Override

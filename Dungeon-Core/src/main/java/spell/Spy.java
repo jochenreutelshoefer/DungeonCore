@@ -54,7 +54,7 @@ public class Spy extends NoTargetSpell {
 
 	@Override
 	public int getType() {
-		return Spell.SPELL_SPY;
+		return AbstractSpell.SPELL_SPY;
 	}
 
 	public Spy(int level) {
@@ -112,7 +112,7 @@ public class Spy extends NoTargetSpell {
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

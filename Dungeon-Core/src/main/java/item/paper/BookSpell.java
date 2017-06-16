@@ -4,7 +4,7 @@ import item.interfaces.Usable;
 
 import java.util.*;
 
-import spell.Spell;
+import spell.AbstractSpell;
 
 import figure.Figure;
 import figure.Spellbook;
@@ -23,16 +23,16 @@ public class BookSpell extends Book implements Usable{
 	 * @see Item#getText()
 	 * 
 	 */
-	Spell theSpell;
+	AbstractSpell theSpell;
 
 	int dust = 2;
-	public BookSpell(Spell s, int k) {
+	public BookSpell(AbstractSpell s, int k) {
 		super(s.getWorth());
 		theSpell = s;
 		dust = k;
 	}
 	
-	public BookSpell(Spell s) {
+	public BookSpell(AbstractSpell s) {
 		super(s.getWorth());
 		theSpell = s;
 		
@@ -81,13 +81,13 @@ public class BookSpell extends Book implements Usable{
 	}
 	
 	public boolean use(Figure f,Object target,boolean meta) {
-		List<Spell> theBook = f.getSpellbook().getSpells();
+		List<AbstractSpell> theBook = f.getSpellbook().getSpells();
 		String name = theSpell.getName();
 		for(int i = 0; i < theBook.size(); i++) {
-			String a = ((Spell)theBook.get(i)).getName();
+			String a = ((AbstractSpell)theBook.get(i)).getName();
 			if(name.equals(a)) {
 				int level = theSpell.getLevel();
-				int l = ((Spell)theBook.get(i)).getLevel();
+				int l = ((AbstractSpell)theBook.get(i)).getLevel();
 				if(level > l) {
 					theBook.remove(i);
 					

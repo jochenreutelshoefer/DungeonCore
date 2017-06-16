@@ -18,7 +18,7 @@ import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class Bonebreaker extends Spell implements TargetSpell {
+public class Bonebreaker extends AbstractTargetSpell {
 //	public static int[] diffArray = { 5, 13 };
 //
 //	public static int[] diffMinArray = { 9, 15 };
@@ -66,7 +66,7 @@ public class Bonebreaker extends Spell implements TargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_BONEBREAKER;
+		return AbstractSpell.SPELL_BONEBREAKER;
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class Bonebreaker extends Spell implements TargetSpell {
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

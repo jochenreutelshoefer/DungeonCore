@@ -16,8 +16,8 @@ import game.JDEnv;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class Repair extends Spell implements TargetSpell {
-	
+public class Repair extends AbstractTargetSpell implements TargetSpell {
+
 //	public int [] diff = { 2 , 4 };
 //	public int [] diffMin = { 5 , 10};
 	
@@ -69,7 +69,7 @@ public class Repair extends Spell implements TargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_REPAIR;
+		return AbstractSpell.SPELL_REPAIR;
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class Repair extends Spell implements TargetSpell {
 //			return 1;
 //		}
 	/**
-	 * @see Spell#getDifficulty(int)
+	 * @see AbstractSpell#getDifficulty(int)
 	 */
 //	public int getDifficulty(int level) {
 //		return diff[level-1];
@@ -105,7 +105,7 @@ public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_rapair_name");
 	}
 	/**
-	 * @see Spell#getCost(int)
+	 * @see AbstractSpell#getCost(int)
 	 */
 	public int getCost(int level) {
 		return 5*level;
@@ -116,7 +116,7 @@ public String getName() {
 	
 
 	/**
-	 * @see Spell#sorcer(fighter, Object, int)
+	 * @see AbstractSpell#sorcer(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
@@ -135,7 +135,7 @@ public String getName() {
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	
 	public void repairItem(Item i) {

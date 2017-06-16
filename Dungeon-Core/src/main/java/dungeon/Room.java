@@ -58,8 +58,8 @@ public class Room extends DungeonWorldObject implements
 
 	boolean isWall = false;
 
-	private final Map<Figure, Integer> observer = new HashMap<Figure, Integer>();
-	;
+	// TODO: is this the right place to store every figure that can observe this room?
+	private final Map<Figure, Integer> observer = new HashMap<>();
 
 	private final Position[] positions = new Position[8];
 
@@ -121,7 +121,6 @@ public class Room extends DungeonWorldObject implements
 	public void setObserverStatus(Figure f, int vis) {
 		if (vis < RoomObservationStatus.VISIBILITY_FIGURES) {
 			observer.remove(f);
-
 		}
 		else {
 			observer.put(f, vis);
@@ -144,15 +143,6 @@ public class Room extends DungeonWorldObject implements
 			diff = diff * 1 / 2;
 		}
 		return diff;
-	}
-
-	public Position getFreePosition() {
-		for (int i = 0; i < positions.length; i++) {
-			if (positions[i].getFigure() == null) {
-				return positions[i];
-			}
-		}
-		return null;
 	}
 
 	@Override
@@ -517,32 +507,6 @@ public class Room extends DungeonWorldObject implements
 		return false;
 	}
 
-	public Figure getFighterNumber(int i) {
-		return roomFigures.get(i);
-	}
-
-	public int getItemNumber(Item it) {
-		for (int i = 0; i < items.size(); i++) {
-			if (it == items.get(i)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public boolean isAccessibleNeighbour(Room r) {
-		List<Room> neighbours = this.getScoutableNeighbours();
-		for (int i = 0; i < neighbours.size(); i++) {
-			Room n = (neighbours.get(i));
-			if (n == r) {
-				if (n.hasOpenConnectionTo(r)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public boolean itemArrayContains(Item o) {
 		for (int i = 0; i < itemArray.length; i++) {
 			if ((itemArray[i] != null) && itemArray[i].equals(o)) {
@@ -674,26 +638,24 @@ public class Room extends DungeonWorldObject implements
 		return d;
 	}
 
-	public int getDir(Door d) {
-		int dir = 0;
+	public RouteInstruction.Direction getDirection(Door d) {
+		RouteInstruction.Direction dir = null;
 		if (d != null) {
-
 			if (d == doors[0]) {
-
-				dir = RouteInstruction.NORTH;
+				dir = RouteInstruction.Direction.North;
 			}
 			if (d == doors[1]) {
 
-				dir = RouteInstruction.EAST;
+				dir = RouteInstruction.Direction.East;
 			}
 
 			if (d == doors[2]) {
 
-				dir = RouteInstruction.SOUTH;
+				dir = RouteInstruction.Direction.South;
 			}
 			if (d == doors[3]) {
 
-				dir = RouteInstruction.WEST;
+				dir = RouteInstruction.Direction.West;
 			}
 		}
 		return dir;
@@ -715,23 +677,6 @@ public class Room extends DungeonWorldObject implements
 				}
 				return true;
 			}
-		}
-		return false;
-	}
-
-	public boolean leaveable(RouteInstruction.Direction dir) {
-		if (doors[dir.getValue() - 1] != null) {
-			if (doors[dir.getValue() - 1].isPassable(null)) {
-				if (d.getRoomAt(this,
-						RouteInstruction.direction(dir.getValue() - 1))
-						.getShrine() != null
-						&& d.getRoomAt(this,
-						RouteInstruction.direction(dir.getValue() - 1))
-						.getShrine() instanceof Statue) {
-					return false;
-				}
-			}
-			return true;
 		}
 		return false;
 	}
@@ -783,27 +728,8 @@ public class Room extends DungeonWorldObject implements
 		return l;
 	}
 
-	public List<Room> getEightNeighbours() {
-		List<Room> l = new LinkedList<Room>();
-		int x = number.getX();
-		int y = number.getY();
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if (!((i == 0) && (y == 0))) {
-
-					Room toAdd = d.getRoomNr(x + i, y + j);
-					if (toAdd != null) {
-						l.add(toAdd);
-					}
-				}
-			}
-		}
-		return l;
-	}
-
 	public boolean hasConnectionTo(Room r) {
-		Room[] neighbours = new Room[4];
-		for (int i = 0; i < neighbours.length; i++) {
+		for (int i = 0; i < 4; i++) {
 			if (doors[i] != null) {
 				if (doors[i].getOtherRoom(this) == r) {
 					return true;
@@ -819,8 +745,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public boolean hasOpenConnectionTo(Room r) {
-		Room[] neighbours = new Room[4];
-		for (int i = 0; i < neighbours.length; i++) {
+		for (int i = 0; i < 4; i++) {
 			if (doors[i] != null) {
 				if (doors[i].getOtherRoom(this) == r
 						&& doors[i].isPassable(null)) {

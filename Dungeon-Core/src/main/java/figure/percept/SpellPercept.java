@@ -9,7 +9,7 @@ package figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.SpellInfo;
 import figure.Figure;
 import figure.FigureInfo;
@@ -17,15 +17,15 @@ import figure.FigureInfo;
 public class SpellPercept extends OpticalPercept {
 	
 	private Figure f;
-	private Spell spell;
+	private AbstractSpell spell;
 	private boolean begins = false;
 	
-	public SpellPercept(Figure f, Spell s) {
+	public SpellPercept(Figure f, AbstractSpell s) {
 		this.f = f;
 		this.spell = s;
 	}
 	
-	public SpellPercept(Figure f, Spell s,boolean begins) {
+	public SpellPercept(Figure f, AbstractSpell s, boolean begins) {
 		this.f = f;
 		this.spell = s;
 		this.begins = begins;

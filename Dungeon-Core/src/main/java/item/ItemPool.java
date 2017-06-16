@@ -46,7 +46,7 @@ import spell.Light;
 import spell.Raid;
 import spell.Repair;
 import spell.Search;
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.Spy;
 import spell.Steal;
 import spell.Thunderstorm;
@@ -171,7 +171,7 @@ public class ItemPool {
 	 * @return item
 	 */
 	
-	public static Spell spellArray [] = {new Bonebreaker(1),new Fireball(1),new GoldenHit(1)/*,new Convince(1)*/,new Discover(1),
+	public static AbstractSpell spellArray [] = {new Bonebreaker(1),new Fireball(1),new GoldenHit(1)/*,new Convince(1)*/,new Discover(1),
 		new Escape(1), new GoldenThrow(1), new Heal(1),new Isolation(1), new KeyLocator(1),new Light(1), new Raid(1),new Repair(1),new Search(1),new Spy(1),new Steal(1), new Thunderstorm(1)};
 	
 	public static Item getRandomBookSpell() {
@@ -233,7 +233,7 @@ public class ItemPool {
 	 */
 	//noch nicht langfristig sinnvoll
 	private static Item getMagicPaper(int value, double quotient) {
-		Spell s = getRandomSpell();
+		AbstractSpell s = getRandomSpell();
 		Item i = null;
 		if( value <= 20) {
 			int cost = (20 - value)/2;
@@ -868,10 +868,10 @@ public class ItemPool {
 //		return s;
 //	}
 	
-	private static Spell getRandomSpell() {
+	private static AbstractSpell getRandomSpell() {
 		int k = (int)(Math.random() * spells.length);
 		//hier muss noch die Methode f�r die Wahrscheinlichkeiten der einzelnen Zauberspr�che rein
-		Spell s = Spell.getSpell(spells[k]);
+		AbstractSpell s = AbstractSpell.getSpell(spells[k]);
 		return s;
 		
 	}

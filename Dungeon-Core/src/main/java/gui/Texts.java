@@ -152,6 +152,7 @@ public class Texts {
 	public static String [] noKnowledge;
 	public static String [] noItem;
 	public static String [] wrongTarget;
+	public static String [] noTarget;
 	public static String [] wrongPosition;
 	
 	public static String [] playerHits;
@@ -265,6 +266,12 @@ public class Texts {
 		return wrongTarget[((int) (Math.random() * wrongTarget.length))];
 
 	}
+
+	public static String noTarget() {
+		return wrongTarget[((int) (Math.random() * noTarget.length))];
+
+	}
+
 	public static String wrongPosition() {
 		return wrongPosition[((int) (Math.random() * wrongPosition.length))];
 

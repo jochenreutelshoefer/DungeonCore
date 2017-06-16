@@ -557,13 +557,6 @@ public class DefaultMonsterIntelligence extends GuiAI {
 	@Override
 	public Action chooseFightAction() {
 
-		if (hasLuziaAmulett()) {
-			Action a = getFleeAction(monster);
-			if (a != null) {
-				return a;
-			}
-		}
-
 		Action a = wannaSpell();
 		if (a != null) {
 			return a;

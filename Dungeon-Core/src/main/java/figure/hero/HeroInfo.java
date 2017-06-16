@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.SpellInfo;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
@@ -211,9 +211,9 @@ public class HeroInfo extends FigureInfo {
 	public List<SpellInfo> getSpellBuffer() {
 		if (map.getFigure().equals(h)) {
 			List<SpellInfo> res = new ArrayList<SpellInfo>();
-			List<Spell> l = h.getCharacter().getSpellBuffer();
-			for (Iterator<Spell> iter = l.iterator(); iter.hasNext();) {
-				Spell element = iter.next();
+			List<AbstractSpell> l = h.getCharacter().getSpellBuffer();
+			for (Iterator<AbstractSpell> iter = l.iterator(); iter.hasNext();) {
+				AbstractSpell element = iter.next();
 				res.add(new SpellInfo(element, map));
 			}
 			return res;

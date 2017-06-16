@@ -5,7 +5,7 @@ import figure.FigureInfo;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class TripleAttack extends Spell {
+public class TripleAttack extends AbstractTargetSpell {
 
 public static int[][] values = { { 1, 1, 10, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	
@@ -31,7 +31,7 @@ public static int[][] values = { { 1, 1, 10, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_TRIPLEATTACK;
+		return AbstractSpell.SPELL_TRIPLEATTACK;
 	}
 	@Override
 	public boolean isPossibleFight() {

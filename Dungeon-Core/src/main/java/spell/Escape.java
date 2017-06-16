@@ -46,7 +46,7 @@ public class Escape extends NoTargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_ESCAPE;
+		return AbstractSpell.SPELL_ESCAPE;
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public class Escape extends NoTargetSpell {
 
 
 	/**
-	 * @see Spell#fire(fighter, Object, int)
+	 * @see AbstractSpell#fire(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage) {

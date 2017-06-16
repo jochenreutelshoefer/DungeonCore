@@ -10,7 +10,7 @@ import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class Steal extends Spell {
+public class Steal extends AbstractTargetSpell {
 
 	public static int[][] values = { { 6, 4, 8, 10, 1 }, { 15, 13, 12, 25, 2 } };
 
@@ -46,7 +46,7 @@ public class Steal extends Spell {
 
 	@Override
 	public int getType() {
-		return Spell.SPELL_STEAL;
+		return AbstractSpell.SPELL_STEAL;
 	}
 
 	@Override
@@ -71,12 +71,6 @@ public class Steal extends Spell {
 		isPossibleInFight = true;
 	}
 
-	// public int getLernCost() {
-	// return 1;
-	// }
-	/**
-	 * @see Spell#sorcer(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
 
@@ -113,7 +107,7 @@ public class Steal extends Spell {
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

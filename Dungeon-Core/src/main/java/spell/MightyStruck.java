@@ -9,7 +9,7 @@ import figure.hero.Hero;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class MightyStruck extends Spell implements TargetSpell{
+public class MightyStruck extends AbstractTargetSpell implements TargetSpell{
 
 	public static int[][] values = { { 1, 1, 10, 25, 1 }, { 15, 13, 12, 25, 2 } };
 	
@@ -35,7 +35,7 @@ public class MightyStruck extends Spell implements TargetSpell{
 	
 	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
-		return Spell.distanceMax(mage,target,2);
+		return AbstractSpell.distanceMax(mage,target,2);
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class MightyStruck extends Spell implements TargetSpell{
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_MIGHTYSTRUCK;
+		return AbstractSpell.SPELL_MIGHTYSTRUCK;
 	}
 
 	@Override

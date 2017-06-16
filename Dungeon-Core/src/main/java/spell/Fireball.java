@@ -20,7 +20,7 @@ import game.JDEnv;
 import util.Arith;
 import dungeon.Position;
 
-public class Fireball extends Spell implements TargetSpell{
+public class Fireball extends AbstractTargetSpell implements TargetSpell{
 
 
 	public static int[][] VALUES = { { 9, 6, 5, 9, 1 }, { 17, 13, 7, 24, 2 } };
@@ -51,7 +51,7 @@ public class Fireball extends Spell implements TargetSpell{
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_FIREBALL;
+		return AbstractSpell.SPELL_FIREBALL;
 	}
 	@Override
 	public boolean isApplicable(Figure mage, Object target) {
@@ -90,7 +90,7 @@ public class Fireball extends Spell implements TargetSpell{
 
 
 	/**
-	 * @see Spell#sorcer(fighter, Object, int)
+	 * @see AbstractSpell#sorcer(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
@@ -115,7 +115,7 @@ public class Fireball extends Spell implements TargetSpell{
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

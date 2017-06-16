@@ -14,7 +14,7 @@ import game.JDEnv;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class KeyLocator extends Spell implements TargetSpell {
+public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 
 	public static int [][] values = { {3,4,5,10,1},
 								{6,12,7,30,1}
@@ -47,7 +47,7 @@ public class KeyLocator extends Spell implements TargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_KEYLOCATOR;
+		return AbstractSpell.SPELL_KEYLOCATOR;
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class KeyLocator extends Spell implements TargetSpell {
 	}
 
 	/**
-	 * @see Spell#sorcer(fighter, Object, int)
+	 * @see AbstractSpell#sorcer(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
@@ -112,7 +112,7 @@ public class KeyLocator extends Spell implements TargetSpell {
 			
 	}
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

@@ -6,13 +6,14 @@
  */
 package dungeon;
 
+import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.memory.PositionMemory;
 import game.InfoEntity;
 
-public class Position extends DungeonWorldObject{
+public class Position extends DungeonWorldObject {
 
 	private Room room;
 
@@ -51,7 +52,7 @@ public class Position extends DungeonWorldObject{
 
 		public static Pos fromValue(int value) {
 			for (Pos pos : Pos.values()) {
-				if(pos.getValue() == value) {
+				if (pos.getValue() == value) {
 					return pos;
 				}
 			}
@@ -82,10 +83,12 @@ public class Position extends DungeonWorldObject{
 			figure = fig;
 			fig.setPos(this);
 
-		} else {
+		}
+		else {
 			if (Math.random() < 0.5) {
 				last.figureEntersHere(fig);
-			} else {
+			}
+			else {
 				next.figureEntersHere(fig);
 			}
 		}
@@ -95,14 +98,17 @@ public class Position extends DungeonWorldObject{
 		if (right) {
 			if (index == 7) {
 				return 0;
-			} else {
+			}
+			else {
 				return index + 1;
 			}
-		} else {
+		}
+		else {
 			if (index == 0) {
 				return 7;
 
-			} else {
+			}
+			else {
 				return index - 1;
 			}
 		}
@@ -153,23 +159,22 @@ public class Position extends DungeonWorldObject{
 		return distMatrix[index][otherIndex];
 	}
 
-
 	public static int getFreePositionNear(Room room, int positionIndex) {
-		if(room.getPositions()[positionIndex].getFigure() == null) {
+		if (room.getPositions()[positionIndex].getFigure() == null) {
 			return positionIndex;
 		}
 		int counter = 0;
-		while(counter < 5) {
+		while (counter < 5) {
 			int nextIndexRight = Position.getNextIndex(positionIndex + counter, true);
-			if(room.getPositions()[nextIndexRight].getFigure() == null) {
+			if (room.getPositions()[nextIndexRight].getFigure() == null) {
 				return nextIndexRight;
 			}
 			int nextIndexLeft = Position.getNextIndex(positionIndex - counter, false);
 
-			if(room.getPositions()[nextIndexLeft].getFigure() == null) {
+			if (room.getPositions()[nextIndexLeft].getFigure() == null) {
 				return nextIndexLeft;
 			}
-			counter ++;
+			counter++;
 
 		}
 
@@ -181,7 +186,8 @@ public class Position extends DungeonWorldObject{
 		int left = getDistanceFromTo(from, to, false);
 		if (right < left) {
 			return right;
-		} else {
+		}
+		else {
 			return left;
 		}
 
@@ -194,7 +200,8 @@ public class Position extends DungeonWorldObject{
 			dist++;
 			if (right) {
 				k = incIndex(k);
-			} else {
+			}
+			else {
 				k = decIndex(k);
 			}
 		}
@@ -205,7 +212,8 @@ public class Position extends DungeonWorldObject{
 	public static int decIndex(int k) {
 		if (k == 0) {
 			return 7;
-		} else {
+		}
+		else {
 			return k - 1;
 		}
 	}
@@ -220,20 +228,20 @@ public class Position extends DungeonWorldObject{
 		return -1;
 	}
 
-	public int getPossibleFleeDirection() {
+	public RouteInstruction.Direction getPossibleFleeDirection() {
 		if (index == 1) {
-			return Dir.NORTH;
+			return RouteInstruction.Direction.North;
 		}
 		if (index == 3) {
-			return Dir.EAST;
+			return RouteInstruction.Direction.East;
 		}
 		if (index == 5) {
-			return Dir.SOUTH;
+			return RouteInstruction.Direction.South;
 		}
 		if (index == 7) {
-			return Dir.WEST;
+			return RouteInstruction.Direction.West;
 		}
-		return 0;
+		return null;
 
 	}
 
@@ -260,6 +268,13 @@ public class Position extends DungeonWorldObject{
 	}
 
 	public void figureLeaves() {
+		if (figure != null) {
+			DungeonVisibilityMap roomVisibility = figure.getRoomVisibility();
+			if (roomVisibility != null) {
+				roomVisibility.removeScoutedVisibility(this);
+
+			}
+		}
 		figure = null;
 	}
 
@@ -303,8 +318,8 @@ public class Position extends DungeonWorldObject{
 	}
 
 	public PositionMemory getMemoryObject(FigureInfo info) {
-		
-		return new PositionMemory(this,info);
+
+		return new PositionMemory(this, info);
 	}
 
 }

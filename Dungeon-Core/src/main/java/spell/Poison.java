@@ -6,7 +6,7 @@ import figure.FigureInfo;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class Poison extends Spell {
+public class Poison extends AbstractTargetSpell {
 
 	public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	
@@ -32,7 +32,7 @@ public class Poison extends Spell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_POISONING;
+		return AbstractSpell.SPELL_POISONING;
 	}
 	
 	@Override

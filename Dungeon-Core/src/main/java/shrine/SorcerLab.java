@@ -23,7 +23,7 @@ import java.util.List;
 
 import spell.Discover;
 import spell.Repair;
-import spell.Spell;
+import spell.AbstractSpell;
 import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
@@ -347,7 +347,7 @@ class SorcerLabAction {
 
 	Item it;
 
-	Spell sp;
+	AbstractSpell sp;
 
 	int cost;
 

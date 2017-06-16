@@ -6,6 +6,7 @@
  */
 package dungeon;
 
+import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
@@ -58,6 +59,10 @@ public class RoomInfo extends InfoEntity implements ItemInfoOwner {
 	}
 
 	public DoorInfo getDoor(int dir) {
+		return new DoorInfo(r.getDoor(dir), map);
+	}
+
+	public DoorInfo getDoor(RouteInstruction.Direction dir) {
 		return new DoorInfo(r.getDoor(dir), map);
 	}
 
@@ -416,6 +421,10 @@ public class RoomInfo extends InfoEntity implements ItemInfoOwner {
 	}
 
 	public RoomInfo getNeighbourRoom(int dir) {
+		return makeRoomInfo(r.getNeighbourRoom(dir), map);
+	}
+
+	public RoomInfo getNeighbourRoom(RouteInstruction.Direction dir) {
 		return makeRoomInfo(r.getNeighbourRoom(dir), map);
 	}
 

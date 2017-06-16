@@ -8,6 +8,7 @@ package figure;
 
 import game.JDEnv;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +48,10 @@ public class RoomObservationStatus {
 		this.point = p;
 	}
 
+	public List<VisibilityModifier> getVisibilityModifier() {
+		return Collections.unmodifiableList(visibilityModifier);
+	}
+
 	/**
 	 * @return Returns the discoverageStatus.
 	 */
@@ -70,19 +75,13 @@ public class RoomObservationStatus {
 		if(discoveryStatus >= VISIBILITY_SHRINE) {
 			max = VISIBILITY_SHRINE;
 		}
-		for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
-				.hasNext();) {
-			VisibilityModifier element = iter.next();
-			if(element.getVisibilityStatus() > max) {
-				
-				max = element.getVisibilityStatus();
-			}
-		}
+		max = getMaxVisModifierValue(max);
 
 		/*
 		 * notify control unit
 		 */
 		if(max < VISIBILITY_FIGURES) {
+			// TODO: shouldn't we compare to the previous vis level for level change notification?
 			map.getFigure().getControl().notifyVisibilityStatusDecrease(point);
 		}
 
@@ -92,68 +91,41 @@ public class RoomObservationStatus {
 		visibilityStatus = max;
 		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), visibilityStatus);
 	}
-	
-	public RoomObservationStatus getNeighbour(int dir) {
-		if(dir == RouteInstruction.NORTH) {
-			if(point.getY() <= 0) {
-				return null;
+
+	private int getMaxVisModifierValue(int max) {
+		for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
+				.hasNext();) {
+			VisibilityModifier element = iter.next();
+			if(element.getVisibilityStatus() > max) {
+				max = element.getVisibilityStatus();
 			}
-			return map.getStatusObject(new JDPoint(point.getX(),point.getY()-1));
 		}
-		if(dir == RouteInstruction.SOUTH) {
-			if(point.getY() >= map.getSizeY()-1) {
-				return null;
-			}
-			return map.getStatusObject(new JDPoint(point.getX(),point.getY()+1));
-		}
-		if(dir == RouteInstruction.WEST) {
-			if(point.getX() <= 0) {
-				return null;
-			}
-			return map.getStatusObject(new JDPoint(point.getX()-1,point.getY()));
-		}
-		if(dir == RouteInstruction.EAST) {
-			if(point.getX() >= map.getSizeX()-1) {
-				return null;
-			}
-			return map.getStatusObject(new JDPoint(point.getX()+1,point.getY()));
-		}
-		return null;
+		return max;
 	}
 
-	/**
-	 * @return Returns the visibilityStatus.
-	 */
 	public int getVisibilityStatus() {
 		if(JDEnv.visCheat) {
 			return VISIBILITY_SECRET;
 		}
-		return visibilityStatus;
+		return Math.max(discoveryStatus, getMaxVisModifierValue(VISIBILITY_UNDISCOVERED));
 	}
 
-	/**
-	 * @param visibilityStatus
-	 *            The visibilityStatus to set.
-	 */
-	public void setVisibilityStatus(int visibilityStatus) {
-		this.visibilityStatus = visibilityStatus;
-		if(visibilityStatus > discoveryStatus) {
-			discoveryStatus = visibilityStatus;
-		}
-		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), visibilityStatus);
+	public void setVisibilityStatus(int newVisbility) {
+		this.visibilityStatus = newVisbility;
+		discoveryStatus = Math.min(VISIBILITY_SHRINE, Math.max(discoveryStatus, newVisbility));
+		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), newVisbility);
 		
 	}
 
 	public void addVisibilityModifier(VisibilityModifier mod) {
 		if(!visibilityModifier.contains(mod)) {
 			visibilityModifier.add(mod);
-			mod.getVisibilityStatus();
 			this.setVisibilityStatus(mod.getVisibilityStatus());
 		}
 	}
 
 	public boolean removeVisibilityModifier(Object o) {
-		
+		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), getVisibilityStatus());
 		return visibilityModifier.remove(o);
 	}
 

@@ -2,17 +2,21 @@ package de.jdungeon.androidapp.gui.itemWheel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
+import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
 import spell.SpellInfo;
+import spell.TargetScope;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.SkillImageManager;
@@ -126,8 +130,8 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		}
 		else if (o.equals(SCOUT)) {
 			PositionInRoomInfo pos = info.getPos();
-			int possibleFleeDirection = pos.getPossibleFleeDirection();
-			if (possibleFleeDirection > 0) {
+			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
+			if (possibleFleeDirection != null) {
 				DoorInfo door = info.getRoomInfo().getDoor(
 						possibleFleeDirection);
 				if (door != null) {
@@ -172,26 +176,78 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		}
 		else if (o.equals(FLEE)) {
 			PositionInRoomInfo pos = info.getPos();
-			int possibleFleeDirection = pos.getPossibleFleeDirection();
-			if (possibleFleeDirection > 0) {
+			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
+			if (possibleFleeDirection != null) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler().wannaFlee();
 			}
 		}
 		else if (o instanceof SpellInfo) {
 			SpellInfo spell = ((SpellInfo) o);
+			if (spell.needsTarget()) {
+				TargetScope targetScope = spell.getTargetScope();
+				List<? extends InfoEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(info);
+				Set<Class<? extends InfoEntity>> classes = getEntityClasses(targetEntitiesInScope);
+				if (highlightedEntity != null && !classes.contains(highlightedEntity.getClass())) {
+					// something completely wrong is selected in gui
+					// we discard the selection and see whether auto target detection will work
+					// or otherwise the user will be informed
+					screen.setHighlightedEntity(null);
+				}
+				if (highlightedEntity != null) {
+					// some target selected
+					if (spell.getTargetClass().isAssignableFrom(highlightedEntity.getClass())) {
+						// target has matching object class
+						screen.setInfoEntity(highlightedEntity);
+						AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+						screen.getControl().getActionAssembler()
+								.wannaSpell(spell, highlightedEntity);
+					}
+					else {
+
+						//TODO: what should happen if something wrong is selected
+						// and a unique target is available? Change target or wrong target feedback ?
+						// should the gui remember the last selected entity for each entity class ? (Figure, Door, Item, etc)
+						// NOTE: currently if a different entity class is selected, that selection is cleared, but if an object
+						// of correct entity class is selected but not being in scope, we process and core will generated a message
+						// for the user accordingly
+					}
+				}
+				else {
+					// no target selected
+					if (targetEntitiesInScope.size() == 1) {
+						InfoEntity targetEntity = targetEntitiesInScope.get(0);
+						screen.setInfoEntity(targetEntity);
+						screen.setHighlightedEntity(targetEntity);
+						screen.getControl().getActionAssembler()
+								.wannaSpell(spell, screen.getHighlightedEntity());
+					}
+					else {
+						// we leave the message handling up to the core action handling triggering
+						// an action with target null
+						screen.getControl().getActionAssembler()
+								.wannaSpell(spell, null);
+					}
+				}
+
+			}
+
+			/*
 			Class<? extends InfoEntity> targetClass = spell.getTargetClass();
+
 			InfoEntity uniqueTargetEntity = screen.getControl()
 					.getUniqueTargetEntity(targetClass);
 			if (uniqueTargetEntity != null) {
 				screen.setHighlightedEntity(uniqueTargetEntity);
 				screen.setInfoEntity(uniqueTargetEntity);
+
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				screen.getControl().getActionAssembler()
 						.wannaSpell(spell, uniqueTargetEntity);
 			}
 			else {
 				if (highlightedEntity != null && targetClass.isAssignableFrom(highlightedEntity.getClass())) {
+
 					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 					screen.getControl().getActionAssembler()
 							.wannaSpell(spell, highlightedEntity);
@@ -199,8 +255,18 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				else {
 					// TODO: screen.highlightOptions(targetClass);
 				}
+
 			}
+*/
 		}
+	}
+
+	private Set<Class<? extends InfoEntity>> getEntityClasses(List<? extends InfoEntity> targetEntitiesInScope) {
+		Set<Class<? extends InfoEntity>> result = new HashSet<>();
+		for (InfoEntity infoEntity : targetEntitiesInScope) {
+			result.add(infoEntity.getClass());
+		}
+		return result;
 	}
 
 }

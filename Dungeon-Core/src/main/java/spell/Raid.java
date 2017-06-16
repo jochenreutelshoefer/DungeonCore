@@ -7,8 +7,14 @@
 package spell;
 
 
+import java.util.Collections;
+import java.util.List;
+
 import dungeon.Door;
+import dungeon.PositionInRoomInfo;
 import dungeon.Room;
+import dungeon.RoomInfo;
+import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import game.InfoEntity;
@@ -20,7 +26,7 @@ import game.JDEnv;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class Raid extends Spell implements TargetSpell {
+public class Raid extends AbstractTargetSpell implements TargetSpell {
 
 
 	public static int[][] values = { { 5, 3, 6, 10, 1 }, {
@@ -52,7 +58,27 @@ public class Raid extends Spell implements TargetSpell {
 			String s = JDEnv.getResourceBundle().getString("spell_raid_text");
 			return s;
 	}
-	
+
+	@Override
+	public TargetScope getTargetScope() {
+		return new TargetScope() {
+			@Override
+			public List<? extends InfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
+				PositionInRoomInfo position = actor.getPos();
+				RouteInstruction.Direction possibleRaidDirection =
+						position.getPossibleFleeDirection();
+				if(possibleRaidDirection == null) {
+					return Collections.emptyList();
+				}
+				RoomInfo neighbourRoom = actor.getRoomInfo().getNeighbourRoom(possibleRaidDirection);
+				if(neighbourRoom == null || !actor.getRoomInfo().getDoor(possibleRaidDirection).isPassable()) {
+					return Collections.emptyList();
+				}
+				return neighbourRoom.getFigureInfos();
+			}
+		};
+	}
+
 	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
@@ -69,7 +95,7 @@ public class Raid extends Spell implements TargetSpell {
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_RAID;
+		return AbstractSpell.SPELL_RAID;
 	}
 	
 	public boolean fightModus(){
@@ -105,18 +131,6 @@ public class Raid extends Spell implements TargetSpell {
 		return false;
 	}
 
-	//		public int getDifficulty(int level) {
-	//			return diff[level - 1];	
-	//		}
-
-	//		public int getDifficultyMin(int level) {
-	//			return diffMin[level - 1];	
-	//		}
-
-	//		public int getCost(int level) {
-	//			return 5*level;
-	//		}
-
 	@Override
 	public void sorcer(Figure mage, Object target) {
 		
@@ -125,7 +139,7 @@ public class Raid extends Spell implements TargetSpell {
 		Room mageRoom = mage.getRoom();
 
 		Door d = mageRoom.getConnectionTo(targetRoom);
-		int dir = mageRoom.getDir(d);
+		RouteInstruction.Direction dir = mageRoom.getDirection(d);
 		mage.makeRaid((Figure)target);
 		
 		mage.walk(dir);

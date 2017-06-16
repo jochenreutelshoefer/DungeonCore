@@ -14,7 +14,7 @@ import figure.monster.Monster;
 import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
-public class Convince extends Spell implements TargetSpell{
+public class Convince extends AbstractTargetSpell implements TargetSpell{
 
 	public static int[][] values = { { 7, 4, 7, 30,1 }, {
 			12, 12, 9, 20,1 }
@@ -60,7 +60,7 @@ public class Convince extends Spell implements TargetSpell{
 	}
 	@Override
 	public int getType() {
-		return Spell.SPELL_CONVINCE;
+		return AbstractSpell.SPELL_CONVINCE;
 	}
 	
 	@Override
@@ -95,7 +95,7 @@ public class Convince extends Spell implements TargetSpell{
 		isPossibleInFight = true;
 	}
 	/**
-	 * @see Spell#sorcer(fighter, Object, int)
+	 * @see AbstractSpell#sorcer(fighter, Object, int)
 	 */
 	@Override
 	public void sorcer(Figure mage, Object target/*, int l*/) {
@@ -132,7 +132,7 @@ public class Convince extends Spell implements TargetSpell{
 	}
 
 	/**
-	 * @see Spell#getName()
+	 * @see AbstractSpell#getName()
 	 */
 	@Override
 	public String getName() {

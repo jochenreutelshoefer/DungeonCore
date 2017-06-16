@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import figure.FigureInfo;
-import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import figure.percept.BreakSpellPercept;
 import figure.percept.DiePercept;
@@ -27,7 +26,6 @@ import figure.percept.MovePercept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.SpellPercept;
 import figure.percept.TakePercept;
-import figure.percept.TextPercept;
 import figure.percept.TumblingPercept;
 import game.JDEnv;
 import gui.Texts;
@@ -50,9 +48,11 @@ public class StatementManager {
 				s = new Statement(Texts.wrongPosition(), 0);
 			} else if (k == ActionResult.IMPOSSIBLE_REASON_WRONGTARGET) {
 				s = new Statement(Texts.wrongTarget(), 0);
+			} else if (k == ActionResult.IMPOSSIBLE_REASON_NOTARGET) {
+				s = new Statement(Texts.wrongTarget(), 0);
 			} else if (k == ActionResult.IMPOSSIBLE_REASON_DISTANCE) {
 				s = new Statement(JDEnv.getString("wrong_distance"), 0);
-			} else if (res == ActionResult.TARGET) {
+			} else if (res == ActionResult.WRONG_TARGET) {
 				s = new Statement("Kein Platz da!", 0);
 			} else {
 				s = new Statement(Texts.doesNotWork(), 0);

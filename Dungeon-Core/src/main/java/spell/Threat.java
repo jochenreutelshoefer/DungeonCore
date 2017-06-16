@@ -6,7 +6,7 @@ import figure.FigureInfo;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class Threat extends Spell implements TargetSpell{
+public class Threat extends AbstractTargetSpell implements TargetSpell{
 
 	public static int [][] values = { {1,1,2,4,1},
 		{15,13,12,25,2}
@@ -24,7 +24,7 @@ public class Threat extends Spell implements TargetSpell{
 	@Override
 	public int getType() {
 	
-		return Spell.SPELL_THREAT;
+		return AbstractSpell.SPELL_THREAT;
 	}
 	
 	@Override

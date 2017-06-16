@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.TimedSpellInstance;
 import test.TestTracker;
 import dungeon.Dungeon;
@@ -168,7 +168,7 @@ public class DungeonGame implements Runnable, EventListener {
 	}
 
 	private void spellsTurn() {
-		List<TimedSpellInstance> spells = Spell.timedSpells;
+		List<TimedSpellInstance> spells = AbstractSpell.timedSpells;
 		for (int i = 0; i < spells.size(); i++) {
 			((Turnable) spells.get(i)).turn(this.round);
 		}

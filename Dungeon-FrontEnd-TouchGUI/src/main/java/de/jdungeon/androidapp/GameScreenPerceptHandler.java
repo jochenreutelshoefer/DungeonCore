@@ -224,6 +224,14 @@ public class GameScreenPerceptHandler {
 		RoomInfo info = fig.getRoomInfo();
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
+		if(fig.equals(this.figure)) {
+			if(screen.getHighlightedEntity() instanceof RoomInfo) {
+				// we reset the selected room, as hero has moved on
+				screen.setHighlightedEntity(null);
+			}
+
+		}
+
 		if (set != null) {
 			// clear old queued animations if there are some
 			screen.clearFigureAnimation(fig);

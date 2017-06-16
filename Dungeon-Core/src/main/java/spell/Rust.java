@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Rust extends Spell {
+public class Rust extends AbstractTargetSpell {
 
 public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	
@@ -39,7 +39,7 @@ public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_RUST;
+		return AbstractSpell.SPELL_RUST;
 	}
 	
 	@Override

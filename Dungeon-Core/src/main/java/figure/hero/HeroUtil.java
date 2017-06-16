@@ -17,8 +17,7 @@ import spell.Fireball;
 import spell.GoldenHit;
 import spell.Raid;
 import spell.Search;
-import spell.Spell;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import spell.AbstractSpell;
 
 public class HeroUtil {
 
@@ -156,7 +155,7 @@ public class HeroUtil {
 		}
 
 		if (held.getHeroCode() == Hero.HEROCODE_DRUID) {
-			Spell s = new Bonebreaker(1);
+			AbstractSpell s = new Bonebreaker(1);
 			Scroll scroll1 = new Scroll(s, 5);
 			Scroll scroll2 = new Scroll(s, 5);
 			Scroll scroll3 = new Scroll(s, 5);

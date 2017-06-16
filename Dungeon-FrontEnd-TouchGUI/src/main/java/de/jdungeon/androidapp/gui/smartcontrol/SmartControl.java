@@ -212,6 +212,7 @@ public class SmartControl extends ContainerGUIElement {
 			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
 			JDPoint position = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionSize / 2, correctionY + positionCoord.getY() + positionAreaOffset - positionSize / 2);
 			JDDimension positionDimension = new JDDimension(positionSize, positionSize);
+			// TODO: cache this
 			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
 				positionElements.add(
 						new PositionElement(

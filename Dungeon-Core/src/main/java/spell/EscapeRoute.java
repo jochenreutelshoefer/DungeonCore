@@ -6,7 +6,7 @@ import figure.Figure;
 import game.InfoEntity;
 import game.JDEnv;
 
-public class EscapeRoute extends TimedSpell {
+public class EscapeRoute extends AbstractTargetSpell {
 
 	public static int[][] values = { { 7, 5, 8, 10, 1 }, { 15, 13, 12, 25, 2 } };
 
@@ -28,7 +28,7 @@ public class EscapeRoute extends TimedSpell {
 
 	@Override
 	public int getType() {
-		return Spell.SPELL_ESCAPEROUTE;
+		return AbstractSpell.SPELL_ESCAPEROUTE;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class EscapeRoute extends TimedSpell {
 	@Override
 	public void sorcer(Figure mage, Object target) {
 		if (target instanceof Door) {
-			Spell.addTimedSpell(new EscapeRouteInstance(this.getStrength(),
+			AbstractSpell.addTimedSpell(new EscapeRouteInstance(this.getStrength(),
 					(Door) target, mage));
 		}
 	}
@@ -65,6 +65,12 @@ public class EscapeRoute extends TimedSpell {
 	@Override
 	public Class<? extends InfoEntity> getTargetClass() {
 		return DoorInfo.class;
+	}
+
+	@Override
+	public TargetScope getTargetScope() {
+		// TODO
+		return null;
 	}
 
 	@Override

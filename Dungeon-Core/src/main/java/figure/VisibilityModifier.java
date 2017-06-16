@@ -7,9 +7,7 @@
 package figure;
 
 public interface VisibilityModifier {
-	
-	public int getVisibilityStatus();
-	
-	
+
+	int getVisibilityStatus();
 
 }

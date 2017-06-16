@@ -128,7 +128,7 @@ public class DarkMaster extends Monster {
 			//
 			//}
 
-			boolean marched = walk(i);
+			boolean marched = walk(RouteInstruction.Direction.fromInteger(i));
 			if (!marched) {
 				this.getHeroRouteInstruction();
 			}

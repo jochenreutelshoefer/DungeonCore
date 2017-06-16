@@ -1,6 +1,5 @@
 package item.paper;
-import game.JDEnv;
-import spell.Spell;
+import spell.AbstractSpell;
 
 /**
  * @author Duke1
@@ -12,7 +11,7 @@ import spell.Spell;
  */
 public class ScrollMagic extends Scroll {
 	
-	public ScrollMagic(Spell s) {
+	public ScrollMagic(AbstractSpell s) {
 		super(s, 0);
 	}
 	
@@ -22,19 +21,19 @@ public class ScrollMagic extends Scroll {
 		String s = new String();
 		int t = theSpell.getLevel();
 		if(t == 1) {
-			s = Spell.spell()+": (1)\n";
+			s = AbstractSpell.spell()+": (1)\n";
 		}
 		else if(t == 2) {
-			s = Spell.spell()+": (2)\n";
+			s = AbstractSpell.spell()+": (2)\n";
 		}
 		else if(t == 3) {
-			s = Spell.spell()+": (3)\n";
+			s = AbstractSpell.spell()+": (3)\n";
 		}
 		else if(t == 4) {
-			s = Spell.spell()+": (4)\n";
+			s = AbstractSpell.spell()+": (4)\n";
 		}
 		else if(t == 5) {
-			s = Spell.spell()+": (5)\n";
+			s = AbstractSpell.spell()+": (5)\n";
 		}
 		s += theSpell.getName();
 		

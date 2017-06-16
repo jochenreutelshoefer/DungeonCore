@@ -106,9 +106,12 @@ public class ActionAssembler implements EventListener {
 		}
 	}
 
+	public void wannaScout(RouteInstruction.Direction dir) {
+		wannaScout(dir.getValue());
+	}
 
 	public void wannaScout(int direction) {
-		Action a = new ScoutAction(direction);
+		Action a = new ScoutAction(this.getFigure(), direction);
 		int index = Figure.getDirPos(direction);
 		if (gui.getFigure().getPositionInRoomIndex() != index) {
 			doStepTo(index);

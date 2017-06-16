@@ -16,15 +16,15 @@ import game.JDEnv;
 import gui.Paragraph;
 import item.Item;
 import item.interfaces.Usable;
-import spell.Spell;
+import spell.AbstractSpell;
 import spell.TargetSpell;
 import util.JDColor;
 public class Scroll extends Item implements Usable{
 	
 	
-	protected final Spell theSpell;
+	protected final AbstractSpell theSpell;
 
-	public Scroll(Spell s, int cost) {
+	public Scroll(AbstractSpell s, int cost) {
 		super(s.getCost(),false);
 		this.theSpell = s;
 		s.setCost((int)(cost*0.5));

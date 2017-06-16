@@ -21,6 +21,8 @@ import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.Spellbook;
 import figure.action.Action;
+import figure.action.ScoutAction;
+import figure.action.ScoutResult;
 import figure.attribute.Attribute;
 import figure.attribute.TimedAttributeModification;
 import figure.monster.Monster;
@@ -44,7 +46,7 @@ import item.interfaces.ItemOwner;
 import item.quest.LuziasBall;
 import log.Log;
 import shrine.Shrine;
-import spell.Spell;
+import spell.AbstractSpell;
 
 /**
  * Der Held des Spiels. Es kann nur einen geben. Besteht hauptsaechlich aus
@@ -920,22 +922,10 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		}
 	}
 
-	@Override
-	protected boolean flee(int dir) {
-		RouteInstruction.Direction fleeDirection = null;
-		if (dir == RouteInstruction.NORTH) {
-			fleeDirection = RouteInstruction.Direction.North;
-		} else if (dir == RouteInstruction.SOUTH) {
-			fleeDirection = RouteInstruction.Direction.South;
-		} else if (dir == RouteInstruction.WEST) {
-			fleeDirection = RouteInstruction.Direction.West;
-		} else if (dir == RouteInstruction.EAST) {
-			fleeDirection = RouteInstruction.Direction.East;
-		} else {
-			// System.out.println("FLEEDIRECTION ERRRROR!");
-		}
 
-		Room toGo = this.getRoom().getDungeon().getRoomAt(getRoom(), RouteInstruction.direction(dir));
+	@Override
+	public boolean flee(RouteInstruction.Direction fleeDirection) {
+		Room toGo = this.getRoom().getDungeon().getRoomAt(getRoom(), fleeDirection);
 		Door d = this.getRoom().getDungeon().getRoom(getLocation()).getConnectionTo(toGo);
 
 		if ((toGo == null) || (d == null) || (!d.isPassable(this))) {
@@ -965,7 +955,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			int fleeV = 0;
 
 			fleeV = calcFleeResult((int) diff); // 2 kommt nicht
-			if(getRoom().getDoor(dir).hasEscapeRoute(this)) {
+			if(getRoom().getDoor(fleeDirection).hasEscapeRoute(this)) {
 				fleeV = 1;
 			}
 
@@ -1004,14 +994,15 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public boolean scout(int dir) {
-
+	public ScoutResult scout(ScoutAction action) {
+		int dir = action.getDirection();
 		Room loc = getRoom();
 		Room toScout = loc.getNeighbourRoom(dir);
 		Door d = loc.getConnectionTo(toScout);
 
 		boolean scoutable = ((d != null));
 		String s = new String();
+		int visStatusResult = -1;
 		if ((scoutable)) {
 			List<Figure> monsters = toScout.getRoomFigures();
 			s += ("Du horchst und schaust duch die Ritzen in der Tür -" + "\n");
@@ -1019,7 +1010,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			decActionPoints(1);
 			int scoutlevel = calcScout(toScout);
 			if (scoutlevel == 0) {
-
 				if (monsters.isEmpty()) {
 					s += "...aber Du kannst leider nichts rauskriegen";
 				} else {
@@ -1031,6 +1021,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 					}
 
 				}
+				visStatusResult = RoomObservationStatus.VISIBILITY_UNDISCOVERED;
 			} else if (scoutlevel == 1) {
 
 				if (monsters.isEmpty()) {
@@ -1043,50 +1034,11 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 					}
 					s += (" und ...Du wirst entdeckt!");
 				}
-			} else if (scoutlevel == 2) {
-
-				if (monsters.isEmpty()) {
-					s += "Du siehst dort niemanden.";
-					getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-							RoomObservationStatus.VISIBILITY_FIGURES);
-
-				} else {
-					toScout.distributePercept(new ScoutPercept(this, getRoom(), dir));
-					s += ("Du hast ihn entdeckt..." + "\n");
-					s += ("...und er Dich jetzt auch!");
-				}
-			} else if (scoutlevel == 3) {
+			} else if (scoutlevel == 2 || scoutlevel == 3|| scoutlevel == 4) {
 				s += ("... aber Du kannst leider nichts rauskriegen");
-				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-						RoomObservationStatus.VISIBILITY_FOUND);
+				visStatusResult = RoomObservationStatus.VISIBILITY_FOUND;
 
-			} else if (scoutlevel == 4) {
-				if (monsters.isEmpty()) {
-					if (((int) (Math.random() * 100)) < 80) {
-						s += ("hmm.. Du glaubst da ist jemand.");
-					} else {
-						s += ("hmm..Du glaubst da ist niemand");
-					}
-				} else {
-					if (((int) (Math.random() * 100)) < 20) {
-						s += ("hmm..Du glaubst da ist jemand.");
-					} else {
-						s += ("hmm..Du glaubst da ist niemand");
-					}
-				}
-				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-						RoomObservationStatus.VISIBILITY_SHRINE);
-
-			} else if (scoutlevel == 5) {
-				if (toScout.getRoomFigures().isEmpty()) {
-					s += ("In diesem Raum ist niemand!");
-					getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-							RoomObservationStatus.VISIBILITY_FIGURES);
-
-				} else {
-					s += ("In diesem Raum ist jemand!");
-				}
-			} else if (scoutlevel >= 6) {
+			} else if (scoutlevel >= 5) {
 				if (!toScout.getRoomFigures().isEmpty()) {
 					s += ("Du kannst den Gegner genau beobachten." + "\n");
 					for (int i = 0; i < monsters.size(); i++) {
@@ -1094,10 +1046,9 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 					}
 
 				} else {
-					s += ("Wenn da jemand gewesen wäre hättest Du es raugekriegt.");
+					s += ("Wenn da jemand gewesen wäre hättest Du es rausgekriegt.");
 				}
-				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-						RoomObservationStatus.VISIBILITY_FIGURES);
+				visStatusResult = RoomObservationStatus.VISIBILITY_FIGURES;
 
 			} else if (scoutlevel >= 8) {
 				if (!toScout.getRoomFigures().isEmpty()) {
@@ -1110,8 +1061,8 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				} else {
 					s += "keine Gegenstände dort\n";
 				}
-				getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-						RoomObservationStatus.VISIBILITY_ITEMS);
+				visStatusResult = RoomObservationStatus.VISIBILITY_ITEMS;
+
 			} else {
 				s += ("Scout Level Error: " + scoutlevel);
 			}
@@ -1119,10 +1070,10 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			s += ("Das funktioniert so jetzt gerade nicht...");
 		}
 		tellPercept(new TextPercept(s));
-		return true;
+		return new ScoutResult(action, this, visStatusResult, s);
 	}
 
-	public boolean learnSpell(Spell s) {
+	public boolean learnSpell(AbstractSpell s) {
 		if (c.getSpellBuffer().contains(s)) {
 			int k = s.getLernCost();
 			if (c.getSpellPoints() >= k) {

@@ -10,7 +10,7 @@ import game.JDEnv;
 
 
 
-public class GoldenThrow extends Spell implements TargetSpell{
+public class GoldenThrow extends AbstractTargetSpell implements TargetSpell{
 	
 	public static int [][] values = { {5,3,5,10,1},
 								{7,5,5,20,2}
@@ -55,7 +55,7 @@ public class GoldenThrow extends Spell implements TargetSpell{
 	
 	@Override
 	public int getType() {
-		return Spell.SPELL_GOLDENTHROW;
+		return AbstractSpell.SPELL_GOLDENTHROW;
 	}
 	
 	@Override
