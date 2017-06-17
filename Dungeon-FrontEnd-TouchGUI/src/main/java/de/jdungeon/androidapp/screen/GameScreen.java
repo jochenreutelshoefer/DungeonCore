@@ -26,6 +26,7 @@ import dungeon.SpotInfo;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
+import event.WorldChangedEvent;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -123,6 +124,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private boolean roomItemWheelShowing = false;
 	private ItemWheel itemWheelRoomItems;
 	private ItemWheel itemWheelSkills;
+	private boolean worldHasChanged = true;
 
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
@@ -385,8 +387,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void drawWorld(Graphics gr) {
-		drawnObjects.clear();
-		getDungeonRenderer().clear();
 
 		// at which room we have to start drawing
 		int startingRoomNumberX = (int) (viewportPosition.getX() / roomSize);
@@ -395,6 +395,11 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		// how many cols and rows we have to paint to cover screen
 		int roomCols = (int) (game.getScreenWidth() / roomSize) + 1;
 		int roomRows = (int) (game.getScreenHeight() / roomSize) + 1;
+
+		boolean resetWorldChangedAfterwards = false;
+		if(worldHasChanged) {
+			resetWorldChangedAfterwards = true;
+		}
 
 		int col = 0;
 		while (col <= roomCols) {
@@ -414,11 +419,22 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				if (roomInfo != null) {
 					int roomOffsetX = (int) (roomNumberX * roomSize);
 					int roomOffsetY = (int) (roomNumberY * roomSize);
-					List<GraphicObject> graphicObjectsForRoom = getDungeonRenderer()
-							.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
-									roomOffsetY, new ArrayList<>());
-					clearNulls(graphicObjectsForRoom);
-					putGraphicObjects(roomInfo.getPoint(), graphicObjectsForRoom);
+					List<GraphicObject> graphicObjectsForRoom;
+					// TODO: consider graphic object caching on room level
+					if(worldHasChanged) {
+						// world has changed, hence we need to newly generate graphic objects
+						graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
+						drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
+					} else {
+						graphicObjectsForRoom = drawnObjects.get(roomInfo.getPoint());
+						if(graphicObjectsForRoom == null) {
+							// obviously room has not yet been drawn, i.e. has just scrolled into view
+							// hence we have to create the objects
+							graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
+							drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
+						}
+					}
+
 					DrawUtils.drawObjects(gr, graphicObjectsForRoom,
 							getViewportPosition(), roomInfo, (int)getRoomSize(),
 							roomOffsetX, roomOffsetY, this);
@@ -426,6 +442,21 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				}
 			}
 		}
+		// close world changed flag;
+		// as long as it stays false, the cached graphic objects are used for rendering
+		if(resetWorldChangedAfterwards) {
+			worldHasChanged = false;
+		}
+	}
+
+	private List<GraphicObject> createGraphicObjectsForRoom(RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
+		List<GraphicObject> graphicObjectsForRoom;
+		graphicObjectsForRoom = getDungeonRenderer()
+				.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
+						roomOffsetY, new ArrayList<>());
+		clearNulls(graphicObjectsForRoom);
+		putGraphicObjects(roomInfo.getPoint(), graphicObjectsForRoom);
+		return graphicObjectsForRoom;
 	}
 
 	private void clearNulls(List<?> l) {
@@ -558,8 +589,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 				if (!guiOP) {
 					Object clickedObject = findClickedObjectLongPressed(longPressedCoordinates);
-					if (clickedObject != null
-							&& clickedObject instanceof InfoEntity) {
+					if (clickedObject instanceof InfoEntity) {
 						infoPanel.setContent(((InfoEntity) clickedObject));
 					}
 				}
@@ -744,12 +774,16 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		this.roomSize = newRoomSize;
 		resetDungeonRenderer();
+		// we need to clear drawing objects cache as it is not independent of roomSize parameter
+		// TODO: can the objects also be made independent of the roomSize parameter?
+		// then we could also use drawing object cache during zooming
+		this.drawnObjects.clear();
 	}
 
 	private void handleClickEvent(TouchEvent touchEvent) {
 
 		Boolean dead = this.figureInfo.isDead();
-		if (dead != null && dead.booleanValue()) {
+		if (dead != null && dead) {
 			gameOverView.setShow(true);
 		}
 
@@ -1146,6 +1180,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		events.add(InfoObjectClickedEvent.class);
 		events.add(VisibilityIncreasedEvent.class);
 		events.add(ClickedTakeItemButton.class);
+		events.add(WorldChangedEvent.class);
 		return events;
 	}
 
@@ -1165,6 +1200,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (event instanceof ClickedTakeItemButton) {
 			toggleSkillVersusRoomItemWheel();
 		}
+		if (event instanceof WorldChangedEvent) {
+					worldHasChanged = true;
+		}
 	}
 
 	/**
@@ -1181,5 +1219,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			roomItemWheelShowing = true;
 		}
 	}
+
 
 }

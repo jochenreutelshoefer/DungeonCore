@@ -25,6 +25,7 @@ import de.jdungeon.game.Image;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
+import graphics.util.RelativeRectangle;
 import org.apache.log4j.Logger;
 import util.JDDimension;
 
@@ -81,8 +82,8 @@ public class DrawUtils {
 					 * draw the image
 					 */
 					g.drawScaledImage(im,
-							image.getPosX() - viewportPosition.getX(),
-							image.getPosY() - viewportPosition.getY(),
+							image.getX(roomOffsetX) - viewportPosition.getX(),
+							image.getY(roomOffsetY) - viewportPosition.getY(),
 							image.getWidth(), image.getHeight(), 0, 0,
 							im.getWidth(), im.getHeight());
 
@@ -92,9 +93,9 @@ public class DrawUtils {
 					}
 
 					if (showText != null) {
-						g.drawString(showText, image.getPosX()
+						g.drawString(showText, image.getX(roomOffsetX)
 								- viewportPosition.getX() + textOffset.getX(),
-								image.getPosY() - viewportPosition.getY()
+								image.getY(roomOffsetY) - viewportPosition.getY()
 										+ textOffset.getY(), g.getSmallPaint());
 					}
 
@@ -162,10 +163,10 @@ public class DrawUtils {
 				int sizeY = figureInfoSize.getHeight();
 				GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
 				JDPoint positionCoordModified = renderer.getPositionCoordModified(deadFigure.getPositionInRoomIndex());
-				JDPoint p = new JDPoint(
-						positionCoordModified.getX() + roomOffsetX,
-						positionCoordModified.getY() + roomOffsetY);
-				JDRectangle destinationRectangle = new JDRectangle(new JDPoint(p.getX() - (sizeX / 2), p.getY() - (sizeY / 2)), sizeX, sizeY);
+				JDPoint relativeCoordinates = new JDPoint(
+						positionCoordModified.getX(),
+						positionCoordModified.getY());
+				RelativeRectangle destinationRectangle = new RelativeRectangle(new JDPoint(relativeCoordinates.getX() - (sizeX / 2), relativeCoordinates.getY() - (sizeY / 2)), sizeX, sizeY);
 				JDImageLocated locatedImage = new JDImageLocated(ImageManager.getImage(deadFigure, deadFigure.getLookDirection()), destinationRectangle);
 				if(animationImage != null) {
 					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
@@ -178,9 +179,9 @@ public class DrawUtils {
 
 						Image im = (Image) imagePraxy.getImage();
 						g.drawScaledImage(im,
-								destinationRectangle.getX()
+								destinationRectangle.getX(roomOffsetX)
 										- viewportPosition.getX(),
-								destinationRectangle.getY()
+								destinationRectangle.getY(roomOffsetY)
 										- viewportPosition.getY(),
 								destinationRectangle.getWidth(),
 								destinationRectangle.getHeight(), 0, 0,

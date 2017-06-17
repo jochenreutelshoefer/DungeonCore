@@ -2,6 +2,7 @@ package spell;
 
 import java.lang.annotation.Target;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import dungeon.DoorInfo;
@@ -48,6 +49,6 @@ public class DefaultTargetScope implements TargetScope {
 			}
 			return doorsWithLock;
 		}
-		return null;
+		return Collections.emptyList();
 	}
 }

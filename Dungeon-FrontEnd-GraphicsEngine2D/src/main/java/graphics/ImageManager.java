@@ -228,6 +228,8 @@ public class ImageManager {
 
 	public static JDImageProxy<?> floorImage;
 
+	public static JDImageProxy<?>[] floorImageArray = new JDImageProxy<?>[8];
+
 	public static JDImageProxy<?>[] floorImage_darkArray = new JDImageProxy<?>[8];
 
 	public static JDImageProxy<?>[] floorImage_mediumArray = new JDImageProxy<?>[8];
@@ -243,8 +245,6 @@ public class ImageManager {
 	public static JDImageProxy<?> floorImage6;
 
 	public static JDImageProxy<?> floorImage7;
-
-	public static JDImageProxy<?>[] floorImageArray = new JDImageProxy<?>[8];
 
 	public static JDImageProxy<?> fountainImage;
 

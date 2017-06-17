@@ -5,11 +5,11 @@ import dungeon.JDPoint;
 
 public class JDRectangle implements DrawingRectangle {
 
-	private final int x;
-	private final int y;
-	private final int width;
-	private final int height;
-
+	private  int x;
+	private  int y;
+	private  int width;
+	private  int height;
+/*
 	public JDRectangle(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
@@ -30,6 +30,8 @@ public class JDRectangle implements DrawingRectangle {
 		this.width = d.getWidth();
 		this.height = d.getHeight();
 	}
+
+*/
 
 	public int getX() {
 		return x;

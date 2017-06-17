@@ -31,7 +31,7 @@ import de.jdungeon.game.Image;
 public class DungeonSelectionScreen extends MenuScreen {
 
 
-	private DungeonSession session;
+	private final DungeonSession session;
 	private final DungeonManager dungeonManager;
 	private final int offset;
 	private final AbstractImageLoader imageLoader;

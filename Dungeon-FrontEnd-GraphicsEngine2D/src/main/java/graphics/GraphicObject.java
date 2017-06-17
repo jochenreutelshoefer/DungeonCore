@@ -42,7 +42,7 @@ public class GraphicObject {
 	protected boolean rim = false;
 	protected JDImageProxy<?> image;
 
-	public GraphicObject(Object ob, JDRectangle rectangle, JDColor c, JDImageProxy<?> i) {
+	public GraphicObject(Object ob, DrawingRectangle rectangle, JDColor c, JDImageProxy<?> i) {
 
 		this.rect = rectangle;
 		this.c = c;
@@ -50,8 +50,8 @@ public class GraphicObject {
 		image = i;
 	}
 
-	public GraphicObject(Object object, JDRectangle rectangle, JDColor color,
-			JDImageProxy<?> i, JDRectangle clickRect) {
+	public GraphicObject(Object object, DrawingRectangle rectangle, JDColor color,
+			JDImageProxy<?> i, DrawingRectangle clickRect) {
 
 		this.rect = rectangle;
 		this.c = color;
@@ -60,7 +60,7 @@ public class GraphicObject {
 		image = i;
 	}
 
-	public GraphicObject(Object ob, JDRectangle o, JDColor c, boolean rim,
+	public GraphicObject(Object ob, DrawingRectangle o, JDColor c, boolean rim,
 			JDImageProxy<?> i) {
 		this.rim = rim;
 		this.rect = o;

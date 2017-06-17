@@ -1,6 +1,7 @@
 package graphics.util;
 
 import dungeon.JDPoint;
+import util.JDDimension;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -13,17 +14,33 @@ public class RelativeRectangle implements DrawingRectangle {
 	private final int offsetInRoomX;
 	private final int offsetInRoomY;
 
-	public RelativeRectangle(int width, int height, int offsetInRoomX, int offsetInRoomY) {
+	public RelativeRectangle(int offsetInRoomX, int offsetInRoomY, int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.offsetInRoomX = offsetInRoomX;
 		this.offsetInRoomY = offsetInRoomY;
 	}
 
+	public RelativeRectangle(JDPoint pointRelativeInRoom, int width, int height) {
+		this.offsetInRoomX = pointRelativeInRoom.getX();
+		this.offsetInRoomY = pointRelativeInRoom.getY();
+		this.width = width;
+		this.height = height;
+	}
+
+	public RelativeRectangle(JDPoint pointRelativeInRoom, JDDimension dimension) {
+		this.offsetInRoomX = pointRelativeInRoom.getX();
+		this.offsetInRoomY = pointRelativeInRoom.getY();
+		this.width = dimension.getWidth();
+		this.height = dimension.getHeight();
+	}
+
 	@Override
 	public boolean containsPoint(JDPoint p, int roomOffsetX, int roomOffsetY) {
-			return p.getX() >= roomOffsetX && p.getX() <= roomOffsetX + width && p.getY() >= roomOffsetY
-					&& p.getY() <= roomOffsetY + height;
+			return p.getX() >= roomOffsetX + offsetInRoomX
+					&& p.getX() <= roomOffsetX + offsetInRoomX + width
+					&& p.getY() >= roomOffsetY + offsetInRoomY
+					&& p.getY() <= roomOffsetY + offsetInRoomY + height;
 	}
 
 	@Override

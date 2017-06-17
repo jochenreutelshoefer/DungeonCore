@@ -1,20 +1,25 @@
 package graphics;
+
 import dungeon.JDPoint;
 import graphics.util.DrawingRectangle;
 import graphics.util.JDRectangle;
 import graphics.util.RelativeRectangle;
 
-public class JDImageLocated implements DrawingRectangle {
-
+/**
+ * @author Jochen Reutelshoefer (denkbares GmbH)
+ * @created 17.06.17.
+ */
+public class JDImageLocatedRelative extends JDImageLocated implements DrawingRectangle {
 
 	private final JDImageProxy<?> image;
-	private  RelativeRectangle relativeRectangle;
+	private RelativeRectangle relativeRectangle;
 	private final int sizeX;
 	private final int sizeY;
 	private  int posY;
 	private  int posX;
 
-	public JDImageLocated(JDImageProxy<?> i, int posX, int posY, int sizeX, int sizeY) {
+	public JDImageLocatedRelative(JDImageProxy<?> i, int posX, int posY, int sizeX, int sizeY) {
+		super(i, 0,0,0,0);  // only temporary
 		image = i;
 		this.posX = posX;
 		this.posY = posY;
@@ -23,16 +28,8 @@ public class JDImageLocated implements DrawingRectangle {
 
 	}
 
-	public JDImageLocated(JDImageProxy<?> i, JDRectangle r) {
-		image = i;
-		this.posX = r.getX();
-		this.posY = r.getY();
-		this.sizeX = r.getWidth();
-		this.sizeY = r.getHeight();
-
-	}
-
-	public JDImageLocated(JDImageProxy<?> i, RelativeRectangle relativeRectangle) {
+	public JDImageLocatedRelative(JDImageProxy<?> i, RelativeRectangle relativeRectangle) {
+		super(i, relativeRectangle);
 		image = i;
 
 		this.relativeRectangle = relativeRectangle;
@@ -62,7 +59,7 @@ public class JDImageLocated implements DrawingRectangle {
 		if(relativeRectangle != null) {
 			return relativeRectangle.getX(roomOffsetX);
 		}
-		return posX;
+		return roomOffsetX + posX;
 	}
 
 	@Override
@@ -70,9 +67,10 @@ public class JDImageLocated implements DrawingRectangle {
 		if(relativeRectangle != null) {
 			return relativeRectangle.getY(roomOffsetY);
 		}
-		return posY;
+		return roomOffsetY + posY;
 	}
 
+	@Override
 	public JDImageProxy<?> getImage() {
 		return image;
 	}
