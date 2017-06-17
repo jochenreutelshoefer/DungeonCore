@@ -591,16 +591,16 @@ public class GraphicObjectRenderer {
 	}
 
 
-	private static GraphicObject drawAMonster(MonsterInfo m, JDPoint p, int roomSize) {
+	private static GraphicObject drawAMonster(MonsterInfo m, JDPoint absoluteCoordinates, int roomSize) {
 
 		JDDimension figureInfoSize = getFigureInfoSize(m, roomSize);
 		int sizeX = figureInfoSize.getWidth();
 		int sizeY = figureInfoSize.getHeight();
-		JDRectangle rect = new JDRectangle(new JDPoint(p.getX() - (sizeX / 2),
-				p.getY() - (sizeY / 2)), sizeX, sizeY);
+		JDRectangle rect = new JDRectangle(new JDPoint(absoluteCoordinates.getX() - (sizeX / 2),
+				absoluteCoordinates.getY() - (sizeY / 2)), sizeX, sizeY);
 		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, m.getLookDirection()), rect);
 
-		if (m.isDead() != null && m.isDead().booleanValue()) {
+		if (m.isDead() != null && m.isDead()) {
 			AnimationSet set = AnimationUtils.getFigure_tipping_over(m);
 			if (set != null && set.getLength() > 0) {
 				JDImageProxy<?> i = set.getImagesNr(set.getLength() - 1);
@@ -608,10 +608,10 @@ public class GraphicObjectRenderer {
 			}
 		}
 
-		int mouseSize = roomSize / 5;
+		int fifthRoomSize = roomSize / 5;
 		return new JDGraphicObject(ob, m, rect, JDColor.WHITE, new JDRectangle(
-				p.getX() - mouseSize / 2, p.getY() - mouseSize / 2, mouseSize,
-				mouseSize));
+				absoluteCoordinates.getX() - fifthRoomSize / 2, absoluteCoordinates.getY() - fifthRoomSize / 2, fifthRoomSize,
+				fifthRoomSize));
 	}
 
 	public static JDDimension getMonsterSize(MonsterInfo m, double roomSize) {
@@ -645,7 +645,7 @@ public class GraphicObjectRenderer {
 
 	}
 
-	private GraphicObject[] drawMonster(int xcoord, int ycoord,
+	private GraphicObject[] drawMonster(int roomOffsetX, int roomOffsetY,
 			List<MonsterInfo> monsterList) {
 		if (monsterList == null) {
 			return new GraphicObject[] {};
@@ -661,8 +661,8 @@ public class GraphicObjectRenderer {
 			int position = m.getPositionInRoomIndex();
 
 			GraphicObject gr = drawAMonster(m, new JDPoint(
-					getPositionCoordModified(position).getX() + xcoord,
-					getPositionCoordModified(position).getY() + ycoord), roomSize);
+					getPositionCoordModified(position).getX() + roomOffsetX,
+					getPositionCoordModified(position).getY() + roomOffsetY), roomSize);
 			if (i >= 8) {
 				break;
 			}
@@ -1068,7 +1068,7 @@ public class GraphicObjectRenderer {
 	}
 
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r,
-			Object obj, int xcoord, int ycoord, List<?> animatedObs) {
+			Object obj, int roomOffsetX, int roomOffsetY, List<?> animatedObs) {
 		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
 		if (r == null) {
 			return graphObs;
@@ -1077,13 +1077,13 @@ public class GraphicObjectRenderer {
 		/*
 		 * room
 		 */
-		GraphicObject roomOb = drawBackGround(xcoord, ycoord, r, this);
+		GraphicObject roomOb = drawBackGround(roomOffsetX, roomOffsetY, r, this);
 		graphObs.add(roomOb);
 
 		/*
 		 * wall
 		 */
-		Collection<GraphicObject> wallOb = drawWall(xcoord, ycoord, r);
+		Collection<GraphicObject> wallOb = drawWall(roomOffsetX, roomOffsetY, r);
 		if (wallOb != null) {
 			graphObs.addAll(wallOb);
 		}
@@ -1091,7 +1091,7 @@ public class GraphicObjectRenderer {
 		/*
 		 * wall south
 		 */
-		GraphicObject wallObSouth = drawWallSouth(xcoord, ycoord, r);
+		GraphicObject wallObSouth = drawWallSouth(roomOffsetX, roomOffsetY, r);
 		if (wallObSouth != null) {
 			graphObs.add(wallObSouth);
 		}
@@ -1099,7 +1099,7 @@ public class GraphicObjectRenderer {
 		/*
 		 * doors
 		 */
-		graphObs.addAll(drawDoors(r, xcoord, ycoord));
+		graphObs.addAll(drawDoors(r, roomOffsetX, roomOffsetY));
 
 		int status = r.getVisibilityStatus();
 
@@ -1111,8 +1111,8 @@ public class GraphicObjectRenderer {
 				for (int i = 0; i < positionCoord.length; i++) {
 					int posSize = ROOMSIZE_BY_8;
 					GraphicObject ob = new GraphicObject(
-							r.getPositionInRoom(i), new JDRectangle(xcoord
-									+ getPositionCoord(i).getX(), ycoord
+							r.getPositionInRoom(i), new JDRectangle(roomOffsetX
+									+ getPositionCoord(i).getX(), roomOffsetY
 									+ getPositionCoord(i).getY(), posSize,
 									posSize), JDColor.BLACK,
 							ImageManager.fieldImage);
@@ -1123,7 +1123,7 @@ public class GraphicObjectRenderer {
 			}
 
 			graphObs.add(new GraphicObject(r, new JDRectangle(new JDPoint(
-					xcoord, ycoord
+					roomOffsetX, roomOffsetY
 							- getDoorDimension(true, roomSize).getWidth()),
 					new JDDimension(roomSize, roomSize)), JDColor.DARK_GRAY,
 					ImageManager.wall_sidesImage));
@@ -1131,7 +1131,7 @@ public class GraphicObjectRenderer {
 			GraphicObject ob = null;
 			if (r.getShrine() != null) {
 				ShrineInfo s = r.getShrine();
-				ob = getShrineGraphicObject(s, xcoord, ycoord);
+				ob = getShrineGraphicObject(s, roomOffsetX, roomOffsetY);
 				graphObs.add(ob);
 			}
 
@@ -1139,12 +1139,12 @@ public class GraphicObjectRenderer {
 				GraphicObject chestOb;
 				if (r.getChest().hasLock()) {
 					chestOb = new GraphicObject(r.getChest(),
-							new JDRectangle(getChestPoint(xcoord, ycoord),
+							new JDRectangle(getChestPoint(roomOffsetX, roomOffsetY),
 									getChestDimension()), new JDColor(140, 90,
 									20), ImageManager.chest_lockImage);
 				} else {
 					chestOb = new GraphicObject(r.getChest(),
-							new JDRectangle(getChestPoint(xcoord, ycoord),
+							new JDRectangle(getChestPoint(roomOffsetX, roomOffsetY),
 									getChestDimension()), new JDColor(140, 90,
 									20), ImageManager.chestImage);
 				}
@@ -1153,7 +1153,7 @@ public class GraphicObjectRenderer {
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
 			if (r.getMonsterInfos() != null && !r.getMonsterInfos().isEmpty()) {
-				GraphicObject[] monsterObs = drawMonster(xcoord, ycoord,
+				GraphicObject[] monsterObs = drawMonster(roomOffsetX, roomOffsetY,
 						r.getMonsterInfos());
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
@@ -1170,7 +1170,7 @@ public class GraphicObjectRenderer {
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
 
-			GraphicObject[] itObs = drawItems(xcoord, ycoord, r.getItemArray(),
+			GraphicObject[] itObs = drawItems(roomOffsetX, roomOffsetY, r.getItemArray(),
 					roomSize);
 			for (int i = 0; i < itObs.length; i++) {
 				GraphicObject o = itObs[i];
@@ -1183,7 +1183,7 @@ public class GraphicObjectRenderer {
 
 		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
-					new JDRectangle(getSpotPoint(xcoord, ycoord),
+					new JDRectangle(getSpotPoint(roomOffsetX, roomOffsetY),
 							getSpotDimension()), new JDColor(0, 0, 0),
 					ImageManager.spotImage);
 			graphObs.add(spotOb);
@@ -1193,7 +1193,7 @@ public class GraphicObjectRenderer {
 		if (!heroInfos.isEmpty()) {
 			for (HeroInfo heroInfo : heroInfos) {
 				if (!animatedObs.contains(heroInfo)) {
-					GraphicObject heroObject = drawHero(xcoord, ycoord,
+					GraphicObject heroObject = drawHero(roomOffsetX, roomOffsetY,
 							heroInfo, this);
 					if (heroObject != null) {
 						graphObs.add(heroObject);

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -22,7 +23,6 @@ import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.SpotInfo;
-import event.ActionEvent;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -61,7 +61,6 @@ import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.ZoomButton;
-import de.jdungeon.androidapp.gui.itemWheel.ItemActivityItemProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
@@ -390,8 +389,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		getDungeonRenderer().clear();
 
 		// at which room we have to start drawing
-		int roomCoordinateX = (int) (viewportPosition.getX() / roomSize);
-		int roomCoordinateY = (int) (viewportPosition.getY() / roomSize);
+		int startingRoomNumberX = (int) (viewportPosition.getX() / roomSize);
+		int startingRoomNumberY = (int) (viewportPosition.getY() / roomSize);
 
 		// how many cols and rows we have to paint to cover screen
 		int roomCols = (int) (game.getScreenWidth() / roomSize) + 1;
@@ -399,12 +398,12 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 		int col = 0;
 		while (col <= roomCols) {
-			int roomNumberX = roomCoordinateX + col;
+			int roomNumberX = startingRoomNumberX + col;
 			col++;
 			int row = 0;
 
 			while (row <= roomRows) {
-				int roomNumberY = roomCoordinateY + row;
+				int roomNumberY = startingRoomNumberY + row;
 				row++;
 
 				RoomInfo roomInfo = RoomInfo.makeRoomInfo(derDungeon
@@ -415,9 +414,26 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				if (roomInfo != null) {
 					int roomOffsetX = (int) (roomNumberX * roomSize);
 					int roomOffsetY = (int) (roomNumberY * roomSize);
-					DrawUtils.paintSingleRoom(this, gr, roomInfo, roomOffsetX,
-							roomOffsetY);
+					List<GraphicObject> graphicObjectsForRoom = getDungeonRenderer()
+							.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
+									roomOffsetY, new ArrayList<>());
+					clearNulls(graphicObjectsForRoom);
+					putGraphicObjects(roomInfo.getPoint(), graphicObjectsForRoom);
+					DrawUtils.drawObjects(gr, graphicObjectsForRoom,
+							getViewportPosition(), roomInfo, (int)getRoomSize(),
+							roomOffsetX, roomOffsetY, this);
+
 				}
+			}
+		}
+	}
+
+	private void clearNulls(List<?> l) {
+		Iterator<?> iterator = l.iterator();
+		while (iterator.hasNext()) {
+			Object o = iterator.next();
+			if (o == null) {
+				iterator.remove();
 			}
 		}
 	}
@@ -435,7 +451,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public synchronized void update(float arg0) {
 
-		if(this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().size() == 0) {
+		if(this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().isEmpty()) {
 			// we need to switch back to skills mode as user has not the respective button in this case
 			toggleSkillVersusRoomItemWheel();
 		}
@@ -766,18 +782,19 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (roomObjects == null) {
 			return null;
 		}
-
-		return findClickedObjectsInRoom(inGameLocation, roomObjects);
+		int roomOffsetX = (int) (roomNrX * roomSize);
+		int roomOffsetY = (int) (roomNrY * roomSize);
+		return findClickedObjectsInRoom(inGameLocation, roomObjects, roomOffsetX, roomOffsetY);
 	}
 
 	private Object findClickedObject(JDPoint p) {
 
-		JDPoint screenLocation = new JDPoint(p.getX(), p.getY());
 
 		JDPoint inGameLocation = new JDPoint(viewportPosition.getX()
-				+ screenLocation.getX(), viewportPosition.getY()
-				+ screenLocation.getY());
+				+ p.getX(), viewportPosition.getY()
+				+ p.getY());
 
+		// TODO: why do we need to adjust click location here, but not when long pressed?
 		JDPoint adjustedClickLocation = new JDPoint(inGameLocation.getX(),
 				inGameLocation.getY());
 
@@ -790,16 +807,18 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (roomObjects == null) {
 			return null;
 		}
-		return findClickedObjectsInRoom(inGameLocation, roomObjects);
+		int roomOffsetX = (int) (roomNrX * roomSize);
+		int roomOffsetY = (int) (roomNrY * roomSize);
+		return findClickedObjectsInRoom(inGameLocation, roomObjects, roomOffsetX, roomOffsetY);
 	}
 
 	private Object findClickedObjectsInRoom(JDPoint inGameLocation,
-											List<GraphicObject> roomObjects) {
+											List<GraphicObject> roomObjects, int roomOffsetX, int roomOffsetY) {
 		Collections.sort(roomObjects, new GraphicObjectComparator());
 		Object clickedObject = null;
 		if (roomObjects != null) {
 			for (GraphicObject graphicObject : roomObjects) {
-				if (graphicObject.hasPoint(inGameLocation)) {
+				if (graphicObject.hasPoint(inGameLocation, roomOffsetX, roomOffsetY)) {
 					clickedObject = graphicObject.getClickableObject();
 					break;
 				}
@@ -1033,8 +1052,13 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return dungeonRenderer;
 	}
 
+	@Deprecated
 	public Map<JDPoint, List<GraphicObject>> getDrawnObjects() {
 		return drawnObjects;
+	}
+
+	public void putGraphicObjects(JDPoint point, List<GraphicObject> graphicObjectsForRoom) {
+		drawnObjects.put(point, graphicObjectsForRoom);
 	}
 
 	public FigureInfo getFigureInfo() {

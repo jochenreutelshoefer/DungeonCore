@@ -48,7 +48,7 @@ public class RoomObservationStatus {
 		this.point = p;
 	}
 
-	public List<VisibilityModifier> getVisibilityModifier() {
+	public synchronized List<VisibilityModifier> getVisibilityModifier() {
 		return Collections.unmodifiableList(visibilityModifier);
 	}
 
@@ -66,7 +66,7 @@ public class RoomObservationStatus {
 		}
 	}
 
-	public void resetVisibilityStatus() {
+	public synchronized void resetVisibilityStatus() {
 		
 		/*
 		 * determine current maximum visibility level
@@ -92,7 +92,7 @@ public class RoomObservationStatus {
 		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), visibilityStatus);
 	}
 
-	private int getMaxVisModifierValue(int max) {
+	private synchronized int getMaxVisModifierValue(int max) {
 		for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
 				.hasNext();) {
 			VisibilityModifier element = iter.next();
@@ -103,28 +103,28 @@ public class RoomObservationStatus {
 		return max;
 	}
 
-	public int getVisibilityStatus() {
+	public synchronized int getVisibilityStatus() {
 		if(JDEnv.visCheat) {
 			return VISIBILITY_SECRET;
 		}
 		return Math.max(discoveryStatus, getMaxVisModifierValue(VISIBILITY_UNDISCOVERED));
 	}
 
-	public void setVisibilityStatus(int newVisbility) {
+	public  synchronized void setVisibilityStatus(int newVisbility) {
 		this.visibilityStatus = newVisbility;
 		discoveryStatus = Math.min(VISIBILITY_SHRINE, Math.max(discoveryStatus, newVisbility));
 		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), newVisbility);
 		
 	}
 
-	public void addVisibilityModifier(VisibilityModifier mod) {
+	public synchronized void addVisibilityModifier(VisibilityModifier mod) {
 		if(!visibilityModifier.contains(mod)) {
 			visibilityModifier.add(mod);
 			this.setVisibilityStatus(mod.getVisibilityStatus());
 		}
 	}
 
-	public boolean removeVisibilityModifier(Object o) {
+	public synchronized boolean removeVisibilityModifier(Object o) {
 		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), getVisibilityStatus());
 		return visibilityModifier.remove(o);
 	}

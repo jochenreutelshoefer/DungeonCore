@@ -8,13 +8,14 @@
  */
 package graphics;
 
+import graphics.util.DrawingRectangle;
 import graphics.util.JDRectangle;
 import util.JDColor;
 import dungeon.JDPoint;
 
 public class GraphicObject {
 
-	public JDRectangle getRectangle() {
+	public DrawingRectangle getRectangle() {
 		return rect;
 	}
 
@@ -31,8 +32,8 @@ public class GraphicObject {
 		}
 	}
 
-	protected JDRectangle rect;
-	protected JDRectangle clickRect;
+	protected DrawingRectangle rect;
+	protected DrawingRectangle clickRect;
 	protected JDColor c;
 
 	protected boolean flipped = false;
@@ -41,21 +42,21 @@ public class GraphicObject {
 	protected boolean rim = false;
 	protected JDImageProxy<?> image;
 
-	public GraphicObject(Object ob, JDRectangle o, JDColor c, JDImageProxy<?> i) {
+	public GraphicObject(Object ob, JDRectangle rectangle, JDColor c, JDImageProxy<?> i) {
 
-		this.rect = o;
+		this.rect = rectangle;
 		this.c = c;
 		clickedObject = ob;
 		image = i;
 	}
 
-	public GraphicObject(Object ob, JDRectangle o, JDColor c,
+	public GraphicObject(Object object, JDRectangle rectangle, JDColor color,
 			JDImageProxy<?> i, JDRectangle clickRect) {
 
-		this.rect = o;
-		this.c = c;
+		this.rect = rectangle;
+		this.c = color;
 		this.clickRect = clickRect;
-		clickedObject = ob;
+		clickedObject = object;
 		image = i;
 	}
 
@@ -80,16 +81,18 @@ public class GraphicObject {
 		return c;
 	}
 
-	public boolean hasPoint(JDPoint p) {
+	public boolean hasPoint(JDPoint p, int roomOffsetX, int roomOffsetY) {
 		if (clickRect != null) {
-			return clickRect.containsPoint(p);
+			return clickRect.containsPoint(p, roomOffsetX, roomOffsetY);
 		}
 		if (rect != null) {
-			return rect.containsPoint(p);
+			return rect.containsPoint(p, roomOffsetX, roomOffsetY);
 		} else {
 			return false;
 		}
 	}
+
+
 
 	/**
 	 * @return Returns the flipped.

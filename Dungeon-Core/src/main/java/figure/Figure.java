@@ -1523,19 +1523,21 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 	}
 
-	private ActionResult handleScoutAction(ScoutAction a, boolean doIt) {
+	private ActionResult handleScoutAction(ScoutAction action, boolean doIt) {
 		if (this.getActionPoints() < 1) {
 			return ActionResult.NOAP;
 		}
-		int dir = a.getDirection();
+		int dir = action.getDirection();
 		if (pos.getIndex() != getDirPos(dir)) {
 			return ActionResult.POSITION;
 		}
-
+		Room toScout = getRoom().getNeighbourRoom(dir);
+		if(toScout == null) {
+			return ActionResult.INVALID;
+		}
 		if (doIt) {
 			lookDir = dir;
-			ScoutResult result = scout(a);
-			Room toScout = getRoom().getNeighbourRoom(dir);
+			ScoutResult result = scout(action);
 
 			//getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
 			//		result.getVisibilityStatus());

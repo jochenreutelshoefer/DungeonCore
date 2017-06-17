@@ -8,11 +8,10 @@ import graphics.ImageManager;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
+import graphics.util.DrawingRectangle;
 import graphics.util.JDRectangle;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import animation.AnimationFrame;
@@ -31,12 +30,7 @@ import util.JDDimension;
 
 public class DrawUtils {
 
-	public static void drawImageNormalized(Graphics g, GraphicObject ob) {
-		JDRectangle destinationRectOrig = ob.getRectangle();
-	}
-
-
-	private static void drawObjects(Graphics g,
+	public static void drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
 			JDPoint viewportPosition, RoomInfo roomInfo, int roomSize,
 			int roomOffsetX, int roomOffsetY, GameScreen screen) {
@@ -80,7 +74,7 @@ public class DrawUtils {
 					boolean drawHighlightBoxOnTopOfItem = clickedObject instanceof DoorInfo;
 					if (!drawHighlightBoxOnTopOfItem) {
 						drawHighlightBox(g, viewportPosition, screen,
-								jdGraphicObject, clickedObject);
+								jdGraphicObject, clickedObject, roomOffsetX, roomOffsetY);
 					}
 
 					/*
@@ -94,7 +88,7 @@ public class DrawUtils {
 
 					if (drawHighlightBoxOnTopOfItem) {
 						drawHighlightBox(g, viewportPosition, screen,
-								jdGraphicObject, clickedObject);
+								jdGraphicObject, clickedObject, roomOffsetX, roomOffsetY);
 					}
 
 					if (showText != null) {
@@ -125,7 +119,7 @@ public class DrawUtils {
 					}
 
 					if (image != null) {
-						JDRectangle destinationRectangle = graphicObject
+						DrawingRectangle destinationRectangle = graphicObject
 								.getRectangle();
 						/*
 						 * draw highlight background if necessary
@@ -133,7 +127,7 @@ public class DrawUtils {
 						if (clickedObject instanceof InfoEntity) {
 							InfoEntity highlightedEntity = screen
 									.getHighlightedEntity();
-							highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, destinationRectangle);
+							highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, destinationRectangle, roomOffsetX, roomOffsetY);
 						}
 
 						/*
@@ -142,9 +136,9 @@ public class DrawUtils {
 
 						g.drawScaledImage(
 								image,
-								destinationRectangle.getX()
+								destinationRectangle.getX(roomOffsetX)
 										- viewportPosition.getX(),
-								destinationRectangle.getY()
+								destinationRectangle.getY(roomOffsetY)
 										- viewportPosition.getY(),
 								destinationRectangle.getWidth(),
 								destinationRectangle.getHeight(), 0, 0,
@@ -209,27 +203,27 @@ public class DrawUtils {
 	}
 
 	private static void drawHighlightBox(Graphics g, JDPoint viewportPosition,
-			GameScreen screen, JDGraphicObject jdGraphicObject,
-			Object clickedObject) {
+										 GameScreen screen, JDGraphicObject jdGraphicObject,
+										 Object clickedObject, int roomOffsetX, int roomOffsetY) {
 		/*
 		 * draw highlight background if necessary
 		 */
 		if (clickedObject instanceof InfoEntity) {
 			InfoEntity highlightedEntity = screen.getHighlightedEntity();
-			JDRectangle rectangle = jdGraphicObject.getRectangle();
-			highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, rectangle);
+			DrawingRectangle rectangle = jdGraphicObject.getRectangle();
+			highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, rectangle, roomOffsetX, roomOffsetY);
 		}
 	}
 
-	private static void highlight(Graphics g, JDPoint viewportPosition, GameScreen screen, Object clickedObject, InfoEntity highlightedEntity, JDRectangle rectangle) {
+	private static void highlight(Graphics g, JDPoint viewportPosition, GameScreen screen, Object clickedObject, InfoEntity highlightedEntity, DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
 		if (highlightedEntity != null) {
 			if (clickedObject.equals(highlightedEntity)) {
 				Image highlightImage = screen.getGuiImageManager().getImage(
 						GUIImageManager.HIGHLIGHT);
 
 
-				int x1 = rectangle.getX() - viewportPosition.getX();
-				int y1 = rectangle.getY() - viewportPosition.getY();
+				int x1 = rectangle.getX(roomOffsetX) - viewportPosition.getX();
+				int y1 = rectangle.getY(roomOffsetY) - viewportPosition.getY();
 				int x2 = x1 + rectangle.getWidth();
 				int y2 = y1 + rectangle.getHeight();
 
@@ -264,26 +258,7 @@ public class DrawUtils {
 		g.drawLine(x2, y1, x2, y2, yellow);
 	}
 
-	private static void clearNulls(List<?> l) {
-		Iterator<?> iterator = l.iterator();
-		while (iterator.hasNext()) {
-			Object o = iterator.next();
-			if (o == null) {
-				iterator.remove();
-			}
-		}
-	}
 
-	public static void paintSingleRoom(GameScreen screen, Graphics g,
-			RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
-		List<GraphicObject> graphicObjectsForRoom = screen.getDungeonRenderer()
-				.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
-						roomOffsetY, new ArrayList<>());
-		clearNulls(graphicObjectsForRoom);
-		screen.getDrawnObjects()
-				.put(roomInfo.getPoint(), graphicObjectsForRoom);
-		DrawUtils.drawObjects(g, graphicObjectsForRoom,
-				screen.getViewportPosition(), roomInfo, (int)screen.getRoomSize(),
-				roomOffsetX, roomOffsetY, screen);
-	}
+
+
 }
