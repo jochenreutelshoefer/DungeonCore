@@ -2,13 +2,18 @@ package de.jdungeon.androidapp.gui.smartcontrol;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
+import event.Event;
+import event.EventListener;
 import event.EventManager;
+import event.WorldChangedEvent;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
@@ -20,14 +25,11 @@ import graphics.GraphicObjectRenderer;
 import item.ItemInfo;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.event.ClickedTakeItemButton;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
-import de.jdungeon.androidapp.gui.DrawGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
-import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
@@ -37,7 +39,7 @@ import de.jdungeon.game.Input;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.16.
  */
-public class SmartControl extends ContainerGUIElement {
+public class SmartControl extends ContainerGUIElement implements EventListener{
 
 	private final List<GUIElement> allGuiElements = new ArrayList<>();
 	private final Collection<GUIElement> positionElements = new ArrayList<>();
@@ -53,6 +55,7 @@ public class SmartControl extends ContainerGUIElement {
 	private final int x02;
 	private final int y13;
 	private final JDPoint[] doorCoordinates;
+	private boolean worldHasChanged = true;
 
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure) {
 		super(position, dimension, screen, game);
@@ -75,14 +78,18 @@ public class SmartControl extends ContainerGUIElement {
 				new JDPoint(doorOuterBorderWidth, y13)
 		};
 
-		updateAllElements();
+		EventManager.getInstance().registerListener(this);
+		updateAllElementsIfNecessary();
 	}
 
-	private void updateAllElements() {
-		updatePositionElements();
-		updateDoorElements();
-		updateMoveElements();
-		updateTakeElement();
+	private void updateAllElementsIfNecessary() {
+		if(worldHasChanged) {
+			updatePositionElements();
+			updateDoorElements();
+			updateMoveElements();
+			updateTakeElement();
+			worldHasChanged = false;
+		}
 	}
 
 	private void updateMoveElements() {
@@ -262,7 +269,7 @@ public class SmartControl extends ContainerGUIElement {
 
 	@Override
 	public void update(float time) {
-		updateAllElements();
+		updateAllElementsIfNecessary();
 
 		allGuiElements.clear();
 		allGuiElements.addAll(doorElements);
@@ -274,6 +281,20 @@ public class SmartControl extends ContainerGUIElement {
 	@Override
 	public boolean isVisible() {
 		return true;
+	}
+
+	@Override
+	public Collection<Class<? extends Event>> getEvents() {
+		Set<Class<? extends Event>> result = new HashSet<>();
+		result.add(WorldChangedEvent.class);
+		return result;
+	}
+
+	@Override
+	public void notify(Event event) {
+		if(event instanceof WorldChangedEvent) {
+			this.worldHasChanged = true;
+		}
 	}
 
 	/*

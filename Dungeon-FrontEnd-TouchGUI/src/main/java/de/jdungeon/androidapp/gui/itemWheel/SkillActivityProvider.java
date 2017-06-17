@@ -189,7 +189,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				List<? extends InfoEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(info);
 				Set<Class<? extends InfoEntity>> classes = getEntityClasses(targetEntitiesInScope);
 				if (highlightedEntity != null && !classes.contains(highlightedEntity.getClass())) {
-					// something completely wrong is selected in gui
+					// something completely wrong for this spell is selected by the user in the gui
 					// we discard the selection and see whether auto target detection will work
 					// or otherwise the user will be informed
 					screen.setHighlightedEntity(null);
@@ -264,7 +264,9 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 	private Set<Class<? extends InfoEntity>> getEntityClasses(List<? extends InfoEntity> targetEntitiesInScope) {
 		Set<Class<? extends InfoEntity>> result = new HashSet<>();
 		for (InfoEntity infoEntity : targetEntitiesInScope) {
-			result.add(infoEntity.getClass());
+			if(infoEntity != null) {
+				result.add(infoEntity.getClass());
+			}
 		}
 		return result;
 	}

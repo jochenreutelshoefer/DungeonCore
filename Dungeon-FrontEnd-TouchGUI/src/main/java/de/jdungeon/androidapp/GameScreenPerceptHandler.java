@@ -253,6 +253,10 @@ public class GameScreenPerceptHandler {
 			Music music = screen.getGame().getAudio().createMusic("music/" + "Dark_Times.mp3");
 			music.play();
 		}
+		// we reset highlighted entity if a selected figure was killed
+		if(deadFigure.equals(this.screen.getHighlightedEntity())) {
+			this.screen.setHighlightedEntity(null);
+		}
 
 		AnimationSet set = AnimationUtils.getFigure_tipping_over(deadFigure);
 		if (set != null) {

@@ -25,6 +25,8 @@ import dungeon.Room;
 import dungeon.util.DungeonUtils;
 import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
+import event.EventManager;
+import event.WorldChangedEvent;
 import fight.Frightening;
 import fight.Poisoning;
 import fight.Slap;
@@ -775,8 +777,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				}
 				cnt++;
 
+				// TODO: unify action processing in fight and non-fight case
 				ActionResult res = processAction(a);
-
+				if(res.equals(ActionResult.DONE)) {
+					EventManager.getInstance().fireEvent(new WorldChangedEvent());
+				}
 				control.actionDone(a, res);
 
 				if (getRoom().getFight() != null) {
@@ -843,9 +848,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					}
 				}
 
+
 			}
 
+			// TODO: unify action processing in fight and non-fight case
 			res = processAction(a);
+			if(res.equals(ActionResult.DONE)) {
+				EventManager.getInstance().fireEvent(new WorldChangedEvent());
+			}
 			control.actionDone(a, res);
 
 		}
