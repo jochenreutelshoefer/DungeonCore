@@ -96,7 +96,6 @@ public class Control implements EventListener {
 
 	private void handlePosInfoClick(PositionInRoomInfo pos, boolean doubleClick) {
 		actionAssembler.positionClicked(pos, doubleClick);
-
 	}
 
 	private void handleShrineInfoClick(ShrineInfo info, boolean doubleClick) {

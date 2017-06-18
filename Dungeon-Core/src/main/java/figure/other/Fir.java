@@ -15,6 +15,7 @@ public class Fir extends ConjuredMagicFigure {
 	public Fir(int value, Dungeon d) {
 		super(value, 25);
 		construcHelp(value);
+		this.setActualDungeon(d);
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
 				this.getRoomVisibility());

@@ -240,7 +240,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				selectedIndexItem, null);
 		this.guiElements.add(itemWheelHeroItems);
 
-
 		JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth, screenWidth);
 		/*
 		 * init skills wheel
@@ -397,7 +396,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		int roomRows = (int) (game.getScreenHeight() / roomSize) + 1;
 
 		boolean resetWorldChangedAfterwards = false;
-		if(worldHasChanged) {
+		if (worldHasChanged) {
 			resetWorldChangedAfterwards = true;
 		}
 
@@ -421,13 +420,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 					int roomOffsetY = (int) (roomNumberY * roomSize);
 					List<GraphicObject> graphicObjectsForRoom;
 					// TODO: consider graphic object caching on room level
-					if(worldHasChanged) {
+					if (worldHasChanged) {
 						// world has changed, hence we need to newly generate graphic objects
 						graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
 						drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
-					} else {
+					}
+					else {
 						graphicObjectsForRoom = drawnObjects.get(roomInfo.getPoint());
-						if(graphicObjectsForRoom == null) {
+						if (graphicObjectsForRoom == null) {
 							// obviously room has not yet been drawn, i.e. has just scrolled into view
 							// hence we have to create the objects
 							graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
@@ -436,7 +436,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 					}
 
 					DrawUtils.drawObjects(gr, graphicObjectsForRoom,
-							getViewportPosition(), roomInfo, (int)getRoomSize(),
+							getViewportPosition(), roomInfo, (int) getRoomSize(),
 							roomOffsetX, roomOffsetY, this);
 
 				}
@@ -444,7 +444,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 		// close world changed flag;
 		// as long as it stays false, the cached graphic objects are used for rendering
-		if(resetWorldChangedAfterwards) {
+		if (resetWorldChangedAfterwards) {
 			worldHasChanged = false;
 		}
 	}
@@ -482,7 +482,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public synchronized void update(float arg0) {
 
-		if(this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().isEmpty()) {
+		if (this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().isEmpty()) {
 			// we need to switch back to skills mode as user has not the respective button in this case
 			toggleSkillVersusRoomItemWheel();
 		}
@@ -553,10 +553,18 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 				if (!guiOP) {
 					Object clickedObject = findClickedObject(doubleTapCoordinates);
-					control.objectClicked(clickedObject, true);
-					setInfoEntity(((InfoEntity) clickedObject));
-					setHighlightedEntity(((InfoEntity) clickedObject));
-					// scrollTo(this.figureInfo.getRoomNumber(), 10f);
+					if (clickedObject != null) {
+						if (clickedObject.equals(getHighlightedEntity())) {
+							// object was already highlighted before
+							// hence we can trigger an action
+							control.objectClicked(clickedObject, true);
+						}
+						else {
+							setHighlightedEntity(((InfoEntity) clickedObject));
+						}
+						setInfoEntity(((InfoEntity) clickedObject));
+						// scrollTo(this.figureInfo.getRoomNumber(), 10f);
+					}
 				}
 
 				// flush events and quit processing
@@ -782,6 +790,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private void handleClickEvent(TouchEvent touchEvent) {
 
+		//System.out.println(System.currentTimeMillis()+" "+touchEvent);
 		Boolean dead = this.figureInfo.isDead();
 		if (dead != null && dead) {
 			gameOverView.setShow(true);
@@ -790,14 +799,13 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		JDPoint p = new JDPoint(touchEvent.x, touchEvent.y);
 		Object clickedObject = findClickedObject(p);
 		if (clickedObject != null) {
-			if ((highlightedEntity != null && highlightedEntity
-					.equals(clickedObject))
-					|| (!(clickedObject instanceof FigureInfo))) {
-
+			if (clickedObject.equals(getHighlightedEntity())) {
+				// it was already selected, hence we should trigger an action new
 				control.objectClicked(clickedObject, false);
+			} else {
+				setHighlightedEntity(((InfoEntity) clickedObject));
 			}
 			setInfoEntity(((InfoEntity) clickedObject));
-			setHighlightedEntity(((InfoEntity) clickedObject));
 		}
 	}
 
@@ -823,7 +831,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private Object findClickedObject(JDPoint p) {
 
-
 		JDPoint inGameLocation = new JDPoint(viewportPosition.getX()
 				+ p.getX(), viewportPosition.getY()
 				+ p.getY());
@@ -843,19 +850,17 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 		int roomOffsetX = (int) (roomNrX * roomSize);
 		int roomOffsetY = (int) (roomNrY * roomSize);
-		return findClickedObjectsInRoom(inGameLocation, roomObjects, roomOffsetX, roomOffsetY);
+		return findClickedObjectsInRoom(inGameLocation, new ArrayList<>(roomObjects), roomOffsetX, roomOffsetY);
 	}
 
 	private Object findClickedObjectsInRoom(JDPoint inGameLocation,
 											List<GraphicObject> roomObjects, int roomOffsetX, int roomOffsetY) {
 		Collections.sort(roomObjects, new GraphicObjectComparator());
 		Object clickedObject = null;
-		if (roomObjects != null) {
-			for (GraphicObject graphicObject : roomObjects) {
-				if (graphicObject.hasPoint(inGameLocation, roomOffsetX, roomOffsetY)) {
-					clickedObject = graphicObject.getClickableObject();
-					break;
-				}
+		for (GraphicObject graphicObject : roomObjects) {
+			if (graphicObject.hasPoint(inGameLocation, roomOffsetX, roomOffsetY)) {
+				clickedObject = graphicObject.getClickableObject();
+				break;
 			}
 		}
 		return clickedObject;
@@ -873,14 +878,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	public void showVisibilityIncrease(List<JDPoint> points) {
 		JDPoint heroRoom = this.getFigureInfo().getRoomInfo().getPoint();
-		if(points.contains(heroRoom)) {
+		if (points.contains(heroRoom)) {
 			// entered current room, no need to do animation
 			points.remove(heroRoom);
-			if(points.size() == 0) {
+			if (points.size() == 0) {
 				return;
 			}
 		}
-		if(points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
+		if (points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
 			scrollTo(points.get(0), 50);
 			return;
 		}
@@ -893,7 +898,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			scrollFromTo(last, p, 30, 70);
 			last = p;
 		}
-		if(points.size() == 1) {
+		if (points.size() == 1) {
 			zoomToSize(30, 70, (int) this.roomSize, last);
 		}
 		// scroll back to hero
@@ -1201,7 +1206,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			toggleSkillVersusRoomItemWheel();
 		}
 		if (event instanceof WorldChangedEvent) {
-					worldHasChanged = true;
+			worldHasChanged = true;
 		}
 	}
 
@@ -1209,16 +1214,16 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	 * Switch/toggle between skill- and room-items ItemWheel
 	 */
 	private void toggleSkillVersusRoomItemWheel() {
-		if(roomItemWheelShowing) {
+		if (roomItemWheelShowing) {
 			itemWheelRoomItems.setVisible(false);
 			itemWheelSkills.setVisible(true);
 			roomItemWheelShowing = false;
-		} else {
+		}
+		else {
 			itemWheelRoomItems.setVisible(true);
 			itemWheelSkills.setVisible(false);
 			roomItemWheelShowing = true;
 		}
 	}
-
 
 }

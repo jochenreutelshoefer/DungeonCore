@@ -169,7 +169,7 @@ public class ItemWheel extends AbstractGUIElement {
 		int diffX = p.getX() - this.position.getX();
 		int diffY = p.getY() - this.position.getY();
 		double hypot = Math.hypot(diffX, diffY);
-		return hypot < radius + 50;
+		return hypot < radius + 40;
 	}
 
 	@Override
