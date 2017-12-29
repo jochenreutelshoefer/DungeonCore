@@ -8,7 +8,7 @@ import org.w3c.dom.events.Event;
  */
 public class DungeonSelectedEvent extends event.Event {
 
-	private DungeonFactory dungeon;
+	private final DungeonFactory dungeon;
 
 	public DungeonSelectedEvent(DungeonFactory dungeon) {
 		this.dungeon = dungeon;

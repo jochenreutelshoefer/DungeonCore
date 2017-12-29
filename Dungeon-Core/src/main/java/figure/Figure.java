@@ -50,6 +50,7 @@ import figure.action.SpellAction;
 import figure.action.StepAction;
 import figure.action.SuicideAction;
 import figure.action.TakeItemAction;
+import figure.action.TakeItemFromChestAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.action.result.ActionResult;
@@ -779,7 +780,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 				// TODO: unify action processing in fight and non-fight case
 				ActionResult res = processAction(a);
-				if(res.equals(ActionResult.DONE)) {
+				if (res.equals(ActionResult.DONE)) {
 					EventManager.getInstance().fireEvent(new WorldChangedEvent());
 				}
 				control.actionDone(a, res);
@@ -848,12 +849,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					}
 				}
 
-
 			}
 
 			// TODO: unify action processing in fight and non-fight case
 			res = processAction(a);
-			if(res.equals(ActionResult.DONE)) {
+			if (res.equals(ActionResult.DONE)) {
 				EventManager.getInstance().fireEvent(new WorldChangedEvent());
 			}
 			control.actionDone(a, res);
@@ -1197,18 +1197,17 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	public abstract boolean canTakeItem(Item i);
 
-	private ActionResult handleTakeItemAction(
-			TakeItemAction a, boolean doIt) {
+	private ActionResult handleTakeItemFromChestAction(TakeItemFromChestAction a, boolean doIt) {
 		boolean fight = this.getRoom().fightRunning();
 		if (fight) {
 			if (this.canPayFightActionPoint()) {
 				ItemInfo info = a.getItem();
-				Item it = getRoom().getItem(info);
-				if (this.isAbleToTakeItemInFight(it)) {
-					if (this.getRoom().hasItem(it)) {
-						if (this.canTakeItem(it)) {
+				Item item = getRoom().getChest().getItem(info);
+				if (this.isAbleToTakeItemInFight(item)) {
+					if (this.getRoom().getChest().hasItem(item)) {
+						if (this.canTakeItem(item)) {
 							if (doIt) {
-								this.takeItem(it);
+								this.takeItem(item);
 								this.payFightActionPoint();
 								return ActionResult.DONE;
 							}
@@ -1228,12 +1227,63 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 		else {
 			ItemInfo info = a.getItem();
-			Item it = getRoom().getItem(info);
-			if (this.isAbleToTakeItem(it)) {
-				if (this.getRoom().hasItem(it)) {
-					if (this.canTakeItem(it)) {
+			Item item = getRoom().getChest().getItem(info);
+			if (this.isAbleToTakeItem(item)) {
+				if (this.getRoom().getChest().hasItem(item)) {
+					if (this.canTakeItem(item)) {
 						if (doIt) {
-							this.takeItem(it);
+							this.takeItem(item);
+							return ActionResult.DONE;
+						}
+						else {
+							return ActionResult.POSSIBLE;
+						}
+					}
+				}
+			}
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
+					ActionResult.IMPOSSIBLE_REASON_OTHER);
+
+		}
+	}
+
+	private ActionResult handleTakeItemAction(
+			TakeItemAction a, boolean doIt) {
+		boolean fight = this.getRoom().fightRunning();
+		if (fight) {
+			if (this.canPayFightActionPoint()) {
+				ItemInfo info = a.getItem();
+				Item item = getRoom().getItem(info);
+				if (this.isAbleToTakeItemInFight(item)) {
+					if (this.getRoom().hasItem(item)) {
+						if (this.canTakeItem(item)) {
+							if (doIt) {
+								this.takeItem(item);
+								this.payFightActionPoint();
+								return ActionResult.DONE;
+							}
+							else {
+								return ActionResult.POSSIBLE;
+							}
+						}
+					}
+				}
+				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
+						ActionResult.IMPOSSIBLE_REASON_OTHER);
+			}
+			else {
+				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
+						ActionResult.IMPOSSIBLE_REASON_NOAP);
+			}
+		}
+		else {
+			ItemInfo info = a.getItem();
+			Item item = getRoom().getItem(info);
+			if (this.isAbleToTakeItem(item)) {
+				if (this.getRoom().hasItem(item)) {
+					if (this.canTakeItem(item)) {
+						if (doIt) {
+							this.takeItem(item);
 							return ActionResult.DONE;
 						}
 						else {
@@ -1355,10 +1405,13 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			return handleMoveAction((MoveAction) a, doIt);
 		}
 		if (a instanceof TakeItemAction) {
-			return handleTakeItemAction((TakeItemAction) a, /* false, */doIt);
+			return handleTakeItemAction((TakeItemAction) a, doIt);
+		}
+		if (a instanceof TakeItemFromChestAction) {
+			return handleTakeItemFromChestAction((TakeItemFromChestAction) a, doIt);
 		}
 		if (a instanceof UseItemAction) {
-			return handleUseItemAction(((UseItemAction) a)/* , false */, doIt);
+			return handleUseItemAction(((UseItemAction) a), doIt);
 		}
 		if (a instanceof StepAction) {
 			return handleStepAction(((StepAction) a), doIt);
@@ -1458,6 +1511,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	private ActionResult handleStepAction(StepAction a, boolean doIt) {
+		int targetIndex = a.getTargetIndex();
+		if (targetIndex == -1) {
+			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
+					ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
+		}
 		if (getRoom().fightRunning()) {
 			if (canPayFightActionPoint()) {
 
@@ -1465,12 +1523,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 							ActionResult.IMPOSSIBLE_REASON_OTHER);
 				}
-				int field = a.getTargetIndex();
-				if (field == -1) {
-					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-							ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
-				}
-				Position newPos = getRoom().getPositions()[field];
+
+				Position newPos = getRoom().getPositions()[targetIndex];
 				Figure neighbour;
 
 				int oldPosIndex = pos.getIndex();
@@ -1479,7 +1533,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					if (neighbour == null) {
 						if (doIt) {
 
-							doStepTo(field, oldPosIndex);
+							doStepTo(targetIndex, oldPosIndex);
 							this.payFightActionPoint();
 							return ActionResult.DONE;
 
@@ -1501,7 +1555,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (this.getActionPoints() < 1) {
 				return ActionResult.NOAP;
 			}
-			Position newPos = getRoom().getPositions()[a.getTargetIndex()];
+
+			Position newPos = getRoom().getPositions()[targetIndex];
 			if (newPos.getFigure() != null) {
 				return ActionResult.WRONG_TARGET;
 			}
@@ -1532,7 +1587,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			return ActionResult.POSITION;
 		}
 		Room toScout = getRoom().getNeighbourRoom(dir);
-		if(toScout == null) {
+		if (toScout == null) {
 			return ActionResult.INVALID;
 		}
 		if (doIt) {

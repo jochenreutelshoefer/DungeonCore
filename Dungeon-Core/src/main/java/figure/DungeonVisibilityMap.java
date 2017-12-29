@@ -98,7 +98,15 @@ public class DungeonVisibilityMap {
 	public RoomObservationStatus getStatusObject(JDPoint p) {
 		if (p == null)
 			return null;
-		return rooms[p.getX()][p.getY()];
+		int x = p.getX();
+		int y = p.getY();
+		if(x < 0 || x > rooms.length-1) {
+			return null;
+		}
+		if(y < 0 || y > rooms[0].length-1) {
+			return null;
+		}
+		return rooms[x][y];
 	}
 
 	public void setVisibilityStatus(int x, int y, int status) {

@@ -925,11 +925,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 
-	@Override
-	public Item getItemNumber(int i) {
-		return items.get(i);
-	}
-
 
 	@Override
 	public void recover() {

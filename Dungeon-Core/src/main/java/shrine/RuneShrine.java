@@ -78,6 +78,12 @@ public void metaClick(Figure f) {
 		
 			return null;
 	}
+
+	@Override
+	public boolean hasItem(Item i) {
+		return false;
+	}
+
 	@Override
 	public Room getRoom() {
 			return this.location; 
@@ -168,14 +174,6 @@ public void metaClick(Figure f) {
 			return null;
 	}
 	
-	@Override
-	public Item getItemNumber(int i) {
-		if(i == 0) {
-			return r;
-		}
-		return null;
-	}
-
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_rune_name")+": " + Integer.toString(index);

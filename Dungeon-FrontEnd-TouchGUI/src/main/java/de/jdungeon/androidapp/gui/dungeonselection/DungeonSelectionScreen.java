@@ -14,6 +14,7 @@ import level.DungeonManager;
 import user.DungeonSession;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.audio.MusicManager;
 import de.jdungeon.androidapp.gui.DrawGUIElement;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
 import de.jdungeon.androidapp.gui.SimpleImageGUIElement;
@@ -23,6 +24,7 @@ import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
+import de.jdungeon.game.Music;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -109,10 +111,6 @@ public class DungeonSelectionScreen extends MenuScreen {
 			JDPoint tilePosition = new JDPoint(x-DungeonSelectionTile.TILE_WIDTH/2, y);
 			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage));
 
-
-
-
-
 			innerStageIndex++;
 		}
 	}
@@ -128,6 +126,8 @@ public class DungeonSelectionScreen extends MenuScreen {
 	@Override
 	public void init() {
 
+		Music music = this.game.getAudio().createMusic("music/" + "For_the_Fallen.mp3");
+		MusicManager.getInstance().playMusic(music);
 	}
 
 

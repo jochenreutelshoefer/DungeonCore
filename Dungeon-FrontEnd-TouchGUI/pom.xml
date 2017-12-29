@@ -32,5 +32,10 @@
 			<artifactId>Dungeon-App-Core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>jo</version>
+		</dependency>
 	</dependencies>
 </project>

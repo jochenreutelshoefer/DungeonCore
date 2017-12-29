@@ -76,10 +76,6 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	}
 
 
-	@Override
-	public Item getItemNumber(int i) {
-		return items.get(i);
-	}
 
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
@@ -103,7 +99,10 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return null;
 	}
 
-
+	@Override
+	public boolean hasItem(Item i) {
+		return items.contains(i);
+	}
 
 	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {

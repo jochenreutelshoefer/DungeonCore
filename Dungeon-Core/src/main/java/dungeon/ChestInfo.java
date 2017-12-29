@@ -14,6 +14,7 @@ import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,4 +66,12 @@ public class ChestInfo extends InfoEntity {
 		return infos;
 	}
 
+	public List<ItemInfo> getItemList() {
+		return Arrays.asList(getItems());
+	}
+
+	@Override
+	public int hashCode() {
+		return chest != null ? chest.hashCode() : 0;
+	}
 }

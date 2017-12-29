@@ -134,7 +134,7 @@ public abstract class StandardScreen extends Screen {
 		/*
 		 * clear background
 		 */
-		gr.drawRect(0, 0, this.game.getScreenWidth() * 2,
+		gr.fillRect(0, 0, this.game.getScreenWidth() * 2,
 				this.game.getScreenHeight() * 2, Colors.BLACK);
 
 

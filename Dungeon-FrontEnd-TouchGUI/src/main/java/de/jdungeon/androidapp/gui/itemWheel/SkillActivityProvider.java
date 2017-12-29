@@ -263,6 +263,9 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 
 	private Set<Class<? extends InfoEntity>> getEntityClasses(List<? extends InfoEntity> targetEntitiesInScope) {
 		Set<Class<? extends InfoEntity>> result = new HashSet<>();
+		if(targetEntitiesInScope == null) {
+			return result;
+		}
 		for (InfoEntity infoEntity : targetEntitiesInScope) {
 			if(infoEntity != null) {
 				result.add(infoEntity.getClass());

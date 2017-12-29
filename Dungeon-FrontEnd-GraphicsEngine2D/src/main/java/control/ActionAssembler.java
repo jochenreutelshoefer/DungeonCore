@@ -63,11 +63,6 @@ public class ActionAssembler implements EventListener {
 		EventManager.getInstance().registerListener(this);
 	}
 
-	public void wannaAttack(int index) {
-		wannaAttack(getFigure().getRoomInfo().getFigureInfos()
-				.get(index).getFighterID());
-	}
-
 	public void setGui(JDGUIEngine2D gui) {
 		this.gui = gui;
 	}

@@ -29,7 +29,7 @@ public interface ItemOwner {
 		
 	Item getItem(ItemInfo it);
 	
-	Item getItemNumber(int k);
+	boolean hasItem(Item i);
 
 	JDPoint getLocation();
 

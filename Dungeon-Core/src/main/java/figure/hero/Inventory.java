@@ -352,7 +352,6 @@ public class Inventory implements Serializable {
 	/**
 	 * Man kann ihm hier Schild aufsetzen
 	 * 
-	 * @param h
 	 *            a <code>shield</code> value
 	 * @return a <code>boolean</code> value
 	 */
@@ -899,4 +898,34 @@ public class Inventory implements Serializable {
 		return l;
 	}
 
+	public boolean hasItem(Item i) {
+		for (Item item : items) {
+			if(item.equals(i)) {
+				return true;
+			}
+		}
+
+		boolean found = checkArray(weapons, i);
+		if(found) return true;
+
+		found = checkArray(armors, i);
+		if(found) return true;
+
+		found = checkArray(helmets, i);
+		if(found) return true;
+
+		found = checkArray(shields, i);
+		if(found) return true;
+
+		return false;
+	}
+
+	private boolean checkArray(Object[] weapons, Item i) {
+		for (Object weapon : weapons) {
+			if(i.equals(weapon)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -3,6 +3,7 @@ package level.stageone;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
 import dungeon.generate.ReachabilityChecker;
 import dungeon.generate.RectArea;
+import dungeon.generate.undo.SetChestAction;
+import dungeon.generate.undo.SetShrineAction;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuest1x1;
 import dungeon.quest.RoomQuest2x2;
@@ -116,6 +119,21 @@ public class StartLevel extends AbstractDungeonFactory {
 			entryRoom = dungeon.getRoom(this.getHeroEntryPoint());
 			filler.addAllocatedRoom(entryRoom);
 			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+
+
+
+			// CHEST TEST
+			List<Item> itemsL = new LinkedList<Item>();
+			Item it1 = ItemPool.getRandomItem(25, 1);
+			Item it2 = ItemPool.getRandomItem(30, 1.5);
+			if (it1 != null) {
+				itemsL.add(it1);
+			}
+			if (it2 != null) {
+				itemsL.add(it2);
+			}
+			Chest ch = new Chest(itemsL);
+			entryRoom.setChest(ch);
 
 			remainingKeys.addAll(allKeys);
 			remainingKeys.remove(exitKey);

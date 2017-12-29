@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.event;
+package de.jdungeon.androidapp.gui.itemWheel;
 
 import event.Event;
 
@@ -6,5 +6,5 @@ import event.Event;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 04.01.17.
  */
-public class ClickedTakeItemButton extends Event {
+public class TakeItemButtonClickedEvent extends Event {
 }

@@ -4,6 +4,7 @@ import java.awt.*;
 
 import dungeon.JDPoint;
 
+import de.jdungeon.androidapp.audio.MusicManager;
 import de.jdungeon.androidapp.event.QuitGameEvent;
 import de.jdungeon.androidapp.event.StartNewGameEvent;
 import de.jdungeon.androidapp.gui.SimpleButton;
@@ -29,12 +30,12 @@ public class WelcomeScreen extends MenuScreen {
 
 	@Override
 	protected String getHeaderString() {
-		return "Willkommen bei <Untitled Dungeon Game>";
+		return "Willkommen bei Dungeon Forever";
 	}
 
 	@Override
 	public void init() {
 		Music music = this.game.getAudio().createMusic("music/" + "Exciting_Trailer.mp3");
-		music.play();
+		MusicManager.getInstance().playMusic(music);
 	}
 }

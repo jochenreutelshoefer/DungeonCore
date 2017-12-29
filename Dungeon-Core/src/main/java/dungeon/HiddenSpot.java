@@ -63,7 +63,12 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		}
 		return null;
 	}
-	
+
+	@Override
+	public boolean hasItem(Item i) {
+		return items.contains(i);
+	}
+
 	public MemoryObject getMemoryObject(FigureInfo info) {
 		return new SpotMemory();
 	}
@@ -81,11 +86,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new SpotInfo(this,map);
 	}
-	@Override
-	public Item getItemNumber(int i) {
-		return items.get(i);
-	}
-	
+
 	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] array = new ItemInfo[items.size()];

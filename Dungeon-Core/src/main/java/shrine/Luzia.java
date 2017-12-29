@@ -91,11 +91,6 @@ public class Luzia extends Shrine implements ItemOwner {
 		return null;
 	}
 
-	@Override
-	public Item getItemNumber(int i) {
-		return items.get(i);
-	}
-
 	public void setReqItem(Item req) {
 		requestedItem = req;
 	}
@@ -121,6 +116,11 @@ public class Luzia extends Shrine implements ItemOwner {
 
 		}
 		return null;
+	}
+
+	@Override
+	public boolean hasItem(Item i) {
+		return false;
 	}
 
 	@Override

@@ -200,7 +200,7 @@ public class AndroidGraphics implements Graphics {
 	public void drawRect(int x, int y, int width, int height, de.jdungeon.game.Color color) {
 		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
-		paint.setStyle(Style.FILL);
+		paint.setStyle(Style.STROKE);
 		canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
 	}
 

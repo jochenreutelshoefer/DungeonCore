@@ -304,11 +304,6 @@ public class Room extends DungeonWorldObject implements
 		return (s instanceof Statue);
 	}
 
-	@Override
-	public Item getItemNumber(int i) {
-		return items.get(i);
-	}
-
 	public boolean directionPassable(int dir) {
 		return doors[dir - 1] != null && doors[dir - 1].isPassable(null);
 	}

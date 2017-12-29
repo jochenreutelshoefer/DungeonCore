@@ -105,7 +105,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			Log.severe("Invalid hero category code: "+value);
 			return null;
 		}
-		private int code;
+		private final int code;
 		HeroCategory(int value) {
 			this.code = value;
 		}
@@ -153,7 +153,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	public Map<String, String> getHighScoreData(String playerName,
 			String comment,
 			boolean reg, boolean liga, HeroInfo h) {
-		return new HashMap();
+		return new HashMap<>();
 	}
 
 	@Override
@@ -217,10 +217,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private Room[][] memory;
 
-	@Override
-	public Item getItemNumber(int i) {
-		return inv.getItemNumber(i);
-	}
 
 	@Override
 	public int getItemIndex(Item it) {
@@ -489,6 +485,11 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	@Override
 	public boolean takeItem(Item i) {
 		return getInventory().takeItem(i, i.getOwner());
+	}
+
+	@Override
+	public boolean hasItem(Item i) {
+		return getInventory().hasItem(i);
 	}
 
 	@Override

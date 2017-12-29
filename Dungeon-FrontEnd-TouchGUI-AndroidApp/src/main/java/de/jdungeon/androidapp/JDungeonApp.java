@@ -92,7 +92,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		if(event instanceof DungeonSelectedEvent) {
 			this.dungeonSession.initDungeon(((DungeonSelectedEvent)event).getDungeon());
 
-			// TODO: solve this wierd bidirectional dependency in a better way..
+			// TODO: solve this weird bidirectional dependency in a better way..
 			AndroidScreenJDGUI gui = new AndroidScreenJDGUI(this);
 			GameScreen screen = new GameScreen(this, gui);
 			gui.setPerceptHandler(screen);
@@ -124,6 +124,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		this.state = state;
 	}
 
+	@Override
 	public Configuration getConfiguration() {
 		return new DefaultConfiguration();
 	}

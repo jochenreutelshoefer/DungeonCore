@@ -8,6 +8,7 @@ import android.content.res.AssetManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.Log;
 import org.apache.log4j.Logger;
 
 import de.jdungeon.game.Audio;
@@ -15,13 +16,13 @@ import de.jdungeon.game.Music;
 import de.jdungeon.game.Sound;
 
 public class AndroidAudio implements Audio {
-    private AssetManager assets;
+    private final AssetManager assets;
 
 	public SoundPool getSoundPool() {
 		return soundPool;
 	}
 
-	private SoundPool soundPool;
+	private final SoundPool soundPool;
 
     public AndroidAudio(Activity activity) {
         activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -69,10 +70,7 @@ public class AndroidAudio implements Audio {
             return new AndroidSound(soundPool, soundId);
 
 		} catch (IOException e) {
-			System.out.println("Couldn't load sound '" + filename + "'");
-			System.out.println(e.getMessage());
-			// throw new RuntimeException("Couldn't load sound '" + filename +
-			// "'");
+			Log.w("Warning","Couldn't load sound '" + filename + "'"+ e.getMessage());
 			return null;
         }
 

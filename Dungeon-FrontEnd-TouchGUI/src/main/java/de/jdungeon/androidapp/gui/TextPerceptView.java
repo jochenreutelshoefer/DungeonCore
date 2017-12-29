@@ -18,7 +18,7 @@ import dungeon.JDPoint;
 public class TextPerceptView extends AbstractGUIElement {
 
 	private final List<Statement> cache = new ArrayList<Statement>();
-	private List<Statement> all = new ArrayList<Statement>();
+	private List<Statement> all = new ArrayList<>();
 	private Statement currentInsert = null;
 	private static final float animationTime = 10f;
 	private float timer = 0;
@@ -60,15 +60,13 @@ public class TextPerceptView extends AbstractGUIElement {
 		}
 
 		if (all.size() > 200) {
-			List<Statement> latest = all.subList(all.size() - 20, all.size());
-			all = latest;
+			all = all.subList(all.size() - 20, all.size());
 		}
 
 	}
 
 	private void animateNextPercept() {
-		Statement percept = cache.remove(0);
-		currentInsert = percept;
+		currentInsert = cache.remove(0);
 		timer = 0;
 	}
 
@@ -87,7 +85,7 @@ public class TextPerceptView extends AbstractGUIElement {
 		g.drawRect(this.position.getX() - 1, this.position.getY() - 1,
 				this.dimension.getWidth() + 2, this.dimension.getHeight() + 2,
 				Colors.GRAY);
-		g.drawRect(this.position.getX(), this.position.getY(),
+		g.fillRect(this.position.getX(), this.position.getY(),
 				this.dimension.getWidth(), this.dimension.getHeight(),
 				Colors.BLACK);
 		

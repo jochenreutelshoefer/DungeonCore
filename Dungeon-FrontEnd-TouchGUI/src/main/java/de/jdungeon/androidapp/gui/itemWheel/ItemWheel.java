@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import event.EventManager;
+import log.Log;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
@@ -26,6 +27,7 @@ public class ItemWheel extends AbstractGUIElement {
 	private static final double TWO_PI = Math.PI * 2;
 	private final JDPoint[] points = new JDPoint[36];
 	private final int hightlightItemPosition;
+	private final String title;
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
 	private int markedPointIndex;
@@ -61,9 +63,10 @@ public class ItemWheel extends AbstractGUIElement {
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
-					 Image background) {
+					 Image background, String title) {
 		super(position, dim, screen, game);
 		this.hightlightItemPosition = selectedIndex;
+		this.title = title;
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
@@ -226,6 +229,22 @@ public class ItemWheel extends AbstractGUIElement {
 		g.drawOval(position.getX(), position.getY(), dimension.getWidth(),
 				dimension.getHeight(), Colors.BLUE);
 		this.binding.getSize();
+
+		// headline and title
+		int xLeft = position.getX() - this.getDimension().getWidth()*2 / 5 - 20;
+		int xRight = position.getX() + this.getDimension().getWidth()*2 / 5 + 20;
+		int posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight()/12;
+		g.drawLine(xLeft,posY, xRight, posY, Colors.WHITE);
+		int stepDown = 10;
+		int stepLength = 50;
+		g.drawLine(xLeft- stepLength,posY+ stepDown, xLeft, posY+ stepDown, Colors.WHITE);
+		g.drawLine(xLeft, posY, xLeft, posY + stepDown, Colors.WHITE);
+		g.drawLine(xRight, posY+ stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
+		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
+		g.drawString(title, xLeft-25, posY+stepDown-1, g.getPaintWhite());
+		g.drawString(title, xRight+25, posY+stepDown-1, g.getPaintWhite());
+
+
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
 			int x = points[toDraw].getX();
@@ -256,7 +275,7 @@ public class ItemWheel extends AbstractGUIElement {
 
 				Image im = binding.getProvider().getActivityImage(activity);
 				if (im == null) {
-					System.out.println("Activity image is null: "
+					Log.warning("Activity image is null: "
 							+ activity);
 				}
 

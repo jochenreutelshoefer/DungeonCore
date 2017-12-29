@@ -1,19 +1,16 @@
-
 package figure.action;
 
 import item.ItemInfo;
 
 /**
- * Gegenstand-Aufnehm-Aktion. Enthaelt den Gegenstand, der aufgenommen werden soll.
- *
+ * @author Jochen Reutelshoefer (denkbares GmbH)
+ * @created 27.12.17.
  */
-
-public class TakeItemAction extends Action {
+public class TakeItemFromChestAction extends Action {
 	private final ItemInfo item;
-	public TakeItemAction(ItemInfo it) {
-		super();
+	public TakeItemFromChestAction(ItemInfo it) {
 		this.item = it;
-		
+
 	}
 
 	/**
@@ -22,4 +19,5 @@ public class TakeItemAction extends Action {
 	public ItemInfo getItem() {
 		return item;
 	}
+
 }

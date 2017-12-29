@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -23,13 +24,18 @@ import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import graphics.GraphicObjectRenderer;
 import item.ItemInfo;
+import shrine.ShrineInfo;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.event.ClickedTakeItemButton;
+import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
+import de.jdungeon.androidapp.gui.SubGUIElementRelative;
+import de.jdungeon.androidapp.gui.itemWheel.ChestItemButtonClickedEvent;
+import de.jdungeon.androidapp.gui.itemWheel.TakeItemButtonClickedEvent;
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
@@ -39,13 +45,16 @@ import de.jdungeon.game.Input;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.16.
  */
-public class SmartControl extends ContainerGUIElement implements EventListener{
+public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private final List<GUIElement> allGuiElements = new ArrayList<>();
 	private final Collection<GUIElement> positionElements = new ArrayList<>();
 	private final Collection<GUIElement> doorElements = new ArrayList<>();
 	private final Collection<GUIElement> moveElements = new ArrayList<>();
 	private final Collection<GUIElement> takeItemElements = new ArrayList<>();
+	private final Collection<GUIElement> chestElements = new ArrayList<>();
+	private final Collection<GUIElement> shrineElements = new ArrayList<>();
+	private final GUIElement frame;
 	private final FigureInfo figure;
 	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
@@ -78,16 +87,38 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 				new JDPoint(doorOuterBorderWidth, y13)
 		};
 
+		frame = new SubGUIElement(
+				new JDPoint(0, this.getDimension().getHeight() * 0.05),
+				new JDDimension(this.getDimension().getWidth(), (int)(this.getDimension().getHeight() * 0.9))
+				, this) {
+			@Override
+			public boolean isVisible() {
+				return true;
+			}
+
+			@Override
+			public void paint(Graphics g, JDPoint viewportPosition) {
+				JDPoint absolutePosition = new JDPoint(parent.getPositionOnScreen().getX() + this.getPositionOnScreen()
+						.getX(), parent.getPositionOnScreen()
+						.getY() + this.getPositionOnScreen()
+						.getY());
+				Color borderColor = Colors.WHITE;
+				DrawUtils.drawRectangle(g, borderColor, absolutePosition, this.getDimension());
+			}
+		};
+
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
 	}
 
 	private void updateAllElementsIfNecessary() {
-		if(worldHasChanged) {
+		if (worldHasChanged) {
 			updatePositionElements();
 			updateDoorElements();
 			updateMoveElements();
 			updateTakeElement();
+			updateChestElement();
+			updateShrineElement();
 			worldHasChanged = false;
 		}
 	}
@@ -99,29 +130,30 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 		RoomInfo roomInfo = figure.getRoomInfo();
 		DoorInfo[] doors = roomInfo.getDoors();
 
-		if(figure.getRoomInfo().fightRunning()) {
+		if (figure.getRoomInfo().fightRunning()) {
 			int positionInRoomIndex = figure.getPositionInRoomIndex();
-			if(positionInRoomIndex == 1) {
-				if(checkFleeAction()) {
+			if (positionInRoomIndex == 1) {
+				if (checkFleeAction()) {
 					addDoorNorth(moveElementSize, moveElementDimension);
 				}
 			}
-			if(positionInRoomIndex == 3) {
-				if(checkFleeAction()) {
+			if (positionInRoomIndex == 3) {
+				if (checkFleeAction()) {
 					addDoorEast(moveElementSize, moveElementDimension);
 				}
 			}
-			if(positionInRoomIndex == 5) {
-				if(checkFleeAction()) {
+			if (positionInRoomIndex == 5) {
+				if (checkFleeAction()) {
 					addDoorSouth(moveElementSize, moveElementDimension);
 				}
 			}
-			if(positionInRoomIndex == 7) {
-				if(checkFleeAction()) {
+			if (positionInRoomIndex == 7) {
+				if (checkFleeAction()) {
 					addDoorWest(moveElementSize, moveElementDimension);
 				}
 			}
-		} else {
+		}
+		else {
 
 			if (doors[0] != null && doors[0].isPassable()) {
 				addDoorNorth(moveElementSize, moveElementDimension);
@@ -181,23 +213,53 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 		int takeElementSize = 25;
 		if (!items.isEmpty()) {
 			final JDDimension dimension = new JDDimension(takeElementSize, takeElementSize);
-			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 2 - takeElementSize/2, getDimension().getHeight() / 2 - takeElementSize/2);
-			takeItemElements.add(new SubGUIElement(posRelative, dimension, this) {
-					@Override
-					public void paint(Graphics g, JDPoint viewportPosition) {
-						JDPoint parentPosition = parent.getPositionOnScreen();
-						JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
-						g.fillRect(absolutePosition.getX(), absolutePosition.getY(), dimension.getWidth(), dimension.getHeight(), Colors.WHITE);
-					}
-
+			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
+			takeItemElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
 				@Override
-				public boolean isVisible() {
+				public boolean handleTouchEvent(Input.TouchEvent touch) {
+					EventManager.getInstance().fireEvent(new TakeItemButtonClickedEvent());
 					return true;
 				}
+			});
+		}
+	}
+
+	private void updateShrineElement() {
+		shrineElements.clear();
+		RoomInfo roomInfo = figure.getRoomInfo();
+		ShrineInfo shrine = roomInfo.getShrine();
+		int shrineElementSize = 30;
+		if (shrine != null) {
+			final JDDimension dimension = new JDDimension(shrineElementSize, shrineElementSize);
+			final JDPoint posRelative = new JDPoint(getDimension().getWidth() * 5 / 7, getDimension()
+					.getHeight() / 4 - shrineElementSize / 2);
+			shrineElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
+				@Override
+				public boolean handleTouchEvent(Input.TouchEvent touch) {
+					EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
+					return true;
+				}
+			});
+		}
+	}
+
+	private void updateChestElement() {
+		chestElements.clear();
+		ChestInfo chest = figure.getRoomInfo().getChest();
+		if (chest == null) {
+			return;
+		}
+		List<ItemInfo> items = figure.getRoomInfo().getChest().getItemList();
+		int takeElementSizeX = 30;
+		int takeElementSizeY = 20;
+		if (!items.isEmpty()) {
+			final JDDimension dimension = new JDDimension(takeElementSizeX, takeElementSizeY);
+			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
+			chestElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
 
 				@Override
 				public boolean handleTouchEvent(Input.TouchEvent touch) {
-					EventManager.getInstance().fireEvent(new ClickedTakeItemButton());
+					EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
 					return true;
 				}
 			});
@@ -217,7 +279,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 			int positionSize = 26;
 			Action action = new StepAction(i);
 			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
-			JDPoint position = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionSize / 2, correctionY + positionCoord.getY() + positionAreaOffset - positionSize / 2);
+			JDPoint position = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionSize / 2, correctionY + positionCoord
+					.getY() + positionAreaOffset - positionSize / 2);
 			JDDimension positionDimension = new JDDimension(positionSize, positionSize);
 			// TODO: cache this
 			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
@@ -250,7 +313,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 									this,
 									null, color, otherFigure));
 				}
-			} else {
+			}
+			else {
 				positionElements.add(
 						new PositionElement(
 								new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord
@@ -270,12 +334,14 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 	@Override
 	public void update(float time) {
 		updateAllElementsIfNecessary();
-
 		allGuiElements.clear();
+		allGuiElements.add(frame);
 		allGuiElements.addAll(doorElements);
 		allGuiElements.addAll(positionElements);
 		allGuiElements.addAll(moveElements);
 		allGuiElements.addAll(takeItemElements);
+		allGuiElements.addAll(chestElements);
+		allGuiElements.addAll(shrineElements);
 	}
 
 	@Override
@@ -292,7 +358,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener{
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof WorldChangedEvent) {
+		if (event instanceof WorldChangedEvent) {
 			this.worldHasChanged = true;
 		}
 	}
