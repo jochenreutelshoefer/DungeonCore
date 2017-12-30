@@ -36,15 +36,19 @@ public class InfoPanel extends SlidingGUIElement {
 	}
 
 	private Paragraphable content;
+
 	private boolean visible = true;
 	private float timer = 0;
 	private final static float DISPLAY_TIME = 1000f;
 	private final static int SLIDE_OUT_STEPS = 20;
-
 	public void setContent(Paragraphable entity) {
 		this.content = entity;
 		visible = true;
 		timer = DISPLAY_TIME;
+	}
+
+	public Paragraphable getContent() {
+		return content;
 	}
 
 	@Override

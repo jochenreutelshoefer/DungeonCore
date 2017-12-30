@@ -236,7 +236,7 @@ public class RoomInfo extends InfoEntity implements ItemInfoOwner {
 			}
 			return res;
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	public JDPoint getPoint() {

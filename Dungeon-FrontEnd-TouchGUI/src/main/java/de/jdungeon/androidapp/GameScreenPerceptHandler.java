@@ -37,6 +37,7 @@ import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 
+import de.jdungeon.androidapp.audio.MusicManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Music;
 
@@ -48,8 +49,7 @@ public class GameScreenPerceptHandler {
 
 	public GameScreenPerceptHandler(GameScreen screen) {
 		this.screen = screen;
-		figure = FigureInfo.makeFigureInfo(screen.getHero(), screen.getHero()
-				.getRoomVisibility());
+		figure = screen.getFigureInfo();
 	}
 
 	public void handlePercept(Percept p) {
@@ -190,6 +190,8 @@ public class GameScreenPerceptHandler {
 		if (set != null) {
 			screen.startAnimation(set, taker);
 		}
+		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
+		newStatement(StatementManager.getStatement(p, this.figure));
 
 	}
 
@@ -225,11 +227,10 @@ public class GameScreenPerceptHandler {
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if(fig.equals(this.figure)) {
-			if(screen.getHighlightedEntity() instanceof RoomInfo) {
+			if(screen.getFocusManager().getWorldFocusObject() instanceof RoomInfo) {
 				// we reset the selected room, as hero has moved on
-				screen.setHighlightedEntity(null);
+				screen.getFocusManager().setWorldFocusObject(null);
 			}
-
 		}
 
 		if (set != null) {
@@ -251,11 +252,11 @@ public class GameScreenPerceptHandler {
 		FigureInfo deadFigure = p.getFigure();
 		if(deadFigure.equals(this.figure)) {
 			Music music = screen.getGame().getAudio().createMusic("music/" + "Dark_Times.mp3");
-			music.play();
+			MusicManager.getInstance().playMusic(music);
 		}
 		// we reset highlighted entity if a selected figure was killed
-		if(deadFigure.equals(this.screen.getHighlightedEntity())) {
-			this.screen.setHighlightedEntity(null);
+		if(deadFigure.equals(this.screen.getFocusManager().getWorldFocusObject())) {
+			this.screen.getFocusManager().setWorldFocusObject(null);
 		}
 
 		AnimationSet set = AnimationUtils.getFigure_tipping_over(deadFigure);

@@ -1,11 +1,13 @@
 package de.jdungeon.androidapp;
 
+import audio.AudioEffectsManager;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
+import gui.Paragraphable;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 
@@ -63,13 +65,13 @@ public class Control implements EventListener {
 
 	}
 
-	public void inventoryItemClicked(ItemInfo item, InfoEntity target) {
+	public void inventoryItemClicked(ItemInfo item, Paragraphable target) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionAssembler.wannaUseItem(item, target, false);
 	}
 
 	public void itemWheelActivityClicked(ItemWheelActivity item,
-			InfoEntity target) {
+			Paragraphable target) {
 		if (item == null) {
 			return;
 		}
@@ -122,10 +124,12 @@ public class Control implements EventListener {
 				break;
 			}
 		}
+		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
 		actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
 	}
 
 	public void inventoryItemLongClicked(int itemType, EquipmentItemInfo info) {
+		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
 		actionAssembler.wannaLayDownItem(info);
 	}
 

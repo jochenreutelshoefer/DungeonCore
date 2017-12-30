@@ -23,7 +23,7 @@ public class AudioEffectsManager {
 	public static AbstractAudioSet MAGIC_SOUND;
 	public static AbstractAudioSet MAGIC_BLING;
 
-	public static AbstractAudioSet MUSIC_INTRO_1;
+	public static AbstractAudioSet TAKE_ITEM;
 
 	// unused
 	public static AbstractAudioSet HIT;
@@ -94,7 +94,8 @@ public class AudioEffectsManager {
 					"bark2.wav" });
 			WOLF_DIES = a.createAudioSet(new String[] { "wolf-dies.wav" });
 
-			MUSIC_INTRO_1 = a.createAudioSet(new String[] { "Exciting_Trailer.mp3" });
+			TAKE_ITEM = a.createAudioSet(new String [] {"qubodupItemHandling1.wav", "qubodupItemHandling2.wav", "qubodupItemHandling3.wav", "qubodupItemHandling4.wav", "qubodupItemHandling5.wav",});
+
 		}
 	}
 

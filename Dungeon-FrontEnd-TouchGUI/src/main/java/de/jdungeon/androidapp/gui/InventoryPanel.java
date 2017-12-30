@@ -6,8 +6,7 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
-import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
-import de.jdungeon.androidapp.event.ShowItemInfoEvent;
+import de.jdungeon.androidapp.event.FocusEvent;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -275,7 +274,7 @@ public class InventoryPanel extends SlidingGUIElement {
 		}
 
 		if (item != null) {
-			EventManager.getInstance().fireEvent(new ShowInfoEntityEvent(item));
+			EventManager.getInstance().fireEvent(new FocusEvent(item));
 
 			if (type != -1) {
 				if (action == ItemActionType.change) {

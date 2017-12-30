@@ -13,6 +13,7 @@ import item.Bunch;
 import item.HealPotion;
 import item.Item;
 import item.ItemInfo;
+import item.Key;
 import item.equipment.Armor;
 import item.equipment.Helmet;
 import item.equipment.Shield;
@@ -51,6 +52,7 @@ public class InventoryImageManager {
 		itemClassImageMap.put(AncientMapFragment.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
 		itemClassImageMap.put(Bunch.class,  guiImageManager.getJDImageProxy(GUIImageManager.BUNCH));
 		itemClassImageMap.put(Thing.class,  guiImageManager.getJDImageProxy(GUIImageManager.MANA_BATTERY));
+		itemClassImageMap.put(Key.class,  guiImageManager.getJDImageProxy(GUIImageManager.KEY));
 	}
 
 	private final GUIImageManager guiImageManager;

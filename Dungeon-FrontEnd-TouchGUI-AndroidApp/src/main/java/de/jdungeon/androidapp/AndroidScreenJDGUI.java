@@ -177,7 +177,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
 		visibilityIncreasedRooms.add(p);
-		//EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(p));
 	}
 
 	@Override

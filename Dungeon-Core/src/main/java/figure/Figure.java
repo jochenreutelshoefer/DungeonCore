@@ -78,6 +78,7 @@ import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.StepPercept;
+import figure.percept.TakePercept;
 import figure.percept.TextPercept;
 import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
@@ -1260,6 +1261,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 							if (doIt) {
 								this.takeItem(item);
 								this.payFightActionPoint();
+								this.getRoom().distributePercept(new TakePercept(this, item));
 								return ActionResult.DONE;
 							}
 							else {
@@ -1284,6 +1286,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					if (this.canTakeItem(item)) {
 						if (doIt) {
 							this.takeItem(item);
+							this.getRoom().distributePercept(new TakePercept(this, item));
 							return ActionResult.DONE;
 						}
 						else {

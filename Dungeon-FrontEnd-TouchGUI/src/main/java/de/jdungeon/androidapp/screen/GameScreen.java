@@ -50,9 +50,11 @@ import util.JDDimension;
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.GameScreenPerceptHandler;
+import de.jdungeon.androidapp.audio.MusicManager;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
-import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
+import de.jdungeon.androidapp.event.FocusEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
+import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.GameOverView;
@@ -92,9 +94,10 @@ import de.jdungeon.util.Pair;
 
 public class GameScreen extends StandardScreen implements EventListener, PerceptHandler {
 
-	public static final int SCALE_FIGHT_MODE = 250;
+	public static final int SCALE_ROOM_FIGHT_MODE = 250;
+	public static final int SCALE_ROOM_DEFAULT = 180;
 	private final Dungeon derDungeon;
-	private Hero hero = null;
+	//private Hero hero = null;
 	private HeroInfo figureInfo;
 
 	private GraphicObjectRenderer dungeonRenderer;
@@ -113,7 +116,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private final int maxRoomSize = 400;
 	private final int minRoomSize = 100;
 	private final Control control;
-	private InfoEntity highlightedEntity = null;
 
 	private long lastDoubleTapEventTime = -1;
 
@@ -133,12 +135,13 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private ItemWheel itemWheelSkills;
 	private ItemWheel itemWheelChest;
 	private boolean worldHasChanged = true;
+	private FocusManager focusManager;
 
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
 		setSession(game.getSession());
 
-		this.hero = this.session.getCurrentHero();
+		Hero hero = this.session.getCurrentHero();
 		figureInfo = this.session.getHeroInfo();
 		perceptHandler = new GameScreenPerceptHandler(this);
 		gui.setFigure(figureInfo);
@@ -146,8 +149,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		hero.setControl(gui);
 		control = new Control(figureInfo, new ActionAssembler(gui));
 
-
-			/*
+		/*
 	 * init text messages panel
 	 */
 		textPerceptView = new TextPerceptView(this);
@@ -185,6 +187,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		infoPanel = new InfoPanel(new JDPoint(3 * quarterScreenX, 0),
 				new JDDimension(quarterScreenX, halfScreenY), this, this.getGame());
 		this.guiElements.add(infoPanel);
+		focusManager = new FocusManager(infoPanel, figureInfo);
 
 		/*
 		 * init health bars
@@ -217,7 +220,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 			@Override
 			public boolean handleTouchEvent(TouchEvent touch) {
-				scrollTo(figureInfo.getRoomNumber(), 30);
+				scrollTo(figureInfo.getRoomNumber(), 30, SCALE_ROOM_DEFAULT);
 				return true;
 			}
 		};
@@ -333,10 +336,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return new JDDimension(game.getScreenWidth(), game.getScreenHeight());
 	}
 
-	public InfoEntity getHighlightedEntity() {
-		return highlightedEntity;
-	}
-
 	public Control getControl() {
 		return control;
 	}
@@ -379,7 +378,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public void init() {
 		Music music = this.game.getAudio().createMusic("music/" + "Eyes_Gone_Wrong.mp3");
-		music.play();
+		MusicManager.getInstance().playMusic(music);
 	}
 
 	@Override
@@ -434,9 +433,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				int roomNumberY = startingRoomNumberY + row;
 				row++;
 
-				RoomInfo roomInfo = RoomInfo.makeRoomInfo(derDungeon
-						.getRoom(new JDPoint(roomNumberX, roomNumberY)), hero
-						.getRoomVisibility());
+				RoomInfo roomInfo = figureInfo.getRoomInfo(new JDPoint(roomNumberX, roomNumberY));
 
 				// paint this room onto the offscreen canvas
 				if (roomInfo != null) {
@@ -564,6 +561,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 				JDPoint doubleTapCoordinates = normalizeRawCoordinates(doubleTapEvent);
 
+				/*
+				distinguish whether a gui elements was clicked or the click was into the 'world'
+				 */
 				boolean guiOP = false;
 				ListIterator<GUIElement> listIterator = guiElements
 						.listIterator(guiElements.size());
@@ -580,16 +580,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				if (!guiOP) {
 					Object clickedObject = findClickedObject(doubleTapCoordinates);
 					if (clickedObject != null) {
-						if (clickedObject.equals(getHighlightedEntity())) {
+						if (clickedObject.equals(getFocusManager().getWorldFocusObject())) {
 							// object was already highlighted before
 							// hence we can trigger an action
 							control.objectClicked(clickedObject, true);
 						}
 						else {
-							setHighlightedEntity(((InfoEntity) clickedObject));
+							getFocusManager().setWorldFocusObject(((InfoEntity) clickedObject));
 						}
-						setInfoEntity(((InfoEntity) clickedObject));
-						// scrollTo(this.figureInfo.getRoomNumber(), 10f);
 					}
 				}
 
@@ -794,7 +792,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		float roomCoordinateX = ((viewportPosition.getX() + ((float) game.getScreenWidth() / 2)) / roomSize);
 		float roomCoordinateY = ((viewportPosition.getY() + ((float) game
 				.getScreenHeight() / 2)) / roomSize);
-		return new Pair<Float, Float>(roomCoordinateX, roomCoordinateY);
+		return new Pair<>(roomCoordinateX, roomCoordinateY);
 	}
 
 	private JDPoint getCurrentViewCenterRoomCoordinatesPoint() {
@@ -825,14 +823,13 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		JDPoint p = new JDPoint(touchEvent.x, touchEvent.y);
 		Object clickedObject = findClickedObject(p);
 		if (clickedObject != null) {
-			if (clickedObject.equals(getHighlightedEntity())) {
+			if (clickedObject.equals(focusManager.getWorldFocusObject())) {
 				// it was already selected, hence we should trigger an action new
 				control.objectClicked(clickedObject, false);
 			}
 			else {
-				setHighlightedEntity(((InfoEntity) clickedObject));
+				focusManager.setWorldFocusObject(((InfoEntity) clickedObject));
 			}
-			setInfoEntity(((InfoEntity) clickedObject));
 		}
 	}
 
@@ -918,18 +915,18 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 
 		// zoom out
-		zoomToSize(30, 70);
+		int flightScale = 70;
+		int stepDuration = 30;
+		zoomToSize(stepDuration, flightScale);
 		JDPoint last = getCurrentViewCenterRoomCoordinatesPoint();
 		for (JDPoint p : points) {
 			// center on each discovered room
-			scrollFromTo(last, p, 30, 70);
+			scrollFromTo(last, p, stepDuration, flightScale);
 			last = p;
 		}
-		if (points.size() == 1) {
-			zoomToSize(30, 70, (int) this.roomSize, last);
-		}
+
 		// scroll back to hero
-		scrollFromTo(last, this.getFigureInfo().getRoomNumber(), 60, (int) this.roomSize);
+		scrollFromToScale(last, this.getFigureInfo().getRoomNumber(), 60, flightScale, (int) this.roomSize);
 	}
 
 	/*
@@ -973,12 +970,12 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	public void exitFightMode() {
-		zoomToSize(30, SCALE_FIGHT_MODE, preFightRoomSize, figureInfo.getRoomNumber());
+		zoomToSize(30, SCALE_ROOM_FIGHT_MODE, preFightRoomSize, figureInfo.getRoomNumber());
 	}
 
 	public void enterFightMode() {
 		preFightRoomSize = roomSize;
-		zoomToSize(30, SCALE_FIGHT_MODE);
+		zoomToSize(30, SCALE_ROOM_FIGHT_MODE);
 	}
 
 	@Override
@@ -1102,10 +1099,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		AnimationManager.getInstance().startAnimation(task, figure, text, delayed, postDelay, delayImage);
 	}
 
-	public Hero getHero() {
-		return hero;
-	}
-
 	public float getRoomSize() {
 		return roomSize;
 	}
@@ -1142,12 +1135,24 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.sequenceManager.addSequence(sequence);
 	}
 
+	private void scrollFromToScale(JDPoint start, JDPoint target, float duration, int startScale, int endScale) {
+		scrollFromToScale(floatPair(start), floatPair(target), duration, startScale, endScale);
+	}
+
+	private void scrollFromToScale(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int startScale, int endScale) {
+		MovieSequence sequence = new DefaultMovieSequence(
+				new ZoomSequence(startScale, endScale, duration),
+				new StraightLineScroller(start,
+						target, duration), duration);
+		this.sequenceManager.addSequence(sequence);
+	}
+
 	private Pair<Float, Float> floatPair(JDPoint point) {
 		return new Pair<>(
 				(float) point.getX(), (float) point.getY());
 	}
 
-	private void scrollTo(JDPoint number, float duration, int roomScale) {
+	public void scrollTo(JDPoint number, float duration, int roomScale) {
 		Pair<Float, Float> currentViewCenterRoomCoordinates = getCurrentViewCenterRoomCoordinates();
 		currentViewCenterRoomCoordinates = new Pair<>(
 				currentViewCenterRoomCoordinates.getA() - 0.5f,
@@ -1159,21 +1164,17 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		textPerceptView.addTextPercept(p);
 	}
 
+
+	public FocusManager getFocusManager() {
+		return focusManager;
+	}
+
 	public void setInfoEntity(Paragraphable item) {
 		if (item == null || item.equals(this.figureInfo)) {
 			this.infoPanel.setContent(null);
 		}
 		else {
 			this.infoPanel.setContent(item);
-		}
-	}
-
-	public void setHighlightedEntity(InfoEntity item) {
-		if (item == null || item.equals(this.figureInfo)) {
-			highlightedEntity = null;
-		}
-		else {
-			this.highlightedEntity = item;
 		}
 	}
 
@@ -1189,7 +1190,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				Thread.sleep(timeStep);
 			}
 			catch (InterruptedException e) {
-				Log.w("Warning","flush animation manager sleep interrupted");
+				Log.w("Warning", "flush animation manager sleep interrupted");
 			}
 		}
 		AnimationManager.getInstance().clearAll();
@@ -1203,7 +1204,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
-		events.add(ShowInfoEntityEvent.class);
+		events.add(FocusEvent.class);
 		events.add(InfoObjectClickedEvent.class);
 		events.add(VisibilityIncreasedEvent.class);
 		events.add(TakeItemButtonClickedEvent.class);
@@ -1215,13 +1216,12 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	@Override
 	public void notify(Event event) {
-		if (event instanceof ShowInfoEntityEvent) {
-			Paragraphable infoEntity = ((ShowInfoEntityEvent) event).getInfoEntity();
-			setInfoEntity(infoEntity);
+		if (event instanceof FocusEvent) {
+			Paragraphable infoEntity = ((FocusEvent) event).getObject();
+			focusManager.setGuiFocusObject(infoEntity);
 		}
 		if (event instanceof InfoObjectClickedEvent) {
-			setInfoEntity(((InfoObjectClickedEvent) event).getClickedEntity());
-			setHighlightedEntity(((InfoObjectClickedEvent) event).getClickedEntity());
+			focusManager.setWorldFocusObject(((InfoObjectClickedEvent) event).getClickedEntity());
 		}
 		if (event instanceof VisibilityIncreasedEvent) {
 			showVisibilityIncrease(((VisibilityIncreasedEvent) event).getPoints());
@@ -1229,7 +1229,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (event instanceof TakeItemButtonClickedEvent || event instanceof ChestItemButtonClickedEvent) {
 			switchRightItemWheel(event);
 		}
-		if(event instanceof ShrineButtonClickedEvent) {
+		if (event instanceof ShrineButtonClickedEvent) {
 			EventManager.getInstance().fireEvent(new ActionEvent(new ShrineAction(null, false)));
 		}
 		if (event instanceof WorldChangedEvent) {
@@ -1243,20 +1243,23 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	 * @param event kind of the event
 	 */
 	private void switchRightItemWheel(Event event) {
-		if(event == null) {
+		if (event == null) {
 			setSkillWheelVisible();
-		} else if (event instanceof TakeItemButtonClickedEvent) {
-			if(!roomItemWheelShowing) {
+		}
+		else if (event instanceof TakeItemButtonClickedEvent) {
+			if (!roomItemWheelShowing) {
 				setRoomItemsWheelVisible();
-			} else {
+			}
+			else {
 				// switching room item wheel off
 				setSkillWheelVisible();
 			}
 		}
 		else if (event instanceof ChestItemButtonClickedEvent) {
-			if(!chestItemWheelShowing) {
+			if (!chestItemWheelShowing) {
 				setChestItemWheelVisible();
-			} else {
+			}
+			else {
 				// switching chest item wheel off
 				setSkillWheelVisible();
 			}

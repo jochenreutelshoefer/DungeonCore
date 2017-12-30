@@ -126,8 +126,6 @@ public class DungeonSelectionScreen extends MenuScreen {
 	@Override
 	public void init() {
 
-		Music music = this.game.getAudio().createMusic("music/" + "For_the_Fallen.mp3");
-		MusicManager.getInstance().playMusic(music);
 	}
 
 

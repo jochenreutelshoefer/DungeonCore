@@ -88,8 +88,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		};
 
 		frame = new SubGUIElement(
-				new JDPoint(0, this.getDimension().getHeight() * 0.05),
-				new JDDimension(this.getDimension().getWidth(), (int)(this.getDimension().getHeight() * 0.9))
+				new JDPoint(0, this.getDimension().getHeight() * 0.03),
+				new JDDimension(this.getDimension().getWidth(), (int)(this.getDimension().getHeight() * 0.94))
 				, this) {
 			@Override
 			public boolean isVisible() {

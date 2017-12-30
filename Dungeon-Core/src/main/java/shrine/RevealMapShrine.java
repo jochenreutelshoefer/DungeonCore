@@ -3,9 +3,11 @@ package shrine;
 import java.util.ArrayList;
 import java.util.List;
 
+import dungeon.JDPoint;
 import dungeon.Room;
 import figure.Figure;
 import figure.RoomObservationStatus;
+import game.ControlUnit;
 import util.JDColor;
 
 /**
@@ -23,7 +25,7 @@ public class RevealMapShrine extends Shrine {
 
 	public RevealMapShrine(Room revealedRoom) {
 		super();
-		this.revealedRooms = new ArrayList<Room>();
+		this.revealedRooms = new ArrayList<>();
 		this.revealedRooms.add(revealedRoom);
 	}
 
@@ -68,12 +70,21 @@ public class RevealMapShrine extends Shrine {
 		for (Room revealedRoom : revealedRooms) {
 			int discoveryStatus = f.getRoomVisibility().getDiscoveryStatus(revealedRoom.getNumber());
 			if(discoveryStatus < RoomObservationStatus.VISIBILITY_FIGURES) {
-				f.getRoomVisibility().setDiscoveryStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
 				f.getRoomVisibility().setVisibilityStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
+				f.getRoomVisibility().setDiscoveryStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
 				revealedSomething = true;
+			} else {
+				// in this case for the user it is helpful to show target room(s)
+				// even if they are already revealed (as reminder)
+				// we 'emulate' this by triggering a corresponding event.
+				ControlUnit control = f.getControl();
+				if(control != null) {
+					control.notifyVisibilityStatusIncrease(revealedRoom.getPoint());
+				}
 			}
 
 		}
+
 		return revealedSomething;
 	}
 

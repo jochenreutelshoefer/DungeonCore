@@ -22,6 +22,6 @@ public class UseItemActivityProvider extends ItemActivityItemProvider {
 		// TODO: refactor, remove control, direct event processing by ActionAssembler
 		Control control = screen.getControl();
 		control.itemWheelActivityClicked(infoEntity,
-				screen.getHighlightedEntity());
+				screen.getFocusManager().getWorldFocusObject());
 	}
 }

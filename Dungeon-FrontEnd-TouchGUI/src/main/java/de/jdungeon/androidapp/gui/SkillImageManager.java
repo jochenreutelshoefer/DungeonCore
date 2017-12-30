@@ -33,7 +33,7 @@ public class SkillImageManager {
 		} else if (o instanceof SpellInfo) {
 			SpellInfo spell = ((SpellInfo) o);
 			int spellType = spell.getType();
-			if (spellType == AbstractSpell.SPELL_GOLDENHIT) {
+			if (spellType == AbstractSpell.SPELL_GOLDENHIT || spellType == AbstractSpell.SPELL_RAID) {
 				im = guiImageManager.getImage(GUIImageManager.TARGET_ICON);
 			} else if (spellType == AbstractSpell.SPELL_HEAL) {
 				im = guiImageManager.getImage(GUIImageManager.HEART_ICON);

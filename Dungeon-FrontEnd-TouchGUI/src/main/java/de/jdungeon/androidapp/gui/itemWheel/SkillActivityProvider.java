@@ -15,10 +15,12 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
+import gui.Paragraphable;
 import spell.SpellInfo;
 import spell.TargetScope;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.SkillImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;
@@ -106,8 +108,15 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			return;
 		}
 		Object o = activity.getObject();
-		InfoEntity highlightedEntity = screen.getHighlightedEntity();
+		FocusManager focusManager = screen.getFocusManager();
+		Paragraphable highlightedEntity = focusManager.getWorldFocusObject();
+
 		if (o.equals(ATTACK)) {
+			if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(info.getRoomInfo().getLocation())) {
+				// moved out of room since last figure focus hence reset focus
+				focusManager.setWorldFocusObject(null);
+				highlightedEntity = null;
+			}
 			List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
 			List<FigureInfo> hostileFigures = new ArrayList<>();
 			for (FigureInfo figureInfo : figureInfos) {
@@ -119,8 +128,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 					&& (!(highlightedEntity instanceof FigureInfo))) {
 				FigureInfo target = hostileFigures.get(0);
 				screen.getControl().getActionAssembler().wannaAttack(target);
-				screen.setHighlightedEntity(target);
-				screen.setInfoEntity(target);
+				focusManager.setWorldFocusObject(target);
 			}
 			if (highlightedEntity instanceof FigureInfo) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
@@ -192,13 +200,12 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 					// something completely wrong for this spell is selected by the user in the gui
 					// we discard the selection and see whether auto target detection will work
 					// or otherwise the user will be informed
-					screen.setHighlightedEntity(null);
+					screen.getFocusManager().setWorldFocusObject(null);
 				}
 				if (highlightedEntity != null) {
 					// some target selected
 					if (spell.getTargetClass().isAssignableFrom(highlightedEntity.getClass())) {
 						// target has matching object class
-						screen.setInfoEntity(highlightedEntity);
 						AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 						screen.getControl().getActionAssembler()
 								.wannaSpell(spell, highlightedEntity);
@@ -217,10 +224,9 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 					// no target selected
 					if (targetEntitiesInScope.size() == 1) {
 						InfoEntity targetEntity = targetEntitiesInScope.get(0);
-						screen.setInfoEntity(targetEntity);
-						screen.setHighlightedEntity(targetEntity);
+						focusManager.setWorldFocusObject(targetEntity);
 						screen.getControl().getActionAssembler()
-								.wannaSpell(spell, screen.getHighlightedEntity());
+								.wannaSpell(spell, targetEntity);
 					}
 					else {
 						// we leave the message handling up to the core action handling triggering

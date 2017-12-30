@@ -26,6 +26,7 @@ import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import graphics.util.RelativeRectangle;
+import gui.Paragraphable;
 import org.apache.log4j.Logger;
 import util.JDDimension;
 
@@ -126,8 +127,8 @@ public class DrawUtils {
 						 * draw highlight background if necessary
 						 */
 						if (clickedObject instanceof InfoEntity) {
-							InfoEntity highlightedEntity = screen
-									.getHighlightedEntity();
+							Paragraphable highlightedEntity = screen
+									.getFocusManager().getWorldFocusObject();
 							highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, destinationRectangle, roomOffsetX, roomOffsetY);
 						}
 
@@ -210,32 +211,19 @@ public class DrawUtils {
 		 * draw highlight background if necessary
 		 */
 		if (clickedObject instanceof InfoEntity) {
-			InfoEntity highlightedEntity = screen.getHighlightedEntity();
+			Paragraphable highlightedEntity = screen.getFocusManager().getWorldFocusObject();
 			DrawingRectangle rectangle = jdGraphicObject.getRectangle();
 			highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, rectangle, roomOffsetX, roomOffsetY);
 		}
 	}
 
-	private static void highlight(Graphics g, JDPoint viewportPosition, GameScreen screen, Object clickedObject, InfoEntity highlightedEntity, DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
+	private static void highlight(Graphics g, JDPoint viewportPosition, GameScreen screen, Object clickedObject, Paragraphable highlightedEntity, DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
 		if (highlightedEntity != null) {
 			if (clickedObject.equals(highlightedEntity)) {
-				Image highlightImage = screen.getGuiImageManager().getImage(
-						GUIImageManager.HIGHLIGHT);
-
-
 				int x1 = rectangle.getX(roomOffsetX) - viewportPosition.getX();
 				int y1 = rectangle.getY(roomOffsetY) - viewportPosition.getY();
 				int x2 = x1 + rectangle.getWidth();
 				int y2 = y1 + rectangle.getHeight();
-
-				// int x1 = image.getPosX()
-				// - viewportPosition.getX();
-				// int y1 = image.getPosY()
-				// - viewportPosition.getY();
-				// int x2 = x1
-				// + image.getWidth();
-				// int y2 = y1
-				// + image.getHeight();
 
 				drawRectangle(g, Colors.YELLOW, x1, y1, x2, y2);
 			}

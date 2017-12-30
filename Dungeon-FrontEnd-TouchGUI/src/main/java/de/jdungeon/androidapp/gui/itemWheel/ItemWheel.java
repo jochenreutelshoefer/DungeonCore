@@ -1,13 +1,10 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import android.util.Log;
 import event.EventManager;
-import log.Log;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.event.ShowInfoEntityEvent;
+import de.jdungeon.androidapp.event.FocusEvent;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
@@ -16,7 +13,6 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
-import de.jdungeon.util.PaintBuilder;
 
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
@@ -163,7 +159,7 @@ public class ItemWheel extends AbstractGUIElement {
 		// show info about element
 		ItemWheelActivity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
-			EventManager.getInstance().fireEvent(new ShowInfoEntityEvent(activity));
+			EventManager.getInstance().fireEvent(new FocusEvent(activity));
 		}
 	}
 
@@ -275,7 +271,7 @@ public class ItemWheel extends AbstractGUIElement {
 
 				Image im = binding.getProvider().getActivityImage(activity);
 				if (im == null) {
-					Log.warning("Activity image is null: "
+					Log.w("Warning", "Activity image is null: "
 							+ activity);
 				}
 
@@ -296,9 +292,13 @@ public class ItemWheel extends AbstractGUIElement {
 					}
 
 					/*
+					draw highlighting circle
+					 */
+					g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
+
+					/*
 					 * draw actual item
 					 */
-
 					g.drawScaledImage(im, xMinusDefaultWidth,
 							yMinusDefaultHeight, doubleImageWidth,
 							doubleImageHeight, 0, 0, im.getWidth(),
