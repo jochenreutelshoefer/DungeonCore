@@ -170,15 +170,17 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 		}
 	}
 	public Boolean isDead() {
-		if(map.getVisibilityStatus(f.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return new Boolean(f.isDead());
+		if(map.getDungeon().equals(f.actualDungeon)) {
+			if(map.getVisibilityStatus(f.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+				return f.isDead();
+			}
 		}
 		return null;
 	}
 	
 	public Boolean hasKey(DoorInfo  d) {
 		if(f.equals(map.getFigure())) {
-		return new Boolean(f.hasKey(d.getLock()));
+		return f.hasKey(d.getLock());
 		}
 		
 		return null;

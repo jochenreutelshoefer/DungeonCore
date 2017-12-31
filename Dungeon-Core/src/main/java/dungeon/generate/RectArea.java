@@ -14,11 +14,12 @@ import dungeon.Room;
  */
 public class RectArea implements Area {
 
-	private JDPoint leftUpperCornerPosition;
-	private int sizeX;
-	private int sizeY;
-	private Dungeon dungeon;
+	private final JDPoint leftUpperCornerPosition;
 
+	private final int sizeX;
+
+	private final int sizeY;
+	private final Dungeon dungeon;
 	public RectArea(JDPoint leftUpperCornerPosition, int sizeX, int sizeY, Dungeon dungeon) {
 		this.leftUpperCornerPosition = leftUpperCornerPosition;
 		this.sizeX = sizeX;
@@ -40,5 +41,13 @@ public class RectArea implements Area {
 	@Override
 	public JDPoint getPosition() {
 		return leftUpperCornerPosition;
+	}
+
+	public int getSizeX() {
+		return sizeX;
+	}
+
+	public int getSizeY() {
+		return sizeY;
 	}
 }

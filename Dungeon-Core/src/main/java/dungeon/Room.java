@@ -676,6 +676,15 @@ public class Room extends DungeonWorldObject implements
 		return false;
 	}
 
+	public void addDoor(Door d, int dir, boolean otherRoom) {
+		RouteInstruction.Direction direction = RouteInstruction.Direction.fromInteger(dir);
+		doors[dir-1] = d;
+		Room neighbourRoom = this.getNeighbourRoom(direction);
+		if(otherRoom) {
+			neighbourRoom.addDoor(d, RouteInstruction.turnOpp(direction).getValue(), false);
+		}
+	}
+
 	public int getDoorCount() {
 		int cnt = 0;
 		for (int i = 0; i < doors.length; i++) {

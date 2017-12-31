@@ -67,7 +67,6 @@ public class RoomQuest1x1 extends ReversibleRoomQuest {
 
 		for (int i = 1; i < 5; i++) {
 			if (i != dir) {
-				//rooms[0][0].removeDoor(i,true);
 				actions.add(new RemoveDoor(rooms[0][0], RouteInstruction.Direction.fromInteger(i)));
 			}
 			else {
@@ -122,10 +121,7 @@ public class RoomQuest1x1 extends ReversibleRoomQuest {
 		return result;
 	}
 
-	@Override
-	public boolean setUp() {
-		return insert();
-	}
+
 
 	public boolean isFinalized() {
 		return finalized;

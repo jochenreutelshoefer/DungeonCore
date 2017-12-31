@@ -51,16 +51,16 @@ public class RoomQuest_XxY extends RoomQuest{
 		makeWall();
 
 		//mache Tuer
-		entrenceRoom = df.getDungeon().getPoint(p.getX() + location.getX(),p.getY() + location.getY());;
-		entrenceDirection = k;
+		entranceRoom = df.getDungeon().getPoint(p.getX() + location.getX(),p.getY() + location.getY());;
+		entranceDirection = k;
 		if(locked) {
 			theKey = df.getNextKey();
 			df.itemToDistribute(theKey);
 			Room other = df.getDungeon().getRoomAt(
-					df.getDungeon().getRoom(entrenceRoom),
+					df.getDungeon().getRoom(entranceRoom),
 					RouteInstruction.direction(k));
-			Door d = new Door(df.getDungeon().getRoom(entrenceRoom),other,theKey);
-			df.getDungeon().getRoom(entrenceRoom).setDoor(d,k,true);
+			Door d = new Door(df.getDungeon().getRoom(entranceRoom),other,theKey);
+			df.getDungeon().getRoom(entranceRoom).setDoor(d,k,true);
 			
 			
 		}else {

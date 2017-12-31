@@ -7,4 +7,6 @@ public interface Sound {
     void dispose();
 
 	int getId();
+
+	String getName();
 }

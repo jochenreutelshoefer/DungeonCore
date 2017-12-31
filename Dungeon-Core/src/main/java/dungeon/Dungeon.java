@@ -44,7 +44,7 @@ public class Dungeon implements Turnable, EventListener {
 
 	private boolean gameOver = false;
 
-	private InfoUnitUnwrapper unwrapper;
+	private final InfoUnitUnwrapper unwrapper;
 
 	public Dungeon(int sizeX, int sizeY) {
 		EventManager.getInstance().registerListener(this);
@@ -67,6 +67,18 @@ public class Dungeon implements Turnable, EventListener {
 		}
 		return result;
 	}
+
+	public Collection<Room> getWallRooms() {
+		Set<Room> result = new HashSet<Room>();
+		Collection<Room> allRooms = getAllRooms();
+		for (Room room : allRooms) {
+			if(room.isWall()) {
+				result.add(room);
+			}
+		}
+		return result;
+	}
+
 
 	public Dungeon(int x, int y, int xh, int yh) {
 		this(x, y);
@@ -91,7 +103,6 @@ public class Dungeon implements Turnable, EventListener {
 
 			}
 		}
-
 		return stats;
 	}
 
@@ -99,10 +110,6 @@ public class Dungeon implements Turnable, EventListener {
 	public void turn(int round) {
 		shrinesTurn(round);
 		roomsTurn(round);
-	}
-
-	public List<Shrine> getShrines() {
-		return shrines;
 	}
 
 	public void addShrine(Shrine s) {
@@ -129,47 +136,6 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	
-
-	
-
-	
-
-	// public LinkedList searchWayGreedy(Room r1, Room r2, LinkedList bisWay) {
-	//
-	// bisWay.add(r1);
-	// if (bisWay.size() > 50) {
-	// doPrint("Kein Weg zu finden in 100 Zuegen!");
-	// // throw new NullPointerException();
-	//
-	// return null;
-	// }
-	// if (r1 == r2) {
-	// doPrint("FERTIG GEFUNDEN!");
-	// return bisWay;
-	// }
-	//
-	// int dx = r1.getNumber().getX() - r2.getNumber().getX();
-	// int dy = r1.getNumber().getY() - r2.getNumber().getY();
-	//
-	// int distance = dx + dy;
-	//
-	// boolean[] dirs = getPossibleDirection(r1);
-	// int dir = decideDir(dirs, dx, dy, bisWay);
-	//
-	// doPrintoz("Richtung: " + dir);
-	//
-	// Room next = this.getRoomAt(r1, dir);
-	// getGame().getTracker().setLocation(next);
-	//
-	// // getGame().getGui().repaintSpielfeldBild();
-	//
-	// // try {Thread.sleep(1000);}catch(Exception e){}
-	// doPrint(" zu Raum: " + next.toString());
-	// doPrintBisWay(bisWay);
-	// return searchWayGreedy(next, r2, bisWay);
-	//
-	// }
-
 	public Room getRoom(JDPoint p) {
 		if (p == null) {
 			return null;
@@ -212,12 +178,7 @@ public class Dungeon implements Turnable, EventListener {
 	public Room getRoomNr(int x, int y) {
 		if ((x >= 0) && (x < theDungeon.length) && (y >= 0)
 				&& (y < theDungeon[0].length)) {
-			Room r = theDungeon[x][y];
-			// if(r.isWall()) {
-			// return null;
-			// }
-			// else {
-			return r;
+			return theDungeon[x][y];
 			// }
 		} else {
 			return null;
@@ -259,29 +220,6 @@ public class Dungeon implements Turnable, EventListener {
 		return this.gameOver;
 	}
 
-	// public void monsterTurn() {
-	// LinkedList alle = getAlleMonster();
-	// List fightingMonsters = null;
-	// if(game.getFight()!= null) {
-	// fightingMonsters = game.getFight().getMonstersL();
-	// }
-	// int length = alle.size();
-	// // System.out.println("Anzahl Monster: " + length);
-	// if (length > 0) {
-	// int k = 0;
-	// while (k < length) {
-	// Monster m = ((Monster) alle.get(k));
-	// if (fightingMonsters == null || !fightingMonsters.contains(m)) {
-	// m.turn(0);
-	// }
-	//
-	// k++;
-	//
-	// }
-	// } else { // //System.out.println("Keine Monster mehr vorhanden");
-	// }
-	// }
-
 	private void roomsTurn(int round) {
 		for (int i = 0; i < theDungeon.length; i++) {
 			for (int j = 0; j < theDungeon[0].length; j++) {
@@ -305,7 +243,6 @@ public class Dungeon implements Turnable, EventListener {
 		return alle;
 	}
 
-	// fügt monster aus ruam der liste alle hinzu
 	private void addMonsters(Room raum, List<Figure> alle) {
 		List<Figure> liste = raum.getRoomFigures();
 		int length = liste.size();
@@ -314,11 +251,8 @@ public class Dungeon implements Turnable, EventListener {
 			while (i < length) {
 				Monster m = (Monster) liste.get(i);
 				alle.add(m);
-				// //System.out.println(m.toString() + " hinzugefuegt");
 				i++;
 			}
-		} else {
-			/** System.out.println("Keine Monster");* */
 		}
 
 	}
@@ -340,42 +274,6 @@ public class Dungeon implements Turnable, EventListener {
 	public InfoUnitUnwrapper getUnwrapper() {
 		return unwrapper;
 	}
-
-	// public LinkedList searchWayGreedy(Room r1, Room r2, LinkedList bisWay) {
-	//
-	// bisWay.add(r1);
-	// if (bisWay.size() > 50) {
-	// doPrint("Kein Weg zu finden in 100 Zuegen!");
-	// // throw new NullPointerException();
-	//
-	// return null;
-	// }
-	// if (r1 == r2) {
-	// doPrint("FERTIG GEFUNDEN!");
-	// return bisWay;
-	// }
-	//
-	// int dx = r1.getNumber().getX() - r2.getNumber().getX();
-	// int dy = r1.getNumber().getY() - r2.getNumber().getY();
-	//
-	// int distance = dx + dy;
-	//
-	// boolean[] dirs = getPossibleDirection(r1);
-	// int dir = decideDir(dirs, dx, dy, bisWay);
-	//
-	// doPrintoz("Richtung: " + dir);
-	//
-	// Room next = this.getRoomAt(r1, dir);
-	// getGame().getTracker().setLocation(next);
-	//
-	// // getGame().getGui().repaintSpielfeldBild();
-	//
-	// // try {Thread.sleep(1000);}catch(Exception e){}
-	// doPrint(" zu Raum: " + next.toString());
-	// doPrintBisWay(bisWay);
-	// return searchWayGreedy(next, r2, bisWay);
-	//
-	// }
 
 
 }

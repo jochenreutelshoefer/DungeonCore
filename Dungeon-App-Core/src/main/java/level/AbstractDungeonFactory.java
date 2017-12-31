@@ -1,5 +1,7 @@
 package level;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import dungeon.Door;
@@ -10,6 +12,7 @@ import dungeon.generate.DungeonFiller;
 import dungeon.generate.ReachabilityChecker;
 import dungeon.generate.RectArea;
 import dungeon.quest.ReversibleRoomQuest;
+import dungeon.quest.RoomQuestWall;
 import dungeon.util.RouteInstruction;
 //import org.apache.log4j.Logger;
 
@@ -47,6 +50,7 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 	 * @param roomQuests
 	 */
 	protected void setupRoomQuests(Dungeon dungeon, DungeonFiller filler, Room entryRoom, JDPoint entryPoint, List<ReversibleRoomQuest> roomQuests) {
+		ReachabilityChecker reachabilityChecker = new ReachabilityChecker(dungeon, entryPoint);
 		for (ReversibleRoomQuest roomQuest : roomQuests) {
 			int iteration = 0;
 			final int maxIterations = 10;
@@ -57,7 +61,11 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 					roomQuest.setLocation(unallocatedSpace.getPosition());
 					boolean possible = roomQuest.setUp();
 					if(possible) {
-						boolean valid = new ReachabilityChecker(dungeon, entryPoint).check();
+						boolean valid = reachabilityChecker.check();
+						if(roomQuest instanceof RoomQuestWall) {
+							// the rooms of a RoomQuestWall should not be reachable, that is ok
+							valid = reachabilityChecker.checkIgnoreRooms(toList(roomQuest.getRooms()));
+						}
 						if (valid) {
 							filler.itemsToDistribute(roomQuest.finalizeRoomQuest());
 							filler.addAllocatedRooms(unallocatedSpace.getRooms());
@@ -65,7 +73,6 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 							success = true;
 							break;
 						} else {
-							//Logger.getLogger(this.getClass()).warn("undo RoomQuest "+roomQuest.toString()+" at "+unallocatedSpace.getPosition());
 							roomQuest.undo();
 						}
 					}
@@ -73,9 +80,21 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 				}
 			}
 			if(!success) {
-				//Logger logger = Logger.getLogger(this.getClass());
-				//logger.error("Could not create RoomQuest: "+roomQuest.toString());
+				// TODO: find proper way of logging to android logger in non-android projects
+				System.out.println("Could not create RoomQuest: "+roomQuest.toString());
 			}
 		}
+	}
+
+	private Collection<Room> toList(Room[][] rooms) {
+		List<Room> result = new ArrayList<>();
+		int sizeX = rooms[0].length;
+		int sizeY = rooms.length;
+		for (int i = 0; i < sizeX; i++) {
+			for (int j = 0; j < sizeY; j++) {
+				result.add(rooms[j][i]);
+			}
+		}
+		return result;
 	}
 }

@@ -100,10 +100,8 @@ public class RouteInstruction {
 
 	public int getWay(Room start) {
 		if(destination != null) {
-			int i = DungeonUtils.getFirstStepFromTo2(start.getDungeon(), start,
+			return DungeonUtils.getFirstStepFromTo2(start.getDungeon(), start,
 					destination);
-			
-			return i;
 		}
 		else {
 			return direction;
@@ -190,12 +188,8 @@ public class RouteInstruction {
 //	}
 
 	public static int turnRight(int dir) {
-		if (!validDir(dir)) {
-			//System.out.println("keine gueltige Richtung bei Rechtsdrehung");
-		}
 		int x = dir - 1;
 		x = (x + 1) % 4;
-		////System.out.println("turningRight: "+dirToString(dir)+" -> " +dirToString(x+1));
 		return x + 1;
 	}
 
@@ -207,13 +201,8 @@ public class RouteInstruction {
 	}
 
 	public static int turnLeft(int dir) {
-		if (!validDir(dir)) {
-			//System.out.println("keine gueltige Richtung bei Linksdrehung");
-		}
 		int x = dir - 1;
 		x = ((x - 1) + 4) % 4;
-		////System.out.println("turningLeft: "+dirToString(dir)+" -> " +dirToString(x+1));
-
 		return x + 1;
 	}
 
@@ -235,14 +224,12 @@ public class RouteInstruction {
 	}
 
 	public static Direction turnOpp(Direction dir) {
-		return RouteInstruction.direction(dir.getValue());
+		return RouteInstruction.direction(RouteInstruction.turnOpp(dir.getValue()));
 	}
 
 	public static int turnOpp(int dir) {
 		int x = dir - 1;
 		x = (x + 2) % 4;
-		////System.out.println("turningOpp: "+dirToString(dir)+" -> " +dirToString(x+1));
-
 		return x + 1;
 	}
 
@@ -250,18 +237,10 @@ public class RouteInstruction {
 		direction = i;
 	}
 
-	/**
-	 * 
-	 * @uml.property name="direction"
-	 */
 	public int getDirection() {
 		return direction;
 	}
 
-	/**
-	 * 
-	 * @uml.property name="destination"
-	 */
 	public Room getDestination() {
 		return destination;
 	}
@@ -269,7 +248,7 @@ public class RouteInstruction {
 	@Override
 	public String toString() {
 		if(destination != null) {
-			return("RouteInstruction To : "+destination.toString());
+			return("RouteInstruction To : "+ destination);
 		}
 		else {
 			return("RouteInstruction nach: "+ direction);

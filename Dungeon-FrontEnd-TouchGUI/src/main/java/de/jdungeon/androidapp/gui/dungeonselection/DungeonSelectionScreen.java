@@ -2,8 +2,10 @@ package de.jdungeon.androidapp.gui.dungeonselection;
 
 import java.util.List;
 
+import android.util.Log;
 import animation.AnimationSet;
 import animation.Motion;
+import audio.AudioEffectsManager;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
 import figure.hero.Hero;
@@ -19,12 +21,14 @@ import de.jdungeon.androidapp.gui.DrawGUIElement;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
 import de.jdungeon.androidapp.gui.SimpleImageGUIElement;
 import de.jdungeon.androidapp.screen.start.MenuScreen;
+import de.jdungeon.game.AbstractAudioSet;
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Music;
+import de.jdungeon.game.Sound;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -126,6 +130,24 @@ public class DungeonSelectionScreen extends MenuScreen {
 	@Override
 	public void init() {
 
+		/*
+		For testing loaded sounds only
+
+		List<AbstractAudioSet> allSounds = AudioEffectsManager.allSounds;
+		for (AbstractAudioSet soundSet : allSounds) {
+			List<Sound>  sounds  = soundSet.getAllSounds();
+			for (Sound sound : sounds) {
+				sound.play(1);
+				Log.i("info", "Playing Sound: "+sound.getName()+" ("+sound.getId()+")");
+				try {
+					Thread.sleep(100);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		*/
 	}
 
 

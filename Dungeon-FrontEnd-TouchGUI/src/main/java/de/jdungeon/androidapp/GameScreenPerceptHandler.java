@@ -164,7 +164,7 @@ public class GameScreenPerceptHandler {
 	}
 
 	private void handleFleePercept(FleePercept p) {
-
+		newStatement(StatementManager.getStatement(p, this.figure));
 		FigureInfo fleeingFigure = p.getFigure();
 		AnimationSet set = AnimationUtils.getFigure_running(fleeingFigure);
 		if (set != null) {
@@ -186,10 +186,14 @@ public class GameScreenPerceptHandler {
 
 	private void handleTakePercept(TakePercept p) {
 		FigureInfo taker = p.getFigure();
+		if(taker.equals(this.figure)) {
+			screen.focusTakenItem(p.getItem());
+		}
 		AnimationSet set = AnimationUtils.getFigure_using(taker);
 		if (set != null) {
 			screen.startAnimation(set, taker);
 		}
+
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
 		newStatement(StatementManager.getStatement(p, this.figure));
 

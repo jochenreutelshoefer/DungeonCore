@@ -258,7 +258,7 @@ public class Sector1 extends Sector {
 		GuiAI vimAI = new VimAI();
 		vim.setSpecifiedAI(vimAI);
 		RoomQuest rq = mainHall.insertRQXY(1, 1, false, null);
-		rq.getEntrenceRoom().figureEnters(vim, 0);
+		rq.getEntranceRoom().figureEnters(vim, 0);
 
 		Room rimHome = this.getRandomRimRoom(wolfRaum, orcRaum, skeletonRaum,
 				mainHall);

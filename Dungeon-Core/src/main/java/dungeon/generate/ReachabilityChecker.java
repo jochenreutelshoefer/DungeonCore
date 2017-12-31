@@ -2,6 +2,7 @@ package dungeon.generate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -26,8 +27,8 @@ import shrine.Shrine;
  */
 public class ReachabilityChecker {
 
-	private Dungeon dungeon;
-	private JDPoint entryPoint;
+	private final Dungeon dungeon;
+	private final JDPoint entryPoint;
 	private boolean allowThroughExit = false;
 
 	public ReachabilityChecker(Dungeon dungeon, JDPoint entryPoint) {
@@ -41,17 +42,28 @@ public class ReachabilityChecker {
 		this.allowThroughExit = allowThroughExit;
 	}
 
-
 	public boolean check() {
+		return check(Collections.<JDPoint>emptyList());
+	}
+
+	public boolean checkIgnoreRooms(Collection<Room> ignoredRooms) {
+		Set<JDPoint> points = new HashSet<>();
+		for (Room room : ignoredRooms) {
+			points.add(room.getLocation());
+		}
+		return check(points);
+	}
+
+	public boolean check(Collection<JDPoint> ignoredRooms) {
 		// TODO: improve: do not allow to 'cross' exit room
 		// everything should be accessible without going 'through' exit
 
 		Set<Key> keys = new HashSet<Key>();
 
 		Node startNode = new Node(entryPoint);
-		Set<Node> closed = new HashSet<Node>();
+		Set<Node> closed = new HashSet<>();
 		Set<Node> fringe = new HashSet<>();
-		Set<Node> postPoned = new HashSet<Node>();
+		Set<Node> postPoned = new HashSet<>();
 
 		fringe.add(startNode);
 		while(fringe.iterator().hasNext()) {
@@ -101,6 +113,13 @@ public class ReachabilityChecker {
 		allRooms.removeAll(expandedPoints);
 		allRooms.removeAll(postPonedPoints);
 		// allRooms now contains the rooms that have not been reached
+
+		if(ignoredRooms.containsAll(allRooms)) {
+			// only ignored rooms are not reachable -> success
+			return true;
+		}
+
+
 		return false;
 
 	}
@@ -135,7 +154,7 @@ public class ReachabilityChecker {
 			return point.hashCode();
 		}
 
-		private JDPoint point;
+		private final JDPoint point;
 
 		public Node(JDPoint room) {
 			this.point = room;
@@ -228,7 +247,7 @@ public class ReachabilityChecker {
 		}
 
 		static class ExpansionResult {
-			private Set<Node> expandedNodes;
+			private final Set<Node> expandedNodes;
 			// postponed because some door could not be expanded due to missing key
 			private boolean postPoned = false;
 			private boolean keyFound = false;

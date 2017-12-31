@@ -7,6 +7,7 @@ import figure.Figure;
 import figure.RoomObservationStatus;
 import item.interfaces.Usable;
 import item.quest.Thing;
+import log.Log;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -30,8 +31,13 @@ public class VisibilityCheatBall extends Thing implements Usable {
 
 		for(int x = 0; x < dungeon.getSize().getX(); x++) {
 			for (int y = 0; y < dungeon.getSize().getY(); y++) {
-				Room toView = dungeon.getRoom(new JDPoint(x, y));
-				f.getRoomObservationStatus(toView.getLocation()).setVisibilityStatus(RoomObservationStatus.VISIBILITY_ITEMS);
+				JDPoint point = new JDPoint(x, y);
+				Room toView = dungeon.getRoom(point);
+				if(toView != null) {
+					f.getRoomObservationStatus(toView.getLocation()).setVisibilityStatus(RoomObservationStatus.VISIBILITY_ITEMS);
+				} else {
+					Log.warning("Room not found for Point: "+point);
+				}
 			}
 		}
 		return true;

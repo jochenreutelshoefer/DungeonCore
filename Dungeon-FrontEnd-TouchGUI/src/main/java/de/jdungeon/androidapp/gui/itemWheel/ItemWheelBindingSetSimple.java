@@ -12,7 +12,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
 	private final int itemWheelSize;
 	private final int initValue;
-	private final Map<Integer, ItemWheelActivity> mapping = new HashMap<Integer, ItemWheelActivity>();
+	private final Map<Integer, ItemWheelActivity> mapping = new HashMap<>();
 	private final Map<Integer, ItemWheelActivity> completedMapping = new HashMap<>();
 	private final ItemWheelActivityProvider provider;
 

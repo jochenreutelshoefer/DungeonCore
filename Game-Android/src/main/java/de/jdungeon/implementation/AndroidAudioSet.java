@@ -29,4 +29,9 @@ public class AndroidAudioSet implements AbstractAudioSet {
 
 	}
 
+	@Override
+	public List<Sound> getAllSounds() {
+		return sounds;
+	}
+
 }

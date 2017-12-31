@@ -39,6 +39,7 @@ public class Assets {
 
 			SoundPool soundPool = ((AndroidAudio) audio).getSoundPool();
 			soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+				@Override
 				public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 					audioLoaded = true;
 				}

@@ -45,7 +45,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 	public Chest() {
 
-		items = new LinkedList<Item>();
+		items = new LinkedList<>();
 		// this.game = game;
 
 	}
@@ -59,17 +59,17 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	}
 
 	public Chest(Item i) {
-		items = new LinkedList<Item>();
+		items = new LinkedList<>();
 		this.takeItem(i);
 	}
 
 	public Chest(String lock) {
-		items = new LinkedList<Item>();
+		items = new LinkedList<>();
 		this.lock = lock;
 	}
 
 	public Chest(List<Item> list) {
-		items = new LinkedList<Item>();
+		items = new LinkedList<>();
 		for (int i = 0; i < list.size(); i++) {
 			this.takeItem(list.get(i));
 		}

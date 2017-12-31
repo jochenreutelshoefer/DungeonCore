@@ -10,7 +10,7 @@ import dungeon.util.RouteInstruction;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 03.08.16.
  */
-public class RemoveDoor implements DungeonChangeAction{
+public class RemoveDoor implements DungeonChangeAction {
 
 	private final Room room;
 	private final RouteInstruction.Direction direction;

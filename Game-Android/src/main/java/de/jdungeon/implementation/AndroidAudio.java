@@ -67,7 +67,8 @@ public class AndroidAudio implements Audio {
 			//InputStream inputStream = assets.open(filename);
 			//int soundId = soundPool.load(filename, 1);
 			int soundId = soundPool.load(assetDescriptor, 0);
-            return new AndroidSound(soundPool, soundId);
+			Log.i("info", "Loaded sound '"+filename+"' to id: "+soundId);
+            return new AndroidSound(soundPool, soundId, filename);
 
 		} catch (IOException e) {
 			Log.w("Warning","Couldn't load sound '" + filename + "'"+ e.getMessage());

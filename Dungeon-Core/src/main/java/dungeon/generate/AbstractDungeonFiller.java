@@ -54,12 +54,14 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	}
 
+	@Override
 	public void addAllocatedRoom(Room room) {
 		this.allocatedRooms.add(room);
 	}
 
+	@Override
 	public Key getNextKey() {
-		if (keyList.size() > 0) {
+		if (!keyList.isEmpty()) {
 			int i = (int) (Math.random() * keyList.size());
 			Key k = keyList.get(i);
 			keyList.remove(i);
@@ -72,10 +74,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	protected abstract int[][] getMap();
 
-	/**
-	 *
-	 * @uml.property name="d"
-	 */
+	@Override
 	public Dungeon getDungeon() {
 		return d;
 	}
@@ -113,7 +112,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	public abstract void fillDungeon() throws DungeonGenerationFailedException;
 
-	// Gibt zuf�llig einen B�ren, Ghul oder Oger zur�ck
+	@Override
 	public Monster getBigMonster(int value) {
 		int k = (int) (Math.random() * 3);
 		if (k == 0) {
@@ -142,7 +141,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	}
 
-	// gibt zuf�llig einen wolf, orc oder skellet zur�ck
+	@Override
 	public Monster getSmallMonster(int value) {
 		int k = (int) (Math.random() * 3);
 		if (k == 0) {
@@ -164,6 +163,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 	 * @param m
 	 * @param rate
 	 */
+	@Override
 	public void equipMonster(Monster m, int rate) {
 		// itemwert = Wurzel(monsterwert) mal einhalb
 
@@ -214,16 +214,12 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 		if (Math.random() * 3 < 1) {
 			int value = (int) (0.2 * Math.sqrt(m.getWorth()));
 			Item i = new DustItem(value);
-			if (i != null) {
-				m.takeItem(i);
-			}
+			m.takeItem(i);
 		}
 		if (Math.random() * 2 < 1) {
 			int value = (int) (0.3 * Math.sqrt(m.getWorth()));
 			Item i = new HealPotion(value);
-			if (i != null) {
 				m.takeItem(i);
-			}
 		}
 	}
 
@@ -265,7 +261,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 		}
 
 		Room r = d.getRoomNr(b, a);
-		if ((r == null) || (r.getRoomFigures().size() == 0)) {
+		if ((r == null) || (r.getRoomFigures().isEmpty())) {
 			return getMonsterIn(sector, cnt);
 		}
 		else {

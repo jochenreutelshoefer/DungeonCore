@@ -21,7 +21,7 @@ public interface DungeonFiller {
 
 	boolean isAllocated(Room room);
 
-	Room getUnallocatedRandomRoom();
+	Room getUnallocatedRandomRoom(RoomPositionConstraint... contr);
 
 	Room getUnallocatedRandomRoom(JDPoint near);
 
@@ -47,7 +47,7 @@ public interface DungeonFiller {
 	 * * Tries to find some empty space randomly to fill with content.
 	 * @return
 	 */
-	RectArea getUnallocatedSpaceRandom(int sizeX, int sizeY);
+	RectArea getUnallocatedSpaceRandom(int sizeX, int sizeY, RoomPositionConstraint... constraints);
 
 	/**
 	 * Returns an area that is unallocated and valid according to reachability.
@@ -63,7 +63,7 @@ public interface DungeonFiller {
 	 * Sets an item that needs to be distributed in an accessible way
 	 * during the level generation process
 	 *
-	 * @param item
+	 * @param item item
 	 */
 	void itemToDistribute(Item item);
 
@@ -73,7 +73,17 @@ public interface DungeonFiller {
 	 * Returns and removes one item for distribution.
 	 * Returns null if no more item remaining.
 	 *
-	 * @return
+	 * @return item
 	 */
 	Item getItemForDistribution();
+
+	/**
+	 * Removes the given number of doors randomly by retaining full reachability.
+	 * If the number of doors cannot be removed without reducing reachability,
+	 * only the number of doors possible is removed.
+	 *
+	 * @param number number of doors to be removed if possible
+	 * @return number of doors that actually have been removed
+	 */
+	int removeDoors(int number, JDPoint entryPoint);
 }

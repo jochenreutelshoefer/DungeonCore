@@ -136,6 +136,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private ItemWheel itemWheelChest;
 	private boolean worldHasChanged = true;
 	private FocusManager focusManager;
+	private ItemWheel itemWheelHeroItems;
 
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
@@ -243,17 +244,18 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 * init hero item wheel
 		 */
 		int screenWidth = getGame().getScreenWidth();
-		int selectedIndexItem = 16;
+		int selectedIndexItem = 17;
 		int screenWidthBy2 = screenWidth / 2;
 		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
-		ItemWheel itemWheelHeroItems = new ItemWheel(new JDPoint(0 - 20, screenWidth),
+		double wheelCenterY = getGame().getScreenHeight() * 1.8;
+		itemWheelHeroItems = new ItemWheel(new JDPoint(0, wheelCenterY),
 				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new UseItemActivityProvider(figureInfo, this)),
 				selectedIndexItem, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
-		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth, screenWidth);
+		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth, wheelCenterY);
 		/*
 		 * init skills wheel
 		 */
@@ -707,15 +709,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			boolean isTouchDownEvent = game.getInput().isTouchDown(i);
 			if (isTouchDownEvent) {
 				touchDownEvent = touchEvent;
-
 			}
 		}
 
 		if (touchDownEvent != null) {
 			long timeNow = System.currentTimeMillis();
-			if (timeNow - lastTouchEventTime < 100) {
+			if (timeNow - lastTouchEventTime < 200) {
 				/*
-				 * catch double event recognition; should have at least 0.1s
+				 * catch double event recognition; should have at least 0.2s
 				 * between events
 				 */
 				return;
@@ -981,6 +982,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public void tellPercept(Percept p) {
 		this.perceptHandler.handlePercept(p);
+	}
+
+	public void focusTakenItem(ItemInfo item) {
+		this.itemWheelHeroItems.highlightEntity(item);
 	}
 
 	static class GraphicObjectComparator implements Comparator<GraphicObject> {

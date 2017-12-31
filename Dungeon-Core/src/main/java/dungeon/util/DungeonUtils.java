@@ -4,10 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import figure.hero.Hero;
-import figure.hero.HeroInfo;
-import log.Log;
-import test.TestTracker;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
@@ -15,21 +11,23 @@ import dungeon.Room;
 import dungeon.RoomInfo;
 import dungeon.Way;
 import figure.DungeonVisibilityMap;
+import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import game.DungeonGame;
+import log.Log;
+import test.TestTracker;
 
 public class DungeonUtils {
 
 	@Deprecated
 	public static List<Room> findShortestWayFromTo(Dungeon d, JDPoint p1,
-			JDPoint p2, DungeonVisibilityMap map) {
+												   JDPoint p2, DungeonVisibilityMap map) {
 		return findShortestWayFromTo(d.getRoom(p1), d.getRoom(p2), map);
 	}
-	
-
 
 	@Deprecated
 	public static List<Room> findShortestWayFromTo(Room room1, Room room2,
-			DungeonVisibilityMap map) {
+												   DungeonVisibilityMap map) {
 
 		RoomInfo r1 = RoomInfo.makeRoomInfo(room1, map);
 		RoomInfo r2 = RoomInfo.makeRoomInfo(room2, map);
@@ -54,7 +52,8 @@ public class DungeonUtils {
 	public static int stepRight(int pos) {
 		if (pos == 7) {
 			return 0;
-		} else {
+		}
+		else {
 			return pos + 1;
 		}
 	}
@@ -62,11 +61,11 @@ public class DungeonUtils {
 	public static int stepLeft(int pos) {
 		if (pos == 0) {
 			return 7;
-		} else {
+		}
+		else {
 			return pos - 1;
 		}
 	}
-
 
 	private static void builtShortCuts(List<Room> way) {
 		if (way == null) {
@@ -75,7 +74,7 @@ public class DungeonUtils {
 		}
 		int i = 0;
 		while (i < way.size()) {
-			Room r1 = ( way.get(i));
+			Room r1 = (way.get(i));
 			for (int j = way.size() - 1; j > 0; j--) {
 				Room r2 = (way.get(j));
 				if (r2.hasConnectionTo(r1)) {
@@ -86,7 +85,7 @@ public class DungeonUtils {
 				}
 			}
 			i++;
-	
+
 		}
 	}
 
@@ -107,25 +106,25 @@ public class DungeonUtils {
 				}
 			}
 			i++;
-	
+
 		}
 	}
 
 	private static void explore(List<Tupel> list, RoomInfo to) {
-	
+
 		boolean more = walkBackToLastUnexploredPoint(list);
 		if (more) {
-	
+
 			Tupel t = (list.get(list.size() - 1));
 			Explorer ex = t.exp;
 			int dir = ex.getOpenDir(to);
 			ex.setExplored(dir);
 			RoomInfo next = t.r.getDoor(dir + 1).getOtherRoom(t.r);
-	
+
 			Explorer newExp = new Explorer(next, false);
 			configExp(newExp, list);
 			Tupel tup = new Tupel(next, newExp);
-			if(!list.contains(tup)) {
+			if (!list.contains(tup)) {
 				list.add(tup);
 			}
 			if (next.equals(to)) {
@@ -136,23 +135,23 @@ public class DungeonUtils {
 	}
 
 	private static List<Tupel> explore2(List<Tupel> list, RoomInfo to,
-			boolean blocked,
-			int cnt) {
+										boolean blocked,
+										int cnt) {
 		cnt++;
 		if (cnt > 2000) {
 			Log.severe("Endlosschleife in dungeon.explore2()");
 			System.exit(0);
 		}
-	
+
 		boolean more = walkBackToLastUnexploredPoint(list);
 		if (more) {
-	
+
 			Tupel t = (list.get(list.size() - 1));
 			Explorer ex = t.exp;
 			int dir = ex.getOpenDir(to);
 			ex.setExplored(dir);
 			RoomInfo next = t.r.getDoor(dir + 1).getOtherRoom(t.r);
-	
+
 			Explorer newExp = new Explorer(next, blocked);
 			configExp(newExp, list);
 			list.add(new Tupel(next, newExp));
@@ -160,7 +159,8 @@ public class DungeonUtils {
 				return list;
 			}
 			return explore2(list, to, blocked, cnt);
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -184,7 +184,6 @@ public class DungeonUtils {
 		return new HeroInfo(h, heroVisMap);
 	}
 
-	
 	private int getLastDir(List<Room> way) {
 		if (way.size() < 2) {
 			//doPrint("letzte Richtung noch nicht verfuegbar");
@@ -197,7 +196,7 @@ public class DungeonUtils {
 			//doPrint("Error bei lastDir() --> Weg gar nicht moeglich");
 		}
 		return dir;
-	
+
 	}
 
 	private static void configExp(Explorer exp, List<Tupel> list) {
@@ -205,7 +204,7 @@ public class DungeonUtils {
 			RoomInfo r1 = list.get(i).r;
 			if (exp.r.hasConnectionTo(r1)) {
 				int dir = exp.r.getConnectionDirectionTo(r1);
-	
+
 				exp.setExplored2(dir - 1);
 			}
 		}
@@ -216,7 +215,7 @@ public class DungeonUtils {
 		JDPoint fromP = from.getNumber();
 		JDPoint toP = to.getNumber();
 		return getNeighbourDirectionFromTo(fromP, toP);
-	
+
 	}
 
 	public static RouteInstruction.Direction getNeighbourDirectionFromTo(
@@ -224,28 +223,34 @@ public class DungeonUtils {
 		if (fromP.getX() == toP.getX()) {
 			if (fromP.getY() == toP.getY() - 1) {
 				return RouteInstruction.Direction.South;
-			} else if (fromP.getY() == toP.getY() + 1) {
+			}
+			else if (fromP.getY() == toP.getY() + 1) {
 				return RouteInstruction.Direction.North;
-	
-			} else {
+
+			}
+			else {
 				// doPrint("Sind keine Nachbarn: dungeon.setNeighbourDirectionFromTo()");
 				// return some default value
 				return RouteInstruction.Direction.North;
 			}
-		} else if (fromP.getY() == toP.getY()) {
+		}
+		else if (fromP.getY() == toP.getY()) {
 			if (fromP.getX() == toP.getX() - 1) {
 				// doPrint("Gefundene Richtung: EAST!");
 				return RouteInstruction.Direction.East;
-			} else if (fromP.getX() == toP.getX() + 1) {
+			}
+			else if (fromP.getX() == toP.getX() + 1) {
 				// doPrint("Gefundene Richtung: WEST!");
 				return RouteInstruction.Direction.West;
-	
-			} else {
+
+			}
+			else {
 				// doPrint("Sind keine Nachbarn: dungeon.setNeighbourDirectionFromTo()");
 				// return some default value
 				return RouteInstruction.Direction.North;
 			}
-		} else {
+		}
+		else {
 			// doPrint("Sind keine Nachbarn: dungeon.setNeighbourDirectionFromTo()");
 
 			// return some default value
@@ -255,13 +260,14 @@ public class DungeonUtils {
 
 	private static void removeCycles(List<Room> l) {
 		if (l == null) {
-		} else {
+		}
+		else {
 			int index = 0;
 			while (index < l.size() - 1) {
 				Room r = l.get(index);
 				int lastAppearence = -1;
 				for (int i = index + 1; i < l.size(); i++) {
-	
+
 					Room next = l.get(i);
 					if (next == r) {
 						lastAppearence = i;
@@ -279,13 +285,14 @@ public class DungeonUtils {
 
 	private static void removeCycles2(Way l) {
 		if (l == null) {
-		} else {
+		}
+		else {
 			int index = 0;
 			while (index < l.size() - 1) {
 				Room r = l.getRooms().get(index);
 				int lastAppearence = -1;
 				for (int i = index + 1; i < l.getRooms().size(); i++) {
-	
+
 					Room next = l.getRooms().get(i);
 					if (next == r) {
 						lastAppearence = i;
@@ -306,7 +313,8 @@ public class DungeonUtils {
 		configExp(ex, list);
 		if (ex.stillOpen()) {
 			return true;
-		} else {
+		}
+		else {
 			int k = list.size() - 2;
 			while (!ex.stillOpen()) {
 				if (k < 0) {
@@ -322,12 +330,12 @@ public class DungeonUtils {
 	}
 
 	private static Way searchWayBackTrack2(Dungeon d, Room fromR, Room toR,
-			boolean blocked) {
-	
+										   boolean blocked) {
+
 		DungeonVisibilityMap map = DungeonVisibilityMap.getAllVisMap(d);
 		RoomInfo from = RoomInfo.makeRoomInfo(fromR, map);
 		RoomInfo to = RoomInfo.makeRoomInfo(toR, map);
-	
+
 		if (from == to) {
 			LinkedList<RoomInfo> l = new LinkedList<RoomInfo>();
 			l.add(from);
@@ -340,7 +348,7 @@ public class DungeonUtils {
 			return null;
 		}
 		LinkedList<RoomInfo> erg = new LinkedList<RoomInfo>();
-	
+
 		for (int i = 0; i < list.size(); i++) {
 			erg.add(list.get(i).r);
 		}
@@ -352,11 +360,10 @@ public class DungeonUtils {
 		return findShortestWayFromTo2(d, d.getRoom(r1), d.getRoom(r2), crossBlockedDoors);
 	}
 
-
-		public static Way findShortestWayFromTo2(Dungeon d, Room r1, Room r2,
-			boolean crossBlockedDoors) {
-			//TODO: fix expansion: room list contains duplicates
-		if(r1.getLocation().equals(r2.getLocation())) {
+	public static Way findShortestWayFromTo2(Dungeon d, Room r1, Room r2,
+											 boolean crossBlockedDoors) {
+		//TODO: fix expansion: room list contains duplicates
+		if (r1.getLocation().equals(r2.getLocation())) {
 			// we are already there..
 			return new Way(Collections.singletonList(RoomInfo.makeRoomInfo(r1, DungeonVisibilityMap.getAllVisMap(d))), false);
 		}
@@ -366,7 +373,6 @@ public class DungeonUtils {
 		builtShortCuts2(way);
 		return way;
 	}
-
 
 	public static int getFirstStepFromTo2(Dungeon d, Room r1, Room r2) {
 		if (r1 == r2) {
@@ -378,7 +384,8 @@ public class DungeonUtils {
 		}
 		Room next = null;
 		if (way.size() == 1) {
-		} else {
+		}
+		else {
 			next = way.get(1).getRoom();
 		}
 		int dir = 0;
@@ -389,7 +396,7 @@ public class DungeonUtils {
 	}
 
 	public static int getFirstStepFromTo(Room r1, Room r2,
-			DungeonVisibilityMap map) {
+										 DungeonVisibilityMap map) {
 		if (r1 == r2) {
 			return 0;
 		}
@@ -399,13 +406,15 @@ public class DungeonUtils {
 		}
 		Room next = null;
 		if (way.size() == 1) {
-		} else {
+		}
+		else {
 			next = (way.get(1));
 		}
 		int dir = 0;
 		if (next != null && next.hasConnectionTo(r1)) {
 			dir = r1.getConnectionDirectionTo(next);
-		} else {
+		}
+		else {
 
 		}
 		return dir;
@@ -475,20 +484,24 @@ class Explorer {
 
 				if (r.getDoors()[i] != null) {
 					directions[i] = 2;
-				} else {
+				}
+				else {
 					directions[i] = 0;
 				}
 			}
-		} else {
+		}
+		else {
 
 			for (int i = 0; i < 4; i++) {
 				DoorInfo[] doors = r.getDoors();
 				if (doors == null) {
 
-				} else {
+				}
+				else {
 					if (doors[i] != null && doors[i].isPassable()) {
 						directions[i] = 2;
-					} else {
+					}
+					else {
 						directions[i] = 0;
 					}
 				}
@@ -536,7 +549,8 @@ class Explorer {
 			if (directions[i] == 2) {
 				openDirs[i] = true;
 				;
-			} else {
+			}
+			else {
 				openDirs[i] = false;
 			}
 		}
@@ -547,13 +561,15 @@ class Explorer {
 		int diry = 0;
 		if (dx > 0) {
 			dirx = 1;
-		} else {
+		}
+		else {
 			dirx = 3;
 		}
 
 		if (dy > 0) {
 			diry = 2;
-		} else {
+		}
+		else {
 			diry = 0;
 		}
 
@@ -563,14 +579,15 @@ class Explorer {
 			dirOrder[1] = diry;
 			dirOrder[2] = (diry + 2) % 4;
 			dirOrder[3] = (dirx + 2) % 4;
-		} else {
+		}
+		else {
 			dirOrder[0] = diry;
 			dirOrder[1] = dirx;
 			dirOrder[2] = (dirx + 2) % 4;
 			dirOrder[3] = (diry + 2) % 4;
 		}
 		for (int i = 0; i < 4; i++) {
-			if (openDirs[dirOrder[i]] == true) {
+			if (openDirs[dirOrder[i]]) {
 				return dirOrder[i];
 			}
 		}

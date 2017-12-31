@@ -7,6 +7,7 @@ import java.util.Map;
 
 import level.stageone.PreliminaryStartLevelFactory;
 import level.stageone.StartLevel;
+import level.stageone.StartLevelOLD;
 import level.stagetwo.EscortLevel2A;
 
 /**
@@ -24,7 +25,7 @@ public class DefaultDungeonManager implements DungeonManager {
 
 
 		List<DungeonFactory> stageOneList = new ArrayList<>();
-		stageOneList.add(new StandardDungeonFactory());
+		stageOneList.add(new StartLevelOLD());
 		stageOneList.add(new EscortLevel2A());
 		stages.put(1 , stageOneList);
 

@@ -89,7 +89,7 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 			// kriegt
 			if ((r.getSec() != null) && (r.getSec().number == sector)) {
 				List<Figure> monsters = r.getRoomFigures();
-				if (monsters.size() > 0) {
+				if (!monsters.isEmpty()) {
 					return (Monster) monsters
 							.get((int) (Math.random() * monsters.size()));
 				}
@@ -105,7 +105,7 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 	}
 
 	@Override
-	public Room getUnallocatedRandomRoom() {
+	public Room getUnallocatedRandomRoom(RoomPositionConstraint... constraints) {
 		throw new NotImplementedException();
 	}
 
@@ -125,7 +125,7 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 	}
 
 	@Override
-	public RectArea getUnallocatedSpaceRandom(int sizeX, int sizeY) {
+	public RectArea getUnallocatedSpaceRandom(int sizeX, int sizeY, RoomPositionConstraint... constraints) {
 		return null;
 	}
 
@@ -149,5 +149,10 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 	@Override
 	public Item getItemForDistribution() {
 		return null;
+	}
+
+	@Override
+	public int removeDoors(int number, JDPoint entryPoint) {
+		throw new NotImplementedException();
 	}
 }

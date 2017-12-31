@@ -707,7 +707,7 @@ public class GraphicObjectRenderer {
 
 	private JDGraphicObject getShrineGraphicObject(ShrineInfo s, int roomOffsetX,
 												   int roomOffsetY) {
-		// TODO: refactore this
+		// TODO: refactor this
 		JDGraphicObject ob = null;
 		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);

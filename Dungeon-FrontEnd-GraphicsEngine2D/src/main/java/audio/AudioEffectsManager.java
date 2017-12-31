@@ -1,5 +1,8 @@
 package audio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.jdungeon.game.AbstractAudioSet;
 import de.jdungeon.game.AudioLoader;
 
@@ -27,6 +30,8 @@ public class AudioEffectsManager {
 
 	// unused
 	public static AbstractAudioSet HIT;
+
+	public static List<AbstractAudioSet> allSounds = new ArrayList<>();
 
 	/*
 	public static void init(AudioLoader a) {
@@ -67,36 +72,41 @@ public class AudioEffectsManager {
 
 		if (!initialized) {
 			initialized = true;
-			HERO_HURT = a.createAudioSet(new String[] { "getroffen.wav",
-					"getroffen2.wav" });
-
-			SMASH = a.createAudioSet(new String[] { "smash.wav", "punch.mp3" });
-			HIT = a.createAudioSet(new String[] { "dang.mp3" });
-			DOOR_CLOSE = a.createAudioSet(new String[] { "door-closed.wav" });
-			DOOR_LOCK = a.createAudioSet(new String[] { "door-lock.wav" });
-
-			MAGIC_SOUND = a
-					.createAudioSet(new String[] { "woow-anything.wav" });
-			MAGIC_FIREBALL = a.createAudioSet(new String[] { "fire-ball2.wav",
-					"magic-fireball.wav" });
-			MAGIC_BLING = a.createAudioSet(new String[] { "magic-bling1.wav" });
-
-			MONSTER_HURT = a.createAudioSet(new String[] { "monster-pain1.wav",
-					"monster-pain5.wav" });
-
-			SKEL_HURT = a.createAudioSet(new String[] {});
-
-			SPIDER_DIES = a.createAudioSet(new String[] { "spider-dies.wav" });
-			SPIDER_ATTACKS = a.createAudioSet(new String[] { "hiss1.wav",
-					"hiss2.wav" });
-
-			WOLF_ATTACKS = a.createAudioSet(new String[] { "bark1.wav",
-					"bark2.wav" });
-			WOLF_DIES = a.createAudioSet(new String[] { "wolf-dies.wav" });
+			HERO_HURT = create(a, "getroffen.wav",
+					"getroffen2.wav" );
 
 			TAKE_ITEM = a.createAudioSet(new String [] {"qubodupItemHandling1.wav", "qubodupItemHandling2.wav", "qubodupItemHandling3.wav", "qubodupItemHandling4.wav", "qubodupItemHandling5.wav",});
+			SMASH = create(a, "smash.wav", "punch.mp3" );
+			HIT = create(a, "dang.mp3" );
+			DOOR_CLOSE = create(a, "door-closed.wav" );
+			DOOR_LOCK = create(a,  "door-lock.wav" );
+			MONSTER_HURT = create(a, "monster-pain1.wav",
+					"monster-pain5.wav" );
+			WOLF_ATTACKS = create(a, "bark1.wav",
+					"bark2.wav" );
+
+			MAGIC_SOUND = create(a,  "woow-anything.wav" );
+			MAGIC_FIREBALL = create(a,  "fire-ball2.wav", "magic-fireball.wav");
+			MAGIC_BLING = create(a, "magic-bling1.wav" );
+
+
+			//SKEL_HURT = create(a, new String[] {});
+
+			SPIDER_DIES = create(a,  "spider-dies.wav" );
+			SPIDER_ATTACKS = create(a, "hiss1.wav",
+					"hiss2.wav" );
+
+
+			WOLF_DIES = a.createAudioSet(new String[] { "wolf-dies.wav" });
+
 
 		}
+	}
+
+	private static AbstractAudioSet create(AudioLoader loader, String... s) {
+		AbstractAudioSet audioSet = loader.createAudioSet(s);
+		allSounds.add(audioSet);
+		return audioSet;
 	}
 
 	public static void playSound(AbstractAudioSet set) {

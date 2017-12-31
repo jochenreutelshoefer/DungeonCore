@@ -1,10 +1,13 @@
 package spell;
 import dungeon.Door;
 import dungeon.DoorInfo;
+import dungeon.JDPoint;
 import figure.Figure;
+import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
+import item.interfaces.ItemOwner;
 
 /**
  * @author Duke1
@@ -16,14 +19,15 @@ import game.JDEnv;
  */
 public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 
-	public static int [][] values = { {3,4,5,10,1},
+	public static int [][] values = {
+								{3,4,5,10,1},
 								{6,12,7,30,1}
 								};
 	
 	private final boolean isPossibleNormal;
 	private final boolean isPossibleInFight;
 	
-	public KeyLocator(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
+	public KeyLocator(int level, int diffMin, int diff, int cost, int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
 		isPossibleNormal = true;
 		isPossibleInFight = false;
@@ -52,8 +56,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	
 	@Override
 	public String getText() {
-			String s = JDEnv.getResourceBundle().getString("spell_keyLocator_text");
-			return s;
+		return JDEnv.getResourceBundle().getString("spell_keyLocator_text");
 	}
 	public KeyLocator(int level) {
 			
@@ -84,9 +87,6 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 		return isPossibleNormal;
 	}
 
-	/**
-	 * @see AbstractSpell#sorcer(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
 		if(target instanceof Door) {
@@ -103,17 +103,16 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	public void tellDirection(Door d,Figure f) {
 		
 		if(d != null && d.hasLock()) {
-			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("spell_keyLocator_cast_found")+": "+d.getKey().getOwner().getLocation().toString()));
+			ItemOwner owner = d.getKey().getOwner();
+			JDPoint location = owner.getLocation();
+			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("spell_keyLocator_cast_found")+": "+ location));
+			f.getRoomVisibility().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
 		}
 		else {
 			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("spell_keyLocator_cast_nothing")));
 		}
-			
-			
 	}
-	/**
-	 * @see AbstractSpell#getName()
-	 */
+
 	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_keyLocator_name");

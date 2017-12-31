@@ -6,12 +6,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
+import dungeon.generate.ReachabilityChecker;
 import dungeon.generate.RectArea;
+import dungeon.generate.RoomPositionConstraint;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
@@ -33,19 +36,17 @@ import util.Arith;
  */
 public class SimpleDungeonFiller implements DungeonFiller {
 
-	private Dungeon dungeon;
-	private List<Key> allKeys;
+	private final Dungeon dungeon;
+	private final List<Key> allKeys;
 	private int keyIndex = 0;
-	private Collection<Item> itemsToBeDistributed = new HashSet<Item>();
+	private final Collection<Item> itemsToBeDistributed = new HashSet<Item>();
 
-	private List<Room> allocatedRooms = new ArrayList<Room>();
+	private final List<Room> allocatedRooms = new ArrayList<Room>();
 
 	public SimpleDungeonFiller(Dungeon dungeon, List<Key> allKeys) {
 		this.dungeon = dungeon;
 		this.allKeys = allKeys;
 	}
-
-
 
 	@Override
 	public Dungeon getDungeon() {
@@ -78,34 +79,21 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	public void equipMonster(Monster m, int rate) {
 		if (Math.random() * rate < 1) { // jedes dritte Monster hat was
 			int value = (int) (0.32 * Math.sqrt(m.getWorth()));
-			// Wert des Monsters hoch 3/8
-			// int value = (int) (1
-			// *(Math.sqrt(Math.sqrt(Math.sqrt(m.getWorth()*m.getWorth()*m.getWorth())))));
 
 			double scattered = Arith.gauss(value, ((double) value) / 5);
 			double quotient = scattered / value;
 			Item i = ItemPool.getRandomItem((int) scattered, quotient);
 			if ((i != null) && (scattered > 0)) {
-				// //System.out.println(i.toString());
 				m.takeItem(i);
 			}
 		}
 		if (Math.random() * 3 < 1) {
-
 			int value = (int) (0.2 * Math.sqrt(m.getWorth()));
-			Item i = new DustItem(value);
-			if (i != null) {
-				// //System.out.println(i.toString());
-				m.takeItem(i);
-			}
+			m.takeItem(new DustItem(value));
 		}
 		if (Math.random() * 3 < 0.7) {
 			int value = (int) (0.3 * Math.sqrt(m.getWorth()));
-			Item i = new HealPotion(value);
-			if (i != null) {
-				// //System.out.println(i.toString());
-				m.takeItem(i);
-			}
+			m.takeItem(new HealPotion(value));
 		}
 	}
 
@@ -115,8 +103,8 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	}
 
 	@Override
-	public Room getUnallocatedRandomRoom() {
-		RectArea unallocatedSpaceRandom = getUnallocatedSpaceRandom(1, 1);
+	public Room getUnallocatedRandomRoom(RoomPositionConstraint... constraints) {
+		RectArea unallocatedSpaceRandom = getUnallocatedSpaceRandom(1, 1,  constraints);
 		if(unallocatedSpaceRandom != null) {
 			return dungeon.getRoom(unallocatedSpaceRandom.getPosition());
 		}
@@ -151,7 +139,6 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	@Override
 	public void addAllocatedRooms(Collection<Room> rooms) {
 		this.allocatedRooms.addAll(rooms);
-
 	}
 
 	@Override
@@ -172,7 +159,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	}
 
 	@Override
-	public RectArea getUnallocatedSpaceRandom(int sizeX, int sizeY) {
+	public RectArea getUnallocatedSpaceRandom(int sizeX, int sizeY, RoomPositionConstraint... constraints) {
 		int numberOfTrials = 100;
 		int trial = 0;
 		JDPoint result = null;
@@ -183,7 +170,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 			for (int x = pointToCheck.getX(); x < pointToCheck.getX() + sizeX; x++) {
 				for (int y = pointToCheck.getY(); y < pointToCheck.getY() + sizeY; y++) {
 					Room room = getDungeon().getRoom(new JDPoint(x, y));
-					if (room == null || allocatedRooms.contains(room)) {
+					if (room == null || allocatedRooms.contains(room)  || !constraintsOk(room, constraints)) {
 						isOk = false;
 						break;
 					}
@@ -197,26 +184,46 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return new RectArea(result, sizeX, sizeY, getDungeon());
 	}
 
+	private boolean constraintsOk(Room room, RoomPositionConstraint[] constraints) {
+		for (RoomPositionConstraint constraint : constraints) {
+			if(!constraint.isValid(room)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public JDPoint getRandomPoint() {
 		return new JDPoint(Math.random() * getDungeon().getSize().getX(),
 				Math.random() * getDungeon().getSize().getY());
 
 	}
 
+	@Override
 	public RectArea getValidArea(Room entryRoom, int sizeX, int sizeY) {
 		int maxTrials = 100;
 		int trial = 0;
-		RectArea unallocatedSpace1 = getUnallocatedSpaceRandom(sizeX, sizeY);
-		boolean valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, unallocatedSpace1.getRooms());
+		RectArea unallocatedSpace = getUnallocatedSpaceRandom(sizeX, sizeY);
+
+		// we need to exclude the rooms of the tested area and those which are already declared as unreachable (isWall)
+		Collection<Room> ignoredRooms = new HashSet<>();
+		ignoredRooms.addAll(unallocatedSpace.getRooms());
+		Collection<Room> wallRooms = dungeon.getWallRooms();
+		ignoredRooms.addAll(wallRooms);
+
+		boolean valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, ignoredRooms );
 		while(!valid) {
-			unallocatedSpace1 = getUnallocatedSpaceRandom(sizeX, sizeY);
-			valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, unallocatedSpace1.getRooms());
+			unallocatedSpace = getUnallocatedSpaceRandom(sizeX, sizeY);
+			ignoredRooms = new HashSet<>();
+			ignoredRooms.addAll(unallocatedSpace.getRooms());
+			ignoredRooms.addAll(wallRooms);
+			valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, ignoredRooms);
 			if(trial > maxTrials) {
 				break;
 			}
 			trial++;
 		}
-		return unallocatedSpace1;
+		return unallocatedSpace;
 	}
 
 	@Override
@@ -233,11 +240,56 @@ public class SimpleDungeonFiller implements DungeonFiller {
 
 	@Override
 	public Item getItemForDistribution() {
-		if(itemsToBeDistributed.size() == 0) return null;
+		if(itemsToBeDistributed.isEmpty()) return null;
 		Iterator<Item> iterator = itemsToBeDistributed.iterator();
 		Item item = iterator.next();
 		iterator.remove();
 		return item;
+	}
+
+	@Override
+	public int removeDoors(int number, JDPoint entryPoint) {
+		ReachabilityChecker checker = new ReachabilityChecker(dungeon, entryPoint);
+		int counterTries = 0;
+		int counterDoors = 0;
+		int max = 200;
+		while(counterDoors < number) {
+			counterTries++;
+			JDPoint randomPoint = getRandomPoint();
+			Room room = dungeon.getRoom(randomPoint);
+			if(room == null) continue;
+			List<Door> doors = getDoorList(room);
+			if(doors.isEmpty()) continue;
+			int doorIndex = (int) (Math.random() * doors.size());
+			Door door = doors.get(doorIndex);
+			int direction = door.getDir(room.getPoint());
+			room.removeDoor(door, true);
+			boolean allRoomsStillReachable = checker.check();
+			if (allRoomsStillReachable) {
+				counterDoors ++;
+			}
+			else {
+				// we re-insert the door as it is required
+				room.addDoor(door, direction, true);
+			}
+
+			if(counterTries > max) {
+				break;
+			}
+
+		}
+		return counterDoors;
+	}
+
+	private List<Door> getDoorList(Room room) {
+		List<Door> result = new ArrayList<>();
+		for(int i = 0; i < room.getDoors().length; i++) {
+			Door door = room.getDoors()[i];
+			if(door != null && !door.hasLock()) {
+				result.add(door);
+			}
+		}
+		return result;
 	}
 
 }

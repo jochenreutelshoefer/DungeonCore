@@ -8,7 +8,7 @@ import java.util.*;
 
 public abstract class Quest {
 	
-	LinkedList rooms;
+	private List rooms;
 	
 	public Quest () {
 		

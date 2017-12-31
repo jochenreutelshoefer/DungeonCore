@@ -4,6 +4,7 @@
  */
 package dungeon.quest;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,6 +16,7 @@ import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DefaultHall;
+import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
 import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
@@ -61,9 +63,9 @@ public abstract class RoomQuest {
 
 	protected final int sizeY;
 
-	protected JDPoint entrenceRoom;
+	protected JDPoint entranceRoom;
 
-	protected int entrenceDirection;
+	protected int entranceDirection;
 
 	protected final DungeonFiller df;
 
@@ -97,9 +99,9 @@ public abstract class RoomQuest {
 	protected boolean valid = true;
 
 	protected boolean doorsRemoved = false;
+
 	protected final boolean wallMade = false;
 	protected DefaultHall halle;
-
 	public RoomQuest(
 			JDPoint p, DungeonFiller df,
 			int x,
@@ -115,6 +117,10 @@ public abstract class RoomQuest {
 		if(p != null) {
 			setRoomArray();
 		}
+	}
+
+	public Room[][] getRooms() {
+		return rooms;
 	}
 
 	public RoomQuest(DungeonFiller df, int x, int y) {
@@ -173,12 +179,11 @@ public abstract class RoomQuest {
 		}
 	}
 
-	public Room getEntrenceRoom() {
-		return df.getDungeon().getRoom(entrenceRoom);
+	public Room getEntranceRoom() {
+		return df.getDungeon().getRoom(entranceRoom);
 	}
 
 	protected boolean accessible(Room r, int dir) {
-		boolean b = false;
 		Room entrance = df.getDungeon().getRoomAt(r,
 				RouteInstruction.direction(dir));
 		if (entrance == null) {
@@ -186,11 +191,9 @@ public abstract class RoomQuest {
 		}
 		boolean room_ok = true;
 		if (entrance.getRoomQuest() != null) {
-			//System.out.println("kein Eingang");
 			room_ok = false;
 		}
 		if (entrance.getHall() != r.getHall()) {
-			//System.out.println("kein Eingang");
 			room_ok = false;
 		}
 
@@ -258,18 +261,11 @@ public abstract class RoomQuest {
 
 	public abstract boolean setUp();
 
-	/**
-	 * Returns the valid.
-	 *
-	 * @return boolean
-	 * @uml.property name="valid"
-	 */
 	public boolean isValid() {
 		return valid;
 	}
 
 	public void plugMonster(int avStrength, double cntProRoom, int typeCode) {
-		//LinkedList monsterToPlug = new LinkedList();
 		int cnt = (int) (cntProRoom * sizeX * sizeY);
 		for (int i = 0; i < cnt; i++) {
 			Monster m = getMonster(avStrength, typeCode);
@@ -292,18 +288,12 @@ public abstract class RoomQuest {
 
 	public void plugShrine(Shrine s) {
 
-		List<Room> roomList = new LinkedList<Room>();
-		for (int i = 0; i < rooms.length; i++) {
-			for (int j = 0; j < rooms[0].length; j++) {
-				roomList.add(rooms[i][j]);
-			}
-
-		}
+		List<Room> roomList = getAllRoomsList();
 		Map<List<Room>, Room> ways = new HashMap<List<Room>, Room>();
 		for (int i = 0; i < roomList.size(); i++) {
 			Room to = roomList.get(i);
 			List<Room> way = DungeonUtils.findShortestWayFromTo(df.getDungeon()
-					.getRoom(this.entrenceRoom), to, DungeonVisibilityMap
+					.getRoom(this.entranceRoom), to, DungeonVisibilityMap
 					.getAllVisMap(df.getDungeon()));
 
 			if (way != null) {
@@ -327,65 +317,26 @@ public abstract class RoomQuest {
 
 	}
 
-	protected boolean validateNet() {
-		LinkedList hash = new LinkedList();
 
-		////System.out.println();
-		////System.out.println();
-		////System.out.println("rooms ohne rq:");
-		LinkedList roomList = new LinkedList();
+	private List<Room> getAllRoomsList() {
+		List<Room> roomList = new LinkedList<>();
 		for (int i = 0; i < rooms.length; i++) {
 			for (int j = 0; j < rooms[0].length; j++) {
 				roomList.add(rooms[i][j]);
 			}
 		}
-
-		Room first = df.getDungeon().getRoom(location);
-		////System.out.println();
-		////System.out.println();
-		////System.out.println("mache netz; ");
-		////System.out.println("adding: "+first.toString());
-		hash.add(first);
-		int k = 0;
-		while (k < hash.size()) {
-			Room r = (Room) hash.get(k);
-			Door[] doors = r.getDoors();
-			for (int i = 0; i < 4; i++) {
-				if (doors[i] != null) {
-					Room a = doors[i].getOtherRoom(r);
-					if (!hash.contains(a)
-							&& (a.getRoomQuest() == this)) {
-						////System.out.println("adding: "+a.toString());
-						hash.add(a);
-					}
-				}
-			}
-			k++;
-
-		}
-		int l = hash.size();
-		////System.out.println("Anzahl R�ume insgesamt: "+roomList.size());
-		////System.out.println("Anzahl erreichbarer R�ume: " + l);
-		////System.out.println("Anzahl r�ume ohne rq: "+not_rq_roomList.size());
-		if (l == roomList.size()) {
-			return true;
-		}
-		else {
-			//System.out.println("validate fehlgeschlagen!!!!");
-			return false;
-		}
-
+		return roomList;
 	}
 
 	public boolean isEntrenceDoor(Door d) {
-		Room r = df.getDungeon().getRoom(entrenceRoom);
-		Door d2 = r.getDoor(entrenceDirection);
+		Room r = df.getDungeon().getRoom(entranceRoom);
+		Door d2 = r.getDoor(entranceDirection);
 		boolean b = d == d2;
 		return b;
 	}
 
 	public void removeDoors(int cnt) {
-		boolean ok = validateNet();
+		boolean ok = false;
 		doorsRemoved = true;
 		int undos = 0;
 		int rounds = 0;
@@ -393,17 +344,15 @@ public abstract class RoomQuest {
 			rounds++;
 
 			Room r1 = getRandomRoom();
-			int k = 1 + ((int) Math.random() * 4);
+			int k = 1 + ((int) (Math.random() * 4));
 			Door d1 = null;
 			if (!isEntrenceDoor(r1.getDoor(k))) {
 				d1 = r1.removeDoor(k, true);
 			}
 
 			if (d1 != null) {
-
 				cnt--;
-
-				ok = validateNet();
+				ok = DungeonFillUtils.validateNet(getAllRoomsList(), df.getDungeon().getRoom(location), Collections.<Room>emptyList());
 				if (!ok) {
 					undoDoorRemove(r1, k, d1);
 					cnt++;
@@ -444,51 +393,51 @@ public abstract class RoomQuest {
 		else if (typeCode == TYPE_SMALL) {
 			int k = (int) (Math.random() * 3);
 			if (k < 1) {
-				return getMonster(strength, this.TYPE_WOLF);
+				return getMonster(strength, TYPE_WOLF);
 			}
 			else if (k < 2) {
-				return getMonster(strength, this.TYPE_ORC);
+				return getMonster(strength, TYPE_ORC);
 			}
 			else {
-				return getMonster(strength, this.TYPE_SKELETON);
+				return getMonster(strength, TYPE_SKELETON);
 			}
 		}
 		else if (typeCode == TYPE_BIG) {
 			int k = (int) (Math.random() * 3);
 			if (k < 1) {
-				return getMonster(strength, this.TYPE_BEAR);
+				return getMonster(strength, TYPE_BEAR);
 			}
 			else if (k < 2) {
-				return getMonster(strength, this.TYPE_OGRE);
+				return getMonster(strength, TYPE_OGRE);
 			}
 			else {
-				return getMonster(strength, this.TYPE_GHUL);
+				return getMonster(strength, TYPE_GHUL);
 			}
 		}
 		else if (typeCode == TYPE_NATURE) {
 			if (Math.random() < 0.5) {
-				return getMonster(strength, this.TYPE_WOLF);
+				return getMonster(strength, TYPE_WOLF);
 			}
 			else {
-				return getMonster(strength, this.TYPE_BEAR);
+				return getMonster(strength, TYPE_BEAR);
 			}
 
 		}
 		else if (typeCode == TYPE_CREATURE) {
 			if (Math.random() < 0.5) {
-				return getMonster(strength, this.TYPE_ORC);
+				return getMonster(strength, TYPE_ORC);
 			}
 			else {
-				return getMonster(strength, this.TYPE_OGRE);
+				return getMonster(strength, TYPE_OGRE);
 			}
 
 		}
 		else if (typeCode == TYPE_UNDEAD) {
 			if (Math.random() < 0.5) {
-				return getMonster(strength, this.TYPE_SKELETON);
+				return getMonster(strength, TYPE_SKELETON);
 			}
 			else {
-				return getMonster(strength, this.TYPE_GHUL);
+				return getMonster(strength, TYPE_GHUL);
 			}
 
 		}

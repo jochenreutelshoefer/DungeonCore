@@ -1,7 +1,10 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
 import android.util.Log;
+import dungeon.JDPoint;
 import event.EventManager;
+import figure.hero.HeroInfo;
+import game.InfoEntity;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.FocusEvent;
@@ -14,12 +17,10 @@ import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
 
-import dungeon.JDPoint;
-import figure.hero.HeroInfo;
-
 public class ItemWheel extends AbstractGUIElement {
 
 	private static final double PI_EIGHTEENTH = Math.PI / 18;
+	private static final double PI_THIRTHYSIXTH = Math.PI / 36;
 	private static final double TWO_PI = Math.PI * 2;
 	private final JDPoint[] points = new JDPoint[36];
 	private final int hightlightItemPosition;
@@ -53,7 +54,6 @@ public class ItemWheel extends AbstractGUIElement {
 	private float velocity = 0;
 	private float startVelocity = 0;
 	private final float maxVelocity = 50;
-
 
 	private boolean visible = true;
 
@@ -89,8 +89,7 @@ public class ItemWheel extends AbstractGUIElement {
 		this.visible = visible;
 	}
 
-
-	long lastEvent =0;
+	long lastEvent = 0;
 
 	@Override
 	public void handleScrollEvent(ScrollMotion scrolling) {
@@ -100,12 +99,13 @@ public class ItemWheel extends AbstractGUIElement {
 		float rotation = movementX / 400;
 
 		// instant rotation
-		changeRotation(rotation);
+		changeRotationState(rotation);
 
 		float initialRotationVelocity = movementX / 50;
 		if (initialRotationVelocity > maxVelocity) {
 			velocity = maxVelocity;
-		} else {
+		}
+		else {
 			velocity = initialRotationVelocity;
 		}
 		startVelocity = velocity;
@@ -127,34 +127,63 @@ public class ItemWheel extends AbstractGUIElement {
 		return super.handleTouchEvent(touch);
 	}
 
+	public void highlightEntity(InfoEntity object) {
+		// we need to update the binding set to have the new item included
+		binding.update(0);
+		int size = binding.getSize();
+		for (int i = 0; i < size; i++) {
+			ItemWheelActivity activity = binding.getActivity(i);
+			if (activity != null) {
+				if (activity.getObject().equals(object)) {
+					centerOnIndex(i);
+					break;
+				}
+			}
+		}
+	}
+
 	private void iconTouched(int i) {
 		if (i == markedPointIndex) {
 			ItemWheelActivity infoEntity = binding.getActivity(i);
-			if(infoEntity != null) {
+			if (infoEntity != null) {
 				binding.getProvider().activityPressed(infoEntity);
 			}
-		} else {
+		}
+		else {
 			centerOnIndex(i);
 		}
 	}
 
 	private void centerOnIndex(int i) {
 		setMarkedIndex(i);
-	}
-
-	private synchronized void changeRotation(float rotationChange) {
-		this.currentRotationState += rotationChange;
-		updatePointCoordinates();
-	}
-
-	private void setMarkedIndex(int i) {
-		// set touched element as highlighted element
-		markedPointIndex = i;
 
 		// scroll element to center position
 		int diff = hightlightItemPosition - i;
 		this.currentRotationState = (float) PI_EIGHTEENTH * diff;
 		updatePointCoordinates();
+
+	}
+
+	private synchronized void changeRotationState(float rotationChange) {
+		this.currentRotationState = (float) ((this.currentRotationState + rotationChange + TWO_PI) % TWO_PI);
+		updatePointCoordinates();
+
+		// we jump with highlighting to the next element during rotation
+		int diff = ((hightlightItemPosition - markedPointIndex) + 36) % 36;
+		float highlightPosition = (float) PI_EIGHTEENTH * diff;
+		double rotationFromHighlightPoint = (this.currentRotationState - highlightPosition);
+		if (rotationFromHighlightPoint > PI_THIRTHYSIXTH) {
+			setMarkedIndex((markedPointIndex - 1 + 36) % 36);
+		}
+		if (rotationFromHighlightPoint < -1 * PI_THIRTHYSIXTH) {
+			setMarkedIndex((markedPointIndex + 1) % 36);
+		}
+
+	}
+
+	private void setMarkedIndex(int i) {
+		// set touched element as highlighted element
+		markedPointIndex = i;
 
 		// show info about element
 		ItemWheelActivity activity = binding.getActivity(markedPointIndex);
@@ -180,7 +209,8 @@ public class ItemWheel extends AbstractGUIElement {
 			 */
 			updatePointCoordinates();
 			justRotated = false;
-		} else {
+		}
+		else {
 			/*
 			 * calc movement due to inertia-velocity
 			 */
@@ -190,7 +220,7 @@ public class ItemWheel extends AbstractGUIElement {
 					velocity *= 0.7;
 					timer = 0;
 				}
-				changeRotation(velocity/10);
+				changeRotationState(velocity / 10);
 
 				// at some very low velocity -> stop
 				if (Math.abs(velocity) < 0.07) {
@@ -204,11 +234,8 @@ public class ItemWheel extends AbstractGUIElement {
 	private void updatePointCoordinates() {
 		for (int i = 0; i < points.length; i++) {
 			double degreeRad = i * PI_EIGHTEENTH + currentRotationState;
-			int x = calcXCoordinate(degreeRad);
-			int y = calcYCoordinate(degreeRad);
-			points[i].setX(x);
-			points[i].setY(y);
-
+			points[i].setX(calcXCoordinate(degreeRad));
+			points[i].setY(calcYCoordinate(degreeRad));
 		}
 	}
 
@@ -227,19 +254,18 @@ public class ItemWheel extends AbstractGUIElement {
 		this.binding.getSize();
 
 		// headline and title
-		int xLeft = position.getX() - this.getDimension().getWidth()*2 / 5 - 20;
-		int xRight = position.getX() + this.getDimension().getWidth()*2 / 5 + 20;
-		int posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight()/12;
-		g.drawLine(xLeft,posY, xRight, posY, Colors.WHITE);
+		int xLeft = position.getX() - this.getDimension().getWidth() * 2 / 5 - 20;
+		int xRight = position.getX() + this.getDimension().getWidth() * 2 / 5 + 20;
+		int posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight() / 12;
+		g.drawLine(xLeft, posY, xRight, posY, Colors.WHITE);
 		int stepDown = 10;
 		int stepLength = 50;
-		g.drawLine(xLeft- stepLength,posY+ stepDown, xLeft, posY+ stepDown, Colors.WHITE);
+		g.drawLine(xLeft - stepLength, posY + stepDown, xLeft, posY + stepDown, Colors.WHITE);
 		g.drawLine(xLeft, posY, xLeft, posY + stepDown, Colors.WHITE);
-		g.drawLine(xRight, posY+ stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
+		g.drawLine(xRight, posY + stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
-		g.drawString(title, xLeft-25, posY+stepDown-1, g.getPaintWhite());
-		g.drawString(title, xRight+25, posY+stepDown-1, g.getPaintWhite());
-
+		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getPaintWhite());
+		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getPaintWhite());
 
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
@@ -260,8 +286,6 @@ public class ItemWheel extends AbstractGUIElement {
 				continue;
 			}
 
-
-
 			ItemWheelActivity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
 				int yMinusDefaultHeight = y - defaultImageHeight;
@@ -276,6 +300,14 @@ public class ItemWheel extends AbstractGUIElement {
 				}
 
 				if (toDraw == this.markedPointIndex) {
+
+					/*
+					draw highlighting circle
+					 */
+					g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
+
+
+
 					/*
 					 * draw background if existing
 					 */
@@ -292,18 +324,14 @@ public class ItemWheel extends AbstractGUIElement {
 					}
 
 					/*
-					draw highlighting circle
-					 */
-					g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
-
-					/*
 					 * draw actual item
 					 */
 					g.drawScaledImage(im, xMinusDefaultWidth,
 							yMinusDefaultHeight, doubleImageWidth,
 							doubleImageHeight, 0, 0, im.getWidth(),
 							im.getHeight());
-				} else {
+				}
+				else {
 
 					/*
 					 * draw background if existing
@@ -329,7 +357,6 @@ public class ItemWheel extends AbstractGUIElement {
 							im.getHeight());
 				}
 			}
-
 
 		}
 

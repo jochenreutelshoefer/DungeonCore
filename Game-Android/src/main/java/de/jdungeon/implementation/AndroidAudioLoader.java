@@ -3,6 +3,8 @@ package de.jdungeon.implementation;
 import java.io.IOException;
 
 import android.content.res.AssetManager;
+import android.util.Log;
+
 import de.jdungeon.game.AbstractAudioSet;
 import de.jdungeon.game.AudioLoader;
 
@@ -28,7 +30,10 @@ public class AndroidAudioLoader implements AudioLoader {
 				Sound sound = audio.createSound(fullFilename);
 				if (sound != null) {
 					set.addSound(sound);
+				} else {
+					Log.w("Warning", "Sound could not be created: "+file);
 				}
+
 			}
 		}
 		return set;
