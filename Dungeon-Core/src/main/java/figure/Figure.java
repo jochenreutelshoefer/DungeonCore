@@ -12,7 +12,7 @@ import java.util.Set;
 import ai.AI;
 import ai.AbstractReflexBehavior;
 import ai.DefaultMonsterIntelligence;
-import ai.GuiAI;
+import ai.AbstractAI;
 import dungeon.Chest;
 import dungeon.Dir;
 import dungeon.Door;
@@ -150,7 +150,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	private static int figureID_counter = 1;
 
-	private static Map<Integer, Figure> allFigures = new HashMap<Integer, Figure>();
+	private static Map<Integer, Figure> allFigures = new HashMap<>();
 
 	protected int level;
 
@@ -472,7 +472,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (f instanceof Monster) {
 				MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(f,
 						f.getRoomVisibility());
-				GuiAI ai = new DefaultMonsterIntelligence();
+				AbstractAI ai = new DefaultMonsterIntelligence();
 				if (f.getSpecifiedAI() != null) {
 					ai = f.getSpecifiedAI();
 
@@ -487,7 +487,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 	}
 
-	GuiAI specifiedAI = null;
+	AbstractAI specifiedAI = null;
 
 	public static void removeFigure(Figure f) {
 		allFigures.remove(Integer.valueOf(f.getFighterID()));
@@ -2025,11 +2025,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 	}
 
-	@Deprecated
-	public int getLookDir() {
-		return lookDir;
-	}
-
 	public void setLookDir(int lookDir) {
 		this.lookDir = lookDir;
 	}
@@ -2402,11 +2397,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		return lastSpell;
 	}
 
-	public GuiAI getSpecifiedAI() {
+	public AbstractAI getSpecifiedAI() {
 		return specifiedAI;
 	}
 
-	public void setSpecifiedAI(GuiAI specifiedAI) {
+	public void setSpecifiedAI(AbstractAI specifiedAI) {
 		this.specifiedAI = specifiedAI;
 	}
 

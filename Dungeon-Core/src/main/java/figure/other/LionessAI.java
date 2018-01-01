@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ai.AttitudeDefaultHero;
-import ai.GuiAI;
+import ai.AbstractAI;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
@@ -16,7 +16,7 @@ import figure.action.MoveAction;
 import figure.percept.MovePercept;
 import figure.percept.Percept;
 
-public class LionessAI extends GuiAI {
+public class LionessAI extends AbstractAI {
 
 	FigureInfo master;
 	RoomInfo currentWalkTarget = null;

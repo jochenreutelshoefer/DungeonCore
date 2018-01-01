@@ -6,6 +6,7 @@
  */
 package figure;
 
+import dungeon.Room;
 import game.JDEnv;
 
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
+import log.Log;
 
 public class RoomObservationStatus {
 	
@@ -89,7 +91,12 @@ public class RoomObservationStatus {
 		 * set new visibility status
 		 */
 		visibilityStatus = max;
-		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), visibilityStatus);
+		Room room = map.getDungeon().getRoom(point);
+		if(room != null) {
+			room.setObserverStatus(map.getFigure(), visibilityStatus);
+		} else {
+			Log.warning("Could not find room for Point: "+ point);
+		}
 	}
 
 	private synchronized int getMaxVisModifierValue(int max) {

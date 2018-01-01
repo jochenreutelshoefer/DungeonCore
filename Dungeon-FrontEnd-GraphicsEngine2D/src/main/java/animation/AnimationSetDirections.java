@@ -1,5 +1,7 @@
 package animation;
 
+import dungeon.util.RouteInstruction;
+
 import de.jdungeon.game.AbstractAudioSet;
 
 public class AnimationSetDirections {
@@ -30,6 +32,10 @@ public class AnimationSetDirections {
 		if (dir < 0 || dir > 3)
 			return null;
 		return animations[dir];
+	}
+
+	public AnimationSet get(RouteInstruction.Direction direction) {
+		return get(direction.getValue()-1);
 	}
 	
 }

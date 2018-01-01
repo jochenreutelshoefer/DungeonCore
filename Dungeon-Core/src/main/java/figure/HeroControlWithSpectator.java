@@ -1,6 +1,6 @@
 package figure;
 
-import ai.GuiAI;
+import ai.AbstractAI;
 import figure.hero.HeroInfo;
 import game.JDGUI;
 
@@ -9,7 +9,7 @@ public class HeroControlWithSpectator extends FigureControlWithSpectator {
 	protected HeroInfo hero;
 
 
-	public HeroControlWithSpectator(HeroInfo info, GuiAI ai, JDGUI spectator) {
+	public HeroControlWithSpectator(HeroInfo info, AbstractAI ai, JDGUI spectator) {
 		super(info, ai, spectator);
 		this.hero = info;
 

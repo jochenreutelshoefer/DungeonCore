@@ -35,8 +35,6 @@ public class VisibilityCheatBall extends Thing implements Usable {
 				Room toView = dungeon.getRoom(point);
 				if(toView != null) {
 					f.getRoomObservationStatus(toView.getLocation()).setVisibilityStatus(RoomObservationStatus.VISIBILITY_ITEMS);
-				} else {
-					Log.warning("Room not found for Point: "+point);
 				}
 			}
 		}

@@ -133,6 +133,10 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 
 	
 	public boolean isHostile(FigureInfo fig) {
+		if(fig.equals(this)) {
+			// hopefully not called, but you never know..
+			return false;
+		}
 		return f.getControl().isHostileTo(fig);
 	}
 	
@@ -186,7 +190,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 		return null;
 	}
 	
-	public static FigureInfo makeFigureInfo(Figure f,DungeonVisibilityMap map) {
+	public static FigureInfo makeFigureInfo(Figure f, DungeonVisibilityMap map) {
 		if(map == null) {
 			System.out.println("FigureInfo mit VisMap null!");
 			return null;

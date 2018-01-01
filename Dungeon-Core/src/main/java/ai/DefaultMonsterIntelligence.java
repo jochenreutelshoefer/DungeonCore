@@ -47,7 +47,7 @@ import figure.percept.Percept;
 /**
  * Standard-verhalten der Monster.
  */
-public class DefaultMonsterIntelligence extends GuiAI {
+public class DefaultMonsterIntelligence extends AbstractAI {
 
 	protected MonsterInfo monster;
 
@@ -62,9 +62,10 @@ public class DefaultMonsterIntelligence extends GuiAI {
 	@Override
 	public void setFigure(FigureInfo info) {
 		if (info instanceof MonsterInfo) {
+			// TODO: remove monster info object
 			monster = ((MonsterInfo) info);
-
 		}
+		this.info = info;
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class DefaultMonsterIntelligence extends GuiAI {
 			lastAction = a;
 			return a;
 		}
-		if (actionQueue.size() > 0) {
+		if (!actionQueue.isEmpty()) {
 			Action a = actionQueue.remove(0);
 			lastAction = a;
 			return a;
@@ -288,7 +289,7 @@ public class DefaultMonsterIntelligence extends GuiAI {
 
 	private static DoorStep[] getDoorSteps(FigureInfo monster) {
 		int doors[] = monster.getRoomDoors();
-		List<DoorStep> steps = new LinkedList<DoorStep>();
+		List<DoorStep> steps = new LinkedList<>();
 		for (int i = 0; i < doors.length; i++) {
 			if (doors[i] == Door.DOOR || doors[i] == Door.DOOR_LOCK_OPEN) {
 				DoorStep step = calcDoorStep(i, monster);
@@ -456,8 +457,8 @@ public class DefaultMonsterIntelligence extends GuiAI {
 		for (int i = 0; i < 8; i++) {
 
 			PositionInRoomInfo pos = info.getPositionInRoom(i);
-			FigureInfo f = pos.getFigure();
-			if (f instanceof HeroInfo) {
+			FigureInfo otherFigure  = pos.getFigure();
+			if (otherFigure != null && this.isHostileTo(otherFigure)) {
 				if (Position.getMinDistanceFromTo(
 						monster.getPositionInRoomIndex(), i) == 1) {
 					return null;

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ai.AttitudeDefaultHero;
-import ai.GuiAI;
+import ai.AbstractAI;
 import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
@@ -18,7 +18,7 @@ import figure.percept.FightEndedPercept;
 import figure.percept.FleePercept;
 import figure.percept.Percept;
 
-public class FirAI extends GuiAI {
+public class FirAI extends AbstractAI {
 	
 	FigureInfo info;
 	List<FigureInfo> attackers = new LinkedList<FigureInfo>();

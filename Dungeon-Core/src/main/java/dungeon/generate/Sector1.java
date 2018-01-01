@@ -52,8 +52,8 @@ import shrine.Statue;
 import spell.Discover;
 import spell.Prayer;
 import spell.conjuration.FirConjuration;
-import ai.GuiAI;
-import ai.VimAI;
+import ai.AbstractAI;
+import ai.ChaserAI;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.DoorCountRoomComparator;
@@ -255,7 +255,7 @@ public class Sector1 extends Sector {
 		
 		
 		
-		GuiAI vimAI = new VimAI();
+		AbstractAI vimAI = new ChaserAI();
 		vim.setSpecifiedAI(vimAI);
 		RoomQuest rq = mainHall.insertRQXY(1, 1, false, null);
 		rq.getEntranceRoom().figureEnters(vim, 0);

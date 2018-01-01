@@ -20,7 +20,7 @@ import dungeon.JDPoint;
 /**
  * Einfachste rein zufallsbasierte Steuerung eines Helden. Nur fuer Testzwecke.
  */
-public class SimpleHeroBehavior extends GuiAI implements ControlUnit {
+public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 
 	private HeroInfo h;
 

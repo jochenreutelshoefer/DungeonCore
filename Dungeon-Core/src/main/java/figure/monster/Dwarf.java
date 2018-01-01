@@ -10,7 +10,6 @@ import figure.Figure;
 import figure.action.Action;
 import figure.attribute.Attribute;
 
-
 /**
  * Zwerg Alberich, Hüter des Schatzes. Soll nur einmal vorkommen.
  */
@@ -27,43 +26,33 @@ public class Dwarf extends Monster {
 		this.dexterity = new Attribute(Attribute.DEXTERITY,5);
 		// TODO Auto-generated constructor stub
 		name = "Alberich";
-//		int value = 4000;
-//		int HealthI = value / (50 + (int) (Math.random() * 10));
-//
-//		value = value / HealthI;
-//		health = new Attribute(Attribute.HEALTH, HealthI);
-//		psycho = new Attribute(Attribute.PSYCHO, 20);
-//		int average = value / (3 + (int) (Math.random() * 4));
-//		int scatter = 1 + (int) (Math.random() * (average / 4));
-//		minDamage = average - scatter;
-//		maxDamage = average + scatter;
-//		//	value = value / average;
-//		chanceToHit =
-//			new Attribute(
-//					Attribute.CHANCE_TO_HIT,
-//				(int) (((float) value / average) * 6));
-//		//(100));
 
-		
+
+
 	}
 	
+	@Override
 	public double getAntiFleeFactor() {
 		return 0;
 	}
 	
+	@Override
 	protected int getHEALTH_DAMAGE_BALANCE() {
-		return this.HEALTH_DAMAGE_BALANCE;
+		return HEALTH_DAMAGE_BALANCE;
 	}
 
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
 	
+	@Override
 	protected int getSCATTER() {
-		return this.SCATTER;
+		return SCATTER;
 	}
 	
 	
+	@Override
 	public boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
 		attack(op);
@@ -74,6 +63,7 @@ public class Dwarf extends Monster {
 		return false;
 	}
 	
+	@Override
 	public int hunting() {
 		return 0;
 	}

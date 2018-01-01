@@ -72,8 +72,12 @@ public class FigureControl implements ControlUnit {
 	}
 
 	@Override
-	public boolean isHostileTo(FigureInfo f) {
-		return brain.isHostileTo(f);
+	public boolean isHostileTo(FigureInfo otherFigure) {
+		if(otherFigure.equals(this.f)) {
+			// hopefully not called, but you never know..
+			return false;
+		}
+		return brain.isHostileTo(otherFigure);
 	}
 
 	@Override

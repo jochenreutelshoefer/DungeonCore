@@ -5,16 +5,18 @@ import figure.FigureInfo;
 import figure.percept.Percept;
 import game.JDGUI;
 
-public abstract class GuiAI implements AI {
-
-	/**
-	 * @param args
-	 */
+public abstract class AbstractAI implements AI {
 
 	protected Attitude att;
 
-	public GuiAI(Attitude att) {
+	public AbstractAI(Attitude att) {
 		this.att = att;
+	}
+
+	@Override
+	public void notifyVisibilityStatusIncrease(JDPoint p) {
+		// most simple AIs do not use this information
+		// override this method if required
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public abstract class GuiAI implements AI {
 		return att.isHostile(f);
 	}
 
-
+	@Override
 	public void setFigure(FigureInfo info) {
 		this.info = info;
 	}
@@ -33,11 +35,6 @@ public abstract class GuiAI implements AI {
 
 	public void plugSpectatorGui(JDGUI gui) {
 		this.gui = gui;
-	}
-
-
-	public void notifyVisibilityStatusIncrease(JDPoint p) {
-
 	}
 
 	@Override
@@ -57,6 +54,5 @@ public abstract class GuiAI implements AI {
 	public void setWait(boolean wait) {
 		this.wait = wait;
 	}
-
 
 }

@@ -907,16 +907,13 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
-	public void figureEnters(Figure figure, int from) {
+	public void figureEnters(Figure figure, int fromDir) {
 
-		if (!this.getDungeon().equals(figure.getActualDungeon())) {
-			figure.setActualDungeon(this.getDungeon());
-		}
+
 
 		int inRoomIndex = -1;
-		figure.setLocation(this);
 
-		if (from == 0) {
+		if (fromDir == 0) {
 			inRoomIndex = (int) (Math.random() * 8);
 			while (positions[inRoomIndex].getFigure() != null) {
 				inRoomIndex = (int) (Math.random() * 8);
@@ -924,23 +921,33 @@ public class Room extends DungeonWorldObject implements
 		}
 		// TODO: check whether the pos is free!
 		// edit: is automatically shifted to next position if not free
-		if (from == Dir.EAST) {
+		if (fromDir == Dir.EAST) {
 			inRoomIndex = 7;
 		}
-		if (from == Dir.WEST) {
+		if (fromDir == Dir.WEST) {
 			inRoomIndex = 3;
 		}
-		if (from == Dir.NORTH) {
+		if (fromDir == Dir.NORTH) {
 			inRoomIndex = 5;
 		}
-		if (from == Dir.SOUTH) {
+		if (fromDir == Dir.SOUTH) {
 			inRoomIndex = 1;
 		}
+
+		figureEntersAtPosition(figure, fromDir, inRoomIndex);
+	}
+
+	public void figureEntersAtPosition(Figure figure, int fromDir, int inRoomIndex) {
+		Position position = positions[inRoomIndex];
+		if (!this.getDungeon().equals(figure.getActualDungeon())) {
+			figure.setActualDungeon(this.getDungeon());
+		}
+
 		if (figure.getPos() != null) {
 			figure.getPos().figureLeaves();
 		}
-		if (from != 0) {
-			figure.setLookDir(from);
+		if (fromDir != 0) {
+			figure.setLookDir(fromDir);
 		}
 		if (figure.getRoomVisibility() == null) {
 			figure.createVisibilityMap(d);
@@ -950,8 +957,8 @@ public class Room extends DungeonWorldObject implements
 		figure.getRoomVisibility().getStatusObject(getNumber())
 				.addVisibilityModifier(figure);
 
-		positions[inRoomIndex].figureEntersHere(figure);
-
+		position.figureEntersHere(figure);
+		figure.setLocation(this);
 		roomFigures.add(figure);
 
 		if (this.fightRunning()) {
@@ -963,34 +970,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void figureEntersAtPosition(Figure m, int position) {
-
-		if (!this.getDungeon().equals(m.getActualDungeon())) {
-			m.setActualDungeon(this.getDungeon());
-		}
-
-		m.setLocation(this);
-
-		if (m.getPos() != null) {
-			m.getPos().figureLeaves();
-		}
-		if (m.getRoomVisibility() == null) {
-			m.createVisibilityMap(d);
-		}
-		m.getRoomVisibility().setVisibilityStatus(getNumber(),
-				RoomObservationStatus.VISIBILITY_ITEMS);
-		m.getRoomVisibility().getStatusObject(getNumber())
-				.addVisibilityModifier(m);
-
-		positions[position].figureEntersHere(m);
-
-		roomFigures.add(m);
-
-		if (this.fightRunning()) {
-			getFight().figureJoins(m);
-		}
-		else {
-			this.checkFight(m);
-		}
+		figureEntersAtPosition(m, 0, position);
 	}
 
 	public boolean addItem(Item i) {

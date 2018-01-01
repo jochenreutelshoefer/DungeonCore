@@ -17,15 +17,15 @@ import figure.percept.MovePercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 
-public class VimAI extends DefaultMonsterIntelligence {
+public class ChaserAI extends DefaultMonsterIntelligence {
 
-	JDPoint lastHeroLocation = null;
-	List<Percept> perceptList = new LinkedList<Percept>();
+	private JDPoint lastHeroLocation = null;
+	private final List<Percept> perceptList = new LinkedList<>();
 	@Override
 	public Action chooseFightAction() {
 		
 		Action a = this.stepToEnemy();
-		if(a != null) {
+		if(a != null && Math.random() > 0.3) {
 			return a;
 		}
 		
@@ -50,6 +50,7 @@ public class VimAI extends DefaultMonsterIntelligence {
 			if(element instanceof MovePercept) {
 				if(((MovePercept)element).getFigure() instanceof HeroInfo) {
 					this.lastHeroLocation = ((MovePercept)element).getTo().getPoint();
+					perceptList.clear();
 					return;
 				}
 			}
@@ -58,6 +59,7 @@ public class VimAI extends DefaultMonsterIntelligence {
 					int dir = ((FleePercept)element).getDir();
 					RoomInfo r = ((FleePercept)element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
+					perceptList.clear();
 					return;
 				}
 			}
@@ -66,12 +68,13 @@ public class VimAI extends DefaultMonsterIntelligence {
 					int dir = ((ScoutPercept)element).getDir();
 					RoomInfo r = ((ScoutPercept)element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
+					perceptList.clear();
 					return;
 				}
 			}
 		}
 		
-		perceptList.clear();
+
 	}
 	
 	@Override
@@ -79,7 +82,7 @@ public class VimAI extends DefaultMonsterIntelligence {
 		
 		processPercepts();
 		
-		if (actionQueue.size() > 0) {
+		if (!actionQueue.isEmpty()) {
 			Action a = actionQueue.remove(0);
 			lastAction = a;
 			return a;
@@ -106,16 +109,14 @@ public class VimAI extends DefaultMonsterIntelligence {
 		return new EndRoundAction();
 	}
 	
-	class PerceptComparator implements Comparator<Percept> {
+	static class PerceptComparator implements Comparator<Percept> {
 		
 		@Override
 		public int compare(Percept o1, Percept o2) {
-			if(o1 instanceof Percept && o2 instanceof Percept) {
-				Percept p1 = (o1);
-				Percept p2 = (o2);
-				if(p1.getRound() < p2.getRound()) {
+			if(o1 != null && o2 != null) {
+				if((o1).getRound() < (o2).getRound()) {
 					return 1;
-				}else if(p1.getRound() > p2.getRound()) {
+				} else if((o1).getRound() > (o2).getRound()) {
 					return -1;
 				}
 				

@@ -1,7 +1,6 @@
 package figure.other;
 
 import ai.AI;
-import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
@@ -13,8 +12,6 @@ import item.interfaces.ItemOwner;
 import java.util.List;
 
 import dungeon.Dungeon;
-
-import ai.GuiAI;
 
 public class Lioness extends ConjuredMagicFigure {
 

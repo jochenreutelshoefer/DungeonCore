@@ -65,6 +65,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 	@Override
 	public int getCurrentStage() {
+		// for testing at stage 2
+		if(completedDungeons.isEmpty()) return 1;
+
 		return completedDungeons.size();
 	}
 

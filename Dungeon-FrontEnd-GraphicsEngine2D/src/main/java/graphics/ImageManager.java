@@ -35,7 +35,6 @@ import figure.monster.Spider;
 import figure.monster.Wolf;
 import figure.other.Fir;
 import figure.other.Lioness;
-import de.jdungeon.game.AbstractImageLoader;
 import item.AttrPotion;
 import item.DustItem;
 import item.Item;
@@ -63,6 +62,8 @@ import shrine.Brood;
 import shrine.Luzia;
 import shrine.Shrine;
 import shrine.ShrineInfo;
+
+import de.jdungeon.game.AbstractImageLoader;
 
 public class ImageManager {
 
@@ -372,7 +373,6 @@ public class ImageManager {
 
 	public static AnimationSetDirections lioness_walking = null;
 
-
 	public static JDImageProxy<?>[] ogreImage;
 	public static JDImageProxy<?>[] lionessImage;
 
@@ -565,14 +565,19 @@ public class ImageManager {
 	public static JDImageProxy<?> lebenskugel;
 
 	private static AnimationSetDirections load4Animations(
-			AbstractImageLoader<?> a, String path, String pattern, int cnt) {
+			AbstractImageLoader<?> a, String path, String pattern) {
 		AnimationSet[] set = new AnimationSet[4];
 		for (int i = 0; i < 4; i++) {
-			set[i] = new AnimationSet(loadArray(a, path, pattern, i + 1, cnt),
-					getArray(45, cnt));
+			JDImageProxy<?>[] loadedImages = loadArray(a, path, pattern, i + 1);
+			set[i] = new AnimationSet(loadedImages,
+					getArray(45, loadedImages.length));
 		}
 		return new AnimationSetDirections(set);
 	}
+
+
+
+
 
 	public static boolean imagesLoaded = false;
 
@@ -584,221 +589,147 @@ public class ImageManager {
 
 			puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
-			warrior_slays = load4Animations(a, "animation/warrior/",
-					"warrior_attack_", 13);
-			thief_slays = load4Animations(a, "animation/thief/",
-					"thief_attack_", 13);
-			druid_slays = load4Animations(a, "animation/druid/",
-					"druid_attack_", 13);
-			mage_slays = load4Animations(a, "animation/mage/", "mage_attack_",
-					8);
+			warrior_slays = load4Animations(a, "animation/warrior/", "warrior_attack_");
+			thief_slays = load4Animations(a, "animation/thief/", "thief_attack_");
+			druid_slays = load4Animations(a, "animation/druid/", "druid_attack_");
+			mage_slays = load4Animations(a, "animation/mage/", "mage_attack_");
 
-			warrior_been_hit = load4Animations(a, "animation/warrior/",
-					"warrior_swordstan_treffer_", 7);
-			warrior_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
+			warrior_been_hit = load4Animations(a, "animation/warrior/", "warrior_swordstan_treffer_");
+			warrior_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
 			warrior_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			thief_been_hit = load4Animations(a, "animation/thief/",
-					"thief_treffer_", 7);
+			thief_been_hit = load4Animations(a, "animation/thief/", "thief_treffer_");
 			thief_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
 			thief_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			druid_been_hit = load4Animations(a, "animation/druid/",
-					"druid_been_hit_", 9);
+			druid_been_hit = load4Animations(a, "animation/druid/", "druid_been_hit_");
 			druid_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
 			druid_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			mage_been_hit = load4Animations(a, "animation/mage/",
-					"mage_treffer_", 9);
+			mage_been_hit = load4Animations(a, "animation/mage/", "mage_treffer_");
 			mage_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
 			mage_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			warrior_tipping_over = load4Animations(a, "animation/warrior/",
-					"warrior_swordstan_kippt_um_", 9);
-			thief_tipping_over = load4Animations(a, "animation/thief/",
-					"thief_kippt_um_", 11);
-			druid_tipping_over = load4Animations(a, "animation/druid/",
-					"druid_tipping_over_", 13);
-			mage_tipping_over = load4Animations(a, "animation/mage/",
-					"mage_magier_45_kippt_um_", 10);
+			warrior_tipping_over = load4Animations(a, "animation/warrior/", "warrior_swordstan_kippt_um_");
+			thief_tipping_over = load4Animations(a, "animation/thief/", "thief_kippt_um_");
+			druid_tipping_over = load4Animations(a, "animation/druid/", "druid_tipping_over_");
+			mage_tipping_over = load4Animations(a, "animation/mage/", "mage_magier_45_kippt_um_");
 
-			warrior_walking = load4Animations(a, "animation/warrior/",
-					"warrior_swordstan_laeuft_", 9);
-			thief_walking = load4Animations(a, "animation/thief/",
-					"thief_laeuft_", 9);
-			druid_walking = load4Animations(a, "animation/druid/",
-					"druid_walking_", 8);
-			mage_walking = load4Animations(a, "animation/mage/",
-					"mage_laeuft_", 8);
+			warrior_walking = load4Animations(a, "animation/warrior/", "warrior_swordstan_laeuft_");
+			thief_walking = load4Animations(a, "animation/thief/", "thief_laeuft_");
+			druid_walking = load4Animations(a, "animation/druid/", "druid_walking_");
+			mage_walking = load4Animations(a, "animation/mage/", "mage_laeuft_");
 
-			warrior_using = load4Animations(a, "animation/warrior/",
-					"warrior_swordstan_spricht_", 7);
-			thief_using = load4Animations(a, "animation/thief/",
-					"thief_laeuft_", 9);
+			warrior_using = load4Animations(a, "animation/warrior/", "warrior_swordstan_spricht_");
+			thief_using = load4Animations(a, "animation/thief/", "thief_laeuft_");
 
-			druid_using = load4Animations(a, "animation/druid/",
-					"druid_talking_", 8);
-			mage_using = load4Animations(a, "animation/mage/", "mage_talking_",
-					9);
+			druid_using = load4Animations(a, "animation/druid/", "druid_talking_");
+			mage_using = load4Animations(a, "animation/mage/", "mage_talking_");
 
-			warrior_pause = load4Animations(a, "animation/warrior/",
-					"warrior_stan_strickt_", 7);
-			thief_pause = load4Animations(a, "animation/thief/",
-					"thief_laeuft_", 9);
+			warrior_pause = load4Animations(a, "animation/warrior/", "warrior_stan_strickt_");
+			thief_pause = load4Animations(a, "animation/thief/", "thief_laeuft_");
 
-			druid_pause = load4Animations(a, "animation/druid/",
-					"druid_paused_", 8);
-			mage_pause = load4Animations(a, "animation/mage/", "mage_liest_", 9);
+			druid_pause = load4Animations(a, "animation/druid/", "druid_paused_");
+			mage_pause = load4Animations(a, "animation/mage/", "mage_liest_");
 
-			warrior_sorcering = load4Animations(a, "animation/warrior/",
-					"warrior_swordstan_spricht_", 7);
-			thief_sorcering = load4Animations(a, "animation/thief/",
-					"thief_laeuft_", 9);
+			warrior_sorcering = load4Animations(a, "animation/warrior/", "warrior_swordstan_spricht_");
+			thief_sorcering = load4Animations(a, "animation/thief/", "thief_laeuft_");
 
-			druid_sorcering = load4Animations(a, "animation/druid/",
-					"druid_magic_spelling_", 13);
-			mage_sorcering = load4Animations(a, "animation/mage/",
-					"mage_magieattack_", 9);
+			druid_sorcering = load4Animations(a, "animation/druid/", "druid_magic_spelling_");
+			mage_sorcering = load4Animations(a, "animation/mage/", "mage_magieattack_");
 
-			warrior_running = load4Animations(a, "animation/" + "warrior/",
-					"warrior_swordstan_rennt_", 8);
-			thief_running = load4Animations(a, "animation/thief/",
-					"thief_rennt_", 9);
-			druid_running = load4Animations(a, "animation/" + "druid/",
-					"druid_running_", 8);
-			mage_running = load4Animations(a, "animation/" + "mage/",
-					"mage_magieattack_", 8);
+			warrior_running = load4Animations(a, "animation/" + "warrior/", "warrior_swordstan_rennt_");
+			thief_running = load4Animations(a, "animation/thief/", "thief_rennt_");
+			druid_running = load4Animations(a, "animation/" + "druid/", "druid_running_");
+			mage_running = load4Animations(a, "animation/" + "mage/", "mage_magieattack_");
 
-			wolf1_been_hit = load4Animations(a, "animation/" + "wolf/",
-					"wolf_been_hit_", 9);
-			wolf1_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			wolf1_been_hit = load4Animations(a, "animation/" + "wolf/", "wolf_been_hit_");
+			wolf1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			wolf1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			wolf1_tipping_over = load4Animations(a, "animation/" + "wolf/",
-					"wolf_tipping_over_", 9);
+			wolf1_tipping_over = load4Animations(a, "animation/" + "wolf/", "wolf_tipping_over_");
 			wolf1_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES, 1);
 
-			wolf1_slays = load4Animations(a, "animation/" + "wolf/",
-					"wolf_wolf_attack_", 10);
+			wolf1_slays = load4Animations(a, "animation/" + "wolf/", "wolf_wolf_attack_");
 			wolf1_slays.addAudioClip(AudioEffectsManager.WOLF_ATTACKS, 1);
 
-			wolf1_walking = load4Animations(a, "animation/" + "wolf/",
-					"wolf_rennt_", 10);
-			wolf1_running = load4Animations(a, "animation/" + "wolf/",
-					"wolf_laeuft_", 10);
+			wolf1_walking = load4Animations(a, "animation/" + "wolf/", "wolf_rennt_");
+			wolf1_running = load4Animations(a, "animation/" + "wolf/", "wolf_laeuft_");
 
 			wolf1_pause = wolf1_walking;
 
-			skel1_been_hit = load4Animations(a, "animation/" + "skel/",
-					"skel_swordskel_treffer_", 7);
-			skel1_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			skel1_been_hit = load4Animations(a, "animation/" + "skel/", "skel_swordskel_treffer_");
+			skel1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			skel1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			skel1_tipping_over = load4Animations(a, "animation/" + "skel/",
-					"skel_zerfaellt_", 9);
-			skel1_slays = load4Animations(a, "animation/" + "skel/",
-					"skel_swordskel_attack_", 11);
-			skel1_walking = load4Animations(a, "animation/" + "skel/",
-					"skel_swordskel_laeuft_", 11);
-			skel1_running = load4Animations(a, "animation/" + "skel/",
-					"skel_swordskel_rennt_", 11);
+			skel1_tipping_over = load4Animations(a, "animation/" + "skel/", "skel_zerfaellt_");
+			skel1_slays = load4Animations(a, "animation/" + "skel/", "skel_swordskel_attack_");
+			skel1_walking = load4Animations(a, "animation/" + "skel/", "skel_swordskel_laeuft_");
+			skel1_running = load4Animations(a, "animation/" + "skel/", "skel_swordskel_rennt_");
 
 			skel1_pause = skel1_walking;
 
-			ghul1_been_hit = load4Animations(a, "animation/" + "ghul/",
-					"ghul_treffer_", 7);
-			ghul1_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			ghul1_been_hit = load4Animations(a, "animation/" + "ghul/", "ghul_treffer_");
+			ghul1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			ghul1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			ghul1_tipping_over = load4Animations(a, "animation/" + "ghul/",
-					"ghul_mumie_zerfaellt_", 9);
-			ghul1_slays = load4Animations(a, "animation/" + "ghul/",
-					"ghul_mummy_45_attack_", 10);
+			ghul1_tipping_over = load4Animations(a, "animation/" + "ghul/", "ghul_mumie_zerfaellt_");
+			ghul1_slays = load4Animations(a, "animation/" + "ghul/", "ghul_mummy_45_attack_");
 
-			ghul1_running = load4Animations(a, "animation/" + "ghul/",
-					"ghul_mummy_rennt_", 10);
-			ghul1_walking = load4Animations(a, "animation/" + "ghul/",
-					"ghul_mummy_45_laeuft_", 10);
+			ghul1_running = load4Animations(a, "animation/" + "ghul/", "ghul_mummy_rennt_");
+			ghul1_walking = load4Animations(a, "animation/" + "ghul/", "ghul_mummy_45_laeuft_");
 			ghul1_pause = ghul1_walking;
 
-			ogre1_been_hit = load4Animations(a, "animation/" + "ogre/",
-					"ogre_been_hit_", 7);
-			ogre1_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			ogre1_been_hit = load4Animations(a, "animation/" + "ogre/", "ogre_been_hit_");
+			ogre1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			ogre1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			ogre1_tipping_over = load4Animations(a, "animation/" + "ogre/",
-					"ogre_tipping_over_", 9);
-			ogre1_slays = load4Animations(a, "animation/" + "ogre/",
-					"ogre_attack_", 11);
-			ogre1_running = load4Animations(a, "animation/" + "ogre/",
-					"ogre_running_", 11);
-			ogre1_walking = load4Animations(a, "animation/" + "ogre/",
-					"ogre_walking_", 11);
+			ogre1_tipping_over = load4Animations(a, "animation/" + "ogre/", "ogre_tipping_over_");
+			ogre1_slays = load4Animations(a, "animation/" + "ogre/", "ogre_attack_");
+			ogre1_running = load4Animations(a, "animation/" + "ogre/", "ogre_running_");
+			ogre1_walking = load4Animations(a, "animation/" + "ogre/", "ogre_walking_");
 			ogre1_pause = ogre1_walking;
 
-			orc1_been_hit = load4Animations(a, "animation/" + "orc/",
-					"orc_been_hit_", 7);
-			orc1_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			orc1_been_hit = load4Animations(a, "animation/" + "orc/", "orc_been_hit_");
+			orc1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			orc1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			orc1_tipping_over = load4Animations(a, "animation/" + "orc/",
-					"orc_tipping_over_", 9);
-			orc1_slays = load4Animations(a, "animation/" + "orc/",
-					"orc_attack_", 11);
-			orc1_walking = load4Animations(a, "animation/" + "orc/",
-					"orc_walking_", 11);
-			orc1_running = load4Animations(a, "animation/" + "orc/",
-					"orc_running_", 11);
+			orc1_tipping_over = load4Animations(a, "animation/" + "orc/", "orc_tipping_over_");
+			orc1_slays = load4Animations(a, "animation/" + "orc/", "orc_attack_");
+			orc1_walking = load4Animations(a, "animation/" + "orc/", "orc_walking_");
+			orc1_running = load4Animations(a, "animation/" + "orc/", "orc_running_");
 			orc1_pause = orc1_walking;
 
-			spider1_been_hit = load4Animations(a, "animation/" + "spider/",
-					"spider_been_hit_", 7);
-			spider1_been_hit
-					.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
+			spider1_been_hit = load4Animations(a, "animation/" + "spider/", "spider_been_hit_");
+			spider1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			spider1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			spider1_tipping_over = load4Animations(a, "animation/" + "spider/",
-					"spider_tipping_over_", 9);
-			spider1_tipping_over.addAudioClip(AudioEffectsManager.SPIDER_DIES,
-					0);
+			spider1_tipping_over = load4Animations(a, "animation/" + "spider/", "spider_tipping_over_");
+			spider1_tipping_over.addAudioClip(AudioEffectsManager.SPIDER_DIES, 0);
 
-			spider1_slays = load4Animations(a, "animation/" + "spider/",
-					"spider_attack_", 11);
+			spider1_slays = load4Animations(a, "animation/" + "spider/", "spider_attack_");
 			spider1_slays.addAudioClip(AudioEffectsManager.SPIDER_ATTACKS, 0);
 
-			spider1_walking = load4Animations(a, "animation/" + "spider/",
-					"spider_walking_", 11);
+			spider1_walking = load4Animations(a, "animation/" + "spider/", "spider_walking_");
 			spider1_running = spider1_walking;
 			spider1_pause = spider1_walking;
 
-
-			lioness_been_hit = load4Animations(a, "animation/" + "lioness/",
-					"been hit", 9);
+			lioness_been_hit = load4Animations(a, "animation/" + "lioness/", "been hit");
 			lioness_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			lioness_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			lioness_tipping_over = load4Animations(a, "animation/" + "lioness/",
-					"tipping over", 11);
-			lioness_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES,0);
+			lioness_tipping_over = load4Animations(a, "animation/" + "lioness/", "tipping over");
+			lioness_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES, 0);
 
-			lioness_slays = load4Animations(a, "animation/" + "lioness/",
-					"attack", 9);
+			lioness_slays = load4Animations(a, "animation/" + "lioness/", "attack");
 			lioness_slays.addAudioClip(AudioEffectsManager.WOLF_ATTACKS, 0);
 
-			lioness_walking = load4Animations(a, "animation/" + "lioness/",
-					"walking", 11);
-			lioness_running =  load4Animations(a, "animation/" + "lioness/",
-					"running", 11);;
-			lioness_pause = load4Animations(a, "animation/" + "lioness/",
-					"roaring", 7);;
+			lioness_walking = load4Animations(a, "animation/" + "lioness/", "walking");
+			lioness_running = load4Animations(a, "animation/" + "lioness/", "running");
+			;
+			lioness_pause = load4Animations(a, "animation/" + "lioness/", "roaring");
+			;
 
-			
 			warriorImage = makePics(warrior_walking);
 			thiefImage = makePics(thief_walking);
 			druidImage = makePics(druid_walking);
@@ -1003,7 +934,7 @@ public class ImageManager {
 			createFigureClassMap();
 			createShrineClassMap();
 			createHeroAnimationMap();
-			createMonsterAnimationMap();
+			createMonsterAnimationMap(a);
 
 		}
 
@@ -1040,9 +971,14 @@ public class ImageManager {
 	}
 
 	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a,
-											   String path, String fileNamePrefix, int dir, int cnt) {
+											   String path, String fileNamePrefix, int dir) {
 
-		List<JDImageProxy<?>> imageList = new LinkedList<JDImageProxy<?>>();
+		if(!path.startsWith("animation")) {
+			// new loading mechanism
+			path = "animation/"+path+"/";
+		}
+
+		List<JDImageProxy<?>> imageList = new LinkedList<>();
 		String dirChar = "";
 		if (dir == Dir.EAST) {
 			dirChar = "e";
@@ -1073,10 +1009,11 @@ public class ImageManager {
 					+ dirChar + suffix + "_trans.GIF", a);
 			if (im.fileExists()) {
 				imageList.add(im);
-			} else {
+			}
+			else {
 				// new simple file name format
 				im = new JDImageProxy<>(path + fileNamePrefix
-						+" "+ dirChar + suffix + ".gif", a);
+						+ " " + dirChar + suffix + ".gif", a);
 				if (im.fileExists()) {
 					imageList.add(im);
 				}
@@ -1152,31 +1089,35 @@ public class ImageManager {
 
 	public static AnimationSet getAnimationSet(MonsterInfo monster, Motion motion, RouteInstruction.Direction direction) {
 		Class<? extends Monster> monsterClass = monster.getMonsterClass();
-		if(monsterAnimationMap.containsKey(monsterClass)) {
-			AnimationSetDirections animationSetDirections = monsterAnimationMap.get(monsterClass).get(motion);
-			if(animationSetDirections != null) {
-				return animationSetDirections.get(direction.getValue()-1);
-			} else {
-				Log.severe("No animation set found for monster class: "+monsterClass+ " and motion: "+motion);
+		if (monsterAnimationMap.containsKey(monsterClass)) {
+
+			CharacterAnimationSet characterAnimationSet = monsterAnimationMap.get(monsterClass);
+			if(characterAnimationSet.containsMotion(motion)) {
+				return  characterAnimationSet.getAnimationSet(motion, direction);
+
+			}
+			else {
+				Log.severe("No animation set found for monster class: " + monsterClass + " and motion: " + motion);
 				return null;
 			}
-		} else {
-			Log.severe("No animation set found for monster class: "+monsterClass);
+		}
+		else {
+			Log.severe("No animation set found for monster class: " + monsterClass);
 			return null;
 		}
 	}
 
-	private static final Map<Class<? extends Monster>, Map<Motion, AnimationSetDirections>> monsterAnimationMap = new HashMap<>();
+	private static final Map<Class<? extends Monster>, CharacterAnimationSet> monsterAnimationMap = new HashMap<>();
 
-	private static void createMonsterAnimationMap() {
-		monsterAnimationMap.put(Skeleton.class, new HashMap<Motion, AnimationSetDirections>());
-		monsterAnimationMap.put(Orc.class, new HashMap<Motion, AnimationSetDirections>());
-		monsterAnimationMap.put(Wolf.class, new HashMap<Motion, AnimationSetDirections>());
-		monsterAnimationMap.put(Ogre.class, new HashMap<Motion, AnimationSetDirections>());
-		monsterAnimationMap.put(Ghul.class, new HashMap<Motion, AnimationSetDirections>());
-		monsterAnimationMap.put(Spider.class, new HashMap<Motion, AnimationSetDirections>());
-		monsterAnimationMap.put(Lioness.class, new HashMap<Motion, AnimationSetDirections>());
-
+	private static void createMonsterAnimationMap(AbstractImageLoader<?> a) {
+		monsterAnimationMap.put(Skeleton.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Orc.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Wolf.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Ogre.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Ghul.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Spider.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Lioness.class, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(Dwarf.class, new CharacterAnimationSetBuilder("darkdwarf", a).build());
 
 		monsterAnimationMap.get(Skeleton.class).put(Motion.BeingHit, ImageManager.skel1_been_hit);
 		monsterAnimationMap.get(Skeleton.class).put(Motion.Pause, ImageManager.skel1_pause);
@@ -1243,13 +1184,13 @@ public class ImageManager {
 
 	}
 
-	private static final Map<Hero.HeroCategory, Map<Motion, AnimationSetDirections>> heroAnimationMap = new HashMap<>();
+	private static final Map<Hero.HeroCategory, DefaultCharacterAnimationSet> heroAnimationMap = new HashMap<>();
 
 	private static void createHeroAnimationMap() {
-		heroAnimationMap.put(Hero.HeroCategory.Warrior, new HashMap<Motion, AnimationSetDirections>());
-		heroAnimationMap.put(Hero.HeroCategory.Thief, new HashMap<Motion, AnimationSetDirections>());
-		heroAnimationMap.put(Hero.HeroCategory.Druid, new HashMap<Motion, AnimationSetDirections>());
-		heroAnimationMap.put(Hero.HeroCategory.Mage, new HashMap<Motion, AnimationSetDirections>());
+		heroAnimationMap.put(Hero.HeroCategory.Warrior, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(Hero.HeroCategory.Thief, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(Hero.HeroCategory.Druid, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(Hero.HeroCategory.Mage, new DefaultCharacterAnimationSet());
 
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.BeingHit, ImageManager.warrior_been_hit);
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Pause, ImageManager.warrior_pause);
@@ -1315,16 +1256,15 @@ public class ImageManager {
 		if (info instanceof HeroInfo) {
 			return ImageManager.getAnimationSet(((HeroInfo) info), motion, direction);
 		}
-		Log.severe("Unknown FigureInfo for AnimationSet: "+info);
+		Log.severe("Unknown FigureInfo for AnimationSet: " + info);
 		return null;
 	}
 
 	public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
 		if (heroAnimationMap.containsKey(heroCategory)) {
-			Map<Motion, AnimationSetDirections> motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
-			if (motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsKey(motion)) {
-				AnimationSetDirections animationSetDirections = motionAnimationSetDirectionsMap.get(motion);
-				return animationSetDirections.get(direction.getValue() - 1);
+			CharacterAnimationSet motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
+			if (motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsMotion(motion)) {
+				return motionAnimationSetDirectionsMap.getAnimationSet(motion, direction);
 			}
 		}
 		return null;
@@ -1349,11 +1289,11 @@ public class ImageManager {
 	public static JDImageProxy<?> getImage(DoorInfo s) {
 		if (s.hasLock()) {
 			return ImageManager.door_north_lock;
-		} else {
+		}
+		else {
 			return ImageManager.door_north;
 		}
 	}
-
 
 	public static JDImageProxy<?> getImage(ShrineInfo s) {
 		// todo: use class objects to compare
@@ -1460,11 +1400,11 @@ public class ImageManager {
 			}
 			else if (monsterClass == Lioness.class) {
 				AnimationSet animationSet = ImageManager.lioness_walking.get(dir.getValue() - 1);
-				if(animationSet != null) {
+				if (animationSet != null) {
 					return animationSet.getImagesNr(0);
 				}
 			}
-				return ImageManager.engelImage;
+			return ImageManager.engelImage;
 		}
 		return null;
 	}
@@ -1528,5 +1468,89 @@ public class ImageManager {
 			im = ImageManager.questionmark;
 		}
 		return im;
+	}
+
+	interface CharacterAnimationSet {
+		AnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction);
+
+		boolean containsMotion(Motion motion);
+
+		// TODO: method should not be in this interface
+		void put(Motion motion, AnimationSetDirections ani);
+	}
+
+	static class CharacterAnimationSetBuilder {
+
+		private final String foldername;
+		private final AbstractImageLoader<?> loader;
+
+		private final Map<Motion, String> motionFilenameMap;
+
+		public CharacterAnimationSetBuilder(String foldername, AbstractImageLoader<?> loader) {
+			this.foldername = foldername;
+			this.loader = loader;
+			motionFilenameMap = new HashMap<>();
+			motionFilenameMap.put(Motion.Slaying, "attack");
+			motionFilenameMap.put(Motion.BeingHit, "been hit");
+			motionFilenameMap.put(Motion.Using, "looking");
+			motionFilenameMap.put(Motion.Running, "running");
+			motionFilenameMap.put(Motion.Sorcering, "talking");
+			motionFilenameMap.put(Motion.TippingOver, "tipping over");
+			motionFilenameMap.put(Motion.Walking, "walking");
+		}
+
+		public CharacterAnimationSetBuilder(String foldername, AbstractImageLoader<?> loader, Map<Motion, String> map) {
+			this.foldername = foldername;
+			this.motionFilenameMap = map;
+			this.loader = loader;
+		}
+
+		public CharacterAnimationSet build() {
+			DefaultCharacterAnimationSet result = new DefaultCharacterAnimationSet();
+			Set<Motion> motions = motionFilenameMap.keySet();
+			for (Motion motion : motions) {
+				AnimationSetDirections set = load4Animations(loader, foldername, motionFilenameMap
+						.get(motion));
+				if(set != null) {
+					result.put(motion, set);
+				}
+			}
+			return result;
+		}
+	}
+
+	static class DefaultCharacterAnimationSet implements CharacterAnimationSet {
+
+		private final Map<Motion, AnimationSetDirections> animations;
+
+		public DefaultCharacterAnimationSet( Map<Motion, AnimationSetDirections> animations) {
+			this.animations = animations;
+		}
+
+		public DefaultCharacterAnimationSet() {
+			this.animations = new HashMap<>();
+		}
+
+		@Override
+		public void put(Motion motion, AnimationSetDirections ani) {
+			animations.put(motion, ani);
+		}
+
+		@Override
+		public AnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction) {
+			AnimationSetDirections animationSetDirections = animations.get(motion);
+			if(animationSetDirections != null) {
+				return animationSetDirections.get(direction);
+			} else {
+				return null;
+			}
+
+		}
+
+		@Override
+		public boolean containsMotion(Motion motion) {
+			return animations.containsKey(motion);
+		}
+
 	}
 }

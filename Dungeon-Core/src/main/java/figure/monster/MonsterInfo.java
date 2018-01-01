@@ -69,7 +69,6 @@ public class MonsterInfo extends FigureInfo {
 		for (Iterator<Room> iter = l.iterator(); iter.hasNext();) {
 			Room element = iter.next();
 			l2.add(element.getNumber());
-			
 		}
 		return l2;
 	}
@@ -82,6 +81,7 @@ public class MonsterInfo extends FigureInfo {
 	}
 	
 
+	@Deprecated //use FigureInfo#getFigureClass()
 	public Class<? extends Monster> getMonsterClass() {
 		return this.monster.getClass();
 	}

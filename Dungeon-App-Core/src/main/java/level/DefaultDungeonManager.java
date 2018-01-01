@@ -9,6 +9,7 @@ import level.stageone.PreliminaryStartLevelFactory;
 import level.stageone.StartLevel;
 import level.stageone.StartLevelOLD;
 import level.stagetwo.EscortLevel2A;
+import level.stagetwo.LevelTwoB;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -16,26 +17,27 @@ import level.stagetwo.EscortLevel2A;
  */
 public class DefaultDungeonManager implements DungeonManager {
 
-	private Map<Integer, List<DungeonFactory>> stages = new HashMap();
+	private final Map<Integer, List<DungeonFactory>> stages = new HashMap<>();
 
 	public DefaultDungeonManager() {
+
 		List<DungeonFactory> stageZeroList = new ArrayList<>();
 		stageZeroList.add(new StartLevel());
 		stages.put(0 , stageZeroList);
 
-
 		List<DungeonFactory> stageOneList = new ArrayList<>();
-		stageOneList.add(new StartLevelOLD());
+		stageOneList.add(new LevelTwoB());
 		stageOneList.add(new EscortLevel2A());
 		stages.put(1 , stageOneList);
 
 		List<DungeonFactory> stageTwoList = new ArrayList<>();
-		stageTwoList.add(new PreliminaryStartLevelFactory());
-		stageTwoList.add(new PreliminaryStartLevelFactory());
-		stageTwoList.add(new PreliminaryStartLevelFactory());
+		stageTwoList.add(new StartLevelOLD());
+		stageTwoList.add(new StartLevelOLD());
+		stageTwoList.add(new StartLevelOLD());
 		stages.put(2 , stageTwoList);
 	}
 
+	@Override
 	public List<DungeonFactory> getDungeonOptions(int stage) {
 		return stages.get(stage);
 	}

@@ -16,7 +16,7 @@ import log.Log;
  */
 public class ImageConverter {
 
-	private static final String path = "/Users/jochenreutelshofer/Documents/privat/Dungeon resources/ReinerProkein/";
+	private static final String path = "/Users/jochenreutelshofer/Documents/privat/Dungeon resources/ReinerProkein/T_darkdwarf/";
 
 	public static final String TRANS_COLOR1  = "61442B";
 	public static final String TRANS_COLOR2  = "6A4C30";
@@ -62,7 +62,7 @@ public class ImageConverter {
 			File gifFile = new File(folder, gifName);
 			if(! gifFile.exists()) {
 				//String command = "convert '"+bitmap.getAbsolutePath()+"' -transparent '#61442B' '"+gifFile.getAbsolutePath()+"'";
-				String [] command = {"convert", ""+bitmap.getAbsolutePath()+"", "-transparent","#"+TRANS_COLOR2, ""+gifFile.getAbsolutePath()+""};
+				String [] command = {"convert", ""+bitmap.getAbsolutePath()+"", "-transparent","#"+TRANS_COLOR1, ""+gifFile.getAbsolutePath()+""};
 				System.out.println("Converting: "+bitmap.getName());
 				ProcessBuilder processBuilder = new ProcessBuilder(command);
 					Process process = processBuilder.start();

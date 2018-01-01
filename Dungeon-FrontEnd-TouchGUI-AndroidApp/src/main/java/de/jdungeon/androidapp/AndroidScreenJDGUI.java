@@ -21,7 +21,6 @@ import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
-import figure.monster.MonsterInfo;
 import figure.other.Fir;
 import figure.percept.Percept;
 
@@ -86,13 +85,20 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	}
 
 	@Override
-	public boolean isHostileTo(FigureInfo f) {
-		// TODO: how to treat self conjured figures better?
-		if (f.getFigureClass().equals(Fir.class)
-				|| f.getFigureClass().equals(Lioness.class)) {
+	public boolean isHostileTo(FigureInfo otherFigure) {
+		if(otherFigure.equals(this.figure)) {
+			// hopefully not called, but you never know..
 			return false;
 		}
-		if (f instanceof MonsterInfo) {
+		// TODO: how to treat self conjured figures better?
+		if (otherFigure.getFigureClass().equals(Fir.class)
+				|| otherFigure.getFigureClass().equals(Lioness.class)) {
+			return false;
+		}
+
+		// player is hostile to those figures which are hostile to play
+		// TODO: find way to prevent infinite loop if other figure also plays like this..
+		if (otherFigure.isHostile(this.figure)) {
 			return true;
 		}
 		return false;

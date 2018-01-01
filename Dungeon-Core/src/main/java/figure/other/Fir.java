@@ -1,6 +1,6 @@
 package figure.other;
 
-import ai.GuiAI;
+import ai.AbstractAI;
 
 import dungeon.Dungeon;
 import dungeon.Room;
@@ -19,7 +19,7 @@ public class Fir extends ConjuredMagicFigure {
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
 				this.getRoomVisibility());
-		GuiAI ai = new FirAI(info);
+		AbstractAI ai = new FirAI(info);
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);
 		// TODO: factor out - bilingual
