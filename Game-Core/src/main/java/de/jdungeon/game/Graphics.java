@@ -35,13 +35,11 @@ public interface Graphics {
 
 	void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
 
-    void drawImage(Image image, int x, int y, int srcX, int srcY,
-            int srcWidth, int srcHeight);
+    void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
 
     void drawImage(Image Image, int x, int y);
     
-    void drawScaledImage(Image Image, int x, int y, int width,
-			int height, int srcX, int srcY, int srcWidth, int srcHeight);
+    void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight);
 
     void drawString(String text, int x, int y, Paint paint);
 
@@ -50,5 +48,11 @@ public interface Graphics {
     int getHeight();
 
     void drawARGB(int i, int j, int k, int l);
+
+	void setTempCanvas(int x, int y, int widhth, int height);
+
+	void flushAndResetTempCanvas();
+
+	Image getTempImage();
 
 }

@@ -20,35 +20,37 @@ import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Paint;
-import de.jdungeon.util.PaintBuilder;
 import de.jdungeon.util.GifDecoder;
+import de.jdungeon.util.PaintBuilder;
 
 public class AndroidGraphics implements Graphics {
-	AssetManager assets;
-	Bitmap frameBuffer;
-	Canvas canvas;
+	private final AssetManager assets;
+	private final Bitmap frameBuffer;
+	private final Canvas canvas;
 
-
-	Rect srcRect = new Rect();
-	Rect dstRect = new Rect();
+	private final Rect srcRect = new Rect();
+	private final Rect dstRect = new Rect();
+	private final Rect tmpDstRect = new Rect();
 
 	public static android.graphics.Paint defaultPaint;
-	android.graphics.Paint smallPaint = new android.graphics.Paint();
-	android.graphics.Paint black = new android.graphics.Paint();
-	android.graphics.Paint gray = new android.graphics.Paint();
-	android.graphics.Paint labelPaint = new android.graphics.Paint();
+	private final android.graphics.Paint smallPaint = new android.graphics.Paint();
+	private final android.graphics.Paint black = new android.graphics.Paint();
+	private final android.graphics.Paint gray = new android.graphics.Paint();
+	private android.graphics.Paint labelPaint = new android.graphics.Paint();
+	private Bitmap bitmap;
+	private Canvas tmpCanvas;
+	private int tmpCanvasX;
+	private int tmpCanvasY;
+
 	{
 
 		gray.setColor(Color.LTGRAY);
-
 
 		labelPaint = new android.graphics.Paint();
 		labelPaint.setTextSize(10);
 		labelPaint.setTextAlign(android.graphics.Paint.Align.CENTER);
 		labelPaint.setAntiAlias(true);
 		labelPaint.setColor(Color.WHITE);
-
-
 
 		black.setColor(Color.BLACK);
 		black.setTextSize(12);
@@ -58,7 +60,6 @@ public class AndroidGraphics implements Graphics {
 		defaultPaint.setTextAlign(android.graphics.Paint.Align.CENTER);
 		defaultPaint.setAntiAlias(true);
 		defaultPaint.setColor(Color.RED);
-
 
 		smallPaint.setColor(Color.RED);
 		smallPaint.setTextSize(14);
@@ -79,13 +80,13 @@ public class AndroidGraphics implements Graphics {
 		paint.setTextSize(builder.getFontSize());
 
 		Paint.Alignment alignment = builder.getAlignment();
-		if(alignment == Paint.Alignment.CENTER) {
+		if (alignment == Paint.Alignment.CENTER) {
 			paint.setTextAlign(android.graphics.Paint.Align.CENTER);
 		}
-		if(alignment == Paint.Alignment.LEFT) {
+		if (alignment == Paint.Alignment.LEFT) {
 			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
 		}
-		if(alignment == Paint.Alignment.RIGHT) {
+		if (alignment == Paint.Alignment.RIGHT) {
 			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
 		}
 		return new AndroidPaint(paint);
@@ -120,50 +121,58 @@ public class AndroidGraphics implements Graphics {
 	public Image newImage(String fileName, ImageFormat format) {
 
 		Config config = null;
-		if (format == ImageFormat.RGB565)
+		if (format == ImageFormat.RGB565) {
 			config = Config.RGB_565;
-		else if (format == ImageFormat.ARGB4444)
+		}
+		else if (format == ImageFormat.ARGB4444) {
 			config = Config.ARGB_4444;
-		else
+		}
+		else {
 			config = Config.ARGB_8888;
+		}
 
 		Options options = new Options();
 		options.inPreferredConfig = config;
 		Bitmap bitmap = null;
 		InputStream in = null;
 		try {
-
 			in = assets.open(fileName);
 			if (fileName.toLowerCase().endsWith("gif")) {
 				GifDecoder gd = new GifDecoder();
 				gd.read(in);
 				bitmap = gd.getBitmap();
-			} else {
+			}
+			else {
 				bitmap = BitmapFactory.decodeStream(in, null, options);
 			}
-			if (bitmap == null)
+			if (bitmap == null) {
 				throw new RuntimeException("Couldn't load bitmap from asset '"
 						+ fileName + "'");
-		} catch (IOException e) {
+			}
+		}
+		catch (IOException e) {
 			throw new RuntimeException("Couldn't load bitmap from asset '"
 					+ fileName + "'");
-		} finally {
+		}
+		finally {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					Logger.getLogger(this.getClass()).warn("Could close InputStream of bitmap loading from asset", e);
 				}
 			}
 		}
-
-		if (bitmap.getConfig() == Config.RGB_565)
+		if (bitmap.getConfig() == Config.RGB_565) {
 			format = ImageFormat.RGB565;
-		else if (bitmap.getConfig() == Config.ARGB_4444)
+		}
+		else if (bitmap.getConfig() == Config.ARGB_4444) {
 			format = ImageFormat.ARGB4444;
-		else
+		}
+		else {
 			format = ImageFormat.ARGB8888;
-
+		}
 		return new AndroidImage(bitmap, format);
 	}
 
@@ -178,7 +187,12 @@ public class AndroidGraphics implements Graphics {
 	public void drawLine(int x, int y, int x2, int y2, de.jdungeon.game.Color color) {
 		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
-		canvas.drawLine(x, y, x2, y2, paint);
+		if (tmpCanvas == null) {
+			canvas.drawLine(x, y, x2, y2, paint);
+		}
+		else {
+			tmpCanvas.drawLine(x - tmpCanvasX, y - tmpCanvasY, x2 - tmpCanvasX, y2 - tmpCanvasY, paint);
+		}
 	}
 
 	@Override
@@ -186,14 +200,24 @@ public class AndroidGraphics implements Graphics {
 		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setStyle(Style.STROKE);
 		paint.setColor(convertColor(color));
-		canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
+		if (tmpCanvas == null) {
+			canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
+		}
+		else {
+			tmpCanvas.drawOval(new RectF(x - tmpCanvasX, y - tmpCanvasY, x + width - tmpCanvasX, y + height - tmpCanvasY), paint);
+		}
 	}
 
 	@Override
 	public void fillOval(int x, int y, int width, int height, de.jdungeon.game.Color color) {
 		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
-		canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
+		if (tmpCanvas == null) {
+			canvas.drawOval(new RectF(x, y, x + width, y + height), paint);
+		}
+		else {
+			tmpCanvas.drawOval(new RectF(x - tmpCanvasX, y - tmpCanvasY, x + width - tmpCanvasX, y + height - tmpCanvasY), paint);
+		}
 	}
 
 	@Override
@@ -201,7 +225,12 @@ public class AndroidGraphics implements Graphics {
 		android.graphics.Paint paint = new android.graphics.Paint();
 		paint.setColor(convertColor(color));
 		paint.setStyle(Style.STROKE);
-		canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
+		if (tmpCanvas == null) {
+			canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
+		}
+		else {
+			tmpCanvas.drawRect(x - tmpCanvasX, y - tmpCanvasY, x + width - 1 - tmpCanvasX, y + height - 1 - tmpCanvasY, paint);
+		}
 	}
 
 	@Override
@@ -213,20 +242,30 @@ public class AndroidGraphics implements Graphics {
 		paint.setStyle(android.graphics.Paint.Style.FILL_AND_STROKE);
 		paint.setAntiAlias(true);
 
-		Path path = new Path();
-		path.setFillType(Path.FillType.EVEN_ODD);
-		path.moveTo(x, y);
-		path.lineTo(x + width, y);
-		path.lineTo(x + width, y + height);
-		path.lineTo(x, y + height);
-		path.close();
-
-		canvas.drawPath(path, paint);
+		if (tmpCanvas == null) {
+			Path path = new Path();
+			path.setFillType(Path.FillType.EVEN_ODD);
+			path.moveTo(x, y);
+			path.lineTo(x + width, y);
+			path.lineTo(x + width, y + height);
+			path.lineTo(x, y + height);
+			path.close();
+			canvas.drawPath(path, paint);
+		}
+		else {
+			Path pathTmp = new Path();
+			pathTmp.setFillType(Path.FillType.EVEN_ODD);
+			pathTmp.moveTo(x - tmpCanvasX, y - tmpCanvasY);
+			pathTmp.lineTo(x + width - tmpCanvasX, y - tmpCanvasY);
+			pathTmp.lineTo(x + width - tmpCanvasX, y + height - tmpCanvasY);
+			pathTmp.lineTo(x - tmpCanvasX, y + height - tmpCanvasY);
+			pathTmp.close();
+			tmpCanvas.drawPath(pathTmp, paint);
+		}
 	}
 
 	@Override
-	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, de.jdungeon.game.Color color)
-	{
+	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, de.jdungeon.game.Color color) {
 		android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
 
 		paint.setStrokeWidth(1);
@@ -234,36 +273,46 @@ public class AndroidGraphics implements Graphics {
 		paint.setStyle(android.graphics.Paint.Style.FILL_AND_STROKE);
 		paint.setAntiAlias(true);
 
-		Path path = new Path();
-		path.setFillType(Path.FillType.EVEN_ODD);
-		path.moveTo(x1, y1);
-		path.lineTo(x2, y2);
-		path.lineTo(x3, y3);
-		path.close();
-
-		canvas.drawPath(path, paint);
+		if (tmpCanvas == null) {
+			Path path = new Path();
+			path.setFillType(Path.FillType.EVEN_ODD);
+			path.moveTo(x1, y1);
+			path.lineTo(x2, y2);
+			path.lineTo(x3, y3);
+			path.close();
+			canvas.drawPath(path, paint);
+		}
+		else {
+			Path pathTmp = new Path();
+			pathTmp.setFillType(Path.FillType.EVEN_ODD);
+			pathTmp.moveTo(x1 - tmpCanvasX, y1 - tmpCanvasY);
+			pathTmp.lineTo(x2 - tmpCanvasX, y2 - tmpCanvasY);
+			pathTmp.lineTo(x3 - tmpCanvasX, y3 - tmpCanvasY);
+			pathTmp.close();
+			canvas.drawPath(pathTmp, paint);
+		}
 	}
 
 	public static int convertColor(de.jdungeon.game.Color color) {
-		if(Colors.BLACK.equals(color)) {
+		if (Colors.BLACK.equals(color)) {
 			return Color.BLACK;
 		}
-		if(Colors.BLUE.equals(color)) {
+		if (Colors.BLUE.equals(color)) {
 			return Color.BLUE;
 		}
-		if(Colors.GREEN.equals(color)) {
+		if (Colors.GREEN.equals(color)) {
 			return Color.GREEN;
 		}
-		if(Colors.RED.equals(color)) {
+		if (Colors.RED.equals(color)) {
 			return Color.RED;
 		}
-		if(Colors.WHITE.equals(color)) {
+		if (Colors.WHITE.equals(color)) {
 			return Color.WHITE;
 		}
-		if(Colors.YELLOW.equals(color)) {
+		if (Colors.YELLOW.equals(color)) {
 			return Color.YELLOW;
 		}
-		if(Colors.GRAY.equals(color)) {
+		if (Colors.GRAY.equals(color)) {
 			return Color.GRAY;
 		}
 
@@ -273,24 +322,66 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void drawARGB(int a, int r, int g, int b) {
-		canvas.drawARGB(a, r, g, b);
+		if (tmpCanvas == null) {
+			canvas.drawARGB(a, r, g, b);
+		}
+		else {
+			tmpCanvas.drawARGB(a, r, g, b);
+		}
+	}
+
+	@Override
+	public void setTempCanvas(int x, int y, int width, int height) {
+		if (bitmap != null && tmpCanvas != null) {
+			flushAndResetTempCanvas();
+		}
+		tmpCanvasX = x;
+		tmpCanvasY = y;
+		bitmap = Bitmap.createBitmap(width, height, Config.RGB_565);
+		tmpCanvas = new Canvas(bitmap);
+	}
+
+	@Override
+	public void flushAndResetTempCanvas() {
+		canvas.drawBitmap(bitmap, tmpCanvasX, tmpCanvasY, null);
+		bitmap = null;
+		tmpCanvas = null;
+	}
+
+	@Override
+	public Image getTempImage() {
+		ImageFormat format;
+		if (bitmap.getConfig() == Config.RGB_565) {
+			format = ImageFormat.RGB565;
+		}
+		else if (bitmap.getConfig() == Config.ARGB_4444) {
+			format = ImageFormat.ARGB4444;
+		}
+		else {
+			format = ImageFormat.ARGB8888;
+		}
+		return new AndroidImage(bitmap, format);
 	}
 
 	@Override
 	public void drawString(String text, int x, int y, Paint paint) {
 		Paint p;
-		if(paint instanceof PaintBuilder) {
+		if (paint instanceof PaintBuilder) {
 			p = createPaint(((PaintBuilder) paint));
-		} else {
+		}
+		else {
 			p = paint;
 		}
-		canvas.drawText(text, x, y, ((AndroidPaint)p).getPaint() );
-
+		if (tmpCanvas == null) {
+			canvas.drawText(text, x, y, ((AndroidPaint) p).getPaint());
+		}
+		else {
+			tmpCanvas.drawText(text, x - tmpCanvasX, y - tmpCanvasY, ((AndroidPaint) p).getPaint());
+		}
 	}
 
 	@Override
-	public void drawImage(Image Image, int x, int y, int srcX, int srcY,
-			int srcWidth, int srcHeight) {
+	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		srcRect.left = srcX;
 		srcRect.top = srcY;
 		srcRect.right = srcX + srcWidth;
@@ -301,17 +392,35 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + srcWidth;
 		dstRect.bottom = y + srcHeight;
 
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		if (tmpCanvas == null) {
+			canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		}
+		else {
+			tmpDstRect.left = dstRect.left - tmpCanvasX;
+			tmpDstRect.top = dstRect.top - tmpCanvasY;
+			tmpDstRect.right = dstRect.right - tmpCanvasX;
+			tmpDstRect.bottom = dstRect.bottom - tmpCanvasY;
+			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, tmpDstRect, null);
+		}
 	}
 
 	@Override
 	public void drawImage(Image Image, int x, int y) {
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, x, y, null);
+		if (tmpCanvas == null) {
+			canvas.drawBitmap(((AndroidImage) Image).bitmap, x, y, null);
+		}
+		else {
+			tmpDstRect.left = dstRect.left - tmpCanvasX;
+			tmpDstRect.top = dstRect.top - tmpCanvasY;
+			tmpDstRect.right = dstRect.right - tmpCanvasX;
+			tmpDstRect.bottom = dstRect.bottom - tmpCanvasY;
+			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, x - tmpCanvasX, y - tmpCanvasY, null);
+		}
 	}
 
 	@Override
 	public void drawScaledImage(Image Image, int x, int y, int width,
-			int height, int srcX, int srcY, int srcWidth, int srcHeight) {
+								int height, int srcX, int srcY, int srcWidth, int srcHeight) {
 
 		srcRect.left = srcX;
 		srcRect.top = srcY;
@@ -323,8 +432,16 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + width;
 		dstRect.bottom = y + height;
 
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
-
+		if (tmpCanvas == null) {
+			canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		}
+		else {
+			tmpDstRect.left = dstRect.left - tmpCanvasX;
+			tmpDstRect.top = dstRect.top - tmpCanvasY;
+			tmpDstRect.right = dstRect.right - tmpCanvasX;
+			tmpDstRect.bottom = dstRect.bottom - tmpCanvasY;
+			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		}
 	}
 
 	@Override

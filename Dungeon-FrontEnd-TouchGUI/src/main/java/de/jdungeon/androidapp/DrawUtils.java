@@ -1,5 +1,8 @@
 package de.jdungeon.androidapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import figure.FigureInfo;
 import game.InfoEntity;
 import graphics.GraphicObject;
@@ -36,6 +39,7 @@ public class DrawUtils {
 			List<GraphicObject> graphicObjectsForRoom,
 			JDPoint viewportPosition, RoomInfo roomInfo, int roomSize,
 			int roomOffsetX, int roomOffsetY, GameScreen screen) {
+
 
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {
 			if (graphicObject != null) {
@@ -195,13 +199,6 @@ public class DrawUtils {
 				}
 			}
 		}
-		/*
-		Paint p = new Paint();
-		p.setColor(Color.RED);
-		g.drawString(roomInfo.getNumber().getX() + "/"
-				+ roomInfo.getNumber().getY(), roomOffsetX + roomSize / 2,
-				roomOffsetY + roomSize / 2, p);
-				*/
 	}
 
 	private static void drawHighlightBox(Graphics g, JDPoint viewportPosition,
