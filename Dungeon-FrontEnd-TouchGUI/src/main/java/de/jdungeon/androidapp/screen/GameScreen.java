@@ -103,6 +103,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private GraphicObjectRenderer dungeonRenderer;
 
 	private final Map<JDPoint, List<GraphicObject>> drawnObjects = new HashMap<>();
+	private final Map<JDPoint, Image> drawnRooms = new HashMap<>();
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
 	private InfoPanel infoPanel;
 	private final TextPerceptView textPerceptView;
@@ -397,6 +398,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 * draw game world
 		 */
 		drawWorld(gr);
+		gr.flushAndResetTempCanvas();
 
 		/*
 		 * draw gui elements
@@ -458,9 +460,20 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 						}
 					}
 
-					DrawUtils.drawObjects(gr, graphicObjectsForRoom,
-							getViewportPosition(), roomInfo, (int) getRoomSize(),
-							roomOffsetX, roomOffsetY, this);
+
+					if(worldHasChanged || !this.drawnRooms.containsKey(roomInfo.getPoint()) || AnimationManager.getInstance().hasAnimations(roomInfo)) {
+						Image roomOffscreenImage = DrawUtils.drawObjects(gr, graphicObjectsForRoom,
+								getViewportPosition(), roomInfo, (int) getRoomSize(),
+								roomOffsetX, roomOffsetY, this);
+						if(roomOffscreenImage != null) {
+							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);
+							gr.drawScaledImage(roomOffscreenImage, roomOffsetX-viewportPosition.getX(), roomOffsetY-viewportPosition.getY(), (int)roomSize, (int)roomSize, 0 , 0, roomOffscreenImage.getWidth(), roomOffscreenImage.getHeight(), true);
+						}
+					}
+					if(!worldHasChanged && this.drawnRooms.get(roomInfo.getPoint()) != null) {
+						Image roomOffscreenImage = this.drawnRooms.get(roomInfo.getPoint());
+						gr.drawScaledImage(roomOffscreenImage, roomOffsetX-viewportPosition.getX(), roomOffsetY-viewportPosition.getY(), (int)roomSize, (int)roomSize, 0 , 0, roomOffscreenImage.getWidth(), roomOffscreenImage.getHeight(), true);
+					}
 
 				}
 			}

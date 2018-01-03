@@ -37,10 +37,11 @@ public interface Graphics {
 
     void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
 
-    void drawImage(Image Image, int x, int y);
+    void drawImage(Image Image, int x, int y, boolean nonTmp);
     
-    void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight);
+    void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight, boolean nonTmp);
 
+	void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight);
     void drawString(String text, int x, int y, Paint paint);
 
     int getWidth();

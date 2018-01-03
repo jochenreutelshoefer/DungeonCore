@@ -1,8 +1,5 @@
 package de.jdungeon.androidapp;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import figure.FigureInfo;
 import game.InfoEntity;
 import graphics.GraphicObject;
@@ -12,14 +9,12 @@ import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 import graphics.util.DrawingRectangle;
-import graphics.util.JDRectangle;
 
 import java.util.Collection;
 import java.util.List;
 
 import animation.AnimationFrame;
 import animation.AnimationManager;
-import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
@@ -35,10 +30,13 @@ import util.JDDimension;
 
 public class DrawUtils {
 
-	public static void drawObjects(Graphics g,
+	public static Image drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
 			JDPoint viewportPosition, RoomInfo roomInfo, int roomSize,
 			int roomOffsetX, int roomOffsetY, GameScreen screen) {
+
+		// we init a tmp offscreen image for this room for caching and later re-use
+		//g.setTempCanvas(roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition.getY(), roomSize, roomSize);
 
 
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {
@@ -48,8 +46,8 @@ public class DrawUtils {
 				if (graphicObject instanceof JDGraphicObject) {
 					JDGraphicObject jdGraphicObject = (JDGraphicObject) graphicObject;
 
-					JDImageLocated image = jdGraphicObject.getAWTImage();
-					Image im = (Image) image.getImage().getImage();
+					JDImageLocated jdImage = jdGraphicObject.getAWTImage();
+					Image imageResource = (Image) jdImage.getImage().getImage();
 
 					// check for animation image
 					Object clickedObject = jdGraphicObject.getClickableObject();
@@ -67,9 +65,9 @@ public class DrawUtils {
 							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
 							if(locatedImage != null) {
 								// might be null if that room is not visible
-								image = locatedImage;
+								jdImage = locatedImage;
 							}
-							im = (Image) animationImage.getImage();
+							imageResource = (Image) animationImage.getImage();
 							if (frame.getText() != null) {
 								showText = frame.getText();
 								textOffset = frame.getTextCoordinatesOffset();
@@ -86,11 +84,11 @@ public class DrawUtils {
 					/*
 					 * draw the image
 					 */
-					g.drawScaledImage(im,
-							image.getX(roomOffsetX) - viewportPosition.getX(),
-							image.getY(roomOffsetY) - viewportPosition.getY(),
-							image.getWidth(), image.getHeight(), 0, 0,
-							im.getWidth(), im.getHeight());
+					g.drawScaledImage(imageResource,
+							jdImage.getX(roomOffsetX) - viewportPosition.getX(),
+							jdImage.getY(roomOffsetY) - viewportPosition.getY(),
+							jdImage.getWidth(), jdImage.getHeight(), 0, 0,
+							imageResource.getWidth(), imageResource.getHeight());
 
 					if (drawHighlightBoxOnTopOfItem) {
 						drawHighlightBox(g, viewportPosition, screen,
@@ -98,9 +96,9 @@ public class DrawUtils {
 					}
 
 					if (showText != null) {
-						g.drawString(showText, image.getX(roomOffsetX)
+						g.drawString(showText, jdImage.getX(roomOffsetX)
 								- viewportPosition.getX() + textOffset.getX(),
-								image.getY(roomOffsetY) - viewportPosition.getY()
+								jdImage.getY(roomOffsetY) - viewportPosition.getY()
 										+ textOffset.getY(), g.getSmallPaint());
 					}
 
@@ -199,6 +197,9 @@ public class DrawUtils {
 				}
 			}
 		}
+
+		// we return the off screen image of this room for later reuse
+		return g.getTempImage();
 	}
 
 	private static void drawHighlightBox(Graphics g, JDPoint viewportPosition,

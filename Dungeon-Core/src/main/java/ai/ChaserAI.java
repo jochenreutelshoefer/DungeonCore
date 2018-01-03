@@ -20,6 +20,7 @@ import figure.percept.ScoutPercept;
 public class ChaserAI extends DefaultMonsterIntelligence {
 
 	private JDPoint lastHeroLocation = null;
+	private int lastHeroLocationInfoRound;
 	private final List<Percept> perceptList = new LinkedList<>();
 	@Override
 	public Action chooseFightAction() {
@@ -48,32 +49,29 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 		for (Iterator<Percept> iter = perceptList.iterator(); iter.hasNext();) {
 			Percept element = iter.next();
 			if(element instanceof MovePercept) {
-				if(((MovePercept)element).getFigure() instanceof HeroInfo) {
+				if(((MovePercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
 					this.lastHeroLocation = ((MovePercept)element).getTo().getPoint();
-					perceptList.clear();
-					return;
+					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
 			if(element instanceof FleePercept) {
-				if(((FleePercept)element).getFigure() instanceof HeroInfo) {
+				if(((FleePercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
 					int dir = ((FleePercept)element).getDir();
 					RoomInfo r = ((FleePercept)element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
-					perceptList.clear();
-					return;
+					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
 			if(element instanceof ScoutPercept) {
-				if(((ScoutPercept)element).getFigure() instanceof HeroInfo) {
+				if(((ScoutPercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
 					int dir = ((ScoutPercept)element).getDir();
 					RoomInfo r = ((ScoutPercept)element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
-					perceptList.clear();
-					return;
+					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
 		}
-		
+		perceptList.clear();
 
 	}
 	

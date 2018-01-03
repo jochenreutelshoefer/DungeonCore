@@ -4,6 +4,8 @@ import graphics.util.DrawingRectangle;
 import graphics.util.JDRectangle;
 import graphics.util.RelativeRectangle;
 
+import de.jdungeon.game.Image;
+
 public class JDImageLocated implements DrawingRectangle {
 
 
@@ -20,15 +22,6 @@ public class JDImageLocated implements DrawingRectangle {
 		this.posY = posY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-
-	}
-
-	public JDImageLocated(JDImageProxy<?> i, JDRectangle r) {
-		image = i;
-		this.posX = r.getX();
-		this.posY = r.getY();
-		this.sizeX = r.getWidth();
-		this.sizeY = r.getHeight();
 
 	}
 
@@ -49,28 +42,61 @@ public class JDImageLocated implements DrawingRectangle {
 
 	@Override
 	public int getWidth() {
+		Image image = (Image) this.image.getImage();
+		if(image.getHeight() == 128 && image.getWidth() == 128) {
+			// some of the figure animation images have size 128 instead of 96
+			return (sizeX * 128) / 96;
+		}
 		return sizeX;
 	}
 
 	@Override
 	public int getHeight() {
+		Image image = (Image) this.image.getImage();
+		if(image.getHeight() == 128 && image.getWidth() == 128) {
+			// some of the figure animation images have size 128 instead of 96
+			return (sizeY * 128) / 96;
+		}
 		return sizeY;
 	}
 
 	@Override
 	public int getX(int roomOffsetX) {
+
+		int xValue;
 		if(relativeRectangle != null) {
-			return relativeRectangle.getX(roomOffsetX);
+			xValue = relativeRectangle.getX(roomOffsetX);
+		} else {
+			xValue = posX;
 		}
-		return posX;
+		Image resourceImage = (Image) this.image.getImage();
+		if(resourceImage.getHeight() == 128 && resourceImage.getWidth() == 128) {
+			// some of the figure animation images have size 128 instead of 96
+			int width = getWidth();
+			return (int) (xValue - (((((float)(width * 128 - width * 96))/96)/2)));
+		} else {
+			return xValue;
+		}
 	}
 
 	@Override
 	public int getY(int roomOffsetY) {
+
+		int yValue;
 		if(relativeRectangle != null) {
-			return relativeRectangle.getY(roomOffsetY);
+			yValue = relativeRectangle.getY(roomOffsetY);
+		} else {
+			yValue = posY;
 		}
-		return posY;
+
+		Image resourceImage = (Image) this.image.getImage();
+		if(resourceImage.getHeight() == 128 && resourceImage.getWidth() == 128) {
+			// some of the figure animation images have size 128 instead of 96
+			int height = getHeight();
+			return (int) (yValue - (((((float)(height * 128 - height * 96))/96)/2)));
+		} else {
+			return yValue;
+		}
 	}
 
 	public JDImageProxy<?> getImage() {

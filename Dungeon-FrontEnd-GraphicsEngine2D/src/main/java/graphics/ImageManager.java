@@ -1385,10 +1385,14 @@ public class ImageManager {
 			Class<? extends Monster> monsterClass = m.getMonsterClass();
 			if (figureMap.containsKey(monsterClass)) {
 				return figureMap.get(monsterClass)[dir.getValue() - 1];
+			} else {
+				AnimationSet animationSet = monsterAnimationMap.get(monsterClass).getAnimationSet(Motion.Walking, dir);
+				if(animationSet != null) {
+					return animationSet.getImagesNr(0);
+				}
 			}
 
 			// todo: create animations
-			JDImageProxy<?> im = null;
 			if (monsterClass == DarkMaster.class) {
 				return ImageManager.darkMasterImage;
 			}

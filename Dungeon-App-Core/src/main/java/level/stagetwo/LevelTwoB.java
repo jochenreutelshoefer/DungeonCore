@@ -7,6 +7,7 @@ import java.util.List;
 import ai.AbstractAI;
 import ai.ChaserAI;
 import dungeon.Chest;
+import dungeon.Dir;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
@@ -22,6 +23,7 @@ import figure.FigureControl;
 import figure.FigureInfo;
 import figure.monster.Dwarf;
 import figure.monster.MonsterInfo;
+import figure.monster.Ogre;
 import figure.monster.Orc;
 import game.ControlUnit;
 import item.Item;
@@ -122,7 +124,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			Room dwarfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 2));
 			if(dwarfRoom == null) continue;
 			Figure dwarf = new Dwarf();
-			dwarfRoom.figureEnters(dwarf, Position.Pos.SE.getValue());
+			dwarfRoom.figureEntersAtPosition(dwarf, 0, Position.Pos.SE.getValue());
 			MonsterInfo dwarfInfo = (MonsterInfo) FigureInfo.makeFigureInfo(dwarf,
 					dwarf.getRoomVisibility());
 
@@ -154,6 +156,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			filler.removeDoors(3, entryPoint);
 
 			entryRoom.addItem(new VisibilityCheatBall());
+			entryRoom.figureEnters(new Ogre(500), Dir.NORTH);
 
 			accomplished = true;
 		}

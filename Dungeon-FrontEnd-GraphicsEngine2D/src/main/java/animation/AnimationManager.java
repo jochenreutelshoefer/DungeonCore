@@ -31,6 +31,18 @@ public class AnimationManager {
 	private final Map<FigureInfo, Queue<AnimationTask>> animations = new HashMap<>();
 	//private final Map<RoomInfo, Queue<AnimationTask>> singleQueue = new HashMap<RoomInfo, Queue<AnimationTask>>();
 	private final Map<FigureInfo, AnimationTask> currentTasks = new HashMap<>();;
+	private final Map<RoomInfo, Set<AnimationTask>> roomTasks = new HashMap<>();
+
+	public boolean hasAnimations(RoomInfo room) {
+		Set<AnimationTask> anis = roomTasks.get(room);
+		if(anis == null) {
+			return false;
+		}
+		if(anis.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Returns the AnimationFrame for a Figure that should currently
@@ -55,6 +67,10 @@ public class AnimationManager {
 			}
 		}
 		if (currentTask.isFinished()) {
+			Set<AnimationTask> roomSet = roomTasks.get(info.getRoomInfo());
+			if(roomSet != null) {
+				roomSet.remove(currentTask);
+			}
 			// some task for figure has been finished
 			if (queue != null && !queue.isEmpty()) {
 				// there are more tasks in the queue, pop next as current
@@ -64,6 +80,13 @@ public class AnimationManager {
 				currentTask = null;
 			}
 			currentTasks.put(info, currentTask);
+			RoomInfo room = info.getRoomInfo();
+			Set<AnimationTask> set = roomTasks.get(room);
+			if(set == null) {
+				set = new HashSet<>();
+				roomTasks.put(room, set);
+			}
+			set.add(currentTask);
 		}
 		if (currentTask != null) {
 			//if(currentTask.getRoom().equals(roomInfo)) {

@@ -37,7 +37,7 @@ public class AndroidGraphics implements Graphics {
 	private final android.graphics.Paint black = new android.graphics.Paint();
 	private final android.graphics.Paint gray = new android.graphics.Paint();
 	private android.graphics.Paint labelPaint = new android.graphics.Paint();
-	private Bitmap bitmap;
+	private Bitmap tmpBitmap;
 	private Canvas tmpCanvas;
 	private int tmpCanvasX;
 	private int tmpCanvasY;
@@ -332,35 +332,45 @@ public class AndroidGraphics implements Graphics {
 
 	@Override
 	public void setTempCanvas(int x, int y, int width, int height) {
-		if (bitmap != null && tmpCanvas != null) {
+		if (tmpBitmap != null && tmpCanvas != null) {
 			flushAndResetTempCanvas();
 		}
 		tmpCanvasX = x;
 		tmpCanvasY = y;
-		bitmap = Bitmap.createBitmap(width, height, Config.RGB_565);
-		tmpCanvas = new Canvas(bitmap);
+		tmpBitmap = Bitmap.createBitmap(width, height, Config.RGB_565);
+		tmpCanvas = new Canvas(tmpBitmap);
 	}
 
 	@Override
 	public void flushAndResetTempCanvas() {
-		canvas.drawBitmap(bitmap, tmpCanvasX, tmpCanvasY, null);
-		bitmap = null;
+		if(tmpBitmap != null) {
+			canvas.drawBitmap(tmpBitmap, tmpCanvasX, tmpCanvasY, null);
+		}
+		tmpBitmap = null;
 		tmpCanvas = null;
 	}
 
 	@Override
 	public Image getTempImage() {
+		if(tmpBitmap == null) {
+			return null;
+		}
 		ImageFormat format;
-		if (bitmap.getConfig() == Config.RGB_565) {
+		if (tmpBitmap.getConfig() == Config.RGB_565) {
 			format = ImageFormat.RGB565;
 		}
-		else if (bitmap.getConfig() == Config.ARGB_4444) {
+		else if (tmpBitmap.getConfig() == Config.ARGB_4444) {
 			format = ImageFormat.ARGB4444;
 		}
 		else {
 			format = ImageFormat.ARGB8888;
 		}
-		return new AndroidImage(bitmap, format);
+		if(tmpBitmap != null) {
+			return new AndroidImage(tmpBitmap, format);
+
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -405,22 +415,25 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public void drawImage(Image Image, int x, int y) {
-		if (tmpCanvas == null) {
-			canvas.drawBitmap(((AndroidImage) Image).bitmap, x, y, null);
+	public void drawImage(Image image, int x, int y, boolean nonTmp) {
+		if (tmpCanvas == null || nonTmp) {
+			canvas.drawBitmap(((AndroidImage) image).bitmap, x, y, null);
 		}
 		else {
-			tmpDstRect.left = dstRect.left - tmpCanvasX;
-			tmpDstRect.top = dstRect.top - tmpCanvasY;
-			tmpDstRect.right = dstRect.right - tmpCanvasX;
-			tmpDstRect.bottom = dstRect.bottom - tmpCanvasY;
-			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, x - tmpCanvasX, y - tmpCanvasY, null);
+			tmpCanvas.drawBitmap(((AndroidImage) image).bitmap, x - tmpCanvasX, y - tmpCanvasY, null);
 		}
 	}
 
 	@Override
 	public void drawScaledImage(Image Image, int x, int y, int width,
 								int height, int srcX, int srcY, int srcWidth, int srcHeight) {
+		drawScaledImage( Image,  x,  y,  width,
+		 height,  srcX,  srcY,  srcWidth,  srcHeight, false);
+	}
+
+	@Override
+	public void drawScaledImage(Image Image, int x, int y, int width,
+								int height, int srcX, int srcY, int srcWidth, int srcHeight, boolean nonTmp) {
 
 		srcRect.left = srcX;
 		srcRect.top = srcY;
@@ -432,7 +445,7 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + width;
 		dstRect.bottom = y + height;
 
-		if (tmpCanvas == null) {
+		if (tmpCanvas == null || nonTmp) {
 			canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
 		}
 		else {
@@ -440,7 +453,7 @@ public class AndroidGraphics implements Graphics {
 			tmpDstRect.top = dstRect.top - tmpCanvasY;
 			tmpDstRect.right = dstRect.right - tmpCanvasX;
 			tmpDstRect.bottom = dstRect.bottom - tmpCanvasY;
-			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, tmpDstRect, null);
 		}
 	}
 
