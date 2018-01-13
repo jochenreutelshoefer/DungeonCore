@@ -154,7 +154,9 @@ public class ActionAssembler implements EventListener {
 	}
 
 	public void wannaUseShrine(Object target, boolean right) {
-
+		if(this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
+			wannaStepToPosition(Position.Pos.NE);
+		}
 		Action a = new ShrineAction(target, right);
 		plugAction(a);
 
@@ -188,6 +190,9 @@ public class ActionAssembler implements EventListener {
 
 	public void wannaUseChest(boolean right) {
 
+		if(this.getFigure().getPositionInRoomIndex() != Position.Pos.NW.getValue()) {
+			wannaStepToPosition(Position.Pos.NW);
+		}
 		Action a = new UseChestAction(right);
 		plugAction(a);
 

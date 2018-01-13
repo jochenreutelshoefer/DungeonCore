@@ -38,6 +38,7 @@ import game.DungeonGame;
 import game.InfoEntity;
 import game.InfoProvider;
 import gui.Paragraphable;
+import log.Log;
 
 /**
  * Superklasse fuer alle moeglichen Monster, abgeleitet von Fighter.
@@ -164,7 +165,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	protected void construcHelp(int value) {
 		this.spellbook = new Spellbook();
 		this.reflexReactionUnit = new DefaultMonsterReflexBehavior(this);
-		lookDir = ((int) Math.random() * 4) + 1;
+		lookDir = ((int) (Math.random() * 4)) + 1;
 		worth = value;
 		setLevel(value);
 		int cth_modifier = (int) (Math.random() * 8) - 4;
@@ -792,10 +793,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 			return 0;
 	}
 
-	/**
-	 * 
-	 * @uml.property name="items"
-	 */
 	@Override
 	public List<Item> getItems() {
 		return items;
@@ -1100,7 +1097,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 			}
 
 		} else if (lastMove == RouteInstruction.EAST) {
-			if (goWest() == false) {
+			if (!goWest()) {
 				if (this.getRoom().directionPassable(RouteInstruction.WEST)) {
 					return RouteInstruction.WEST;
 				} else if (this.getRoom().directionPassable(
@@ -1139,8 +1136,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 			}
 
 		}
-
-		// System.out.println("lastMove Error! monster.flee()");
 		return 0;
 	}
 
@@ -1184,8 +1179,9 @@ public abstract class Monster extends Figure implements Paragraphable,
 		try {
 			Thread.sleep(600);
 		} catch (Exception e) {
+			Log.warning("sleep interupted");
 		}
-		if (items.size() > 0) {
+		if (!items.isEmpty()) {
 			getRoom().distributePercept(new ItemDroppedPercept(items, this));
 			getRoom().addItems(items, null);
 		}

@@ -238,6 +238,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void setShrine(Shrine s) {
+		this.getDungeon().addShrine(s);
 		setShrine(s, true);
 
 	}

@@ -49,7 +49,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	}
 
 	@Override
-	public void actionDone(Action a, ActionResult res) {
+	public void actionProcessed(Action a, ActionResult res) {
 		if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
 			perceptHandler.tellPercept(new TextPercept(StatementManager.getStatement(res).getText()));
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);

@@ -66,7 +66,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getCurrentStage() {
 		// for testing at stage 2
-		if(completedDungeons.isEmpty()) return 1;
+		//if(completedDungeons.isEmpty()) return 1;
 
 		return completedDungeons.size();
 	}
@@ -120,6 +120,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		// we make a copy of this hero for potential restart after death
 		this.currentHero.clearVisibilityMaps();
 		heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
+
+		// we need to clear the keys from the last dungeon (as they would work in the new one also)
+		currentHero.getInventory().clearKeys();
 		heroInfo = DungeonUtils.enterDungeon(currentHero, derDungeon,
 				dungeon.getHeroEntryPoint());
 

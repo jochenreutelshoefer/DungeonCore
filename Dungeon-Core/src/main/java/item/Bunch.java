@@ -21,7 +21,7 @@ import game.JDEnv;
 public class Bunch extends Item implements Serializable {
 
 	
-	private final Set<Key> keys = new HashSet<Key>();
+	private final Set<Key> keys = new HashSet<>();
 
 	
 	public Bunch() {
@@ -92,4 +92,7 @@ public class Bunch extends Item implements Serializable {
 		return s.substring(11);	
 	}
 
+	public void clear() {
+		keys.clear();
+	}
 }

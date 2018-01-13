@@ -3,10 +3,13 @@ package de.jdungeon.androidapp.gui.itemWheel;
 import java.util.ArrayList;
 import java.util.List;
 
+import control.ActionAssembler;
 import dungeon.ChestInfo;
+import dungeon.Position;
 import event.ActionEvent;
 import event.EventManager;
 import figure.FigureInfo;
+import figure.action.StepAction;
 import figure.action.TakeItemFromChestAction;
 import item.ItemInfo;
 
@@ -48,6 +51,9 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 	@Override
 	public void activityPressed(ItemWheelActivity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		if(! (this.info.getPos().getIndex() == Position.Pos.NW.getValue())) {
+			EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
+		}
 		EventManager.getInstance().fireEvent(new ActionEvent(new TakeItemFromChestAction((ItemInfo)infoEntity.getObject())));
 	}
 }

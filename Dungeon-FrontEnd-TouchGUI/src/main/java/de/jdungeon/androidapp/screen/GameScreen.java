@@ -1,5 +1,6 @@
 package de.jdungeon.androidapp.screen;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +32,7 @@ import event.EventManager;
 import event.WorldChangedEvent;
 import figure.FigureInfo;
 import figure.action.ShrineAction;
+import figure.action.StepAction;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
@@ -45,6 +47,7 @@ import item.ItemInfo;
 import shrine.ShrineInfo;
 import text.Statement;
 import user.DefaultDungeonSession;
+import util.JDColor;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.Control;
@@ -54,6 +57,7 @@ import de.jdungeon.androidapp.audio.MusicManager;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.event.FocusEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
+import de.jdungeon.androidapp.gui.ColorConverter;
 import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GUIImageManager;
@@ -90,11 +94,12 @@ import de.jdungeon.game.MotionEvent;
 import de.jdungeon.game.Music;
 import de.jdungeon.game.ScrollMotion;
 import de.jdungeon.user.Session;
+import de.jdungeon.util.PaintBuilder;
 import de.jdungeon.util.Pair;
 
 public class GameScreen extends StandardScreen implements EventListener, PerceptHandler {
 
-	public static final int SCALE_ROOM_FIGHT_MODE = 250;
+	public static final int SCALE_ROOM_FIGHT_MODE = 220;
 	public static final int SCALE_ROOM_DEFAULT = 180;
 	private final Dungeon derDungeon;
 	//private Hero hero = null;
@@ -119,6 +124,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private final Control control;
 
 	private long lastDoubleTapEventTime = -1;
+	private final RenderTimeLog renderTimeLog = new RenderTimeLog();
 
 	private long lastTouchEventTime = -1;
 	private long lastScaleEventTime = -1;
@@ -384,8 +390,42 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		MusicManager.getInstance().playMusic(music);
 	}
 
+	private static class RenderTimeLog {
+
+		private final int bufferSize = 10;
+		private final long[] durations = new long[bufferSize];
+		private int counter;
+
+		public PaintBuilder getPaintBuilder() {
+			return paintBuilder;
+		}
+
+		private PaintBuilder paintBuilder;
+
+		public void setFrameRenderTime(long duration) {
+			durations[counter] = duration;
+			counter =  (counter + 1) % bufferSize;
+
+			paintBuilder = new PaintBuilder();
+			paintBuilder.setColor(ColorConverter.getColor(JDColor.red));
+			paintBuilder.setFontSize(16);
+
+		}
+
+		public int getFrameRate() {
+			long result = 0;
+			for (long duration : durations) {
+				result += duration;
+			}
+			return Math.round(1000 / (result / 10));
+		}
+
+	}
+
 	@Override
 	public void paint(float arg0) {
+
+		long renderStart = System.currentTimeMillis();
 		Graphics gr = game.getGraphics();
 
 		/*
@@ -398,7 +438,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 * draw game world
 		 */
 		drawWorld(gr);
-		gr.flushAndResetTempCanvas();
+
 
 		/*
 		 * draw gui elements
@@ -410,6 +450,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			}
 		}
 
+		long renderTime  = System.currentTimeMillis() - renderStart;
+		renderTimeLog.setFrameRenderTime(renderTime);
+
+		gr.drawString(renderTimeLog.getFrameRate()+" fps", 25, 15, renderTimeLog.getPaintBuilder());
 	}
 
 	private void drawWorld(Graphics gr) {
@@ -483,6 +527,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (resetWorldChangedAfterwards) {
 			worldHasChanged = false;
 		}
+
+		// flush graphics (room tile offscreen render cache) before gui rendering is started
+		gr.flushAndResetTempCanvas();
 	}
 
 	private List<GraphicObject> createGraphicObjectsForRoom(RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
@@ -1248,6 +1295,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			switchRightItemWheel(event);
 		}
 		if (event instanceof ShrineButtonClickedEvent) {
+			if(! (getFigureInfo().getPos().getIndex() == Position.Pos.NE.getValue())) {
+				EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NE.getValue())));
+			}
 			EventManager.getInstance().fireEvent(new ActionEvent(new ShrineAction(null, false)));
 		}
 		if (event instanceof WorldChangedEvent) {
@@ -1275,6 +1325,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 		else if (event instanceof ChestItemButtonClickedEvent) {
 			if (!chestItemWheelShowing) {
+				if(! (getFigureInfo().getPos().getIndex() == Position.Pos.NW.getValue())) {
+					EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
+				}
 				setChestItemWheelVisible();
 			}
 			else {

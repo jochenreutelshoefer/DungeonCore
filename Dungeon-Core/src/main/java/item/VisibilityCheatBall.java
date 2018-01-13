@@ -43,7 +43,7 @@ public class VisibilityCheatBall extends Thing implements Usable {
 
 	@Override
 	public boolean usableOnce() {
-		return false;
+		return true;
 	}
 
 	@Override

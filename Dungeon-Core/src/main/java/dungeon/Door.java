@@ -14,6 +14,8 @@ import item.Key;
 import java.util.LinkedList;
 import java.util.List;
 
+import item.interfaces.ItemOwner;
+import item.interfaces.Locatable;
 import shrine.Statue;
 import dungeon.util.DungeonUtils;
 
@@ -25,7 +27,7 @@ import dungeon.util.DungeonUtils;
  * werden. Tueren koennen durch Zaubersprueche eine zeitlang blockiert werden.
  * 
  */
-public class Door implements  InfoProvider {
+public class Door implements  InfoProvider, Locatable {
 
 	public static final int NO_DOOR = 0;
 
@@ -43,7 +45,7 @@ public class Door implements  InfoProvider {
 
 	private final List escapeRoutes = new LinkedList();
 	
-	private String lock = "unlockable";
+	private Lock lock = null;
 
 	private boolean locked = false;
 
@@ -98,6 +100,21 @@ public class Door implements  InfoProvider {
 		return rooms[0].getLocation();
 	}
 
+	@Override
+	public ItemOwner getOwner() {
+		return null;
+	}
+
+	@Override
+	public void setOwner(ItemOwner o) {
+
+	}
+
+	@Override
+	public void getsRemoved() {
+
+	}
+
 	public void setHidden(boolean isHidden) {
 		difficultyToFind = 150;
 		this.isHidden = isHidden;
@@ -109,7 +126,6 @@ public class Door implements  InfoProvider {
 		return new DoorInfo(this, map);
 	}
 
-	private Key schluessel;
 
 	private boolean statueBlocks;
 
@@ -176,10 +192,10 @@ public class Door implements  InfoProvider {
 	}
 
 	public Key getKey() {
-		return schluessel;
+		return lock.getKey();
 	}
 
-	public String getLock() {
+	public Lock getLock() {
 		return lock;
 	}
 
@@ -192,8 +208,7 @@ public class Door implements  InfoProvider {
 	}
 
 	private void setKey(Key k) {
-		this.lock = k.getType();
-		this.schluessel = k;
+		this.lock = new Lock(k, this);
 		locked = true;
 	}
 
@@ -232,14 +247,11 @@ public class Door implements  InfoProvider {
 	}
 
 	public boolean hasLock() {
-		if (lock.equals("unlockable")) {
-			return false;
-		}
-		return true;
+		return lock != null;
 	}
 
 	public boolean matches(Key k) {
-		return k.getType().equals(lock);
+		return k.getType().equals(lock.getKey().getType());
 	}
 
 	public boolean lock(Key k, boolean doIt) {

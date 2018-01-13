@@ -1,14 +1,14 @@
 package figure.memory;
 
 import dungeon.Door;
-
+import dungeon.Lock;
 
 public class DoorMemory extends MemoryObject {
 	
 	
-	private boolean isLocked;
-	private boolean hasLock;
-	private String lock;
+	private final boolean isLocked;
+	private final boolean hasLock;
+	private Lock lock;
 	
 	public DoorMemory(Door d) {
 		isLocked = d.getLocked();
@@ -27,7 +27,7 @@ public class DoorMemory extends MemoryObject {
 		return isLocked;
 	}
 
-	public String getLock() {
+	public Lock getLock() {
 		return lock;
 	}
 

@@ -10,4 +10,6 @@ public interface ItemWheelBindingSet {
 	ItemWheelActivityProvider getProvider();
 
 	int getSize();
+
+	ItemWheelActivity getAndClearLastAdded();
 }

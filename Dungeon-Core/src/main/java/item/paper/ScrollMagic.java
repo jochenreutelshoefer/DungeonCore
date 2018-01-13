@@ -17,6 +17,7 @@ public class ScrollMagic extends Scroll {
 	
 	
 	
+	@Override
 	public String getText() {
 		String s = new String();
 		int t = theSpell.getLevel();

@@ -66,7 +66,7 @@ public class ItemWheel extends AbstractGUIElement {
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
-		markedPointIndex = selectedIndex;
+		//markedPointIndex = selectedIndex;
 		this.backgroundImage = background;
 
 		/*
@@ -127,7 +127,7 @@ public class ItemWheel extends AbstractGUIElement {
 		return super.handleTouchEvent(touch);
 	}
 
-	public void highlightEntity(InfoEntity object) {
+	public void highlightEntity(Object object) {
 		// we need to update the binding set to have the new item included
 		binding.update(0);
 		int size = binding.getSize();
@@ -229,6 +229,10 @@ public class ItemWheel extends AbstractGUIElement {
 			}
 		}
 		binding.update(time);
+		ItemWheelActivity lastAdded = binding.getAndClearLastAdded();
+		if(lastAdded != null) {
+			this.highlightEntity(lastAdded.getObject());
+		}
 	}
 
 	private void updatePointCoordinates() {

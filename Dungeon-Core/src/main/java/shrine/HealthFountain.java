@@ -18,24 +18,10 @@ import game.JDEnv;
 public class HealthFountain extends Shrine {
 
 	
-	Attribute health;
+	private final Attribute health;
 
-	int rate;
-	//String story;
-public void metaClick(Figure f){
-		
-	}
-	
-	public HealthFountain(int max, int rate, Room p) {
-		
-		super(p);
-		health = new Attribute(Attribute.FOUNTAIN, max);
-		type = 0;
-		this.rate = rate;
-		story = JDEnv.getResourceBundle().getString("see_health_fountain");;
-		
-		
-	}
+	private final int rate;
+
 	public HealthFountain(int max, int rate) {
 		
 		super();
@@ -101,7 +87,6 @@ public void metaClick(Figure f){
 	
 	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
-		//System.out.println("erfrischen am Brunnen!");
 		Attribute h = f.getHealth();
 		double act = h.getValue();
 		double max = h.getBasic();

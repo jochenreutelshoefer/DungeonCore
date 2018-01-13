@@ -40,7 +40,7 @@ public class Dungeon implements Turnable, EventListener {
 	@Deprecated
 	private JDPoint heroPosition;
 
-	private final List<Shrine> shrines = new LinkedList<Shrine>();
+	private final Set<Shrine> shrines = new HashSet<Shrine>();
 
 	private boolean gameOver = false;
 
@@ -123,11 +123,8 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	private void shrinesTurn(int round) {
-		int j = shrines.size();
-		for (int i = 0; i < j; i++) {
-			Shrine s = (shrines.get(i));
-			// doPrint("turning: "+s.toString());
-			s.turn(round);
+		for (Shrine shrine : shrines) {
+			shrine.turn(round);
 		}
 	}
 

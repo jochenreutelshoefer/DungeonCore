@@ -4,9 +4,9 @@ package figure.action;
 
 public class ShrineAction extends Action {
 
-	private Object target;
+	private final Object target;
 
-	private boolean meta;
+	private final boolean meta;
 
 	public ShrineAction(Object target, boolean meta) {
 

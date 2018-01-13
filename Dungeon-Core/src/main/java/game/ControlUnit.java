@@ -43,7 +43,7 @@ public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	 * @param res
 	 *            The result of the execution of Action a
 	 */
-	void actionDone(Action a, ActionResult res);
+	void actionProcessed(Action a, ActionResult res);
 	
 	/**
 	 * 

@@ -928,4 +928,9 @@ public class Inventory implements Serializable {
 		}
 		return false;
 	}
+
+	public void clearKeys() {
+		this.getBunch().clear();
+
+	}
 }

@@ -49,7 +49,7 @@ public class StatementManager {
 			} else if (k == ActionResult.IMPOSSIBLE_REASON_WRONGTARGET) {
 				s = new Statement(Texts.wrongTarget(), 0);
 			} else if (k == ActionResult.IMPOSSIBLE_REASON_NOTARGET) {
-				s = new Statement(Texts.wrongTarget(), 0);
+				s = new Statement(Texts.noTarget(), 0);
 			} else if (k == ActionResult.IMPOSSIBLE_REASON_DISTANCE) {
 				s = new Statement(JDEnv.getString("wrong_distance"), 0);
 			} else if (res == ActionResult.WRONG_TARGET) {

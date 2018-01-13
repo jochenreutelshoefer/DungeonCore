@@ -50,12 +50,12 @@ public class DoorInfo extends InfoEntity {
 	
 	public Boolean isLocked() {
 		if (getShrineVisibility()) {
-			return new Boolean(d.getLocked());
+			return d.getLocked();
 		}
 		return null;
 	}
 
-	public String getLock() {
+	public Lock getLock() {
 		if (getFoundDiscovery()) {
 			return d.getLock();
 		}
@@ -72,9 +72,15 @@ public class DoorInfo extends InfoEntity {
 		return d.equals(((DoorInfo) obj).d);
 	}
 
+
+	@Override
+	public int hashCode() {
+		return d != null ? d.hashCode() : 0;
+	}
+
 	public Boolean isPassable() {
 		if (getShrineVisibility()) {
-			return new Boolean(d.isPassable(map.getFigure()));
+			return d.isPassable(map.getFigure());
 		}
 		return null;
 	}
@@ -98,7 +104,7 @@ public class DoorInfo extends InfoEntity {
 		p[1].setCentered();
 		p[1].setBold();
 		String s2 = new String();
-		if (!d.getLock().equals("unlockable")) {
+		if (d.getLock() != null) {
 			s2 += JDEnv.getString("door_lock")+": " + d.getLock() + "  Status: ";
 			if (d.getLocked()) {
 				s2 += JDEnv.getString("door_locked");
@@ -114,7 +120,7 @@ public class DoorInfo extends InfoEntity {
 		p[2].setBold();
 
 		String s3 = new String();
-		if (d.getBlockings().size() > 0) {
+		if (!d.getBlockings().isEmpty()) {
 			s3 += JDEnv.getString("door_blocked")+": ";
 			// for(int i = 0; i < blockings)
 		}
@@ -131,14 +137,14 @@ public class DoorInfo extends InfoEntity {
 
 	public Boolean isBlocked() {
 		if (getShrineVisibility()) {
-			return new Boolean(d.getBlockings().size() > 0);
+			return !d.getBlockings().isEmpty();
 		}
 		return null;
 	}
 
 	public Boolean hasLock() {
 		if(getFoundDiscovery()) {
-		return new Boolean(d.hasLock());
+		return d.hasLock();
 		}
 		return null;
 	}

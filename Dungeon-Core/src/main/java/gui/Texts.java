@@ -182,6 +182,7 @@ public class Texts {
 		noKnowledge = makeStrings("no_knowledge");
 		noItem = makeStrings("no_item");
 		wrongTarget = makeStrings("wrong_target");
+		noTarget = makeStrings("no_target");
 	    wrongPosition = makeStrings("wrong_position");
 		unlockDoor = bundle.getString("unlock_door");
 		lockDoor = bundle.getString("lock_door");
@@ -268,7 +269,7 @@ public class Texts {
 	}
 
 	public static String noTarget() {
-		return wrongTarget[((int) (Math.random() * noTarget.length))];
+		return noTarget[((int) (Math.random() * noTarget.length))];
 
 	}
 

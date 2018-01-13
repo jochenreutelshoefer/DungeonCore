@@ -2,6 +2,7 @@ package spell;
 import dungeon.Door;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
+import dungeon.LockInfo;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
@@ -97,7 +98,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 
 	@Override
 	public Class<? extends InfoEntity> getTargetClass() {
-		return DoorInfo.class;
+		return LockInfo.class;
 	}
 
 	public void tellDirection(Door d,Figure f) {

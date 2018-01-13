@@ -16,7 +16,7 @@ import figure.attribute.Attribute;
 public class Dwarf extends Monster {
 	
 	private static final int HEALTH_DAMAGE_BALANCE = 10;
-	public static final int CHANCE_TO_HIT = 30;
+	public static final int CHANCE_TO_HIT = 40;
 	protected static final int SCATTER = 5;
 	
 	public  Dwarf() {

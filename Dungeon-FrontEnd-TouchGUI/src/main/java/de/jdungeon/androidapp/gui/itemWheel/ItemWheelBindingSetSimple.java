@@ -15,6 +15,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 	private final Map<Integer, ItemWheelActivity> mapping = new HashMap<>();
 	private final Map<Integer, ItemWheelActivity> completedMapping = new HashMap<>();
 	private final ItemWheelActivityProvider provider;
+	ItemWheelActivity addedLast = null;
 
 	@Override
 	public ItemWheelActivityProvider getProvider() {
@@ -26,8 +27,15 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		return mapping.size();
 	}
 
+	@Override
+	public ItemWheelActivity getAndClearLastAdded() {
+		ItemWheelActivity result = addedLast;
+		addedLast = null;
+		return result;
+	}
+
 	public ItemWheelBindingSetSimple(int initialValue, int itemWheelSize,
-			ItemWheelActivityProvider provider) {
+									 ItemWheelActivityProvider provider) {
 		this.initValue = initialValue;
 		this.itemWheelSize = itemWheelSize;
 		this.provider = provider;
@@ -61,13 +69,13 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		int reoccurrenceCycleSize = 3;
 		// its less than 3 items, we fill up mapping with empty entries
 		// for not rendering an item multiple times on the display
-		if(activities.size() > reoccurrenceCycleSize ) {
+		if (activities.size() > reoccurrenceCycleSize) {
 			reoccurrenceCycleSize = activities.size();
 		}
-		while(!completedMapping.containsKey(completionIndex % itemWheelSize)) {
+		while (!completedMapping.containsKey(completionIndex % itemWheelSize)) {
 			int activityIndex = activityCounter % reoccurrenceCycleSize;
 			ItemWheelActivity activity = null;
-			if(activityIndex < activities.size()) {
+			if (activityIndex < activities.size()) {
 				activity = activities.get(activityIndex);
 			}
 			// else: we insert null as placeholder into mapping
@@ -103,7 +111,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 				toRemove.add(itemInfo);
 			}
 		}
-		if(!toRemove.isEmpty()) {
+		if (!toRemove.isEmpty()) {
 			initMapping();
 			return;
 		}
@@ -119,6 +127,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		for (ItemWheelActivity itemInfo : figureItemList) {
 			if (!mapping.containsValue(itemInfo)) {
 				insertItem(itemInfo);
+
 			}
 		}
 		completeMapping();
@@ -132,6 +141,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		while (iteration < this.itemWheelSize) {
 			if (!mapping.containsKey(index)) {
 				mapping.put(index, itemInfo);
+				this.addedLast = itemInfo;
 				inserted = true;
 				break;
 			}

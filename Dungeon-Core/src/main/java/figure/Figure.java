@@ -784,7 +784,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				if (res.equals(ActionResult.DONE)) {
 					EventManager.getInstance().fireEvent(new WorldChangedEvent());
 				}
-				control.actionDone(a, res);
+				control.actionProcessed(a, res);
 
 				if (getRoom().getFight() != null) {
 					break;
@@ -800,7 +800,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			}
 
 			if (a instanceof EndRoundAction) {
-				control.actionDone(a, new ActionResult(ActionResult.VALUE_DONE));
+				control.actionProcessed(a, new ActionResult(ActionResult.VALUE_DONE));
 				int ap = this.getActionPoints();
 				for (int j = 0; j < ap; j++) {
 					this.getRoom().distributePercept(new WaitPercept(this));
@@ -846,7 +846,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				res = processAction(a, false);
 				if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
 					if (control != null) {
-						control.actionDone(a, res);
+						control.actionProcessed(a, res);
 					}
 				}
 
@@ -857,7 +857,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (res.equals(ActionResult.DONE)) {
 				EventManager.getInstance().fireEvent(new WorldChangedEvent());
 			}
-			control.actionDone(a, res);
+			control.actionProcessed(a, res);
 
 		}
 		return false;
@@ -1206,6 +1206,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				Item item = getRoom().getChest().getItem(info);
 				if (this.isAbleToTakeItemInFight(item)) {
 					if (this.getRoom().getChest().hasItem(item)) {
+						if(! (this.getPos().getIndex() == Position.Pos.NW.getValue())) {
+							return ActionResult.POSITION;
+						}
 						if (this.canTakeItem(item)) {
 							if (doIt) {
 								this.takeItem(item);
@@ -1472,8 +1475,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (it instanceof Usable) {
 				Usable usable = (Usable) it;
 				Object target = a.getTarget();
+				if(((Usable) it).needsTarget() && target == null) {
+					return ActionResult.NO_TARGET;
+				}
 				Object t = null;
-				if (target != null && target instanceof InfoEntity) {
+				if (target instanceof InfoEntity) {
 					t = this.getRoom().getDungeon().getUnwrapper().unwrappObject((InfoEntity) target);
 				}
 				if (usable.canBeUsedBy(this)) {
@@ -2361,6 +2367,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (a.isMeta()) {
 			right = true;
 		}
+		if(! (this.getPos().getIndex() == Position.Pos.NW.getValue())) {
+			return ActionResult.POSITION;
+		}
 		Chest s = this.getRoom().getChest();
 		if (s != null && this.isAbleToUseChest()) {
 			if (doIt) {
@@ -2377,6 +2386,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	private ActionResult handleShrineAction(ShrineAction a, boolean doIt) {
 		Shrine s = this.getRoom().getShrine();
 		if (s != null && this.isAbleToUseShrine()) {
+			if(! (this.getPos().getIndex() == Position.Pos.NE.getValue())) {
+				return ActionResult.POSITION;
+			}
+
 			if (doIt) {
 
 				if (s.canBeUsedBy(this)) {

@@ -9,6 +9,7 @@ package item.interfaces;
  * Window>Preferences>Java>Code Generation.
  */
 import figure.DungeonVisibilityMap;
+import game.InfoEntity;
 import item.Item;
 import item.ItemInfo;
 

@@ -151,12 +151,11 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			setupRoomQuests(dungeon, filler, entryRoom, entryPoint, roomQuests);
 
 
-			filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(10, 1));
+			filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(20, 1));
 
 			filler.removeDoors(3, entryPoint);
 
 			entryRoom.addItem(new VisibilityCheatBall());
-			entryRoom.figureEnters(new Ogre(500), Dir.NORTH);
 
 			accomplished = true;
 		}

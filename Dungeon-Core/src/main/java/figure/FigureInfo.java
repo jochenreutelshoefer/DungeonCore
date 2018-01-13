@@ -184,7 +184,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	
 	public Boolean hasKey(DoorInfo  d) {
 		if(f.equals(map.getFigure())) {
-		return f.hasKey(d.getLock());
+		return f.hasKey(d.getLock().getKey().getType());
 		}
 		
 		return null;

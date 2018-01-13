@@ -13,10 +13,8 @@ import gui.Paragraphable;
 
 public interface InfoProvider {
 	
-	public InfoEntity makeInfoObject(DungeonVisibilityMap map);
-	
-	
-	
-	public JDPoint getLocation();
+	InfoEntity makeInfoObject(DungeonVisibilityMap map);
+
+	JDPoint getLocation();
 
 }
