@@ -218,6 +218,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			takeItemElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
 				@Override
 				public boolean handleTouchEvent(Input.TouchEvent touch) {
+					super.handleTouchEvent(touch);
 					EventManager.getInstance().fireEvent(new TakeItemButtonClickedEvent());
 					return true;
 				}
@@ -237,6 +238,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			shrineElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
 				@Override
 				public boolean handleTouchEvent(Input.TouchEvent touch) {
+					super.handleTouchEvent(touch);
 					EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
 					return true;
 				}
@@ -260,6 +262,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 				@Override
 				public boolean handleTouchEvent(Input.TouchEvent touch) {
+					super.handleTouchEvent(touch);
 					EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
 					return true;
 				}

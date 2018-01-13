@@ -20,23 +20,42 @@ import de.jdungeon.game.Input;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.16.
  */
-public class DoorElement extends SubGUIElement {
+public class DoorElement extends AnimatedSmartControlElement {
 
 	private final boolean locked;
 	private final boolean hasKey;
 	private final Action action;
 	private final InfoEntity clickableObject;
 
-	public DoorElement(JDPoint position, JDDimension dimension, GUIElement parent, boolean locked, boolean hasKey, Action action, InfoEntity clickableObject) {
+	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, InfoEntity clickableObject) {
 		super(position, dimension, parent);
 		this.locked = locked;
 		this.hasKey = hasKey;
 		this.action = action;
 		this.clickableObject = clickableObject;
+
+		// prepare highlight animation drawables
+		for (int i = 0; i < animationShapes.length; i++) {
+			final int finalI = i;
+			animationShapes[i] = new Drawable() {
+				@Override
+				public void paint(Graphics g, JDPoint viewportPosition) {
+					JDPoint parentPosition = parent.getPositionOnScreen();
+					JDPoint posRelative = getPositionOnScreen();
+					JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
+					int width = (int) ((dimension.getWidth()) * buttonAnimationSizes[finalI]);
+					int height = (int)((dimension.getHeight()) * buttonAnimationSizes[finalI]);
+					int x = absolutePosition.getX() - ((width - dimension.getWidth())/2);
+					int y = absolutePosition.getY() - ((height - dimension.getHeight())/2);
+					DrawUtils.drawRectangle(g, Colors.WHITE, new JDPoint(x, y), new JDDimension(width, height));
+				}
+			};
+		}
 	}
 
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		super.handleTouchEvent(touch);
 		EventManager.getInstance().fireEvent(new ActionEvent(action));
 		if(clickableObject != null) {
 			EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));

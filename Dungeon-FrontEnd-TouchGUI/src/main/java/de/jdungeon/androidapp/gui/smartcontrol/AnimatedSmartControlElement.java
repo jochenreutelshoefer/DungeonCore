@@ -18,9 +18,9 @@ public abstract class AnimatedSmartControlElement extends SubGUIElement {
 
 	private long buttonAnimationStart;
 	private final int buttonAnimationStage = 0;
-	private static final int buttonAnimationStepTime = 1000;
+	private static final int buttonAnimationStepTime = 200;
 
-	public static float[] buttonAnimationSizes = new float[] {4, 5, 6, 8};
+	public static float[] buttonAnimationSizes = new float[] {4, 5, 6};
 	protected Drawable[] animationShapes;
 
 	public AnimatedSmartControlElement(JDPoint position, JDDimension dimension, GUIElement parent) {
