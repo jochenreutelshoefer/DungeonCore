@@ -22,7 +22,7 @@ import de.jdungeon.game.Input;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.16.
  */
-public class PositionElement extends SubGUIElement {
+public class PositionElement extends AnimatedSmartControlElement {
 
 	private final Action action;
 	private final Color color;
@@ -32,7 +32,7 @@ public class PositionElement extends SubGUIElement {
 	private final int ballOffsetX;
 	private final int ballOffsetY;
 
-	public PositionElement(JDPoint position, JDDimension dimension, GUIElement parent, Action action, Color color, InfoEntity clickableObject) {
+	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, Action action, final Color color, InfoEntity clickableObject) {
 		super(position, dimension, parent);
 		this.action = action;
 		this.color = color;
@@ -41,6 +41,27 @@ public class PositionElement extends SubGUIElement {
 		ballHeight = (int) (dimension.getHeight() / 1.5);
 		ballOffsetX = (dimension.getWidth() - ballWidth) / 2;
 		ballOffsetY = (dimension.getHeight() - ballHeight) / 2;
+
+		final JDPoint positionOnScreen = getPositionOnScreen();
+
+		// prepare highlight animation drawables
+		for (int i = 0; i < animationShapes.length; i++) {
+			final int finalI = i;
+			animationShapes[i] = new Drawable() {
+				@Override
+				public void paint(Graphics g, JDPoint viewportPosition) {
+					JDPoint parentPosition = parent.getPositionOnScreen();
+					JDPoint absolutePosition = new JDPoint(parentPosition.getX() + positionOnScreen.getX(), parentPosition.getY() + positionOnScreen
+							.getY());
+					int x = absolutePosition.getX() + ballOffsetX;
+					int y = absolutePosition.getY() + ballOffsetY;
+
+					int scaledSizeX = (int) (ballWidth * buttonAnimationSizes[finalI]);
+					int scaledSizeY = (int) (ballHeight * buttonAnimationSizes[finalI]);
+					g.drawOval(x - ((scaledSizeX-ballWidth)/2), y- ((scaledSizeY-ballHeight)/2), scaledSizeX, scaledSizeY, color);
+				}
+			};
+		}
 	}
 
 	@Override
@@ -50,6 +71,7 @@ public class PositionElement extends SubGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		super.handleTouchEvent(touch);
 		if(action != null) {
 			EventManager.getInstance().fireEvent(new ActionEvent(action));
 			if(clickableObject != null) {
@@ -65,8 +87,6 @@ public class PositionElement extends SubGUIElement {
 		JDPoint parentPosition = parent.getPositionOnScreen();
 		JDPoint posRelative = this.getPositionOnScreen();
 		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
-		JDDimension dimension = this.getDimension();
-		//DrawUtils.drawRectangle(g, Colors.BLUE, absolutePosition, dimension);
 		int x = absolutePosition.getX() + ballOffsetX;
 		int y = absolutePosition.getY() + ballOffsetY;
 		if(clickableObject instanceof FigureInfo) {

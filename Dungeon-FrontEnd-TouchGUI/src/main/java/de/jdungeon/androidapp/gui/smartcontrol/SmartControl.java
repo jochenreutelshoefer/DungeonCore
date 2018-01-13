@@ -87,6 +87,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 				new JDPoint(doorOuterBorderWidth, y13)
 		};
 
+		// draw border frame
 		frame = new SubGUIElement(
 				new JDPoint(0, this.getDimension().getHeight() * 0.03),
 				new JDDimension(this.getDimension().getWidth(), (int)(this.getDimension().getHeight() * 0.94))

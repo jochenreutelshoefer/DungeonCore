@@ -17,138 +17,114 @@ import de.jdungeon.game.Input;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.16.
  */
-public class MoveElement extends SubGUIElement {
+public class MoveElement extends AnimatedSmartControlElement {
 
 	private final GUIElement parent;
 	private final RouteInstruction.Direction direction;
 	private JDPoint[] triangle;
 
-	private long buttonAnimationStart;
-	private final int buttonAnimationStage = 0;
-	private static final int buttonAnimationStepTime = 500;
-
-	//public static float[] buttonAnimationSizes = new float[] {1.2f, 1.4f, 1.6f, 2.0f, 3.0f, 4.0f};
-	public static float[] buttonAnimationSizes = new float[] {2f, 3, 4f, 5};
-	private final JDPoint[][] animationShapes;
 
 	public MoveElement(JDPoint position, JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction) {
 		super(position, dimension, parent);
 		this.parent = parent;
 		this.direction = direction;
 
-		int sizeY = dimension.getHeight();
-		int sizeX = dimension.getWidth();
-		animationShapes = new JDPoint[buttonAnimationSizes.length][3];
+
 		if(direction == RouteInstruction.Direction.West) {
-			triangle = getTriangleWest(position, sizeX, sizeY);
+			triangle = getTriangleWest(position, dimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = getTriangleWest(position, (int) (sizeX * buttonAnimationSizes[i]), (int) (sizeY * buttonAnimationSizes[i]));
+				animationShapes[i] = new Triangle(getTriangleWest(position,  dimension, buttonAnimationSizes[i]), parent);
 			}
 		}
 		if(direction == RouteInstruction.Direction.East) {
-			triangle = getTriangleEast(position, sizeX, sizeY);
+			triangle = getTriangleEast(position, dimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = getTriangleEast(position, (int) (sizeX * buttonAnimationSizes[i]), (int) (sizeY * buttonAnimationSizes[i]));
+				animationShapes[i] = new Triangle(getTriangleEast(position,  dimension,buttonAnimationSizes[i]), parent);
 			}
 		}
 		if(direction == RouteInstruction.Direction.North) {
-			triangle = getTriangleNorth(position, sizeX, sizeY);
+			triangle = getTriangleNorth(position, dimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = getTriangleNorth(position, (int) (sizeX * buttonAnimationSizes[i]), (int) (sizeY * buttonAnimationSizes[i]));
+				animationShapes[i] = new Triangle(getTriangleNorth(position, dimension,buttonAnimationSizes[i]),parent);
 			}
 		}
 		if(direction == RouteInstruction.Direction.South) {
-			triangle = getTriangleSouth(position, sizeX, sizeY);
+			triangle = getTriangleSouth(position, dimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = getTriangleSouth(position, (int) (sizeX * buttonAnimationSizes[i]), (int) (sizeY * buttonAnimationSizes[i]));
+				animationShapes[i] = new Triangle(getTriangleSouth(position,  dimension, buttonAnimationSizes[i]), parent);
 			}
 		}
 	}
 
-	public static JDPoint[] getTriangleSouth(JDPoint parentPosition, int sizeX, int sizeY) {
-		int sizeBy10 = sizeX/10;
+	private JDPoint[] getTriangleSouth(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
+		int sizeX = clickAreaDimension.getWidth();
+		int sizeY = clickAreaDimension.getHeight();
+
+		int centerX = position.getX() + sizeX / 2;
+		int centerY = position.getY() + sizeY / 2;
+
 		JDPoint[] result =  new JDPoint[3];
-		result[0] = new JDPoint(parentPosition.getX() + sizeX /2, parentPosition.getY() + sizeY - sizeY/3); // peak downwards
-		result[1] = new JDPoint(parentPosition.getX() + sizeX, parentPosition.getY()+  sizeBy10); // upper right
-		result[2] = new JDPoint(parentPosition.getX(), parentPosition.getY() +  sizeBy10); // upper left
-		return normalize(result);
+		result[0] = new JDPoint(centerX, centerY + ((sizeY /3)* drawScale)); // peak to bottom
+		double y = centerY - ((sizeY / 3)*drawScale);
+		result[1] = new JDPoint(centerX + ((sizeX/2)*drawScale), y); // upper right
+		result[2] = new JDPoint(centerX - ((sizeX/2)*drawScale), y); // upper left
+		return result;
 	}
 
-	public static JDPoint[] getTriangleNorth(JDPoint parentPosition, int sizeX, int sizeY) {
-		int sizeBy10 = sizeX/10;
+	private JDPoint[] getTriangleNorth(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
+		int sizeX = clickAreaDimension.getWidth();
+		int sizeY = clickAreaDimension.getHeight();
+
+		int centerX = position.getX() + sizeX / 2;
+		int centerY = position.getY() + sizeY / 2;
+
 		JDPoint[] result =  new JDPoint[3];
-		result[0] = new JDPoint(parentPosition.getX() + sizeX /2, parentPosition.getY() + sizeY/3); // peak to top
-		result[1] = new JDPoint(parentPosition.getX() + sizeX, parentPosition.getY()+ sizeY -   sizeBy10); // lower right
-		result[2] = new JDPoint(parentPosition.getX(), parentPosition.getY()+ sizeY - sizeBy10); // lower left
-		return normalize(result);
+		result[0] = new JDPoint(centerX, centerY - ((sizeY /3)* drawScale)); // peak to top
+		double y = centerY + ((sizeY / 3) * drawScale);
+		result[1] = new JDPoint(centerX + ((sizeX/2)*drawScale), y); // lower right
+		result[2] = new JDPoint(centerX - ((sizeX/2)*drawScale), y); // lower left
+		return result;
 	}
 
+	private JDPoint[] getTriangleEast(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
+		int sizeX = clickAreaDimension.getWidth();
+		int sizeY = clickAreaDimension.getHeight();
 
-	public static JDPoint[] getTriangleEast(JDPoint parentPosition, int sizeX, int sizeY) {
-		int sizeBy10 = sizeX/10;
+		int centerX = position.getX() + sizeX / 2;
+		int centerY = position.getY() + sizeY / 2;
+
 		JDPoint[] result =  new JDPoint[3];
-		result[0] = new JDPoint(parentPosition.getX() + sizeX - sizeX/3, parentPosition.getY()+ sizeY / 2); // peak to right
-		result[1] = new JDPoint(parentPosition.getX() + sizeBy10, parentPosition.getY()); // left upper
-		result[2] = new JDPoint(parentPosition.getX() + sizeBy10, parentPosition.getY()+ sizeY); // left lower
-		return normalize(result);
+		result[0] = new JDPoint(centerX + ((sizeX /3)* drawScale), centerY ); // peak to right
+		double x = centerX - ((sizeX / 3) * drawScale);
+		result[1] = new JDPoint(x, centerY - ((sizeY/2)*drawScale)); // upper
+		result[2] = new JDPoint(x, centerY + ((sizeY/2)*drawScale)); // lower
+		return result;
 	}
 
-	public static JDPoint[] getTriangleWest(JDPoint parentPosition, int sizeX, int sizeY) {
-		int sizeBy10 = sizeX/10;
+	private JDPoint[] getTriangleWest(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
+		int sizeX = clickAreaDimension.getWidth();
+		int sizeY = clickAreaDimension.getHeight();
+
+		int centerX = position.getX() + sizeX  / 2;
+		int centerY = position.getY() + sizeY / 2;
+
 		JDPoint[] result =  new JDPoint[3];
-		result[0] = new JDPoint(parentPosition.getX() + sizeX/3, parentPosition.getY()+ sizeY / 2); // peak to left
-		result[1] = new JDPoint(parentPosition.getX() + sizeX - sizeBy10, parentPosition.getY()); // right upper
-		result[2] = new JDPoint(parentPosition.getX() + sizeX - sizeBy10, parentPosition.getY()+ sizeY); // right lower
-		return normalize(result);
+		result[0] = new JDPoint(centerX - ((sizeX /3)* drawScale), centerY ); // peak to left
+		double x = centerX + ((sizeX / 3) * drawScale);
+		result[1] = new JDPoint(x, centerY - ((sizeY/2)*drawScale)); // upper
+		result[2] = new JDPoint(x, centerY + ((sizeY/2)*drawScale)); // lower
+		return result;
 	}
-
-	private static JDPoint[] normalize(JDPoint[] points) {
-		int maxX = 0;
-		int maxY = 0;
-		int minY = Integer.MAX_VALUE;
-		int minX = Integer.MAX_VALUE;
-		for (JDPoint point : points) {
-			int x = point.getX();
-			if(x < minX) {
-				minX = x;
-			}
-			if(x > maxX) {
-				maxX = x;
-			}
-			int y = point.getY();
-			if(y < minY) {
-				minY = y;
-			}
-			if(y > maxY) {
-				maxY = y;
-			}
-		}
-
-		int dimensionXHalf = (maxX - minX)/2;
-		int dimensionYHalf = (maxY - minY)/2;
-
-
-		JDPoint [] pointsNormalized = new JDPoint[points.length];
-		for (int i  = 0; i < points.length; i++) {
-			pointsNormalized[i] = new JDPoint(points[i].getX() - dimensionXHalf, points[i].getY() - dimensionYHalf);
-		}
-
-		return pointsNormalized;
-	}
-
 
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		super.handleTouchEvent(touch);
 		EventManager.getInstance().fireEvent(new WannaMoveEvent(direction));
-		startButtonAnimation();
 		return true;
 	}
 
 
 
-	private void startButtonAnimation() {
-		buttonAnimationStart = System.currentTimeMillis();
-	}
 
 	@Override
 	public boolean isVisible() {
@@ -168,17 +144,6 @@ public class MoveElement extends SubGUIElement {
 				parentX + triangle[2].getX(),
 				parentY + triangle[2].getY(), Colors.WHITE);
 
-		long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
-		if(elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
-			int stage = (int)(elapsedTime / buttonAnimationStepTime);
-			Log.w("aniButton", ""+stage);
-			g.drawTriangle(parentX + animationShapes[stage][0].getX(),
-					parentY + animationShapes[stage][0].getY(),
-					parentX + animationShapes[stage][1].getX(),
-					parentY + animationShapes[stage][1].getY(),
-					parentX + animationShapes[stage][2].getX(),
-					parentY + animationShapes[stage][2].getY(), Colors.WHITE);
-		}
 
 	}
 }
