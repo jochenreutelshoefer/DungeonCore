@@ -37,7 +37,6 @@ public abstract class AnimatedSmartControlElement extends SubGUIElement {
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
-		super.paint(g, viewportPosition);
 		long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
 		if(elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
 			int stage = (int)(elapsedTime / buttonAnimationStepTime);

@@ -131,7 +131,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		RoomInfo roomInfo = figure.getRoomInfo();
 		DoorInfo[] doors = roomInfo.getDoors();
 
-		if (figure.getRoomInfo().fightRunning()) {
+		Boolean fightRunning = figure.getRoomInfo().fightRunning();
+		if (fightRunning != null && fightRunning) {
 			int positionInRoomIndex = figure.getPositionInRoomIndex();
 			if (positionInRoomIndex == 1) {
 				if (checkFleeAction()) {
@@ -211,7 +212,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		takeItemElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
 		List<ItemInfo> items = roomInfo.getItems();
-		int takeElementSize = 25;
+		int takeElementSize = 28;
 		if (!items.isEmpty()) {
 			final JDDimension dimension = new JDDimension(takeElementSize, takeElementSize);
 			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
@@ -280,7 +281,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		int correctionY = -3;
 		for (int i = 0; i < 8; i++) {
 			JDPoint positionCoord = renderer.getPositionCoordModified(i);
-			int positionSize = 26;
+			int positionSize = 32;
 			Action action = new StepAction(i);
 			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
 			JDPoint position = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionSize / 2, correctionY + positionCoord

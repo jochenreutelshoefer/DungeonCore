@@ -159,36 +159,36 @@ public class GraphicObjectRenderer {
 		int ROOMSIZE_BY_16 = roomSize / 16;
 		int ROOMSIZE_BY_36 = roomSize / 36;
 		if (pos == Position.Pos.NW) {
-			return new JDPoint(roomSize / 4 - ROOMSIZE_BY_16, roomSize
-					/ 3 - ROOMSIZE_BY_36);
+			return new JDPoint(roomSize / 4 - ROOMSIZE_BY_16,
+					roomSize * 11 / 36 - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.N) {
 			return new JDPoint(roomSize / 2 - ROOMSIZE_BY_16,
-					(int) (roomSize / 3.5) - ROOMSIZE_BY_36);
+					(int) (roomSize / 3.6) - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.NE) {
 			return new JDPoint(roomSize * 3 / 4 - ROOMSIZE_BY_16,
-					roomSize / 3 - ROOMSIZE_BY_36);
+					roomSize *  11 / 36 - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.E) {
 			return new JDPoint(roomSize * 4 / 5 - ROOMSIZE_BY_16,
-					(int) (roomSize / 1.8) - ROOMSIZE_BY_36);
+					(int) (roomSize / 1.85) - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.SE) {
 			return new JDPoint(roomSize * 3 / 4 - ROOMSIZE_BY_16,
-					roomSize * 3 / 4 - ROOMSIZE_BY_36);
+					roomSize * 25 / 32 - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.S) {
-			return new JDPoint(roomSize / 2 - ROOMSIZE_BY_16, roomSize
-					* 4 / 5 - ROOMSIZE_BY_36);
+			return new JDPoint(roomSize / 2 - ROOMSIZE_BY_16,
+					roomSize * 33 / 40 - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.SW) {
-			return new JDPoint(roomSize / 4 - ROOMSIZE_BY_16, roomSize
-					* 3 / 4 - ROOMSIZE_BY_36);
+			return new JDPoint(roomSize / 4 - ROOMSIZE_BY_16,
+					roomSize * 25 / 32 - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.W) {
 			return new JDPoint(roomSize / 5 - ROOMSIZE_BY_16,
-					(int) (roomSize / 1.8) - ROOMSIZE_BY_36);
+					(int) (roomSize / 1.85) - ROOMSIZE_BY_36);
 		}
 
 		Log.warning("Could not create coordinates for " + pos);

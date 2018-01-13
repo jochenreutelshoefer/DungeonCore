@@ -565,9 +565,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public synchronized void update(float arg0) {
 
+		ChestInfo chest = this.gui.getFigure().getRoomInfo().getChest();
 		if ((this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().isEmpty())
 				||
-				(this.chestItemWheelShowing && this.gui.getFigure().getRoomInfo().getChest().getItemList().isEmpty())) {
+				(this.chestItemWheelShowing && (chest == null || chest.getItemList().isEmpty()))) {
 			// we need to switch back to skills mode as user has not the respective button in this case
 			switchRightItemWheel(null);
 		}
