@@ -293,6 +293,35 @@ public class AndroidGraphics implements Graphics {
 		}
 	}
 
+	@Override
+	public void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, de.jdungeon.game.Color color) {
+		android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+
+		paint.setStrokeWidth(1);
+		paint.setColor(convertColor(color));
+		paint.setStyle(Style.STROKE);
+		paint.setAntiAlias(true);
+
+		if (tmpCanvas == null) {
+			Path path = new Path();
+			path.setFillType(Path.FillType.EVEN_ODD);
+			path.moveTo(x1, y1);
+			path.lineTo(x2, y2);
+			path.lineTo(x3, y3);
+			path.close();
+			canvas.drawPath(path, paint);
+		}
+		else {
+			Path pathTmp = new Path();
+			pathTmp.setFillType(Path.FillType.EVEN_ODD);
+			pathTmp.moveTo(x1 - tmpCanvasX, y1 - tmpCanvasY);
+			pathTmp.lineTo(x2 - tmpCanvasX, y2 - tmpCanvasY);
+			pathTmp.lineTo(x3 - tmpCanvasX, y3 - tmpCanvasY);
+			pathTmp.close();
+			canvas.drawPath(pathTmp, paint);
+		}
+	}
+
 	public static int convertColor(de.jdungeon.game.Color color) {
 		if (Colors.BLACK.equals(color)) {
 			return Color.BLACK;

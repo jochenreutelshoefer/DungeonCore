@@ -52,6 +52,7 @@ public class DoorElement extends SubGUIElement {
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
+		super.paint(g, viewportPosition);
 		JDPoint parentPosition = parent.getPositionOnScreen();
 		JDPoint posRelative = this.getPositionOnScreen();
 		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());

@@ -3,6 +3,9 @@ package de.jdungeon.androidapp.gui;
 import dungeon.JDPoint;
 import util.JDDimension;
 
+import de.jdungeon.game.Colors;
+import de.jdungeon.game.Graphics;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.16.
@@ -17,6 +20,10 @@ public abstract class SubGUIElement extends AbstractGUIElement {
 		this.parent = parent;
 	}
 
+	@Override
+	public void paint(Graphics g, JDPoint viewportPosition) {
+		g.drawRect(parent.getPositionOnScreen().getX() +position.getX(), parent.getPositionOnScreen().getY() + position.getY(), dimension.getWidth(), dimension.getHeight(), Colors.BLUE);
+	}
 
 	@Override
 	public boolean hasPoint(JDPoint p) {

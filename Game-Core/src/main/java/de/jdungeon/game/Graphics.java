@@ -35,6 +35,8 @@ public interface Graphics {
 
 	void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
 
+	void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color);
+
     void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
 
     void drawImage(Image Image, int x, int y, boolean nonTmp);
