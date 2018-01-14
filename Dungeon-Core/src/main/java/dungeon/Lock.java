@@ -10,9 +10,7 @@ import item.interfaces.Locatable;
  */
 public class Lock<T extends Locatable> implements Locatable {
 
-
-
-	public T getLockableClass() {
+	public T getLockableObject() {
 		return object;
 	}
 

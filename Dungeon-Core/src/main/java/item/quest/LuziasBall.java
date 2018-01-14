@@ -29,7 +29,7 @@ import java.util.List;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class LuziasBall extends Item implements Locatable,Usable{
+public class LuziasBall extends Item implements Locatable, Usable{
 
 	/**
 	 * @param value
@@ -68,20 +68,19 @@ public class LuziasBall extends Item implements Locatable,Usable{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see item#getHitPoints()
-	 */
 	public Attribute getHitPoints() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
+	@Override
 	public void setOwner(ItemOwner o) {
 		owner = o;
 	}
 
 	
+	@Override
 	public ItemOwner getOwner() {
 		return owner;
 

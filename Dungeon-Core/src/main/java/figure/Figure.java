@@ -2103,7 +2103,15 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (direction == null) {
 				return ActionResult.WRONG_TARGET;
 			}
+
+
 			Door d = getRoom().getDoor(direction);
+
+			Position positionAtDoor = d.getPositionAtDoor(this.getRoom(), false);
+			if(!this.getPos().equals(positionAtDoor)) {
+				return ActionResult.POSITION;
+			}
+
 			boolean wasLocked = d.getLocked();
 			boolean ok = this.tryUnlockDoor(d, doIt);
 
@@ -2225,7 +2233,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (passable) {
 			before = this.getRoom();
 			Door door = before.getDoor(dir);
-			Position destPos = door.getPositionBehind(toGo);
+			Position destPos = door.getPositionAtDoor(toGo, true);
 			Figure standing = destPos.getFigure();
 			if (standing == null) {
 				// the position is free so walk right in

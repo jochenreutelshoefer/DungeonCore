@@ -48,7 +48,6 @@ public class Rune extends Item implements Usable, Locatable {
 		return false;
 	}
 
-    
 	@Override
 	public void getsRemoved() {
 		

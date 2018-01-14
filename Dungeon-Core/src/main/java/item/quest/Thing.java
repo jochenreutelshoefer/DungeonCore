@@ -23,15 +23,9 @@ import figure.monster.Monster;
  */
 public class Thing extends Item implements Usable, Locatable {
 
-	/**
-	 * 
-	 */
-	Object sup;
+	private Object sup;
 
-	/**
-	 * 
-	 */
-	ItemOwner owner;
+	private ItemOwner owner;
 
 	public Thing(String name, Object sup) {
 		super(150, false);
@@ -40,9 +34,7 @@ public class Thing extends Item implements Usable, Locatable {
 		this.sup = sup;
 	}
 
-	/**
-	 * 
-	 */
+	@Override
 	public void setOwner(ItemOwner o) {
 		owner = o;
 		if (name.equalsIgnoreCase("Luzia�s Amulett")) {
@@ -53,17 +45,16 @@ public class Thing extends Item implements Usable, Locatable {
 		}
 	}
 
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 
-	/**
-	 * @see Item#getHitPoints()
-	 */
 	public Attribute getHitPoints() {
 		return null;
 	}
 
+	@Override
 	public void getsRemoved() {
 		if (owner instanceof Monster) {
 

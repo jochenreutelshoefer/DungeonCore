@@ -125,7 +125,7 @@ public class Thunderstorm extends NoTargetSpell {
 			Door [] doors = mage.getRoom().getDoors();
 			for (int i = 0; i < doors.length; i++) {
 				if(doors[i] != null) {
-					Position p = doors[i].getPositionBehind(mage.getRoom());
+					Position p = doors[i].getPositionAtDoor(mage.getRoom(), true);
 					Figure behindFigure = p.getFigure();
 					if(behindFigure != null) {
 						behindFigure.putFrightening(new Frightening(mage, 2,

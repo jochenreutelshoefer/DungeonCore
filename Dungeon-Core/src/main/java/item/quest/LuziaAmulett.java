@@ -23,21 +23,24 @@ public class LuziaAmulett extends Thing implements Turnable{
 		super("Luzia's Amulett",witch);
 	}
 	
+	@Override
 	public void turn(int round) {
 		if(charge < maxCharge) {
 			charge++;
 		}
 	}
 	
+	@Override
 	public String getText() {
 		return JDEnv.getString("loads")+": "+charge/cost+"/"+maxCharge/cost;
 	}
 
 	
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		if (meta) {
-			if (f.getRoom().getShrine() == this.sup) {
-				((Shrine) sup).use(f, this, meta);
+			if (f.getRoom().getShrine() == this.getSup()) {
+				((Shrine) getSup()).use(f, this, meta);
 				return true;
 			}
 		}else {

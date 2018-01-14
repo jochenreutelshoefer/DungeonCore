@@ -19,6 +19,7 @@ import figure.Figure;
 import figure.FigureInfo;
 import game.InfoEntity;
 import game.JDEnv;
+import game.RoomEntity;
 
 /**
  * @author Jochen
@@ -63,7 +64,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	public TargetScope getTargetScope() {
 		return new TargetScope() {
 			@Override
-			public List<? extends InfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
+			public List<? extends RoomEntity> getTargetEntitiesInScope(FigureInfo actor) {
 				PositionInRoomInfo position = actor.getPos();
 				RouteInstruction.Direction possibleRaidDirection =
 						position.getPossibleFleeDirection();

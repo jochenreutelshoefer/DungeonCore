@@ -6,7 +6,22 @@
  */
 package figure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import ai.DefaultMonsterIntelligence;
+import dungeon.DoorInfo;
 import dungeon.ItemInfoOwner;
+import dungeon.JDPoint;
+import dungeon.Position;
+import dungeon.PositionInRoomInfo;
+import dungeon.Room;
+import dungeon.RoomInfo;
+import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -16,35 +31,22 @@ import figure.memory.FigureMemory;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.DungeonGame;
-import game.InfoEntity;
+import game.RoomEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import log.Log;
 import spell.AbstractSpell;
 import spell.SpellInfo;
-import ai.DefaultMonsterIntelligence;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
-import dungeon.Room;
-import dungeon.RoomInfo;
-import dungeon.util.DungeonUtils;
 
 /**
  * Abstrakte Klasse - Soll fuer eine Steuerung die Informationen einer Figur
  * liefern.
  */
-public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
+public abstract class FigureInfo extends RoomEntity implements ItemInfoOwner {
 
 	private final Figure f;
+
 	public FigureInfo(Figure f, DungeonVisibilityMap stats) {
 		super(stats);
 		this.f = f;
@@ -54,24 +56,35 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 		List<FigureInfo> result = new ArrayList<FigureInfo>();
 		for (Figure figure : figures) {
 			// todo : find better solution using appropriate design pattern
-			if(figure instanceof Hero) {
-				result.add(new HeroInfo((Hero)figure, perceiver.getRoomVisibility()));
+			if (figure instanceof Hero) {
+				result.add(new HeroInfo((Hero) figure, perceiver.getRoomVisibility()));
 			}
-			if(figure instanceof Monster) {
-				result.add(new MonsterInfo((Monster)figure, perceiver.getRoomVisibility()));
+			if (figure instanceof Monster) {
+				result.add(new MonsterInfo((Monster) figure, perceiver.getRoomVisibility()));
 			}
 		}
 		return result;
 	}
-	
+
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		int positionInRoomIndex = this.getPositionInRoomIndex();
+		int prev = Position.getNextIndex(positionInRoomIndex, true);
+		int next = Position.getNextIndex(positionInRoomIndex, false);
+		Collection<PositionInRoomInfo> result = new ArrayList<>();
+		result.add(this.getRoomInfo().getPositionInRoom(prev));
+		result.add(this.getRoomInfo().getPositionInRoom(next));
+		return result;
+	}
+
 	public Class<? extends Figure> getFigureClass() {
 		return f.getClass();
 	}
-	
+
 	public abstract int getMight();
-	
+
 	public List<JDPoint> getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		
+
 		List<Room> wayFromTo = DungeonUtils.findShortestWayFromTo(
 				this.getRoomInfo(p1), this.getRoomInfo(p2));
 		List<JDPoint> result = new ArrayList<JDPoint>();
@@ -80,7 +93,6 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 		}
 		return result;
 	}
-	
 
 //	/**
 //	 * Liefert die Information �ber das Vorhandensein eines
@@ -104,68 +116,64 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 //			return Shrine.SHRINE_NOSHRINE;
 //		}
 //	}
-	
+
 	public abstract List<ItemInfo> getAllItems();
-	
+
 	@Override
 	public FigureMemory getMemoryObject(FigureInfo info) {
 		return f.getMemoryObject(info);
 	}
-	
 
 	public RouteInstruction.Direction getLookDirection() {
-		if(f.getLocation() == null) {
+		if (f.getLocation() == null) {
 			// should not happen
 			return RouteInstruction.Direction.South;
 		}
 		int visStat = map.getVisibilityStatus(f.getLocation());
 
-		if(visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return f.getLookDirection();
 		}
 		// todo: handle this situation reasonable
-		Log.warning("No look direction found for: "+this);
-		return RouteInstruction.Direction.fromInteger((int) (Math.random()* 4 +1));
+		Log.warning("No look direction found for: " + this);
+		return RouteInstruction.Direction.fromInteger((int) (Math.random() * 4 + 1));
 
 	}
-	
-	
 
-	
 	public boolean isHostile(FigureInfo fig) {
-		if(fig.equals(this)) {
+		if (fig.equals(this)) {
 			// hopefully not called, but you never know..
 			return false;
 		}
 		return f.getControl().isHostileTo(fig);
 	}
-	
+
 	public void controlLeaves() {
 		f.setControl(null);
 		DungeonGame.getInstance().controlLeft(f);
 	}
-	
+
 	public int getFleeDistance() {
-		return  DefaultMonsterIntelligence.getMinFleeDist(this);
+		return DefaultMonsterIntelligence.getMinFleeDist(this);
 	}
-	
-	
+
 	public PositionInRoomInfo getPos() {
 		int vis = map.getVisibilityStatus(f.getLocation());
-		if(vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return new PositionInRoomInfo(f.getPos(), map);
-		}else {
+		}
+		else {
 			return null;
 		}
 	}
-	
+
 	public int getPositionInRoomIndex() {
 		// elvis has left the building
-		if(f.getLocation() == null) return -1;
+		if (f.getLocation() == null) return -1;
 
 		int vis = map.getVisibilityStatus(f.getLocation());
-		
-		if(vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
+
+		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return f.getPositionInRoom();
 		}
 		else {
@@ -173,52 +181,53 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 			return -1;
 		}
 	}
+
 	public Boolean isDead() {
-		if(map.getDungeon().equals(f.actualDungeon)) {
-			if(map.getVisibilityStatus(f.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getDungeon().equals(f.actualDungeon)) {
+			if (map.getVisibilityStatus(f.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 				return f.isDead();
 			}
 		}
 		return null;
 	}
-	
-	public Boolean hasKey(DoorInfo  d) {
-		if(f.equals(map.getFigure())) {
-		return f.hasKey(d.getLock().getKey().getType());
+
+	public Boolean hasKey(DoorInfo d) {
+		if (f.equals(map.getFigure())) {
+			return f.hasKey(d.getLock().getKeyPhrase());
 		}
-		
+
 		return null;
 	}
-	
+
 	public static FigureInfo makeFigureInfo(Figure f, DungeonVisibilityMap map) {
-		if(map == null) {
+		if (map == null) {
 			System.out.println("FigureInfo mit VisMap null!");
 			return null;
 		}
-		if(f instanceof Hero) {
-			return new HeroInfo((Hero)f,map);
+		if (f instanceof Hero) {
+			return new HeroInfo((Hero) f, map);
 		}
-		if(f instanceof Monster) {
-			return MonsterInfo.makeMonsterInfo((Monster)f,map);
+		if (f instanceof Monster) {
+			return MonsterInfo.makeMonsterInfo((Monster) f, map);
 		}
 		return null;
 	}
-	
+
 	public int getVisStatus(RoomInfo r) {
 		return f.getRoomObservationStatus(r.getLocation()).getVisibilityStatus();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		
-		if(o instanceof FigureInfo) {
+
+		if (o instanceof FigureInfo) {
 			if (((FigureInfo) o).f.equals(this.f)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return f.hashCode();
@@ -227,7 +236,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	public String getShortStatus() {
 		return f.getShortStatus();
 	}
-	
+
 	@Override
 	public String toString() {
 		return f.toString();
@@ -236,7 +245,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	/**
 	 * Liefert die Koordinate des Raumes indem sich das Monster momentan
 	 * befindet
-	 * 
+	 *
 	 * @return Koordinate des Raumes
 	 */
 	public JDPoint getRoomNumber() {
@@ -247,12 +256,12 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	/**
 	 * Liefert ein Array von WrappedItem aller Gegenstaende, die in diesem Raum
 	 * auf dem Boden liegen.
-	 * 
+	 *
 	 * @return Gegenstaende im Raum
 	 */
 	public ItemInfo[] getRoomItems() {
-		if(f.getRoom() != null) {
-		return f.getRoom().getItemInfos(map);
+		if (f.getRoom() != null) {
+			return f.getRoom().getItemInfos(map);
 		}
 		return null;
 	}
@@ -260,10 +269,10 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	/**
 	 * Liefert ein Integer-Array, dass die Tueren des Raumes kodiert. array[0]
 	 * -> Norden; array[1] -> Osten; array[2] -> Sueden; array[3] -> Westen;
-	 * 
+	 * <p>
 	 * 0 -> Keine Tuere; 1 -> normale Tuere; 2 -> Tuere mit Schloss offen; 3 ->
 	 * Tuere mit Schloss verschlossen;
-	 * 
+	 *
 	 * @return Kodierung der Tueren des Raumes
 	 */
 	public int[] getRoomDoors() {
@@ -272,67 +281,66 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 
 	@Override
 	public Paragraph[] getParagraphs() {
-		return ((Paragraphable)f).getParagraphs();
+		return ((Paragraphable) f).getParagraphs();
 	}
-	
+
 	public boolean hasItem(ItemInfo it) {
 		ItemInfo[] items = getFigureItems();
 		for (int i = 0; i < items.length; i++) {
-			if(items[i].equals(it)) {
+			if (items[i].equals(it)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public boolean isThief(){
+
+	public boolean isThief() {
 		return f.isThief();
 	}
+
 	/**
 	 * Liefert ein Array von MonsterInfos mit allen Monstern, die sich in dem
 	 * selben Raum befinden (einschlie�lich this)
-	 * 
+	 *
 	 * @return Die Monster des Raumes
 	 */
 	public FigureInfo[] getMonsterInRoom() {
 		return f.getRoom().getMonsterInfoArray(map);
 	}
-	
+
 	public int getLevel() {
 		return f.getLevel();
 	}
 
-	public RoomInfo getRoomInfo(){
+	public RoomInfo getRoomInfo() {
 		return RoomInfo.makeRoomInfo(f.getRoom(), map);
 	}
-	
+
 	public SpellInfo getLastSpell() {
-		if(f.getLastSpell() != null) {
-			return new SpellInfo(f.getLastSpell(),map);
+		if (f.getLastSpell() != null) {
+			return new SpellInfo(f.getLastSpell(), map);
 		}
 		return null;
 	}
-	
-	
-	
+
 	public JDPoint getDungeonSize() {
 		return f.getRoom().getDungeon().getSize();
 	}
-	
+
 	public RoomInfo getRoomInfo(int x, int y) {
 		return f.getRoom().getDungeon().getRoomInfoNr(x, y, map);
 	}
+
 	public RoomInfo getRoomInfo(JDPoint p) {
-		return getRoomInfo(p.getX(),p.getY());
+		return getRoomInfo(p.getX(), p.getY());
 	}
-	
+
 //	public RoomInfo getMemory(int i, int j) {
 //		if(this instanceof HeroInfo) {
 //			return ((Hero)f).getMemory(i, j);
 //		}
 //		return null;
 //	}
-	
 
 	//	public int getFighterIndex() {
 	//		return m.getFighterID();
@@ -344,11 +352,10 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 
 	/**
 	 * Liefert den Gesundheitszustand des Monsters
-	 * 
+	 * <p>
 	 * Kodierung: > 50% --> HEALTHY = 4; > 30% -->WEAK = 3; > 15% -->INJURED =
 	 * 2; > 8% --> WOUNDED = 1; < 8% --> CRITICAL = 0;
-	 * 
-	 * 
+	 *
 	 * @return Gesundheitszustand
 	 */
 	public int getHealthLevel() {
@@ -358,7 +365,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	/**
 	 * Liefert die Anzahl Kampfaktionspunkte die das Monster in der aktuellen
 	 * Kampfrunde noch zur Verf�gung hat.
-	 * 
+	 *
 	 * @return Anzahl Kampfaktionspunkte
 	 */
 	public int getFightAP() {
@@ -368,7 +375,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	/**
 	 * Liefert die Anzahl Aktionspunkte, die das Monster in dieser Spielrunde
 	 * noch zur Verf�gung hat.
-	 * 
+	 *
 	 * @return Anzahl Aktionspunkte
 	 */
 	public int getActionPoints() {
@@ -377,7 +384,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 
 	/**
 	 * Liefert die Spielrunde zur�ck
-	 * 
+	 *
 	 * @return Spielrunde
 	 */
 	public int getGameRound() {
@@ -398,8 +405,7 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 	/**
 	 * Liefert ein Array von WrappedItem aller Gegenstaende, die das Monster mit
 	 * sich fuehrt.
-	 * 
-	 * 
+	 *
 	 * @return Gegenstaende der Figure
 	 */
 	public ItemInfo[] getFigureItems() {
@@ -424,14 +430,11 @@ public abstract class FigureInfo extends InfoEntity implements ItemInfoOwner {
 		return f.getName();
 	}
 
-
-
-
 	public List<SpellInfo> getSpells() {
 		if (map.getFigure().equals(f)) {
 			List<SpellInfo> res = new LinkedList<SpellInfo>();
 			List l = f.getSpellbook().getSpells();
-			for (Iterator iter = l.iterator(); iter.hasNext();) {
+			for (Iterator iter = l.iterator(); iter.hasNext(); ) {
 				AbstractSpell element = (AbstractSpell) iter.next();
 				res.add(new SpellInfo(element, map));
 			}

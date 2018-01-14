@@ -7,28 +7,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ai.AI;
 import ai.GuardPositionBehaviour;
 import ai.PreGuardBehaviour;
-import ai.SteppingBehaviour;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.Room;
-import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
-import dungeon.generate.ReachabilityChecker;
-import dungeon.generate.RectArea;
-import dungeon.generate.undo.SetChestAction;
-import dungeon.generate.undo.SetShrineAction;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuest1x1;
 import dungeon.quest.RoomQuest2x2;
-import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
-import figure.FigureInfo;
 import figure.monster.Monster;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
@@ -207,7 +198,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		for (int i = 0; i < 3; i++) {
 			RouteInstruction.Direction dir = directionsIterator.next();
 			Door door = exitRoom.getDoor(dir);
-			Position positionToGuard = door.getPositionBehind(exitRoom);
+			Position positionToGuard = door.getPositionAtDoor(exitRoom, true);
 			Monster monster = gateKeepers.get(i);
 			// todo: use setControl!
 			monster.setAI(new GuardPositionBehaviour(positionToGuard));

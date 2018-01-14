@@ -6,6 +6,9 @@ import animation.Motion;
 import dungeon.Position;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
+import gui.Paragraphable;
+import shrine.Shrine;
+import shrine.ShrineInfo;
 import text.Statement;
 import text.StatementManager;
 import animation.AnimationSet;
@@ -231,7 +234,9 @@ public class GameScreenPerceptHandler {
 		AnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if(fig.equals(this.figure)) {
-			if(screen.getFocusManager().getWorldFocusObject() instanceof RoomInfo) {
+			Paragraphable worldFocusObject = screen.getFocusManager().getWorldFocusObject();
+			if(worldFocusObject instanceof RoomInfo
+					|| worldFocusObject instanceof ShrineInfo) {
 				// we reset the selected room, as hero has moved on
 				screen.getFocusManager().setWorldFocusObject(null);
 			}

@@ -6,17 +6,21 @@
  */
 package dungeon;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.memory.DoorMemory;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomEntity;
 import gui.Paragraph;
 import util.JDColor;
 
-public class DoorInfo extends InfoEntity {
+public class DoorInfo extends RoomEntity {
 
 	private final Door d;
 
@@ -28,6 +32,18 @@ public class DoorInfo extends InfoEntity {
 	private boolean getShrineVisibility() {
 		return map.getVisibilityStatus(getRooms()[0].getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE
 				|| map.getVisibilityStatus(getRooms()[1].getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE;
+	}
+
+
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		Collection<PositionInRoomInfo> result = new ArrayList<>();
+		Room[] rooms = d.getRooms();
+		Position posA = d.getPositionAtDoor(rooms[0]);
+		Position posB = d.getPositionAtDoor(rooms[1]);
+		result.add(new PositionInRoomInfo(posA, this.map));
+		result.add(new PositionInRoomInfo(posB, this.map));
+		return result;
 	}
 	
 	@Override
@@ -55,9 +71,9 @@ public class DoorInfo extends InfoEntity {
 		return null;
 	}
 
-	public Lock getLock() {
+	public LockInfo getLock() {
 		if (getFoundDiscovery()) {
-			return d.getLock();
+			return new LockInfo(d.getLock(), map);
 		}
 		return null;
 	}
@@ -70,6 +86,10 @@ public class DoorInfo extends InfoEntity {
 			return false;
 
 		return d.equals(((DoorInfo) obj).d);
+	}
+
+	public PositionInRoomInfo getPositionAtDoor(RoomInfo room, boolean other) {
+		return new PositionInRoomInfo(d.getPositionAtDoor(map.getDungeon().getRoom(room.getPoint()), other), map);
 	}
 
 

@@ -1,34 +1,34 @@
 package de.jdungeon.androidapp;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 import audio.AudioEffectsManager;
+import control.ActionAssembler;
+import dungeon.ChestInfo;
+import dungeon.DoorInfo;
+import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
+import game.RoomEntity;
 import gui.Paragraphable;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import shrine.ShrineInfo;
-import control.ActionAssembler;
+import spell.TargetScope;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
-import de.jdungeon.game.Audio;
-
-import dungeon.ChestInfo;
-import dungeon.DoorInfo;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
 
 public class Control implements EventListener {
 
@@ -48,30 +48,41 @@ public class Control implements EventListener {
 	public void objectClicked(Object clickedObject, boolean doubleClick) {
 		if (clickedObject instanceof ItemInfo) {
 			handleItemInfoClick(((ItemInfo) clickedObject), doubleClick);
-		} else if (clickedObject instanceof FigureInfo) {
+		}
+		else if (clickedObject instanceof FigureInfo) {
 			handleFigureInfoClick(((FigureInfo) clickedObject), doubleClick);
-		} else if (clickedObject instanceof ShrineInfo) {
+		}
+		else if (clickedObject instanceof ShrineInfo) {
 			handleShrineInfoClick(((ShrineInfo) clickedObject), doubleClick);
-		} else if (clickedObject instanceof PositionInRoomInfo) {
+		}
+		else if (clickedObject instanceof PositionInRoomInfo) {
 			handlePosInfoClick(((PositionInRoomInfo) clickedObject),
 					doubleClick);
-		} else if (clickedObject instanceof RoomInfo) {
+		}
+		else if (clickedObject instanceof RoomInfo) {
 			handleRoomInfoClick(((RoomInfo) clickedObject), doubleClick);
-		} else if (clickedObject instanceof ChestInfo) {
+		}
+		else if (clickedObject instanceof ChestInfo) {
 			handleChestInfoClick(((ChestInfo) clickedObject), doubleClick);
-		} else if (clickedObject instanceof DoorInfo) {
+		}
+		else if (clickedObject instanceof DoorInfo) {
 			handleDoorInfoClick(((DoorInfo) clickedObject), doubleClick);
 		}
 
 	}
 
+	// TODO: refactor: make target RoomEntity
 	public void inventoryItemClicked(ItemInfo item, Paragraphable target) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+
+
 		actionAssembler.wannaUseItem(item, target, false);
 	}
 
+
+
 	public void itemWheelActivityClicked(ItemWheelActivity item,
-			Paragraphable target) {
+										 Paragraphable target) {
 		if (item == null) {
 			return;
 		}
@@ -164,18 +175,18 @@ public class Control implements EventListener {
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof InventoryItemClickedEvent) {
-			InventoryItemClickedEvent e = ((InventoryItemClickedEvent)event);
-			if(e.getClick() == ClickType.Double) {
+		if (event instanceof InventoryItemClickedEvent) {
+			InventoryItemClickedEvent e = ((InventoryItemClickedEvent) event);
+			if (e.getClick() == ClickType.Double) {
 				inventoryItemDoubleClicked(e.getType(), e.getItem());
 			}
-			if(e.getClick() == ClickType.Long) {
+			if (e.getClick() == ClickType.Long) {
 				inventoryItemLongClicked(e.getType(), e.getItem());
 			}
 
 		}
 
-		if(event instanceof EndRoundEvent) {
+		if (event instanceof EndRoundEvent) {
 			endRound();
 		}
 	}

@@ -13,6 +13,8 @@ import figure.memory.MemoryObject;
 import game.InfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
+import spell.TargetScope;
+
 /**
  * 
  * Diese Klasse bietet alle Informationen ueber einen Gegenstand
@@ -27,15 +29,21 @@ public class ItemInfo extends InfoEntity {
 		it = i;
 	}
 	
+	@Override
 	public MemoryObject getMemoryObject(FigureInfo info) {
-		return (ItemMemory)it.getMemoryObject(info);
+		return it.getMemoryObject(info);
 	}
 	
 	public int getItemKey(){
 		return it.getItemKey();
 	}
 	
-
+	public TargetScope getTargetClass() {
+		if(it instanceof UsableWithTarget) {
+			return ((UsableWithTarget) it).getTargetScope();
+		}
+		return null;
+	}
 	
 	public InfoEntity getOwner() {
 		return Item.wrappItemOwner(it.getOwner(),map);
@@ -85,6 +93,17 @@ public class ItemInfo extends InfoEntity {
 	public boolean isUsable() {
 		return it instanceof Usable;
 	}
+
+	public boolean isUsableWithTarget() {
+		return it instanceof UsableWithTarget;
+	}
+
+	public TargetScope getTargetScope() {
+		if(it instanceof UsableWithTarget) {
+			return ((UsableWithTarget)it).getTargetScope();
+		}
+		return null;
+	}
 	
 	public boolean needsTarget() {
 		if(this.isUsable()) {
@@ -112,6 +131,7 @@ public class ItemInfo extends InfoEntity {
 		return it.getClass();
 	}
 	
+	@Override
 	public Paragraph[] getParagraphs() {
 		return it.getParagraphs();
 	}

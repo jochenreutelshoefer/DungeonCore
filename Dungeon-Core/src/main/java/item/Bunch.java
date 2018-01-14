@@ -1,6 +1,6 @@
 /**
  * @author Duke1
- *
+ * <p>
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
  * To enable and disable the creation of type comments go to
@@ -11,67 +11,74 @@ package item;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dungeon.Door;
+import dungeon.Lock;
+import dungeon.LockInfo;
+import dungeon.Position;
+import dungeon.util.InfoUnitUnwrapper;
+import figure.Figure;
+import figure.FigureInfo;
 import figure.attribute.Attribute;
 import game.JDEnv;
+import game.RoomEntity;
+import item.interfaces.Locatable;
+import item.interfaces.UsableWithTarget;
+import spell.DefaultTargetScope;
+import spell.TargetScope;
 
+public class Bunch extends Item implements Serializable, UsableWithTarget {
 
-public class Bunch extends Item implements Serializable {
-
-	
 	private final Set<Key> keys = new HashSet<>();
 
-	
 	public Bunch() {
-		super(0,false);	
+		super(0, false);
 	}
 
 	public Attribute getHitPoints() {
 		return null;
 	}
 
-	
 	public Collection<Key> getKeys() {
 		return keys;
 	}
 
-	
-	public boolean tryUnlockDoor(Door d,boolean doIt) {
+	public boolean tryUnlockDoor(Door d, boolean doIt) {
 		boolean b = false;
 		for (Key k : this.keys) {
-			b = d.lock(k,doIt);
-			if(b) return true;	
+			b = d.lock(k, doIt);
+			if (b) return true;
 		}
 		return false;
-	}	
-	
+	}
+
 	public void addKey(Key k) {
 		keys.add(k);
 	}
-	
+
 	public boolean hasKey(Key k) {
-		return keys.contains(k);	
+		return keys.contains(k);
 	}
-	
+
 	public boolean hasKey(String k) {
 		for (Key ke : this.keys) {
-			if(ke.getType().equals(k)) {
+			if (ke.getType().equals(k)) {
 				return true;
-				
-			}	
+
+			}
 		}
-		return false;	
+		return false;
 	}
-	
+
 	public boolean removeKey(Key k) {
-		return keys.remove(k);	
+		return keys.remove(k);
 	}
-	
+
 	@Override
 	public String toString() {
-		return JDEnv.getResourceBundle().getString("bunch")+": "+keys.size();	
+		return JDEnv.getResourceBundle().getString("bunch") + ": " + keys.size();
 	}
 
 	/**
@@ -82,17 +89,56 @@ public class Bunch extends Item implements Serializable {
 		String text = new String();
 		for (Key k : this.keys) {
 			String one = k.toString();
-			String cut = cut(one); 
-			text += " , "+cut;
-		}	
+			String cut = cut(one);
+			text += " , " + cut;
+		}
 		return text;
 	}
-	
+
 	private String cut(String s) {
-		return s.substring(11);	
+		return s.substring(11);
 	}
 
 	public void clear() {
 		keys.clear();
+	}
+
+	@Override
+	public TargetScope getTargetScope() {
+		return DefaultTargetScope.createDefaultScope(LockInfo.class);
+	}
+
+	@Override
+	public boolean use(Figure f, Object target, boolean meta) {
+		List<? extends RoomEntity> targetLocks = getTargetScope().getTargetEntitiesInScope(FigureInfo.makeFigureInfo(f, f
+				.getRoomVisibility()));
+		if (targetLocks.size() == 1) {
+			RoomEntity lockInfo = targetLocks.iterator().next();
+			Lock lock = (Lock) new InfoUnitUnwrapper(f.getActualDungeon()).unwrappObject(lockInfo);
+			Locatable lockableObject = lock.getLockableObject();
+			if (lockableObject instanceof Door) {
+				Door door = (Door) lockableObject;
+				Position positionAtDoor = door.getPositionAtDoor(f.getRoom(), false);
+				if(positionAtDoor.equals(f.getPos())) {
+					return this.tryUnlockDoor(door, true);
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean usableOnce() {
+		return false;
+	}
+
+	@Override
+	public boolean canBeUsedBy(Figure f) {
+		return true;
+	}
+
+	@Override
+	public boolean needsTarget() {
+		return true;
 	}
 }

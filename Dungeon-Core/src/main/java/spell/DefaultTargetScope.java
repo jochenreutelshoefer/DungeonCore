@@ -1,14 +1,15 @@
 package spell;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import dungeon.DoorInfo;
+import dungeon.LockInfo;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
 import game.InfoEntity;
+import game.RoomEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -31,7 +32,7 @@ public class DefaultTargetScope implements TargetScope {
 	}
 
 	@Override
-	public List<? extends InfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
+	public List<? extends RoomEntity> getTargetEntitiesInScope(FigureInfo actor) {
 		if(targetClass.equals(FigureInfo.class)) {
 			RoomInfo roomInfo = actor.getRoomInfo();
 			List<FigureInfo> figureInfos = roomInfo.getFigureInfos();
@@ -48,6 +49,17 @@ public class DefaultTargetScope implements TargetScope {
 				}
 			}
 			return doorsWithLock;
+		}
+		if(targetClass.equals(LockInfo.class)) {
+			RoomInfo roomInfo = actor.getRoomInfo();
+			DoorInfo[] doors = roomInfo.getDoors();
+			List<LockInfo> locks = new ArrayList<>();
+			for (DoorInfo door : doors) {
+				if(door != null && door.hasLock()) {
+					locks.add(door.getLock());
+				}
+			}
+			return locks;
 		}
 		return Collections.emptyList();
 	}

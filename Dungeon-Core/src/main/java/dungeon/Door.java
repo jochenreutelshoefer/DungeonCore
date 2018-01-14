@@ -154,16 +154,30 @@ public class Door implements  InfoProvider, Locatable {
 		return hallDoor;
 	}
 
-	public Position getPositionBehind(Room r) {
+	public Position getPositionAtDoor(Room room) {
+		return getPositionAtDoor(room, true);
+	}
+
+	public Position getPositionAtDoor(Room room, boolean other) {
 		//System.out.println("mageRoom: "+r.toString());
 		int roomTo = 0;
-		if (r.equals(rooms[0])) {
+		if (room.equals(rooms[0])) {
 			roomTo = 1;
 		}
 		Room otherRoom = rooms[roomTo];
-		//System.out.println("otherRomm: "+otherRoom.toString());
-		int dir = DungeonUtils.getNeighbourDirectionFromTo(r, otherRoom)
+		//System.out.println("otherRoom: "+otherRoom.toString());
+		int dir = DungeonUtils.getNeighbourDirectionFromTo(room, otherRoom)
 				.getValue();
+		if(other) {
+			return otherRoom.getPositions()[getPosIndexForDirection(dir)];
+		} else {
+			return room.getPositions()[getPosIndexForDirection(RouteInstruction.Direction.opposite(RouteInstruction.Direction.fromInteger(dir)).getValue())];
+		}
+	}
+
+
+
+	private int getPosIndexForDirection(int dir) {
 		int index = -1;
 		if (dir == Dir.NORTH) {
 			index = 5;
@@ -177,10 +191,7 @@ public class Door implements  InfoProvider, Locatable {
 		if (dir == Dir.WEST) {
 			index = 3;
 		}
-		
-		Position p = otherRoom.getPositions()[index];
-		return p;
-
+		return index;
 	}
 
 	public Door(Room r1, Room r2, Key k) {

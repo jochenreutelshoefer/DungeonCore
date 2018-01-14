@@ -4,6 +4,7 @@ import java.util.List;
 
 import figure.FigureInfo;
 import game.InfoEntity;
+import game.RoomEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -11,6 +12,6 @@ import game.InfoEntity;
  */
 public interface TargetScope {
 
-	List<? extends InfoEntity> getTargetEntitiesInScope(FigureInfo actor);
+	List<? extends RoomEntity> getTargetEntitiesInScope(FigureInfo actor);
 
 }

@@ -37,7 +37,7 @@ import gui.Paragraphable;
  * je nach Nuetzlichkeit, Seltenheit, Eigenschaften etc.
  *
  */
-public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Locatable, Serializable {
+public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Locatable, Serializable {
 
 	public static final int ITEM_KEY_UNDEFINDED = -1;
 	public static final int ITEM_KEY_ATTRPOTION = 1;
@@ -59,7 +59,8 @@ public abstract class Item implements ModifierI,Paragraphable, InfoProvider,Loca
 	
 	protected String name = "itemname";
 
-	
+
+
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new ItemInfo(this,map); 	

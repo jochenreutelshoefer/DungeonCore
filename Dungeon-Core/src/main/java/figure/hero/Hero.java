@@ -265,7 +265,9 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		
 		this.bravery = new Attribute(Attribute.BRAVE, brave);
 		inv = new Inventory(3, 3, 3, 3, this);
+		bund.setOwner(this);
 		inv.addItem(bund);
+
 
 	}
 

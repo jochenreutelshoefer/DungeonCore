@@ -68,9 +68,7 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
     	 
      
      
-    
 
-	
 	public void setLocation(Room p) {
 		if (this instanceof Statue) {
 			//System.out.println("setzte location von statue neu auf: "+p.toString());	

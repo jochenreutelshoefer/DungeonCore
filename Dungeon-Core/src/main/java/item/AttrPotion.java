@@ -33,8 +33,8 @@ public class AttrPotion extends Item implements Usable {
 	public boolean needsTarget() {
 		return false;
 	}
-	
-	
+
+
 	@Override
 	public int getItemKey() {
 		return Item.ITEM_KEY_ATTRPOTION;

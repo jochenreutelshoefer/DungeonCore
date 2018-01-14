@@ -16,10 +16,12 @@ import game.JDEnv;
 import gui.Paragraph;
 import item.Item;
 import item.interfaces.Usable;
+import item.interfaces.UsableWithTarget;
 import spell.AbstractSpell;
+import spell.TargetScope;
 import spell.TargetSpell;
 import util.JDColor;
-public class Scroll extends Item implements Usable{
+public class Scroll extends Item implements UsableWithTarget {
 	
 	
 	protected final AbstractSpell theSpell;
@@ -55,7 +57,16 @@ public class Scroll extends Item implements Usable{
 	public boolean needsTarget() {
 		return theSpell instanceof TargetSpell;
 	}
-	
+
+	@Override
+	public TargetScope getTargetScope() {
+		if(theSpell instanceof TargetSpell) {
+			return ((TargetSpell)theSpell).getTargetScope();
+		}
+		return null;
+	}
+
+
 	private static String scroll = null;
 	public static String scroll() {
 		if(scroll == null) {

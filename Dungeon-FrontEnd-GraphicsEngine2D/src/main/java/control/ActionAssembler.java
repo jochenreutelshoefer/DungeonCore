@@ -6,7 +6,19 @@
  */
 package control;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
+import dungeon.ChestInfo;
+import dungeon.Dir;
+import dungeon.DoorInfo;
+import dungeon.JDPoint;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import event.ActionEvent;
 import event.Event;
@@ -15,22 +27,6 @@ import event.EventManager;
 import event.WannaMoveEvent;
 import event.WannaStepEvent;
 import event.WannaTakeItemEvent;
-import item.ItemInfo;
-import item.quest.LuziasBall;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import shrine.ShrineInfo;
-import spell.SpellInfo;
-import dungeon.ChestInfo;
-import dungeon.Dir;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -49,6 +45,12 @@ import figure.action.TakeItemAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.hero.HeroInfo;
+import game.RoomEntity;
+import item.ItemInfo;
+import item.quest.LuziasBall;
+import shrine.ShrineInfo;
+import spell.SpellInfo;
+import spell.TargetScope;
 
 public class ActionAssembler implements EventListener {
 
@@ -66,7 +68,6 @@ public class ActionAssembler implements EventListener {
 	public void setGui(JDGUIEngine2D gui) {
 		this.gui = gui;
 	}
-
 
 	public void wannaAttack(FigureInfo o) {
 		Action a = Action.makeActionAttack(o.getFighterID());
@@ -93,6 +94,14 @@ public class ActionAssembler implements EventListener {
 	}
 
 	public void wannaLockDoor(DoorInfo d) {
+		PositionInRoomInfo positionAtDoor = d.getPositionAtDoor(this.getFigure().getRoomInfo(), false);
+		if(! getFigure().getPos().equals(positionAtDoor)) {
+			// we need to step towards the door first
+			wannaStepToPosition(positionAtDoor);
+			if (getFigure().getActionPoints() < 1) {
+				plugAction(new EndRoundAction());
+			}
+		}
 		FigureInfo f = getFigure();
 		RouteInstruction.Direction dir = d.getDirection(f.getRoomNumber());
 		if (dir != null) {
@@ -117,13 +126,13 @@ public class ActionAssembler implements EventListener {
 		this.plugAction(a);
 	}
 
-
 	public void sorcButtonClicked(SpellInfo sp) {
 		if (gui.getFigure() instanceof HeroInfo) {
 			if (sp.needsTarget()) {
 				spellMeta = true;
 				gui.setSpellMetaDown(true);
-			} else {
+			}
+			else {
 				wannaSpell(sp, null);
 			}
 		}
@@ -135,7 +144,8 @@ public class ActionAssembler implements EventListener {
 			if (it.needsTarget()) {
 				useWithTarget = true;
 				gui.setUseWithTarget(true);
-			} else {
+			}
+			else {
 				gui.setUseWithTarget(false);
 				wannaUseItem(it, null, right);
 			}
@@ -147,14 +157,60 @@ public class ActionAssembler implements EventListener {
 		plugAction(a);
 	}
 
-
 	public void wannaUseItem(ItemInfo it, Object target, boolean meta) {
+		if (target == null && it.needsTarget()) {
+			target = findAndStepTowardsTarget(it);
+		}
+
 		Action a = new UseItemAction(it, target, meta);
 		plugAction(a);
 	}
 
+	private Object findAndStepTowardsTarget(ItemInfo item) {
+		Object target = null;
+		if (item.isUsableWithTarget()) {
+			TargetScope targetScope = item.getTargetScope();
+			List<? extends RoomEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(this.getFigure());
+			if (targetEntitiesInScope.size() == 1) {
+				// there is only one possibility
+				target = targetEntitiesInScope.get(0);
+			}
+		}
+		if (target != null) {
+			Collection<PositionInRoomInfo> interactionPositions = ((RoomEntity) target).getInteractionPositions();
+			if (!interactionPositions.isEmpty()) {
+				PositionInRoomInfo currentPos = getFigure().getPos();
+				if (!interactionPositions.contains(currentPos)) {
+					// TODO: filter for position in same room !
+					Collection<PositionInRoomInfo> interactionPositionsInCurrentRoom = new HashSet<>();
+					for (PositionInRoomInfo interactionPosition : interactionPositions) {
+						if (interactionPosition.getLocation().equals(getFigure().getRoomNumber())) {
+							interactionPositionsInCurrentRoom.add(interactionPosition);
+						}
+					}
+					PositionInRoomInfo position = null;
+					if (!interactionPositionsInCurrentRoom.isEmpty()) {
+						position = interactionPositionsInCurrentRoom.iterator().next();
+					}
+					else {
+						if (!interactionPositions.isEmpty()) {
+							position = interactionPositions.iterator().next();
+						}
+					}
+					if (position != null) {
+						wannaStepToPosition(position);
+						if (getFigure().getActionPoints() < 1) {
+							plugAction(new EndRoundAction());
+						}
+					}
+				}
+			}
+		}
+		return target;
+	}
+
 	public void wannaUseShrine(Object target, boolean right) {
-		if(this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
+		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
 			wannaStepToPosition(Position.Pos.NE);
 		}
 		Action a = new ShrineAction(target, right);
@@ -190,7 +246,7 @@ public class ActionAssembler implements EventListener {
 
 	public void wannaUseChest(boolean right) {
 
-		if(this.getFigure().getPositionInRoomIndex() != Position.Pos.NW.getValue()) {
+		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NW.getValue()) {
 			wannaStepToPosition(Position.Pos.NW);
 		}
 		Action a = new UseChestAction(right);
@@ -225,7 +281,8 @@ public class ActionAssembler implements EventListener {
 				plugAction(new EndRoundAction());
 			}
 
-		} else {
+		}
+		else {
 			plugAction(new EndRoundAction());
 			plugAction(new StepAction(i));
 		}
@@ -240,7 +297,8 @@ public class ActionAssembler implements EventListener {
 			if (!right) {
 				wannaSpell(sp, o);
 			}
-		} else if (useWithTarget) {
+		}
+		else if (useWithTarget) {
 			useWithTarget = false;
 			gui.setUseWithTarget(false);
 			if (!right) {
@@ -249,12 +307,14 @@ public class ActionAssembler implements EventListener {
 				ItemInfo it = (ItemInfo) hero.getAllItems().get(index);
 				wannaUseItem(it, o, right);
 			}
-		} else {
+		}
+		else {
 
 			if (right) {
 				wannaSpell(sp, o);
 
-			} else {
+			}
+			else {
 
 				wannaAttack((o));
 
@@ -270,7 +330,8 @@ public class ActionAssembler implements EventListener {
 			if (!right) {
 				wannaSpell(sp, o);
 			}
-		} else if (useWithTarget) {
+		}
+		else if (useWithTarget) {
 			useWithTarget = false;
 			gui.setUseWithTarget(false);
 
@@ -278,12 +339,14 @@ public class ActionAssembler implements EventListener {
 			if (!right) {
 				wannaUseItem(it, o, right);
 			}
-		} else {
+		}
+		else {
 
 			if (right) {
 
 				wannaSpell(sp, o);
-			} else {
+			}
+			else {
 
 				Action a = new TakeItemAction(o);
 				plugAction(a);
@@ -315,13 +378,16 @@ public class ActionAssembler implements EventListener {
 			if (f.getRoomInfo().fightRunning().booleanValue()) {
 
 				wannaFleePanic(dir);
-			} else {
+			}
+			else {
 				wannaScout(dir);
 			}
-		} else {
+		}
+		else {
 			if (dir == -1) {
 
-			} else {
+			}
+			else {
 
 				if (f.getRoomInfo().fightRunning() != null && f.getRoomInfo().fightRunning().booleanValue()) {
 					int pos = getFigure().getPositionInRoomIndex();
@@ -329,7 +395,8 @@ public class ActionAssembler implements EventListener {
 							|| (dir == 3 && pos == 5) || (dir == 4 && pos == 7)) {
 						this.wannaFlee();
 					}
-				} else {
+				}
+				else {
 					this.wannaWalk(dir);
 				}
 			}
@@ -349,14 +416,16 @@ public class ActionAssembler implements EventListener {
 			if (!right) {
 				wannaSpell(sp, sh);
 			}
-		} else if (useWithTarget) {
+		}
+		else if (useWithTarget) {
 			useWithTarget = false;
 			gui.setUseWithTarget(false);
 			if (!right) {
-				ItemInfo it =  gui.getSelectedItem();
+				ItemInfo it = gui.getSelectedItem();
 				wannaUseItem(it, sh, right);
 			}
-		} else {
+		}
+		else {
 			wannaUseShrine(null, right);
 		}
 
@@ -374,7 +443,7 @@ public class ActionAssembler implements EventListener {
 	}
 
 	public void positionClicked(PositionInRoomInfo pos, boolean right) {
-		if(useWithTarget) {
+		if (useWithTarget) {
 			ItemInfo sp = gui.getSelectedItem();
 			useWithTarget = false;
 			gui.setSpellMetaDown(false);
@@ -382,7 +451,8 @@ public class ActionAssembler implements EventListener {
 				wannaUseItem(sp, pos, right);
 				gui.setUseWithTarget(false);
 			}
-		} else {
+		}
+		else {
 			// assume want to move normally
 			wannaStepToPosition(pos);
 		}
@@ -402,8 +472,9 @@ public class ActionAssembler implements EventListener {
 		Action a = null;
 
 		a = new StepAction(pos.getIndex());
-		if (unanimated)
+		if (unanimated) {
 			a.setUnanimated();
+		}
 		if (f.getActionPoints() < 1) {
 			plugAction(new EndRoundAction());
 		}
@@ -415,7 +486,6 @@ public class ActionAssembler implements EventListener {
 		plugAction(new SkillUpAction(key));
 	}
 
-
 	public void doorClicked(Object o, boolean right) {
 		DoorInfo d = ((DoorInfo) o);
 		if (spellMeta) {
@@ -425,19 +495,22 @@ public class ActionAssembler implements EventListener {
 			if (!right) {
 				wannaSpell(sp, d);
 			}
-		} else if (useWithTarget) {
+		}
+		else if (useWithTarget) {
 			useWithTarget = false;
 			gui.setUseWithTarget(false);
 			if (!right) {
 				ItemInfo it = gui.getSelectedItem();
 				wannaUseItem(it, d, right);
 			}
-		} else {
+		}
+		else {
 
 			if (right) {
 				SpellInfo sp = gui.getSelectedSpellInfo();
 				wannaSpell(sp, o);
-			} else {
+			}
+			else {
 				if (d.hasLock().booleanValue()) {
 					wannaLockDoor(d);
 				}
@@ -466,7 +539,7 @@ public class ActionAssembler implements EventListener {
 	public void wannaUseLuziaBall() {
 		FigureInfo f = this.getFigure();
 		List<ItemInfo> items = f.getAllItems();
-		for (Iterator iter = items.iterator(); iter.hasNext();) {
+		for (Iterator iter = items.iterator(); iter.hasNext(); ) {
 			ItemInfo element = (ItemInfo) iter.next();
 			if (element.getClass().equals(LuziasBall.class)) {
 				this.wannaUseItem(element, null, false);
@@ -487,24 +560,25 @@ public class ActionAssembler implements EventListener {
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof WannaMoveEvent) {
-			WannaMoveEvent moveEvent = ((WannaMoveEvent)event);
-			if(this.getFigure().getRoomInfo().fightRunning()) {
+		if (event instanceof WannaMoveEvent) {
+			WannaMoveEvent moveEvent = ((WannaMoveEvent) event);
+			if (this.getFigure().getRoomInfo().fightRunning()) {
 				this.wannaFlee();
-			} else {
+			}
+			else {
 				this.wannaWalk(moveEvent.getDirection().getValue());
 			}
 		}
-		if(event instanceof WannaStepEvent) {
-			WannaStepEvent moveEvent = ((WannaStepEvent)event);
+		if (event instanceof WannaStepEvent) {
+			WannaStepEvent moveEvent = ((WannaStepEvent) event);
 			this.wannaStepToPosition(moveEvent.getTarget());
 		}
-		if(event instanceof WannaTakeItemEvent) {
-			WannaTakeItemEvent takeEvent = ((WannaTakeItemEvent)event);
+		if (event instanceof WannaTakeItemEvent) {
+			WannaTakeItemEvent takeEvent = ((WannaTakeItemEvent) event);
 			this.wannaTakeItem(takeEvent.getItem());
 		}
-		if(event instanceof ActionEvent) {
-			plugAction(((ActionEvent)event).getAction());
+		if (event instanceof ActionEvent) {
+			plugAction(((ActionEvent) event).getAction());
 		}
 	}
 }

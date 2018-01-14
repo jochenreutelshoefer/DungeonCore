@@ -19,46 +19,47 @@ import figure.attribute.Attribute;
 import figure.percept.TextPercept;
 import game.JDEnv;
 public class InfoScroll extends Item implements Usable{
-	
-	
-	private String content;
-	private String title;
-	
+
+
+	private final String content;
+	private final String title;
+
 	public InfoScroll(String title, String text) {
 		super(5,false);
 		content = text;
 		this.title = title;
 	}
-		
-		
+
+
 	public Attribute getHitPoints() {
 		return null;
 	}
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return true;
 	}
+	@Override
+	public boolean usableOnce() {
+		return false;
+	}
+
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
-	
-	public boolean use(Figure f,Object target,boolean meta) {
+
+
+	@Override
+	public boolean use(Figure f, Object target, boolean meta) {
 		f.tellPercept(new TextPercept(content));
-		//f.getGame().newStatement(content,0);
 		return true;
 	}
-	
-//	public String getText() {
-//		return text;
-//	}
-//	
+
+	@Override
 	public String getText() {
 		return toString();
 	}
-	
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("document")+": "+title;
-	}
-	public boolean usableOnce() {
-		return false;
 	}
 }

@@ -10,19 +10,22 @@ import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.ChestMemory;
 import game.InfoEntity;
+import game.RoomEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class ChestInfo extends InfoEntity {
+public class ChestInfo extends RoomEntity {
 	
 	private final Chest chest;
 	
-	public ChestInfo(Chest c,DungeonVisibilityMap stats) {
+	public ChestInfo(Chest c, DungeonVisibilityMap stats) {
 		super(stats);
 		chest = c;
 	}
@@ -73,5 +76,10 @@ public class ChestInfo extends InfoEntity {
 	@Override
 	public int hashCode() {
 		return chest != null ? chest.hashCode() : 0;
+	}
+
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		return Collections.singleton(new PositionInRoomInfo(map.getDungeon().getRoom(this.getLocation()).getPositions()[Position.Pos.NW.getValue()], map));
 	}
 }
