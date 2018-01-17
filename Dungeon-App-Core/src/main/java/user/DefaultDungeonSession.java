@@ -38,6 +38,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	private final User user;
 	private int heroType;
 	private DungeonGame dungeonGame;
+	private DungeonFactory lastCompletedDungeonFactory;
+	private DungeonFactory lastSelectedDungeonFactory;
 	private Dungeon derDungeon;
 	private HeroInfo heroInfo;
 
@@ -69,6 +71,11 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		//if(completedDungeons.isEmpty()) return 1;
 
 		return completedDungeons.size();
+	}
+
+	@Override
+	public DungeonFactory getLastCompleted() {
+		return lastCompletedDungeonFactory;
 	}
 
 	@Override
@@ -113,6 +120,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 	@Override
 	public void initDungeon(DungeonFactory dungeon) {
+		lastSelectedDungeonFactory = dungeon;
 		dungeonGame = DungeonGame.getInstance();
 
 		derDungeon = dungeon.createDungeon();
@@ -152,6 +160,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			Dungeon currentDungeon = getCurrentDungeon();
 			if(! completedDungeons.contains(currentDungeon) && currentDungeon != null) {
 				completedDungeons.add(currentDungeon);
+				lastCompletedDungeonFactory = lastSelectedDungeonFactory;
 			}
 			derDungeon = null;
 		}

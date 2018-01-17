@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import animation.AnimationSet;
+import animation.DefaultAnimationSet;
 import animation.AnimationSetDirections;
 import animation.Motion;
 import audio.AudioEffectsManager;
@@ -388,7 +388,7 @@ public class ImageManager {
 
 	public static JDImageProxy<?> featherImage;
 
-	public static AnimationSet puff;
+	public static DefaultAnimationSet puff;
 
 	public static JDImageProxy<?> questionmark;
 
@@ -566,10 +566,10 @@ public class ImageManager {
 
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern) {
-		AnimationSet[] set = new AnimationSet[4];
+		DefaultAnimationSet[] set = new DefaultAnimationSet[4];
 		for (int i = 0; i < 4; i++) {
 			JDImageProxy<?>[] loadedImages = loadArray(a, path, pattern, i + 1);
-			set[i] = new AnimationSet(loadedImages,
+			set[i] = new DefaultAnimationSet(loadedImages,
 					getArray(45, loadedImages.length));
 		}
 		return new AnimationSetDirections(set);
@@ -587,7 +587,7 @@ public class ImageManager {
 
 			AbstractImageLoader<?> a = this.loader;
 
-			puff = new AnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
+			puff = new DefaultAnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
 			warrior_slays = load4Animations(a, "animation/warrior/", "warrior_attack_");
 			thief_slays = load4Animations(a, "animation/thief/", "thief_attack_");
@@ -942,7 +942,7 @@ public class ImageManager {
 	}
 
 	private static JDImageProxy<?>[] makePics(AnimationSetDirections a) {
-		AnimationSet[] sets = a.getAnimations();
+		DefaultAnimationSet[] sets = a.getAnimations();
 		JDImageProxy<?> ims[] = new JDImageProxy<?>[sets.length];
 		for (int i = 0; i < sets.length; i++) {
 			ims[i] = sets[i].getImagesNr(0);
@@ -1087,7 +1087,7 @@ public class ImageManager {
 
 	}
 
-	public static AnimationSet getAnimationSet(MonsterInfo monster, Motion motion, RouteInstruction.Direction direction) {
+	public static DefaultAnimationSet getAnimationSet(MonsterInfo monster, Motion motion, RouteInstruction.Direction direction) {
 		Class<? extends Monster> monsterClass = monster.getMonsterClass();
 		if (monsterAnimationMap.containsKey(monsterClass)) {
 
@@ -1230,7 +1230,7 @@ public class ImageManager {
 
 	}
 
-	public static AnimationSet getAnimationSet(HeroInfo hero, Motion motion, RouteInstruction.Direction direction) {
+	public static DefaultAnimationSet getAnimationSet(HeroInfo hero, Motion motion, RouteInstruction.Direction direction) {
 		Hero.HeroCategory heroClass = ((HeroInfo) hero).getHeroCategory();
 
 		if (heroClass == Hero.HeroCategory.Warrior) {
@@ -1249,7 +1249,7 @@ public class ImageManager {
 		return null;
 	}
 
-	public static AnimationSet getAnimationSet(FigureInfo info, Motion motion, RouteInstruction.Direction direction) {
+	public static DefaultAnimationSet getAnimationSet(FigureInfo info, Motion motion, RouteInstruction.Direction direction) {
 		if (info instanceof MonsterInfo) {
 			return ImageManager.getAnimationSet((MonsterInfo) info, motion, direction);
 		}
@@ -1260,7 +1260,7 @@ public class ImageManager {
 		return null;
 	}
 
-	public static AnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
+	public static DefaultAnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
 		if (heroAnimationMap.containsKey(heroCategory)) {
 			CharacterAnimationSet motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
 			if (motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsMotion(motion)) {
@@ -1386,7 +1386,7 @@ public class ImageManager {
 			if (figureMap.containsKey(monsterClass)) {
 				return figureMap.get(monsterClass)[dir.getValue() - 1];
 			} else {
-				AnimationSet animationSet = monsterAnimationMap.get(monsterClass).getAnimationSet(Motion.Walking, dir);
+				DefaultAnimationSet animationSet = monsterAnimationMap.get(monsterClass).getAnimationSet(Motion.Walking, dir);
 				if(animationSet != null) {
 					return animationSet.getImagesNr(0);
 				}
@@ -1403,7 +1403,7 @@ public class ImageManager {
 				return ImageManager.finImage;
 			}
 			else if (monsterClass == Lioness.class) {
-				AnimationSet animationSet = ImageManager.lioness_walking.get(dir.getValue() - 1);
+				DefaultAnimationSet animationSet = ImageManager.lioness_walking.get(dir.getValue() - 1);
 				if (animationSet != null) {
 					return animationSet.getImagesNr(0);
 				}
@@ -1475,7 +1475,7 @@ public class ImageManager {
 	}
 
 	interface CharacterAnimationSet {
-		AnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction);
+		DefaultAnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction);
 
 		boolean containsMotion(Motion motion);
 
@@ -1541,7 +1541,7 @@ public class ImageManager {
 		}
 
 		@Override
-		public AnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction) {
+		public DefaultAnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction) {
 			AnimationSetDirections animationSetDirections = animations.get(motion);
 			if(animationSetDirections != null) {
 				return animationSetDirections.get(direction);

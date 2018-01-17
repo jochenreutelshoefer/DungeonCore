@@ -17,6 +17,8 @@ public interface DungeonSession {
 
 	DungeonManager getDungeonManager();
 
+	DungeonFactory getLastCompleted();
+
 	int getCurrentStage();
 
 	void notifyExit(LevelExit exit, Figure figure);

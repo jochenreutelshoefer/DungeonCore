@@ -1,6 +1,5 @@
 package de.jdungeon.androidapp.screen;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,7 +12,7 @@ import java.util.Map;
 
 import android.util.Log;
 import animation.AnimationManager;
-import animation.AnimationSet;
+import animation.DefaultAnimationSet;
 import animation.DefaultAnimationTask;
 import control.ActionAssembler;
 import control.JDGUIEngine2D;
@@ -1121,43 +1120,43 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		AnimationManager.getInstance().clearFigure(figure);
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info) {
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo info) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), null, false, false, false, null, null);
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to) {
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to) {
 		startAnimation(ani, info, from, to, info.getRoomInfo(), null, false, false, false, null, null);
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo info, String text) {
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo info, String text) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), text, false, false, false, null, null);
 	}
 
-	public void startAnimationDelayed(AnimationSet ani, FigureInfo info, String text) {
+	public void startAnimationDelayed(DefaultAnimationSet ani, FigureInfo info, String text) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, false, false, null, null);
 	}
 
-	public void startAnimationUrgent(AnimationSet ani, FigureInfo info, String text) {
+	public void startAnimationUrgent(DefaultAnimationSet ani, FigureInfo info, String text) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), text, false, true, false, null, null);
 	}
 
-	public void startAnimationUrgent(AnimationSet ani, FigureInfo fig, Position.Pos from, Position.Pos to) {
+	public void startAnimationUrgent(DefaultAnimationSet ani, FigureInfo fig, Position.Pos from, Position.Pos to) {
 		startAnimation(ani, fig, from, to, fig.getRoomInfo(), null, false, true, false, null, null);
 	}
 
-	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text) {
+	public void startAnimationDelayedUrgent(DefaultAnimationSet ani, FigureInfo info, String text) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, true, false, null, null);
 	}
 
-	public void startAnimationDelayedUrgentPostDelay(AnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
+	public void startAnimationDelayedUrgentPostDelay(DefaultAnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, true, true, percept, delayImage);
 	}
 
-	public void startAnimationDelayedUrgent(AnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
+	public void startAnimationDelayedUrgent(DefaultAnimationSet ani, FigureInfo info, String text, Percept percept, JDImageProxy delayImage) {
 		startAnimation(ani, info, null, null, info.getRoomInfo(), text, true, true, false, percept, delayImage);
 	}
 
-	public void startAnimation(AnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent, boolean postDelay, Percept percept, JDImageProxy delayImage) {
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent, boolean postDelay, Percept percept, JDImageProxy delayImage) {
 		DefaultAnimationTask task = new DefaultAnimationTask(ani,
 				text, figure, from, to, room);
 		task.setUrgent(urgent);

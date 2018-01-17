@@ -6,35 +6,35 @@ import de.jdungeon.game.AbstractAudioSet;
 
 public class AnimationSetDirections {
 
-	private final AnimationSet[] animations;
+	private final DefaultAnimationSet[] animations;
 	
-	public AnimationSet[] getAnimations() {
+	public DefaultAnimationSet[] getAnimations() {
 		return animations;
 	}
 
-	public AnimationSetDirections(AnimationSet[] anis) {
+	public AnimationSetDirections(DefaultAnimationSet[] anis) {
 		this.animations = anis;
 	}
 	
 	public void addAudioClip(AbstractAudioSet sound, int beginNr) {
-		for (AnimationSet ani : animations) {
+		for (DefaultAnimationSet ani : animations) {
 			ani.addAudio(sound, beginNr);
 		}
 	}
 	
 	public void addAudioClipHalfTime(AbstractAudioSet sound) {
-		for (AnimationSet ani : animations) {
+		for (DefaultAnimationSet ani : animations) {
 			ani.addAudio(sound, animations[0].getLength()/2);
 		}
 	}
 	
-	public AnimationSet get(int dir) {
+	public DefaultAnimationSet get(int dir) {
 		if (dir < 0 || dir > 3)
 			return null;
 		return animations[dir];
 	}
 
-	public AnimationSet get(RouteInstruction.Direction direction) {
+	public DefaultAnimationSet get(RouteInstruction.Direction direction) {
 		return get(direction.getValue()-1);
 	}
 	

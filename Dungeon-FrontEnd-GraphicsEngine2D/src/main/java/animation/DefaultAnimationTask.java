@@ -18,7 +18,7 @@ import de.jdungeon.game.Image;
 
 public class DefaultAnimationTask implements AnimationTask {
 
-	private final AnimationSet ani;
+	private final DefaultAnimationSet ani;
 	private long startTime;
 	private final Collection<AbstractAudioSet> soundsPlayed = new HashSet<>();
 	private final String text;
@@ -54,7 +54,7 @@ public class DefaultAnimationTask implements AnimationTask {
 		return info;
 	}
 
-	public DefaultAnimationTask(AnimationSet ani, String text, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room) {
+	public DefaultAnimationTask(DefaultAnimationSet ani, String text, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room) {
 		this.ani = ani;
 		this.text = text;
 		this.from = from;

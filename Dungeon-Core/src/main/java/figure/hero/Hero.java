@@ -486,7 +486,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	@Override
 	public boolean takeItem(Item i) {
-		return getInventory().takeItem(i, i.getOwner());
+		return i != null && getInventory().takeItem(i, i.getOwner());
 	}
 
 	@Override

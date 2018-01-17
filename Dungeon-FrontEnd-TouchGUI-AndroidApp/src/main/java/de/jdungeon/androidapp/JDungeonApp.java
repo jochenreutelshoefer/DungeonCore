@@ -10,7 +10,9 @@ import event.EventListener;
 import event.EventManager;
 import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
+import figure.hero.Hero;
 import level.DungeonSelectedEvent;
+import level.DungeonStartEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import user.DungeonSession;
@@ -64,7 +66,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		events.add(PlayerDiedEvent.class);
 		events.add(StartNewGameEvent.class);
 		events.add(QuitGameEvent.class);
-		events.add(DungeonSelectedEvent.class);
+		events.add(DungeonStartEvent.class);
 		events.add(HeroCategorySelectedEvent.class);
 		return events;
 	}
@@ -79,7 +81,9 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		if(event instanceof StartNewGameEvent) {
-			setScreen(new HeroSelectionScreen(this));
+			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Thief.getCode());
+			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
+			this.setScreen(screen);
 		}
 		if(event instanceof QuitGameEvent) {
 			this.finish();
@@ -89,8 +93,8 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
 			this.setScreen(screen);
 		}
-		if(event instanceof DungeonSelectedEvent) {
-			this.dungeonSession.initDungeon(((DungeonSelectedEvent)event).getDungeon());
+		if(event instanceof DungeonStartEvent) {
+			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
 
 			// TODO: solve this weird bidirectional dependency in a better way..
 			AndroidScreenJDGUI gui = new AndroidScreenJDGUI(this);
@@ -102,12 +106,14 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.dungeonSession.revertHero();
 			setScreen(new DungeonSelectionScreen(this, dungeonSession));
 		}
+		/*
 		if(event instanceof HeroCategorySelectedEvent) {
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(((HeroCategorySelectedEvent)event).getHeroType());
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
 			this.setScreen(screen);
 			//setScreen(new GameScreen(this));
 		}
+		*/
 	}
 
 	enum GameState {

@@ -13,7 +13,7 @@ import dungeon.JDPoint;
 
 public abstract class AbstractGUIElement implements GUIElement {
 
-	protected final JDPoint position;
+	protected JDPoint position;
 	protected final JDDimension dimension;
 	// TODO: remove
 	private GUIElement parent;

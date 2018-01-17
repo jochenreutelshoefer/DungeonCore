@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import animation.AnimationSet;
+import animation.DefaultAnimationSet;
 import animation.AnimationUtils;
 import animation.Motion;
 import dungeon.DoorInfo;
@@ -618,7 +618,7 @@ public class GraphicObjectRenderer {
 		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, m.getLookDirection()), rect);
 
 		if (m.isDead() != null && m.isDead()) {
-			AnimationSet set = AnimationUtils.getFigure_tipping_over(m);
+			DefaultAnimationSet set = AnimationUtils.getFigure_tipping_over(m);
 			if (set != null && set.getLength() > 0) {
 				JDImageProxy<?> i = set.getImagesNr(set.getLength() - 1);
 				ob = new JDImageLocated(i, rect);
@@ -929,7 +929,7 @@ public class GraphicObjectRenderer {
 		JDImageLocated im = null;
 		JDImageProxy imageProxy = null;
 		if (info.isDead()) {
-			AnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), Motion.TippingOver, RouteInstruction.Direction
+			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), Motion.TippingOver, RouteInstruction.Direction
 					.fromInteger(info.getLookDirection().getValue()));
 			// we take the last image from the tipping over animation
 			if (animationSet == null) {
@@ -948,7 +948,7 @@ public class GraphicObjectRenderer {
 			else {
 				motion = Motion.Walking;
 			}
-			AnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), motion, RouteInstruction.Direction
+			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), motion, RouteInstruction.Direction
 					.fromInteger(info.getLookDirection().getValue()));
 			if (animationSet == null) {
 				Log.warning("No image found for motion " + motion + " (info.toString()+");

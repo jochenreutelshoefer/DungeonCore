@@ -213,7 +213,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		RoomInfo roomInfo = figure.getRoomInfo();
 		List<ItemInfo> items = roomInfo.getItems();
 		int takeElementSize = 28;
-		if (!items.isEmpty()) {
+		if (items != null && !items.isEmpty()) {
 			final JDDimension dimension = new JDDimension(takeElementSize, takeElementSize);
 			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
 			takeItemElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
