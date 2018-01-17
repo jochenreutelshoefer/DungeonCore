@@ -12,36 +12,32 @@ package spell;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-import figure.Figure;
-import figure.percept.TextPercept;
-import game.InfoEntity;
-import game.JDEnv;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import dungeon.Door;
 import dungeon.Room;
+import figure.Figure;
+import figure.percept.TextPercept;
+import game.JDEnv;
 public class Isolation extends AbstractSpell {
-	
-//	public static int[] diffArray = { 5, 13 };
-//	public static int[] diffMinArray = { 9, 15 };
 	
 	public static int [][] values = { {8,5,8,3,1},
 								{15,13,12,25,2}
 								};
-	
-	
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
-	List<Door> doors = new LinkedList<Door>();
+
+	private final boolean isPossibleNormal = true;
+	private final boolean isPossibleInFight = false;
+	private final List<Door> doors = new ArrayList<Door>();
 	
 	public Isolation(int level){
 		super(level, values[level-1]);
-		isPossibleNormal = true;
-		isPossibleInFight = true;
 	}
-	
+
+	public Isolation() {
+	}
+
 	@Override
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
@@ -51,7 +47,6 @@ public class Isolation extends AbstractSpell {
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
-	
 	
 	@Override
 	public String getName() {
@@ -70,18 +65,9 @@ public class Isolation extends AbstractSpell {
 	
 	@Override
 	public boolean isApplicable(Figure mage, Object target) {
-		
 		return true;
 	}
-	
-//	public int getLernCost() {
-//		return 1;
-//	}
-	
-//	public int getDuration(){
-//		return rounds;
-//	}
-	
+
 	public boolean fightModus(){
 		return true;
 	}
@@ -98,14 +84,6 @@ public class Isolation extends AbstractSpell {
 		AbstractSpell.addTimedSpell(instance);
 		String str = JDEnv.getResourceBundle().getString("spell_isolation_cast");
 		sorcerer.tellPercept(new TextPercept(str));
-		
 	}
 	
-	public void stopEffect(){
-		for(int i =0 ; i < doors.size(); i++) {
-			doors.get(i).removeBlocking(this);
-		}
-		
-	}
-
 }

@@ -32,7 +32,11 @@ public class GoldenHit extends AbstractTargetSpell implements TargetSpell{
 		super(level,diffMin, diff, cost,strength, lerncost);
 		isPossibleNormal = false;
 		isPossibleInFight = true;
-		
+	}
+
+	public GoldenHit() {
+		isPossibleNormal = false;
+		isPossibleInFight = true;
 	}
 
 	@Override

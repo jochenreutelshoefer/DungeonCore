@@ -21,8 +21,6 @@ import de.jdungeon.game.Screen;
  */
 public abstract class StandardScreen extends Screen {
 
-
-
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
 	private final long screenCreatedTime;
 	private final GUIImageManager guiImageManager;

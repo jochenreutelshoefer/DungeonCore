@@ -6,7 +6,6 @@
  */
 package spell;
 
-
 import java.util.Collections;
 import java.util.List;
 
@@ -23,41 +22,44 @@ import game.RoomEntity;
 
 /**
  * @author Jochen
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ *         <p>
+ *         To change the template for this generated type comment go to
+ *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Raid extends AbstractTargetSpell implements TargetSpell {
 
-
 	public static int[][] values = { { 5, 3, 6, 10, 1 }, {
-			7, 5, 5, 20,2 }
+			7, 5, 5, 20, 2 }
 	};
 
 	private final boolean isPossibleNormal;
 	private final boolean isPossibleInFight;
 
 	public Raid(
-		int level,
-		int diffMin,
-		int diff,
-		int cost,
-		int strength, int lerncost) {
+			int level,
+			int diffMin,
+			int diff,
+			int cost,
+			int strength, int lerncost) {
 		super(level, diffMin, diff, cost, strength, lerncost);
 		isPossibleNormal = true;
-		isPossibleInFight =false;
+		isPossibleInFight = false;
 
 	}
-	
+
+	public Raid() {
+		isPossibleNormal = true;
+		isPossibleInFight = false;
+	}
+
 	@Override
 	public boolean distanceOkay(Figure mage, Object target) {
 		return true;
 	}
-	
+
 	@Override
 	public String getText() {
-			String s = JDEnv.getResourceBundle().getString("spell_raid_text");
-			return s;
+		return JDEnv.getResourceBundle().getString("spell_raid_text");
 	}
 
 	@Override
@@ -68,11 +70,11 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 				PositionInRoomInfo position = actor.getPos();
 				RouteInstruction.Direction possibleRaidDirection =
 						position.getPossibleFleeDirection();
-				if(possibleRaidDirection == null) {
+				if (possibleRaidDirection == null) {
 					return Collections.emptyList();
 				}
 				RoomInfo neighbourRoom = actor.getRoomInfo().getNeighbourRoom(possibleRaidDirection);
-				if(neighbourRoom == null || !actor.getRoomInfo().getDoor(possibleRaidDirection).isPassable()) {
+				if (neighbourRoom == null || !actor.getRoomInfo().getDoor(possibleRaidDirection).isPassable()) {
 					return Collections.emptyList();
 				}
 				return neighbourRoom.getFigureInfos();
@@ -84,7 +86,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	public boolean isPossibleFight() {
 		return this.isPossibleInFight;
 	}
-	
+
 	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
@@ -93,17 +95,17 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 //	public int getLernCost() {
 //		return level;
 //	}
-	
+
 	@Override
 	public int getType() {
 		return AbstractSpell.SPELL_RAID;
 	}
-	
-	public boolean fightModus(){
+
+	public boolean fightModus() {
 		return isPossibleInFight;
 	}
-	
-	public boolean normalModus(){
+
+	public boolean normalModus() {
 		return isPossibleNormal;
 	}
 
@@ -112,7 +114,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 		super(level, values[level - 1]);
 		this.level = level;
 		isPossibleNormal = true;
-		isPossibleInFight =false;
+		isPossibleInFight = false;
 	}
 
 	@Override
@@ -134,17 +136,16 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 
 	@Override
 	public void sorcer(Figure mage, Object target) {
-		
-		
+
 		Room targetRoom = ((Figure) target).getRoom();
 		Room mageRoom = mage.getRoom();
 
 		Door d = mageRoom.getConnectionTo(targetRoom);
 		RouteInstruction.Direction dir = mageRoom.getDirection(d);
-		mage.makeRaid((Figure)target);
-		
+		mage.makeRaid((Figure) target);
+
 		mage.walk(dir);
-		
+
 	}
 
 	@Override

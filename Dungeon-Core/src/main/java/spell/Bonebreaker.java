@@ -26,15 +26,11 @@ public class Bonebreaker extends AbstractTargetSpell {
 	public static int[][] values = { { 7, 5, 8, 12, 2 }, { 15, 13, 12, 25, 2 } };
 
 	
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
+	private final boolean isPossibleNormal = false;
+	private final boolean isPossibleInFight = true;
 	
 	public Bonebreaker(int level, int diffMin, int diff, int cost, int strength, int learnCost) {
 		super(level, diffMin, diff, cost, strength,learnCost);
-		
-		isPossibleNormal = false;
-		isPossibleInFight = true;
-
 	}
 	
 	@Override
@@ -84,14 +80,12 @@ public class Bonebreaker extends AbstractTargetSpell {
 	}
 
 	public Bonebreaker(int level) {
-
 		super(level, values[level - 1]);
-		
-		isPossibleNormal = false;
-		isPossibleInFight = true;
 	}
 
-	
+	public Bonebreaker() {
+	}
+
 	@Override
 	public void sorcer(Figure mage, Object target/*, int l*/) {
 		

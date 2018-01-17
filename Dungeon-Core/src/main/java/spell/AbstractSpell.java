@@ -65,28 +65,23 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static final int SPELL_FIR = 27;
 	public static final int SPELL_LIONESS = 28;
 	
-	//public static int[][] values = { { -1, -1, -1, -1 }, { -1, -1, -1, -1 } };
-
 	public static List<TimedSpellInstance> timedSpells = new LinkedList<TimedSpellInstance>();
 	
 	protected int[] valueSet = new int[5];
 
 	public static void addTimedSpell(TimedSpellInstance s) {
 		timedSpells.add(s);
-
 	}
 
 	public static void removeTimedSpell(TimedSpellInstance s) {
 		timedSpells.remove(s);
 	}
 	
-	//protected int [] configValues;
-	
 	public int[] getConfigValues() {
 		return valueSet;
 	}
 
-	protected int level;
+	protected int level = 1;
 
 	protected int diff;
 
@@ -119,6 +114,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	}
 	
+	@Override
 	public abstract int getType();
 
 	public AbstractSpell(int level, int diffMin, int diff, int cost, int strength, int learnCost) {
@@ -194,6 +190,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		return getName() + " " + Integer.toString(level);
 	}
 
+	@Override
 	public abstract String getText();
 
 	public boolean canFire(Figure mage) {
@@ -224,6 +221,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		return false;
 	}
 
+	@Override
 	public abstract boolean isApplicable(Figure mage, Object target);
 		
 
@@ -320,11 +318,13 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	public boolean isAbleToCast(Figure mage) {
+		/*
 		double psy = mage.getPsycho().getValue();
 		if (psy < getDifficultyMin()) {
 			return false;
 
 		}
+		*/
 		if(mage.getRoom().fightRunning()) {
 			if(!this.isPossibleFight()) {
 				return false;
@@ -373,6 +373,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public ActionResult fire(Figure mage, Object target, boolean doIt) {
 
 		double psy = mage.getPsycho().getValue();
+		/*
 		if (psy < getDifficultyMin()) {
 			String str = JDEnv.getResourceBundle().getString("spell_no_wisdom");
 			mage.tellPercept(new TextPercept(str));
@@ -381,6 +382,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 			return ActionResult.KNOWLEDGE;
 		}
+		*/
 		if (!isApplicable(mage, target)) {
 			String str = JDEnv.getResourceBundle().getString(
 					"spell_wrong_target");

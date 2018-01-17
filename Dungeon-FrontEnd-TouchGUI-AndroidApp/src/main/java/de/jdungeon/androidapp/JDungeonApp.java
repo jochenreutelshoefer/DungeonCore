@@ -15,6 +15,7 @@ import level.DungeonSelectedEvent;
 import level.DungeonStartEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import spell.Spell;
 import user.DungeonSession;
 import user.DefaultDungeonSession;
 
@@ -22,6 +23,8 @@ import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.event.QuitGameEvent;
 import de.jdungeon.androidapp.event.StartNewGameEvent;
 import de.jdungeon.androidapp.gui.dungeonselection.DungeonSelectionScreen;
+import de.jdungeon.androidapp.gui.skillselection.SkillSelectedEvent;
+import de.jdungeon.androidapp.gui.skillselection.SkillSelectionScreen;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.start.HeroCategorySelectedEvent;
 import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
@@ -68,6 +71,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		events.add(QuitGameEvent.class);
 		events.add(DungeonStartEvent.class);
 		events.add(HeroCategorySelectedEvent.class);
+		events.add(SkillSelectedEvent.class);
 		return events;
 	}
 
@@ -82,7 +86,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		if(event instanceof StartNewGameEvent) {
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Thief.getCode());
-			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
+			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
 			this.setScreen(screen);
 		}
 		if(event instanceof QuitGameEvent) {
@@ -90,7 +94,14 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		}
 		if(event instanceof ExitUsedEvent) {
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
-			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
+			SkillSelectionScreen screen = new SkillSelectionScreen(this);
+			this.setScreen(screen);
+
+		}
+		if(event instanceof SkillSelectedEvent) {
+			Spell spell = ((SkillSelectedEvent) event).getSpell();
+			dungeonSession.getCurrentHero().getSpellbook().addSpell(spell);
+			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
 			this.setScreen(screen);
 		}
 		if(event instanceof DungeonStartEvent) {
@@ -104,7 +115,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();
-			setScreen(new DungeonSelectionScreen(this, dungeonSession));
+			setScreen(new DungeonSelectionScreen(this));
 		}
 		/*
 		if(event instanceof HeroCategorySelectedEvent) {

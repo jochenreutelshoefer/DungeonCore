@@ -98,9 +98,7 @@ public class Dungeon implements Turnable, EventListener {
 		RoomObservationStatus[][] stats = new RoomObservationStatus[theDungeon.length][theDungeon[0].length];
 		for (int i = 0; i < stats.length; i++) {
 			for (int j = 0; j < stats[0].length; j++) {
-
 				stats[i][j] = new RoomObservationStatus(map, getPoint(i, j));
-
 			}
 		}
 		return stats;
@@ -113,7 +111,9 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	public void addShrine(Shrine s) {
-		shrines.add(s);
+		if(s != null) {
+			shrines.add(s);
+		}
 	}
 
 	public JDPoint getRandomPoint() {

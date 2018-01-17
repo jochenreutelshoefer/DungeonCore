@@ -1,5 +1,7 @@
 package de.jdungeon.androidapp.gui.smartcontrol;
 
+import control.ActionAssembler;
+import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import event.ActionEvent;
 import event.EventManager;
@@ -25,14 +27,16 @@ public class DoorElement extends AnimatedSmartControlElement {
 	private final boolean locked;
 	private final boolean hasKey;
 	private final Action action;
-	private final InfoEntity clickableObject;
+	private final DoorInfo clickableObject;
+	private final ActionAssembler actionAssembler;
 
-	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, InfoEntity clickableObject) {
+	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, DoorInfo clickableObject, ActionAssembler actionAssembler) {
 		super(position, dimension, parent);
 		this.locked = locked;
 		this.hasKey = hasKey;
 		this.action = action;
 		this.clickableObject = clickableObject;
+		this.actionAssembler = actionAssembler;
 
 		// prepare highlight animation drawables
 		for (int i = 0; i < animationShapes.length; i++) {
@@ -56,7 +60,7 @@ public class DoorElement extends AnimatedSmartControlElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
-		EventManager.getInstance().fireEvent(new ActionEvent(action));
+		actionAssembler.wannaLockDoor(clickableObject);
 		if(clickableObject != null) {
 			EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
 		}

@@ -66,29 +66,18 @@ public class Search extends AbstractTargetSpell {
 			return s;
 		}
 	
-//	public int getLernCost() {
-//			return 1;
-//		}
-	
-//	public boolean fightModus(){
-//		return isPossibleInFight;
-//	}
-//	
-//	public boolean normalModus(){
-//		return isPossibleNormal;
-//	}
-	
-	
-	public Search(int level) {
-			
-		super(level,values[level-1]);
-		
+	public Search() {
 		isPossibleNormal = false;
 		isPossibleInFight = true;
 	}
-	/**
-	 * @see AbstractSpell#sorcer(fighter, Object, int)
-	 */
+
+	public Search(int level) {
+			
+		super(level,values[level-1]);
+		isPossibleNormal = false;
+		isPossibleInFight = true;
+
+	}
 	@Override
 	public void sorcer(Figure mage, Object target) {
 		

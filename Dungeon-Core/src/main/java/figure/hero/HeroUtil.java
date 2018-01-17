@@ -58,7 +58,6 @@ public class HeroUtil {
 		switch (heroCode) {
 		case 1:
 
-			spells.addSpell(new GoldenHit(1));
 			waffe = new Sword(25, false);
 			healthVal = (int) warriorBasic[0];
 			strengthVal = (int) warriorBasic[1];
@@ -79,7 +78,6 @@ public class HeroUtil {
 			break;
 
 		case 2:
-			spells.addSpell(new Raid(1));
 			waffe = new Club(25, false);
 			thief = true;
 			healthVal = (int) hunterBasic[0];
@@ -99,7 +97,6 @@ public class HeroUtil {
 			dustReg = hunterBasic[14];
 			break;
 		case 3:
-			spells.addSpell(new Convince(1));
 			waffe = new Wolfknife(25, false);
 			healthVal = (int) druidBasic[0];
 			strengthVal = (int) druidBasic[1];
@@ -118,7 +115,6 @@ public class HeroUtil {
 			dustReg = druidBasic[14];
 			break;
 		case 4:
-			spells.addSpell(new Fireball(1));
 			waffe = new Lance(25, false);
 			healthVal = (int) mageBasic[0];
 			strengthVal = (int) mageBasic[1];

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import control.ActionAssembler;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
@@ -56,6 +57,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private final Collection<GUIElement> shrineElements = new ArrayList<>();
 	private final GUIElement frame;
 	private final FigureInfo figure;
+	private final ActionAssembler actionAssembler;
 	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
 	private final int doorThickness;
@@ -66,9 +68,10 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private final JDPoint[] doorCoordinates;
 	private boolean worldHasChanged = true;
 
-	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure) {
+	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
+		this.actionAssembler = actionAssembler;
 
 		doorOuterBorderWidth = this.getDimension().getWidth() / 5;
 
@@ -203,7 +206,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			if (door != null && door.hasLock()) {
 				Action action = new LockAction(door);
 				doorElements.add(new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
-						.isLocked(), this.figure.hasKey(door), action, door));
+						.isLocked(), this.figure.hasKey(door), action, door, actionAssembler));
 			}
 		}
 	}

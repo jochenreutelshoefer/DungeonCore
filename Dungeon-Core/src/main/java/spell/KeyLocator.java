@@ -26,14 +26,11 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 			{ 6, 12, 7, 30, 1 }
 	};
 
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
+	private final boolean isPossibleNormal = true;
+	private final boolean isPossibleInFight = false;
 
 	public KeyLocator(int level, int diffMin, int diff, int cost, int strength, int lerncost) {
 		super(level, diffMin, diff, cost, strength, lerncost);
-		isPossibleNormal = true;
-		isPossibleInFight = false;
-
 	}
 
 	@Override
@@ -62,11 +59,11 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	public KeyLocator(int level) {
-
 		super(level, values[level - 1]);
 		this.level = level;
-		isPossibleNormal = true;
-		isPossibleInFight = false;
+	}
+
+	public KeyLocator() {
 	}
 
 	@Override

@@ -87,7 +87,8 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 		this.level = level;
 	}
 
-
+	public Fireball() {
+	}
 
 	/**
 	 * @see AbstractSpell#sorcer(fighter, Object, int)

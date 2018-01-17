@@ -26,8 +26,7 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 
 	@Override
 	public String getText() {
-		String s = JDEnv.getResourceBundle().getString("spell_light_text");
-		return s;
+		return JDEnv.getResourceBundle().getString("spell_light_text");
 	}
 	
 	@Override
@@ -48,7 +47,10 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 	public Light(int level) {
 		super(level, values[level - 1]);
 	}
-	
+
+	public Light() {
+	}
+
 	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		if(target instanceof Figure) {
@@ -96,7 +98,6 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 
 			} else if (bal > 1) {
 				res = (strength * 2) / m.getLevel();
-
 			}
 			String str = JDEnv.getResourceBundle().getString("spell_light_cast")+" " + m.getName() + " (" + res + ")";
 			mage.tellPercept(new TextPercept(str));
@@ -107,9 +108,6 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 		}
 	}
 
-	/**
-	 * @see AbstractSpell#getName()
-	 */
 	@Override
 	public String getName() {
 		return JDEnv.getResourceBundle().getString("spell_light_name");

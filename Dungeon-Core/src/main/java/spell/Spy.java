@@ -19,21 +19,15 @@ import game.JDEnv;
 
 public class Spy extends NoTargetSpell {
 
-//	public int [] diff = { 6 , 13 };
-//	public int [] diffMin = { 10 , 15};
-
 	public static int[][] values = { { 10, 6, 5, 10, 1 },
 			{ 15, 10, 7, 30, 2 }
 	};
 
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
+	private final boolean isPossibleNormal = true;
+	private final boolean isPossibleInFight = false;
 
 	public Spy(int level, int diffMin, int diff, int cost, int strength, int lerncost) {
 		super(level, diffMin, diff, cost, strength, lerncost);
-		isPossibleNormal = true;
-		isPossibleInFight = false;
-
 	}
 
 	@Override
@@ -58,38 +52,11 @@ public class Spy extends NoTargetSpell {
 	}
 
 	public Spy(int level) {
-
 		super(level, values[level - 1]);
-
-		isPossibleNormal = true;
-		isPossibleInFight = false;
 	}
 
-//	public boolean fightModus(){
-//		return isPossibleInFight;
-//	}
-//	
-//	public boolean normalModus(){
-//		return isPossibleNormal;
-//	}
-//	
-//	public int getLernCost() {
-//			return level;
-//		}
-//	
-//	/**
-//	 * @see Spell#getDifficulty(int)
-//	 */
-//	public int getDifficulty(int level) {
-//		return diff[level-1];
-//	}
-//
-//	/**
-//	 * @see Spell#getDifficultyMin(int)
-//	 */
-//	public int getDifficultyMin(int level) {
-//		return diff[level-1];
-//	}
+	public Spy() {
+	}
 
 	public int getCost(int level) {
 		return level * 8;

@@ -14,16 +14,15 @@ public class Steal extends AbstractTargetSpell {
 
 	public static int[][] values = { { 6, 4, 8, 10, 1 }, { 15, 13, 12, 25, 2 } };
 
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
+	private final boolean isPossibleNormal = false;
+	private final boolean isPossibleInFight = true;
 
 	public Steal(int level, int diffMin, int diff, int cost, int strength,
 			int lerncost) {
 		super(level, diffMin, diff, cost, strength, lerncost);
+	}
 
-		isPossibleNormal = false;
-		isPossibleInFight = true;
-
+	public Steal() {
 	}
 
 	@Override
@@ -55,20 +54,10 @@ public class Steal extends AbstractTargetSpell {
 		return s;
 	}
 
-	// public boolean fightModus(){
-	// return isPossibleInFight;
-	// }
-
-	// public boolean normalModus(){
-	// return isPossibleNormal;
-	// }
-
 	public Steal(int level) {
 
 		super(level, values[level - 1]);
 		this.level = level;
-		isPossibleNormal = false;
-		isPossibleInFight = true;
 	}
 
 	@Override

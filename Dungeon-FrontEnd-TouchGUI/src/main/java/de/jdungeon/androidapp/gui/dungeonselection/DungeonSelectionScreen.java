@@ -20,7 +20,6 @@ import level.DungeonStartEvent;
 import user.DungeonSession;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.gui.AnimationGUIElement;
 import de.jdungeon.androidapp.gui.DrawGUIElement;
 import de.jdungeon.androidapp.screen.start.MenuScreen;
 import de.jdungeon.game.AbstractImageLoader;
@@ -51,18 +50,18 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 	private int[][] coordinatesX;
 	private int iconIndex = 0;
 
-	public DungeonSelectionScreen(Game game, DungeonSession session) {
+	public DungeonSelectionScreen(Game game) {
 		super(game);
 		EventManager.getInstance().registerListener(this);
-		this.session = session;
+		this.session = (DungeonSession)game.getSession();
 		dungeonManager = session.getDungeonManager();
 		int currentStage = session.getCurrentStage();
 		stageHeightOffset = 180;
-		offset = game.getScreenHeight()*1/2 + (stageHeightOffset * currentStage);
+		offset = game.getScreenHeight() /2 + (stageHeightOffset * currentStage);
 		xCenterValue = game.getScreenWidth()/2;
 
 		DefaultAnimationSet animationSet = ImageManager.getAnimationSet(Hero.HeroCategory.fromValue(session.getCurrentHero()
-				.getHeroCode()), Motion.Walking, RouteInstruction.Direction.North);
+				.getHeroCode()), Motion.Running, RouteInstruction.Direction.North);
 
 		imageLoader = game.getFileIO().getImageLoader();
 		for(int i = 0; i < dungeonManager.getNumberOfStages(); i++) {
@@ -133,8 +132,6 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			});
 
 			Image image = LevelIconImageManager.getInstance().getIcon(imageLoader, iconIndex++);
-			//Image image = (Image)ImageManager.engelImage.getImage();
-			//int x = xDistance + (innerStageIndex * stageHeightOffset);
 			JDPoint tilePosition = new JDPoint(x-DungeonSelectionTile.TILE_WIDTH/2, y);
 			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage));
 
@@ -194,7 +191,6 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			int currentStage = session.getCurrentStage();
 			JDPoint dungeonTileHeroPosition = getDungeonTileHeroPosition(currentStage, dungeonFactory);
 			heroFigure.addTask(heroFigure.getPositionOnScreen(), dungeonTileHeroPosition, 4, new DungeonStartEvent(selectedEvent));
-
 		}
 	}
 }

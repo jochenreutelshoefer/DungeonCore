@@ -143,6 +143,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private boolean worldHasChanged = true;
 	private FocusManager focusManager;
 	private ItemWheel itemWheelHeroItems;
+	private final ActionAssembler actionAssembler;
 
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
@@ -154,7 +155,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		gui.setFigure(figureInfo);
 		this.gui = gui;
 		hero.setControl(gui);
-		control = new Control(figureInfo, new ActionAssembler(gui));
+		actionAssembler =  new ActionAssembler(gui);
+		control = new Control(figureInfo, actionAssembler);
 
 		/*
 	 * init text messages panel
@@ -243,7 +245,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		SmartControl smartControl = new SmartControl(
 				new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2),
 				new JDDimension(smartControlSize, smartControlSize), this, this
-				.getGame(), figureInfo);
+				.getGame(), figureInfo, actionAssembler);
 		this.guiElements.add(smartControl);
 
 		/*

@@ -8,6 +8,7 @@ import spell.AbstractSpell;
 
 import figure.Figure;
 import figure.Spellbook;
+import spell.Spell;
 
 /**
  * @author Duke1
@@ -81,13 +82,13 @@ public class BookSpell extends Book implements Usable{
 	}
 	
 	public boolean use(Figure f,Object target,boolean meta) {
-		List<AbstractSpell> theBook = f.getSpellbook().getSpells();
+		List<Spell> theBook = f.getSpellbook().getSpells();
 		String name = theSpell.getName();
 		for(int i = 0; i < theBook.size(); i++) {
-			String a = ((AbstractSpell)theBook.get(i)).getName();
+			String a = (theBook.get(i)).getName();
 			if(name.equals(a)) {
 				int level = theSpell.getLevel();
-				int l = ((AbstractSpell)theBook.get(i)).getLevel();
+				int l = (theBook.get(i)).getLevel();
 				if(level > l) {
 					theBook.remove(i);
 					

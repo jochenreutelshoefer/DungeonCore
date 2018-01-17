@@ -15,15 +15,13 @@ import game.JDEnv;
 
 public class Heal extends NoTargetSpell {
 	
-//	public static int [] diff = { 4 , 7 };
-//	public static int [] diffMin = { 8 , 14};
-	
+
 	public static int [][] values = { {9,5,7,30,1},
 								{7,11,9,45,2}
 								};
 	
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
+	private final boolean isPossibleNormal = true;
+	private final boolean isPossibleInFight = true;
 	
 	@Override
 	public boolean isPossibleNormal() {
@@ -35,21 +33,13 @@ public class Heal extends NoTargetSpell {
 		return this.isPossibleInFight;
 	}
 	
-//	public heal_spell() {
-//		target = spell.TARGET_SELF;
-//		normal = true;
-//		fight = true;
-//		level = 1;
-//		worth = 15;
-//	}
-	
 	public Heal(int l) {
 		super(l,values[l-1]);
-		isPossibleNormal = true;
-		isPossibleInFight = true;
-		
 	}
-	
+
+	public Heal() {
+	}
+
 	@Override
 	public boolean isApplicable(Figure mage, Object target) {
 		
@@ -63,13 +53,8 @@ public class Heal extends NoTargetSpell {
 	
 	@Override
 	public String getText() {
-			String s = JDEnv.getResourceBundle().getString("spell_heal_text");
-			return s;
+		return JDEnv.getResourceBundle().getString("spell_heal_text");
 	}
-	
-//	public int getLernCost() {
-//			return level;
-//		}
 	
 	public boolean fightModus(){
 		return isPossibleInFight;
@@ -81,8 +66,6 @@ public class Heal extends NoTargetSpell {
 	
 	public Heal(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
-		isPossibleNormal = true;
-		isPossibleInFight = true;
 	}
 	
 	@Override
@@ -90,20 +73,12 @@ public class Heal extends NoTargetSpell {
 		return JDEnv.getResourceBundle().getString("spell_heal_name");
 	}
 
-
-	
-
-	/**
-	 * @see AbstractSpell#fire(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage) {
-		
 				mage.heal(strength);
 				mage.healPoisonings();
 				String str = JDEnv.getResourceBundle().getString("spell_heal_cast");
 				mage.tellPercept(new TextPercept(str));
-				
 	}
 
 	

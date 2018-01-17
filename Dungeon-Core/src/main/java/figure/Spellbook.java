@@ -14,21 +14,21 @@ import spell.*;
 public class Spellbook implements Serializable {
 
 	
-	List<AbstractSpell> spells = new ArrayList<AbstractSpell>();
+	List<Spell> spells = new ArrayList<Spell>();
 
 	
 	public Spellbook() {
 	}
 	
-	public Spellbook(List<AbstractSpell> l) {
+	public Spellbook(List<Spell> l) {
 		spells.addAll(l);
 	}
 	
-	public void addSpell(AbstractSpell s) {
+	public void addSpell(Spell s) {
 		spells.add(s);
 	}
 	
-	public AbstractSpell getSpell(int i) {
+	public Spell getSpell(int i) {
 		if(i>= 0 && i < spells.size()) {
 			return spells.get(i);
 		}
@@ -36,16 +36,16 @@ public class Spellbook implements Serializable {
 	}
 
 	
-	public List<AbstractSpell> getSpells() {
+	public List<Spell> getSpells() {
 		return spells;
 	}
 
 	
-	public AbstractSpell getSpell(String s) {
+	public Spell getSpell(String s) {
 		for(int i = 0; i < spells.size(); i++) {
-			String t = ((AbstractSpell)spells.get(i)).getName();
+			String t = ((Spell)spells.get(i)).getName();
 			if(t.equals(s)){
-				return (AbstractSpell)spells.get(i);
+				return (Spell)spells.get(i);
 			}
 		}
 		return null;

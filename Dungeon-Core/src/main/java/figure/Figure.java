@@ -98,6 +98,7 @@ import item.interfaces.Usable;
 import org.apache.log4j.Logger;
 import shrine.Shrine;
 import spell.AbstractSpell;
+import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
 
@@ -142,7 +143,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	protected int fightAP = 0;
 
-	private AbstractSpell lastSpell = null;
+	private Spell lastSpell = null;
 
 	protected int figureID = -1;
 
@@ -367,8 +368,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 	}
 
-	public AbstractSpell resetLastSpell() {
-		AbstractSpell s = lastSpell;
+	public Spell resetLastSpell() {
+		Spell s = lastSpell;
 		lastSpell = null;
 		return s;
 	}
@@ -2306,7 +2307,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	protected void fireModifications() {
 		List modifications = getModificationList();
-		if (modifications.size() > 0) {
+		if (!modifications.isEmpty()) {
 
 			TimedAttributeModification m = null;// ((TimedModification)
 			Iterator iter = modifications.iterator();
@@ -2322,13 +2323,13 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		}
 	}
 
-	private AbstractSpell unWrappSpellInfo(SpellInfo a) {
+	private Spell unWrappSpellInfo(SpellInfo a) {
 		if (a == null) {
 			return null;
 		}
-		List<AbstractSpell> l = this.getSpellbook().getSpells();
-		for (Iterator<AbstractSpell> iter = l.iterator(); iter.hasNext(); ) {
-			AbstractSpell element = iter.next();
+		List<Spell> l = this.getSpellbook().getSpells();
+		for (Iterator<Spell> iter = l.iterator(); iter.hasNext(); ) {
+			Spell element = iter.next();
 			if (element != null
 					&& a.equals(new SpellInfo(element, this.getRoomVisibility()))) {
 				return element;
@@ -2340,7 +2341,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	private ActionResult handleSpellAction(SpellAction a, boolean doIt) {
 
-		AbstractSpell sp = unWrappSpellInfo(a.getSpell());
+		Spell sp = unWrappSpellInfo(a.getSpell());
 		if (sp != null) {
 
 			if (lastSpell != null && lastSpell != sp) {
@@ -2414,7 +2415,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		return ActionResult.OTHER;
 	}
 
-	public AbstractSpell getLastSpell() {
+	public Spell getLastSpell() {
 		return lastSpell;
 	}
 

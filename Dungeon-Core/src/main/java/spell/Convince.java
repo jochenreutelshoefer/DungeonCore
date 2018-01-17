@@ -20,8 +20,8 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 			12, 12, 9, 20,1 }
 	};
 
-	private final boolean isPossibleNormal;
-	private final boolean isPossibleInFight;
+	private final boolean isPossibleNormal = false;
+	private final boolean isPossibleInFight = true;
 	
 	public Convince(
 		int level,
@@ -30,9 +30,6 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 		int cost,
 		int strength) {
 		super(level, diffMin, diff, cost, strength,1);
-		isPossibleNormal = false;
-		isPossibleInFight = true;
-
 	}
 	
 	@Override
@@ -88,15 +85,13 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 //	}
 
 	public Convince(int level) {
-
 		super(level, values[level - 1]);
 		this.level = level;
-		isPossibleNormal = false;
-		isPossibleInFight = true;
 	}
-	/**
-	 * @see AbstractSpell#sorcer(fighter, Object, int)
-	 */
+
+	public Convince() {
+	}
+
 	@Override
 	public void sorcer(Figure mage, Object target/*, int l*/) {
 

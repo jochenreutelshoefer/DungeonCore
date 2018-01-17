@@ -14,8 +14,8 @@ import gui.Paragraph;
 
 public class SpellInfo extends InfoEntity{
 	
-	private final AbstractSpell spell;
-	public SpellInfo(AbstractSpell s, DungeonVisibilityMap map) {
+	private final Spell spell;
+	public SpellInfo(Spell s, DungeonVisibilityMap map) {
 		super(map);
 		this.spell = s;
 	}
