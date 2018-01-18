@@ -12,10 +12,16 @@ import dungeon.JDPoint;
 public class InventoryBox extends AbstractGUIElement {
 
 	private EquipmentItemInfo item;
+	private Image itemImage;
+	private final int width_16;
+	private final int height_16;
+	private final int width_20;
+	private final int height_20;
+	private final int posX8;
+	private final int posY8;
+	private final int posX10;
+	private final int posY10;
 
-	public EquipmentItemInfo getItem() {
-		return item;
-	}
 
 	private final Image background;
 	private final Image foregroundEmpty;
@@ -23,6 +29,7 @@ public class InventoryBox extends AbstractGUIElement {
 
 	public void setItem(EquipmentItemInfo item) {
 		this.item = item;
+		itemImage = inventoryImageManager.getImage(item);
 	}
 
 	public InventoryBox(JDPoint position, JDDimension dim, Image background,
@@ -31,12 +38,28 @@ public class InventoryBox extends AbstractGUIElement {
 		this.background = background;
 		this.foregroundEmpty = foregroundEmpty;
 		this.inventoryImageManager = inventoryImageManager;
+
+
+
+		width_16 = this.dimension.getWidth() - 16;
+		height_16 = this.dimension.getHeight() - 16;
+		width_20 = this.dimension.getWidth() - 20;
+		height_20 = this.dimension.getHeight() - 20;
+		posX8 = position.getX() + 8;
+		posY8 = position.getY() + 8;
+		posX10 = position.getX() + 10;
+		posY10 = position.getY() + 10;
 	}
 
 	@Override
 	public boolean needsRepaint() {
 		return true;
 	}
+
+	public EquipmentItemInfo getItem() {
+		return item;
+	}
+
 
 	@Override
 	public boolean isVisible() {
@@ -50,30 +73,26 @@ public class InventoryBox extends AbstractGUIElement {
 
 	@Override
 	public void paint(Graphics g, JDPoint parentPosition) {
-
-
 		g.drawScaledImage(background, parentPosition.getX() + position.getX(),
 				parentPosition.getY() + position.getY(),
 				this.dimension.getWidth(), this.dimension.getHeight(), 0, 0,
 				background.getWidth(), background.getHeight());
 		if (item != null) {
-			Image itemImage = inventoryImageManager.getImage(item);
 			g.drawScaledImage(itemImage,
-					parentPosition.getX() + position.getX() + 8,
-					parentPosition.getY() + position.getY() + 8,
-					this.dimension.getWidth() - 16,
-					this.dimension.getHeight() - 16, 0, 0,
+					parentPosition.getX() + posX8,
+					parentPosition.getY() + posY8,
+					width_16,
+					height_16, 0, 0,
 					itemImage.getWidth(), itemImage.getHeight());
 
 		} else {
 			g.drawScaledImage(foregroundEmpty,
-					parentPosition.getX() + position.getX() + 10,
-					parentPosition.getY() + position.getY() + 10,
-					this.dimension.getWidth() - 20,
-					this.dimension.getHeight() - 20, 0, 0,
+					parentPosition.getX() + posX10,
+					parentPosition.getY() + posY10,
+					width_20,
+					height_20, 0, 0,
 					foregroundEmpty.getWidth(), foregroundEmpty.getHeight());
 		}
-
 	}
 
 }

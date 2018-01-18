@@ -42,8 +42,7 @@ public abstract class ImageGUIElement extends AbstractGUIElement {
 
 	public void paint(Graphics g, JDPoint viewportPosition, JDImageLocated image) {
 		g.drawScaledImage((Image) image.getImage().getImage(), image.getX(0), image.getY(0), image.getWidth()
-				, image.getHeight(), 0, 0,
-				im.getWidth(), im.getHeight());
+				, image.getHeight(), 0, 0, im.getWidth(), im.getHeight());
 	}
 
 	@Override

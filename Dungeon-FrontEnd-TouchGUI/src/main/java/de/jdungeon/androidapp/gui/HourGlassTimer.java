@@ -28,11 +28,6 @@ public class HourGlassTimer extends AbstractGUIElement {
 	}
 
 	@Override
-	public boolean needsRepaint() {
-		return false;
-	}
-
-	@Override
 	public boolean handleTouchEvent(TouchEvent touch) {
 		EventManager.getInstance().fireEvent(new EndRoundEvent());
 		return true;

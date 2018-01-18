@@ -368,6 +368,10 @@ public class AndroidGraphics implements Graphics {
 		tmpCanvasY = y;
 		tmpBitmap = Bitmap.createBitmap(width, height, Config.RGB_565);
 		tmpCanvas = new Canvas(tmpBitmap);
+		// TODO: not working unfortunately
+		//canvas.drawColor(Color.TRANSPARENT);
+
+
 	}
 
 	@Override

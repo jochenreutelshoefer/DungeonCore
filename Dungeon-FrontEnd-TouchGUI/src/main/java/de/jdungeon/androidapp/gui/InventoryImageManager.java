@@ -63,7 +63,8 @@ public class InventoryImageManager {
 	}
 
 	public Image getImage(ItemInfo item) {
-		// TODO: make image detection aware of class hierarchy
+		if(item == null) return null;
+	 	// TODO: make image detection aware of class hierarchy
 		// => detect most specific match in class hierarchy
 		Set<Class<? extends Item>> classes = itemClassImageMap.keySet();
 		for (Class<? extends Item> aClass : classes) {

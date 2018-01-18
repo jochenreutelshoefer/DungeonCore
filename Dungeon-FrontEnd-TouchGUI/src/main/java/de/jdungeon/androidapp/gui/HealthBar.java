@@ -33,10 +33,6 @@ public class HealthBar extends AbstractGUIElement {
 		return true;
 	}
 
-	@Override
-	public boolean needsRepaint() {
-		return false;
-	}
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {

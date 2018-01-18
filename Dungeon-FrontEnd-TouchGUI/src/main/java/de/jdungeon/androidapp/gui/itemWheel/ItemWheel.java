@@ -56,6 +56,14 @@ public class ItemWheel extends AbstractGUIElement {
 	private final float maxVelocity = 50;
 
 	private boolean visible = true;
+	private final int posY;
+	private final int xLeft;
+	private final int heightFullArea;
+	private final int backgroundX;
+	private final int backgroundWidth;
+	private final int xRight;
+	private final int stepDown;
+	private final int stepLength;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
@@ -79,6 +87,21 @@ public class ItemWheel extends AbstractGUIElement {
 			int y = calcYCoordinate(degreeRad);
 			points[i] = new JDPoint(x, y);
 		}
+
+		posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight() / 12;
+		xLeft = position.getX() - this.getDimension().getWidth() * 2 / 5 - 20;
+
+		// calc background image size
+		int widthFullArea = game.getScreenWidth() - xLeft;
+		heightFullArea = game.getScreenHeight() - posY;
+		backgroundWidth = widthFullArea * 2 / 3;
+		backgroundX = xLeft + ((widthFullArea - backgroundWidth) / 2);
+
+		// top border line
+		xRight = position.getX() + this.getDimension().getWidth() * 2 / 5 + 20;
+		stepDown = 10;
+		stepLength = 50;
+
 	}
 
 	@Override
@@ -254,23 +277,15 @@ public class ItemWheel extends AbstractGUIElement {
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
-		g.drawOval(position.getX(), position.getY(), dimension.getWidth(),
-				dimension.getHeight(), Colors.BLUE);
-		this.binding.getSize();
 
-		int posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight() / 12;
-		int xLeft = position.getX() - this.getDimension().getWidth() * 2 / 5 - 20;
 
 		/*
-					 * draw item wheel background if existing
-					 */
+		 * draw item wheel background if existing
+		 */
 		if (wheelBackgroundImage != null) {
-			int widthFullArea = game.getScreenWidth() - xLeft;
-			int heightFullArea = game.getScreenHeight() - posY;
-			int backgroundWidth = widthFullArea * 2 / 3;
 			g.drawScaledImage(
 					wheelBackgroundImage,
-					xLeft + ((widthFullArea-backgroundWidth)/2),
+					backgroundX,
 					posY,
 					backgroundWidth,
 					heightFullArea,
@@ -280,16 +295,16 @@ public class ItemWheel extends AbstractGUIElement {
 		}
 
 		// headline and title
-		int xRight = position.getX() + this.getDimension().getWidth() * 2 / 5 + 20;
+		/*
 		g.drawLine(xLeft, posY, xRight, posY, Colors.WHITE);
-		int stepDown = 10;
-		int stepLength = 50;
+
 		g.drawLine(xLeft - stepLength, posY + stepDown, xLeft, posY + stepDown, Colors.WHITE);
 		g.drawLine(xLeft, posY, xLeft, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY + stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
 		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getPaintWhite());
 		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getPaintWhite());
+		*/
 
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
@@ -312,10 +327,7 @@ public class ItemWheel extends AbstractGUIElement {
 
 			ItemWheelActivity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
-				int yMinusDefaultHeight = y - defaultImageHeight;
-				int xMinusDefaultWidth = x - defaultImageWidth;
-				int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
-				int yMinusDefaultHeightHalf = y - defaultImageHeightHalf;
+
 
 				Image im = binding.getProvider().getActivityImage(activity);
 				if (im == null) {
@@ -324,13 +336,12 @@ public class ItemWheel extends AbstractGUIElement {
 				}
 
 				if (toDraw == this.markedPointIndex) {
-
+					int yMinusDefaultHeight = y - defaultImageHeight;
+					int xMinusDefaultWidth = x - defaultImageWidth;
 					/*
 					draw highlighting circle
 					 */
 					g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
-
-
 
 					/*
 					 * draw background if existing
@@ -338,7 +349,7 @@ public class ItemWheel extends AbstractGUIElement {
 					if (itemBackgroundImage != null) {
 						g.drawScaledImage(
 								itemBackgroundImage,
-								xMinusDefaultWidth - backgroundPanelOffset,
+								  xMinusDefaultWidth - backgroundPanelOffset,
 								yMinusDefaultHeight - backgroundPanelOffset,
 								doubleWidthPlusOffset,
 								doubleHeightPlusOffset,
@@ -356,6 +367,8 @@ public class ItemWheel extends AbstractGUIElement {
 							im.getHeight());
 				}
 				else {
+					int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
+					int yMinusDefaultHeightHalf = y - defaultImageHeightHalf;
 
 					/*
 					 * draw background if existing

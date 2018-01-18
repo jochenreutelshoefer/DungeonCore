@@ -63,6 +63,9 @@ public class InventoryPanel extends SlidingGUIElement {
 	private static final JDDimension size = new JDDimension(300, 360);
 
 	private static final int yPosition = 0;
+	private final Image image;
+	private final int posY40;
+	private final int drawThreshold;
 
 	public InventoryPanel(HeroInfo hero, GameScreen screen) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
@@ -139,7 +142,12 @@ public class InventoryPanel extends SlidingGUIElement {
 		InventoryBox[] armors = { armor1, armor2, armor3 };
 		this.armors = armors;
 
+		JDImageProxy<?> background = ImageManager.inventory_figure_background;
+		image = (Image) background.getImage();
 
+		posY40 = position.getY() + 40;
+		int width = this.getDimension().getWidth();
+		drawThreshold = width / 4 - width;
 
 	}
 
@@ -276,13 +284,11 @@ public class InventoryPanel extends SlidingGUIElement {
 		if (item != null) {
 			EventManager.getInstance().fireEvent(new FocusEvent(item));
 
-			if (type != -1) {
-				if (action == ItemActionType.change) {
-					EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Double));
-				}
-				if (action == ItemActionType.drop) {
-					EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Long));
-				}
+			if (action == ItemActionType.change) {
+				EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Double));
+			}
+			if (action == ItemActionType.drop) {
+				EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Long));
 			}
 		}
 
@@ -293,19 +299,19 @@ public class InventoryPanel extends SlidingGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 
-		int x = this.getCurrentX();
+		int currentX = this.getCurrentX();
+		GUIUtils.drawBackground(g, currentX, position.getY(), dimension);
 
-		GUIUtils.drawBackground(g, x, position.getY(), dimension);
+		GUIUtils.drawDoubleBorder(g, currentX, position.getY(), dimension, 20);
 
-		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
-
-		JDImageProxy<?> background = ImageManager.inventory_figure_background;
-		Image image = (Image) background.getImage();
-		g.drawScaledImage(image, x + 70, position.getY() + 40, 110, 288, 0, 0,
+		g.drawScaledImage(image, currentX + 70, posY40, 110, 288, 0, 0,
 				image.getWidth(), image.getHeight());
 
-		for (InventoryBox inventoryBox : boxes) {
-			inventoryBox.paint(g, new JDPoint(x, position.getY()));
+
+		if(currentX > drawThreshold) {
+			for (InventoryBox inventoryBox : boxes) {
+				inventoryBox.paint(g, new JDPoint(currentX, position.getY()));
+			}
 		}
 
 	}

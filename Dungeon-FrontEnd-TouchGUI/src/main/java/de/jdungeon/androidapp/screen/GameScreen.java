@@ -230,11 +230,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				scrollTo(figureInfo.getRoomNumber(), 30, SCALE_ROOM_DEFAULT);
 				return true;
 			}
-
-			@Override
-			public boolean needsRepaint() {
-				return false;
-			}
 		};
 		this.guiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), this, getGUIImage(GUIImageManager.PLUS), true));
 		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), this, getGUIImage(GUIImageManager.MINUS), false));
@@ -266,7 +261,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
-		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 32, wheelCenterY);
+		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 40, wheelCenterY);
 		/*
 		 * init skills wheel
 		 */
