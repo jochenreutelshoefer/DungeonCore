@@ -6,14 +6,18 @@
  */
 package dungeon;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.MemoryObject;
 import game.InfoEntity;
+import game.RoomEntity;
 import gui.Paragraph;
 
-public class PositionInRoomInfo extends InfoEntity{ 
+public class PositionInRoomInfo extends RoomEntity {
 	
 	private final Position pos;
 
@@ -73,4 +77,8 @@ public class PositionInRoomInfo extends InfoEntity{
 		return null;
 	}
 
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		return Collections.singletonList(this);
+	}
 }

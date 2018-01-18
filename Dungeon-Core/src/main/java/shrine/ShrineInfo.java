@@ -6,16 +6,21 @@
  */
 package shrine;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import dungeon.PositionInRoomInfo;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.memory.ShrineMemory;
 import game.InfoEntity;
+import game.RoomEntity;
 import gui.Paragraph;
 import util.JDColor;
 import dungeon.JDPoint;
 
-public class ShrineInfo extends InfoEntity  {
+public class ShrineInfo extends RoomEntity {
 
 	private final Shrine s;
 
@@ -41,6 +46,11 @@ public class ShrineInfo extends InfoEntity  {
 			return false;
 
 		return s.equals(((ShrineInfo) obj).s);
+	}
+
+	@Override
+	public int hashCode() {
+		return s.hashCode();
 	}
 
 	@Override
@@ -103,11 +113,11 @@ public class ShrineInfo extends InfoEntity  {
 	}
 
 	public JDPoint getLocation() {
-		// if (map.getDiscoveryStatus(s.getLocation()) >=
-		// RoomObservationStatus.VISIBILITY_SHRINE) {
-
 			return s.getLocation();
-		// }
-		// return null;
+	}
+
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		return Collections.singletonList(new PositionInRoomInfo(s.getRoom().getPositions()[2], this.map));
 	}
 }

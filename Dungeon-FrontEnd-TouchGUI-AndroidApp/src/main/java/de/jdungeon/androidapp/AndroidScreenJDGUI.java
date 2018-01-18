@@ -107,8 +107,10 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public Action getAction() {
-		if (!actionQueue.isEmpty()) {
-			return actionQueue.remove(0);
+		synchronized (actionQueue) {
+			if (!actionQueue.isEmpty()) {
+				return actionQueue.remove(0);
+			}
 		}
 		return null;
 	}

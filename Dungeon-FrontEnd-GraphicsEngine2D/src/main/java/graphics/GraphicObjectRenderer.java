@@ -3,15 +3,19 @@ package graphics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import animation.AnimationUtils;
 import animation.DefaultAnimationSet;
 import animation.Motion;
+import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
@@ -26,6 +30,7 @@ import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
 import game.JDGUI;
+import game.RoomEntity;
 import graphics.util.DrawingRectangle;
 import graphics.util.RelativeRectangle;
 import graphics.util.RoomSize;
@@ -81,6 +86,7 @@ public class GraphicObjectRenderer {
 	private int ROOMSIZE_BY_2;
 	private final JDPoint[] positionCoord = new JDPoint[8];
 	private final JDPoint[] positionCoordModified = new JDPoint[8];
+	private final RelativeRectangle[] positionRectangles = new RelativeRectangle[8];
 
 	public static final double HERO_POINT_QUOTIENT_X = 2.2;
 
@@ -93,24 +99,6 @@ public class GraphicObjectRenderer {
 	public static final double HERO_SIZE_QUOTIENT_X = 2;
 
 	public static final double HERO_SIZE_QUOTIENT_Y = 2;
-
-	//private final Vector<GraphicObject> rooms = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> shrines = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> items = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> doors = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> chests = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> spots = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> walls = new Vector<GraphicObject>();
-
-	//private final Vector<GraphicObject> lastWalls = new Vector<GraphicObject>();
-
-	//private GraphicObject hero;
 
 	private JDGUI gui;
 	private int posSize;
@@ -127,6 +115,28 @@ public class GraphicObjectRenderer {
 	private JDDimension monsterSizeS;
 	private JDDimension monsterSizeL;
 	private JDDimension monsterSizeSpider;
+	private GraphicObject wallSouth;
+	private JDDimension heroDimension;
+	private JDImageLocated imageDoorWest;
+	private JDImageLocated imageDoorWestLocked;
+	private JDGraphicObject doorWestNone;
+	private JDGraphicObject doorSouthNone;
+	private JDImageLocated doorSouth;
+	private JDImageLocated doorSouthLocked;
+	private JDGraphicObject doorEastNone;
+	private JDImageLocated doorEast;
+	private JDImageLocated doorEastLocked;
+	private JDGraphicObject doorNorthNone;
+	private JDImageLocated doorNorth;
+	private JDImageLocated doorNorthLocked;
+	private RelativeRectangle shrineRect;
+	private JDPoint spotPosition;
+
+	private Map<RoomEntity, GraphicObject> graphicObjectCache = new HashMap<>();
+	private RelativeRectangle roomBlackBackGroundRect;
+	private GraphicObject roomUndiscovered;
+	private RelativeRectangle roomRect;
+	private RelativeRectangle wallRect;
 
 	private JDPoint[] getPositionCoord() {
 		return positionCoord;
@@ -164,7 +174,9 @@ public class GraphicObjectRenderer {
 		itemPointsRelative = getItemPointsRelative();
 
 		spotDimension = new JDDimension(roomSize / 7, roomSize / 7);
-		chestPosition =  new JDPoint((ROOMSIZE_BY_8), ROOMSIZE_BY_10);
+		spotPosition = new JDPoint((ROOMSIZE_BY_8), (6 * ROOMSIZE_BY_8));
+
+		chestPosition = new JDPoint((ROOMSIZE_BY_8), ROOMSIZE_BY_10);
 		chestDimension = new JDDimension(roomSize / 5, roomSize / 5);
 		chestRect = new RelativeRectangle(chestPosition,
 				chestDimension);
@@ -173,6 +185,7 @@ public class GraphicObjectRenderer {
 		for (int i = 0; i < positionCoord.length; i++) {
 			positionCoord[i] = getPositionCoordinates(Position.Pos.fromValue(i), roomSize);
 			positionCoordModified[i] = new JDPoint(positionCoord[i].getX() + ROOMSIZE_BY_20, positionCoord[i].getY());
+			positionRectangles[i] = new RelativeRectangle(positionCoord[i].getX(), positionCoord[i].getY(), ROOMSIZE_BY_8, ROOMSIZE_BY_8);
 		}
 
 		JDDimension westDoorDimension = getDoorDimension(true, roomSize);
@@ -184,13 +197,101 @@ public class GraphicObjectRenderer {
 				- (northDoorDimension.getWidth() / 2), 0), northDoorDimension.getWidth(), northDoorDimension.getHeight());
 
 		JDDimension eastDoorDimension = getDoorDimension(true, roomSize);
-		eastDoorRect = new RelativeRectangle(new JDPoint((roomSize) - (eastDoorDimension.getWidth()), (roomSize / 2) - (eastDoorDimension.getHeight() / 2)), eastDoorDimension.getWidth(),
+		eastDoorRect = new RelativeRectangle(new JDPoint((roomSize) - (eastDoorDimension.getWidth()), (roomSize / 2) - (eastDoorDimension
+				.getHeight() / 2)), eastDoorDimension.getWidth(),
 				eastDoorDimension.getHeight());
 
 		JDDimension southDoorDimension = getDoorDimension(false, roomSize);
 		southDoorRect = new RelativeRectangle((roomSize / 2) - (southDoorDimension.getWidth() / 2), roomSize - (southDoorDimension
 				.getHeight()),
 				southDoorDimension.getWidth(), southDoorDimension.getHeight());
+
+		imageDoorWest = new JDImageLocated(
+				ImageManager.door_west, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		imageDoorWestLocked = new JDImageLocated(
+				ImageManager.door_west_lock, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		doorWestNone = new JDGraphicObject(new JDImageLocated(
+				ImageManager.door_west_none, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize)), null, null);
+
+		doorSouthNone = new JDGraphicObject(new JDImageLocated(
+				ImageManager.door_south_none, new RelativeRectangle(0, roomSize
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize)), null, southDoorRect);
+
+		doorSouth = new JDImageLocated(
+				ImageManager.door_south, new RelativeRectangle(0, roomSize
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		doorSouthLocked = new JDImageLocated(
+				ImageManager.door_south_lock, new RelativeRectangle(0, roomSize
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		JDDimension doorDimension = this.getDoorDimension(true,
+				roomSize);
+
+		doorEastNone = new JDGraphicObject(new JDImageLocated(
+				ImageManager.door_east_none, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize)), null, null);
+
+		doorEast = new JDImageLocated(
+				ImageManager.door_east_lock, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		doorEastLocked = new JDImageLocated(
+				ImageManager.door_east, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		doorNorthNone = new JDGraphicObject(new JDImageLocated(
+				ImageManager.door_north_none, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize)), null, null);
+
+		doorNorth = new JDImageLocated(
+				ImageManager.door_north_lock, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		doorNorthLocked = new JDImageLocated(
+				ImageManager.door_north, new RelativeRectangle(0, 0
+				- getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize));
+
+		wallSouth = new GraphicObject(null,
+				new RelativeRectangle(0, roomSize - doorDimension.getWidth(),
+						roomSize, roomSize), null, ImageManager.wall_southImage);
+
+		wallRect = new RelativeRectangle(
+				0, -getDoorDimension(true, roomSize).getWidth(),
+				roomSize, roomSize);
+
+		// room floor
+		JDDimension roomBlackBackgroundDimension = new JDDimension(roomSize - 2
+				* getDoorDimension(true, roomSize).getWidth(),
+				roomSize - 2 * getDoorDimension(true, roomSize).getWidth());
+		RelativeRectangle roomBlackBackGroundRect = new RelativeRectangle(new JDPoint(
+				getDoorDimension(true, roomSize).getWidth(),
+				getDoorDimension(true, roomSize).getWidth()),
+				roomBlackBackgroundDimension);
+		roomUndiscovered = new GraphicObject(null, roomBlackBackGroundRect, JDColor.DARK_GRAY, false, null);
+		JDDimension roomBackgroundDimension = new JDDimension(roomSize, roomSize
+				- this.getDoorDimension(true, roomSize).getWidth());
+		roomRect = new RelativeRectangle(
+				new JDPoint(0, 0), roomBackgroundDimension);
+
+		heroDimension = new JDDimension((int) (((double) roomSize) / HERO_SIZE_QUOTIENT_X), (int) (((double) roomSize) / HERO_SIZE_QUOTIENT_Y));
 
 		int roomSizeBy2Point5 = (int) (roomSize / 2.5);
 		monsterSizeS = new JDDimension((int) roomSizeBy2Point5,
@@ -201,6 +302,12 @@ public class GraphicObjectRenderer {
 
 		monsterSizeSpider = new JDDimension((int) (roomSize / 2.2),
 				(int) (roomSize / 2.2));
+
+		int xpos = (13 * roomSize / 20);
+		int ypos = (roomSize / 36);
+		int xsize = (int) (roomSize / 2.9);
+		int ysize = (int) (roomSize / 2.2);
+		shrineRect = new RelativeRectangle(new JDPoint(xpos, ypos), xsize, ysize);
 
 	}
 
@@ -336,10 +443,9 @@ public class GraphicObjectRenderer {
 				}
 				else if (itemArray[i].getItemClass().equals(Shield.class)) {
 					int sizeX = 20 * ROOMSIZE_BY_100;
-					int sizeY = roomSize_15_100;
 
 					itemObs[i] = new GraphicObject(itemArray[i],
-							new RelativeRectangle(itemPointRelative, sizeX, sizeY),
+							new RelativeRectangle(itemPointRelative, sizeX, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
 				else if (itemArray[i].getItemClass().equals(Helmet.class)) {
@@ -431,7 +537,7 @@ public class GraphicObjectRenderer {
 		return itemObs;
 	}
 
-	private List<GraphicObject> drawDoors(RoomInfo r, int roomOffsetX, int roomOffsetY) {
+	private List<GraphicObject> drawDoors(RoomInfo r) {
 		DoorInfo[] doors = r.getDoors();
 		if (doors == null) {
 			return Collections.emptyList();
@@ -440,48 +546,28 @@ public class GraphicObjectRenderer {
 		if (doors[0] != null) {
 			JDGraphicObject door0;
 			if (!doors[0].hasLock()) {
-				door0 = new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_north, roomOffsetX, roomOffsetY
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[0], northDoorRect, null, false);
+				door0 = new JDGraphicObject(doorNorthLocked, doors[0], northDoorRect);
 			}
 			else {
-				door0 = new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_north_lock, roomOffsetX, roomOffsetY
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[0], northDoorRect, null, false);
+				door0 = new JDGraphicObject(doorNorth, doors[0], northDoorRect);
 			}
 			roomDoors.add(door0);
 		}
 		else {
-			JDGraphicObject door0 = new JDGraphicObject(new JDImageLocated(
-					ImageManager.door_north_none, roomOffsetX, roomOffsetY
-					- getDoorDimension(true, roomSize).getWidth(),
-					roomSize, roomSize), doors[0], null, null, false);
-			roomDoors.add(door0);
+			roomDoors.add(doorNorthNone);
 		}
 		if (doors[1] != null) {
 			JDGraphicObject door1;
-			if (!doors[1].hasLock().booleanValue()) {
-				door1 = new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_east, roomOffsetX, roomOffsetY
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[1], eastDoorRect, null, false);
+			if (!doors[1].hasLock()) {
+				door1 = new JDGraphicObject(doorEastLocked, doors[1], eastDoorRect);
 			}
 			else {
-				door1 = new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_east_lock, roomOffsetX, roomOffsetY
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[1], eastDoorRect, null, false);
+				door1 = new JDGraphicObject(doorEast, doors[1], eastDoorRect);
 			}
 			roomDoors.add(door1);
 		}
 		else {
-			JDGraphicObject door1 = new JDGraphicObject(new JDImageLocated(
-					ImageManager.door_east_none, roomOffsetX, roomOffsetY
-					- getDoorDimension(true, roomSize).getWidth(),
-					roomSize, roomSize), doors[1], null, null, false);
-			roomDoors.add(door1);
+			roomDoors.add(doorEastNone);
 		}
 		if (doors[2] != null) {
 			/*
@@ -491,55 +577,34 @@ public class GraphicObjectRenderer {
 				/*
 				 * with lock
 				 */
-				roomDoors.add(new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_south_lock, roomOffsetX, roomOffsetY + roomSize
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[2], southDoorRect, null, false));
+				roomDoors.add(new JDGraphicObject(doorSouthLocked, doors[2], southDoorRect, null));
 			}
 			else {
 				/*
 				 * without lock
 				 */
-				roomDoors.add(new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_south, roomOffsetX, roomOffsetY + roomSize
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[2], southDoorRect, null, false));
+				roomDoors.add(new JDGraphicObject(doorSouth, doors[2], southDoorRect, null));
 			}
-
 		}
 		else {
 			/*
 			 * no door to south at all --> wall
 			 */
-			roomDoors.add(new JDGraphicObject(new JDImageLocated(
-					ImageManager.door_south_none, roomOffsetX, roomOffsetY + roomSize
-					- getDoorDimension(true, roomSize).getWidth(),
-					roomSize, roomSize), doors[2], southDoorRect, null, false));
+
+			roomDoors.add(doorSouthNone);
 		}
 		if (doors[3] != null) {
 			JDGraphicObject door3;
-
 			if (!doors[3].hasLock()) {
-				JDImageLocated jdImageLocated = new JDImageLocated(
-						ImageManager.door_west, roomOffsetX, roomOffsetY
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize);
-				door3 = new JDGraphicObject(jdImageLocated, doors[3], westDoorRect, null, false);
+				door3 = new JDGraphicObject(imageDoorWest, doors[3], westDoorRect, null);
 			}
 			else {
-				door3 = new JDGraphicObject(new JDImageLocated(
-						ImageManager.door_west_lock, roomOffsetX, roomOffsetY
-						- getDoorDimension(true, roomSize).getWidth(),
-						roomSize, roomSize), doors[3], westDoorRect, null, false);
+				door3 = new JDGraphicObject(imageDoorWestLocked, doors[3], westDoorRect, null);
 			}
 			roomDoors.add(door3);
 		}
 		else {
-			JDGraphicObject door0 = new JDGraphicObject(new JDImageLocated(
-					ImageManager.door_west_none, roomOffsetX, roomOffsetY
-					- getDoorDimension(true, roomSize).getWidth(),
-					roomSize, roomSize), doors[3], null, null, false);
-			roomDoors.add(door0);
+			roomDoors.add(doorWestNone);
 		}
 
 		return roomDoors;
@@ -581,42 +646,42 @@ public class GraphicObjectRenderer {
 
 	public JDDimension getFigureInfoSize(FigureInfo figureInfo, int roomSize) {
 		if (figureInfo instanceof HeroInfo) {
-			return new JDDimension((int) (((double) roomSize) / HERO_SIZE_QUOTIENT_X), (int) (((double) roomSize) / HERO_SIZE_QUOTIENT_Y));
+			return heroDimension;
 
 		}
 		if (figureInfo instanceof MonsterInfo) {
-			return getMonsterSize((MonsterInfo) figureInfo, roomSize);
+			return getMonsterSize((MonsterInfo) figureInfo);
 		}
 		return null;
 	}
 
-	private GraphicObject drawAMonster(MonsterInfo m, JDPoint relativeCoordinates, int roomSize) {
+	private GraphicObject drawAMonster(MonsterInfo m, JDPoint relativeCoordinates) {
 
 		JDDimension figureInfoSize = getFigureInfoSize(m, roomSize);
 		int sizeX = figureInfoSize.getWidth();
 		int sizeY = figureInfoSize.getHeight();
-		RelativeRectangle rect = new RelativeRectangle(relativeCoordinates.getX() - (sizeX / 2),
+		RelativeRectangle monsterDrawRect = new RelativeRectangle(relativeCoordinates.getX() - (sizeX / 2),
 				relativeCoordinates.getY() - (sizeY / 2), sizeX, sizeY);
-		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, m.getLookDirection()), rect);
+		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, m.getLookDirection()), monsterDrawRect);
 
 		if (m.isDead() != null && m.isDead()) {
 			DefaultAnimationSet set = AnimationUtils.getFigure_tipping_over(m);
 			if (set != null && set.getLength() > 0) {
 				JDImageProxy<?> i = set.getImagesNr(set.getLength() - 1);
-				ob = new JDImageLocated(i, rect);
+				ob = new JDImageLocated(i, monsterDrawRect);
 			}
 		}
 
 		int fifthRoomSize = roomSize / 5;
-		return new JDGraphicObject(ob, m, rect, JDColor.WHITE, new RelativeRectangle(
+		RelativeRectangle monsterClickRect = new RelativeRectangle(
 				relativeCoordinates.getX() - fifthRoomSize / 2, relativeCoordinates.getY() - fifthRoomSize / 2, fifthRoomSize,
-				fifthRoomSize));
+				fifthRoomSize);
+
+		return new JDGraphicObject(ob, m, monsterDrawRect, JDColor.WHITE, monsterClickRect);
 	}
 
-	public JDDimension getMonsterSize(MonsterInfo m, double roomSize) {
+	public JDDimension getMonsterSize(MonsterInfo m) {
 		Class<? extends Monster> mClass = m.getMonsterClass();
-
-
 		if (mClass == Wolf.class) {
 			return monsterSizeS;
 		}
@@ -626,7 +691,6 @@ public class GraphicObjectRenderer {
 		if (mClass == Skeleton.class) {
 			return monsterSizeS;
 		}
-
 		if (mClass == Ghul.class) {
 			return monsterSizeL;
 		}
@@ -634,10 +698,8 @@ public class GraphicObjectRenderer {
 			return monsterSizeL;
 		}
 		if (mClass == Spider.class) {
-
 			return monsterSizeSpider;
 		}
-
 		return monsterSizeS;
 	}
 
@@ -655,9 +717,7 @@ public class GraphicObjectRenderer {
 			MonsterInfo m = (monsterList.get(i));
 			int position = m.getPositionInRoomIndex();
 
-			GraphicObject gr = drawAMonster(m, new JDPoint(
-					getPositionCoordModified(position).getX(),
-					getPositionCoordModified(position).getY()), roomSize);
+			GraphicObject gr = drawAMonster(m, getPositionCoordModified(position));
 			if (i >= 8) {
 				break;
 			}
@@ -674,13 +734,6 @@ public class GraphicObjectRenderer {
 		return null;
 	}
 
-	public JDPoint getPositionCoord(int index) {
-		if (index >= 0 && index < 8) {
-			return positionCoord[index];
-		}
-		return null;
-	}
-
 	private JDGraphicObject getShrineGraphicObject(ShrineInfo s, int roomOffsetX,
 												   int roomOffsetY) {
 		// TODO: refactor this
@@ -690,9 +743,10 @@ public class GraphicObjectRenderer {
 			int ypos = roomOffsetY + (1 * ROOMSIZE_BY_16);
 			int xsize = ROOMSIZE_BY_3;
 			int ysize = (int) (roomSize / 3.5);
-			ob = new JDGraphicObject(new JDImageLocated(
-					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+			JDImageLocated fountainImage = new JDImageLocated(
+					ImageManager.getImage(s), xpos, ypos, xsize, ysize);
+			ob = new JDGraphicObject(fountainImage, s,
+					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_REPAIR) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
@@ -701,7 +755,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 3.5);
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_STATUE) {
 			int xpos = roomOffsetX + (16 * ROOMSIZE_BY_24);
@@ -710,7 +764,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 2.5);
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_ANGEL) {
 			int xpos = roomOffsetX + (16 * ROOMSIZE_BY_24);
@@ -723,7 +777,7 @@ public class GraphicObjectRenderer {
 			}
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_SORCER_LAB) {
 			int xpos = roomOffsetX + (25 * roomSize / 60);
@@ -732,7 +786,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 1.65);
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_EXIT) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
@@ -741,7 +795,7 @@ public class GraphicObjectRenderer {
 			int ysize = (ROOMSIZE_BY_6);
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_BROOD) {
 			if ((s).getType() == Brood.BROOD_NATURE) {
@@ -751,7 +805,7 @@ public class GraphicObjectRenderer {
 				int ysize = (ROOMSIZE_BY_2);
 				ob = new JDGraphicObject(new JDImageLocated(
 						ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-						getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+						shrineRect, JDColor.YELLOW);
 			}
 			else if ((s).getType() == Brood.BROOD_CREATURE) {
 				int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
@@ -760,7 +814,7 @@ public class GraphicObjectRenderer {
 				int ysize = (ROOMSIZE_BY_6);
 				ob = new JDGraphicObject(new JDImageLocated(
 						ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-						getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+						shrineRect, JDColor.YELLOW);
 			}
 			else if ((s).getType() == Brood.BROOD_UNDEAD) {
 				int xpos = roomOffsetX + (3 * ROOMSIZE_BY_5);
@@ -769,7 +823,7 @@ public class GraphicObjectRenderer {
 				int ysize = (int) (roomSize / 2.2);
 				ob = new JDGraphicObject(new JDImageLocated(
 						ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-						getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+						shrineRect, JDColor.YELLOW);
 			}
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_TRADER) {
@@ -779,7 +833,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 2.0);
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					shrineRect, JDColor.YELLOW);
 
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_RUNE) {
@@ -790,7 +844,7 @@ public class GraphicObjectRenderer {
 			JDImageProxy<?> im = ImageManager.getImage(s);
 
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_CORPSE) {
 			int xpos = roomOffsetX + (13 * roomSize / 20);
@@ -799,7 +853,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 3.8);
 			JDImageProxy<?> im = ImageManager.getImage(s);
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_QUEST) {
 			int xpos = roomOffsetX + (13 * roomSize / 20);
@@ -809,7 +863,7 @@ public class GraphicObjectRenderer {
 			JDImageProxy<?> im = ImageManager.getImage(s);
 
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_XMAS) {
 			int xpos = roomOffsetX + (27 * roomSize / 60);
@@ -819,7 +873,7 @@ public class GraphicObjectRenderer {
 			JDImageProxy<?> im = ImageManager.getImage(s);
 
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_RUNEFINDER) {
@@ -829,7 +883,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 2.7);
 			JDImageProxy<?> im = ImageManager.getImage(s);
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_REVEALMAP) {
@@ -839,7 +893,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 2.7);
 			JDImageProxy<?> im = ImageManager.getImage(s);
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_DARK_MASTER) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
@@ -848,7 +902,7 @@ public class GraphicObjectRenderer {
 			int ysize = (int) (roomSize / 3.7);
 			JDImageProxy<?> im = ImageManager.getImage(s);
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
@@ -865,38 +919,29 @@ public class GraphicObjectRenderer {
 			}
 
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, getShrineRect(roomOffsetX, roomOffsetY), JDColor.YELLOW);
+					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		return ob;
 
 	}
 
-	private RelativeRectangle getShrineRect(int roomOffsetX, int roomOffsetY) {
-		int xpos = (13 * roomSize / 20);
-		int ypos = (roomSize / 36);
-		int xsize = (int) (roomSize / 2.9);
-		int ysize = (int) (roomSize / 2.2);
-		return new RelativeRectangle(new JDPoint(xpos, ypos), xsize, ysize);
-	}
-
-	private JDGraphicObject getHeroGraphicObject(HeroInfo info,
-												 GraphicObjectRenderer renderer) {
+	private JDGraphicObject getHeroGraphicObject(HeroInfo info) {
 		int positionInRoomIndex = info
 				.getPositionInRoomIndex();
 		if (positionInRoomIndex == -1) return null;
-		JDPoint p = renderer.getPositionCoordModified(positionInRoomIndex);
+		JDPoint p = getPositionCoordModified(positionInRoomIndex);
 		int xpos = p.getX();
 		int ypos = p.getY();
 		JDDimension figureInfoSize = getFigureInfoSize(info, roomSize);
 		int xHeroSize = figureInfoSize.getWidth();
 		int yHeroSize = figureInfoSize.getHeight();
 
-		RelativeRectangle rect = new RelativeRectangle(xpos - (xHeroSize / 2), ypos
+		RelativeRectangle heroRectangle = new RelativeRectangle(xpos - (xHeroSize / 2), ypos
 				- (yHeroSize / 2), xHeroSize, yHeroSize);
 
-		JDImageLocated im = getImage(info, rect);
-		return new JDGraphicObject(im, info, rect, JDColor.WHITE,
-				getHalfSizeRect(rect));
+		JDImageLocated im = getImage(info, heroRectangle);
+		return new JDGraphicObject(im, info, heroRectangle, JDColor.WHITE,
+				getHalfSizeRect(heroRectangle));
 	}
 
 	private JDImageLocated getImage(HeroInfo info, RelativeRectangle rect) {
@@ -946,22 +991,14 @@ public class GraphicObjectRenderer {
 		return new RelativeRectangle(newPointx, newPointy, newSizex, newSizey);
 	}
 
-	private GraphicObject drawBackGround(int roomOffsetX, int roomOffsetY, RoomInfo roomInfo,
-										 GraphicObjectRenderer renderer) {
+	private GraphicObject drawBackGround(RoomInfo roomInfo) {
 
 		int status = roomInfo.getVisibilityStatus();
 		int floorType = roomInfo.getFloorIndex();
 		JDImageProxy<?> im = null; //ImageManager.floorImageArray[floorType];
 		if (status < RoomObservationStatus.VISIBILITY_FOUND) {
 			// not found, just draw dark background
-			return new GraphicObject(roomInfo, new RelativeRectangle(new JDPoint(
-					getDoorDimension(true, roomSize).getWidth(),
-					getDoorDimension(true, roomSize).getWidth()),
-					new JDDimension(roomSize - 2
-							* getDoorDimension(true, roomSize).getWidth(),
-							roomSize - 2
-									* getDoorDimension(true, roomSize)
-									.getWidth())), JDColor.DARK_GRAY, false, null);
+			return roomUndiscovered;
 		}
 		else if (status == RoomObservationStatus.VISIBILITY_FOUND || status == RoomObservationStatus.VISIBILITY_SHRINE) {
 			im = ImageManager.floorImage_mediumArray[floorType];
@@ -969,22 +1006,16 @@ public class GraphicObjectRenderer {
 		else if (status > RoomObservationStatus.VISIBILITY_SHRINE) {
 			im = ImageManager.floorImageArray[floorType];
 		}
-		return new GraphicObject(roomInfo, new RelativeRectangle(
-				new JDPoint(0, 0), new JDDimension(roomSize, roomSize
-				- this.getDoorDimension(true, roomSize).getWidth())),
-				null, false, im);
+
+		return new GraphicObject(roomInfo, roomRect, null, false, im);
 	}
 
 	private GraphicObject drawWallSouth(RoomInfo r) {
-		GraphicObject ob = null;
 		if (r.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FOUND) {
-			JDDimension doorDimension = this.getDoorDimension(true,
-					roomSize);
-			ob = new GraphicObject(null,
-					new RelativeRectangle(0, roomSize - doorDimension.getWidth(),
-							roomSize, roomSize), null, ImageManager.wall_southImage);
+
+			return wallSouth;
 		}
-		return ob;
+		return null;
 	}
 
 	private Collection<GraphicObject> drawWall(RoomInfo roomInfo) {
@@ -992,14 +1023,10 @@ public class GraphicObjectRenderer {
 		int status = roomInfo.getVisibilityStatus();
 		if (status >= RoomObservationStatus.VISIBILITY_FOUND) {
 
-			result.add(new GraphicObject(roomInfo, new RelativeRectangle(
-					0, -getDoorDimension(true, roomSize).getWidth(),
-					roomSize, roomSize), null,
+			result.add(new GraphicObject(roomInfo, wallRect, null,
 					ImageManager.wall_sidesImage));
 
-			result.add(new GraphicObject(roomInfo, new RelativeRectangle(0,
-					-getDoorDimension(true, roomSize).getWidth(),
-					roomSize, roomSize), null,
+			result.add(new GraphicObject(roomInfo, wallRect, null,
 					ImageManager.wall_northImage));
 
 		}
@@ -1011,10 +1038,8 @@ public class GraphicObjectRenderer {
 		return spotDimension;
 	}
 
-
-	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r,
-														   Object obj, int roomOffsetX, int roomOffsetY, List<?> animatedObs) {
-		List<GraphicObject> graphObs = new LinkedList<GraphicObject>();
+	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, Object obj, int roomOffsetX, int roomOffsetY, List<?> animatedObs) {
+		List<GraphicObject> graphObs = new ArrayList<GraphicObject>();
 		if (r == null) {
 			return graphObs;
 		}
@@ -1022,7 +1047,7 @@ public class GraphicObjectRenderer {
 		/*
 		 * room
 		 */
-		GraphicObject roomOb = drawBackGround(roomOffsetX, roomOffsetY, r, this);
+		GraphicObject roomOb = drawBackGround(r);
 		if (roomOb != null) {
 			graphObs.add(roomOb);
 		}
@@ -1046,7 +1071,7 @@ public class GraphicObjectRenderer {
 		/*
 		 * doors
 		 */
-		graphObs.addAll(drawDoors(r, roomOffsetX, roomOffsetY));
+		graphObs.addAll(drawDoors(r));
 
 		int status = r.getVisibilityStatus();
 
@@ -1056,40 +1081,48 @@ public class GraphicObjectRenderer {
 			if (r.equals(gui.getFigure().getRoomInfo())) {
 				JDPoint[] positionCoord = getPositionCoord();
 				for (int i = 0; i < positionCoord.length; i++) {
-					int posSize = ROOMSIZE_BY_8;
-					GraphicObject ob = new GraphicObject(
-							r.getPositionInRoom(i), new RelativeRectangle(getPositionCoord(i).getX(), getPositionCoord(i)
-							.getY(), posSize,
-							posSize), JDColor.BLACK,
-							ImageManager.fieldImage);
+					PositionInRoomInfo positionInRoom = r.getPositionInRoom(i);
+					GraphicObject ob = graphicObjectCache.get(positionInRoom);
+					if (ob == null) {
+						ob = new GraphicObject(
+								positionInRoom, positionRectangles[i], JDColor.BLACK,
+								ImageManager.fieldImage);
+						graphicObjectCache.put(positionInRoom, ob);
+					}
 
 					graphObs.add(ob);
-
 				}
 			}
 
-			graphObs.add(new GraphicObject(r, new RelativeRectangle(
-					new JDPoint(0, -getDoorDimension(true, roomSize).getWidth()),
-					new JDDimension(roomSize, roomSize)), JDColor.DARK_GRAY,
-					ImageManager.wall_sidesImage));
+			GraphicObject wallSides = new GraphicObject(r, wallRect, JDColor.DARK_GRAY,
+					ImageManager.wall_sidesImage);
+			graphObs.add(wallSides);
 
 			GraphicObject ob = null;
 			if (r.getShrine() != null) {
 				ShrineInfo s = r.getShrine();
-				ob = getShrineGraphicObject(s, roomOffsetX, roomOffsetY);
+
+				ob = graphicObjectCache.get(s);
+				if (ob == null) {
+					ob = getShrineGraphicObject(s, roomOffsetX, roomOffsetY);
+					graphicObjectCache.put(s, ob);
+				}
 				graphObs.add(ob);
 			}
 
-			if (r.getChest() != null) {
-				GraphicObject chestOb;
-
-				if (r.getChest().hasLock()) {
-					chestOb = new GraphicObject(r.getChest(),
-							chestRect, null, ImageManager.chest_lockImage);
-				}
-				else {
-					chestOb = new GraphicObject(r.getChest(),
-							chestRect, null, ImageManager.chestImage);
+			ChestInfo chest = r.getChest();
+			if (chest != null) {
+				GraphicObject chestOb = graphicObjectCache.get(chest);
+				if (chestOb == null) {
+					if (chest.hasLock()) {
+						chestOb = new GraphicObject(chest,
+								chestRect, null, ImageManager.chest_lockImage);
+					}
+					else {
+						chestOb = new GraphicObject(chest,
+								chestRect, null, ImageManager.chestImage);
+					}
+					graphicObjectCache.put(chest, chestOb);
 				}
 				graphObs.add(chestOb);
 			}
@@ -1124,7 +1157,7 @@ public class GraphicObjectRenderer {
 
 		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
-					new RelativeRectangle(getSpotPointRelative(),
+					new RelativeRectangle(spotPosition,
 							getSpotDimension()), null,
 					ImageManager.spotImage);
 			graphObs.add(spotOb);
@@ -1134,7 +1167,7 @@ public class GraphicObjectRenderer {
 		if (!heroInfos.isEmpty()) {
 			for (HeroInfo heroInfo : heroInfos) {
 				if (!animatedObs.contains(heroInfo)) {
-					GraphicObject heroObject = drawHero(heroInfo, this);
+					GraphicObject heroObject = drawHero(heroInfo);
 					if (heroObject != null) {
 						graphObs.add(heroObject);
 					}
@@ -1144,23 +1177,11 @@ public class GraphicObjectRenderer {
 		return graphObs;
 	}
 
-	private JDPoint getSpotPointRelative() {
-		return getSpotPoint(0, 0);
-	}
-
-	private JDPoint getSpotPoint(int xcoord, int ycoord) {
-		int x1 = xcoord + (ROOMSIZE_BY_8);
-		int y1 = ycoord + (6 * ROOMSIZE_BY_8);
-
-		return new JDPoint(x1, y1);
-	}
-
-	private GraphicObject drawHero(HeroInfo info,
-								   GraphicObjectRenderer renderer) {
+	private GraphicObject drawHero(HeroInfo info) {
 		if (info == null) {
 			return null;
 		}
-		return renderer.getHeroGraphicObject(info, renderer);
+		return this.getHeroGraphicObject(info);
 	}
 
 }

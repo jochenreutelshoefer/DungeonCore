@@ -23,6 +23,10 @@ public class JDGraphicObject extends GraphicObject {
 
 	}
 
+	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle rectangle) {
+		this(i, ob, rectangle, null, null);
+	}
+
 	@Override
 	public String toString() {
 		if (clickedObject == null) {
@@ -42,13 +46,5 @@ public class JDGraphicObject extends GraphicObject {
 		image = i;
 
 	}
-
-	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle o, JDColor c,
-			boolean paint) {
-		super(ob, o, c, null);
-		image = i;
-
-	}
-
 
 }

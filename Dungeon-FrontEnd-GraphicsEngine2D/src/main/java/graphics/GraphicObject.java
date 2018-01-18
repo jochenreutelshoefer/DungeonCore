@@ -94,19 +94,4 @@ public class GraphicObject {
 
 
 
-	/**
-	 * @return Returns the flipped.
-	 */
-	public boolean isFlipped() {
-		return flipped;
-	}
-
-	/**
-	 * @param flipped
-	 *            The flipped to set.
-	 */
-	public void setFlipped(boolean flipped) {
-		this.flipped = flipped;
-	}
-
 }
