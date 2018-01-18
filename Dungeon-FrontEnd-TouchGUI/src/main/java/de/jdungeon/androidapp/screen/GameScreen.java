@@ -3,7 +3,6 @@ package de.jdungeon.androidapp.screen;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,13 +16,10 @@ import animation.DefaultAnimationTask;
 import control.ActionAssembler;
 import control.JDGUIEngine2D;
 import dungeon.ChestInfo;
-import dungeon.DoorInfo;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Position;
-import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.SpotInfo;
 import event.ActionEvent;
 import event.Event;
 import event.EventListener;
@@ -43,7 +39,6 @@ import graphics.ImageManager;
 import graphics.JDImageProxy;
 import gui.Paragraphable;
 import item.ItemInfo;
-import shrine.ShrineInfo;
 import text.Statement;
 import user.DefaultDungeonSession;
 import util.JDColor;
@@ -263,7 +258,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
-		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth/32, wheelCenterY);
+		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 32, wheelCenterY);
 		/*
 		 * init skills wheel
 		 */
@@ -459,6 +454,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		long renderTime = System.currentTimeMillis() - renderStart;
 		renderTimeLog.setFrameRenderTime(renderTime);
 
+		gr.fillRect(0, 0, 30, 30, Colors.WHITE);
 		gr.drawString(renderTimeLog.getFrameRate() + " fps", 25, 15, renderTimeLog.getPaintBuilder());
 	}
 
@@ -487,7 +483,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				int roomNumberY = startingRoomNumberY + row;
 				row++;
 
-				RoomInfo roomInfo = figureInfo.getRoomInfo(new JDPoint(roomNumberX, roomNumberY));
+				RoomInfo roomInfo = figureInfo.getRoomInfo(roomNumberX, roomNumberY);
 
 				// paint this room onto the offscreen canvas
 				if (roomInfo != null) {
@@ -543,8 +539,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private List<GraphicObject> createGraphicObjectsForRoom(RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
-		List<GraphicObject> graphicObjectsForRoom;
-		graphicObjectsForRoom = getDungeonRenderer()
+		List<GraphicObject> graphicObjectsForRoom = getDungeonRenderer()
 				.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
 						roomOffsetY, new ArrayList<>());
 		clearNulls(graphicObjectsForRoom);
@@ -886,7 +881,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private void handleClickEvent(TouchEvent touchEvent) {
 
-		//System.out.println(System.currentTimeMillis()+" "+touchEvent);
 		Boolean dead = this.figureInfo.isDead();
 		if (dead != null && dead) {
 			gameOverView.setShow(true);
@@ -1059,70 +1053,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.itemWheelHeroItems.highlightEntity(item);
 	}
 
-	static class GraphicObjectComparator implements Comparator<GraphicObject> {
-
-		private static final int FLOOR = 0;
-		private static final int SHRINE = 1;
-		private static final int CHEST = 2;
-		private static final int ITEM = 3;
-		private static final int POSITION = 4;
-		private static final int FIGURE = 5;
-		private static final int DOOR = 6;
-		private static final int SPOT = 7;
-
-		@Override
-		public int compare(GraphicObject arg0, GraphicObject arg1) {
-			if (arg0 == null) {
-				return 1;
-			}
-			if (arg1 == null) {
-				return -1;
-			}
-			Object clickedObject0 = arg0.getClickableObject();
-			if (clickedObject0 == null) {
-				return 1;
-			}
-			Object clickedObject1 = arg1.getClickableObject();
-			if (clickedObject1 == null) {
-				return -1;
-			}
-
-			int priority0 = getPriority(clickedObject0);
-			int priority1 = getPriority(clickedObject1);
-
-			return priority1 - priority0;
-		}
-
-		private int getPriority(Object o) {
-			if (o instanceof RoomInfo) {
-				return FLOOR;
-			}
-			if (o instanceof FigureInfo) {
-				return FIGURE;
-			}
-			if (o instanceof DoorInfo) {
-				return DOOR;
-			}
-			if (o instanceof PositionInRoomInfo) {
-				return POSITION;
-			}
-			if (o instanceof ShrineInfo) {
-				return SHRINE;
-			}
-			if (o instanceof ChestInfo) {
-				return CHEST;
-			}
-			if (o instanceof SpotInfo) {
-				return SPOT;
-			}
-			if (o instanceof ItemInfo) {
-				return ITEM;
-			}
-			return -1;
-		}
-
-	}
-
 	public void newStatement(Statement s) {
 		this.showNewTextPercept(s);
 	}
@@ -1244,36 +1174,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return focusManager;
 	}
 
-	public void setInfoEntity(Paragraphable item) {
-		if (item == null || item.equals(this.figureInfo)) {
-			this.infoPanel.setContent(null);
-		}
-		else {
-			this.infoPanel.setContent(item);
-		}
-	}
-
-	public void flushAnimationManager() {
-		long timer = 0;
-		long timeStep = 20;
-		while (!AnimationManager.getInstance().isEmpty()) {
-			timer += 20;
-			if (timer > 3000) {
-				break;
-			}
-			try {
-				Thread.sleep(timeStep);
-			}
-			catch (InterruptedException e) {
-				Log.w("Warning", "flush animation manager sleep interrupted");
-			}
-		}
-		AnimationManager.getInstance().clearAll();
-	}
-
 	public void setFigure(FigureInfo f) {
 		this.figureInfo = (HeroInfo) f;
-
 	}
 
 	@Override
