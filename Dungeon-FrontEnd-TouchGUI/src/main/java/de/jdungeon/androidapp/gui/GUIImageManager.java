@@ -37,6 +37,8 @@ public class GUIImageManager {
 	public static final String HAMMER = "guiItems/icon_hammer2.gif";
 	public static final String HAMMER2 = "guiItems/TO_hammer.gif";
 	public static final String RUN_ICON = "guiItems/run.gif";
+	public static final String CHEST_OPEN = "guiItems/brown-trunk-open.png";
+	public static final String FLOOR_BG = "guiItems/dan-rozanski-stone-floor-a1-baking.png";
 
 	public static final String NO_IMAGE = "guiItems/no_image.gif";
 

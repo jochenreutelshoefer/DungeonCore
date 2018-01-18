@@ -20,12 +20,15 @@ public abstract class SubGUIElement extends AbstractGUIElement {
 		this.parent = parent;
 	}
 
-	/*
+
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
+		// for development only
+		/*
 		g.drawRect(parent.getPositionOnScreen().getX() +position.getX(), parent.getPositionOnScreen().getY() + position.getY(), dimension.getWidth(), dimension.getHeight(), Colors.BLUE);
+		*/
 	}
-	*/
+
 
 	@Override
 	public boolean hasPoint(JDPoint p) {

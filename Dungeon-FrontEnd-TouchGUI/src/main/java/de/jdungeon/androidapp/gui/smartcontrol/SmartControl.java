@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import audio.AudioEffectsManager;
 import control.ActionAssembler;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
@@ -68,6 +69,13 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private final JDPoint[] doorCoordinates;
 	private boolean worldHasChanged = true;
 
+	private final MoveElement moveWest;
+	private final MoveElement moveEast;
+	private final MoveElement moveNorth;
+	private final MoveElement moveSouth;
+	public static final int MOVE_ELEMENT_SIZE = 40;
+	private JDDimension moveElementDimension;
+
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
@@ -111,6 +119,12 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			}
 		};
 
+		moveElementDimension = new JDDimension(MOVE_ELEMENT_SIZE, MOVE_ELEMENT_SIZE);
+		moveNorth = createMoveNorth(MOVE_ELEMENT_SIZE, moveElementDimension);
+		moveEast = createMoveEast(MOVE_ELEMENT_SIZE, moveElementDimension);
+		moveWest = createMoveWest(MOVE_ELEMENT_SIZE, moveElementDimension);
+		moveSouth = createMoveSouth(MOVE_ELEMENT_SIZE, moveElementDimension);
+
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
 	}
@@ -129,8 +143,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private void updateMoveElements() {
 		moveElements.clear();
-		int moveElementSize = 40;
-		JDDimension moveElementDimension = new JDDimension(moveElementSize, moveElementSize);
+
 		RoomInfo roomInfo = figure.getRoomInfo();
 		DoorInfo[] doors = roomInfo.getDoors();
 
@@ -139,38 +152,38 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			int positionInRoomIndex = figure.getPositionInRoomIndex();
 			if (positionInRoomIndex == 1) {
 				if (checkFleeAction()) {
-					addDoorNorth(moveElementSize, moveElementDimension);
+					moveElements.add(moveNorth);
 				}
 			}
 			if (positionInRoomIndex == 3) {
 				if (checkFleeAction()) {
-					addDoorEast(moveElementSize, moveElementDimension);
+					moveElements.add(moveEast);
 				}
 			}
 			if (positionInRoomIndex == 5) {
 				if (checkFleeAction()) {
-					addDoorSouth(moveElementSize, moveElementDimension);
+					moveElements.add(moveSouth);
 				}
 			}
 			if (positionInRoomIndex == 7) {
 				if (checkFleeAction()) {
-					addDoorWest(moveElementSize, moveElementDimension);
+					moveElements.add(moveWest);
 				}
 			}
 		}
 		else {
 
 			if (doors[0] != null && doors[0].isPassable()) {
-				addDoorNorth(moveElementSize, moveElementDimension);
+				moveElements.add(moveNorth);
 			}
 			if (doors[1] != null && doors[1].isPassable()) {
-				addDoorEast(moveElementSize, moveElementDimension);
+				moveElements.add(moveEast);
 			}
 			if (doors[2] != null && doors[2].isPassable()) {
-				addDoorSouth(moveElementSize, moveElementDimension);
+				moveElements.add(moveSouth);
 			}
 			if (doors[3] != null && doors[3].isPassable()) {
-				addDoorWest(moveElementSize, moveElementDimension);
+				moveElements.add(moveWest);
 			}
 		}
 	}
@@ -179,22 +192,22 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		return figure.checkAction(new FleeAction(false)).getValue() == ActionResult.VALUE_POSSIBLE;
 	}
 
-	private void addDoorWest(int moveElementSize, JDDimension moveElementDimension) {
-		moveElements.add(new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West));
+	private MoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {
+		return new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West);
 	}
 
-	private void addDoorNorth(int moveElementSize, JDDimension moveElementDimension) {
-		moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North));
+	private MoveElement createMoveNorth(int moveElementSize, JDDimension moveElementDimension) {
+		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North);
 	}
 
-	private void addDoorEast(int moveElementSize, JDDimension moveElementDimension) {
-		moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension()
-				.getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East));
+	private MoveElement createMoveEast(int moveElementSize, JDDimension moveElementDimension) {
+		return new MoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension()
+				.getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East);
 	}
 
-	private void addDoorSouth(int moveElementSize, JDDimension moveElementDimension) {
-		moveElements.add(new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
-				.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South));
+	private MoveElement createMoveSouth(int moveElementSize, JDDimension moveElementDimension) {
+		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
+				.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South);
 	}
 
 	private void updateDoorElements() {
@@ -267,6 +280,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 				@Override
 				public boolean handleTouchEvent(Input.TouchEvent touch) {
 					super.handleTouchEvent(touch);
+					AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
 					EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
 					return true;
 				}

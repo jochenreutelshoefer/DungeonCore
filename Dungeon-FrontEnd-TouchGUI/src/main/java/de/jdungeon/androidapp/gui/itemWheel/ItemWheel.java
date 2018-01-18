@@ -4,7 +4,6 @@ import android.util.Log;
 import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
-import game.InfoEntity;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.FocusEvent;
@@ -24,11 +23,12 @@ public class ItemWheel extends AbstractGUIElement {
 	private static final double TWO_PI = Math.PI * 2;
 	private final JDPoint[] points = new JDPoint[36];
 	private final int hightlightItemPosition;
+	private final Image wheelBackgroundImage;
 	private final String title;
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
 	private int markedPointIndex;
-	private final Image backgroundImage;
+	private final Image itemBackgroundImage;
 	private final ItemWheelBindingSet binding;
 	private boolean justRotated = true;
 	private final int defaultImageWidth = 50;
@@ -59,15 +59,16 @@ public class ItemWheel extends AbstractGUIElement {
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
-					 Image background, String title) {
+					 Image itemBackground, Image wheelBackgroundImage, String title) {
 		super(position, dim, screen, game);
 		this.hightlightItemPosition = selectedIndex;
+		this.wheelBackgroundImage = wheelBackgroundImage;
 		this.title = title;
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
 		this.binding = binding;
 		//markedPointIndex = selectedIndex;
-		this.backgroundImage = background;
+		this.itemBackgroundImage = itemBackground;
 
 		/*
 		 * init points
@@ -230,7 +231,7 @@ public class ItemWheel extends AbstractGUIElement {
 		}
 		binding.update(time);
 		ItemWheelActivity lastAdded = binding.getAndClearLastAdded();
-		if(lastAdded != null) {
+		if (lastAdded != null) {
 			this.highlightEntity(lastAdded.getObject());
 		}
 	}
@@ -257,10 +258,29 @@ public class ItemWheel extends AbstractGUIElement {
 				dimension.getHeight(), Colors.BLUE);
 		this.binding.getSize();
 
-		// headline and title
-		int xLeft = position.getX() - this.getDimension().getWidth() * 2 / 5 - 20;
-		int xRight = position.getX() + this.getDimension().getWidth() * 2 / 5 + 20;
 		int posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight() / 12;
+		int xLeft = position.getX() - this.getDimension().getWidth() * 2 / 5 - 20;
+
+		/*
+					 * draw item wheel background if existing
+					 */
+		if (wheelBackgroundImage != null) {
+			int widthFullArea = game.getScreenWidth() - xLeft;
+			int heightFullArea = game.getScreenHeight() - posY;
+			int backgroundWidth = widthFullArea * 2 / 3;
+			g.drawScaledImage(
+					wheelBackgroundImage,
+					xLeft + ((widthFullArea-backgroundWidth)/2),
+					posY,
+					backgroundWidth,
+					heightFullArea,
+					0, 0,
+					wheelBackgroundImage.getWidth(),
+					wheelBackgroundImage.getHeight());
+		}
+
+		// headline and title
+		int xRight = position.getX() + this.getDimension().getWidth() * 2 / 5 + 20;
 		g.drawLine(xLeft, posY, xRight, posY, Colors.WHITE);
 		int stepDown = 10;
 		int stepLength = 50;
@@ -315,16 +335,16 @@ public class ItemWheel extends AbstractGUIElement {
 					/*
 					 * draw background if existing
 					 */
-					if (backgroundImage != null) {
+					if (itemBackgroundImage != null) {
 						g.drawScaledImage(
-								backgroundImage,
+								itemBackgroundImage,
 								xMinusDefaultWidth - backgroundPanelOffset,
 								yMinusDefaultHeight - backgroundPanelOffset,
 								doubleWidthPlusOffset,
 								doubleHeightPlusOffset,
 								0, 0,
-								backgroundImage.getWidth(),
-								backgroundImage.getHeight());
+								itemBackgroundImage.getWidth(),
+								itemBackgroundImage.getHeight());
 					}
 
 					/*
@@ -340,16 +360,16 @@ public class ItemWheel extends AbstractGUIElement {
 					/*
 					 * draw background if existing
 					 */
-					if (backgroundImage != null) {
+					if (itemBackgroundImage != null) {
 						g.drawScaledImage(
-								backgroundImage,
+								itemBackgroundImage,
 								xMinusDefaultWidthHalf - backgroundPanelOffset,
 								yMinusDefaultHeightHalf - backgroundPanelOffset,
 								defaultImageWidth + doubleBackgroundPanelOffset,
 								defaultImageHeight + doubleBackgroundPanelOffset,
 								0, 0,
-								backgroundImage.getWidth(),
-								backgroundImage.getHeight());
+								itemBackgroundImage.getWidth(),
+								itemBackgroundImage.getHeight());
 					}
 
 					/*

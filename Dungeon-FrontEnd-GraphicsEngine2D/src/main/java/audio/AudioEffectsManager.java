@@ -17,6 +17,7 @@ public class AudioEffectsManager {
 	public static AbstractAudioSet SKEL_HURT;
 	public static AbstractAudioSet DOOR_CLOSE;
 	public static AbstractAudioSet DOOR_LOCK;
+	public static AbstractAudioSet CHEST_OPEN;
 
 	public static AbstractAudioSet MAGIC_FIREBALL;
 	public static AbstractAudioSet SPIDER_DIES;
@@ -80,6 +81,7 @@ public class AudioEffectsManager {
 			HIT = create(a, "dang.mp3" );
 			DOOR_CLOSE = create(a, "door-closed.wav" );
 			DOOR_LOCK = create(a,  "door-lock.wav" );
+			CHEST_OPEN = create(a,  "Opening Casket-SoundBible.mp3", "Cracking Chest Open-SoundBible" );
 			MONSTER_HURT = create(a, "monster-pain1.wav",
 					"monster-pain5.wav" );
 			WOLF_ATTACKS = create(a, "bark1.wav",

@@ -53,8 +53,8 @@ import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.GameScreenPerceptHandler;
 import de.jdungeon.androidapp.audio.MusicManager;
-import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.event.FocusEvent;
+import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 import de.jdungeon.androidapp.gui.ColorConverter;
 import de.jdungeon.androidapp.gui.FocusManager;
@@ -155,7 +155,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		gui.setFigure(figureInfo);
 		this.gui = gui;
 		hero.setControl(gui);
-		actionAssembler =  new ActionAssembler(gui);
+		actionAssembler = new ActionAssembler(gui);
 		control = new Control(figureInfo, actionAssembler);
 
 		/*
@@ -260,10 +260,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
 						new UseItemActivityProvider(figureInfo, this)),
-				selectedIndexItem, null, "Rucksack");
+				selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
-		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth, wheelCenterY);
+		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth/32, wheelCenterY);
 		/*
 		 * init skills wheel
 		 */
@@ -274,19 +274,22 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				new ItemWheelBindingSetSimple(selectedIndex, 36,
 						new SkillActivityProvider(figureInfo, this)),
 				selectedIndex,
-				skillBackgroundImage, "Aktivitäten");
+				skillBackgroundImage, null, "Aktivitäten");
 		this.guiElements.add(itemWheelSkills);
 
 		/*
 		init room item wheel
 		it shares position with the skill wheel, toggled on/off by the user
 		 */
+		Image floorBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.FLOOR_BG, game.getFileIO()
+				.getImageLoader()).getImage();
+
 		itemWheelRoomItems = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndex, 36,
 						new TakeItemActivityProvider(figureInfo, this)),
 				selectedIndex,
-				null, "Boden");
+				null, floorBackGroundImage, "Boden");
 		itemWheelRoomItems.setVisible(false);
 		this.guiElements.add(itemWheelRoomItems);
 
@@ -295,12 +298,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		init chest item wheel
 		it shares position with the skill wheel, toggled on/off by the user
 		 */
+		Image chestBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.CHEST_OPEN, game.getFileIO()
+				.getImageLoader()).getImage();
 		itemWheelChest = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, this, this.getGame(),
 				new ItemWheelBindingSetSimple(selectedIndex, 36,
 						new ChestItemActivityProvider(figureInfo, this)),
 				selectedIndex,
-				null, "Truhe");
+				null, chestBackGroundImage, "Truhe");
 		itemWheelChest.setVisible(false);
 		this.guiElements.add(itemWheelChest);
 
@@ -405,7 +410,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 		public void setFrameRenderTime(long duration) {
 			durations[counter] = duration;
-			counter =  (counter + 1) % bufferSize;
+			counter = (counter + 1) % bufferSize;
 
 			paintBuilder = new PaintBuilder();
 			paintBuilder.setColor(ColorConverter.getColor(JDColor.red));
@@ -451,10 +456,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			}
 		}
 
-		long renderTime  = System.currentTimeMillis() - renderStart;
+		long renderTime = System.currentTimeMillis() - renderStart;
 		renderTimeLog.setFrameRenderTime(renderTime);
 
-		gr.drawString(renderTimeLog.getFrameRate()+" fps", 25, 15, renderTimeLog.getPaintBuilder());
+		gr.drawString(renderTimeLog.getFrameRate() + " fps", 25, 15, renderTimeLog.getPaintBuilder());
 	}
 
 	private void drawWorld(Graphics gr) {
@@ -505,19 +510,23 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 						}
 					}
 
-
-					if(worldHasChanged || !this.drawnRooms.containsKey(roomInfo.getPoint()) || AnimationManager.getInstance().hasAnimations(roomInfo)) {
+					if (worldHasChanged || !this.drawnRooms.containsKey(roomInfo.getPoint()) || AnimationManager.getInstance()
+							.hasAnimations(roomInfo)) {
 						Image roomOffscreenImage = DrawUtils.drawObjects(gr, graphicObjectsForRoom,
 								getViewportPosition(), roomInfo, (int) getRoomSize(),
 								roomOffsetX, roomOffsetY, this);
-						if(roomOffscreenImage != null) {
+						if (roomOffscreenImage != null) {
 							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);
-							gr.drawScaledImage(roomOffscreenImage, roomOffsetX-viewportPosition.getX(), roomOffsetY-viewportPosition.getY(), (int)roomSize, (int)roomSize, 0 , 0, roomOffscreenImage.getWidth(), roomOffscreenImage.getHeight(), true);
+							gr.drawScaledImage(roomOffscreenImage, roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition
+									.getY(), (int) roomSize, (int) roomSize, 0, 0, roomOffscreenImage.getWidth(), roomOffscreenImage
+									.getHeight(), true);
 						}
 					}
-					if(!worldHasChanged && this.drawnRooms.get(roomInfo.getPoint()) != null) {
+					if (!worldHasChanged && this.drawnRooms.get(roomInfo.getPoint()) != null) {
 						Image roomOffscreenImage = this.drawnRooms.get(roomInfo.getPoint());
-						gr.drawScaledImage(roomOffscreenImage, roomOffsetX-viewportPosition.getX(), roomOffsetY-viewportPosition.getY(), (int)roomSize, (int)roomSize, 0 , 0, roomOffscreenImage.getWidth(), roomOffscreenImage.getHeight(), true);
+						gr.drawScaledImage(roomOffscreenImage, roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition
+								.getY(), (int) roomSize, (int) roomSize, 0, 0, roomOffscreenImage.getWidth(), roomOffscreenImage
+								.getHeight(), true);
 					}
 
 				}
@@ -1231,7 +1240,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		textPerceptView.addTextPercept(p);
 	}
 
-
 	public FocusManager getFocusManager() {
 		return focusManager;
 	}
@@ -1297,7 +1305,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			switchRightItemWheel(event);
 		}
 		if (event instanceof ShrineButtonClickedEvent) {
-			if(! (getFigureInfo().getPos().getIndex() == Position.Pos.NE.getValue())) {
+			if (!(getFigureInfo().getPos().getIndex() == Position.Pos.NE.getValue())) {
 				EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NE.getValue())));
 			}
 			EventManager.getInstance().fireEvent(new ActionEvent(new ShrineAction(null, false)));
@@ -1327,7 +1335,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 		else if (event instanceof ChestItemButtonClickedEvent) {
 			if (!chestItemWheelShowing) {
-				if(! (getFigureInfo().getPos().getIndex() == Position.Pos.NW.getValue())) {
+				if (!(getFigureInfo().getPos().getIndex() == Position.Pos.NW.getValue())) {
 					EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
 				}
 				setChestItemWheelVisible();

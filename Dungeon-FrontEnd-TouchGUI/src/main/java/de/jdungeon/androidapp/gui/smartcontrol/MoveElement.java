@@ -29,29 +29,31 @@ public class MoveElement extends AnimatedSmartControlElement {
 		this.parent = parent;
 		this.direction = direction;
 
+		JDDimension iconDimension = new JDDimension((int)(dimension.getWidth()*0.8), (int)(dimension.getHeight()*0.8));
+
 
 		if(direction == RouteInstruction.Direction.West) {
-			triangle = getTriangleWest(position, dimension, 1.0);
+			triangle = getTriangleWest(position, iconDimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = new Triangle(getTriangleWest(position,  dimension, buttonAnimationSizes[i]), parent);
+				animationShapes[i] = new Triangle(getTriangleWest(position,  iconDimension, buttonAnimationSizes[i]), parent);
 			}
 		}
 		if(direction == RouteInstruction.Direction.East) {
-			triangle = getTriangleEast(position, dimension, 1.0);
+			triangle = getTriangleEast(position, iconDimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = new Triangle(getTriangleEast(position,  dimension,buttonAnimationSizes[i]), parent);
+				animationShapes[i] = new Triangle(getTriangleEast(position,  iconDimension, buttonAnimationSizes[i]), parent);
 			}
 		}
 		if(direction == RouteInstruction.Direction.North) {
-			triangle = getTriangleNorth(position, dimension, 1.0);
+			triangle = getTriangleNorth(position, iconDimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = new Triangle(getTriangleNorth(position, dimension,buttonAnimationSizes[i]),parent);
+				animationShapes[i] = new Triangle(getTriangleNorth(position, iconDimension, buttonAnimationSizes[i]),parent);
 			}
 		}
 		if(direction == RouteInstruction.Direction.South) {
-			triangle = getTriangleSouth(position, dimension, 1.0);
+			triangle = getTriangleSouth(position, iconDimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
-				animationShapes[i] = new Triangle(getTriangleSouth(position,  dimension, buttonAnimationSizes[i]), parent);
+				animationShapes[i] = new Triangle(getTriangleSouth(position,  iconDimension, buttonAnimationSizes[i]), parent);
 			}
 		}
 	}
@@ -60,8 +62,8 @@ public class MoveElement extends AnimatedSmartControlElement {
 		int sizeX = clickAreaDimension.getWidth();
 		int sizeY = clickAreaDimension.getHeight();
 
-		int centerX = position.getX() + sizeX / 2;
-		int centerY = position.getY() + sizeY / 2;
+		int centerX = position.getX() + getDimension().getWidth() / 2;
+		int centerY = position.getY() + getDimension().getHeight() / 2;
 
 		JDPoint[] result =  new JDPoint[3];
 		result[0] = new JDPoint(centerX, centerY + ((sizeY /3)* drawScale)); // peak to bottom
@@ -75,8 +77,9 @@ public class MoveElement extends AnimatedSmartControlElement {
 		int sizeX = clickAreaDimension.getWidth();
 		int sizeY = clickAreaDimension.getHeight();
 
-		int centerX = position.getX() + sizeX / 2;
-		int centerY = position.getY() + sizeY / 2;
+		int centerX = position.getX() + getDimension().getWidth() / 2;
+		int centerY = position.getY() + getDimension().getHeight() / 2;
+
 
 		JDPoint[] result =  new JDPoint[3];
 		result[0] = new JDPoint(centerX, centerY - ((sizeY /3)* drawScale)); // peak to top
@@ -90,8 +93,8 @@ public class MoveElement extends AnimatedSmartControlElement {
 		int sizeX = clickAreaDimension.getWidth();
 		int sizeY = clickAreaDimension.getHeight();
 
-		int centerX = position.getX() + sizeX / 2;
-		int centerY = position.getY() + sizeY / 2;
+		int centerX = position.getX() + getDimension().getWidth() / 2;
+		int centerY = position.getY() + getDimension().getHeight() / 2;
 
 		JDPoint[] result =  new JDPoint[3];
 		result[0] = new JDPoint(centerX + ((sizeX /3)* drawScale), centerY ); // peak to right
@@ -101,12 +104,12 @@ public class MoveElement extends AnimatedSmartControlElement {
 		return result;
 	}
 
-	private JDPoint[] getTriangleWest(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
-		int sizeX = clickAreaDimension.getWidth();
-		int sizeY = clickAreaDimension.getHeight();
+	private JDPoint[] getTriangleWest(JDPoint position, JDDimension triangleDimension, double drawScale) {
+		int sizeX = triangleDimension.getWidth();
+		int sizeY = triangleDimension.getHeight();
 
-		int centerX = position.getX() + sizeX  / 2;
-		int centerY = position.getY() + sizeY / 2;
+		int centerX = position.getX() + getDimension().getWidth() / 2;
+		int centerY = position.getY() + getDimension().getHeight() / 2;
 
 		JDPoint[] result =  new JDPoint[3];
 		result[0] = new JDPoint(centerX - ((sizeX /3)* drawScale), centerY ); // peak to left
