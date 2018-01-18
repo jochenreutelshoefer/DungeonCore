@@ -33,7 +33,7 @@ public class DrawUtils {
 	public static Image drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
 			JDPoint viewportPosition, RoomInfo roomInfo, int roomSize,
-			int roomOffsetX, int roomOffsetY, GameScreen screen) {
+			int roomOffsetX, int roomOffsetY, GameScreen screen, GraphicObjectRenderer renderer) {
 
 		// we init a tmp offscreen image for this room for caching and later re-use
 		//g.setTempCanvas(roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition.getY(), roomSize, roomSize);
@@ -60,9 +60,9 @@ public class DrawUtils {
 
 						if (frame != null) {
 							JDImageProxy<?> animationImage = frame.getImage();
-							JDDimension figureInfoSize = GraphicObjectRenderer.getFigureInfoSize(figureInfo, roomSize);
+							JDDimension figureInfoSize = renderer.getFigureInfoSize(figureInfo, roomSize);
 							// we override the image variable here
-							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
+							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize, renderer);
 							if(locatedImage != null) {
 								// might be null if that room is not visible
 								jdImage = locatedImage;
@@ -161,10 +161,9 @@ public class DrawUtils {
 			if(roomInfo.equals(deadFigure.getRoomInfo())) {
 				AnimationFrame animationImage = AnimationManager.getInstance()
 						.getAnimationImage(deadFigure, deadFigure.getRoomInfo());
-				JDDimension figureInfoSize = GraphicObjectRenderer.getFigureInfoSize(deadFigure, roomSize);
+				JDDimension figureInfoSize = renderer.getFigureInfoSize(deadFigure, roomSize);
 				int sizeX = figureInfoSize.getWidth();
 				int sizeY = figureInfoSize.getHeight();
-				GraphicObjectRenderer renderer = new GraphicObjectRenderer(roomSize);
 				JDPoint positionCoordModified = renderer.getPositionCoordModified(deadFigure.getPositionInRoomIndex());
 				JDPoint relativeCoordinates = new JDPoint(
 						positionCoordModified.getX(),
@@ -172,7 +171,7 @@ public class DrawUtils {
 				RelativeRectangle destinationRectangle = new RelativeRectangle(new JDPoint(relativeCoordinates.getX() - (sizeX / 2), relativeCoordinates.getY() - (sizeY / 2)), sizeX, sizeY);
 				JDImageLocated locatedImage = new JDImageLocated(ImageManager.getImage(deadFigure, deadFigure.getLookDirection()), destinationRectangle);
 				if(animationImage != null) {
-					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize);
+					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize, renderer);
 				}
 				if(locatedImage != null) {
 

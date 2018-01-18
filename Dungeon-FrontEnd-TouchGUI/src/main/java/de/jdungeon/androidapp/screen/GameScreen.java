@@ -510,7 +510,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 							.hasAnimations(roomInfo)) {
 						Image roomOffscreenImage = DrawUtils.drawObjects(gr, graphicObjectsForRoom,
 								getViewportPosition(), roomInfo, (int) getRoomSize(),
-								roomOffsetX, roomOffsetY, this);
+								roomOffsetX, roomOffsetY, this, dungeonRenderer);
 						if (roomOffscreenImage != null) {
 							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);
 							gr.drawScaledImage(roomOffscreenImage, roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition
@@ -539,7 +539,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private List<GraphicObject> createGraphicObjectsForRoom(RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
-		List<GraphicObject> graphicObjectsForRoom = getDungeonRenderer()
+		List<GraphicObject> graphicObjectsForRoom = this.dungeonRenderer
 				.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
 						roomOffsetY, new ArrayList<>());
 		clearNulls(graphicObjectsForRoom);
@@ -1111,10 +1111,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	public JDPoint getViewportPosition() {
 		return viewportPosition;
-	}
-
-	public GraphicObjectRenderer getDungeonRenderer() {
-		return dungeonRenderer;
 	}
 
 	public void putGraphicObjects(JDPoint point, List<GraphicObject> graphicObjectsForRoom) {

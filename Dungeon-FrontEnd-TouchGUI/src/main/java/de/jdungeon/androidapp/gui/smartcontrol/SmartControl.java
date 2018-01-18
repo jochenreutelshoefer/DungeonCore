@@ -75,6 +75,9 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private final MoveElement moveSouth;
 	public static final int MOVE_ELEMENT_SIZE = 40;
 	private JDDimension moveElementDimension;
+	private final int positionAreaSize;
+	private final int positionAreaOffset;
+	private final GraphicObjectRenderer renderer;
 
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, screen, game);
@@ -124,6 +127,10 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		moveEast = createMoveEast(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveWest = createMoveWest(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveSouth = createMoveSouth(MOVE_ELEMENT_SIZE, moveElementDimension);
+
+		positionAreaSize = (int) (dimension.getWidth() / 1.6);
+		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
+		renderer = new GraphicObjectRenderer(positionAreaSize);
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
@@ -290,10 +297,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private void updatePositionElements() {
 		positionElements.clear();
-		JDDimension dimension = this.getDimension();
-		int positionAreaSize = (int) (dimension.getWidth() / 1.6);
-		int positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
-		GraphicObjectRenderer renderer = new GraphicObjectRenderer(positionAreaSize);
+
 		int correctionX = 3;
 		int correctionY = -3;
 		for (int i = 0; i < 8; i++) {

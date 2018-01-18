@@ -64,14 +64,14 @@ public class AnimationFrame {
 		this.to = to;
 	}
 
-	public JDImageLocated getLocatedImage(int roomOffsetX, int roomOffsetY, int figureSizeX, int figureSizeY, int roomSize) {
+	public JDImageLocated getLocatedImage(int roomOffsetX, int roomOffsetY, int figureSizeX, int figureSizeY, int roomSize, GraphicObjectRenderer renderer) {
 		if (to == null) {
 			// animation is out of our visibility, hence we cannot render/locate anything
 			return null;
 		}
-		JDPoint positionFromOffset = GraphicObjectRenderer.getPositionCoordinates(from, roomSize);
-		JDPoint positionToOffset = GraphicObjectRenderer.getPositionCoordinates(to, roomSize);
-		int posSize = GraphicObjectRenderer.getPosSize(roomSize);
+		JDPoint positionFromOffset = renderer.getPositionCoordinates(from, roomSize);
+		JDPoint positionToOffset = renderer.getPositionCoordinates(to, roomSize);
+		int posSize = renderer.getPosSize();
 		assert positionToOffset != null;
 		int coordinateX = roomOffsetX+positionToOffset.getX();
 		int coordinateY = roomOffsetY+positionToOffset.getY();
