@@ -78,12 +78,20 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private final int positionAreaSize;
 	private final int positionAreaOffset;
 	private final GraphicObjectRenderer renderer;
+	private final SubGUIElementRelative chestGUIELement;
+	private final SubGUIElementRelative takeGUIElement;
+	private final PositionElement[] freeStepPositionElements = new PositionElement[8];
+	private final PositionElement[] dotPositionElements = new PositionElement[8];
+	private final JDPoint[] positionElementPositions = new JDPoint[8];
+	private final JDDimension positionDimension;
 
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
 		this.actionAssembler = actionAssembler;
-
+		positionAreaSize = (int) (dimension.getWidth() / 1.6);
+		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
+		renderer = new GraphicObjectRenderer(positionAreaSize);
 		doorOuterBorderWidth = this.getDimension().getWidth() / 5;
 
 		/*
@@ -104,7 +112,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		// draw border frame
 		frame = new SubGUIElement(
 				new JDPoint(0, this.getDimension().getHeight() * 0.03),
-				new JDDimension(this.getDimension().getWidth(), (int)(this.getDimension().getHeight() * 0.94))
+				new JDDimension(this.getDimension().getWidth(), (int) (this.getDimension().getHeight() * 0.94))
 				, this) {
 			@Override
 			public boolean isVisible() {
@@ -122,15 +130,59 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			}
 		};
 
+		// prepare step position elements
+		int positionElementSize = 32;
+		int correctionX = 3;
+		int correctionY = -3;
+		positionDimension = new JDDimension(positionElementSize, positionElementSize);
+		for (int i = 0; i < freeStepPositionElements.length; i++) {
+			JDPoint positionCoord = renderer.getPositionCoordModified(i);
+			positionElementPositions[i] = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionElementSize / 2, correctionY + positionCoord
+					.getY() + positionAreaOffset - positionElementSize / 2);
+			freeStepPositionElements[i] = new PositionElement(
+					positionElementPositions[i],
+					positionDimension,
+					this,
+					new StepAction(i), Colors.WHITE, null);
+			dotPositionElements[i] = new PositionElement(
+					new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord.getY() + positionAreaOffset - 1),
+					new JDDimension(3, 3), this, null, Colors.GRAY, null);
+		}
+
 		moveElementDimension = new JDDimension(MOVE_ELEMENT_SIZE, MOVE_ELEMENT_SIZE);
 		moveNorth = createMoveNorth(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveEast = createMoveEast(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveWest = createMoveWest(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveSouth = createMoveSouth(MOVE_ELEMENT_SIZE, moveElementDimension);
 
-		positionAreaSize = (int) (dimension.getWidth() / 1.6);
-		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
-		renderer = new GraphicObjectRenderer(positionAreaSize);
+		// chest button
+		int takeElementSizeX = 30;
+		int takeElementSizeY = 20;
+		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
+		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
+		chestGUIELement = new SubGUIElementRelative(posRelative, chestDimension, this) {
+
+			@Override
+			public boolean handleTouchEvent(Input.TouchEvent touch) {
+				super.handleTouchEvent(touch);
+				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
+				EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
+				return true;
+			}
+		};
+
+		// take from floor  button
+		int takeElementSize = 28;
+		final JDDimension takeDimension = new JDDimension(takeElementSize, takeElementSize);
+		final JDPoint posRelativeTake = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
+		takeGUIElement = new SubGUIElementRelative(posRelativeTake, takeDimension, this) {
+			@Override
+			public boolean handleTouchEvent(Input.TouchEvent touch) {
+				super.handleTouchEvent(touch);
+				EventManager.getInstance().fireEvent(new TakeItemButtonClickedEvent());
+				return true;
+			}
+		};
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
@@ -235,18 +287,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		takeItemElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
 		List<ItemInfo> items = roomInfo.getItems();
-		int takeElementSize = 28;
 		if (items != null && !items.isEmpty()) {
-			final JDDimension dimension = new JDDimension(takeElementSize, takeElementSize);
-			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
-			takeItemElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
-				@Override
-				public boolean handleTouchEvent(Input.TouchEvent touch) {
-					super.handleTouchEvent(touch);
-					EventManager.getInstance().fireEvent(new TakeItemButtonClickedEvent());
-					return true;
-				}
-			});
+			takeItemElements.add(takeGUIElement);
 		}
 	}
 
@@ -277,52 +319,29 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			return;
 		}
 		List<ItemInfo> items = figure.getRoomInfo().getChest().getItemList();
-		int takeElementSizeX = 30;
-		int takeElementSizeY = 20;
-		if (!items.isEmpty()) {
-			final JDDimension dimension = new JDDimension(takeElementSizeX, takeElementSizeY);
-			final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
-			chestElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
 
-				@Override
-				public boolean handleTouchEvent(Input.TouchEvent touch) {
-					super.handleTouchEvent(touch);
-					AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
-					EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
-					return true;
-				}
-			});
+		if (!items.isEmpty()) {
+			chestElements.add(chestGUIELement);
 		}
 	}
 
 	private void updatePositionElements() {
 		positionElements.clear();
 
-		int correctionX = 3;
-		int correctionY = -3;
 		for (int i = 0; i < 8; i++) {
-			JDPoint positionCoord = renderer.getPositionCoordModified(i);
-			int positionSize = 32;
-			Action action = new StepAction(i);
 			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
-			JDPoint position = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionSize / 2, correctionY + positionCoord
-					.getY() + positionAreaOffset - positionSize / 2);
-			JDDimension positionDimension = new JDDimension(positionSize, positionSize);
+			JDPoint positionCoord = renderer.getPositionCoordModified(i);
+			Action action = new StepAction(i);
 			// TODO: cache this
 			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
-				positionElements.add(
-						new PositionElement(
-								position,
-								positionDimension,
-								this,
-								action, Colors.WHITE, null));
+				positionElements.add(freeStepPositionElements[i]);
 			}
 			else if (otherFigure != null) {
 				// show other figures
 				if (otherFigure.isHostile(this.figure)) {
 					positionElements.add(
 							new PositionElement(
-									position,
+									positionElementPositions[i],
 									positionDimension,
 									this,
 									new AttackAction(otherFigure.getFighterID()), Colors.RED, otherFigure));
@@ -334,7 +353,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 					}
 					positionElements.add(
 							new PositionElement(
-									position,
+									positionElementPositions[i],
 									positionDimension,
 									this,
 									null, color, otherFigure));
@@ -342,12 +361,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			}
 			else {
 				positionElements.add(
-						new PositionElement(
-								new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord
-										.getY() + positionAreaOffset - 1),
-								new JDDimension(3, 3),
-								this,
-								null, Colors.GRAY, null));
+						dotPositionElements[i]);
 			}
 		}
 	}

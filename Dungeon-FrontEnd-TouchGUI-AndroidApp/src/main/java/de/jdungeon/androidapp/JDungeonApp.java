@@ -95,8 +95,8 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		}
 		if(event instanceof ExitUsedEvent) {
 			GameScreen gameScreen = (GameScreen) this.getCurrentScreen();
-			Log.w("Rendering:", "Created drawing objects: "+gameScreen.counterCreatingRoomDrawingObjects);
-			Log.w("Rendering:", "Reused drawing objects: "+gameScreen.counterReusingRoomDrawingObjects);
+			//Log.w("Rendering:", "Created drawing objects: "+gameScreen.counterCreatingRoomDrawingObjects);
+			//Log.w("Rendering:", "Reused drawing objects: "+gameScreen.counterReusingRoomDrawingObjects);
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			SkillSelectionScreen screen = new SkillSelectionScreen(this);
 			this.setScreen(screen);

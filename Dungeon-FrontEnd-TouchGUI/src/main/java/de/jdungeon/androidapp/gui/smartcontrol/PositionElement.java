@@ -5,16 +5,12 @@ import event.ActionEvent;
 import event.EventManager;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import game.InfoEntity;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.gui.GUIElement;
-import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.game.Color;
-import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 
@@ -31,6 +27,8 @@ public class PositionElement extends AnimatedSmartControlElement {
 	private final int ballHeight;
 	private final int ballOffsetX;
 	private final int ballOffsetY;
+	private final int x;
+	private final int y;
 
 	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, Action action, final Color color, InfoEntity clickableObject) {
 		super(position, dimension, parent);
@@ -42,25 +40,35 @@ public class PositionElement extends AnimatedSmartControlElement {
 		ballOffsetX = (dimension.getWidth() - ballWidth) / 2;
 		ballOffsetY = (dimension.getHeight() - ballHeight) / 2;
 
+		JDPoint parentPosition = parent.getPositionOnScreen();
+		JDPoint posRelative = this.getPositionOnScreen();
+		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative
+				.getY());
+		x = absolutePosition.getX() + ballOffsetX;
+		y = absolutePosition.getY() + ballOffsetY;
+
 		final JDPoint positionOnScreen = getPositionOnScreen();
 
 		// prepare highlight animation drawables
-		for (int i = 0; i < animationShapes.length; i++) {
-			final int finalI = i;
-			animationShapes[i] = new Drawable() {
-				@Override
-				public void paint(Graphics g, JDPoint viewportPosition) {
-					JDPoint parentPosition = parent.getPositionOnScreen();
-					JDPoint absolutePosition = new JDPoint(parentPosition.getX() + positionOnScreen.getX(), parentPosition.getY() + positionOnScreen
-							.getY());
-					int x = absolutePosition.getX() + ballOffsetX;
-					int y = absolutePosition.getY() + ballOffsetY;
+		if (action != null) {
+			for (int i = 0; i < animationShapes.length; i++) {
+				final int finalI = i;
+				animationShapes[i] = new Drawable() {
+					@Override
+					public void paint(Graphics g, JDPoint viewportPosition) {
+						JDPoint parentPosition = parent.getPositionOnScreen();
+						JDPoint absolutePosition = new JDPoint(parentPosition.getX() + positionOnScreen.getX(), parentPosition
+								.getY() + positionOnScreen
+								.getY());
+						int x = absolutePosition.getX() + ballOffsetX;
+						int y = absolutePosition.getY() + ballOffsetY;
 
-					int scaledSizeX = (int) (ballWidth * buttonAnimationSizes[finalI]);
-					int scaledSizeY = (int) (ballHeight * buttonAnimationSizes[finalI]);
-					g.drawOval(x - ((scaledSizeX-ballWidth)/2), y- ((scaledSizeY-ballHeight)/2), scaledSizeX, scaledSizeY, color);
-				}
-			};
+						int scaledSizeX = (int) (ballWidth * buttonAnimationSizes[finalI]);
+						int scaledSizeY = (int) (ballHeight * buttonAnimationSizes[finalI]);
+						g.drawOval(x - ((scaledSizeX - ballWidth) / 2), y - ((scaledSizeY - ballHeight) / 2), scaledSizeX, scaledSizeY, color);
+					}
+				};
+			}
 		}
 	}
 
@@ -72,9 +80,9 @@ public class PositionElement extends AnimatedSmartControlElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
-		if(action != null) {
+		if (action != null) {
 			EventManager.getInstance().fireEvent(new ActionEvent(action));
-			if(clickableObject != null) {
+			if (clickableObject != null) {
 				EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
 			}
 		}
@@ -84,14 +92,10 @@ public class PositionElement extends AnimatedSmartControlElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		JDPoint parentPosition = parent.getPositionOnScreen();
-		JDPoint posRelative = this.getPositionOnScreen();
-		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
-		int x = absolutePosition.getX() + ballOffsetX;
-		int y = absolutePosition.getY() + ballOffsetY;
-		if(clickableObject instanceof FigureInfo) {
+		if (clickableObject instanceof FigureInfo) {
 			g.fillOval(x, y, ballWidth, ballHeight, color);
-		} else {
+		}
+		else {
 			g.drawOval(x, y, ballWidth, ballHeight, color);
 		}
 

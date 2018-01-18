@@ -12,7 +12,7 @@ package figure.action;
  */
 public class AttackAction extends Action {
 	
-	private int target;
+	private final int target;
 	public AttackAction(int f) {
 		super();
 		target = f;

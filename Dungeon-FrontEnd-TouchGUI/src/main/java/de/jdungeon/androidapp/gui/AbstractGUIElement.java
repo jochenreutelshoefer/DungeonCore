@@ -48,6 +48,11 @@ public abstract class AbstractGUIElement implements GUIElement {
 	}
 
 	@Override
+	public boolean needsRepaint() {
+		return true;
+	}
+
+	@Override
 	public StandardScreen getScreen() {
 		return screen;
 	}

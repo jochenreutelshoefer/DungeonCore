@@ -13,6 +13,8 @@ public interface GUIElement {
 
 	boolean isVisible();
 
+	boolean needsRepaint();
+
 	JDPoint getPositionOnScreen();
 
 	JDDimension getDimension();

@@ -15,6 +15,11 @@ import de.jdungeon.game.ScrollMotion;
 public abstract class DrawGUIElement implements GUIElement{
 
 	@Override
+	public boolean needsRepaint() {
+		return true;
+	}
+
+	@Override
 	public boolean isVisible() {
 		return true;
 	}

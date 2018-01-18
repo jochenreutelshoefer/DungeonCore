@@ -34,6 +34,11 @@ public class InventoryBox extends AbstractGUIElement {
 	}
 
 	@Override
+	public boolean needsRepaint() {
+		return true;
+	}
+
+	@Override
 	public boolean isVisible() {
 		return true;
 	}

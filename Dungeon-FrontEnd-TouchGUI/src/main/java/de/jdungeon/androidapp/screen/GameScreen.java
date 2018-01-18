@@ -122,6 +122,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private long lastTouchEventTime = -1;
 	private long lastScaleEventTime = -1;
 	private long lastScrollEventTime = -1;
+	private boolean touchEventAfterPaint = false;
 	private final JDGUIEngine2D gui;
 
 	private DefaultDungeonSession session;
@@ -425,6 +426,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	}
 
+	Map<GUIElement, Image> guiPaintingCache = new HashMap<>();
+
 	@Override
 	public void paint(float arg0) {
 
@@ -446,10 +449,30 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		/*
 		 * draw gui elements
 		 */
+		if (worldHasChanged || touchEventAfterPaint) {
+			guiPaintingCache.clear();
+			touchEventAfterPaint = false;
+		}
 		List<GUIElement> elements = this.guiElements;
 		for (GUIElement guiElement : elements) {
 			if (guiElement.isVisible()) {
-				guiElement.paint(gr, this.viewportPosition);
+				if (guiElement.needsRepaint()) {
+					guiElement.paint(gr, viewportPosition);
+				}
+				else {
+					Image guiElementImage = guiPaintingCache.get(guiElement);
+					JDPoint positionOnScreen = guiElement.getPositionOnScreen();
+					JDDimension dimension = guiElement.getDimension();
+					if (guiElementImage == null) {
+						gr.setTempCanvas(positionOnScreen.getX(), positionOnScreen.getY(), dimension.getWidth(), dimension
+								.getHeight());
+						guiElement.paint(gr, this.viewportPosition);
+						guiElementImage = gr.getTempImage();
+						gr.flushAndResetTempCanvas();
+						guiPaintingCache.put(guiElement, guiElementImage);
+					}
+					gr.drawImage(guiElementImage, positionOnScreen.getX(), positionOnScreen.getY(), true);
+				}
 			}
 		}
 
@@ -507,7 +530,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 							graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
 							counterCreatingRoomDrawingObjects++;
 							drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
-						} else {
+						}
+						else {
 							counterReusingRoomDrawingObjects++;
 						}
 					}
@@ -783,6 +807,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				return;
 			}
 			lastTouchEventTime = timeNow;
+			touchEventAfterPaint = true;
 
 			boolean guiOP = false;
 			JDPoint coordinates = new JDPoint(touchDownEvent.x,
