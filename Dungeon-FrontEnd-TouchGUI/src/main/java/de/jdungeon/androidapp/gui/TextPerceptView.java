@@ -40,6 +40,11 @@ public class TextPerceptView extends AbstractGUIElement {
 	}
 
 	@Override
+	public boolean needsRepaint() {
+		return !cache.isEmpty();
+	}
+
+	@Override
 	public void update(float time) {
 		if (currentInsert == null) {
 			if (!cache.isEmpty()) {
@@ -82,11 +87,11 @@ public class TextPerceptView extends AbstractGUIElement {
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
-		g.drawRect(this.position.getX() - 1, this.position.getY() - 1,
-				this.dimension.getWidth() + 2, this.dimension.getHeight() + 2,
-				Colors.GRAY);
-		g.fillRect(this.position.getX(), this.position.getY(),
+		g.drawRect(this.position.getX(), this.position.getY(),
 				this.dimension.getWidth(), this.dimension.getHeight(),
+				Colors.GRAY);
+		g.fillRect(this.position.getX()+1, this.position.getY()+1,
+				this.dimension.getWidth()-2, this.dimension.getHeight()-2,
 				Colors.BLACK);
 		
 		ListIterator<Statement> listIterator = all.listIterator(all.size());
@@ -99,13 +104,12 @@ public class TextPerceptView extends AbstractGUIElement {
 		while (yOffset < this.dimension.getHeight()
 				&& listIterator.hasPrevious()) {
 			Statement textPercept = listIterator.previous();
-			String text = textPercept.getText();
 			int yCoord = this.position.getY() + this.dimension.getHeight()
 					- yOffset - timeOffset;
 			if (yCoord < -lineHeight) {
 				break;
 			}
-			g.drawString(text, this.position.getX() + 6, yCoord, g.getPaintGray());
+			g.drawString(textPercept.getText(), this.position.getX() + 6, yCoord, g.getPaintGray());
 			yOffset += lineHeight;
 
 		}

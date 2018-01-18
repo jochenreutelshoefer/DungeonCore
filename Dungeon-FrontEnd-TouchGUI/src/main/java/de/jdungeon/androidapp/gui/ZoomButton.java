@@ -37,6 +37,11 @@ public class ZoomButton extends ImageGUIElement {
 		return true;
 	}
 
+	@Override
+	public boolean needsRepaint() {
+		return false;
+	}
+
 	private void doZoom() {
 		if(plus) {
 			screen.zoomIn();
