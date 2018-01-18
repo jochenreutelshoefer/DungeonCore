@@ -32,7 +32,7 @@ public class DrawUtils {
 
 	public static Image drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
-			JDPoint viewportPosition, RoomInfo roomInfo, int roomSize,
+			JDPoint viewportPosition, RoomInfo roomInfo,
 			int roomOffsetX, int roomOffsetY, GameScreen screen, GraphicObjectRenderer renderer) {
 
 		// we init a tmp offscreen image for this room for caching and later re-use
@@ -60,9 +60,9 @@ public class DrawUtils {
 
 						if (frame != null) {
 							JDImageProxy<?> animationImage = frame.getImage();
-							JDDimension figureInfoSize = renderer.getFigureInfoSize(figureInfo, roomSize);
+							JDDimension figureInfoSize = renderer.getFigureInfoSize(figureInfo);
 							// we override the image variable here
-							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize, renderer);
+							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), renderer);
 							if(locatedImage != null) {
 								// might be null if that room is not visible
 								jdImage = locatedImage;
@@ -131,7 +131,7 @@ public class DrawUtils {
 						if (clickedObject instanceof InfoEntity) {
 							Paragraphable highlightedEntity = screen
 									.getFocusManager().getWorldFocusObject();
-							highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, destinationRectangle, roomOffsetX, roomOffsetY);
+							highlight(g, viewportPosition, clickedObject, highlightedEntity, destinationRectangle, roomOffsetX, roomOffsetY);
 						}
 
 						/*
@@ -161,7 +161,7 @@ public class DrawUtils {
 			if(roomInfo.equals(deadFigure.getRoomInfo())) {
 				AnimationFrame animationImage = AnimationManager.getInstance()
 						.getAnimationImage(deadFigure, deadFigure.getRoomInfo());
-				JDDimension figureInfoSize = renderer.getFigureInfoSize(deadFigure, roomSize);
+				JDDimension figureInfoSize = renderer.getFigureInfoSize(deadFigure);
 				int sizeX = figureInfoSize.getWidth();
 				int sizeY = figureInfoSize.getHeight();
 				JDPoint positionCoordModified = renderer.getPositionCoordModified(deadFigure.getPositionInRoomIndex());
@@ -171,7 +171,7 @@ public class DrawUtils {
 				RelativeRectangle destinationRectangle = new RelativeRectangle(new JDPoint(relativeCoordinates.getX() - (sizeX / 2), relativeCoordinates.getY() - (sizeY / 2)), sizeX, sizeY);
 				JDImageLocated locatedImage = new JDImageLocated(ImageManager.getImage(deadFigure, deadFigure.getLookDirection()), destinationRectangle);
 				if(animationImage != null) {
-					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), roomSize, renderer);
+					locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), renderer);
 				}
 				if(locatedImage != null) {
 
@@ -210,11 +210,11 @@ public class DrawUtils {
 		if (clickedObject instanceof InfoEntity) {
 			Paragraphable highlightedEntity = screen.getFocusManager().getWorldFocusObject();
 			DrawingRectangle rectangle = jdGraphicObject.getRectangle();
-			highlight(g, viewportPosition, screen, clickedObject, highlightedEntity, rectangle, roomOffsetX, roomOffsetY);
+			highlight(g, viewportPosition, clickedObject, highlightedEntity, rectangle, roomOffsetX, roomOffsetY);
 		}
 	}
 
-	private static void highlight(Graphics g, JDPoint viewportPosition, GameScreen screen, Object clickedObject, Paragraphable highlightedEntity, DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
+	private static void highlight(Graphics g, JDPoint viewportPosition, Object clickedObject, Paragraphable highlightedEntity, DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
 		if (highlightedEntity != null) {
 			if (clickedObject.equals(highlightedEntity)) {
 				int x1 = rectangle.getX(roomOffsetX) - viewportPosition.getX();
@@ -234,8 +234,6 @@ public class DrawUtils {
 		g.fillRect(point.getX(), point.getY(), dimension.getWidth(), dimension.getHeight(), yellow);
 	}
 
-
-
 	public static void drawRectangle(Graphics g, de.jdungeon.game.Color yellow, int x1, int y1, int x2, int y2) {
 		// TODO: refactor
 		g.drawLine(x1, y1, x2, y1, yellow);
@@ -243,8 +241,6 @@ public class DrawUtils {
 		g.drawLine(x1, y2, x2, y2, yellow);
 		g.drawLine(x2, y1, x2, y2, yellow);
 	}
-
-
 
 
 }

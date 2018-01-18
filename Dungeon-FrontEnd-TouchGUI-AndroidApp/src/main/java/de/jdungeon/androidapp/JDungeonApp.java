@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.util.Log;
 import android.view.Menu;
 import event.Event;
 import event.EventListener;
@@ -93,6 +94,9 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.finish();
 		}
 		if(event instanceof ExitUsedEvent) {
+			GameScreen gameScreen = (GameScreen) this.getCurrentScreen();
+			Log.w("Rendering:", "Created drawing objects: "+gameScreen.counterCreatingRoomDrawingObjects);
+			Log.w("Rendering:", "Reused drawing objects: "+gameScreen.counterReusingRoomDrawingObjects);
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			SkillSelectionScreen screen = new SkillSelectionScreen(this);
 			this.setScreen(screen);

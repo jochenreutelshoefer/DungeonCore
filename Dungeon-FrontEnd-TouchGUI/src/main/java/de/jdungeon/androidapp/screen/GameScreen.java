@@ -139,6 +139,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private ItemWheel itemWheelHeroItems;
 	private final ActionAssembler actionAssembler;
 
+	public long counterCreatingRoomDrawingObjects = 0;
+	public long counterReusingRoomDrawingObjects = 0;
+
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
 		setSession(game.getSession());
@@ -493,6 +496,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 					if (worldHasChanged) {
 						// world has changed, hence we need to newly generate graphic objects
 						graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
+						counterCreatingRoomDrawingObjects++;
 						drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
 					}
 					else {
@@ -501,14 +505,17 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 							// obviously room has not yet been drawn, i.e. has just scrolled into view
 							// hence we have to create the objects
 							graphicObjectsForRoom = createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
+							counterCreatingRoomDrawingObjects++;
 							drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
+						} else {
+							counterReusingRoomDrawingObjects++;
 						}
 					}
 
 					if (worldHasChanged || !this.drawnRooms.containsKey(roomInfo.getPoint()) || AnimationManager.getInstance()
 							.hasAnimations(roomInfo)) {
 						Image roomOffscreenImage = DrawUtils.drawObjects(gr, graphicObjectsForRoom,
-								getViewportPosition(), roomInfo, (int) getRoomSize(),
+								getViewportPosition(), roomInfo,
 								roomOffsetX, roomOffsetY, this, dungeonRenderer);
 						if (roomOffscreenImage != null) {
 							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);

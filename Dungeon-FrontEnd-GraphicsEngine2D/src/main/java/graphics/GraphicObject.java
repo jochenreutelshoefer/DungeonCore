@@ -69,16 +69,8 @@ public class GraphicObject {
 		image = i;
 	}
 
-	public boolean getRim() {
-		return rim;
-	}
-
 	public Object getClickableObject() {
 		return clickedObject;
-	}
-
-	public JDColor getColor() {
-		return c;
 	}
 
 	public boolean hasPoint(JDPoint p, int roomOffsetX, int roomOffsetY) {

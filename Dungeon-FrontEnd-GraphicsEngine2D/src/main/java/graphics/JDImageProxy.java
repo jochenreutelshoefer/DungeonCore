@@ -4,6 +4,10 @@ import de.jdungeon.game.AbstractImageLoader;
 
 public class JDImageProxy<T extends Object> {
 
+	public String getFilename() {
+		return filename;
+	}
+
 	private final String filename;
 	private T image = null;
 	private AbstractImageLoader<T> loader;
