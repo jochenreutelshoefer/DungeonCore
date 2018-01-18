@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -541,20 +540,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private List<GraphicObject> createGraphicObjectsForRoom(RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
 		List<GraphicObject> graphicObjectsForRoom = this.dungeonRenderer
 				.createGraphicObjectsForRoom(roomInfo, null, roomOffsetX,
-						roomOffsetY, new ArrayList<>());
-		clearNulls(graphicObjectsForRoom);
-		putGraphicObjects(roomInfo.getPoint(), graphicObjectsForRoom);
+						roomOffsetY, Collections.emptyList());
+		drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
 		return graphicObjectsForRoom;
-	}
-
-	private void clearNulls(List<?> l) {
-		Iterator<?> iterator = l.iterator();
-		while (iterator.hasNext()) {
-			Object o = iterator.next();
-			if (o == null) {
-				iterator.remove();
-			}
-		}
 	}
 
 	@Override
@@ -1111,10 +1099,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	public JDPoint getViewportPosition() {
 		return viewportPosition;
-	}
-
-	public void putGraphicObjects(JDPoint point, List<GraphicObject> graphicObjectsForRoom) {
-		drawnObjects.put(point, graphicObjectsForRoom);
 	}
 
 	public FigureInfo getFigureInfo() {

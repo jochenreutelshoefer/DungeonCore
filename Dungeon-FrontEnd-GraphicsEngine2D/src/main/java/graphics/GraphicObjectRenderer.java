@@ -132,7 +132,7 @@ public class GraphicObjectRenderer {
 	private RelativeRectangle shrineRect;
 	private JDPoint spotPosition;
 
-	private Map<RoomEntity, GraphicObject> graphicObjectCache = new HashMap<>();
+	private final Map<RoomEntity, GraphicObject> graphicObjectCache = new HashMap<>();
 	private RelativeRectangle roomBlackBackGroundRect;
 	private GraphicObject roomUndiscovered;
 	private RelativeRectangle roomRect;
@@ -537,12 +537,9 @@ public class GraphicObjectRenderer {
 		return itemObs;
 	}
 
-	private List<GraphicObject> drawDoors(RoomInfo r) {
+	private void drawDoors(RoomInfo r, Collection<GraphicObject> drawObjects) {
 		DoorInfo[] doors = r.getDoors();
-		if (doors == null) {
-			return Collections.emptyList();
-		}
-		List<GraphicObject> roomDoors = new LinkedList<GraphicObject>();
+		if(doors == null) return;
 		if (doors[0] != null) {
 			JDGraphicObject door0;
 			if (!doors[0].hasLock()) {
@@ -551,10 +548,10 @@ public class GraphicObjectRenderer {
 			else {
 				door0 = new JDGraphicObject(doorNorth, doors[0], northDoorRect);
 			}
-			roomDoors.add(door0);
+			drawObjects.add(door0);
 		}
 		else {
-			roomDoors.add(doorNorthNone);
+			drawObjects.add(doorNorthNone);
 		}
 		if (doors[1] != null) {
 			JDGraphicObject door1;
@@ -564,10 +561,10 @@ public class GraphicObjectRenderer {
 			else {
 				door1 = new JDGraphicObject(doorEast, doors[1], eastDoorRect);
 			}
-			roomDoors.add(door1);
+			drawObjects.add(door1);
 		}
 		else {
-			roomDoors.add(doorEastNone);
+			drawObjects.add(doorEastNone);
 		}
 		if (doors[2] != null) {
 			/*
@@ -577,13 +574,13 @@ public class GraphicObjectRenderer {
 				/*
 				 * with lock
 				 */
-				roomDoors.add(new JDGraphicObject(doorSouthLocked, doors[2], southDoorRect, null));
+				drawObjects.add(new JDGraphicObject(doorSouthLocked, doors[2], southDoorRect, null));
 			}
 			else {
 				/*
 				 * without lock
 				 */
-				roomDoors.add(new JDGraphicObject(doorSouth, doors[2], southDoorRect, null));
+				drawObjects.add(new JDGraphicObject(doorSouth, doors[2], southDoorRect, null));
 			}
 		}
 		else {
@@ -591,7 +588,7 @@ public class GraphicObjectRenderer {
 			 * no door to south at all --> wall
 			 */
 
-			roomDoors.add(doorSouthNone);
+			drawObjects.add(doorSouthNone);
 		}
 		if (doors[3] != null) {
 			JDGraphicObject door3;
@@ -601,13 +598,12 @@ public class GraphicObjectRenderer {
 			else {
 				door3 = new JDGraphicObject(imageDoorWestLocked, doors[3], westDoorRect, null);
 			}
-			roomDoors.add(door3);
+			drawObjects.add(door3);
 		}
 		else {
-			roomDoors.add(doorWestNone);
+			drawObjects.add(doorWestNone);
 		}
 
-		return roomDoors;
 	}
 
 	private JDDimension getDoorDimension(boolean vertical, int roomSize) {
@@ -1012,34 +1008,18 @@ public class GraphicObjectRenderer {
 
 	private GraphicObject drawWallSouth(RoomInfo r) {
 		if (r.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FOUND) {
-
 			return wallSouth;
 		}
 		return null;
 	}
 
-	private Collection<GraphicObject> drawWall(RoomInfo roomInfo) {
-		Collection<GraphicObject> result = new ArrayList<>();
-		int status = roomInfo.getVisibilityStatus();
-		if (status >= RoomObservationStatus.VISIBILITY_FOUND) {
-
-			result.add(new GraphicObject(roomInfo, wallRect, null,
-					ImageManager.wall_sidesImage));
-
-			result.add(new GraphicObject(roomInfo, wallRect, null,
-					ImageManager.wall_northImage));
-
-		}
-
-		return result;
-	}
 
 	private JDDimension getSpotDimension() {
 		return spotDimension;
 	}
 
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, Object obj, int roomOffsetX, int roomOffsetY, List<?> animatedObs) {
-		List<GraphicObject> graphObs = new ArrayList<GraphicObject>();
+		List<GraphicObject> graphObs = new ArrayList<>();
 		if (r == null) {
 			return graphObs;
 		}
@@ -1055,9 +1035,15 @@ public class GraphicObjectRenderer {
 		/*
 		 * wall
 		 */
-		Collection<GraphicObject> wallOb = drawWall(r);
-		if (wallOb != null) {
-			graphObs.addAll(wallOb);
+		int status = r.getVisibilityStatus();
+		if (status >= RoomObservationStatus.VISIBILITY_FOUND) {
+
+			graphObs.add(new GraphicObject(r, wallRect, null,
+					ImageManager.wall_sidesImage));
+
+			graphObs.add(new GraphicObject(r, wallRect, null,
+					ImageManager.wall_northImage));
+
 		}
 
 		/*
@@ -1071,9 +1057,7 @@ public class GraphicObjectRenderer {
 		/*
 		 * doors
 		 */
-		graphObs.addAll(drawDoors(r));
-
-		int status = r.getVisibilityStatus();
+		drawDoors(r, graphObs);
 
 		if ((status >= RoomObservationStatus.VISIBILITY_SHRINE)) {
 
@@ -1089,7 +1073,6 @@ public class GraphicObjectRenderer {
 								ImageManager.fieldImage);
 						graphicObjectCache.put(positionInRoom, ob);
 					}
-
 					graphObs.add(ob);
 				}
 			}
