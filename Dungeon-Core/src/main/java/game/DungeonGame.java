@@ -38,8 +38,6 @@ import figure.hero.HeroInfo;
  */
 public class DungeonGame implements Runnable, EventListener {
 
-	private boolean started = false;
-
 	private int round = 1;
 
 	private boolean gameOver = false;
@@ -49,33 +47,15 @@ public class DungeonGame implements Runnable, EventListener {
 
 	private final Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
 
-	@Deprecated
-	public int DungeonSizeX = 30;
-
-	@Deprecated
-	public int DungeonSizeY = 40;
-
-	private boolean imortal = false;
-
 	private final long startTime;
 
 	private TestTracker tracker;
 
-	/*
-	public DungeonSession getSession() {
-		return session;
-	}
-*/
-	/*
-	public void setSession(DungeonSession session) {
-		this.session = session;
-	}
-	*/
-
-	//private DungeonSession session;
-	
 	private static DungeonGame instance = null;
-	
+
+	//TODO: this should certainly NOT be a singleton!
+
+	@Deprecated
 	public static DungeonGame getInstance() {
 		if(instance == null) {
 			instance = new DungeonGame();
@@ -83,20 +63,10 @@ public class DungeonGame implements Runnable, EventListener {
 		return instance;
 	}
 
-	public static DungeonGame createNewInstance() {
-		instance = new DungeonGame();
-		return instance;
-	}
-
-
 
 	private DungeonGame() {
 		startTime = System.currentTimeMillis();
 		tracker = new TestTracker();
-	}
-
-	public DungeonVisibilityMap getVisMapFor(FigureInfo f) {
-		return InfoUnitUnwrapper.getFighter(f.getFighterID()).getRoomVisibility();
 	}
 
 	public Dungeon getDungeon() {
@@ -106,15 +76,6 @@ public class DungeonGame implements Runnable, EventListener {
 	public int getRound() {
 		return round;
 	}
-
-
-
-
-
-
-
-
-
 
 
 	private void checkGuiFigures() {
@@ -147,9 +108,9 @@ public class DungeonGame implements Runnable, EventListener {
 
 	@Override
 	public void run() {
-		while (gameOver == false && heroLeft == false) {
+		while (!gameOver && !heroLeft) {
 			checkGuiFigures();
-			if (guiFigures.size() == 0) {
+			if (guiFigures.isEmpty()) {
 				break;
 			}
 			worldTurn();
@@ -174,7 +135,7 @@ public class DungeonGame implements Runnable, EventListener {
 		}
 	}
 
-	private final List<Turnable> turnableItems = new LinkedList<Turnable>();
+	private final List<Turnable> turnableItems = new ArrayList<Turnable>();
 
 	public void addTurnableItem(Item i) {
 		if (i instanceof Turnable) {
@@ -200,18 +161,12 @@ public class DungeonGame implements Runnable, EventListener {
 
 
 	public void init(Dungeon d) {
+		this.round = 0;
 		ItemPool.setGame(this);
-
-
 		Figure.createVisibilityMaps(derDungeon);
 		Figure.setMonsterControls();
-
 	}
 
-
-	public void setImortal(boolean b) {
-		imortal = b;
-	}
 
 	private final boolean sendHighscore = true;
 
@@ -332,13 +287,6 @@ public class DungeonGame implements Runnable, EventListener {
 		return map;
 	}
 
-	public boolean getImortal() {
-		return imortal;
-	}
-
-	public TestTracker getTracker() {
-		return tracker;
-	}
 
 	public void setTestTracker(TestTracker tracker) {
 		this.tracker = tracker;
@@ -353,10 +301,6 @@ public class DungeonGame implements Runnable, EventListener {
 	public void setDungeon(Dungeon d) {
 		this.derDungeon = d;
 
-	}
-
-	public void setStarted(boolean startet) {
-		this.started = startet;
 	}
 
 	@Override

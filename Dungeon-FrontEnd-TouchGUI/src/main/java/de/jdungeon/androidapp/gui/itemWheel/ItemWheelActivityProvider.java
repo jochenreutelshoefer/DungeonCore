@@ -11,4 +11,5 @@ public interface ItemWheelActivityProvider {
 	Image getActivityImage(ItemWheelActivity a);
 
 	void activityPressed(ItemWheelActivity infoEntity);
+
 }

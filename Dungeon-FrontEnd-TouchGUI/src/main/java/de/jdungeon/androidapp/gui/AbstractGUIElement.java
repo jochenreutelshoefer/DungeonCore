@@ -17,7 +17,6 @@ public abstract class AbstractGUIElement implements GUIElement {
 	protected final JDDimension dimension;
 	// TODO: remove
 	private GUIElement parent;
-	//protected GUIElement parent;
 	protected StandardScreen screen = null;
 	protected Game game;
 
@@ -69,13 +68,11 @@ public abstract class AbstractGUIElement implements GUIElement {
 	@Override
 	public void handleDoubleTapEvent(MotionEvent touch) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void handleLongPressEvent(MotionEvent touch) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -95,7 +92,6 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	@Override
 	public void update(float time) {
-
 			// TODO Auto-generated method stub
 	}
 
@@ -114,7 +110,6 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	protected void drawBorder(Graphics g) {
 		GUIUtils.drawDoubleBorder(g, position.getX(), position.getY(), dimension, 20);
-
 	}
 
 	protected void drawBackground(Graphics g) {

@@ -73,6 +73,11 @@ public class LevelTwoB extends AbstractDungeonFactory {
 		return "Level 2 B";
 	}
 
+	@Override
+	public int getRoundScoringBaseValue() {
+		return 100;
+	}
+
 	private Dungeon createStartDungeon() {
 
 		Dungeon dungeon = null;

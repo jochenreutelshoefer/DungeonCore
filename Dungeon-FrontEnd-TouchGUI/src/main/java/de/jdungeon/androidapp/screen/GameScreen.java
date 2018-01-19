@@ -36,6 +36,7 @@ import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
+import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 import text.Statement;
@@ -92,7 +93,7 @@ import de.jdungeon.util.Pair;
 
 public class GameScreen extends StandardScreen implements EventListener, PerceptHandler {
 
-	public static final int SCALE_ROOM_FIGHT_MODE = 220;
+	public static final int SCALE_ROOM_FIGHT_MODE = 200;
 	public static final int SCALE_ROOM_DEFAULT = 180;
 	private final Dungeon derDungeon;
 	//private Hero hero = null;
@@ -123,6 +124,11 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private long lastScaleEventTime = -1;
 	private long lastScrollEventTime = -1;
 	private boolean touchEventAfterPaint = false;
+
+	public JDGUIEngine2D getGui() {
+		return gui;
+	}
+
 	private final JDGUIEngine2D gui;
 
 	private DefaultDungeonSession session;
@@ -167,7 +173,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		derDungeon = this.session.getCurrentDungeon();
 		JDPoint heroRoomNumber = figureInfo.getRoomNumber();
 		centerOn(heroRoomNumber);
-		scrollTo(heroRoomNumber, 100f);
+		scrollTo(heroRoomNumber, 100f, "init");
 
 		resetDungeonRenderer();
 
@@ -227,7 +233,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 			@Override
 			public boolean handleTouchEvent(TouchEvent touch) {
-				scrollTo(figureInfo.getRoomNumber(), 30, SCALE_ROOM_DEFAULT);
+				scrollTo(figureInfo.getRoomNumber(), 30, SCALE_ROOM_DEFAULT, "user reseted view port with magnifier button");
 				return true;
 			}
 		};
@@ -261,7 +267,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
-		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 40, wheelCenterY);
+		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 50, wheelCenterY);
 		/*
 		 * init skills wheel
 		 */
@@ -540,7 +546,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 							.hasAnimations(roomInfo)) {
 						Image roomOffscreenImage = DrawUtils.drawObjects(gr, graphicObjectsForRoom,
 								getViewportPosition(), roomInfo,
-								roomOffsetX, roomOffsetY, this, dungeonRenderer);
+								roomOffsetX, roomOffsetY, this, dungeonRenderer, (int)roomSize);
 						if (roomOffscreenImage != null) {
 							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);
 							gr.drawScaledImage(roomOffscreenImage, roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition
@@ -996,40 +1002,40 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			}
 		}
 		if (points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
-			scrollTo(points.get(0), 50);
+			scrollTo(points.get(0), 50, "show Visibility increase 1 room hero neighbour");
 			return;
 		}
 
 		// zoom out
 		int flightScale = 70;
 		int stepDuration = 30;
-		zoomToSize(stepDuration, flightScale);
+		zoomToSize(stepDuration, flightScale, "show visibility increase PART 1 zoom out");
 		JDPoint last = getCurrentViewCenterRoomCoordinatesPoint();
 		for (JDPoint p : points) {
 			// center on each discovered room
-			scrollFromTo(last, p, stepDuration, flightScale);
+			scrollFromTo(last, p, stepDuration, flightScale, "show visibility increase PART 2 center to each room");
 			last = p;
 		}
 
 		// scroll back to hero
-		scrollFromToScale(last, this.getFigureInfo().getRoomNumber(), 60, flightScale, (int) this.roomSize);
+		scrollFromToScale(last, this.getFigureInfo().getRoomNumber(), 60, flightScale, (int) this.roomSize, "show visibility increase PART 3 zoom and scroll back to hero");
 	}
 
 	/*
 	Creates a movie sequence that zooms in/out
 	 */
-	private void zoomToSize(int duration, float roomScale) {
-		zoomToSize(duration, roomScale, figureInfo.getRoomNumber());
+	private void zoomToSize(int duration, float roomScale, String title) {
+		zoomToSize(duration, roomScale, figureInfo.getRoomNumber(), title);
 	}
 
-	private void zoomToSize(int duration, float targetScale, JDPoint position) {
-		zoomToSize(duration, roomSize, targetScale, position);
+	private void zoomToSize(int duration, float targetScale, JDPoint position, String title) {
+		zoomToSize(duration, roomSize, targetScale, position, title);
 	}
 
-	private void zoomToSize(int duration, float startScale, float targetScale, JDPoint position) {
+	private void zoomToSize(int duration, float startScale, float targetScale, JDPoint position, String title) {
 		MovieSequence sequence = new DefaultMovieSequence(
 				new ZoomSequence(startScale, targetScale, duration),
-				new StraightLineScroller(getCurrentViewCenterRoomCoordinates(), floatPair(position), duration), duration);
+				new StraightLineScroller(getCurrentViewCenterRoomCoordinates(), floatPair(position), duration), duration, title);
 		this.sequenceManager.addSequence(sequence);
 	}
 
@@ -1041,7 +1047,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				newScale = maxRoomSize;
 			}
 		}
-		zoomToSize(1, newScale);
+		zoomToSize(1, newScale, "zoom in button used");
 	}
 
 	public void zoomOut() {
@@ -1052,16 +1058,16 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				newScale = minRoomSize;
 			}
 		}
-		zoomToSize(1, newScale);
+		zoomToSize(1, newScale, "zoom out button used");
 	}
 
 	public void exitFightMode() {
-		zoomToSize(30, SCALE_ROOM_FIGHT_MODE, preFightRoomSize, figureInfo.getRoomNumber());
+		zoomToSize(30, SCALE_ROOM_FIGHT_MODE, preFightRoomSize, figureInfo.getRoomNumber(), "exit fight mode zoom back");
 	}
 
 	public void enterFightMode() {
 		preFightRoomSize = roomSize;
-		zoomToSize(30, SCALE_ROOM_FIGHT_MODE);
+		zoomToSize(30, SCALE_ROOM_FIGHT_MODE, "enter fight mode zoom in");
 	}
 
 	@Override
@@ -1070,7 +1076,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	public void focusTakenItem(ItemInfo item) {
+		focusManager.setGuiFocusObject(item);
 		this.itemWheelHeroItems.highlightEntity(item);
+		this.itemWheelChest.setHighlightOn(false);
+		this.itemWheelRoomItems.setHighlightOn(false);
 	}
 
 	public void newStatement(Statement s) {
@@ -1137,31 +1146,31 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return figureInfo;
 	}
 
-	public void scrollTo(JDPoint number, float duration) {
-		scrollTo(number, duration, (int) roomSize);
+	public void scrollTo(JDPoint number, float duration, String title) {
+		scrollTo(number, duration, (int) roomSize, title);
 	}
 
-	private void scrollFromTo(JDPoint start, JDPoint target, float duration, int roomScale) {
-		scrollFromTo(floatPair(start), floatPair(target), duration, roomScale);
+	private void scrollFromTo(JDPoint start, JDPoint target, float duration, int roomScale, String title) {
+		scrollFromTo(floatPair(start), floatPair(target), duration, roomScale, title);
 	}
 
-	private void scrollFromTo(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int roomScale) {
+	private void scrollFromTo(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int roomScale, String title) {
 		MovieSequence sequence = new DefaultMovieSequence(
 				new TrivialScaleSequence(roomScale),
 				new StraightLineScroller(start,
-						target, duration), duration);
+						target, duration), duration, title);
 		this.sequenceManager.addSequence(sequence);
 	}
 
-	private void scrollFromToScale(JDPoint start, JDPoint target, float duration, int startScale, int endScale) {
-		scrollFromToScale(floatPair(start), floatPair(target), duration, startScale, endScale);
+	private void scrollFromToScale(JDPoint start, JDPoint target, float duration, int startScale, int endScale, String title) {
+		scrollFromToScale(floatPair(start), floatPair(target), duration, startScale, endScale, title);
 	}
 
-	private void scrollFromToScale(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int startScale, int endScale) {
+	private void scrollFromToScale(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int startScale, int endScale, String title) {
 		MovieSequence sequence = new DefaultMovieSequence(
 				new ZoomSequence(startScale, endScale, duration),
 				new StraightLineScroller(start,
-						target, duration), duration);
+						target, duration), duration, title);
 		this.sequenceManager.addSequence(sequence);
 	}
 
@@ -1170,12 +1179,12 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				(float) point.getX(), (float) point.getY());
 	}
 
-	public void scrollTo(JDPoint number, float duration, int roomScale) {
+	public void scrollTo(JDPoint number, float duration, int roomScale, String title) {
 		Pair<Float, Float> currentViewCenterRoomCoordinates = getCurrentViewCenterRoomCoordinates();
 		currentViewCenterRoomCoordinates = new Pair<>(
 				currentViewCenterRoomCoordinates.getA() - 0.5f,
 				currentViewCenterRoomCoordinates.getB() - 0.5f);
-		scrollFromTo(currentViewCenterRoomCoordinates, floatPair(number), duration, roomScale);
+		scrollFromTo(currentViewCenterRoomCoordinates, floatPair(number), duration, roomScale, title);
 	}
 
 	public void showNewTextPercept(Statement p) {
@@ -1271,6 +1280,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void setChestItemWheelVisible() {
+		Object firstObject = itemWheelChest.highlightFirst();
+		focusManager.setGuiFocusObject((Paragraphable)firstObject);
+		itemWheelHeroItems.setHighlightOn(false);
+
 		itemWheelChest.setVisible(true);
 		itemWheelRoomItems.setVisible(false);
 		itemWheelSkills.setVisible(false);
@@ -1280,6 +1293,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void setRoomItemsWheelVisible() {
+		Object firstObject = itemWheelRoomItems.highlightFirst();
+		focusManager.setGuiFocusObject((Paragraphable)firstObject);
+		itemWheelHeroItems.setHighlightOn(false);
+
 		itemWheelChest.setVisible(false);
 		itemWheelRoomItems.setVisible(true);
 		itemWheelSkills.setVisible(false);

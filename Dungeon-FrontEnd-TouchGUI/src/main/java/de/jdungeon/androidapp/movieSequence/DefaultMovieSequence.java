@@ -7,13 +7,15 @@ public class DefaultMovieSequence implements MovieSequence {
 	private final ChangeScaleSequence scaler;
 	private final ChangeViewportSequence scroller;
 	private final float duration;
+	private final String title;
 	private float timeCounter = 0;
 
 	public DefaultMovieSequence(ChangeScaleSequence scaler,
-			ChangeViewportSequence scroller, float duration) {
+			ChangeViewportSequence scroller, float duration, String title) {
 		this.scaler = scaler;
 		this.scroller = scroller;
 		this.duration = duration;
+		this.title = title;
 	}
 
 	@Override

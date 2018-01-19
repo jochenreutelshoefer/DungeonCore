@@ -28,4 +28,8 @@ public interface DungeonSession {
 	void revertHero();
 
 	Hero getCurrentHero();
+
+	DungeonCompletionScore getAchievedScoreFor(DungeonFactory dungeonFactory);
+
+	int getTotalScore();
 }

@@ -30,4 +30,6 @@ public interface JDGUI extends ControlUnit{
 	 * A new game round in the game world has begun.
 	 */
 	void gameRoundEnded();
+
+	void fightEnded();
 }

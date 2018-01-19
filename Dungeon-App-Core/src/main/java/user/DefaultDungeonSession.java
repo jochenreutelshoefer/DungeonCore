@@ -1,7 +1,10 @@
 package user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import dungeon.Dungeon;
 import dungeon.util.DungeonUtils;
@@ -46,7 +49,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	private final DungeonManager manager;
 
 	private JDGUI gui;
-	private final List<Dungeon> completedDungeons = new ArrayList<Dungeon>();
+	private final Map<DungeonFactory, Integer> completedDungeons = new HashMap<>();
 	private Thread dungeonThread;
 
 	public DefaultDungeonSession(User user) {
@@ -108,6 +111,32 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		return currentHero;
 	}
 
+	@Override
+	public DungeonCompletionScore getAchievedScoreFor(DungeonFactory factory) {
+		if(completedDungeons.containsKey(factory)) {
+			Integer rounds = completedDungeons.get(factory);
+			return new DungeonCompletionScore(rounds, calcScore(factory, rounds));
+		}
+		return null;
+	}
+
+	private int calcScore(DungeonFactory dungeonFactory, int rounds) {
+		if(dungeonFactory.getRoundScoringBaseValue() > rounds) {
+			return dungeonFactory.getRoundScoringBaseValue() - rounds;
+		}
+		return 0;
+	}
+
+	@Override
+	public int getTotalScore() {
+		Set<DungeonFactory> dungeons = completedDungeons.keySet();
+		int score = 0;
+		for (DungeonFactory dungeon : dungeons) {
+			score += calcScore(dungeon, completedDungeons.get(dungeon));
+		}
+		return score;
+	}
+
 	/**
 	 * Tells the players decision for the type of hero to be played
 	 *
@@ -158,8 +187,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	public void notifyExit(LevelExit exit, Figure figure) {
 		if(figure.equals(currentHero)) {
 			Dungeon currentDungeon = getCurrentDungeon();
-			if(! completedDungeons.contains(currentDungeon) && currentDungeon != null) {
-				completedDungeons.add(currentDungeon);
+			if(! completedDungeons.containsKey(lastSelectedDungeonFactory) && currentDungeon != null) {
+				completedDungeons.put(lastSelectedDungeonFactory, dungeonGame.getRound());
 				lastCompletedDungeonFactory = lastSelectedDungeonFactory;
 			}
 			derDungeon = null;

@@ -84,6 +84,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private final PositionElement[] dotPositionElements = new PositionElement[8];
 	private final JDPoint[] positionElementPositions = new JDPoint[8];
 	private final JDDimension positionDimension;
+	private final SubGUIElementRelative shrineElement;
 
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, screen, game);
@@ -155,11 +156,25 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		moveWest = createMoveWest(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveSouth = createMoveSouth(MOVE_ELEMENT_SIZE, moveElementDimension);
 
+		// shrine button
+		int shrineElementSize = 30;
+		final JDDimension shrineDimension = new JDDimension(shrineElementSize, shrineElementSize);
+		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 11 / 14, getDimension()
+				.getHeight() / 10);
+		shrineElement = new SubGUIElementRelative(posRelativeShrine, shrineDimension, this) {
+			@Override
+			public boolean handleTouchEvent(Input.TouchEvent touch) {
+				super.handleTouchEvent(touch);
+				EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
+				return true;
+			}
+		};
+
 		// chest button
 		int takeElementSizeX = 30;
 		int takeElementSizeY = 20;
 		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
-		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
+		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 6, getDimension().getHeight() / 10);
 		chestGUIELement = new SubGUIElementRelative(posRelative, chestDimension, this) {
 
 			@Override
@@ -296,19 +311,10 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		shrineElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
 		ShrineInfo shrine = roomInfo.getShrine();
-		int shrineElementSize = 30;
+
 		if (shrine != null) {
-			final JDDimension dimension = new JDDimension(shrineElementSize, shrineElementSize);
-			final JDPoint posRelative = new JDPoint(getDimension().getWidth() * 5 / 7, getDimension()
-					.getHeight() / 4 - shrineElementSize / 2);
-			shrineElements.add(new SubGUIElementRelative(posRelative, dimension, this) {
-				@Override
-				public boolean handleTouchEvent(Input.TouchEvent touch) {
-					super.handleTouchEvent(touch);
-					EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
-					return true;
-				}
-			});
+
+			shrineElements.add(shrineElement);
 		}
 	}
 

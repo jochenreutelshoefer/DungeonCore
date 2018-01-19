@@ -30,13 +30,17 @@ import util.JDDimension;
 
 public class DrawUtils {
 
+	private static final boolean useTileDrawingCache = false;
+
 	public static Image drawObjects(Graphics g,
 			List<GraphicObject> graphicObjectsForRoom,
 			JDPoint viewportPosition, RoomInfo roomInfo,
-			int roomOffsetX, int roomOffsetY, GameScreen screen, GraphicObjectRenderer renderer) {
+			int roomOffsetX, int roomOffsetY, GameScreen screen, GraphicObjectRenderer renderer, int roomSize) {
 
 		// we init a tmp offscreen image for this room for caching and later re-use
-		//g.setTempCanvas(roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition.getY(), roomSize, roomSize);
+		if(useTileDrawingCache) {
+			g.setTempCanvas(roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition.getY(), roomSize, roomSize);
+		}
 
 
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {

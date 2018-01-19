@@ -1,5 +1,7 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
+import java.util.List;
+
 import android.util.Log;
 import dungeon.JDPoint;
 import event.EventManager;
@@ -64,6 +66,7 @@ public class ItemWheel extends AbstractGUIElement {
 	private final int xRight;
 	private final int stepDown;
 	private final int stepLength;
+	private boolean highlightOn = false;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
@@ -154,8 +157,8 @@ public class ItemWheel extends AbstractGUIElement {
 	public void highlightEntity(Object object) {
 		// we need to update the binding set to have the new item included
 		binding.update(0);
-		int size = binding.getSize();
-		for (int i = 0; i < size; i++) {
+
+		for (int i = 0; i < binding.getBindingSize(); i++) {
 			ItemWheelActivity activity = binding.getActivity(i);
 			if (activity != null) {
 				if (activity.getObject().equals(object)) {
@@ -164,6 +167,24 @@ public class ItemWheel extends AbstractGUIElement {
 				}
 			}
 		}
+	}
+
+	public Object highlightFirst() {
+		// we need to update the binding set to have the new item included
+
+		ItemWheelActivityProvider provider = binding.getProvider();
+		List<ItemWheelActivity> activities = provider.getActivities();
+		if(!activities.isEmpty()) {
+			ItemWheelActivity activity = activities.get(0);
+			Object object = activity.getObject();
+			highlightEntity(object);
+			return object;
+		}
+		return null;
+	}
+
+	public void setHighlightOn(boolean val) {
+		this.highlightOn = val;
 	}
 
 	private void iconTouched(int i) {
@@ -205,9 +226,15 @@ public class ItemWheel extends AbstractGUIElement {
 
 	}
 
+	private void unmark() {
+		markedPointIndex = -1;
+		highlightOn = false;
+	}
+
 	private void setMarkedIndex(int i) {
 		// set touched element as highlighted element
 		markedPointIndex = i;
+		highlightOn = true;
 
 		// show info about element
 		ItemWheelActivity activity = binding.getActivity(markedPointIndex);
@@ -341,7 +368,9 @@ public class ItemWheel extends AbstractGUIElement {
 					/*
 					draw highlighting circle
 					 */
-					g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
+					if(highlightOn) {
+						g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
+					}
 
 					/*
 					 * draw background if existing

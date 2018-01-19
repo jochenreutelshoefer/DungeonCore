@@ -42,11 +42,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 		this.app = app;
 	}
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public AbstractImageLoader getImageSource() {
-		return app.getFileIO().getImageLoader();
-	}
 
 	@Override
 	public void actionProcessed(Action a, ActionResult res) {
@@ -116,12 +111,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	}
 
 	@Override
-	public boolean currentAnimationThreadRunning(RoomInfo r) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void plugAction(Action a) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionQueue.add(a);
@@ -168,6 +157,10 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	}
 
+	@Override
+	public void fightEnded() {
+		this.visibilityIncreasedRooms.clear();
+	}
 
 	@Override
 	public void setFigure(FigureInfo f) {
@@ -185,29 +178,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
 		visibilityIncreasedRooms.add(p);
-	}
-
-	@Override
-	public void setSelectedItemIndex(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void stopAllAnimation() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public ActionAssembler getActionAssembler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AbstractSwingMainFrame getMainFrame() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void setPerceptHandler(PerceptHandler perceptHandler) {

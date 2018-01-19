@@ -18,4 +18,6 @@ public interface DungeonFactory {
 	String getName() ;
 
 	String getDescription();
+
+	int getRoundScoringBaseValue();
 }

@@ -88,11 +88,9 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	public Fireball() {
+		this.strength = 6;
 	}
 
-	/**
-	 * @see AbstractSpell#sorcer(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage, Object target) {
 

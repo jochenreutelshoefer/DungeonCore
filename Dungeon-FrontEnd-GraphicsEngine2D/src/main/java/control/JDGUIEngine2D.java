@@ -16,11 +16,7 @@ public interface JDGUIEngine2D extends JDGUI {
 	 */
 	void plugAction(Action a);
 
-	boolean currentAnimationThreadRunning(RoomInfo r);
-
 	int getSelectedItemIndex();
-
-	void setSelectedItemIndex(int i);
 
 	ItemInfo getSelectedItem();
 
@@ -28,17 +24,6 @@ public interface JDGUIEngine2D extends JDGUI {
 
 	void setSpellMetaDown(boolean b);
 
-
-
 	void setUseWithTarget(boolean b);
-
-	void stopAllAnimation();
-
-	ActionAssembler getActionAssembler();
-
-	AbstractSwingMainFrame getMainFrame();
-
-	AbstractImageLoader getImageSource();
-
 
 }

@@ -1,6 +1,7 @@
 package level.stageone;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,7 @@ import figure.monster.Monster;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Wolf;
+import item.HealPotion;
 import item.Item;
 import item.ItemPool;
 import item.Key;
@@ -73,6 +75,11 @@ public class StartLevel extends AbstractDungeonFactory {
 	@Override
 	public String getDescription() {
 		return "Einstiegslevel";
+	}
+
+	@Override
+	public int getRoundScoringBaseValue() {
+		return 75;
 	}
 
 	private Dungeon createStartDungeon() {
@@ -127,6 +134,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			List<Item> itemsL = new LinkedList<>();
 			itemsL.add(new ScrollMagic(new KeyLocator(1, 0, 0, 0, 0, 0)));
 			Chest entryChest = new Chest(itemsL);
+			entryChest.takeItem(new HealPotion(10));
 			entryRoom.setChest(entryChest);
 
 			filler.removeDoors(2, entryPoint);
@@ -142,8 +150,6 @@ public class StartLevel extends AbstractDungeonFactory {
 
 
 			filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(10, 1));
-
-
 
 			filler.removeDoors(3, entryPoint);
 

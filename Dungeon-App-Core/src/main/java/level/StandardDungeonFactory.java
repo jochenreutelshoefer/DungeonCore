@@ -44,6 +44,11 @@ public class StandardDungeonFactory implements DungeonFactory {
 		return null;
 	}
 
+	@Override
+	public int getRoundScoringBaseValue() {
+		return 10000;
+	}
+
 	private Dungeon createDefaultDungeon() {
 		Dungeon derDungeon = new Dungeon(DungeonSizeX, DungeonSizeY, 18, 39);
 		// TODO: Dungeon should not know DungeonGame

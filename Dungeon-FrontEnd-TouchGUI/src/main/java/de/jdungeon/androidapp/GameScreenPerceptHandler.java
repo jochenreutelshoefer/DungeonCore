@@ -152,6 +152,7 @@ public class GameScreenPerceptHandler {
 
 	private void handleFightEndedPercept(FightEndedPercept p) {
 		newStatement(StatementManager.getStatement(p));
+		screen.getGui().fightEnded();
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -160,6 +161,7 @@ public class GameScreenPerceptHandler {
 				catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+
 				screen.exitFightMode();
 			}
 		}).start();
@@ -252,7 +254,7 @@ public class GameScreenPerceptHandler {
 		if (fig.equals(this.figure)
 				&& // check whether a fight has just started
 				!figure.getRoomInfo().fightRunning()) {
-			screen.scrollTo(info.getNumber(), 30f);
+			screen.scrollTo(info.getNumber(), 24f, "handle move percept");
 		}
 	}
 

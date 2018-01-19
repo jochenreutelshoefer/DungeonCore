@@ -17,10 +17,12 @@ import level.DungeonFactory;
 import level.DungeonManager;
 import level.DungeonSelectedEvent;
 import level.DungeonStartEvent;
+import user.DungeonCompletionScore;
 import user.DungeonSession;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.DrawGUIElement;
+import de.jdungeon.androidapp.gui.StringGUIElement;
 import de.jdungeon.androidapp.screen.start.MenuScreen;
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Colors;
@@ -34,7 +36,7 @@ import de.jdungeon.game.Image;
  */
 public class DungeonSelectionScreen extends MenuScreen implements EventListener {
 
-	public static final JDDimension HERO_DIMENSION = new JDDimension(140, 140);
+	public static final JDDimension HERO_DIMENSION = new JDDimension(130, 130);
 	public static final int X_DISTANCE = 150;
 
 	private final DungeonSession session;
@@ -57,7 +59,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		dungeonManager = session.getDungeonManager();
 		int currentStage = session.getCurrentStage();
 		stageHeightOffset = 180;
-		offset = game.getScreenHeight() /2 + (stageHeightOffset * currentStage);
+		offset = (int) (game.getScreenHeight() /1.8 + (stageHeightOffset * currentStage));
 		xCenterValue = game.getScreenWidth()/2;
 
 		DefaultAnimationSet animationSet = ImageManager.getAnimationSet(Hero.HeroCategory.fromValue(session.getCurrentHero()
@@ -109,13 +111,24 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		final int dotY = getDotY(y);
 		dotSize = 16;
 
-		// we draw the track lines between the tiles also as GUIElements
+		// draw horizontal lines
+		this.guiElements.add(new DrawGUIElement() {
+			@Override
+			public void paint(Graphics g, JDPoint viewportPosition) {
+				g.drawLine(0, dotY, game.getScreenWidth(), dotY, Colors.GRAY);
+			}
+		});
+
+		// draw stage vertices as dots
 		this.guiElements.add(new DrawGUIElement() {
 			@Override
 			public void paint(Graphics g, JDPoint viewportPosition) {
 				g.fillOval(dotX - dotSize /2, dotY - dotSize /2, dotSize, dotSize, Colors.WHITE);
 			}
 		});
+
+
+		DungeonCompletionScore achievedScore = null;
 
 		//
 		int innerStageIndex = 0;
@@ -135,7 +148,19 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			JDPoint tilePosition = new JDPoint(x-DungeonSelectionTile.TILE_WIDTH/2, y);
 			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage));
 
+			DungeonCompletionScore achievedScoreForOption = session.getAchievedScoreFor(dungeonOption);
+			if(achievedScoreForOption != null ) {
+				achievedScore  = achievedScoreForOption;
+			}
+
 			innerStageIndex++;
+		}
+
+		int textY = y + stageHeightOffset/3;
+		this.guiElements.add(new StringGUIElement(new JDPoint(100, textY), new JDDimension(100, 50), this, game,"Level: "+stage));
+
+		if(achievedScore != null) {
+				this.guiElements.add(new StringGUIElement(new JDPoint(game.getScreenWidth()-175, textY), new JDDimension(100, 50), this, game,"Punkte: "+achievedScore.getScore()+ " ("+achievedScore.getRounds()+" Runden)"));
 		}
 	}
 
@@ -173,7 +198,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 	@Override
 	protected String getHeaderString() {
-		return "Dungeon wählen für Ebene " + (session.getCurrentStage()+1);
+		return "Punkte gesamt: "+ session.getTotalScore();
 	}
 
 	@Override

@@ -37,7 +37,6 @@ public class CharAttributeView extends SlidingGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(TouchEvent touch) {
-		screen.scrollTo(info.getRoomNumber(), 50f);
 		return super.handleTouchEvent(touch);
 	}
 

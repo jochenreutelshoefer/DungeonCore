@@ -23,8 +23,13 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 	}
 
 	@Override
-	public int getSize() {
+	public int getNumberOfObjects() {
 		return mapping.size();
+	}
+
+	@Override
+	public int getBindingSize() {
+		return itemWheelSize;
 	}
 
 	@Override

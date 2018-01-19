@@ -83,4 +83,9 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		return "Eskortierung 2A";
 	}
 
+	@Override
+	public int getRoundScoringBaseValue() {
+		return 50;
+	}
+
 }

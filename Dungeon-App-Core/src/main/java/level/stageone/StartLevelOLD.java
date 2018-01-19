@@ -74,6 +74,11 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		return "Einstiegslevel";
 	}
 
+	@Override
+	public int getRoundScoringBaseValue() {
+		return 150;
+	}
+
 	private Dungeon createStartDungeon() {
 
 		Dungeon dungeon = null;

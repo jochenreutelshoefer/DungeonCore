@@ -40,6 +40,11 @@ public class PreliminaryStartLevelFactory extends AbstractDungeonFactory {
 		return "Einstiegslevel";
 	}
 
+	@Override
+	public int getRoundScoringBaseValue() {
+		return 50;
+	}
+
 	private Dungeon makeDungeon() {
 		Dungeon dungeon = new Dungeon(3, 3, 1, 2);
 		createAllDoors(dungeon);
