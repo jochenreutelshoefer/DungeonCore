@@ -31,6 +31,8 @@ public interface DungeonFiller {
 
 	Key getNextKey();
 
+	Collection<DeadEndPath> getDeadEndsUnallocated();
+
 	/**
 	 * Tries to find some empty space to fill with content.
 	 * The point area will be used to start the search for

@@ -1,4 +1,4 @@
-package level.stageone;
+package level.generation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,7 @@ import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.generate.DeadEndPath;
 import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
 import dungeon.generate.ReachabilityChecker;
@@ -151,6 +152,50 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return key;
 	}
 
+	@Override
+	public Collection<DeadEndPath> getDeadEndsUnallocated() {
+		Collection<DeadEndPath> result = new ArrayList<>();
+		Collection<Room> allRooms = dungeon.getAllRooms();
+		for (Room room : allRooms) {
+			List<Door> openDoors = getOpenDoorList(room);
+			if(openDoors.size() == 1) {
+				// we found a dead end room
+				if(this.isAllocated(room)) {
+					// don't count this one as it is special already
+					continue;
+				}
+				List<Room> deadEndPathRooms = collectDeadEndRoad(room, openDoors.get(0));
+				result.add(new DeadEndPath(room, deadEndPathRooms));
+
+			}
+		}
+		return result;
+	}
+
+	private List<Room> collectDeadEndRoad(Room room, Door door) {
+		List<Room> path = new ArrayList<>();
+		path.add(room);
+		Room next = door.getOtherRoom(room);
+		List<Door> openDoorList = getOpenDoorList(next);
+		while(openDoorList.size() == 2) {
+			path.add(next);
+			door = getOtherDoor(openDoorList, door);
+			next = door.getOtherRoom(next);
+			openDoorList = getOpenDoorList(next);
+		}
+		return path;
+	}
+
+	private Door getOtherDoor(List<Door> openDoorList, Door door) {
+		if((! openDoorList.contains(door)) || (!(openDoorList.size() == 2))) {
+			throw new IllegalStateException("unexpected input!");
+		}
+		if(openDoorList.get(0).equals(door)) {
+			return openDoorList.get(1);
+		} else {
+			return openDoorList.get(0);
+		}
+	}
 
 	@Override
 	public RectArea getUnallocatedSpace(int sizeX, int sizeY, JDPoint area) {
@@ -258,7 +303,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 			JDPoint randomPoint = getRandomPoint();
 			Room room = dungeon.getRoom(randomPoint);
 			if(room == null) continue;
-			List<Door> doors = getDoorList(room);
+			List<Door> doors = getOpenDoorList(room);
 			if(doors.isEmpty()) continue;
 			int doorIndex = (int) (Math.random() * doors.size());
 			Door door = doors.get(doorIndex);
@@ -281,7 +326,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return counterDoors;
 	}
 
-	private List<Door> getDoorList(Room room) {
+	private List<Door> getOpenDoorList(Room room) {
 		List<Door> result = new ArrayList<>();
 		for(int i = 0; i < room.getDoors().length; i++) {
 			Door door = room.getDoors()[i];

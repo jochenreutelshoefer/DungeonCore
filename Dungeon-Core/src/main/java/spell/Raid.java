@@ -48,6 +48,8 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	public Raid() {
+		this.strength = 10;
+		this.cost = 6;
 		isPossibleNormal = true;
 		isPossibleInFight = false;
 	}
@@ -91,10 +93,6 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
-
-//	public int getLernCost() {
-//		return level;
-//	}
 
 	@Override
 	public int getType() {

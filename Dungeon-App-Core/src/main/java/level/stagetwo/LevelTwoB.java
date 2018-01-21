@@ -7,7 +7,6 @@ import java.util.List;
 import ai.AbstractAI;
 import ai.ChaserAI;
 import dungeon.Chest;
-import dungeon.Dir;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
@@ -23,15 +22,13 @@ import figure.FigureControl;
 import figure.FigureInfo;
 import figure.monster.Dwarf;
 import figure.monster.MonsterInfo;
-import figure.monster.Ogre;
 import figure.monster.Orc;
 import game.ControlUnit;
 import item.Item;
 import item.Key;
-import item.VisibilityCheatBall;
 import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
-import level.stageone.SimpleDungeonFiller;
+import level.generation.SimpleDungeonFiller;
 import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;
@@ -159,8 +156,6 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(20, 1));
 
 			filler.removeDoors(3, entryPoint);
-
-			entryRoom.addItem(new VisibilityCheatBall());
 
 			accomplished = true;
 		}

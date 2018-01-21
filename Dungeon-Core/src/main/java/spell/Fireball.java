@@ -89,6 +89,7 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 
 	public Fireball() {
 		this.strength = 6;
+		this.cost = 5;
 	}
 
 	@Override

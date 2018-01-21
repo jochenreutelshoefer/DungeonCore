@@ -322,7 +322,7 @@ public class ItemWheel extends AbstractGUIElement {
 		}
 
 		// headline and title
-		/*
+
 		g.drawLine(xLeft, posY, xRight, posY, Colors.WHITE);
 
 		g.drawLine(xLeft - stepLength, posY + stepDown, xLeft, posY + stepDown, Colors.WHITE);
@@ -331,7 +331,7 @@ public class ItemWheel extends AbstractGUIElement {
 		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
 		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getPaintWhite());
 		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getPaintWhite());
-		*/
+
 
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;

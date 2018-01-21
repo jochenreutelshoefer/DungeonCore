@@ -39,6 +39,7 @@ public class Heal extends NoTargetSpell {
 
 	public Heal() {
 		this.strength = 30;
+		this.cost = 6;
 	}
 
 	@Override

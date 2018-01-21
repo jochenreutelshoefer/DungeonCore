@@ -238,13 +238,15 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void setShrine(Shrine s) {
+		if(this.s != null) {
+			throw new IllegalStateException("check for shrine before setting one!");
+		}
 		this.getDungeon().addShrine(s);
 		setShrine(s, true);
 
 	}
 
 	public void setShrine(Shrine s, boolean setShrineLocation) {
-
 		this.s = s;
 		if (s != null && setShrineLocation) {
 			s.setLocation(this);

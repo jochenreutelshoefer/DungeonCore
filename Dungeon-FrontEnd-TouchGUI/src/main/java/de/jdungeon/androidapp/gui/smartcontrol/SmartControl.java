@@ -171,8 +171,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		};
 
 		// chest button
-		int takeElementSizeX = 30;
-		int takeElementSizeY = 20;
+		int takeElementSizeX = 36;
+		int takeElementSizeY = 24;
 		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
 		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 6, getDimension().getHeight() / 10);
 		chestGUIELement = new SubGUIElementRelative(posRelative, chestDimension, this) {

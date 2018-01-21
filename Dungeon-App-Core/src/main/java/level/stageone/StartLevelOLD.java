@@ -32,6 +32,7 @@ import item.map.AncientMapFragmentUtils;
 import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
 //import org.apache.log4j.Logger;
+import level.generation.SimpleDungeonFiller;
 import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;

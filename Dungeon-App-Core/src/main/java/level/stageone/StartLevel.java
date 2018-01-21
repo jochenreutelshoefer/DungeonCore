@@ -1,41 +1,30 @@
 package level.stageone;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import ai.GuardPositionBehaviour;
-import ai.PreGuardBehaviour;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
-import dungeon.Position;
 import dungeon.Room;
+import dungeon.generate.DeadEndPath;
 import dungeon.generate.DistanceAtLeastConstraint;
-import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
-import dungeon.generate.RectArea;
 import dungeon.quest.ReversibleRoomQuest;
-import dungeon.quest.RoomQuest1x1;
-import dungeon.quest.RoomQuest2x2;
 import dungeon.quest.RoomQuestWall;
-import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
-import figure.monster.Monster;
-import figure.monster.Orc;
-import figure.monster.Skeleton;
 import figure.monster.Wolf;
 import item.HealPotion;
 import item.Item;
-import item.ItemPool;
 import item.Key;
 import item.VisibilityCheatBall;
 import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
+import level.generation.SimpleDungeonFiller;
+import shrine.Corpse;
 import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;
@@ -137,10 +126,12 @@ public class StartLevel extends AbstractDungeonFactory {
 			entryChest.takeItem(new HealPotion(10));
 			entryRoom.setChest(entryChest);
 
-			filler.removeDoors(2, entryPoint);
 
+			// remove some doors
+			filler.removeDoors(1, entryPoint);
+
+			// some black areas
 			List<ReversibleRoomQuest> roomQuests = new ArrayList<>();
-
 			// configure RoomQuests to be inserted
 			roomQuests.add(new RoomQuestWall(filler, 1 ,2));
 			roomQuests.add(new RoomQuestWall(filler, 1 ,1));
@@ -149,9 +140,24 @@ public class StartLevel extends AbstractDungeonFactory {
 			setupRoomQuests(dungeon, filler, entryRoom, entryPoint, roomQuests);
 
 
+			// set healing fountain
 			filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(10, 1));
 
+			// remove some more doors
 			filler.removeDoors(3, entryPoint);
+
+			// dead corpse
+			Collection<DeadEndPath> deadEnds = filler.getDeadEndsUnallocated();
+			DeadEndPath longestDeadEndPath = DeadEndPath.getLongestDeadEndPath(deadEnds);
+			if(longestDeadEndPath == null) {
+				continue;
+			}
+			Room endRoom = longestDeadEndPath.getEndRoom();
+			filler.addAllocatedRoom(endRoom);
+			List<Item> list = new ArrayList<>();
+			list.add(new HealPotion(15));
+			endRoom.setShrine(new Corpse(list, endRoom, 1));
+
 
 			entryRoom.addItem(new VisibilityCheatBall());
 

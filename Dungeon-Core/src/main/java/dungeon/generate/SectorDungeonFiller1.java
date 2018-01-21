@@ -15,6 +15,7 @@ import item.Item;
 import item.quest.Rune;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import dungeon.Dungeon;
@@ -117,6 +118,11 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 	@Override
 	public void addAllocatedRooms(Collection<Room> rooms) {
 
+	}
+
+	@Override
+	public Collection<DeadEndPath> getDeadEndsUnallocated() {
+		return Collections.emptyList();
 	}
 
 	@Override

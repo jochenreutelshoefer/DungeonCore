@@ -236,6 +236,11 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 					}
 				}
 
+			} else {
+				// no target required
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				screen.getControl().getActionAssembler()
+						.wannaSpell(spell, null);
 			}
 
 			/*
