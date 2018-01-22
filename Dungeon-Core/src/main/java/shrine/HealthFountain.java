@@ -26,7 +26,6 @@ public class HealthFountain extends Shrine {
 		
 		super();
 		health = new Attribute(Attribute.FOUNTAIN, max);
-		type = 0;
 		this.rate = rate;
 		story = JDEnv.getResourceBundle().getString("see_health_fountain");
 		
@@ -40,7 +39,8 @@ public class HealthFountain extends Shrine {
 	
 	@Override
 	public int getSecondIdentifier() {
-		return type;
+		// TODO: WTF?
+		return -1;
 	}
 	
 	@Override
@@ -84,7 +84,12 @@ public class HealthFountain extends Shrine {
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_fountain_name");
 	}
-	
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		Attribute h = f.getHealth();

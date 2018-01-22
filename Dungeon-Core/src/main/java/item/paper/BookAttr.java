@@ -25,16 +25,19 @@ public class BookAttr extends Book {
 	}
 	
 	
+	@Override
 	public boolean usableOnce() {
 		return true;
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
 	
 	
+	@Override
 	public String getText() {
 		String s = new String();
 		int t = level;
@@ -61,10 +64,7 @@ public class BookAttr extends Book {
 		return  book()+": "+Texts.getAttributeName(attribute)+"("+level+")";
 	}
 	
-	/**
-	 * @see Usable#use(fighter)
-	 */
-	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		Attribute a = f.getAttribute(attribute);
 		if(a != null) { 
@@ -72,7 +72,14 @@ public class BookAttr extends Book {
 		}
 		return false;
 	}
-	public boolean use(Figure f,Object target,boolean meta) {
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
+	public boolean use(Figure f, Object target, boolean meta) {
 		Attribute a = f.getAttribute(attribute);
 		double value = a.getBasic();
 		int add = 0;

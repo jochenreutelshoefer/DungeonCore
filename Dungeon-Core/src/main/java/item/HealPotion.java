@@ -17,8 +17,13 @@ public class HealPotion extends AttrPotion implements Usable{
 	
 	}
     
-    public int getItemKey() {
+    @Override
+	public int getItemKey() {
     	return Item.ITEM_KEY_HEALPOTION;
     }
-	
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
 }

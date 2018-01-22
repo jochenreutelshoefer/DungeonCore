@@ -321,6 +321,7 @@ public class Room extends DungeonWorldObject implements
 		return b;
 	}
 
+	@Override
 	public boolean hasItem(Item i) {
 		return items.contains(i);
 	}

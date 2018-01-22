@@ -2,6 +2,7 @@ package level;
 
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.generate.DungeonFiller;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

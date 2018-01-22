@@ -230,6 +230,11 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 
 		if (!activated) {

@@ -23,7 +23,7 @@ import figure.monster.Monster;
  */
 public class Thing extends Item implements Usable, Locatable {
 
-	private Object sup;
+	private final Object sup;
 
 	private ItemOwner owner;
 
@@ -65,6 +65,7 @@ public class Thing extends Item implements Usable, Locatable {
 	/**
 	 * 
 	 */
+	@Override
 	public ItemOwner getOwner() {
 		return owner;
 	}
@@ -76,9 +77,7 @@ public class Thing extends Item implements Usable, Locatable {
 		return sup;
 	}
 
-	/**
-	 * @see Item#getText()
-	 */
+	@Override
 	public String getText() {
 		return "";
 	}
@@ -87,10 +86,17 @@ public class Thing extends Item implements Usable, Locatable {
 		return Type + ": " + getName();
 	}
 
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return true;
 	}
 
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		if (f instanceof Hero) {
 			if (f.getRoom().getShrine() == this.sup) {
@@ -102,6 +108,7 @@ public class Thing extends Item implements Usable, Locatable {
 
 	}
 
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}

@@ -1,8 +1,6 @@
 package user;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +19,7 @@ import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
+import spell.Spell;
 import util.DeepCopyUtil;
 
 import de.jdungeon.user.Session;
@@ -37,6 +36,7 @@ import de.jdungeon.user.User;
 public class DefaultDungeonSession implements Session, DungeonSession {
 
 	private Hero currentHero;
+
 	private Hero heroBackup;
 	private final User user;
 	private int heroType;
@@ -71,7 +71,13 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getCurrentStage() {
 		// for testing at stage 2
-		//if(completedDungeons.isEmpty()) return 1;
+		if(completedDungeons.isEmpty()) {
+			DungeonFactory level0 = getDungeonManager().getDungeonOptions(0).get(0);
+			lastCompletedDungeonFactory = level0;
+			lastSelectedDungeonFactory = level0;
+			this.completedDungeons.put(level0, 0);
+			return 1;
+		}
 
 		return completedDungeons.size();
 	}
@@ -137,6 +143,14 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		return score;
 	}
 
+	@Override
+	public void learnSkill(Spell spell) {
+		currentHero.getSpellbook().addSpell(spell);
+		if(heroBackup != null) {
+			heroBackup.getSpellbook().addSpell(spell);
+		}
+	}
+
 	/**
 	 * Tells the players decision for the type of hero to be played
 	 *
@@ -148,20 +162,20 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	}
 
 	@Override
-	public void initDungeon(DungeonFactory dungeon) {
-		lastSelectedDungeonFactory = dungeon;
+	public void initDungeon(DungeonFactory dungeonFactory) {
+		lastSelectedDungeonFactory = dungeonFactory;
 		dungeonGame = DungeonGame.getInstance();
 
-		derDungeon = dungeon.createDungeon();
+		derDungeon = dungeonFactory.createDungeon();
 		Hero currentHero = getCurrentHero();
 		// we make a copy of this hero for potential restart after death
 		this.currentHero.clearVisibilityMaps();
 		heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
 
-		// we need to clear the keys from the last dungeon (as they would work in the new one also)
+		// we need to clear the keys from the last dungeonFactory (as they would work in the new one also)
 		currentHero.getInventory().clearKeys();
 		heroInfo = DungeonUtils.enterDungeon(currentHero, derDungeon,
-				dungeon.getHeroEntryPoint());
+				dungeonFactory.getHeroEntryPoint());
 
 	}
 

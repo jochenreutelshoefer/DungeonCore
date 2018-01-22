@@ -55,13 +55,26 @@ import item.quest.DarkMasterKey;
 import item.quest.Feather;
 import item.quest.Incense;
 import item.quest.LuziasBall;
+import item.quest.MoonRune;
 import item.quest.Rune;
 import item.quest.Thing;
 import log.Log;
+import shrine.Angel;
 import shrine.Brood;
+import shrine.DarkMasterShrine;
+import shrine.HealthFountain;
+import shrine.LevelExit;
 import shrine.Luzia;
+import shrine.MoonRuneFinderShrine;
+import shrine.QuestShrine;
+import shrine.RepairShrine;
+import shrine.RevealMapShrine;
 import shrine.Shrine;
 import shrine.ShrineInfo;
+import shrine.SorcerLab;
+import shrine.Statue;
+import shrine.Trader;
+import shrine.Xmas;
 
 import de.jdungeon.game.AbstractImageLoader;
 
@@ -930,11 +943,11 @@ public class ImageManager {
 
 			button1 = new JDImageProxy<>(a, "button1.gif");
 
-			createItemClassMap();
+			createItemClassMap(a);
 			createFigureClassMap();
-			createShrineClassMap();
 			createHeroAnimationMap();
 			createMonsterAnimationMap(a);
+			createShrineClassMap();
 
 		}
 
@@ -1281,21 +1294,24 @@ public class ImageManager {
 		return null;
 	}
 
-	public static Map<Integer, JDImageProxy<?>> shrineMap = new HashMap<>();
+	public static Map<Class<? extends Shrine>, JDImageProxy<?>> shrineMap = new HashMap<>();
 
 	private void createShrineClassMap() {
-		shrineMap.put(Shrine.SHRINE_HEALTH_FOUNTAIN, ImageManager.fountainImage);
-		shrineMap.put(Shrine.SHRINE_REPAIR, ImageManager.repairImage);
-		shrineMap.put(Shrine.SHRINE_STATUE, ImageManager.statueImage);
-		shrineMap.put(Shrine.SHRINE_ANGEL, ImageManager.engelImage);
-		shrineMap.put(Shrine.SHRINE_SORCER_LAB, ImageManager.sorcLabImage);
-		shrineMap.put(Shrine.SHRINE_TRADER, ImageManager.traderImage);
-		shrineMap.put(Shrine.SHRINE_QUEST, ImageManager.shrine_blackImage);
-		shrineMap.put(Shrine.SHRINE_REVEALMAP, ImageManager.shrine_blackImage);
-		shrineMap.put(Shrine.SHRINE_XMAS, ImageManager.xmasImage);
-		shrineMap.put(Shrine.SHRINE_DARK_MASTER, ImageManager.pentagrammImage);
-		shrineMap.put(Shrine.SHRINE_EXIT, ImageManager.falltuerImage);
+		shrineMap.put(HealthFountain.class, ImageManager.fountainImage);
+		shrineMap.put(RepairShrine.class, ImageManager.repairImage);
+		shrineMap.put(Statue.class, ImageManager.statueImage);
+		shrineMap.put(Angel.class, ImageManager.engelImage);
+		shrineMap.put(SorcerLab.class, ImageManager.sorcLabImage);
+		shrineMap.put(Trader.class, ImageManager.traderImage);
+		shrineMap.put(QuestShrine.class, ImageManager.shrine_blackImage);
+		shrineMap.put(RevealMapShrine.class, ImageManager.shrine_blackImage);
+		shrineMap.put(Xmas.class, ImageManager.xmasImage);
+		shrineMap.put(DarkMasterShrine.class, ImageManager.pentagrammImage);
+		shrineMap.put(LevelExit.class, ImageManager.falltuerImage);
+		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, RouteInstruction.Direction.South).getImagesNr(0));
 	}
+
+
 
 	public static JDImageProxy<?> getImage(DoorInfo s) {
 		if (s.hasLock()) {
@@ -1307,11 +1323,11 @@ public class ImageManager {
 	}
 
 	public static JDImageProxy<?> getImage(ShrineInfo s) {
-		// todo: use class objects to compare
 
 		int shrineIndex = s.getShrineIndex();
-		if (shrineMap.containsKey(shrineIndex)) {
-			return shrineMap.get(shrineIndex);
+		Class<? extends Shrine> shrineClass = s.getShrineClass();
+		if (shrineMap.containsKey(shrineClass)) {
+			return shrineMap.get(shrineClass);
 		}
 
 		JDImageProxy<?> im = null;
@@ -1426,7 +1442,7 @@ public class ImageManager {
 
 	public static Map<Class<? extends Item>, JDImageProxy<?>> itemMap = new HashMap<>();
 
-	private void createItemClassMap() {
+	private void createItemClassMap(AbstractImageLoader loader) {
 		itemMap.put(DustItem.class, ImageManager.dustImage);
 		itemMap.put(Sword.class, ImageManager.swordImage);
 		itemMap.put(Axe.class, ImageManager.axeImage);
@@ -1445,6 +1461,7 @@ public class ImageManager {
 		itemMap.put(LuziasBall.class, ImageManager.kugelImage);
 		itemMap.put(Book.class, ImageManager.bookImage);
 		itemMap.put(Thing.class, ImageManager.amulettImage);
+		itemMap.put(MoonRune.class, new JDImageProxy<>("kristall_blau.gif", loader));
 	}
 
 	public static JDImageProxy<?> getImage(ItemInfo item) {

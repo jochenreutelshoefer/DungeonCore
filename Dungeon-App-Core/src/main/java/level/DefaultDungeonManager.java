@@ -10,6 +10,7 @@ import level.stageone.StartLevel;
 import level.stageone.StartLevelOLD;
 import level.stagetwo.EscortLevel2A;
 import level.stagetwo.LevelTwoB;
+import level.stagetwo.MoonRuneChase;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -26,7 +27,8 @@ public class DefaultDungeonManager implements DungeonManager {
 		stages.put(0 , stageZeroList);
 
 		List<DungeonFactory> stageOneList = new ArrayList<>();
-		stageOneList.add(new LevelTwoB());
+		//stageOneList.add(new LevelTwoB());
+		stageOneList.add(new MoonRuneChase());
 		stageOneList.add(new EscortLevel2A());
 		stages.put(1 , stageOneList);
 

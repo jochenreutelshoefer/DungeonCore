@@ -59,7 +59,12 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	public void metaClick(Figure f) {
 		
 	}
-	
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		return false;

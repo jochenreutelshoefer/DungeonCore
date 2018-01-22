@@ -41,7 +41,12 @@ public class Scroll extends Item implements UsableWithTarget {
 	public boolean usableOnce() {
 		return true;
 	}
-	
+
+	@Override
+	public int dustCosts() {
+		return theSpell.getCost();
+	}
+
 	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		theSpell.setCostsAP(false);

@@ -3,7 +3,6 @@ package ai;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.JDPoint;
@@ -19,9 +18,10 @@ import figure.percept.ScoutPercept;
 
 public class ChaserAI extends DefaultMonsterIntelligence {
 
-	private JDPoint lastHeroLocation = null;
-	private int lastHeroLocationInfoRound;
-	private final List<Percept> perceptList = new LinkedList<>();
+
+	private HeroPositionLog heroLog = new HeroPositionLog();
+
+
 	@Override
 	public Action chooseFightAction() {
 		
@@ -41,51 +41,22 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 	
 	@Override
 	public void processPercept(Percept p) {
-		perceptList.add(p);
-	}
-	
-	protected void processPercepts() {
-		Collections.sort(perceptList, new PerceptComparator());
-		for (Iterator<Percept> iter = perceptList.iterator(); iter.hasNext();) {
-			Percept element = iter.next();
-			if(element instanceof MovePercept) {
-				if(((MovePercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					this.lastHeroLocation = ((MovePercept)element).getTo().getPoint();
-					lastHeroLocationInfoRound = element.getRound();
-				}
-			}
-			if(element instanceof FleePercept) {
-				if(((FleePercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					int dir = ((FleePercept)element).getDir();
-					RoomInfo r = ((FleePercept)element).getRoom();
-					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
-					lastHeroLocationInfoRound = element.getRound();
-				}
-			}
-			if(element instanceof ScoutPercept) {
-				if(((ScoutPercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					int dir = ((ScoutPercept)element).getDir();
-					RoomInfo r = ((ScoutPercept)element).getRoom();
-					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
-					lastHeroLocationInfoRound = element.getRound();
-				}
-			}
-		}
-		perceptList.clear();
+		heroLog.tellPecept(p);
 
 	}
 	
 	@Override
 	public Action chooseMovementAction() {
 		
-		processPercepts();
+		heroLog.processPercepts();
 		
 		if (!actionQueue.isEmpty()) {
 			Action a = actionQueue.remove(0);
 			lastAction = a;
 			return a;
 		}
-		
+
+		JDPoint lastHeroLocation = heroLog.getLastHeroPosition();
 		if(lastHeroLocation == null) {
 			return new EndRoundAction();
 		}
@@ -106,22 +77,6 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 		
 		return new EndRoundAction();
 	}
-	
-	static class PerceptComparator implements Comparator<Percept> {
-		
-		@Override
-		public int compare(Percept o1, Percept o2) {
-			if(o1 != null && o2 != null) {
-				if((o1).getRound() < (o2).getRound()) {
-					return 1;
-				} else if((o1).getRound() > (o2).getRound()) {
-					return -1;
-				}
-				
-			}
-			return 0;
-		}
-		
-	}
+
 
 }

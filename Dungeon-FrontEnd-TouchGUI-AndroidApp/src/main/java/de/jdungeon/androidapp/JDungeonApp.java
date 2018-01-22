@@ -104,7 +104,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		}
 		if(event instanceof SkillSelectedEvent) {
 			Spell spell = ((SkillSelectedEvent) event).getSpell();
-			dungeonSession.getCurrentHero().getSpellbook().addSpell(spell);
+			dungeonSession.learnSkill(spell);
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
 			this.setScreen(screen);
 		}

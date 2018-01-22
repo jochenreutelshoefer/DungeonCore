@@ -65,7 +65,8 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new ItemInfo(this,map); 	
 	}
-	
+
+	@Deprecated
 	public int getItemKey() {
 		return Item.ITEM_KEY_UNDEFINDED;
 	}

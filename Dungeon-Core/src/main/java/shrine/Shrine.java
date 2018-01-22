@@ -1,10 +1,15 @@
 package shrine;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.ShrineMemory;
 import game.InfoEntity;
 import game.InfoProvider;
 import game.Turnable;
+import item.Item;
 import item.interfaces.Usable;
 import util.JDColor;
 import dungeon.JDPoint;
@@ -19,33 +24,51 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
 
 
 	// TODO: factor out this list, use class objects
+	@Deprecated
 	public static final int SHRINE_NOSHRINE = 0;
+	@Deprecated
 	public static final int SHRINE_CORPSE= 1;
+	@Deprecated
 	public static final int SHRINE_DARK_MASTER = 2;
+	@Deprecated
 	public static final int SHRINE_HEALTH_FOUNTAIN = 3;
+	@Deprecated
 	public static final int SHRINE_INFO = 4;
+	@Deprecated
 	public static final int SHRINE_LUZIA = 5;
+	@Deprecated
 	public static final int SHRINE_QUEST = 6;
+	@Deprecated
 	public static final int SHRINE_REPAIR = 7;
+	@Deprecated
 	public static final int SHRINE_RUNEFINDER = 8;
+	@Deprecated
 	public static final int SHRINE_RUNE = 9;
+	@Deprecated
 	public static final int SHRINE_SORCER_LAB = 10;
+	@Deprecated
 	public static final int SHRINE_STATUE = 11;
+	@Deprecated
 	public static final int SHRINE_TRADER = 12;
+	@Deprecated
 	public static final int SHRINE_XMAS = 13;
+	@Deprecated
 	public static final int SHRINE_BROOD = 14;
+	@Deprecated
 	public static final int SHRINE_ANGEL = 15;
+	@Deprecated
 	public static final int SHRINE_EXIT = 16;
+	@Deprecated
 	public static final int SHRINE_REVEALMAP = 17;
 
 	
 	protected Room location;
 
 	
-	int type;
+	private int type;
 
 	
-	String name;
+	private String name;
 
 	
 	String story;
@@ -75,6 +98,10 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
 		}
 		location = p;
 	}
+	protected final List<Item> items = new ArrayList<>();
+	public List<Item> getItems() {
+		return Collections.unmodifiableList(items);
+	}
 	
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
@@ -86,16 +113,13 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
 	}
 
     
-//    public static void setGame(Game g) {
-//    	game  = g;
-//    }
-
 	public abstract int getShrineIndex();
 
     @Override
 	public abstract void turn(int round);
 
-	
+
+	@Deprecated
 	public int getType() {
 		return type;
 	}

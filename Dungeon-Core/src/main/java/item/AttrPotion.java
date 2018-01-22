@@ -59,6 +59,11 @@ public class AttrPotion extends Item implements Usable {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure h,Object target,boolean meta) {
 		//Hero held = (Hero) h;
 		h.tellPercept(new TextPercept(Texts.getPoitionDrinkString(a)));

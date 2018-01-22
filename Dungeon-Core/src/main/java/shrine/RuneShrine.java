@@ -36,7 +36,6 @@ public class RuneShrine extends Shrine implements ItemOwner {
 		index = i;
 		this.c = c;
 		story = JDEnv.getResourceBundle().getString("see_rune_shrine");
-		type = Rune.getRuneIndex(c);
 
 	}
 
@@ -45,7 +44,6 @@ public class RuneShrine extends Shrine implements ItemOwner {
 		index = i;
 		this.c = c;
 		story = JDEnv.getResourceBundle().getString("see_rune_shrine");
-		type = Rune.getRuneIndex(c);
 	}
 	
 	@Override
@@ -177,6 +175,11 @@ public void metaClick(Figure f) {
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_rune_name")+": " + Integer.toString(index);
+	}
+
+	@Override
+	public int dustCosts() {
+		return 0;
 	}
 
 	@Override

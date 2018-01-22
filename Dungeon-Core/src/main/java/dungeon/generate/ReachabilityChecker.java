@@ -18,6 +18,7 @@ import dungeon.Room;
 import figure.Figure;
 import item.Item;
 import item.Key;
+import item.interfaces.ItemOwner;
 import shrine.LevelExit;
 import shrine.Shrine;
 
@@ -202,28 +203,15 @@ public class ReachabilityChecker {
 			boolean keyFound = false;
 
 			// collect keys lying on ground
-			List<Item> items = room.getItems();
-			for (Item item : items) {
-				if(item instanceof Key) {
-					if(!keys.contains(item)) {
-						keyFound = true;
-						keys.add((Key)item);
-					}
-
-				}
+			if(collectKeys(keys, room.getItems())) {
+				keyFound = true;
 			}
 
 			// collect keys from figures in room
 			List<Figure> roomFigures = room.getRoomFigures();
-			for (Figure figure : roomFigures) {
-				List<Item> figureItems = figure.getItems();
-				for (Item figureItem : figureItems) {
-					if(figureItem instanceof Key) {
-						if(!keys.contains(figureItem)) {
-								keyFound = true;
-							keys.add((Key) figureItem);
-						}
-					}
+			for (ItemOwner figure : roomFigures) {
+				if(collectKeys(keys, figure.getItems())) {
+					keyFound = true;
 				}
 			}
 
@@ -233,16 +221,23 @@ public class ReachabilityChecker {
 				if (chest.hasLock()) {
 					// TODO: currently chests are not locked
 				}
-				List<Item> chestItems = chest.getItems();
-				for (Item chestItem : chestItems) {
-					if (chestItem instanceof Key) {
-						if(!keys.contains(chestItem)) {
-							keyFound = true;
-							keys.add((Key) chestItem);
+				if(collectKeys(keys, chest.getItems())) {
+					keyFound = true;
+				}
+			}
+			return keyFound;
+		}
+
+		private boolean collectKeys(Set<Key> keys, List<Item> items) {
+			boolean keyFound = false;
+				for (Item figureItem : items) {
+					if(figureItem instanceof Key) {
+						if(!keys.contains(figureItem)) {
+								keyFound = true;
+							keys.add((Key) figureItem);
 						}
 					}
 				}
-			}
 			return keyFound;
 		}
 

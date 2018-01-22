@@ -23,7 +23,7 @@ import util.JDColor;
  */
 public class QuestShrine extends Shrine {
 
-	
+	private final String name;
 	Item requestedItem;
 
 	
@@ -134,6 +134,11 @@ public class QuestShrine extends Shrine {
 		else {
 			return JDEnv.getResourceBundle().getString("shrine_quest_unsolved");	
 		}
+	}
+
+	@Override
+	public int dustCosts() {
+		return 0;
 	}
 
 	/**

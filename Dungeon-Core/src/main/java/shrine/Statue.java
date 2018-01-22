@@ -57,6 +57,11 @@ public void metaClick(Figure f){
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		return false;
 	}

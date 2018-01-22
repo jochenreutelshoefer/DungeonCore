@@ -1,15 +1,14 @@
 package de.jdungeon.androidapp.gui;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import graphics.ImageManager;
 import graphics.JDImageProxy;
 import item.AttrPotion;
 import item.Bunch;
+import item.DustItem;
 import item.HealPotion;
 import item.Item;
 import item.ItemInfo;
@@ -26,9 +25,9 @@ import item.map.AncientMapFragment;
 import item.paper.Book;
 import item.paper.InfoScroll;
 import item.paper.Scroll;
+import item.quest.MoonRune;
 import item.quest.Thing;
 
-import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
 public class InventoryImageManager {
@@ -52,7 +51,9 @@ public class InventoryImageManager {
 		itemClassImageMap.put(AncientMapFragment.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
 		itemClassImageMap.put(Bunch.class,  guiImageManager.getJDImageProxy(GUIImageManager.BUNCH));
 		itemClassImageMap.put(Thing.class,  guiImageManager.getJDImageProxy(GUIImageManager.MANA_BATTERY));
-		itemClassImageMap.put(Key.class,  guiImageManager.getJDImageProxy(GUIImageManager.KEY));
+		itemClassImageMap.put(Key.class,  guiImageManager.getJDImageProxy("guiItems/key.gif"));
+		itemClassImageMap.put(MoonRune.class,  guiImageManager.getJDImageProxy("guiItems/mondrune.png"));
+		itemClassImageMap.put(DustItem.class,  guiImageManager.getJDImageProxy("guiItems/Zauberstaub.png"));
 	}
 
 	private final GUIImageManager guiImageManager;

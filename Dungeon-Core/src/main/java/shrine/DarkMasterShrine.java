@@ -237,11 +237,16 @@ public boolean needsTarget() {
 		return s;
 	}
 
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see usable#use(fighter)
-	 */
+		 * (non-Javadoc)
+		 *
+		 * @see usable#use(fighter)
+		 */
 	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		// TODO Auto-generated method stub

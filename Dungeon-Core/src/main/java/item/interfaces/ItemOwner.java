@@ -35,8 +35,6 @@ public interface ItemOwner {
 	JDPoint getLocation();
 
 	Room getRoom();
-	
-	
 
-	
+	List<Item> getItems();
 }

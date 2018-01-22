@@ -10,6 +10,7 @@ import dungeon.Chest;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Room;
 import dungeon.generate.DungeonFiller;
 import dungeon.generate.undo.AddDoor;
 import dungeon.generate.undo.DungeonChangeAction;
@@ -102,16 +103,17 @@ public class RoomQuest2x2 extends ReversibleRoomQuest {
 
 
 		//rooms[1][0].removeDoor(RouteInstruction.SOUTH, true);
-		actions.add(new RemoveDoor(rooms[1][0],RouteInstruction.Direction.South));
+		Room room10 = rooms[1][0];
+		actions.add(new RemoveDoor(room10,RouteInstruction.Direction.South));
 
 
 		//rooms[1][0].removeDoor(RouteInstruction.WEST, true);
-		actions.add(new RemoveDoor(rooms[1][0],RouteInstruction.Direction.West));
+		actions.add(new RemoveDoor(room10,RouteInstruction.Direction.West));
 
 
-		Door keyDoor = new Door(rooms[1][0], rooms[0][0], k);
+		Door keyDoor = new Door(room10, rooms[0][0], k);
 		//rooms[1][0].setDoor(keyDoor, RouteInstruction.NORTH, true);
-		actions.add(new AddDoor(rooms[1][0], keyDoor, RouteInstruction.Direction.North ));
+		actions.add(new AddDoor(room10, keyDoor, RouteInstruction.Direction.North ));
 
 
 		Chest ch1 = new Chest(k);
@@ -135,15 +137,16 @@ public class RoomQuest2x2 extends ReversibleRoomQuest {
 		//rooms[1][1].setChest(ch2);
 		actions.add(new SetChestAction(ch2, rooms[1][1]));
 		//rooms[1][0].setChest(ch1);
-		actions.add(new SetChestAction(ch1, rooms[1][0]));
+		actions.add(new SetChestAction(ch1, room10));
 
 		Monster smallMonster = df.getSmallMonster(800);
 		//rooms[1][0].figureEnters(smallMonster,0);
-		actions.add(new InsertFigure(smallMonster, rooms[1][0]));
+		actions.add(new InsertFigure(smallMonster, room10));
 
-		if(shrine != null) {
+		if(shrine != null && room10.getShrine() != null) {
+			// TODO: find method to handle situation, that there is already a shrine!
 			//rooms[1][0].setShrine(shrine);
-			actions.add(new SetShrineAction(shrine, rooms[1][0]));
+			actions.add(new SetShrineAction(shrine, room10));
 		}
 		for (int i = 0; i < 3; i++) {
 			Monster bigMonster = df.getBigMonster(1200);

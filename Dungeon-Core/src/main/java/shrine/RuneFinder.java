@@ -24,7 +24,7 @@ import dungeon.Room;
 
 public class RuneFinder extends Shrine {
 
-	private Rune rune;
+	private final Rune rune;
 
 	public RuneFinder(Rune r, Room room) {
 		super(room);
@@ -37,7 +37,7 @@ public class RuneFinder extends Shrine {
 		super();
 		this.rune = r;
 		story = JDEnv.getResourceBundle().getString("see_rune_finder_shrine");
-		type = Rune.getRuneIndex(r.getChar());
+		//type = Rune.getRuneIndex(r.getChar());
 	}
 
 	@Override
@@ -109,9 +109,11 @@ public class RuneFinder extends Shrine {
 		return JDEnv.getResourceBundle().getString("shrine_runeFinder_name")+": " + rune.toString();
 	}
 
-	/**
-	 * @see Usable#use(fighter)
-	 */
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	@Override
 	public boolean use(Figure f,Object target,boolean meta) {
 		Percept p = new UsePercept(f, this);

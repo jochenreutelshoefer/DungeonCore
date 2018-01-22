@@ -17,6 +17,7 @@ import dungeon.util.RouteInstruction;
 
 public class Brood extends Shrine {
 
+	private final int type;
 	//String Type;
 	int points;
 	int grow = 40;
@@ -130,6 +131,11 @@ public class Brood extends Shrine {
 				}
 			}
 		}
+	}
+
+	@Override
+	public int dustCosts() {
+		return 0;
 	}
 
 	@Override

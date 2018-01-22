@@ -93,7 +93,13 @@ public class Rune extends Item implements Usable, Locatable {
 	public boolean canBeUsedBy(Figure f) {
     	return f instanceof Hero;
     }
-    @Override
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f,Object target,boolean meta){
 		Shrine s = ((Hero)f).getRoom().getShrine(); 
 		if(s instanceof RuneShrine){

@@ -138,9 +138,7 @@ public boolean needsTarget() {
 			}
 			
 	}
-	/**
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_repair_name");
@@ -152,9 +150,6 @@ public boolean needsTarget() {
 		   return false;
 	   }
 	
-	/**
-	 * @see Shrine#getStatus()
-	 */
 	@Override
 	public String getStatus() {
 		if(i == null) {
@@ -162,6 +157,11 @@ public boolean needsTarget() {
 		} else {
 			return i.toString();
 		}
+	}
+
+	@Override
+	public int dustCosts() {
+		return 0;
 	}
 
 	/**

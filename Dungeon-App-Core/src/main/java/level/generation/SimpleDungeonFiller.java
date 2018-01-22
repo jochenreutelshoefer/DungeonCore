@@ -16,6 +16,7 @@ import dungeon.generate.DungeonFiller;
 import dungeon.generate.ReachabilityChecker;
 import dungeon.generate.RectArea;
 import dungeon.generate.RoomPositionConstraint;
+import dungeon.util.RouteInstruction;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
@@ -52,6 +53,28 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	@Override
 	public Dungeon getDungeon() {
 		return dungeon;
+	}
+
+	@Override
+	public Room getUnallocatedRimRoom(boolean cornerAllowed) {
+		List<Room> candidates = new ArrayList<>();
+		JDPoint size = dungeon.getSize();
+		int firstCol = 0;
+		int lastCol = size.getX() - 1;
+		int firstRow = 0;
+		int lastRow = size.getY() - 1;
+		for (int x = 0; x < size.getX(); x++) {
+			for (int y = 0; y < size.getY(); y++) {
+				if(x == firstCol || x == lastCol || y == firstRow || y == lastRow ) {
+					if(!cornerAllowed && ((x == firstCol && (y == 0 || y == lastRow))|| (x == lastCol && (y == 0 || y == lastRow)))){
+						continue;
+					}
+					candidates.add(dungeon.getRoomNr(x, y));
+				}
+			}
+		}
+
+		return candidates.get((int)(Math.random()* candidates.size()));
 	}
 
 	@Override
@@ -112,6 +135,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return null;
 	}
 
+
 	@Override
 	public Room getUnallocatedRandomRoom(JDPoint near) {
 		int count = 0;
@@ -157,7 +181,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		Collection<DeadEndPath> result = new ArrayList<>();
 		Collection<Room> allRooms = dungeon.getAllRooms();
 		for (Room room : allRooms) {
-			List<Door> openDoors = getOpenDoorList(room);
+			List<Door> openDoors = getDoorList(room, true);
 			if(openDoors.size() == 1) {
 				// we found a dead end room
 				if(this.isAllocated(room)) {
@@ -326,15 +350,33 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return counterDoors;
 	}
 
-	private List<Door> getOpenDoorList(Room room) {
+	@Override
+	public RouteInstruction.Direction getUnallocatedRandomNeighbour(Room exitRoom) {
+		List<RouteInstruction.Direction> candidates = new ArrayList<>();
+		RouteInstruction.Direction[] values = RouteInstruction.Direction.values();
+		for (RouteInstruction.Direction direction : values) {
+			Room neighbourRoom = exitRoom.getNeighbourRoom(direction);
+			if(neighbourRoom != null && !isAllocated(neighbourRoom)) {
+				candidates.add(direction);
+			}
+		}
+		if(candidates.isEmpty()) return null;
+		return candidates.get((int)(Math.random() * candidates.size()));
+	}
+
+	private List<Door> getDoorList(Room room, boolean includeLocked) {
 		List<Door> result = new ArrayList<>();
 		for(int i = 0; i < room.getDoors().length; i++) {
 			Door door = room.getDoors()[i];
-			if(door != null && !door.hasLock()) {
+			if(door != null && (!door.hasLock() || includeLocked)) {
 				result.add(door);
 			}
 		}
 		return result;
+	}
+
+	private List<Door> getOpenDoorList(Room room) {
+		return getDoorList(room, false);
 	}
 
 }

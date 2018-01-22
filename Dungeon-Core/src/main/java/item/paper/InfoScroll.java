@@ -48,6 +48,10 @@ public class InfoScroll extends Item implements Usable{
 		return false;
 	}
 
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
 
 	@Override
 	public boolean use(Figure f, Object target, boolean meta) {

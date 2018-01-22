@@ -35,7 +35,7 @@ public class Angel extends Shrine {
 		requestedItems.add(f1);
 		requestedItems.add(f2);
 		rewardItems.add(new Scroll(new Prayer(),0));
-		this.type = Angel.UNSOLVED;
+		//this.type = Angel.UNSOLVED;
 	}
 
 	@Override
@@ -84,6 +84,11 @@ public class Angel extends Shrine {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		if(target instanceof Feather) {
 			ownedItems.add((Feather) target);
@@ -109,7 +114,7 @@ public class Angel extends Shrine {
 			solved = true;
 			this.getRoom().addItems(rewardItems, null);
 			rewardItems.clear();
-			this.type = Angel.SOLVED;
+			//this.type = Angel.SOLVED;
 		}
 	}
 

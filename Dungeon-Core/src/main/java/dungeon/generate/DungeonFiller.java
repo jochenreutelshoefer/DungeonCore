@@ -5,6 +5,7 @@ import java.util.Collection;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.util.RouteInstruction;
 import figure.monster.Monster;
 import item.Item;
 import item.Key;
@@ -22,6 +23,8 @@ public interface DungeonFiller {
 	boolean isAllocated(Room room);
 
 	Room getUnallocatedRandomRoom(RoomPositionConstraint... contr);
+
+	Room getUnallocatedRimRoom(boolean cornerAllowed);
 
 	Room getUnallocatedRandomRoom(JDPoint near);
 
@@ -88,4 +91,7 @@ public interface DungeonFiller {
 	 * @return number of doors that actually have been removed
 	 */
 	int removeDoors(int number, JDPoint entryPoint);
+
+	RouteInstruction.Direction getUnallocatedRandomNeighbour(Room exitRoom);
+
 }

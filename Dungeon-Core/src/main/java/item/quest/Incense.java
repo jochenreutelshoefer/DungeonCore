@@ -8,6 +8,7 @@ public class Incense extends item.Item {
 		super(1000, false);
 	}
 	
+	@Override
 	public String getText() {
 		return JDEnv.getString("incense_text");
 	}

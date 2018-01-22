@@ -96,7 +96,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 
 
 			JDPoint entryPoint = this.getHeroEntryPoint();
-			Room entryRoom = dungeon.getRoom(this.getHeroEntryPoint());
+			Room entryRoom = dungeon.getRoom(entryPoint);
 			filler.addAllocatedRoom(entryRoom);
 
 			Room statueRoom = filler.getUnallocatedRandomRoom();

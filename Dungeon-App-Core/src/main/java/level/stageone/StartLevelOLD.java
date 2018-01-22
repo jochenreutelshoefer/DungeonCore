@@ -119,6 +119,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 
 
+
 			// CHEST TEST
 			List<Item> itemsL = new LinkedList<Item>();
 			Item it1 = ItemPool.getRandomItem(25, 1);
@@ -172,7 +173,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		entryRoom.addItem(new ScrollMagic(new LionessConjuration(1)));
 		entryRoom.addItem(new ScrollMagic(new FirConjuration(1)));
 		// TODO: remove
-		entryRoom.addItem(AncientMapFragmentUtils.createMap(dungeon, getHeroEntryPoint(), 7));
+		entryRoom.addItem(AncientMapFragmentUtils.createMap(dungeon, entryPoint, 7));
 
 		List<ReversibleRoomQuest> roomQuests = new ArrayList<>();
 

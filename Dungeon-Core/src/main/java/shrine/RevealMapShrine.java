@@ -16,7 +16,7 @@ import util.JDColor;
  */
 public class RevealMapShrine extends Shrine {
 
-	private List<Room> revealedRooms;
+	private final List<Room> revealedRooms;
 
 	public RevealMapShrine(List<Room> revealedRooms) {
 		super();
@@ -65,6 +65,11 @@ public class RevealMapShrine extends Shrine {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		boolean revealedSomething = false;
 		for (Room revealedRoom : revealedRooms) {
@@ -82,9 +87,7 @@ public class RevealMapShrine extends Shrine {
 					control.notifyVisibilityStatusIncrease(revealedRoom.getPoint());
 				}
 			}
-
 		}
-
 		return revealedSomething;
 	}
 

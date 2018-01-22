@@ -96,7 +96,7 @@ public abstract class AndroidGame extends Activity implements Game {
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		int height = displaymetrics.heightPixels;
-		int width = displaymetrics.widthPixels;
+ 		int width = displaymetrics.widthPixels;
 		*/
 		// TODO: implement properly
 		//return 400;

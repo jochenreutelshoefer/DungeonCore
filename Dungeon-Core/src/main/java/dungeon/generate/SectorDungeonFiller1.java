@@ -161,4 +161,9 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 	public int removeDoors(int number, JDPoint entryPoint) {
 		throw new NotImplementedException();
 	}
+
+	@Override
+	public RouteInstruction.Direction getUnallocatedRandomNeighbour(Room exitRoom) {
+		return null;
+	}
 }

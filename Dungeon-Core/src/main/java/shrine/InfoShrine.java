@@ -84,6 +84,11 @@ public class InfoShrine extends Shrine {
 		return JDColor.orange;
 	}
 
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	/**
 	 * @see Usable#use(fighter)
 	 */

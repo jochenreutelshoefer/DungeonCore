@@ -237,6 +237,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	public abstract String getName();
 
+
+
 	protected boolean wayPassable(Door d, Room toGo) {
 
 		if ((d != null) && (d.isPassable(this)) && (toGo != null)) {
@@ -1875,13 +1877,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		this.thief = thief;
 	}
 
-	public void incAP(int k) {
-		incActionPoints(k);
-	}
-
-	private void incActionPoints(int k) {
-		actionPoints += k;
-	}
 
 	public boolean isRaiding() {
 		return raiding;

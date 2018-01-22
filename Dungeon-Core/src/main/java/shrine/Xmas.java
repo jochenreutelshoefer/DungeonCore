@@ -69,6 +69,11 @@ public class Xmas extends Shrine {
 		return Shrine.SHRINE_XMAS;
 	}
 
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	/**
 	 * @see Shrine#clicked(fighter)
 	 */

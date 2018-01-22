@@ -9,8 +9,9 @@ import event.EventManager;
 import event.ExitUsedEvent;
 import figure.Figure;
 import figure.hero.Hero;
-import game.DungeonGame;
+import figure.percept.TextPercept;
 import game.JDEnv;
+import item.Item;
 import util.JDColor;
 
 /**
@@ -20,10 +21,21 @@ import util.JDColor;
 public class LevelExit extends Shrine {
 
 	private List<Figure> requiredFigures = new ArrayList<>();
+	private List<Item> requiredItems = new ArrayList<>();
 
 	public LevelExit() {
 
 	}
+
+	/**
+	 * Constructor to create exits that required some special item(s) to access the exit
+	 *
+	 * @param items that player needs to have to trigger exit
+	 */
+	public LevelExit(Item... items) {
+		requiredItems = Arrays.asList(items);
+	}
+
 
 	/**
 	 * Constructor to create exits that required presence of escorted NPCs
@@ -71,9 +83,22 @@ public class LevelExit extends Shrine {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
-		if(checkRequiredFigures()) {
+		// TODO: factor out text
+		if(requiredFigureMissing()) {
 			// some figure to be escorted to exit is not here -> refuse
+			f.getRoomInfo().distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: "+requiredItems.toString()));
+			return false;
+		}
+
+		if(requiredItemMissing(f)) {
+			// some item to be found to exit is not here -> refuse
+			f.getRoomInfo().distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: "+requiredItems.toString()));
 			return false;
 		}
 
@@ -82,9 +107,18 @@ public class LevelExit extends Shrine {
 		return true;
 	}
 
-	private boolean checkRequiredFigures() {
+	private boolean requiredFigureMissing() {
 		for (Figure requiredFigure : requiredFigures) {
 			if(!this.getRoom().getRoomFigures().contains(requiredFigure)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean requiredItemMissing(Figure figure) {
+		for (Item item : requiredItems) {
+			if(!figure.getItems().contains(item)) {
 				return true;
 			}
 		}

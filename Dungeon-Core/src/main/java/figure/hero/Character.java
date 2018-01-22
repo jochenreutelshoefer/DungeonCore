@@ -211,7 +211,7 @@ public class Character implements Serializable {
 				(strength.getBasic() + psycho.getBasic()) / 5);
 		attributes.put(Attribute.THREAT,threat);
 
-		owner.setActionPoints(3);
+		owner.setActionPoints(2);
 
 		weaponExp[0] = 0;
 		weaponExp[1] = 0;

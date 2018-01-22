@@ -14,6 +14,7 @@ import dungeon.generate.RectArea;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuestWall;
 import dungeon.util.RouteInstruction;
+import level.generation.SimpleDungeonFiller;
 //import org.apache.log4j.Logger;
 
 /**
@@ -21,6 +22,23 @@ import dungeon.util.RouteInstruction;
  * @created 20.03.16.
  */
 public abstract class AbstractDungeonFactory implements DungeonFactory {
+
+	protected JDPoint entryPoint;
+	protected SimpleDungeonFiller filler;
+
+	@Override
+	public JDPoint getHeroEntryPoint() {
+		if (entryPoint == null) {
+
+			if (filler != null) {
+				entryPoint = filler.getUnallocatedRimRoom(false).getPoint();
+			}
+			else {
+				entryPoint = new JDPoint(2, 4);
+			}
+		}
+		return entryPoint;
+	}
 
 	protected void createAllDoors(Dungeon dungeon) {
 		for(int x = 0; x < dungeon.getSize().getX(); x++) {

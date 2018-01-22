@@ -29,6 +29,11 @@ public class ShrineInfo extends RoomEntity {
 		this.s = s;
 	}
 
+	public Class<? extends Shrine> getShrineClass() {
+		return s.getClass();
+	}
+
+	@Deprecated
 	public int getShrineIndex() {
 		JDPoint location = getLocation();
 		if (location != null

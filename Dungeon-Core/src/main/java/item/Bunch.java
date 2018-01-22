@@ -109,6 +109,11 @@ public class Bunch extends Item implements Serializable, UsableWithTarget {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		List<? extends RoomEntity> targetLocks = getTargetScope().getTargetEntitiesInScope(FigureInfo.makeFigureInfo(f, f
 				.getRoomVisibility()));

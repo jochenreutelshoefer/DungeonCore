@@ -36,28 +36,15 @@ import dungeon.Room;
 
 public class Luzia extends Shrine implements ItemOwner {
 
-	/**
-	 * @param actualP
-	 * 
-	 */
-	Item requestedItem;
+	private Item requestedItem;
 
-	/**
-	 * 
-	 */
-	LuziasBall ball;
+	private LuziasBall ball;
 
-	Figure figure;
+	private Figure figure;
 
-	/**
-	 * 
-	 */
-	List<Item> goodItems = new LinkedList<Item>();
+	private final List<Item> goodItems = new LinkedList<Item>();
 
-	/**
-	 * 
-	 */
-	List<Item> items = new LinkedList<Item>();
+	private final List<Item> items = new LinkedList<Item>();
 
 	public static final int UNSOLVED = 1;
 
@@ -76,7 +63,7 @@ public class Luzia extends Shrine implements ItemOwner {
 		goodItems.add(ItemPool.getHigherItem(40, 2));
 		goodItems.add(ItemPool.getHigherItem(50, 2));
 		goodItems.add(ItemPool.getHigherItem(60, 2));
-		type = Luzia.UNSOLVED;
+		//type = Luzia.UNSOLVED;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -207,7 +194,7 @@ public class Luzia extends Shrine implements ItemOwner {
 
 		this.solved = true;
 		dead = true;
-		this.type = Luzia.DEAD;
+		//this.type = Luzia.DEAD;
 	}
 
 	private boolean dead = false;
@@ -312,7 +299,7 @@ public class Luzia extends Shrine implements ItemOwner {
 
 	private void solve(Figure f) {
 		solved = true;
-		type = Luzia.SOLVED;
+		//type = Luzia.SOLVED;
 		ball.solved();
 		String s = JDEnv.getResourceBundle().getString("shrine_luzia_solved");
 		f.tellPercept(new TextPercept(s));
@@ -343,11 +330,16 @@ public class Luzia extends Shrine implements ItemOwner {
 		}
 	}
 
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see usable#use(fighter)
-	 */
+		 * (non-Javadoc)
+		 *
+		 * @see usable#use(fighter)
+		 */
 	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 

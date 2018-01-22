@@ -90,8 +90,13 @@ public class LuziasBall extends Item implements Locatable, Usable{
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("palantir");
 	}
-	
-	public boolean use(Figure f,Object target,boolean meta) {
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	public boolean use(Figure f, Object target, boolean meta) {
 		if(questSolved) {
 			//[TODO] leuchtet....
 			//show();

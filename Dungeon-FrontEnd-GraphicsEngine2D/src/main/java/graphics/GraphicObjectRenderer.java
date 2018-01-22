@@ -60,6 +60,7 @@ import log.Log;
 import shrine.Angel;
 import shrine.Brood;
 import shrine.Luzia;
+import shrine.MoonRuneFinderShrine;
 import shrine.Shrine;
 import shrine.ShrineInfo;
 import util.JDColor;
@@ -729,7 +730,7 @@ public class GraphicObjectRenderer {
 
 	private JDGraphicObject getShrineGraphicObject(ShrineInfo s, int roomOffsetX,
 												   int roomOffsetY) {
-		// TODO: refactor this
+		// TODO: refactor this, we shouldn't need to create new objects here, use RelativeRectangles
 		JDGraphicObject ob = null;
 		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
@@ -897,7 +898,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
+		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA  || s.getShrineClass().equals(MoonRuneFinderShrine.class)) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
 			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
 			int xsize = (int) (roomSize / 3.6);

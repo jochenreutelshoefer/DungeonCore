@@ -6,6 +6,7 @@ import game.JDGUI;
 import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
+import spell.Spell;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -32,4 +33,6 @@ public interface DungeonSession {
 	DungeonCompletionScore getAchievedScoreFor(DungeonFactory dungeonFactory);
 
 	int getTotalScore();
+
+	void learnSkill(Spell spell);
 }

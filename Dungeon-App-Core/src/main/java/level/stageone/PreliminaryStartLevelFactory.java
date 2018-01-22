@@ -1,12 +1,10 @@
 package level.stageone;
 
-import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.util.RouteInstruction;
+import dungeon.generate.DungeonFiller;
 import level.AbstractDungeonFactory;
-import level.DungeonFactory;
 import shrine.LevelExit;
 
 /**

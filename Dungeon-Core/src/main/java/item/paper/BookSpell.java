@@ -73,6 +73,7 @@ public class BookSpell extends Book implements Usable{
 		return book()+": "+theSpell.getName()+"("+theSpell.getLevel()+")";
 	}
 	
+	@Override
 	public boolean canBeUsedBy(Figure f) {
 		Spellbook b = f.getSpellbook();
 		if(b != null) {
@@ -80,8 +81,13 @@ public class BookSpell extends Book implements Usable{
 		}
 		return false;
 	}
-	
-	public boolean use(Figure f,Object target,boolean meta) {
+
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	public boolean use(Figure f, Object target, boolean meta) {
 		List<Spell> theBook = f.getSpellbook().getSpells();
 		String name = theSpell.getName();
 		for(int i = 0; i < theBook.size(); i++) {

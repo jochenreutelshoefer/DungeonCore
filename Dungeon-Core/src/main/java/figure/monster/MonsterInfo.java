@@ -54,7 +54,7 @@ public class MonsterInfo extends FigureInfo {
 		if(m == null) {
 			return null;
 		}
-		return new MonsterInfo(m,map);
+		return new MonsterInfo(m, map);
 	}
 	
 	@Override

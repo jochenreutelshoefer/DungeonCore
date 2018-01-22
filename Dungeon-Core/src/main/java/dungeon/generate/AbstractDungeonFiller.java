@@ -31,7 +31,6 @@ import item.ItemPool;
 import item.Key;
 import item.quest.Rune;
 import shrine.Statue;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.Arith;
 
 public abstract class AbstractDungeonFiller implements DungeonFiller {
@@ -44,7 +43,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	private final List<Key> keyList;
 
-	List<Room> allocatedRooms = new ArrayList<Room>();
+	private List<Room> allocatedRooms = new ArrayList<Room>();
 
 	public AbstractDungeonFiller(Dungeon d, Rune[] runen) {
 		this.d = d;
@@ -52,6 +51,28 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 		this.map = getMap();
 		keyList = Key.generateKeylist();
 
+	}
+
+	@Override
+	public Room getUnallocatedRimRoom(boolean cornerAllowed) {
+		List<Room> candidates = new ArrayList<>();
+		JDPoint size = d.getSize();
+		int firstCol = 0;
+		int lastCol = size.getX() - 1;
+		int firstRow = 0;
+		int lastRow = size.getY() - 1;
+		for (int x = 0; x < size.getX(); x++) {
+			for (int y = 0; y < size.getY(); y++) {
+				if(x == firstCol || x == lastCol || y == firstRow || y == lastRow ) {
+					if(!cornerAllowed && ((x == firstCol && (y == 0 || y == lastRow))|| (x == lastCol && (y == 0 || y == lastRow)))){
+						continue;
+					}
+					candidates.add(d.getRoomNr(x, y));
+				}
+			}
+		}
+
+		return candidates.get((int)(Math.random()* candidates.size()));
 	}
 
 	@Override
@@ -219,7 +240,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 		if (Math.random() * 2 < 1) {
 			int value = (int) (0.3 * Math.sqrt(m.getWorth()));
 			Item i = new HealPotion(value);
-				m.takeItem(i);
+			m.takeItem(i);
 		}
 	}
 
@@ -273,9 +294,5 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 	public Rune[] getRunes() {
 		return runen;
 	}
-
-
-
-
 
 }

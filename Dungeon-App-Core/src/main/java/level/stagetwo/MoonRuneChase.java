@@ -1,52 +1,46 @@
-package level.stageone;
+package level.stagetwo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.Chest;
-import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DeadEndPath;
 import dungeon.generate.DistanceAtLeastConstraint;
-import dungeon.generate.DungeonFiller;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuestWall;
 import dungeon.util.RouteInstruction;
+import figure.FigureInfo;
+import figure.monster.Ogre;
+import figure.monster.Orc;
 import figure.monster.Wolf;
+import item.DustItem;
 import item.HealPotion;
 import item.Item;
+import item.ItemInfo;
 import item.Key;
 import item.VisibilityCheatBall;
 import item.paper.ScrollMagic;
+import item.quest.MoonRune;
 import level.AbstractDungeonFactory;
 import level.generation.SimpleDungeonFiller;
 import shrine.Corpse;
 import shrine.HealthFountain;
 import shrine.LevelExit;
+import shrine.MoonRuneFinderShrine;
 import shrine.RevealMapShrine;
 import shrine.Statue;
 import spell.KeyLocator;
+import spell.Steal;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
- * @created 31.12.17.
+ * @created 22.01.18.
  */
-public class StartLevel extends AbstractDungeonFactory {
-
-	public static final int DUNGEON_SIZE_Y = 5;
-	public static final int DUNGEON_SIZE_X = 5;
-	private static final int FLOOR_INDEX_EXIT = 5;
-	private JDPoint entryPoint;
-
-	@Override
-	public Dungeon createDungeon() {
-		return createStartDungeon();
-	}
-
+public class MoonRuneChase extends AbstractDungeonFactory {
 
 	@Override
 	public String icon() {
@@ -55,20 +49,21 @@ public class StartLevel extends AbstractDungeonFactory {
 
 	@Override
 	public String getName() {
-		return "Level 1";
+		return "Moon Rune Chase";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Einstiegslevel";
+		return "Find the Moon Rune";
 	}
 
 	@Override
 	public int getRoundScoringBaseValue() {
-		return 75;
+		return 100;
 	}
 
-	private Dungeon createStartDungeon() {
+	@Override
+	public Dungeon createDungeon() {
 
 		Dungeon dungeon = null;
 
@@ -81,7 +76,9 @@ public class StartLevel extends AbstractDungeonFactory {
 		while (!accomplished && counter < limit) {
 			counter++;
 
-			dungeon = new Dungeon(DUNGEON_SIZE_X, DUNGEON_SIZE_Y);
+			int dungeonSizeX = 6;
+			int dungeonSizeY = 6;
+			dungeon = new Dungeon(dungeonSizeX, dungeonSizeY);
 			createAllDoors(dungeon);
 			filler = new SimpleDungeonFiller(dungeon, new ArrayList<Key>());
 
@@ -89,34 +86,42 @@ public class StartLevel extends AbstractDungeonFactory {
 			Room entryRoom = dungeon.getRoom(entryPoint);
 			filler.addAllocatedRoom(entryRoom);
 
+			MoonRune rune = new MoonRune();
+			MoonRuneFinderShrine runeFinder = new MoonRuneFinderShrine(rune);
 
 			Room exitRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 3));
 			if (exitRoom == null) continue;
 			filler.addAllocatedRoom(exitRoom);
-			exitRoom.setShrine(new LevelExit());
-			exitRoom.removeAllDoors();
+			exitRoom.setShrine(new LevelExit(rune));
 			entryRoom.setShrine(new RevealMapShrine(exitRoom));
 
-			RouteInstruction.Direction exitNeighbour = filler.getUnallocatedRandomNeighbour(exitRoom);
-			if(exitNeighbour == null) continue;
-			exitRoom.setDoor( new Door(exitRoom, exitNeighbour, exitKey), exitNeighbour, true);
+			Room druidRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
+			druidRoom.setShrine(runeFinder);
+			filler.addAllocatedRoom(druidRoom);
 
-
-			Room wolfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 2));
-			if (wolfRoom == null) continue;
-			wolfRoom.figureEnters(new Wolf(900), RouteInstruction.Direction.North.getValue());
-
+			// statue should be placed (and allocated) before monsters
 			Room statueRoom = filler.getUnallocatedRandomRoom();
 			statueRoom.setShrine(new Statue());
 			filler.addAllocatedRoom(statueRoom);
 
+			Room orcRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
+			if (orcRoom == null) continue;
+			Orc runeRunner = new Orc(1500);
+			orcRoom.figureEnters(runeRunner, RouteInstruction.Direction.North.getValue());
+			runeRunner.takeItem(rune);
+			runeRunner.takeItem(new DustItem(8));
+			runeRunner.setAI(new RuneRunnerAI(FigureInfo.makeFigureInfo(runeRunner, runeRunner.getRoomVisibility()), ItemInfo.makeItemInfo(rune, runeRunner.getRoomVisibility())));
 
-			List<Item> itemsL = new ArrayList<>();
-			itemsL.add(new ScrollMagic(new KeyLocator(1, 0, 0, 0, 0, 0)));
-			Chest entryChest = new Chest(itemsL);
-			entryChest.takeItem(new HealPotion(10));
-			entryChest.takeItem(exitKey); // for reachability checking only, remove and set later
-			entryRoom.setChest(entryChest);
+			Room ogreRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
+			if (ogreRoom == null) continue;
+			Ogre ogre = new Ogre(2000);
+			ogreRoom.figureEnters(ogre, RouteInstruction.Direction.North.getValue());
+
+			Room wolfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
+			if (wolfRoom == null) continue;
+			Wolf wolf = new Wolf(800);
+			wolf.takeItem(new DustItem(4));
+			wolfRoom.figureEnters(wolf, RouteInstruction.Direction.North.getValue());
 
 			// remove some doors
 			//filler.removeDoors(1, entryPoint);
@@ -131,7 +136,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			setupRoomQuests(dungeon, filler, entryRoom, entryPoint, roomQuests);
 
 			// remove some more doors
-			filler.removeDoors(3, entryPoint);
+			filler.removeDoors(6, entryPoint);
 
 			Collection<DeadEndPath> deadEnds = filler.getDeadEndsUnallocated();
 
@@ -142,9 +147,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			Room keyRoom = shortestDeadEndPath.getEndRoom();
 
 			// this is just the trick to allow exit key setting after dungeon thinning out
-			entryChest.removeItem(exitKey);
-
-			Chest keyChest = new Chest(exitKey);
+			Chest keyChest = new Chest(new ScrollMagic(new Steal()));
 			keyRoom.setChest(keyChest);
 			filler.addAllocatedRoom(keyRoom);
 
@@ -186,6 +189,8 @@ public class StartLevel extends AbstractDungeonFactory {
 		}
 
 		return dungeon;
+
 	}
+
 
 }

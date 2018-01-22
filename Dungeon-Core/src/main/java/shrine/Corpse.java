@@ -28,6 +28,7 @@ import item.interfaces.Usable;
 import util.JDColor;
 
 public class Corpse extends Shrine {
+	private final int type;
 	private List<Item> items;
 
 	private final int type_code;
@@ -150,18 +151,19 @@ public class Corpse extends Shrine {
 	}
 
 	@Override
+	public int dustCosts() {
+		return 0;
+	}
+
+	@Override
 	public boolean use(Figure f, Object target, boolean meta) {
 		if (items != null) {
 			String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
 			f.tellPercept(new TextPercept(s));
-			//game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
 			Percept p = new UsePercept(f, this);
 			f.getRoom().distributePercept(p);
 			this.location.addItems(items, null);
 			items = null;
-		}
-		else {
-			//System.out.println("Item ist null!");
 		}
 		return true;
 	}
@@ -171,20 +173,10 @@ public class Corpse extends Shrine {
 
 	}
 
-	/**
-	 * @see Usable#usableOnce()
-	 */
 	@Override
 	public boolean usableOnce() {
 		return false;
 	}
 
-	/**
-	 * @return
-	 *
-	 */
-	public int getType_code() {
-		return type_code;
-	}
 
 }
