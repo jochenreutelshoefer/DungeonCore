@@ -121,7 +121,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 
 			// CHEST TEST
-			List<Item> itemsL = new LinkedList<Item>();
+			List<Item> itemsL = new ArrayList<Item>();
 			Item it1 = ItemPool.getRandomItem(25, 1);
 			Item it2 = ItemPool.getRandomItem(30, 1.5);
 			if (it1 != null) {
