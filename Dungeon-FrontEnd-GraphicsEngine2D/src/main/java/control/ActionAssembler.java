@@ -29,6 +29,7 @@ import event.WannaStepEvent;
 import event.WannaTakeItemEvent;
 import figure.Figure;
 import figure.FigureInfo;
+import figure.RoomObservationStatus;
 import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
@@ -37,6 +38,7 @@ import figure.action.LayDownItemAction;
 import figure.action.LearnSpellAction;
 import figure.action.LockAction;
 import figure.action.ScoutAction;
+import figure.action.ScoutResult;
 import figure.action.ShrineAction;
 import figure.action.SkillUpAction;
 import figure.action.SpellAction;
@@ -59,6 +61,8 @@ public class ActionAssembler implements EventListener {
 	private JDGUIEngine2D gui;
 	private boolean useWithTarget = false;
 	private boolean spellMeta = false;
+	private Action lastAction;
+	private int repeatActionCounter;
 
 	public ActionAssembler(JDGUIEngine2D gui) {
 		this.gui = gui;
@@ -521,9 +525,7 @@ public class ActionAssembler implements EventListener {
 	}
 
 	public void wannaEndRound() {
-
 		plugAction(new EndRoundAction());
-
 	}
 
 	public void wannaChangeExpCode(int i) {
@@ -533,6 +535,12 @@ public class ActionAssembler implements EventListener {
 	}
 
 	private void plugAction(Action a) {
+		if(lastAction == a) {
+			repeatActionCounter++;
+		} else {
+			repeatActionCounter = 0;
+		}
+		lastAction = a;
 		gui.plugAction(a);
 	}
 
@@ -580,5 +588,17 @@ public class ActionAssembler implements EventListener {
 		if (event instanceof ActionEvent) {
 			plugAction(((ActionEvent) event).getAction());
 		}
+	}
+
+	public void triggerPlannedActions() {
+			if(lastAction instanceof ScoutAction) {
+				int direction = ((ScoutAction) lastAction).getDirection();
+				RoomInfo scoutedRoom = this.getFigure().getRoomInfo().getNeighbourRoom(direction);
+				if(scoutedRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
+					if(repeatActionCounter < 10) {
+						plugAction(lastAction);
+					}
+				}
+			}
 	}
 }

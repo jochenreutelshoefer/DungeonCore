@@ -93,10 +93,9 @@ import de.jdungeon.util.Pair;
 
 public class GameScreen extends StandardScreen implements EventListener, PerceptHandler {
 
-	public static final int SCALE_ROOM_FIGHT_MODE = 200;
-	public static final int SCALE_ROOM_DEFAULT = 180;
+	public static final int SCALE_ROOM_FIGHT_MODE = 180;
+	public static final int SCALE_ROOM_DEFAULT = 160;
 	private final Dungeon derDungeon;
-	//private Hero hero = null;
 	private HeroInfo figureInfo;
 
 	private GraphicObjectRenderer dungeonRenderer;
@@ -144,7 +143,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private boolean worldHasChanged = true;
 	private FocusManager focusManager;
 	private ItemWheel itemWheelHeroItems;
-	private final ActionAssembler actionAssembler;
 
 	public long counterCreatingRoomDrawingObjects = 0;
 	public long counterReusingRoomDrawingObjects = 0;
@@ -159,8 +157,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		gui.setFigure(figureInfo);
 		this.gui = gui;
 		hero.setControl(gui);
-		actionAssembler = new ActionAssembler(gui);
-		control = new Control(figureInfo, actionAssembler);
+
+		control = new Control(figureInfo, gui.getActionAssembler());
 
 		/*
 	 * init text messages panel
@@ -249,7 +247,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		SmartControl smartControl = new SmartControl(
 				new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2),
 				new JDDimension(smartControlSize, smartControlSize), this, this
-				.getGame(), figureInfo, actionAssembler);
+				.getGame(), figureInfo, gui.getActionAssembler());
 		this.guiElements.add(smartControl);
 
 		/*

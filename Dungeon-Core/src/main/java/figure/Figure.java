@@ -582,7 +582,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 		this.getRoomVisibility().resetTemporalVisibilities();
 
-		setActionPoints(2);
+		setActionPoints(1);
 
 		if (this.getActionPoints() > 0 && !isDead()) {
 			doActions(i);
@@ -2229,7 +2229,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (passable) {
 			before = this.getRoom();
 			Door door = before.getDoor(dir);
-			Position destPos = door.getPositionAtDoor(toGo, true);
+			Position destPos = door.getPositionAtDoor(toGo, false);
 			Figure standing = destPos.getFigure();
 			if (standing == null) {
 				// the position is free so walk right in

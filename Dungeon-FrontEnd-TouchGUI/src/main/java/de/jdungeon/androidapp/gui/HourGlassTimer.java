@@ -1,25 +1,34 @@
 package de.jdungeon.androidapp.gui;
 
 import event.EventManager;
+import game.DungeonGame;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
+import de.jdungeon.util.PaintBuilder;
+
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
 
 public class HourGlassTimer extends AbstractGUIElement {
 
 	private final HeroInfo hero;
+	private final PaintBuilder paint;
 
 	public HourGlassTimer(JDPoint position, JDDimension dimension, StandardScreen screen, HeroInfo hero, Game game) {
 		super(position, dimension, screen, game);
 		this.hero = hero;
+		paint = new PaintBuilder();
+		paint.setFontSize(14);
+		paint.setColor(Colors.WHITE);
+
 	}
 
 	@Override
@@ -54,6 +63,8 @@ public class HourGlassTimer extends AbstractGUIElement {
 				.getPositionOnScreen().getY(), this.getDimension().getWidth(),
 				this.getDimension().getHeight(), 0, 0, image.getWidth(), image
 						.getHeight());
+			g.drawString(""+DungeonGame.getInstance().getRound(),this.position.getX(), this
+					.getPositionOnScreen().getY(), paint);
 		}
 	}
 

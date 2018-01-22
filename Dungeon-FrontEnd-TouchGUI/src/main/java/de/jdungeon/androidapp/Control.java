@@ -74,8 +74,6 @@ public class Control implements EventListener {
 	// TODO: refactor: make target RoomEntity
 	public void inventoryItemClicked(ItemInfo item, Paragraphable target) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-
-
 		actionAssembler.wannaUseItem(item, target, false);
 	}
 
@@ -148,22 +146,6 @@ public class Control implements EventListener {
 		actionAssembler.wannaEndRound();
 	}
 
-	public InfoEntity getUniqueTargetEntity(
-			Class<? extends InfoEntity> targetClass) {
-		if (targetClass.equals(FigureInfo.class)) {
-			List<FigureInfo> figureInfos = figure.getRoomInfo()
-					.getFigureInfos();
-			if (figureInfos.size() == 2) {
-				// remove player
-				figureInfos.remove(figure);
-				// enemy remains
-				return figureInfos.get(0);
-			}
-		}
-
-		return null;
-
-	}
 
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {

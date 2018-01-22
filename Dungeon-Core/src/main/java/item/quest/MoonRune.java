@@ -36,7 +36,7 @@ public class MoonRune extends Item implements Usable, Locatable {
 	public boolean use(Figure f, Object target, boolean meta) {
 		if(!f.canPayDust(COST)) return false;
 		f.payDust(COST);
-		f.heal(10);
+		f.heal(15);
 		return true;
 	}
 

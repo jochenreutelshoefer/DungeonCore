@@ -91,11 +91,6 @@ public class DarkMaster extends Monster {
 
 	public void turn(int j) {
 
-		//if (Math.random() < 0.5) {
-		//	return;
-		//}
-
-		//room self = getGame().getDungeon().getRoom(location);
 		int i = 0;
 		if (routing.empty()) {
 			getHeroRouteInstruction();
@@ -121,12 +116,6 @@ public class DarkMaster extends Monster {
 				direction = true;
 
 			}
-			//if(getMissionIndex() == monster.MISSION_DARK_MASTER) {
-
-			//System.out.println(Mclass + " " + name + " " + "turns...."+ri.toString());
-			//System.out.println("Richtung: "+i);
-			//
-			//}
 
 			boolean marched = walk(RouteInstruction.Direction.fromInteger(i));
 			if (!marched) {
@@ -137,19 +126,6 @@ public class DarkMaster extends Monster {
 			}
 
 		}
-
-		//		//int dir = getGame().getDungeon().getFirstStepFromTo(self,heroRoom);
-		//		if (wayToHero == null || wayToHero.size() == 0) {
-		//
-		//			wayToHero =
-		//				getGame().getDungeon().findShortestWayFromTo(self, heroRoom);
-		//			wayToHero.remove(0);
-		//		}
-		//		printRoomList(wayToHero);
-		//		int dir = self.getConnectionDirectionTo(((room) wayToHero.get(0)));
-		//		wayToHero.remove(0);
-		//		//System.out.println("Master turn in Richtung: " + dir);
-
 	}
 	
 	protected int getHEALTH_DAMAGE_BALANCE() {

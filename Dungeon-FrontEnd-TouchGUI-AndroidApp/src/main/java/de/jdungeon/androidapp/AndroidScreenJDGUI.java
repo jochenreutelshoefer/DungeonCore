@@ -37,9 +37,11 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	private FigureInfo figure;
 
 	private PerceptHandler perceptHandler;
+	private final ActionAssembler actionAssembler;
 
 	public AndroidScreenJDGUI(JDungeonApp app) {
 		this.app = app;
+		actionAssembler = new ActionAssembler(this);
 	}
 
 
@@ -105,6 +107,8 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 		synchronized (actionQueue) {
 			if (!actionQueue.isEmpty()) {
 				return actionQueue.remove(0);
+			} else {
+				actionAssembler.triggerPlannedActions();
 			}
 		}
 		return null;
@@ -149,6 +153,11 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public void setUseWithTarget(boolean b) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public ActionAssembler getActionAssembler() {
+		return actionAssembler;
 	}
 
 	@Override

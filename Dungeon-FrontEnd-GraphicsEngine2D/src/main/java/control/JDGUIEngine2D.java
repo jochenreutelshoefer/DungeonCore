@@ -26,4 +26,6 @@ public interface JDGUIEngine2D extends JDGUI {
 
 	void setUseWithTarget(boolean b);
 
+	ActionAssembler getActionAssembler();
+
 }

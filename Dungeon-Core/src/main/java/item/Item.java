@@ -57,7 +57,7 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 	protected LinkedList modifications = new LinkedList();
 
 	
-	protected String name = "itemname";
+	protected String name = "";
 
 
 
