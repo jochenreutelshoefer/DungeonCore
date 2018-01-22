@@ -24,6 +24,7 @@ public class SurvivorBehaviour extends AbstractAI {
 		super(new AttitudeMonsterDefault());
 		this.figure = figure;
 		defaultAI = new DefaultMonsterIntelligence();
+		defaultAI.setFigure(figure);
 
 	}
 
@@ -42,7 +43,7 @@ public class SurvivorBehaviour extends AbstractAI {
 		if (figure.getHealthLevel() < HealthLevel.Good.getValue()) {
 			return DefaultMonsterIntelligence.getFleeAction(figure);
 		}
-		return defaultAI.chooseMovementAction();
+		return defaultAI.chooseFightAction();
 	}
 
 	@Override
@@ -56,10 +57,10 @@ public class SurvivorBehaviour extends AbstractAI {
 			int diffY = location.getY() - lastHeroPosition.getY();
 			RouteInstruction.Direction dir = null;
 			if(diffX == 1) {
-				 dir = RouteInstruction.Direction.East;
+				 dir = RouteInstruction.Direction.West;
 			}
 			if(diffX == -1) {
-				dir = RouteInstruction.Direction.West;
+				dir = RouteInstruction.Direction.East;
 			}
 			if(diffY == 1) {
 				dir = RouteInstruction.Direction.South;

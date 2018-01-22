@@ -8,8 +8,8 @@ import figure.FigureInfo;
 
 public class DoorSmashPercept extends OpticalPercept {
 	
-	private Figure victim;
-	private int value;
+	private final Figure victim;
+	private final int value;
 	public DoorSmashPercept(Figure f, int value) {
 		this.value = value;
 		this.victim = f;
@@ -22,6 +22,7 @@ public class DoorSmashPercept extends OpticalPercept {
 		return FigureInfo.makeFigureInfo(victim,viewer.getRoomVisibility());
 	}
 
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<FigureInfo>();
 		l.add(getVictim());

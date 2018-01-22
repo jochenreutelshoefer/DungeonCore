@@ -98,7 +98,10 @@ public class LevelExit extends Shrine {
 
 		if(requiredItemMissing(f)) {
 			// some item to be found to exit is not here -> refuse
-			f.getRoomInfo().distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: "+requiredItems.toString()));
+			Room roomInfo = f.getRoomInfo();
+			if(roomInfo != null) {
+				roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: "+requiredItems.toString()));
+			}
 			return false;
 		}
 

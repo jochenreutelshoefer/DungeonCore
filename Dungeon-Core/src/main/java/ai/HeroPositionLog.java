@@ -10,9 +10,12 @@ import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import figure.hero.HeroInfo;
 import figure.percept.FleePercept;
+import figure.percept.HitPercept;
+import figure.percept.MissPercept;
 import figure.percept.MovePercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
+import figure.percept.StepPercept;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -47,6 +50,28 @@ public class HeroPositionLog {
 					int dir = ((FleePercept)element).getDir();
 					RoomInfo r = ((FleePercept)element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
+					lastHeroLocationInfoRound = element.getRound();
+				}
+			}
+			if(element instanceof HitPercept) {
+				if(((HitPercept)element).getAttacker() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					RoomInfo r = ((HitPercept)element).getAttacker().getRoomInfo();
+					this.lastHeroLocation = r.getNumber();
+					lastHeroLocationInfoRound = element.getRound();
+				}
+			}
+			if(element instanceof MissPercept) {
+				if(((MissPercept)element).getAttacker() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					RoomInfo r = ((MissPercept)element).getAttacker().getRoomInfo();
+					this.lastHeroLocation = r.getNumber();
+					lastHeroLocationInfoRound = element.getRound();
+				}
+			}
+			// TODO: refactor
+			if(element instanceof StepPercept) {
+				if(((StepPercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					RoomInfo r = ((StepPercept)element).getFigure().getRoomInfo();
+					this.lastHeroLocation = r.getNumber();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}

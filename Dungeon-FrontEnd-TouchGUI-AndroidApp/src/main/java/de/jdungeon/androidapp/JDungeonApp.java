@@ -12,6 +12,7 @@ import event.EventManager;
 import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
 import figure.hero.Hero;
+import game.DungeonGame;
 import level.DungeonSelectedEvent;
 import level.DungeonStartEvent;
 import org.apache.log4j.Level;

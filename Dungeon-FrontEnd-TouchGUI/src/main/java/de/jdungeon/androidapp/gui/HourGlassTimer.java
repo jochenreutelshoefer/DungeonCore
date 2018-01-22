@@ -1,11 +1,12 @@
 package de.jdungeon.androidapp.gui;
 
+import dungeon.JDPoint;
 import event.EventManager;
+import figure.hero.HeroInfo;
 import game.DungeonGame;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.EndRoundEvent;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
@@ -13,9 +14,6 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.util.PaintBuilder;
-
-import dungeon.JDPoint;
-import figure.hero.HeroInfo;
 
 public class HourGlassTimer extends AbstractGUIElement {
 
@@ -52,19 +50,22 @@ public class HourGlassTimer extends AbstractGUIElement {
 			// image =
 			// GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_THIRD,
 			// screen.getGame());
-		} else if (actionPoints == 1) {
+		}
+		else if (actionPoints == 1) {
 			image = screen.getGuiImageManager().getImage(GUIImageManager.HOUR_GLASS_HALF);
-		} else if (actionPoints == 2) {
+		}
+		else if (actionPoints == 2) {
 			image = screen.getGuiImageManager().getImage(GUIImageManager.HOUR_GLASS_FULL);
 		}
 		if (image != null) {
 
-		g.drawScaledImage(image, this.position.getX(), this
-				.getPositionOnScreen().getY(), this.getDimension().getWidth(),
-				this.getDimension().getHeight(), 0, 0, image.getWidth(), image
-						.getHeight());
-			g.drawString(""+DungeonGame.getInstance().getRound(),this.position.getX(), this
-					.getPositionOnScreen().getY(), paint);
+			g.drawScaledImage(image, this.position.getX(), this
+							.getPositionOnScreen().getY(), this.getDimension().getWidth(),
+					this.getDimension().getHeight(), 0, 0, image.getWidth(), image
+							.getHeight());
+			g.drawString("" + DungeonGame.getInstance().getRound(), this.position.getX() + this.getDimension()
+					.getWidth() / 2, this
+					.getPositionOnScreen().getY() + this.getDimension().getHeight() / 2, paint);
 		}
 	}
 

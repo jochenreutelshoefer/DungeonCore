@@ -315,6 +315,7 @@ public class GameScreenPerceptHandler {
 
 	private void handleDoorSmashPercept(DoorSmashPercept p) {
 		FigureInfo victim = p.getVictim();
+		AudioEffectsManager.playSound(AudioEffectsManager.DOOR_SMASH);
 		newStatement(StatementManager.getStatement(p, figure));
 		if (p.getValue() > 0) {
 			int damage = p.getValue();

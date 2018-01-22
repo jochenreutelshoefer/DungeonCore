@@ -13,6 +13,7 @@ import dungeon.generate.DistanceAtLeastConstraint;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuestWall;
 import dungeon.util.RouteInstruction;
+import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.monster.Ogre;
 import figure.monster.Orc;
@@ -77,7 +78,7 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			counter++;
 
 			int dungeonSizeX = 6;
-			int dungeonSizeY = 6;
+			int dungeonSizeY = 5;
 			dungeon = new Dungeon(dungeonSizeX, dungeonSizeY);
 			createAllDoors(dungeon);
 			filler = new SimpleDungeonFiller(dungeon, new ArrayList<Key>());
@@ -95,7 +96,7 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			exitRoom.setShrine(new LevelExit(rune));
 			entryRoom.setShrine(new RevealMapShrine(exitRoom));
 
-			Room druidRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
+			Room druidRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(exitRoom.getPoint(), 2));
 			druidRoom.setShrine(runeFinder);
 			filler.addAllocatedRoom(druidRoom);
 
@@ -107,21 +108,27 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			Room orcRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
 			if (orcRoom == null) continue;
 			Orc runeRunner = new Orc(1500);
+			// TODO: setAI must (!) be called before figure is set into room! fix this!
+			DungeonVisibilityMap runeRunnerRoomVisibility = runeRunner.createVisibilityMap(dungeon);
+			FigureInfo runnerInfo = FigureInfo.makeFigureInfo(runeRunner, runeRunnerRoomVisibility);
+			runeRunner.setAI(new RuneRunnerAI(runnerInfo, ItemInfo.makeItemInfo(rune, runeRunnerRoomVisibility)));
 			orcRoom.figureEnters(runeRunner, RouteInstruction.Direction.North.getValue());
 			runeRunner.takeItem(rune);
 			runeRunner.takeItem(new DustItem(8));
-			runeRunner.setAI(new RuneRunnerAI(FigureInfo.makeFigureInfo(runeRunner, runeRunner.getRoomVisibility()), ItemInfo.makeItemInfo(rune, runeRunner.getRoomVisibility())));
+			filler.addAllocatedRoom(orcRoom);
 
 			Room ogreRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
 			if (ogreRoom == null) continue;
 			Ogre ogre = new Ogre(2000);
 			ogreRoom.figureEnters(ogre, RouteInstruction.Direction.North.getValue());
+			filler.addAllocatedRoom(ogreRoom);
 
 			Room wolfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
 			if (wolfRoom == null) continue;
 			Wolf wolf = new Wolf(800);
 			wolf.takeItem(new DustItem(4));
 			wolfRoom.figureEnters(wolf, RouteInstruction.Direction.North.getValue());
+			filler.addAllocatedRoom(wolfRoom);
 
 			// remove some doors
 			//filler.removeDoors(1, entryPoint);

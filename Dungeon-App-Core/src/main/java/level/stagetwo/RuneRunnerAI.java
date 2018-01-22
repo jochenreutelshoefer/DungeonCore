@@ -29,6 +29,7 @@ public class RuneRunnerAI extends AbstractAI {
 		this.item = item;
 		survivor = new SurvivorBehaviour(figure);
 		chaser = new ChaserAI();
+		chaser.setFigure(figure);
 
 	}
 

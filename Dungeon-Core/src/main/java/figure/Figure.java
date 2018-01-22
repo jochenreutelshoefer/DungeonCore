@@ -1165,7 +1165,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	private void getDoorSmash(Door d, boolean bigSmash) {
 		int healthBasic = (int) this.getHealth().getBasic();
-		int value = 0;
+		int value;
 		if (bigSmash) {
 			value = healthBasic / 4;
 		}
@@ -1692,7 +1692,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		visibilities.clear();
 	}
 
-	public void createVisibilityMap(Dungeon d) {
+	public DungeonVisibilityMap createVisibilityMap(Dungeon d) {
 
 		DungeonVisibilityMap roomVisibility = visibilities.get(d);
 
@@ -1705,6 +1705,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			visibilities.put(d, roomVisibility);
 
 		}
+		return roomVisibility;
 	}
 
 	public abstract int getTumbleValue(Figure f);

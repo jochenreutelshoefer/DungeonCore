@@ -28,6 +28,7 @@ public class AudioEffectsManager {
 	public static AbstractAudioSet MAGIC_BLING;
 
 	public static AbstractAudioSet TAKE_ITEM;
+	public static AbstractAudioSet DOOR_SMASH;
 
 	// unused
 	public static AbstractAudioSet HIT;
@@ -81,6 +82,7 @@ public class AudioEffectsManager {
 			HIT = create(a, "dang.mp3" );
 			DOOR_CLOSE = create(a, "door-closed.wav" );
 			DOOR_LOCK = create(a,  "door-lock.wav" );
+			DOOR_SMASH = create(a,  "punch_or_whack_-Vladimir-403040765.mp3", "Sharp Punch-SoundBible.com-1947392621.mp3", "Strong_Punch-Mike_Koenig-574430706.mp3" );
 			CHEST_OPEN = create(a,  "Opening Casket-SoundBible.mp3", "Cracking Chest Open-SoundBible" );
 			MONSTER_HURT = create(a, "monster-pain1.wav",
 					"monster-pain5.wav" );

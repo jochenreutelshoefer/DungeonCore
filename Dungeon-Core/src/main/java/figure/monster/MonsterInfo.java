@@ -50,7 +50,7 @@ public class MonsterInfo extends FigureInfo {
 		return monster.getWorth()/100;
 	}
 	
-	public static MonsterInfo makeMonsterInfo(Monster m,DungeonVisibilityMap map) {
+	public static MonsterInfo makeMonsterInfo(Monster m, DungeonVisibilityMap map) {
 		if(m == null) {
 			return null;
 		}
