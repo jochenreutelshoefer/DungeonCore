@@ -18,6 +18,7 @@ import java.util.List;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
@@ -156,7 +157,7 @@ public class Corpse extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if (items != null) {
 			String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
 			f.tellPercept(new TextPercept(s));

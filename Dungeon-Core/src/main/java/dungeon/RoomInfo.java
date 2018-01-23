@@ -16,15 +16,13 @@ import figure.hero.HeroInfo;
 import figure.memory.RoomMemory;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
-import game.InfoEntity;
 import game.JDEnv;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,7 +33,7 @@ import java.util.List;
 import shrine.ShrineInfo;
 import util.JDColor;
 
-public class RoomInfo extends RoomEntity implements ItemInfoOwner {
+public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	private final Room r;
 
@@ -65,14 +63,18 @@ public class RoomInfo extends RoomEntity implements ItemInfoOwner {
 	}
 
 	public DoorInfo getDoor(RouteInstruction.Direction dir) {
-		return new DoorInfo(r.getDoor(dir), map);
+		Door door = r.getDoor(dir);
+		if(door != null) {
+			return new DoorInfo(door, map);
+		}
+		return null;
 	}
 
 	@Deprecated
 	public Boolean hasHero() {
 
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return new Boolean(r.hasHero());
+			return Boolean.valueOf(r.hasHero());
 		}
 		return null;
 

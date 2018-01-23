@@ -9,9 +9,9 @@ import figure.DungeonVisibilityMap;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 14.01.18.
  */
-public abstract class RoomEntity extends InfoEntity {
+public abstract class RoomInfoEntity extends InfoEntity {
 
-	public RoomEntity(DungeonVisibilityMap m) {
+	public RoomInfoEntity(DungeonVisibilityMap m) {
 		super(m);
 	}
 

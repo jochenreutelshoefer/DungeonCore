@@ -2,6 +2,7 @@ package spell.conjuration;
 
 import dungeon.Position;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.other.Lioness;
@@ -27,7 +28,7 @@ public class LionessConjuration extends AbstractSpell {
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean canFire(Figure mage) {
 		Room roomInfo = mage.getRoomInfo();
 		Position[] positions = roomInfo.getPositions();
 		boolean freePositionAvailable = false;
@@ -37,7 +38,7 @@ public class LionessConjuration extends AbstractSpell {
 				break;
 			}
 		}
-		return freePositionAvailable;
+		return freePositionAvailable && super.canFire(mage);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class LionessConjuration extends AbstractSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		Lioness lioness = Lioness.createLioness(600 * level, mage.getRoom()
 				.getDungeon(), FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility()));
 		Room room = mage.getRoom();

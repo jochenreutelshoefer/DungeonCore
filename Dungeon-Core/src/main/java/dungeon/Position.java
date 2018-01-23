@@ -6,6 +6,9 @@
  */
 package dungeon;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
@@ -13,13 +16,13 @@ import figure.FigureInfo;
 import figure.memory.PositionMemory;
 import game.InfoEntity;
 
-public class Position extends DungeonWorldObject {
+public class Position extends DungeonWorldObject implements RoomEntity {
 
-	private Room room;
+	private final Room room;
 
 	private Figure figure;
 
-	private int index;
+	private final int index;
 
 	private Position next;
 
@@ -28,6 +31,11 @@ public class Position extends DungeonWorldObject {
 	public Position(Room r, int index) {
 		this.room = r;
 		this.index = index;
+	}
+
+	@Override
+	public Collection<Position> getInteractionPositions() {
+		return Collections.singletonList(this);
 	}
 
 	public enum Pos {

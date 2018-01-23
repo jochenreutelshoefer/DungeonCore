@@ -12,6 +12,7 @@ package item.paper;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
+import dungeon.RoomEntity;
 import item.Item;
 import item.interfaces.Usable;
 import figure.Figure;
@@ -54,7 +55,7 @@ public class InfoScroll extends Item implements Usable{
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		f.tellPercept(new TextPercept(content));
 		return true;
 	}

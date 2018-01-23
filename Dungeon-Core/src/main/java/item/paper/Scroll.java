@@ -10,12 +10,13 @@ package item.paper;
 
 
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.action.result.ActionResult;
 import game.JDEnv;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
-import item.interfaces.Usable;
 import item.interfaces.UsableWithTarget;
 import spell.AbstractSpell;
 import spell.TargetScope;
@@ -48,9 +49,9 @@ public class Scroll extends Item implements UsableWithTarget {
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		theSpell.setCostsAP(false);
-		ActionResult res = theSpell.fire(f,target,true);
+		ActionResult res = theSpell.fire(f, target,true);
 		if(res.getValue() == ActionResult.VALUE_DONE) {
 			return true;
 		}

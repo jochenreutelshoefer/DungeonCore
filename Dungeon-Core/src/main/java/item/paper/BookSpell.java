@@ -1,4 +1,5 @@
 package item.paper;
+import dungeon.RoomEntity;
 import item.Item;
 import item.interfaces.Usable;
 
@@ -39,14 +40,17 @@ public class BookSpell extends Book implements Usable{
 		
 	}
 	
+	@Override
 	public boolean needsTarget() {
 		return false;
 	}
 	
+	@Override
 	public boolean usableOnce() {
 		return true;
 	}
 	
+	@Override
 	public String getText() {
 		String s = new String();
 		int t = theSpell.getLevel();
@@ -87,7 +91,7 @@ public class BookSpell extends Book implements Usable{
 		return 0;
 	}
 
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		List<Spell> theBook = f.getSpellbook().getSpells();
 		String name = theSpell.getName();
 		for(int i = 0; i < theBook.size(); i++) {

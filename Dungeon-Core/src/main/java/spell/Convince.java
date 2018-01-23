@@ -8,12 +8,14 @@
  */
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.monster.Monster;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
+
 public class Convince extends AbstractTargetSpell implements TargetSpell{
 
 	public static int[][] values = { { 7, 4, 7, 30,1 }, {
@@ -33,12 +35,12 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 	
@@ -61,7 +63,7 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Figure) {
 			return true;
 		}
@@ -93,7 +95,7 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target/*, int l*/) {
+	public void sorcer(Figure mage, RoomEntity target) {
 
 		if(target instanceof Monster) {
 			Monster m = (Monster)target;

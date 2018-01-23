@@ -1,5 +1,7 @@
 package spell;
 
+import dungeon.RoomEntity;
+import game.RoomInfoEntity;
 import item.Item;
 import item.ItemValueComparator;
 
@@ -11,7 +13,6 @@ import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
 
 public class StealOrc extends AbstractTargetSpell implements TargetSpell{
@@ -50,7 +51,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return AbstractSpell.distanceMax(mage,target,2);
 	}
 
@@ -65,7 +66,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if (target instanceof Figure) {
 			return true;
 		}
@@ -73,7 +74,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	private Item selectItem(List<Item> l) {
-		if(l.size() == 0) {
+		if(l.isEmpty()) {
 			return null;
 		}
 		Collections.sort(l, new ItemValueComparator());
@@ -89,7 +90,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		if (target instanceof Figure) {
 			List<Item> l = ((Figure) target).getAllItems();
 			
@@ -123,7 +124,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

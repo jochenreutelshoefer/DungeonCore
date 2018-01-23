@@ -12,6 +12,8 @@ import game.InfoProvider;
 import item.Key;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ import dungeon.util.DungeonUtils;
  * werden. Tueren koennen durch Zaubersprueche eine zeitlang blockiert werden.
  * 
  */
-public class Door implements  InfoProvider, Locatable {
+public class Door implements InfoProvider, Locatable, RoomEntity {
 
 	public static final int NO_DOOR = 0;
 
@@ -101,21 +103,6 @@ public class Door implements  InfoProvider, Locatable {
 		return rooms[0].getLocation();
 	}
 
-	@Override
-	public ItemOwner getOwner() {
-		return null;
-	}
-
-	@Override
-	public void setOwner(ItemOwner o) {
-
-	}
-
-	@Override
-	public void getsRemoved() {
-
-	}
-
 	public void setHidden(boolean isHidden) {
 		difficultyToFind = 150;
 		this.isHidden = isHidden;
@@ -158,13 +145,11 @@ public class Door implements  InfoProvider, Locatable {
 	}
 
 	public Position getPositionAtDoor(Room room, boolean other) {
-		//System.out.println("mageRoom: "+r.toString());
 		int roomTo = 0;
 		if (room.equals(rooms[0])) {
 			roomTo = 1;
 		}
 		Room otherRoom = rooms[roomTo];
-		//System.out.println("otherRoom: "+otherRoom.toString());
 		int dir = DungeonUtils.getNeighbourDirectionFromTo(room, otherRoom)
 				.getValue();
 		if(other) {
@@ -354,4 +339,11 @@ public class Door implements  InfoProvider, Locatable {
 		return blockings;
 	}
 
+	@Override
+	public Collection<Position> getInteractionPositions() {
+		Collection<Position> result = new HashSet<>();
+		result.add(getPositionAtDoor(rooms[0]));
+		result.add(getPositionAtDoor(rooms[1]));
+		return result;
+	}
 }

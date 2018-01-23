@@ -77,7 +77,7 @@ public class RoomQuest_2x2_1 extends RoomQuest {
 				itemsL.add(it2);
 			}
 		}
-		Chest ch2 = new Chest(itemsL, k.getType());
+		Chest ch2 = new Chest(itemsL, k);
 
 		rooms[1][1].setChest(ch2);
 		rooms[1][0].setChest(ch1);

@@ -10,15 +10,13 @@ import java.util.HashSet;
 
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import item.interfaces.*;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
-import figure.memory.ItemMemory;
 import figure.memory.MemoryObject;
 import game.InfoEntity;
 import gui.Paragraph;
-import gui.Paragraphable;
 import spell.TargetScope;
 
 /**
@@ -26,7 +24,7 @@ import spell.TargetScope;
  * Diese Klasse bietet alle Informationen ueber einen Gegenstand
  * 
  */
-public class ItemInfo extends RoomEntity {
+public class ItemInfo extends RoomInfoEntity {
 	
 	protected Item it;
 	

@@ -1,5 +1,6 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.hero.Hero;
 import game.JDEnv;
@@ -14,7 +15,7 @@ public class Prayer extends NoTargetSpell {
 	private final boolean isPossibleNormal;
 	private boolean isPossibleInFight;
 	
-	private static String suffix = "prayer";
+	private static final String suffix = "prayer";
 	
 	public Prayer()
 	{
@@ -43,12 +44,6 @@ public class Prayer extends NoTargetSpell {
 	@Override
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
-	}
-
-	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		
-		return mage instanceof Hero;
 	}
 
 	@Override

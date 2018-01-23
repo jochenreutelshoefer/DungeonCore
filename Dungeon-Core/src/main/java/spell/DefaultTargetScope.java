@@ -9,7 +9,7 @@ import dungeon.LockInfo;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
 import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -32,7 +32,7 @@ public class DefaultTargetScope implements TargetScope {
 	}
 
 	@Override
-	public List<? extends RoomEntity> getTargetEntitiesInScope(FigureInfo actor) {
+	public List<? extends RoomInfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
 		if(targetClass.equals(FigureInfo.class)) {
 			RoomInfo roomInfo = actor.getRoomInfo();
 			List<FigureInfo> figureInfos = roomInfo.getFigureInfos();

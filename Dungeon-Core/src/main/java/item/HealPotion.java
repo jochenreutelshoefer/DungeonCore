@@ -1,4 +1,5 @@
 package item;
+import dungeon.RoomEntity;
 import item.interfaces.Usable;
 import figure.Figure;
 import figure.attribute.Attribute;
@@ -26,4 +27,6 @@ public class HealPotion extends AttrPotion implements Usable{
 	public int dustCosts() {
 		return 0;
 	}
+
+
 }

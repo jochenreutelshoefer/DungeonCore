@@ -9,6 +9,7 @@
 
 package shrine;
 
+import dungeon.RoomEntity;
 import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
@@ -91,7 +92,7 @@ public class HealthFountain extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		Attribute h = f.getHealth();
 		double act = h.getValue();
 		double max = h.getBasic();

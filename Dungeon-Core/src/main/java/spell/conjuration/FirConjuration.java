@@ -1,5 +1,7 @@
 package spell.conjuration;
 
+import dungeon.RoomEntity;
+import game.RoomInfoEntity;
 import spell.AbstractSpell;
 import spell.AbstractTargetSpell;
 import spell.TargetSpell;
@@ -19,7 +21,7 @@ public class FirConjuration extends AbstractTargetSpell {
 	}
 	
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
 	}
 
@@ -34,7 +36,7 @@ public class FirConjuration extends AbstractTargetSpell {
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Position) {
 			if(((Position)target).getFigure() == null) {
 				return true;
@@ -54,7 +56,7 @@ public class FirConjuration extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 				Fir fir = new Fir(500 * level, mage.getRoom().getDungeon());
 				Room room = mage.getRoom();
 				int pos = ((Position)target).getIndex();
@@ -62,7 +64,7 @@ public class FirConjuration extends AbstractTargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return PositionInRoomInfo.class;
 	}
 

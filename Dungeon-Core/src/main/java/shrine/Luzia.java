@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import fight.Slap;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
@@ -8,6 +9,7 @@ import figure.percept.Percept;
 import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
+import game.RoomInfoEntity;
 import item.Item;
 import item.ItemInfo;
 import item.ItemPool;
@@ -341,7 +343,7 @@ public class Luzia extends Shrine implements ItemOwner {
 		 * @see usable#use(fighter)
 		 */
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 
 		if (solved || dead) {
 			String s = JDEnv.getString("shrine_luzia_done");

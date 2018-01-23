@@ -25,6 +25,7 @@ import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import dungeon.util.DungeonUtils;
 import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
@@ -87,10 +88,9 @@ import figure.percept.TumblingPercept;
 import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 import game.ControlUnit;
-import game.InfoEntity;
 import game.JDEnv;
 import game.JDGUI;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import game.Turnable;
 import gui.Paragraph;
 import gui.Paragraphable;
@@ -119,7 +119,7 @@ import util.JDColor;
  */
 
 public abstract class Figure extends DungeonWorldObject implements ItemOwner,
-		Turnable, VisibilityModifier, Paragraphable, Serializable {
+		Turnable, VisibilityModifier, Paragraphable, Serializable, RoomEntity {
 
 	public static final int STATUS_HEALTHY = 4;
 
@@ -1490,7 +1490,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			Item it = this.getItem(info);
 			if (it instanceof Usable) {
 				Usable usable = (Usable) it;
-				RoomEntity target = a.getTarget();
+				RoomInfoEntity target = a.getTarget();
 				InfoUnitUnwrapper unwrapper = this.getRoom().getDungeon().getUnwrapper();
 				if(((Usable) it).needsTarget() && target == null) {
 					return ActionResult.NO_TARGET;
@@ -1502,13 +1502,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 						return ActionResult.POSITION;
 					}
 				}
-				Object t = null;
-				if (target instanceof InfoEntity) {
-					t = unwrapper.unwrappObject((InfoEntity) target);
-				}
 				if (usable.canBeUsedBy(this)) {
 					if (doIt) {
-						boolean used = ((Usable) it).use(this, t, a.isMeta());
+						boolean used = ((Usable) it).use(this, this.getActualDungeon().getUnwrapper().unwrappObject(target), a.isMeta());
 						this.payActionPoint();
 						Percept p = new UsePercept(this, (Usable) it);
 						getRoom().distributePercept(p);
@@ -2368,12 +2364,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			}
 
 			if (canPayActionPoints(1)) {
-				Object target = null;
-				if (a.getTarget() != null) {
-					target = getRoom().getDungeon().getUnwrapper().unwrappObject((InfoEntity) a.getTarget());
-				}
-				lastSpell = sp;
-				return sp.fire(this, target, doIt);
+				return sp.fire(this, this.getActualDungeon().getUnwrapper().unwrappObject(a.getTarget()), doIt);
 
 			}
 			return ActionResult.NOAP;
@@ -2420,7 +2411,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			if (doIt) {
 
 				if (s.canBeUsedBy(this)) {
-					s.use(this, a.getTarget(), a.isMeta());
+					s.use(this, this.getActualDungeon().getUnwrapper().unwrappObject(a.getTarget()), a.isMeta());
 					return ActionResult.DONE;
 				}
 				return ActionResult.OTHER;

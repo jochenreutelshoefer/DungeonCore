@@ -1,5 +1,6 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 
 /**
@@ -8,12 +9,12 @@ import figure.Figure;
  */
 public abstract class AbstractTargetSpell extends AbstractSpell implements TargetSpell {
 
-	public AbstractTargetSpell(){
+	public AbstractTargetSpell() {
 		super();
 	}
 
 	public AbstractTargetSpell(int level, int diffMin, int diff, int cost, int strength, int learnCost) {
-		super(level, diffMin, diff, cost, strength,learnCost);
+		super(level, diffMin, diff, cost, strength, learnCost);
 	}
 
 	public AbstractTargetSpell(int level, int[] values) {
@@ -26,7 +27,8 @@ public abstract class AbstractTargetSpell extends AbstractSpell implements Targe
 	}
 
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
-		return true;
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
+		return target.getInteractionPositions().contains(mage.getPos());
 	}
+
 }

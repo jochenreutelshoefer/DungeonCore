@@ -5,6 +5,7 @@ import java.util.List;
 
 import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import game.ControlUnit;
@@ -70,7 +71,7 @@ public class RevealMapShrine extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		boolean revealedSomething = false;
 		for (Room revealedRoom : revealedRooms) {
 			int discoveryStatus = f.getRoomVisibility().getDiscoveryStatus(revealedRoom.getNumber());

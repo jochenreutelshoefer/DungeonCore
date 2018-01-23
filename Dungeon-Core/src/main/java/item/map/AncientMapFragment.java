@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dungeon.JDPoint;
+import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.RoomObservationStatus;
@@ -46,7 +47,7 @@ public class AncientMapFragment extends Item implements Usable {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		DungeonVisibilityMap roomVisibility = f.getRoomVisibility();
 		for (JDPoint room : rooms) {
 			int discoveryStatus = roomVisibility.getDiscoveryStatus(room);

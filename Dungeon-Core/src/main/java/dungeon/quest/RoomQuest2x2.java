@@ -132,7 +132,7 @@ public class RoomQuest2x2 extends ReversibleRoomQuest {
 			}
 		}
 
-		Chest ch2 = new Chest(itemsL, k.getType());
+		Chest ch2 = new Chest(itemsL, k);
 
 		//rooms[1][1].setChest(ch2);
 		actions.add(new SetChestAction(ch2, rooms[1][1]));

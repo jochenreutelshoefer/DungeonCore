@@ -12,11 +12,12 @@ import dungeon.JDPoint;
 import dungeon.LockInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 
@@ -47,7 +48,7 @@ public class InfoUnitUnwrapper {
 		return result;
 	}
 
-	public Object unwrappObject(InfoEntity o) {
+	public RoomEntity unwrappObject(InfoEntity o) {
 		if (o instanceof ItemInfo) {
 			InfoEntity info = ((ItemInfo) o).getOwner();
 			ItemOwner owner = (ItemOwner) unwrappObject(info);
@@ -61,14 +62,13 @@ public class InfoUnitUnwrapper {
 			return getDoor((DoorInfo) o);
 		}
 		if (o instanceof LockInfo) {
-			RoomEntity lockedObject = ((LockInfo) o).getLockedObject();
+			RoomInfoEntity lockedObject = ((LockInfo) o).getLockedObject();
 			if(lockedObject instanceof DoorInfo) {
 				return ((Door)unwrappObject(lockedObject)).getLock();
 			}
 			if(lockedObject instanceof ChestInfo) {
 				return ((Chest)unwrappObject(lockedObject)).getLock();
 			}
-			return lockedObject;
 		}
 		if (o instanceof FigureInfo) {
 			return this.getFighter(((FigureInfo) o).getFighterID());

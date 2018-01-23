@@ -1,14 +1,18 @@
 package item;
 
+import dungeon.Position;
+import dungeon.RoomEntity;
 import item.equipment.Armor;
 import item.equipment.Helmet;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
+import item.interfaces.LocatableItem;
 import item.quest.Rune;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +41,7 @@ import gui.Paragraphable;
  * je nach Nuetzlichkeit, Seltenheit, Eigenschaften etc.
  *
  */
-public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Locatable, Serializable {
+public abstract class Item implements ModifierI, Paragraphable, InfoProvider, LocatableItem, Serializable, RoomEntity {
 
 	public static final int ITEM_KEY_UNDEFINDED = -1;
 	public static final int ITEM_KEY_ATTRPOTION = 1;
@@ -140,14 +144,22 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 		return val;
 		
 	}
-	
+
+	@Override
+	public Collection<Position> getInteractionPositions() {
+		if(owner != null) {
+			return owner.getInteractionPositions();
+		}
+		return null;
+	}
+
 	public static void notifyItem(Item i, ItemOwner newOwner ) {
 		if (i instanceof Rune) {
 			int k = 0;
 			k++;
 		}
-		if(i instanceof Locatable) {
-			((Locatable)i).setOwner(newOwner);	
+		if(i instanceof LocatableItem) {
+			((LocatableItem)i).setOwner(newOwner);
 		}	
 	}
 	

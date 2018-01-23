@@ -18,12 +18,13 @@ import dungeon.Door;
 import dungeon.Lock;
 import dungeon.LockInfo;
 import dungeon.Position;
+import dungeon.RoomEntity;
 import dungeon.util.InfoUnitUnwrapper;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.attribute.Attribute;
 import game.JDEnv;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import item.interfaces.Locatable;
 import item.interfaces.UsableWithTarget;
 import spell.DefaultTargetScope;
@@ -114,11 +115,11 @@ public class Bunch extends Item implements Serializable, UsableWithTarget {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
-		List<? extends RoomEntity> targetLocks = getTargetScope().getTargetEntitiesInScope(FigureInfo.makeFigureInfo(f, f
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
+		List<? extends RoomInfoEntity> targetLocks = getTargetScope().getTargetEntitiesInScope(FigureInfo.makeFigureInfo(f, f
 				.getRoomVisibility()));
 		if (targetLocks.size() == 1) {
-			RoomEntity lockInfo = targetLocks.iterator().next();
+			RoomInfoEntity lockInfo = targetLocks.iterator().next();
 			Lock lock = (Lock) new InfoUnitUnwrapper(f.getActualDungeon()).unwrappObject(lockInfo);
 			Locatable lockableObject = lock.getLockableObject();
 			if (lockableObject instanceof Door) {

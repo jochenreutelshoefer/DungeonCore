@@ -7,6 +7,7 @@
  */
 package shrine;
 
+import dungeon.RoomEntity;
 import item.Item;
 import item.interfaces.Usable;
 import util.JDColor;
@@ -74,11 +75,8 @@ public class Xmas extends Shrine {
 		return 0;
 	}
 
-	/**
-	 * @see Shrine#clicked(fighter)
-	 */
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if (it != null) {
 			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString(
 					"shrine_xmas_use")));

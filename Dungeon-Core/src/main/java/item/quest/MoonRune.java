@@ -1,5 +1,6 @@
 package item.quest;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import item.Item;
 import item.interfaces.Locatable;
@@ -33,7 +34,7 @@ public class MoonRune extends Item implements Usable, Locatable {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if(!f.canPayDust(COST)) return false;
 		f.payDust(COST);
 		f.heal(15);

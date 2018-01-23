@@ -14,13 +14,12 @@ import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.memory.ShrineMemory;
-import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import util.JDColor;
 import dungeon.JDPoint;
 
-public class ShrineInfo extends RoomEntity {
+public class ShrineInfo extends RoomInfoEntity {
 
 	private final Shrine s;
 

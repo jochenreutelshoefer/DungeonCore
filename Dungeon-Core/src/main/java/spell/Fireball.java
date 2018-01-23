@@ -9,14 +9,15 @@
 
 package spell;
 
+import dungeon.RoomEntity;
 import fight.Slap;
 import fight.SlapResult;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 import util.Arith;
 import dungeon.Position;
 
@@ -26,7 +27,7 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 	public static int[][] VALUES = { { 9, 6, 5, 9, 1 }, { 17, 13, 7, 24, 2 } };
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 
@@ -45,7 +46,7 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
 	}
 	
@@ -53,9 +54,10 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 	public int getType() {
 		return AbstractSpell.SPELL_FIREBALL;
 	}
+
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		if(target instanceof Figure) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
+		if(target instanceof FigureInfo) {
 			return true;
 		}
 		return false;
@@ -93,9 +95,8 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 
-		
 		if (target instanceof Figure) {
 			Figure m = (Figure) target;
 			int tarPos = m.getPositionInRoom();

@@ -2,9 +2,10 @@ package spell;
 
 import dungeon.Door;
 import dungeon.DoorInfo;
+import dungeon.RoomEntity;
 import figure.Figure;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 
 public class EscapeRoute extends AbstractTargetSpell {
 
@@ -47,7 +48,12 @@ public class EscapeRoute extends AbstractTargetSpell {
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
+		return true;
+	}
+
+	@Override
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Door) {
 			return true;
 		}
@@ -55,7 +61,7 @@ public class EscapeRoute extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		if (target instanceof Door) {
 			AbstractSpell.addTimedSpell(new EscapeRouteInstance(this.getStrength(),
 					(Door) target, mage));
@@ -63,7 +69,7 @@ public class EscapeRoute extends AbstractTargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return DoorInfo.class;
 	}
 

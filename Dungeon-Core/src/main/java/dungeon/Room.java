@@ -50,7 +50,7 @@ import util.JDColor;
  * gespeichert.
  */
 public class Room extends DungeonWorldObject implements
-		ItemOwner {
+		ItemOwner, RoomEntity {
 
 	public static final int NO = 0;
 

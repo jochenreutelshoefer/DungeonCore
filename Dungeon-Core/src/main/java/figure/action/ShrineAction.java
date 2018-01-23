@@ -1,14 +1,14 @@
 package figure.action;
 
-
+import game.RoomInfoEntity;
 
 public class ShrineAction extends Action {
 
-	private final Object target;
+	private final RoomInfoEntity target;
 
 	private final boolean meta;
 
-	public ShrineAction(Object target, boolean meta) {
+	public ShrineAction(RoomInfoEntity target, boolean meta) {
 
 		this.target = target;
 		this.meta = meta;
@@ -17,7 +17,7 @@ public class ShrineAction extends Action {
 
 
 
-	public Object getTarget() {
+	public RoomInfoEntity getTarget() {
 		return target;
 	}
 

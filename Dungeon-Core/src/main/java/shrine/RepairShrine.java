@@ -9,6 +9,7 @@
 
 package shrine;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import game.JDEnv;
 import item.Item;
@@ -164,12 +165,8 @@ public boolean needsTarget() {
 		return 0;
 	}
 
-	/**
-	 * @see Usable#use(fighter)
-	 */
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
-
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		return false;
 	}
 

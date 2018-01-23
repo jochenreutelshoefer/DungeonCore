@@ -5,8 +5,7 @@ import event.ActionEvent;
 import event.EventManager;
 import figure.FigureInfo;
 import figure.action.Action;
-import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
@@ -23,7 +22,7 @@ public class PositionElement extends AnimatedSmartControlElement {
 
 	private final Action action;
 	private final Color color;
-	private final RoomEntity clickableObject;
+	private final RoomInfoEntity clickableObject;
 	private final int ballWidth;
 	private final int ballHeight;
 	private final int ballOffsetX;
@@ -31,7 +30,7 @@ public class PositionElement extends AnimatedSmartControlElement {
 	private final int x;
 	private final int y;
 
-	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, Action action, final Color color, RoomEntity clickableObject) {
+	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, Action action, final Color color, RoomInfoEntity clickableObject) {
 		super(position, dimension, parent);
 		this.action = action;
 		this.color = color;

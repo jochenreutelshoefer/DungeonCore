@@ -1,7 +1,9 @@
 package item.quest;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
+import game.RoomInfoEntity;
 import item.Item;
 import item.interfaces.Locatable;
 import item.interfaces.Usable;
@@ -100,7 +102,7 @@ public class Rune extends Item implements Usable, Locatable {
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta){
+	public boolean use(Figure f, RoomEntity target, boolean meta){
 		Shrine s = ((Hero)f).getRoom().getShrine(); 
 		if(s instanceof RuneShrine){
 			if (((RuneShrine) s).takeItem(this)) {

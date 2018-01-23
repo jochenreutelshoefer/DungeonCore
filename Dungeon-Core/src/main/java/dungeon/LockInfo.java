@@ -6,7 +6,7 @@ import java.util.HashSet;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.MemoryObject;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.interfaces.ItemOwner;
@@ -16,7 +16,7 @@ import item.interfaces.Locatable;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 12.01.18.
  */
-public class LockInfo extends RoomEntity implements Paragraphable, Locatable {
+public class LockInfo extends RoomInfoEntity implements Paragraphable, Locatable {
 
 	private final Lock lock;
 	private final DungeonVisibilityMap m;
@@ -27,7 +27,7 @@ public class LockInfo extends RoomEntity implements Paragraphable, Locatable {
 		this.m = m;
 	}
 
-	public RoomEntity getLockedObject() {
+	public RoomInfoEntity getLockedObject() {
 		Locatable lockableObject = lock.getLockableObject();
 		if(lockableObject instanceof Door) {
 			return new DoorInfo(((Door) lockableObject), m);
@@ -50,21 +50,6 @@ public class LockInfo extends RoomEntity implements Paragraphable, Locatable {
 	@Override
 	public Paragraph[] getParagraphs() {
 		return new Paragraph[0];
-	}
-
-	@Override
-	public ItemOwner getOwner() {
-		return null;
-	}
-
-	@Override
-	public void setOwner(ItemOwner o) {
-
-	}
-
-	@Override
-	public void getsRemoved() {
-
 	}
 
 	@Override

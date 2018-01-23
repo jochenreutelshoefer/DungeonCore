@@ -5,9 +5,9 @@ import figure.Figure;
 
 public class EscapeRouteInstance extends TimedSpellInstance {
 
-	private Door d;
-	private int duration;
-	private Figure mage;
+	private final Door d;
+	private final int duration;
+	private final Figure mage;
 	public EscapeRouteInstance(int time, Door d, Figure mage) {
 		this.mage = mage;
 		this.d = d;
@@ -15,11 +15,13 @@ public class EscapeRouteInstance extends TimedSpellInstance {
 		d.setEscapeRoute(mage);
 	}
 	
+	@Override
 	public void stopEffect() {
 		d.unsetEscapeRoute(mage);
 
 	}
 
+	@Override
 	public int getDuration() {
 		
 		return duration;

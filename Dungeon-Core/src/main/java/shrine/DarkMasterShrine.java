@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import item.Item;
 import item.ItemPool;
 import item.quest.DarkMasterKey;
@@ -248,7 +249,7 @@ public boolean needsTarget() {
 		 * @see usable#use(fighter)
 		 */
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		// TODO Auto-generated method stub
 		return false;
 	}

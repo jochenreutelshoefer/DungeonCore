@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import item.DustItem;
 import item.Item;
 import item.ItemPool;
@@ -66,7 +67,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		return false;
 	}
 	

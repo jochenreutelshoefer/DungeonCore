@@ -15,7 +15,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraphable;
 import spell.SpellInfo;
 import spell.TargetScope;
@@ -110,7 +110,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		}
 		Object o = activity.getObject();
 		FocusManager focusManager = screen.getFocusManager();
-		Paragraphable highlightedEntity = focusManager.getWorldFocusObject();
+		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 
 		if (o.equals(ATTACK)) {
 			if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(info.getRoomInfo().getLocation())) {
@@ -195,7 +195,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			SpellInfo spell = ((SpellInfo) o);
 			if (spell.needsTarget()) {
 				TargetScope targetScope = spell.getTargetScope();
-				List<? extends RoomEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(info);
+				List<? extends RoomInfoEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(info);
 				Set<Class<? extends InfoEntity>> classes = getEntityClasses(targetEntitiesInScope);
 				if (highlightedEntity != null && !classes.contains(highlightedEntity.getClass())) {
 					// something completely wrong for this spell is selected by the user in the gui
@@ -224,7 +224,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				else {
 					// no target selected
 					if (targetEntitiesInScope.size() == 1) {
-						RoomEntity targetEntity = targetEntitiesInScope.get(0);
+						RoomInfoEntity targetEntity = targetEntitiesInScope.get(0);
 						focusManager.setWorldFocusObject(targetEntity);
 						screen.getControl().getActionAssembler()
 								.wannaSpell(spell, targetEntity);

@@ -3,6 +3,7 @@ package item.quest;
 import java.util.Iterator;
 import java.util.List;
 
+import dungeon.RoomEntity;
 import shrine.Luzia;
 import shrine.Shrine;
 import dungeon.Room;
@@ -37,7 +38,7 @@ public class LuziaAmulett extends Thing implements Turnable{
 
 	
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if (meta) {
 			if (f.getRoom().getShrine() == this.getSup()) {
 				((Shrine) getSup()).use(f, this, meta);

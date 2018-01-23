@@ -1,5 +1,7 @@
 package spell;
 
+import dungeon.RoomEntity;
+import game.RoomInfoEntity;
 import item.Item;
 
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.List;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
 
 public class Steal extends AbstractTargetSpell {
@@ -26,7 +27,7 @@ public class Steal extends AbstractTargetSpell {
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if (target instanceof Figure) {
 			return true;
 		}
@@ -61,7 +62,7 @@ public class Steal extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 
 		if (target instanceof Figure) {
 			Figure m = (Figure) target;
@@ -77,12 +78,12 @@ public class Steal extends AbstractTargetSpell {
 					best = it;
 				}
 			}
-			if (list.size() > 0) {
+			if (!list.isEmpty()) {
 				m.removeItem(best);
 				mage.takeItem(best);
 				String str = (m.getName()
 						+ JDEnv.getResourceBundle().getString(
-								"spell_steal_cast") + ":" + best.toString());
+								"spell_steal_cast") + ":" + best);
 				mage.tellPercept(new TextPercept(str));
 			}
 
@@ -91,7 +92,7 @@ public class Steal extends AbstractTargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

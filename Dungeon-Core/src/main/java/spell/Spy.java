@@ -12,6 +12,7 @@ package spell;
 import java.util.List;
 
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
@@ -40,11 +41,6 @@ public class Spy extends NoTargetSpell {
 		return this.isPossibleNormal;
 	}
 
-	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-
-		return true;
-	}
 
 	@Override
 	public int getType() {

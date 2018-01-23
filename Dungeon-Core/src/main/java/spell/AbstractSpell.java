@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeon.Position;
+import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.action.result.ActionResult;
@@ -13,6 +14,7 @@ import figure.percept.SpellPercept;
 import figure.percept.TextPercept;
 import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Texts;
 import spell.conjuration.FirConjuration;
@@ -222,10 +224,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	@Override
-	public abstract boolean isApplicable(Figure mage, Object target);
-		
-
-	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[5];
 		p[0] = new Paragraph(getName());
@@ -350,7 +348,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	
 
 	@Override
-	public ActionResult fire(Figure mage, Object target, boolean doIt) {
+	public ActionResult fire(Figure mage, RoomEntity target, boolean doIt) {
 
 		double psy = mage.getPsycho().getValue();
 		/*
@@ -363,19 +361,20 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			return ActionResult.KNOWLEDGE;
 		}
 		*/
-		if (!isApplicable(mage, target)) {
-			String str = JDEnv.getResourceBundle().getString(
-					"spell_wrong_target");
-			mage.tellPercept(new TextPercept(str));
-			if(target == null) {
-				return ActionResult.NO_TARGET;
-			} else {
-				return ActionResult.WRONG_TARGET;
-			}
-		}
+
 		if(this instanceof TargetSpell) {
-			if(!((TargetSpell)this).distanceOkay(mage,target)) {
+			if(!((TargetSpell)this).distanceOkay(mage, target)) {
 				return ActionResult.DISTANCE;
+			}
+			if (!((TargetSpell)this).isApplicable(mage, target)) {
+				String str = JDEnv.getResourceBundle().getString(
+						"spell_wrong_target");
+				mage.tellPercept(new TextPercept(str));
+				if(target == null) {
+					return ActionResult.NO_TARGET;
+				} else {
+					return ActionResult.WRONG_TARGET;
+				}
 			}
 		}
 		
@@ -420,10 +419,10 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	protected int stepsNec = 1;
 	private int stepCnt = 0;
 	
-	protected void sorcerStep(Figure mage, Object target) {
+	protected void sorcerStep(Figure mage, RoomEntity target) {
 		stepCnt++;
 		if(stepCnt == stepsNec) {
-			payAndSorcer(mage,target);
+			payAndSorcer(mage, target);
 		}else {
 			Percept p = new SpellPercept(mage, this,true);
 			mage.getRoom().distributePercept(p);
@@ -435,12 +434,12 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		stepCnt = 0;
 	}
 	
-	private void payAndSorcer(Figure mage, Object target) {
+	private void payAndSorcer(Figure mage, RoomEntity target) {
 		int c = calcCost();
 		mage.getDust().modValue(c * (-1));
 		Percept p = new SpellPercept(mage, this);
 		mage.getRoom().distributePercept(p);
-		sorcer(mage,target);
+		sorcer(mage, target);
 		mage.resetLastSpell();
 		stepCnt = 0;
 	}

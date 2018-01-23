@@ -1,7 +1,9 @@
 package item.quest;
+import game.RoomInfoEntity;
 import item.Item;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
+import item.interfaces.LocatableItem;
 import item.interfaces.Usable;
 import dungeon.*;
 import shrine.Luzia;
@@ -29,7 +31,7 @@ import java.util.List;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class LuziasBall extends Item implements Locatable, Usable{
+public class LuziasBall extends Item implements Usable{
 
 	/**
 	 * @param value
@@ -96,7 +98,7 @@ public class LuziasBall extends Item implements Locatable, Usable{
 		return 0;
 	}
 
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if(questSolved) {
 			//[TODO] leuchtet....
 			//show();
@@ -112,20 +114,13 @@ public class LuziasBall extends Item implements Locatable, Usable{
 		return true;
 	}
 	
+	@Override
 	public boolean usableOnce() {
 		return false;
 	}
 	
 	
 	
-//	public void show() {
-//		
-//		if(questSolved && .hasLuziaBall()) {
-//		if(seesEnemy()) {
-//			game.newStatement("Luzia's Kristallkugel leuchtet rot!",3);
-//		}
-//		}
-//	}
 
 	public boolean seesEnemy() {
 		List<Room> rooms = owner.getRoom().getScoutableNeighbours();
@@ -133,16 +128,14 @@ public class LuziasBall extends Item implements Locatable, Usable{
 		for(int i = 0; i < rooms.size(); i++) {
 			alleMonster.addAll(((Room)(rooms.get(i))).getRoomFigures());
 		}
-		if(alleMonster.size() > 0) {
+		if(!alleMonster.isEmpty()) {
 			return true;
 			
 		}
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see item#getText()
-	 */
+	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
 		return JDEnv.getResourceBundle().getString("luzias_palantir");

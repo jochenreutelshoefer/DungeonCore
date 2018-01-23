@@ -1,6 +1,7 @@
 //import java.util.*;
 package shrine;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.monster.Ghul;
 import figure.monster.Monster;
@@ -139,7 +140,7 @@ public class Brood extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		//
 		return true;
 	}

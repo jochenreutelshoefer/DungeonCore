@@ -32,13 +32,12 @@ import util.JDColor;
  * 
  * 
  */
-public class Chest implements ItemOwner, Paragraphable, InfoProvider {
+public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity {
 
 	private final List<Item> items;
 
-	private String lock = new String("unlockable");
-
-	private boolean locked = true;
+	private Lock lock;
+	private boolean locked = false;
 
 	private int itemPointer = 0;
 
@@ -46,10 +45,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	private Room r;
 
 	public Chest() {
-
 		items = new LinkedList<>();
-		// this.game = game;
-
 	}
 
 	public void setRoom(Room r) {
@@ -65,9 +61,8 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		this.takeItem(i);
 	}
 
-	public Chest(String lock) {
-		items = new LinkedList<>();
-		this.lock = lock;
+	public void setLock(Key k) {
+		this.lock = new Lock(k, this);
 	}
 
 	public Chest(List<Item> list) {
@@ -124,20 +119,12 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return true;
 	}
 
-	public Chest(List<Item> list, String lock) {
+	public Chest(List<Item> list, Key k) {
 		items = new ArrayList<Item>();
 		for (int i = 0; i < list.size(); i++) {
 			this.takeItem(list.get(i));
 		}
-		this.lock = lock;
-	}
-
-	public boolean getLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean b) {
-		locked = b;
+		this.lock = new Lock(k, this);
 	}
 
 	public void setLocation(JDPoint p) {
@@ -145,24 +132,19 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	}
 
 	public boolean hasLock() {
-		if (lock.equals("unlockable")) {
-			return false;
-		}
-		return true;
+		return lock != null;
 	}
 
 	public boolean lock(Key k) {
-		if (k.getType().equals(lock)) {
+		if (lock != null && k.equals(lock.getKey())) {
 			locked = !locked;
-
 			return true;
 		}
 		return false;
 	}
 
 	public void clicked(Figure f, boolean right) {
-
-		if (lock.equals("unlockable")) {
+		if (lock == null) {
 			if (right) {
 				if (!items.isEmpty()) {
 
@@ -183,11 +165,8 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		}
 	}
 
-	public void setLock(String lock) {
-		this.lock = lock;
-	}
 
-	public String getLock() {
+	public Lock getLock() {
 		return lock;
 	}
 

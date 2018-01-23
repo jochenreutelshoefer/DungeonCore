@@ -1,5 +1,7 @@
 package dungeon;
 
+import java.util.Collection;
+
 import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
@@ -8,7 +10,7 @@ import item.interfaces.Locatable;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 12.01.18.
  */
-public class Lock<T extends Locatable> implements Locatable {
+public class Lock<T extends RoomEntity> implements Locatable, RoomEntity {
 
 	public T getLockableObject() {
 		return object;
@@ -31,18 +33,9 @@ public class Lock<T extends Locatable> implements Locatable {
 		return object.getLocation();
 	}
 
-	@Override
-	public ItemOwner getOwner() {
-		return null;
-	}
 
 	@Override
-	public void setOwner(ItemOwner o) {
-
-	}
-
-	@Override
-	public void getsRemoved() {
-
+	public Collection<Position> getInteractionPositions() {
+		return object.getInteractionPositions();
 	}
 }

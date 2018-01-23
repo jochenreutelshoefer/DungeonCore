@@ -2,8 +2,6 @@ package de.jdungeon.androidapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 
 import audio.AudioEffectsManager;
 import control.ActionAssembler;
@@ -16,13 +14,10 @@ import event.EventListener;
 import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
-import game.InfoEntity;
-import game.RoomEntity;
-import gui.Paragraphable;
+import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 import shrine.ShrineInfo;
-import spell.TargetScope;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.event.ClickType;
@@ -71,7 +66,7 @@ public class Control implements EventListener {
 
 	}
 
-	public void inventoryItemClicked(ItemInfo item, RoomEntity target) {
+	public void inventoryItemClicked(ItemInfo item, RoomInfoEntity target) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionAssembler.wannaUseItem(item, target, false);
 	}
@@ -79,7 +74,7 @@ public class Control implements EventListener {
 
 
 	public void itemWheelActivityClicked(ItemWheelActivity item,
-										 RoomEntity target) {
+										 RoomInfoEntity target) {
 		if (item == null) {
 			return;
 		}

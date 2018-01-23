@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import item.interfaces.Usable;
 
 import java.util.Iterator;
@@ -62,7 +63,7 @@ public void metaClick(Figure f){
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		return false;
 	}
 	

@@ -6,13 +6,14 @@ public abstract class TimedSpellInstance implements Turnable{
 	
 public abstract void stopEffect();
 
-	int timer;
+	private int timer;
 	
 	public void expire() {
 		stopEffect();
 		AbstractSpell.removeTimedSpell(this);
 	}
 	
+	@Override
 	public void turn(int k) {
 		timer++;
 		if(timer > getDuration()) {

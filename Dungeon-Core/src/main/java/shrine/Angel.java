@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.percept.TextPercept;
@@ -89,7 +90,7 @@ public class Angel extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if(target instanceof Feather) {
 			ownedItems.add((Feather) target);
 			f.removeItem((Item)target);

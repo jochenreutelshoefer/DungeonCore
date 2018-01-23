@@ -15,11 +15,11 @@ import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.memory.DoorMemory;
 import game.JDEnv;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import util.JDColor;
 
-public class DoorInfo extends RoomEntity {
+public class DoorInfo extends RoomInfoEntity {
 
 	private final Door door;
 

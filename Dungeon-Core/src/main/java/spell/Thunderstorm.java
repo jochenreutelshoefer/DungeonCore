@@ -46,19 +46,6 @@ public class Thunderstorm extends NoTargetSpell {
 		return AbstractSpell.SPELL_THUNDERSTORM;
 	}
 	
-	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		
-		return true;
-	}
-
-//	public boolean fightModus() {
-//		return isPossibleInFight;
-//	}
-//
-//	public boolean normalModus() {
-//		return isPossibleNormal;
-//	}
 
 	@Override
 	public String getText() {
@@ -66,10 +53,6 @@ public class Thunderstorm extends NoTargetSpell {
 				"spell_thunderstorm_text");
 		return s;
 	}
-
-//	public int getLernCost() {
-//		return 2 * level;
-//	}
 
 	public Thunderstorm(int level) {
 
@@ -79,27 +62,7 @@ public class Thunderstorm extends NoTargetSpell {
 		isPossibleInFight = true;
 	}
 
-	/**
-	 * @see AbstractSpell#getDifficulty(int)
-	 */
-//	public int getDifficulty(int level) {
-//		return diff[level - 1];
-//	}
-//
-//	public int getDifficultyMin(int level) {
-//		return diffMin[level - 1];
-//	}
-//
-//	/**
-//	 * @see Spell#getCost(int)
-//	 */
-//	public int getCost(int level) {
-//		return level * 15;
-//	}
 
-	/**
-	 * @see AbstractSpell#fire(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage) {
 		if(mage.getRoom().fightRunning()) {

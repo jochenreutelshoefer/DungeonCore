@@ -12,7 +12,6 @@ import android.util.Log;
 import animation.AnimationManager;
 import animation.DefaultAnimationSet;
 import animation.DefaultAnimationTask;
-import control.ActionAssembler;
 import control.JDGUIEngine2D;
 import dungeon.ChestInfo;
 import dungeon.Dungeon;
@@ -32,12 +31,11 @@ import figure.hero.HeroInfo;
 import figure.percept.Percept;
 import game.InfoEntity;
 import game.PerceptHandler;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
-import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 import text.Statement;
@@ -678,7 +676,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 							control.objectClicked(clickedObject, true);
 						}
 						else {
-							getFocusManager().setWorldFocusObject(((RoomEntity) clickedObject));
+							getFocusManager().setWorldFocusObject(((RoomInfoEntity) clickedObject));
 						}
 					}
 				}
@@ -919,7 +917,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				control.objectClicked(clickedObject, false);
 			}
 			else {
-				focusManager.setWorldFocusObject(((RoomEntity) clickedObject));
+				focusManager.setWorldFocusObject(((RoomInfoEntity) clickedObject));
 			}
 		}
 	}

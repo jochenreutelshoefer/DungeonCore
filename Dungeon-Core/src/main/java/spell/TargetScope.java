@@ -3,8 +3,7 @@ package spell;
 import java.util.List;
 
 import figure.FigureInfo;
-import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -12,6 +11,6 @@ import game.RoomEntity;
  */
 public interface TargetScope {
 
-	List<? extends RoomEntity> getTargetEntitiesInScope(FigureInfo actor);
+	List<? extends RoomInfoEntity> getTargetEntitiesInScope(FigureInfo actor);
 
 }

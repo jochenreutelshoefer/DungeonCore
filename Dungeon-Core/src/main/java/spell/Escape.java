@@ -10,15 +10,13 @@
 
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.action.FleeAction;
 import game.JDEnv;
 
 
 public class Escape extends NoTargetSpell {
-	
-//	public int [] diff = { 3 , 8 };
-//	public int [] diffMin = { 6 , 12};
 	
 	public static int [][] values = { {3,4,5,10,1},
 								{6,12,7,30,1}
@@ -55,16 +53,7 @@ public class Escape extends NoTargetSpell {
 		return s;
 	}
 	
-	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		
-		return true;
-	}
-	
-//	public int getLernCost() {
-//			return 1*level;
-//	}
-	
+
 	public boolean fightModus(){
 		return isPossibleInFight;
 	}
@@ -88,16 +77,11 @@ public class Escape extends NoTargetSpell {
 	}
 
 
-	/**
-	 * @see AbstractSpell#fire(fighter, Object, int)
-	 */
 	@Override
 	public void sorcer(Figure mage) {
-		
 				mage.setEscape(level);
 				mage.incFightAP(1);
 				mage.handleFleeAction(new FleeAction(false),true);
-				
 	}
 
 	@Override

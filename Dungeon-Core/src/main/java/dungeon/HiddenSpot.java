@@ -27,7 +27,7 @@ import util.JDColor;
  * oder mit dem Entdeckenzauberspruch gefunden werden. Es kann Gegenstaende enthalten.
  *
  */
-public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
+public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider, RoomEntity {
 
 	
 	private boolean found = false;
@@ -153,20 +153,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 		
 	}
 	
-	public void clicked(Figure f) {
-		
-//		if(f.isGuiControlled()) {	
-//		ItemChoiceSpotView view = new ItemChoiceSpotView(f.getControl().getGui().getMainFrame(),
-//		"Versteck",
-//		f,
-//		this,
-//		true);
-//		}
-	
-			
-		
-	}
-	
+
 	@Override
 	public boolean removeItem(Item i) {
 		return items.remove(i);	
@@ -192,6 +179,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 	}
 
 	
+	@Override
 	public List<Item> getItems() {
 		return items;
 	}

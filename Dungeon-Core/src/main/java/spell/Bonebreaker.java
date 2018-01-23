@@ -8,6 +8,7 @@
  */
 package spell;
 
+import dungeon.RoomEntity;
 import fight.Slap;
 import fight.SlapResult;
 import figure.Figure;
@@ -15,13 +16,10 @@ import figure.hero.Hero;
 import figure.monster.MonsterInfo;
 import figure.monster.Skeleton;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 
 public class Bonebreaker extends AbstractTargetSpell {
-//	public static int[] diffArray = { 5, 13 };
-//
-//	public static int[] diffMinArray = { 9, 15 };
 
 	public static int[][] values = { { 7, 5, 8, 12, 2 }, { 15, 13, 12, 25, 2 } };
 
@@ -43,7 +41,7 @@ public class Bonebreaker extends AbstractTargetSpell {
 		return this.isPossibleInFight;
 	}
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Figure) {
 			return true;
 		}
@@ -51,7 +49,7 @@ public class Bonebreaker extends AbstractTargetSpell {
 	}
 	
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
 	}
 	
@@ -87,7 +85,7 @@ public class Bonebreaker extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target/*, int l*/) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		
 		if (target instanceof Figure) {
 			Figure m = (Figure)target;
@@ -116,7 +114,7 @@ public class Bonebreaker extends AbstractTargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return MonsterInfo.class;
 	}
 

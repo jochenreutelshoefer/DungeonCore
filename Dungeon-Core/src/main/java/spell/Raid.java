@@ -12,13 +12,13 @@ import java.util.List;
 import dungeon.Door;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
-import game.InfoEntity;
 import game.JDEnv;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 
 /**
  * @author Jochen
@@ -55,7 +55,8 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
+		// TODO: implement
 		return true;
 	}
 
@@ -68,7 +69,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	public TargetScope getTargetScope() {
 		return new TargetScope() {
 			@Override
-			public List<? extends RoomEntity> getTargetEntitiesInScope(FigureInfo actor) {
+			public List<? extends RoomInfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
 				PositionInRoomInfo position = actor.getPos();
 				RouteInstruction.Direction possibleRaidDirection =
 						position.getPossibleFleeDirection();
@@ -121,7 +122,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object o) {
+	public boolean isApplicable(Figure mage, RoomEntity o) {
 		if (o instanceof Figure) {
 			Room targetRoom = ((Figure) o).getRoom();
 			Room mageRoom = mage.getRoom();
@@ -133,7 +134,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 
 		Room targetRoom = ((Figure) target).getRoom();
 		Room mageRoom = mage.getRoom();
@@ -147,7 +148,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

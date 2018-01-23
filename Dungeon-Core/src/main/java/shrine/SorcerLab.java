@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import item.AttrPotion;
 import item.DustItem;
 import item.HealPotion;
@@ -235,7 +236,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 
 		if (!activated) {
 			Attribute dust = ((Hero) f).getDust();

@@ -1,4 +1,5 @@
 package item.paper;
+import dungeon.RoomEntity;
 import item.interfaces.Usable;
 import util.Arith;
 import figure.Figure;
@@ -79,7 +80,7 @@ public class BookAttr extends Book {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		Attribute a = f.getAttribute(attribute);
 		double value = a.getBasic();
 		int add = 0;

@@ -1,16 +1,16 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 import item.Item;
 import item.ItemValueComparator;
 import item.equipment.weapon.Weapon;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Rust extends AbstractTargetSpell {
@@ -58,7 +58,12 @@ public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
+		return true;
+	}
+
+	@Override
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Hero) {
 			return true;
 		}
@@ -66,14 +71,12 @@ public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object op) {
+	public void sorcer(Figure mage, RoomEntity op) {
 		if(op instanceof Hero) {
-			List<Item> l = new LinkedList<Item>();
-			if (op instanceof Hero) {
-				l = ((Hero) op).getInventory().getWeaponList();
-			}
+			List<Item> l;
+			l = ((Hero) op).getInventory().getWeaponList();
 			Collections.sort(l, new ItemValueComparator());
-			if (l.size() > 0) {
+			if (!l.isEmpty()) {
 				Weapon weap = ((Weapon) l.get(0));
 				weap.takeRelDamage(0.25);
 			}
@@ -82,7 +85,7 @@ public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

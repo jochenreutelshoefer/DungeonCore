@@ -8,6 +8,7 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
+import item.interfaces.LocatableItem;
 import item.quest.DarkMasterKey;
 
 import java.util.Iterator;
@@ -805,8 +806,8 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public boolean removeItem(Item i) {
-		if (i instanceof Locatable) {
-			((Locatable) i).getsRemoved();
+		if (i != null) {
+			i.getsRemoved();
 		}
 		return items.remove(i);
 	}
@@ -816,7 +817,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		double l = Math.random();
 		if (l < d) {
 			int hunt = this.hunting();
-			int k = (int) Math.random() * hunt;
+			int k = (int) (Math.random() * hunt);
 			if (k >= 5) {
 				// sofort Verfolgen
 				this.addRouteInstruction(new RouteInstruction(r));

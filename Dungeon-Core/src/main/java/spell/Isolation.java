@@ -18,6 +18,7 @@ import java.util.List;
 
 import dungeon.Door;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.percept.TextPercept;
 import game.JDEnv;
@@ -64,20 +65,7 @@ public class Isolation extends AbstractSpell {
 	}
 	
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		return true;
-	}
-
-	public boolean fightModus(){
-		return true;
-	}
-	
-	public boolean normalModus(){
-		return true;
-	}
-	
-	@Override
-	public void sorcer(Figure sorcerer, Object o) {
+	public void sorcer(Figure sorcerer, RoomEntity o) {
 		Room r = sorcerer.getRoom();
 		Door[] d = r.getDoors();
 		IsolationInstance instance = new IsolationInstance(this.getStrength(),d);

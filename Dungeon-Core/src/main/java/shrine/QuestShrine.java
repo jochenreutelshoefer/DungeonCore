@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.percept.Percept;
@@ -141,11 +142,8 @@ public class QuestShrine extends Shrine {
 		return 0;
 	}
 
-	/**
-	 * @see Usable#use(fighter)
-	 */
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if(f.hasItem(this.requestedItem) && (goodItem != null)) {
 			 Percept p = new UsePercept(f,this);
 				f.getRoom().distributePercept(p);

@@ -13,11 +13,10 @@ import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.MemoryObject;
-import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 
-public class PositionInRoomInfo extends RoomEntity {
+public class PositionInRoomInfo extends RoomInfoEntity {
 	
 	private final Position pos;
 

@@ -8,6 +8,7 @@
  */
 package shrine;
 
+import dungeon.RoomEntity;
 import item.interfaces.Usable;
 import util.JDColor;
 import dungeon.Room;
@@ -89,17 +90,11 @@ public class InfoShrine extends Shrine {
 		return 0;
 	}
 
-	/**
-	 * @see Usable#use(fighter)
-	 */
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		return true;
 	}
 
-	/**
-	 * @see Usable#usableOnce()
-	 */
 	@Override
 	public boolean usableOnce() {
 		return false;

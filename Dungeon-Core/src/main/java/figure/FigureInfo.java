@@ -31,7 +31,7 @@ import figure.memory.FigureMemory;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.DungeonGame;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
@@ -43,7 +43,7 @@ import spell.SpellInfo;
  * Abstrakte Klasse - Soll fuer eine Steuerung die Informationen einer Figur
  * liefern.
  */
-public abstract class FigureInfo extends RoomEntity implements ItemInfoOwner {
+public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	private final Figure f;
 

@@ -6,12 +6,4 @@ public interface Locatable {
 
 	JDPoint getLocation();
 
-	ItemOwner getOwner();
-
-	
-	void setOwner(ItemOwner o);
-
-	
-	void getsRemoved();
-
 }

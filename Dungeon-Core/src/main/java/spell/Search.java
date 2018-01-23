@@ -8,6 +8,8 @@
  */
 package spell;
 
+import dungeon.RoomEntity;
+import game.RoomInfoEntity;
 import item.Item;
 
 import java.util.List;
@@ -15,7 +17,6 @@ import java.util.List;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
 
 
@@ -51,9 +52,14 @@ public class Search extends AbstractTargetSpell {
 	public boolean isPossibleNormal() {
 		return this.isPossibleNormal;
 	}
-	
+
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
+		return true;
+	}
+
+	@Override
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Figure) {
 			return true;
 		}
@@ -62,8 +68,7 @@ public class Search extends AbstractTargetSpell {
 	
 	@Override
 	public String getText() {
-			String s = JDEnv.getResourceBundle().getString("spell_search_text");
-			return s;
+		return JDEnv.getResourceBundle().getString("spell_search_text");
 		}
 	
 	public Search() {
@@ -79,7 +84,7 @@ public class Search extends AbstractTargetSpell {
 
 	}
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		
 		if(target instanceof Figure) {
 			Figure m = (Figure)target;
@@ -101,7 +106,7 @@ public class Search extends AbstractTargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

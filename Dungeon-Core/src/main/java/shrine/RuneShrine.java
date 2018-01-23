@@ -1,5 +1,6 @@
 package shrine;
 
+import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.hero.Hero;
@@ -183,7 +184,7 @@ public void metaClick(Figure f) {
 	}
 
 	@Override
-	public boolean use(Figure f,Object target,boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if(r != null) {
 			this.location.addItem(r);
 			r = null;

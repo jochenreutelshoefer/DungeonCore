@@ -1,5 +1,6 @@
 package item;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.attribute.TimedAttributeModification;
@@ -64,7 +65,7 @@ public class AttrPotion extends Item implements Usable {
 	}
 
 	@Override
-	public boolean use(Figure h,Object target,boolean meta) {
+	public boolean use(Figure h, RoomEntity target, boolean meta) {
 		//Hero held = (Hero) h;
 		h.tellPercept(new TextPercept(Texts.getPoitionDrinkString(a)));
 

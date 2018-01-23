@@ -1,6 +1,7 @@
 package shrine;
 
 import dungeon.JDPoint;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
@@ -63,7 +64,7 @@ public class MoonRuneFinderShrine extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if(!f.canPayDust(COST)) return false;
 
 		f.payDust(COST);

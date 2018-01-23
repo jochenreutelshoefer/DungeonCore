@@ -9,8 +9,7 @@ package dungeon;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.ChestMemory;
-import game.InfoEntity;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
@@ -21,7 +20,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class ChestInfo extends RoomEntity {
+public class ChestInfo extends RoomInfoEntity {
 	
 	private final Chest chest;
 	

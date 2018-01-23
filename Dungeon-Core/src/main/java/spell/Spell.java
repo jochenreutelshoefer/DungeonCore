@@ -1,7 +1,9 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.action.result.ActionResult;
+import game.RoomInfoEntity;
 import gui.Paragraph;
 
 /**
@@ -10,10 +12,10 @@ import gui.Paragraph;
  */
 public interface Spell {
 
-	boolean isApplicable(Figure mage, Object target);
 
-	void sorcer(Figure mage, Object target);
+	void sorcer(Figure mage, RoomEntity target);
 
+	ActionResult fire(Figure figure, RoomEntity target, boolean doIt);
 
 	String getName();
 
@@ -35,8 +37,6 @@ public interface Spell {
 	int getCost();
 
 	Paragraph[] getParagraphs();
-
-	ActionResult fire(Figure figure, Object target, boolean doIt);
 
 	void resetSpell();
 }

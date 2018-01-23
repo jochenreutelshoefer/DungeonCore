@@ -9,7 +9,6 @@ package control;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import dungeon.ChestInfo;
@@ -18,6 +17,7 @@ import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
+import dungeon.RoomEntity;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import event.ActionEvent;
@@ -38,7 +38,6 @@ import figure.action.LayDownItemAction;
 import figure.action.LearnSpellAction;
 import figure.action.LockAction;
 import figure.action.ScoutAction;
-import figure.action.ScoutResult;
 import figure.action.ShrineAction;
 import figure.action.SkillUpAction;
 import figure.action.SpellAction;
@@ -47,9 +46,8 @@ import figure.action.TakeItemAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.hero.HeroInfo;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import item.ItemInfo;
-import item.quest.LuziasBall;
 import shrine.ShrineInfo;
 import spell.SpellInfo;
 import spell.TargetScope;
@@ -101,8 +99,8 @@ public class ActionAssembler implements EventListener {
 		PositionInRoomInfo positionAtDoor = d.getPositionAtDoor(this.getFigure().getRoomInfo(), false);
 		if(! getFigure().getPos().equals(positionAtDoor)) {
 			// we need to step towards the door first
-			wannaStepToPosition(positionAtDoor);
-			if (getFigure().getActionPoints() < 1) {
+			boolean stepAction = wannaStepToPosition(positionAtDoor);
+			if (stepAction &&(!getFigure().getRoomInfo().fightRunning())) {
 				plugAction(new EndRoundAction());
 			}
 		}
@@ -156,12 +154,12 @@ public class ActionAssembler implements EventListener {
 		}
 	}
 
-	public void wannaSpell(SpellInfo sp, Object target) {
+	public void wannaSpell(SpellInfo sp, RoomInfoEntity target) {
 		Action a = new SpellAction(sp, target);
 		plugAction(a);
 	}
 
-	public void wannaUseItem(ItemInfo it, RoomEntity target, boolean meta) {
+	public void wannaUseItem(ItemInfo it, RoomInfoEntity target, boolean meta) {
 		if (target == null && it.needsTarget()) {
 			target = findAndStepTowardsTarget(it);
 		}
@@ -170,18 +168,18 @@ public class ActionAssembler implements EventListener {
 		plugAction(a);
 	}
 
-	private RoomEntity findAndStepTowardsTarget(ItemInfo item) {
-		RoomEntity target = null;
+	private RoomInfoEntity findAndStepTowardsTarget(ItemInfo item) {
+		RoomInfoEntity target = null;
 		if (item.isUsableWithTarget()) {
 			TargetScope targetScope = item.getTargetScope();
-			List<? extends RoomEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(this.getFigure());
+			List<? extends RoomInfoEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(this.getFigure());
 			if (targetEntitiesInScope.size() == 1) {
 				// there is only one possibility
 				target = targetEntitiesInScope.get(0);
 			}
 		}
 		if (target != null) {
-			Collection<PositionInRoomInfo> interactionPositions = ((RoomEntity) target).getInteractionPositions();
+			Collection<PositionInRoomInfo> interactionPositions = target.getInteractionPositions();
 			if (!interactionPositions.isEmpty()) {
 				PositionInRoomInfo currentPos = getFigure().getPos();
 				if (!interactionPositions.contains(currentPos)) {
@@ -211,7 +209,7 @@ public class ActionAssembler implements EventListener {
 		return target;
 	}
 
-	public void wannaUseShrine(Object target, boolean right) {
+	public void wannaUseShrine(RoomInfoEntity target, boolean right) {
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
 			wannaStepToPosition(Position.Pos.NE);
 		}
@@ -454,25 +452,23 @@ public class ActionAssembler implements EventListener {
 		}
 	}
 
-	public void wannaStepToPosition(Position.Pos pos) {
-		wannaStepToPosition(gui.getFigure().getRoomInfo().getPositionInRoom(pos.getValue()));
+	public boolean wannaStepToPosition(Position.Pos pos) {
+		return wannaStepToPosition(gui.getFigure().getRoomInfo().getPositionInRoom(pos.getValue()));
 	}
 
-	public void wannaStepToPosition(PositionInRoomInfo pos) {
-		wannaStepToPosition(pos, false);
+	public boolean  wannaStepToPosition(PositionInRoomInfo pos) {
+		return wannaStepToPosition(pos, false);
 	}
 
-	public void wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
+	public boolean wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
 
-		FigureInfo f = getFigure();
-		Action a = null;
-
-		a = new StepAction(pos.getIndex());
+		Action a = new StepAction(pos.getIndex());
 		if (unanimated) {
 			a.setUnanimated();
 		}
-
 		plugAction(a);
+		return true;
+
 
 	}
 
@@ -480,7 +476,7 @@ public class ActionAssembler implements EventListener {
 		plugAction(new SkillUpAction(key));
 	}
 
-	public void doorClicked(Object o, boolean right) {
+	public void doorClicked(RoomInfoEntity o, boolean right) {
 		DoorInfo d = ((DoorInfo) o);
 		if (spellMeta) {
 			SpellInfo sp = gui.getSelectedSpellInfo();

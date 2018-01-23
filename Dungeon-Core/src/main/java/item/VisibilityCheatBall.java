@@ -3,6 +3,7 @@ package item;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import item.interfaces.Usable;
@@ -26,7 +27,7 @@ public class VisibilityCheatBall extends Thing implements Usable {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		Dungeon dungeon = f.getActualDungeon();
 
 		for(int x = 0; x < dungeon.getSize().getX(); x++) {

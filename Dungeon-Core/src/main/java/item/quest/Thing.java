@@ -4,9 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import dungeon.Room;
+import dungeon.RoomEntity;
 import item.Item;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
+import item.interfaces.LocatableItem;
 import item.interfaces.Usable;
 import shrine.Shrine;
 import figure.Figure;
@@ -21,7 +23,7 @@ import figure.monster.Monster;
  * Window>Preferences>Java>Templates. To enable and disable the creation of type
  * comments go to Window>Preferences>Java>Code Generation.
  */
-public class Thing extends Item implements Usable, Locatable {
+public class Thing extends Item implements Usable, LocatableItem {
 
 	private final Object sup;
 
@@ -97,7 +99,7 @@ public class Thing extends Item implements Usable, Locatable {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		if (f instanceof Hero) {
 			if (f.getRoom().getShrine() == this.sup) {
 				((Shrine) sup).use(f, this, meta);

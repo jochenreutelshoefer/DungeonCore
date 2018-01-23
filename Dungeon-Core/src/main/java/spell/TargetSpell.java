@@ -1,13 +1,16 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
-import game.InfoEntity;
+import game.RoomInfoEntity;
 
 public interface TargetSpell extends Spell {
 	
-	boolean distanceOkay(Figure mage, Object target);
+	boolean distanceOkay(Figure mage, RoomEntity target);
 
-	Class<? extends InfoEntity> getTargetClass();
+	boolean isApplicable(Figure mage, RoomEntity target);
+
+	Class<? extends RoomInfoEntity> getTargetClass();
 
 	TargetScope getTargetScope();
 

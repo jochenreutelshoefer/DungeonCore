@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import dungeon.Room;
+import dungeon.RoomEntity;
 import event.EventManager;
 import event.ExitUsedEvent;
 import figure.Figure;
@@ -88,7 +89,7 @@ public class LevelExit extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, Object target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		// TODO: factor out text
 		if(requiredFigureMissing()) {
 			// some figure to be escorted to exit is not here -> refuse

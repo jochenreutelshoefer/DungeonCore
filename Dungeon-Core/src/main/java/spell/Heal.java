@@ -1,4 +1,5 @@
 package spell;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.percept.TextPercept;
 import game.JDEnv;
@@ -42,12 +43,6 @@ public class Heal extends NoTargetSpell {
 		this.cost = 6;
 	}
 
-	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		
-		return true;
-	}
-	
 	@Override
 	public int getType() {
 		return AbstractSpell.SPELL_HEAL;

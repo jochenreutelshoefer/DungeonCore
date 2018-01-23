@@ -2,9 +2,7 @@ package graphics;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +28,7 @@ import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
 import game.JDGUI;
-import game.RoomEntity;
+import game.RoomInfoEntity;
 import graphics.util.DrawingRectangle;
 import graphics.util.RelativeRectangle;
 import graphics.util.RoomSize;
@@ -133,7 +131,7 @@ public class GraphicObjectRenderer {
 	private RelativeRectangle shrineRect;
 	private JDPoint spotPosition;
 
-	private final Map<RoomEntity, GraphicObject> graphicObjectCache = new HashMap<>();
+	private final Map<RoomInfoEntity, GraphicObject> graphicObjectCache = new HashMap<>();
 	private RelativeRectangle roomBlackBackGroundRect;
 	private GraphicObject roomUndiscovered;
 	private RelativeRectangle roomRect;

@@ -1,9 +1,10 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.FigureInfo;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 
 public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
@@ -30,7 +31,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
 	
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
 	}
 	
@@ -46,8 +47,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
 	
 	@Override
-	public void sorcer(Figure f, Object target) {
-		
+	public void sorcer(Figure f, RoomEntity target) {
 		((Figure)target).setCobwebbed(this.level * this.getStrength());
 	}
 	
@@ -67,7 +67,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	@Override
-	public boolean isApplicable(Figure f, Object target) {
+	public boolean isApplicable(Figure f, RoomEntity target) {
 		if(target instanceof Figure) {
 			return true;
 		}
@@ -81,7 +81,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

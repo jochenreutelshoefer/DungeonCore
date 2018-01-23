@@ -1,9 +1,11 @@
 package spell;
 
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.FigureInfo;
 import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 
 public class TripleAttack extends AbstractTargetSpell {
 
@@ -51,7 +53,7 @@ public static int[][] values = { { 1, 1, 10, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if(target instanceof Figure) {
 			return true;
 		}
@@ -59,7 +61,7 @@ public static int[][] values = { { 1, 1, 10, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		if(target instanceof Figure) {
 			mage.attack((Figure)target);
 			mage.attack((Figure)target);
@@ -68,7 +70,7 @@ public static int[][] values = { { 1, 1, 10, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;
 	}
 

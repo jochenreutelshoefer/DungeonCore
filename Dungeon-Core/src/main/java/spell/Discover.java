@@ -9,6 +9,7 @@ package spell;
 import dungeon.Door;
 import dungeon.HiddenSpot;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.percept.TextPercept;
 import game.JDEnv;
@@ -45,10 +46,6 @@ public class Discover extends NoTargetSpell {
 		return this.isPossibleNormal;
 	}
 
-	@Override
-	public boolean isApplicable(Figure mage, Object target) {
-		return true;
-	}
 
 	public Discover(int level) {
 		super(level, values[level - 1]);

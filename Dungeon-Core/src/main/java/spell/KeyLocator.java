@@ -4,11 +4,12 @@ import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Lock;
 import dungeon.LockInfo;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
+import game.RoomInfoEntity;
 import item.interfaces.ItemOwner;
 
 /**
@@ -34,7 +35,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public boolean distanceOkay(Figure mage, Object target) {
+	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
 	}
 
@@ -67,7 +68,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public boolean isApplicable(Figure mage, Object target) {
+	public boolean isApplicable(Figure mage, RoomEntity target) {
 		if (target instanceof Door || target instanceof Lock) {
 			return true;
 		}
@@ -88,7 +89,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, Object target) {
+	public void sorcer(Figure mage, RoomEntity target) {
 		if (target instanceof Door) {
 			Door d = ((Door) target);
 			if (d.hasLock()) {
@@ -112,7 +113,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public Class<? extends InfoEntity> getTargetClass() {
+	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return LockInfo.class;
 	}
 
