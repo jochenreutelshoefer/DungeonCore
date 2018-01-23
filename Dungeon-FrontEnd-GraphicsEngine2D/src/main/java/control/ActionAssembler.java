@@ -596,7 +596,7 @@ public class ActionAssembler implements EventListener {
 			if(lastAction instanceof ScoutAction) {
 				int direction = ((ScoutAction) lastAction).getDirection();
 				RoomInfo scoutedRoom = this.getFigure().getRoomInfo().getNeighbourRoom(direction);
-				if(scoutedRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
+				if((scoutedRoom != null) && scoutedRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
 					if(!getFigure().getRoomInfo().fightRunning() && repeatActionCounter < 10) {
 						plugAction(lastAction);
 					}

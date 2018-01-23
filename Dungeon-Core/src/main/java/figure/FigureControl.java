@@ -91,9 +91,6 @@ public class FigureControl implements ControlUnit {
 		perceptList.add(p);
 	}
 
-	public List<Percept> getPerceptList() {
-		return perceptList;
-	}
 
 	private void delay() {
 		try {

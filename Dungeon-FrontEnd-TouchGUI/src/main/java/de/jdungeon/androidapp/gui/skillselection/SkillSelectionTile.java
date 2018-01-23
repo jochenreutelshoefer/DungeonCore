@@ -41,7 +41,7 @@ public class SkillSelectionTile extends AbstractGUIElement {
 
 		textPaint = new PaintBuilder();
 		textPaint.setColor(ColorConverter.getColor(JDColor.black));
-		textPaint.setFontSize(12);
+		textPaint.setFontSize(18);
 
 		imageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 
@@ -74,7 +74,7 @@ public class SkillSelectionTile extends AbstractGUIElement {
 		Image skillImage = imageManager.getImage(new SpellInfo(skill, null));
 		int iconSizeInternal = (int)(iconSize * 0.8);
 		g.drawScaledImage(skillImage, iconPosX + ((iconSize-iconSizeInternal)/2), iconPosY + ((iconSize-iconSizeInternal)/2), iconSizeInternal, iconSizeInternal, 0, 0, skillImage.getWidth(), skillImage.getHeight());
-		g.drawString(skill.getName(), iconPosX + iconSize/2, position.getY() +50, headerPaint);
-		g.drawString(skill.getText(), iconPosX + iconSize/2, iconPosY+iconSize +30, textPaint);
+		g.drawString(skill.getName(), iconPosX + iconSize/2, position.getY() + 50, headerPaint);
+		g.drawString(skill.getText(), iconPosX + iconSize/2, iconPosY+iconSize + 30, dimension.getWidth()/2, textPaint);
 	}
 }

@@ -329,8 +329,8 @@ public class ItemWheel extends AbstractGUIElement {
 		g.drawLine(xLeft, posY, xLeft, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY + stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
-		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getPaintWhite());
-		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getPaintWhite());
+		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getTextPaintWhite());
+		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getTextPaintWhite());
 
 
 		for (int i = 0; i < points.length; i++) {

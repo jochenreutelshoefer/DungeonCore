@@ -50,7 +50,7 @@ public class GameOverView extends AbstractGUIElement {
 		red.setColor(Colors.RED);
 		red.setFontSize(20);
 		g.drawString("Game Over", this.position.getX() + 100,
-				textStartRow - 10, g.getPaintBlack());
+				textStartRow - 10, g.getTextPaintBlack());
 
 				/*
 

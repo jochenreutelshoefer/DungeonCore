@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import dungeon.JDPoint;
 import dungeon.Room;
 
 /**
@@ -54,6 +55,23 @@ public class DeadEndPath {
 		List<DeadEndPath> sortList = new ArrayList<>(paths);
 		Collections.sort(sortList, comparator);
 		return sortList.get(0);
+	}
+
+	public static DeadEndPath getDeadEndPathFarestTo(Collection<DeadEndPath> paths, final JDPoint other) {
+		return getFirstDeadEndPath(paths, new Comparator<DeadEndPath>(){
+			@Override
+			public int compare(DeadEndPath o1, DeadEndPath o2) {
+				return Integer.compare(JDPoint.getAbsMaxDistXY(o2.getEndRoom().getPoint(), other), JDPoint.getAbsMaxDistXY(o1.getEndRoom().getPoint(), other));
+			}
+		});
+	}
+	public static DeadEndPath getDeadEndPathNearestTo(Collection<DeadEndPath> paths, final JDPoint other) {
+		return getFirstDeadEndPath(paths, new Comparator<DeadEndPath>(){
+			@Override
+			public int compare(DeadEndPath o1, DeadEndPath o2) {
+				return Integer.compare(JDPoint.getAbsMaxDistXY(o1.getEndRoom().getPoint(), other), JDPoint.getAbsMaxDistXY(o2.getEndRoom().getPoint(), other));
+			}
+		});
 	}
 
 

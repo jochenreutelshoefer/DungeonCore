@@ -109,7 +109,7 @@ public class TextPerceptView extends AbstractGUIElement {
 			if (yCoord < -lineHeight) {
 				break;
 			}
-			g.drawString(textPercept.getText(), this.position.getX() + 6, yCoord, g.getPaintGray());
+			g.drawString(textPercept.getText(), this.position.getX() + 6, yCoord, g.getTextPaintGray());
 			yOffset += lineHeight;
 
 		}

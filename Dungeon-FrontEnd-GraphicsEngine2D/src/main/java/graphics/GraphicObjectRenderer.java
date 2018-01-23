@@ -732,7 +732,7 @@ public class GraphicObjectRenderer {
 												   int roomOffsetY) {
 		// TODO: refactor this, we shouldn't need to create new objects here, use RelativeRectangles
 		JDGraphicObject ob = null;
-		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
+		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN|| s.getShrineClass().equals(MoonRuneFinderShrine.class)) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
 			int ypos = roomOffsetY + (1 * ROOMSIZE_BY_16);
 			int xsize = ROOMSIZE_BY_3;
@@ -898,7 +898,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA  || s.getShrineClass().equals(MoonRuneFinderShrine.class)) {
+		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA  ) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
 			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
 			int xsize = (int) (roomSize / 3.6);

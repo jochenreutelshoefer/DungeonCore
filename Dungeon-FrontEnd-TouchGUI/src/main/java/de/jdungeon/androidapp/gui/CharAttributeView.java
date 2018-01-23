@@ -49,7 +49,7 @@ public class CharAttributeView extends SlidingGUIElement {
 		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
 
 		g.drawString("Punkte: " + info.getTotalExp(), this.getCurrentX() + 15,
-				position.getY() + 25, g.getPaintBlack());
+				position.getY() + 25, g.getTextPaintBlack());
 
 		/*
 		 * TODO: refactor attributes to enum
@@ -104,7 +104,7 @@ public class CharAttributeView extends SlidingGUIElement {
 		if (i == 0) {
 			text = texts.get(i) + ": " + info.getName();
 		}
-		g.drawString(text, textStartX, textStartRow + i * lineHeight, g.getPaintBlack());
+		g.drawString(text, textStartX, textStartRow + i * lineHeight, g.getTextPaintBlack());
 
 	}
 

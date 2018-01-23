@@ -137,7 +137,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			Collection<DeadEndPath> deadEnds = filler.getDeadEndsUnallocated();
 
 			// key room
-			DeadEndPath shortestDeadEndPath = DeadEndPath.getShortestDeadEndPath(deadEnds);
+			DeadEndPath shortestDeadEndPath = DeadEndPath.getDeadEndPathFarestTo(deadEnds, entryPoint);
 			if (shortestDeadEndPath == null) continue;
 			deadEnds.remove(shortestDeadEndPath);
 			Room keyRoom = shortestDeadEndPath.getEndRoom();

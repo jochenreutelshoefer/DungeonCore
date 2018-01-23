@@ -99,14 +99,13 @@ public class InfoPanel extends SlidingGUIElement {
 					paintBuilder.setColor(ColorConverter.getColor(paragraph.getColor()));
 					paintBuilder.setAlignment(de.jdungeon.game.Paint.Alignment.CENTER);
 					paintBuilder.setFontSize(13);
-					// paragraph.getFont();
 					String text = paragraph.getText();
 					if(text == null) {
 						text = "null";
 					}
 					g.drawString(text,
 								x + (this.dimension.getWidth() / 2),
-								position.getY() + posCounterY, g.createPaint(paintBuilder));
+								position.getY() + posCounterY, g.createTextPaint(paintBuilder));
 					posCounterY += 30;
 				}
 			}
