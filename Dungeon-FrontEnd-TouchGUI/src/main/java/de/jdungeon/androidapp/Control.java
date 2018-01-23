@@ -71,8 +71,7 @@ public class Control implements EventListener {
 
 	}
 
-	// TODO: refactor: make target RoomEntity
-	public void inventoryItemClicked(ItemInfo item, Paragraphable target) {
+	public void inventoryItemClicked(ItemInfo item, RoomEntity target) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionAssembler.wannaUseItem(item, target, false);
 	}
@@ -80,7 +79,7 @@ public class Control implements EventListener {
 
 
 	public void itemWheelActivityClicked(ItemWheelActivity item,
-										 Paragraphable target) {
+										 RoomEntity target) {
 		if (item == null) {
 			return;
 		}

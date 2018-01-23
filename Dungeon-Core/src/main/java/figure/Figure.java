@@ -1,7 +1,9 @@
 package figure;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +23,7 @@ import dungeon.Dungeon;
 import dungeon.DungeonWorldObject;
 import dungeon.JDPoint;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.util.DungeonUtils;
 import dungeon.util.InfoUnitUnwrapper;
@@ -87,6 +90,7 @@ import game.ControlUnit;
 import game.InfoEntity;
 import game.JDEnv;
 import game.JDGUI;
+import game.RoomEntity;
 import game.Turnable;
 import gui.Paragraph;
 import gui.Paragraphable;
@@ -237,7 +241,16 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	public abstract String getName();
 
-
+	@Override
+	public Collection<Position> getInteractionPositions() {
+		Collection<Position> result = new HashSet<>();
+		Position currentPos = this.getPos();
+		result.add(currentPos.getNext());
+		result.add(currentPos.getLast());
+		// add current pos also, to allow a figure to interact with its own items
+		result.add(currentPos);
+		return result;
+	};
 
 	protected boolean wayPassable(Door d, Room toGo) {
 
@@ -1477,13 +1490,21 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			Item it = this.getItem(info);
 			if (it instanceof Usable) {
 				Usable usable = (Usable) it;
-				Object target = a.getTarget();
+				RoomEntity target = a.getTarget();
+				InfoUnitUnwrapper unwrapper = this.getRoom().getDungeon().getUnwrapper();
 				if(((Usable) it).needsTarget() && target == null) {
 					return ActionResult.NO_TARGET;
 				}
+				if(((Usable)it).needsTarget()) {
+					Collection<PositionInRoomInfo> interactionPositions = target.getInteractionPositions();
+					Collection<Object> positions = unwrapper.unwrappObjects(interactionPositions);
+					if(! positions.contains(this.getPos())) {
+						return ActionResult.POSITION;
+					}
+				}
 				Object t = null;
 				if (target instanceof InfoEntity) {
-					t = this.getRoom().getDungeon().getUnwrapper().unwrappObject((InfoEntity) target);
+					t = unwrapper.unwrappObject((InfoEntity) target);
 				}
 				if (usable.canBeUsedBy(this)) {
 					if (doIt) {
@@ -1783,6 +1804,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			raiding = false;
 			this.half_bonus = true;
 			value += 4;
+			precision *= 2;
 			tumbleFactor = 4;
 			this.tellPercept(new TextPercept(JDEnv.getResourceBundle()
 					.getString("raiding_attack")));

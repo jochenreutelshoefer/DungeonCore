@@ -1,5 +1,8 @@
 package dungeon.util;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import dungeon.Chest;
 import dungeon.ChestInfo;
 import dungeon.Door;
@@ -31,6 +34,17 @@ public class InfoUnitUnwrapper {
 
 	public static Figure getFighter(int index) {
 		return Figure.getFigure(index);
+	}
+
+	public Collection<Object> unwrappObjects(Collection<? extends InfoEntity> entities) {
+		Collection<Object> result = new HashSet<>();
+		for (InfoEntity entity : entities) {
+			Object o = unwrappObject(entity);
+			if(o != null) {
+				result.add(o);
+			}
+		}
+		return result;
 	}
 
 	public Object unwrappObject(InfoEntity o) {

@@ -15,6 +15,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
+import game.RoomEntity;
 import gui.Paragraphable;
 import spell.SpellInfo;
 import spell.TargetScope;
@@ -70,9 +71,9 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		return activityCache;
 	}
 
-	private void updateActivityList(Boolean currentFightstate) {
+	private void updateActivityList(Boolean currentFightState) {
 		activityCache.clear();
-		if (currentFightstate != null && currentFightstate) {
+		if (currentFightState != null && currentFightState) {
 			activityCache.add(attack);
 			activityCache.add(flee);
 		}
@@ -82,10 +83,10 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
-			if (currentFightstate && spell.isFight()) {
+			if (currentFightState && spell.isFight()) {
 				activityCache.add(new ItemWheelActivity(spell));
 			}
-			if (!currentFightstate && spell.isNormal()) {
+			if (!currentFightState && spell.isNormal()) {
 				activityCache.add(new ItemWheelActivity(spell));
 			}
 		}
@@ -194,7 +195,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 			SpellInfo spell = ((SpellInfo) o);
 			if (spell.needsTarget()) {
 				TargetScope targetScope = spell.getTargetScope();
-				List<? extends InfoEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(info);
+				List<? extends RoomEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(info);
 				Set<Class<? extends InfoEntity>> classes = getEntityClasses(targetEntitiesInScope);
 				if (highlightedEntity != null && !classes.contains(highlightedEntity.getClass())) {
 					// something completely wrong for this spell is selected by the user in the gui
@@ -223,7 +224,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 				else {
 					// no target selected
 					if (targetEntitiesInScope.size() == 1) {
-						InfoEntity targetEntity = targetEntitiesInScope.get(0);
+						RoomEntity targetEntity = targetEntitiesInScope.get(0);
 						focusManager.setWorldFocusObject(targetEntity);
 						screen.getControl().getActionAssembler()
 								.wannaSpell(spell, targetEntity);

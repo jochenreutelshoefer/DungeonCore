@@ -14,6 +14,9 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import org.apache.log4j.Logger;
 
 import de.jdungeon.game.Colors;
@@ -32,11 +35,15 @@ public class AndroidGraphics implements Graphics {
 	private final Rect dstRect = new Rect();
 	private final Rect tmpDstRect = new Rect();
 
-	public static android.graphics.Paint defaultPaint;
-	private final android.graphics.Paint smallPaint = new android.graphics.Paint();
+	public static android.text.TextPaint defaultPaint;
+	private final android.text.TextPaint smallPaint = new android.text.TextPaint();
 	private final android.graphics.Paint black = new android.graphics.Paint();
+	private final android.text.TextPaint blackText = new TextPaint();
+	private final android.text.TextPaint whiteText = new TextPaint();
+	private final android.text.TextPaint redText = new TextPaint();
+	private final android.text.TextPaint grayText = new TextPaint();
 	private final android.graphics.Paint gray = new android.graphics.Paint();
-	private android.graphics.Paint labelPaint = new android.graphics.Paint();
+	private android.graphics.Paint labelPaint = new android.text.TextPaint();
 	private Bitmap tmpBitmap;
 	private Canvas tmpCanvas;
 	private int tmpCanvasX;
@@ -45,6 +52,7 @@ public class AndroidGraphics implements Graphics {
 	{
 
 		gray.setColor(Color.LTGRAY);
+		grayText.setColor(Color.LTGRAY);
 
 		labelPaint = new android.graphics.Paint();
 		labelPaint.setTextSize(10);
@@ -54,8 +62,10 @@ public class AndroidGraphics implements Graphics {
 
 		black.setColor(Color.BLACK);
 		black.setTextSize(12);
+		blackText.setColor(Color.BLACK);
+		blackText.setTextSize(12);
 
-		defaultPaint = new android.graphics.Paint();
+		defaultPaint = new android.text.TextPaint();
 		defaultPaint.setTextSize(25);
 		defaultPaint.setTextAlign(android.graphics.Paint.Align.CENTER);
 		defaultPaint.setAntiAlias(true);
@@ -93,13 +103,32 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public Paint getDefaultPaint() {
-		return new AndroidPaint(defaultPaint);
+	public de.jdungeon.game.TextPaint createTextPaint(PaintBuilder builder) {
+		android.text.TextPaint paint = new android.text.TextPaint();
+		paint.setColor(AndroidGraphics.convertColor(builder.getColor()));
+		paint.setTextSize(builder.getFontSize());
+
+		Paint.Alignment alignment = builder.getAlignment();
+		if (alignment == Paint.Alignment.CENTER) {
+			paint.setTextAlign(android.graphics.Paint.Align.CENTER);
+		}
+		if (alignment == Paint.Alignment.LEFT) {
+			paint.setTextAlign(android.graphics.Paint.Align.LEFT);
+		}
+		if (alignment == Paint.Alignment.RIGHT) {
+			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
+		}
+		return new AndroidTextPaint(paint);
 	}
 
 	@Override
-	public Paint getSmallPaint() {
-		return new AndroidPaint(smallPaint);
+	public de.jdungeon.game.TextPaint getDefaultPaint() {
+		return new AndroidTextPaint(defaultPaint);
+	}
+
+	@Override
+	public de.jdungeon.game.TextPaint getSmallPaint() {
+		return new AndroidTextPaint(smallPaint);
 	}
 
 	@Override
@@ -108,9 +137,29 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
+	public de.jdungeon.game.TextPaint getTextPaintWhite() {
+		return new AndroidTextPaint(whiteText);
+	}
+	@Override
+	public de.jdungeon.game.TextPaint getTextPaintRed() {
+		return new AndroidTextPaint(redText);
+	}
+
+	@Override
+	public de.jdungeon.game.TextPaint getTextPaintBlack() {
+		return new AndroidTextPaint(blackText);
+	}
+
+	@Override
+	public de.jdungeon.game.TextPaint getTextPaintGray() {
+		return new AndroidTextPaint(grayText);
+	}
+
+	@Override
 	public Paint getPaintWhite() {
 		return new AndroidPaint(labelPaint);
 	}
+
 
 	@Override
 	public Paint getPaintGray() {
@@ -407,19 +456,64 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public void drawString(String text, int x, int y, Paint paint) {
-		Paint p;
+	public void drawString(String text, int x, int y, de.jdungeon.game.TextPaint paint) {
+		de.jdungeon.game.TextPaint p;
 		if (paint instanceof PaintBuilder) {
-			p = createPaint(((PaintBuilder) paint));
+			p = createTextPaint(((PaintBuilder) paint));
 		}
 		else {
 			p = paint;
 		}
+		TextPaint textPaint = ((AndroidTextPaint) p).getPaint();
 		if (tmpCanvas == null) {
-			canvas.drawText(text, x, y, ((AndroidPaint) p).getPaint());
+			canvas.drawText(text, x, y, textPaint);
 		}
 		else {
-			tmpCanvas.drawText(text, x - tmpCanvasX, y - tmpCanvasY, ((AndroidPaint) p).getPaint());
+			tmpCanvas.drawText(text, x - tmpCanvasX, y - tmpCanvasY, textPaint);
+		}
+	}
+
+	@Override
+	public void drawString(String text, int x, int y, int width, de.jdungeon.game.TextPaint paint) {
+
+		de.jdungeon.game.TextPaint p;
+		if (paint instanceof PaintBuilder) {
+			p = createTextPaint(((PaintBuilder) paint));
+		}
+		else {
+			p = paint;
+		}
+
+
+
+		TextPaint textPaint = ((AndroidTextPaint) p).getPaint();
+
+		Layout.Alignment layoutAlignment = Layout.Alignment.ALIGN_CENTER;
+		if(textPaint.getTextAlign() == android.graphics.Paint.Align.LEFT) {
+			layoutAlignment = Layout.Alignment.ALIGN_NORMAL;
+		}
+		if(textPaint.getTextAlign() == android.graphics.Paint.Align.RIGHT) {
+			layoutAlignment = Layout.Alignment.ALIGN_OPPOSITE;
+		}
+
+		StaticLayout layout = new StaticLayout(text, textPaint, width,
+				layoutAlignment, 1, 1, true);
+
+		if (tmpCanvas == null) {
+			canvas.save();
+			canvas.translate(x, y);
+			layout.draw(canvas);
+			canvas.restore();
+			//canvas.drawText(text, x, y, textPaint);
+		}
+		else {
+
+			tmpCanvas.save();
+			tmpCanvas.translate(x - tmpCanvasX, y - tmpCanvasY);
+			layout.draw(tmpCanvas);
+			tmpCanvas.restore();
+
+			//tmpCanvas.drawText(text, x - tmpCanvasX, y - tmpCanvasY, textPaint);
 		}
 	}
 
@@ -463,6 +557,7 @@ public class AndroidGraphics implements Graphics {
 		drawScaledImage( Image,  x,  y,  width,
 		 height,  srcX,  srcY,  srcWidth,  srcHeight, false);
 	}
+
 
 	@Override
 	public void drawScaledImage(Image Image, int x, int y, int width,

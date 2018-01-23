@@ -29,7 +29,7 @@ public class InfoPercept extends Percept {
 //	public static final int U = 15;
 //	public static final int U = 16;
 	
-	private int code;
+	private final int code;
 	public InfoPercept(int code) {
 		this.code = code;
 	}
@@ -39,6 +39,8 @@ public class InfoPercept extends Percept {
 	public int getCode() {
 		return code;
 	}
+
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		return Collections.emptyList();
 	}

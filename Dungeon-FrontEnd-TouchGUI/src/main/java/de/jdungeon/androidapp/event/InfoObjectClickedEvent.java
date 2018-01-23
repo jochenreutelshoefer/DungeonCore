@@ -2,6 +2,7 @@ package de.jdungeon.androidapp.event;
 
 import event.Event;
 import game.InfoEntity;
+import game.RoomEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -9,13 +10,13 @@ import game.InfoEntity;
  */
 public class InfoObjectClickedEvent extends Event {
 
-	public InfoEntity getClickedEntity() {
+	public RoomEntity getClickedEntity() {
 		return clickedEntity;
 	}
 
-	private final InfoEntity clickedEntity;
+	private final RoomEntity clickedEntity;
 
-	public InfoObjectClickedEvent(InfoEntity clickedEntity) {
+	public InfoObjectClickedEvent(RoomEntity clickedEntity) {
 		this.clickedEntity = clickedEntity;
 	}
 }

@@ -17,32 +17,28 @@ public class Slap {
 	public static final int POISON = 5;
 
 	
-	Figure actor = null;
+	private Figure actor = null;
 
-	Figure target = null;
-	
-	boolean magic = false;
-	
-	private int precision;
+	private final Figure target = null;
 
-	
-	int type;
+	private final int precision;
 
 
-	int valueStandard = 0;
+	private int type;
 
-	int valueMagic = 0;
 
-	int valueFire = 0;
+	private int valueStandard = 0;
 
-	int valueLightning = 0;
+	private int valueMagic = 0;
 
-	int valuePoison = 0;
+	private int valueFire = 0;
 
-	int valueTumble = 0;
+	private int valueLightning = 0;
 
-	
-	//int posIndex = -1;
+	private int valuePoison = 0;
+
+	private int valueTumble = 0;
+
 	
 	public String toString() {
 		String s = "";
@@ -60,8 +56,6 @@ public class Slap {
 		this.valueStandard = value;
 		this.valueTumble = tumble;
 		this.precision = precision;
-
-		
 	}
 	
 	public Slap(Figure attacker, int type, int value, int tumble, int precision) {
@@ -82,41 +76,13 @@ public class Slap {
 		}
 	}
 
-//	public Slap(Figure f, Figure target, int value, int code, int std, int tumble,int posIndex) {
-//		//this.war = war;
-//		type = MIXED;
-//		valueTumble = tumble;
-//		valueStandard = std;
-//		if(code == MAGIC) {
-//			valueMagic = value;
-//		}
-//		else if(code == FIRE) {
-//			valueFire = value;
-//		}
-//		else if(code == LIGHTNING) {
-//			valueLightning = value;
-//		}	
-//		else if(code == this.POISON){
-//			valuePoison = value;
-//		}
-//		magic = true;
-//		this.target = target;
-//		this.actor = f;
-//		this.posIndex = posIndex;
-//	}
-	
-	
-	
-//	public int getPosIndex(){
-//		return posIndex;
-//	}
-
 	/**
 	 * Returns the magic.
 	 * @return boolean
 	 * 
 	 */
 	public boolean isMagic() {
+		boolean magic = false;
 		return magic;
 	}
 

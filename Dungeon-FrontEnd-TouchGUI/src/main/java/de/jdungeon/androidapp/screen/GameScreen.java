@@ -32,6 +32,7 @@ import figure.hero.HeroInfo;
 import figure.percept.Percept;
 import game.InfoEntity;
 import game.PerceptHandler;
+import game.RoomEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.ImageManager;
@@ -677,7 +678,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 							control.objectClicked(clickedObject, true);
 						}
 						else {
-							getFocusManager().setWorldFocusObject(((InfoEntity) clickedObject));
+							getFocusManager().setWorldFocusObject(((RoomEntity) clickedObject));
 						}
 					}
 				}
@@ -918,7 +919,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				control.objectClicked(clickedObject, false);
 			}
 			else {
-				focusManager.setWorldFocusObject(((InfoEntity) clickedObject));
+				focusManager.setWorldFocusObject(((RoomEntity) clickedObject));
 			}
 		}
 	}

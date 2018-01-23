@@ -5,6 +5,12 @@
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package item;
+import java.util.Collection;
+import java.util.HashSet;
+
+import dungeon.Position;
+import dungeon.PositionInRoomInfo;
+import game.RoomEntity;
 import item.interfaces.*;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
@@ -20,7 +26,7 @@ import spell.TargetScope;
  * Diese Klasse bietet alle Informationen ueber einen Gegenstand
  * 
  */
-public class ItemInfo extends InfoEntity {
+public class ItemInfo extends RoomEntity {
 	
 	protected Item it;
 	
@@ -136,4 +142,14 @@ public class ItemInfo extends InfoEntity {
 		return it.getParagraphs();
 	}
 
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		Collection<PositionInRoomInfo> result = new HashSet<>();
+		Collection<Position> interactionPositions =
+				this.it.getOwner().getInteractionPositions();
+		for (Position interactionPosition : interactionPositions) {
+			result.add(new PositionInRoomInfo(interactionPosition, map));
+		}
+		return result;
+	}
 }

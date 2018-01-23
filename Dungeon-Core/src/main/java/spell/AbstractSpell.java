@@ -1,5 +1,10 @@
 package spell;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import dungeon.Position;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.action.result.ActionResult;
@@ -10,14 +15,8 @@ import game.InfoEntity;
 import game.JDEnv;
 import gui.Paragraph;
 import gui.Texts;
-
-import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-
 import spell.conjuration.FirConjuration;
 import util.JDColor;
-import dungeon.Position;
 
 /**
  * Abstrakte Oberklasse aller Zaubersprueche In fire() wird geprueft ob die
@@ -65,7 +64,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static final int SPELL_FIR = 27;
 	public static final int SPELL_LIONESS = 28;
 	
-	public static List<TimedSpellInstance> timedSpells = new LinkedList<TimedSpellInstance>();
+	public static List<TimedSpellInstance> timedSpells = new ArrayList<TimedSpellInstance>();
 	
 	protected int[] valueSet = new int[5];
 
@@ -144,6 +143,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		valueSet = values;
 	}
 
+	@Override
 	public int getLernCost() {
 		return this.getConfigValues()[4];
 	}
@@ -225,6 +225,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public abstract boolean isApplicable(Figure mage, Object target);
 		
 
+	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[5];
 		p[0] = new Paragraph(getName());
@@ -263,26 +264,19 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		return p;
 	}
 
-	// public abstract int getDifficulty();
 
 	public int getDifficultyMin() {
 		return this.getConfigValues()[0];
 	}
 
-//	public boolean fightModus() {
-//		return isPossibleInFight;
-//	}
-//
-//	public boolean normalModus() {
-//		return isPossibleNormal;
-//	}
 
+	@Override
 	public int getCost() {
-		return this.getConfigValues()[2];
+		return this.cost;
 	}
 	
 	public int getStrength() {
-		return this.getConfigValues()[3];
+		return this.strength;
 	}
 
 	public void setCost(int k) {
@@ -299,19 +293,10 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	 * @return int
 	 * 
 	 */
+	@Override
 	public int getLevel() {
 		return level;
 	}
-
-	/**
-	 * Returns the normal.
-	 * 
-	 * @return boolean
-	 * 
-	 */
-//	public boolean isNormal() {
-//		return normalModus();
-//	}
 
 	public void setLevel(int level) {
 		this.level = level;
@@ -337,18 +322,12 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		return true;
 	}
 	
-	public abstract boolean isPossibleNormal();
-	public abstract boolean isPossibleFight();
-	
-	
 	private int calcCost() {
 		int c;
 		if (fixCost == -1) {
 			c = getCost();
-			// System.out.println("getCost(): "+c);
 		} else {
 			c = fixCost;
-			// System.out.println("fix_cost!: "+c);
 		}
 		return c;
 	}
@@ -370,6 +349,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	
 	
 
+	@Override
 	public ActionResult fire(Figure mage, Object target, boolean doIt) {
 
 		double psy = mage.getPsycho().getValue();
@@ -420,9 +400,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 						}
 						return ActionResult.FAILED;
 					}
-					
-					
-
 				}
 				return ActionResult.POSSIBLE;
 
@@ -453,6 +430,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		}
 	}
 	
+	@Override
 	public void resetSpell() {
 		stepCnt = 0;
 	}
@@ -467,19 +445,15 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		stepCnt = 0;
 	}
 
-
-
-
-
-
 	/**
 	 * Returns the difficulty.
 	 * 
 	 * @return int
 	 * 
 	 */
+	@Override
 	public int getDifficulty() {
-		return this.getConfigValues()[1];
+		return this.diff;
 	}
 
 	/**

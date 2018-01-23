@@ -10,16 +10,17 @@ package figure.action;
  * Gegenstand-benutzen-Aktion. Enthaelt den Gegenstand der benutzt werden soll.
  */
 
+import game.RoomEntity;
 import item.ItemInfo;
 
 public class UseItemAction extends Action {
 
 	private ItemInfo it;
 
-	private Object target;
+	private RoomEntity target;
 	private boolean meta;
 
-	public UseItemAction(ItemInfo i, Object target,boolean meta) {
+	public UseItemAction(ItemInfo i, RoomEntity target,boolean meta) {
 
 		it = i;
 		this.target = target;
@@ -40,7 +41,7 @@ public class UseItemAction extends Action {
 		return it;
 	}
 
-	public Object getTarget() {
+	public RoomEntity getTarget() {
 		return target;
 	}
 

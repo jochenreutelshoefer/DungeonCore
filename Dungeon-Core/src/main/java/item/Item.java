@@ -54,7 +54,7 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 	protected boolean unique = false;
 
 	
-	protected LinkedList modifications = new LinkedList();
+	protected List modifications = new LinkedList();
 
 	
 	protected String name = "";
@@ -234,7 +234,7 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 
 	
 	@Override
-	public LinkedList getModifications() {
+	public List getModifications() {
 		return modifications;
 	}
 

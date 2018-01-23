@@ -11,6 +11,7 @@ import game.InfoEntity;
 import game.InfoProvider;
 import item.Key;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,9 +42,9 @@ public class Door implements  InfoProvider, Locatable {
 
 	private final boolean passable = true;
 
-	private final List blockings = new LinkedList();
+	private final List<DoorBlock> blockings = new ArrayList<>();
 
-	private final List escapeRoutes = new LinkedList();
+	private final List<Figure> escapeRoutes = new ArrayList<>();
 	
 	private Lock lock = null;
 
@@ -122,7 +123,6 @@ public class Door implements  InfoProvider, Locatable {
 
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
-		JDPoint point = map.getSuperiorPoint(this);
 		return new DoorInfo(this, map);
 	}
 
@@ -130,7 +130,6 @@ public class Door implements  InfoProvider, Locatable {
 	private boolean statueBlocks;
 
 	public Door(Room r1, Room r2) {
-		// System.out.println("Neue Tuer: "+r1.toString()+" - "+r2.toString());
 		rooms[0] = r1;
 		rooms[1] = r2;
 	}
@@ -299,8 +298,7 @@ public class Door implements  InfoProvider, Locatable {
 				}
 			}
 		//}
-		boolean blocked = blockings.size() > 0;
-		return !locked & !statueBlocks & !blocked;
+		return !locked & !statueBlocks & blockings.isEmpty();
 	}
 
 	public boolean partOfRoomQuest() {

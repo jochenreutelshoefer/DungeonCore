@@ -1,6 +1,7 @@
 package de.jdungeon.androidapp.gui;
 
 import figure.FigureInfo;
+import game.RoomEntity;
 import gui.Paragraphable;
 
 /**
@@ -11,7 +12,7 @@ public class FocusManager {
 
 	private Paragraphable guiFocusObject;
 
-	private Paragraphable worldFocusObject;
+	private RoomEntity worldFocusObject;
 
 	private final InfoPanel infoPanel;
 	private final FigureInfo figure;
@@ -36,14 +37,14 @@ public class FocusManager {
 		return guiFocusObject;
 	}
 
-	public Paragraphable getWorldFocusObject() {
+	public RoomEntity getWorldFocusObject() {
 		if(infoPanel.getContent() == null && worldFocusObject != null) {
 			infoPanel.setContent(worldFocusObject);
 		}
 		return worldFocusObject;
 	}
 
-	public void setWorldFocusObject(Paragraphable object) {
+	public void setWorldFocusObject(RoomEntity object) {
 		if (object == null || object.equals(figure)) {
 			this.infoPanel.setContent(null);
 			this.guiFocusObject = null;

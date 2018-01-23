@@ -8,11 +8,14 @@ package item.interfaces;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
+import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import figure.DungeonVisibilityMap;
 import game.InfoEntity;
 import item.Item;
 import item.ItemInfo;
 
+import java.util.Collection;
 import java.util.List;
 
 import dungeon.JDPoint;
@@ -33,6 +36,8 @@ public interface ItemOwner {
 	boolean hasItem(Item i);
 
 	JDPoint getLocation();
+
+	Collection<Position> getInteractionPositions();
 
 	Room getRoom();
 

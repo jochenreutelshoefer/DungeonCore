@@ -9,7 +9,6 @@ package dungeon;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
@@ -22,11 +21,14 @@ import util.JDColor;
 
 public class DoorInfo extends RoomEntity {
 
-	private final Door d;
+	private final Door door;
 
-	public DoorInfo(Door door, DungeonVisibilityMap m) {
+	public DoorInfo(Door d, DungeonVisibilityMap m) {
 		super(m);
-		d = door;
+		if(d == null) {
+			throw new IllegalArgumentException("object for info object may not be null!");
+		}
+		door = d;
 	}
 
 	private boolean getShrineVisibility() {
@@ -38,9 +40,9 @@ public class DoorInfo extends RoomEntity {
 	@Override
 	public Collection<PositionInRoomInfo> getInteractionPositions() {
 		Collection<PositionInRoomInfo> result = new ArrayList<>();
-		Room[] rooms = d.getRooms();
-		Position posA = d.getPositionAtDoor(rooms[0]);
-		Position posB = d.getPositionAtDoor(rooms[1]);
+		Room[] rooms = door.getRooms();
+		Position posA = door.getPositionAtDoor(rooms[0]);
+		Position posB = door.getPositionAtDoor(rooms[1]);
 		result.add(new PositionInRoomInfo(posA, this.map));
 		result.add(new PositionInRoomInfo(posB, this.map));
 		return result;
@@ -48,15 +50,15 @@ public class DoorInfo extends RoomEntity {
 	
 	@Override
 	public DoorMemory getMemoryObject(FigureInfo info) {
-		return d.getMemoryObject(info);
+		return door.getMemoryObject(info);
 	}
 	
 	public int getDir(JDPoint p) {
-		return d.getDir(p);
+		return door.getDir(p);
 	}
 
 	public RouteInstruction.Direction getDirection(JDPoint p) {
-		return RouteInstruction.Direction.fromInteger(d.getDir(p));
+		return RouteInstruction.Direction.fromInteger(door.getDir(p));
 	}
 
 	private boolean getFoundDiscovery() {
@@ -66,14 +68,14 @@ public class DoorInfo extends RoomEntity {
 	
 	public Boolean isLocked() {
 		if (getShrineVisibility()) {
-			return d.getLocked();
+			return door.getLocked();
 		}
 		return null;
 	}
 
 	public LockInfo getLock() {
 		if (getFoundDiscovery()) {
-			return new LockInfo(d.getLock(), map);
+			return new LockInfo(door.getLock(), map);
 		}
 		return null;
 	}
@@ -85,22 +87,22 @@ public class DoorInfo extends RoomEntity {
 		if (!(obj instanceof DoorInfo))
 			return false;
 
-		return d.equals(((DoorInfo) obj).d);
+		return door.equals(((DoorInfo) obj).door);
 	}
 
 	public PositionInRoomInfo getPositionAtDoor(RoomInfo room, boolean other) {
-		return new PositionInRoomInfo(d.getPositionAtDoor(map.getDungeon().getRoom(room.getPoint()), other), map);
+		return new PositionInRoomInfo(door.getPositionAtDoor(map.getDungeon().getRoom(room.getPoint()), other), map);
 	}
 
 
 	@Override
 	public int hashCode() {
-		return d != null ? d.hashCode() : 0;
+		return door != null ? door.hashCode() : 0;
 	}
 
 	public Boolean isPassable() {
 		if (getShrineVisibility()) {
-			return d.isPassable(map.getFigure());
+			return door.isPassable(map.getFigure());
 		}
 		return null;
 	}
@@ -115,7 +117,7 @@ public class DoorInfo extends RoomEntity {
 		p[0].setCentered();
 		p[0].setColor(JDColor.orange);
 		p[0].setBold();
-		if (d.isPassable(map.getFigure())) {
+		if (door.isPassable(map.getFigure())) {
 			p[1] = new Paragraph(JDEnv.getString("door_passable"));
 		} else {
 			p[1] = new Paragraph(JDEnv.getString("door_not_passable"));
@@ -124,9 +126,9 @@ public class DoorInfo extends RoomEntity {
 		p[1].setCentered();
 		p[1].setBold();
 		String s2 = new String();
-		if (d.getLock() != null) {
-			s2 += JDEnv.getString("door_lock")+": " + d.getLock() + "  Status: ";
-			if (d.getLocked()) {
+		if (door.getLock() != null) {
+			s2 += JDEnv.getString("door_lock")+": " + door.getLock() + "  Status: ";
+			if (door.getLocked()) {
 				s2 += JDEnv.getString("door_locked");
 			} else {
 				s2 += JDEnv.getString("door_open");
@@ -140,11 +142,11 @@ public class DoorInfo extends RoomEntity {
 		p[2].setBold();
 
 		String s3 = new String();
-		if (!d.getBlockings().isEmpty()) {
+		if (!door.getBlockings().isEmpty()) {
 			s3 += JDEnv.getString("door_blocked")+": ";
 			// for(int i = 0; i < blockings)
 		}
-		if(d.hasEscapeRoute(this.map.getFigure())) {
+		if(door.hasEscapeRoute(this.map.getFigure())) {
 			s3 += " - "+JDEnv.getString("spell_escape_route_name");
 		}
 		p[3] = new Paragraph(s3);
@@ -157,32 +159,32 @@ public class DoorInfo extends RoomEntity {
 
 	public Boolean isBlocked() {
 		if (getShrineVisibility()) {
-			return !d.getBlockings().isEmpty();
+			return !door.getBlockings().isEmpty();
 		}
 		return null;
 	}
 
 	public Boolean hasLock() {
 		if(getFoundDiscovery()) {
-		return d.hasLock();
+		return door.hasLock();
 		}
 		return null;
 	}
 
 	public RoomInfo[] getRooms() {
 		RoomInfo[] infos = new RoomInfo[2];
-		infos[0] = RoomInfo.makeRoomInfo(d.getRooms()[0], map);
-		infos[1] = RoomInfo.makeRoomInfo(d.getRooms()[1], map);
+		infos[0] = RoomInfo.makeRoomInfo(door.getRooms()[0], map);
+		infos[1] = RoomInfo.makeRoomInfo(door.getRooms()[1], map);
 		return infos;
 	}
 
 	public RoomInfo getOtherRoom(RoomInfo r) {
-		return d.getOtherRoomInfo(r, map);
+		return door.getOtherRoomInfo(r, map);
 	}
 
 	@Override
 	public String toString() {
-		return d.toString();
+		return door.toString();
 	}
 
 }

@@ -18,6 +18,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
+import de.jdungeon.game.Paint;
 import de.jdungeon.util.PaintBuilder;
 
 /**
@@ -42,6 +43,7 @@ public class SkillSelectionTile extends AbstractGUIElement {
 		textPaint = new PaintBuilder();
 		textPaint.setColor(ColorConverter.getColor(JDColor.black));
 		textPaint.setFontSize(18);
+		textPaint.setAlignment(Paint.Alignment.LEFT);
 
 		imageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 
@@ -75,6 +77,7 @@ public class SkillSelectionTile extends AbstractGUIElement {
 		int iconSizeInternal = (int)(iconSize * 0.8);
 		g.drawScaledImage(skillImage, iconPosX + ((iconSize-iconSizeInternal)/2), iconPosY + ((iconSize-iconSizeInternal)/2), iconSizeInternal, iconSizeInternal, 0, 0, skillImage.getWidth(), skillImage.getHeight());
 		g.drawString(skill.getName(), iconPosX + iconSize/2, position.getY() + 50, headerPaint);
-		g.drawString(skill.getText(), iconPosX + iconSize/2, iconPosY+iconSize + 30, dimension.getWidth()/2, textPaint);
+		int textStartX = position.getX() + dimension.getWidth()/6;
+		g.drawString(skill.getText(), textStartX + 5, iconPosY+iconSize + 15, dimension.getWidth()*2/3, textPaint);
 	}
 }

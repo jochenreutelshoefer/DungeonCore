@@ -13,6 +13,7 @@ public class DefaultHeroReflexBehavior extends AbstractReflexBehavior {
 	}
 	
 	
+	@Override
 	public Action getAction() {
 		Action a = checkRaid();
 		if(a != null) {

@@ -1,6 +1,7 @@
 package figure.monster;
 
 import ai.AI;
+import figure.HealthLevel;
 import figure.action.ScoutAction;
 import figure.action.ScoutResult;
 import item.Item;
@@ -781,16 +782,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	public int getHealthLevel() {
 		int i = health.perCent();
-		if (i > 50)
-			return 4;
-		else if (i > 30)
-			return 3;
-		else if (i > 15)
-			return 2;
-		else if (i > 8)
-			return 1;
-		else
-			return 0;
+		return HealthLevel.fromPercent(i).getValue();
 	}
 
 	@Override

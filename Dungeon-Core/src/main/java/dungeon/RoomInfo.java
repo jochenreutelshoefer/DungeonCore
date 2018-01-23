@@ -18,6 +18,7 @@ import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.InfoEntity;
 import game.JDEnv;
+import game.RoomEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +35,7 @@ import java.util.List;
 import shrine.ShrineInfo;
 import util.JDColor;
 
-public class RoomInfo extends InfoEntity implements ItemInfoOwner {
+public class RoomInfo extends RoomEntity implements ItemInfoOwner {
 
 	private final Room r;
 
@@ -399,11 +401,6 @@ public class RoomInfo extends InfoEntity implements ItemInfoOwner {
 		}
 	}
 
-	public boolean isClaimed() {
-
-		return r.isClaimed();
-	}
-
 	public DoorInfo[] getDoors() {
 
 		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND
@@ -428,4 +425,13 @@ public class RoomInfo extends InfoEntity implements ItemInfoOwner {
 		return makeRoomInfo(r.getNeighbourRoom(dir), map);
 	}
 
+	@Override
+	public Collection<PositionInRoomInfo> getInteractionPositions() {
+		Collection<PositionInRoomInfo> result = new HashSet<>();
+		Collection<Position> positions = r.getInteractionPositions();
+		for (Position position : positions) {
+			result.add(new PositionInRoomInfo(position, map));
+		}
+		return result;
+	}
 }

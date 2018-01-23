@@ -1,8 +1,10 @@
 package shrine;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import dungeon.Position;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.memory.ShrineMemory;
@@ -88,8 +90,10 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
      public int getSecondIdentifier() {
     	 return type;
      }
-    	 
-     
+
+	public Collection<Position> getInteractionPositions() {
+		return Collections.singletonList(this.getRoom().getPositions()[2]);
+	}
      
 
 	public void setLocation(Room p) {

@@ -14,6 +14,8 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,6 +64,11 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider {
 			
 		}
 		return null;
+	}
+
+	@Override
+	public Collection<Position> getInteractionPositions() {
+		return Collections.singletonList(this.getRoom().getPositions()[6]);
 	}
 
 	@Override

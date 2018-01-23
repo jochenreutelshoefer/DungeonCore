@@ -17,6 +17,8 @@ import item.Key;
 import item.interfaces.ItemOwner;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -162,7 +164,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 
 		if (lock.equals("unlockable")) {
 			if (right) {
-				if (items.size() > 0) {
+				if (!items.isEmpty()) {
 
 					Item it = (items.get(itemPointer));
 					// items.remove(it);
@@ -174,7 +176,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 					}
 				}
 			} else {
-				if (items.size() > 0) {
+				if (!items.isEmpty()) {
 					itemPointer = (itemPointer + 1) % items.size();
 				}
 			}
@@ -251,6 +253,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 		return true;
 	}
 
+	@Override
 	public List<Item> getItems() {
 		return items;
 	}
@@ -258,6 +261,11 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider {
 	@Override
 	public JDPoint getLocation() {
 		return location;
+	}
+
+	@Override
+	public Collection<Position> getInteractionPositions() {
+		return Collections.singletonList(this.getRoom().getPositions()[0]);
 	}
 
 }

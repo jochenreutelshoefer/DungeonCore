@@ -15,7 +15,7 @@ public enum HealthLevel {
 		return value;
 	}
 
-	private int value;
+	private final int value;
 
 	HealthLevel(int value) {
 		this.value = value;

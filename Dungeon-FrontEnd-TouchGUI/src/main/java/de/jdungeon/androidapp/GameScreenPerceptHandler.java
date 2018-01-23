@@ -276,11 +276,6 @@ public class GameScreenPerceptHandler {
 			if (damage != -1) {
 				text = "-" + damage;
 			}
-			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(deadFigure, Motion.Walking, deadFigure.getLookDirection());
-			JDImageProxy im = null;
-			if(animationSet != null) {
-				im = animationSet.getImagesNr(0);
-			}
 			screen.startAnimationUrgent(set, deadFigure, text);
 		}
 	}

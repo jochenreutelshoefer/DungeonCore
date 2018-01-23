@@ -3,12 +3,13 @@ package de.jdungeon.util;
 import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Paint;
+import de.jdungeon.game.TextPaint;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 01.01.17.
  */
-public class PaintBuilder implements Paint{
+public class PaintBuilder implements TextPaint {
 
 	private int fontSize = 15;
 	private Color color = Colors.BLACK;

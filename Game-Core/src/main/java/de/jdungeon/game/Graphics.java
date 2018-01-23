@@ -8,16 +8,25 @@ public interface Graphics {
     }
 
 	// TODO: refactor use of Paint objects
-	Paint getDefaultPaint();
+	TextPaint getDefaultPaint();
 
-	Paint getSmallPaint();
+	TextPaint getSmallPaint();
 
 	Paint getPaintBlack();
 
 	Paint getPaintWhite();
 	Paint getPaintGray();
+	TextPaint getTextPaintGray();
+
+	TextPaint getTextPaintBlack();
+
+	TextPaint getTextPaintWhite();
+
+	TextPaint getTextPaintRed();
 
 	Paint createPaint(PaintBuilder builder);
+
+	TextPaint createTextPaint(PaintBuilder builder);
 
     Image newImage(String fileName, ImageFormat format);
 
@@ -44,7 +53,10 @@ public interface Graphics {
     void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight, boolean nonTmp);
 
 	void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight);
-    void drawString(String text, int x, int y, Paint paint);
+
+    void drawString(String text, int x, int y, TextPaint paint);
+
+	void drawString(String text, int x, int y, int width, TextPaint paint);
 
     int getWidth();
 

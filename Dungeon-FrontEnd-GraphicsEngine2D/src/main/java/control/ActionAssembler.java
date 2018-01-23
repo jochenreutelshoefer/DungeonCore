@@ -161,7 +161,7 @@ public class ActionAssembler implements EventListener {
 		plugAction(a);
 	}
 
-	public void wannaUseItem(ItemInfo it, Object target, boolean meta) {
+	public void wannaUseItem(ItemInfo it, RoomEntity target, boolean meta) {
 		if (target == null && it.needsTarget()) {
 			target = findAndStepTowardsTarget(it);
 		}
@@ -170,8 +170,8 @@ public class ActionAssembler implements EventListener {
 		plugAction(a);
 	}
 
-	private Object findAndStepTowardsTarget(ItemInfo item) {
-		Object target = null;
+	private RoomEntity findAndStepTowardsTarget(ItemInfo item) {
+		RoomEntity target = null;
 		if (item.isUsableWithTarget()) {
 			TargetScope targetScope = item.getTargetScope();
 			List<? extends RoomEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(this.getFigure());
@@ -203,9 +203,7 @@ public class ActionAssembler implements EventListener {
 					}
 					if (position != null) {
 						wannaStepToPosition(position);
-						if (getFigure().getActionPoints() < 1) {
-							plugAction(new EndRoundAction());
-						}
+						plugAction(new EndRoundAction());
 					}
 				}
 			}
@@ -358,12 +356,6 @@ public class ActionAssembler implements EventListener {
 		}
 	}
 
-	public void heroClicked() {
-
-		wannaEndRound();
-
-	}
-
 	public void roomClicked(Object o, boolean right) {
 		FigureInfo f = getFigure();
 
@@ -479,9 +471,7 @@ public class ActionAssembler implements EventListener {
 		if (unanimated) {
 			a.setUnanimated();
 		}
-		if (f.getActionPoints() < 1) {
-			plugAction(new EndRoundAction());
-		}
+
 		plugAction(a);
 
 	}
@@ -535,6 +525,9 @@ public class ActionAssembler implements EventListener {
 	}
 
 	private void plugAction(Action a) {
+		if (getFigure().getActionPoints() < 1) {
+			gui.plugAction(new EndRoundAction());
+		}
 		if(lastAction == a) {
 			repeatActionCounter++;
 		} else {
@@ -542,18 +535,6 @@ public class ActionAssembler implements EventListener {
 		}
 		lastAction = a;
 		gui.plugAction(a);
-	}
-
-	public void wannaUseLuziaBall() {
-		FigureInfo f = this.getFigure();
-		List<ItemInfo> items = f.getAllItems();
-		for (Iterator iter = items.iterator(); iter.hasNext(); ) {
-			ItemInfo element = (ItemInfo) iter.next();
-			if (element.getClass().equals(LuziasBall.class)) {
-				this.wannaUseItem(element, null, false);
-			}
-
-		}
 	}
 
 	@Override

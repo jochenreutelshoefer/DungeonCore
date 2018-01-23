@@ -8,9 +8,9 @@ import java.util.*;
  */
 public interface ModifierI{
 
-    public LinkedList getModifications();
+    List getModifications();
 
-    public LinkedList getRemoveModifications();
+    List getRemoveModifications();
 
 
 }
