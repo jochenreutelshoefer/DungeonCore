@@ -1,9 +1,11 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 import dungeon.ItemInfoOwner;
 
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.ItemActivityItemProvider;
 import de.jdungeon.androidapp.screen.GameScreen;
 
 /**

@@ -12,7 +12,7 @@ import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.gui.itemWheel.Activity;
+import de.jdungeon.androidapp.gui.activity.Activity;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;

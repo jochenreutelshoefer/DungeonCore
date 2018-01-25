@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.ActivityProvider;
+
 public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
 	private final int itemWheelSize;

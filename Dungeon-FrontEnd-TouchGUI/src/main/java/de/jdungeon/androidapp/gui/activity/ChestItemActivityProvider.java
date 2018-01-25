@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 import java.util.ArrayList;
 import java.util.List;

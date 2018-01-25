@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 import game.RoomInfoEntity;
 import gui.Paragraph;

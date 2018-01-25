@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import dungeon.ItemInfoOwner;
 import item.ItemInfo;
 
 import de.jdungeon.androidapp.gui.InventoryImageManager;
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;
 

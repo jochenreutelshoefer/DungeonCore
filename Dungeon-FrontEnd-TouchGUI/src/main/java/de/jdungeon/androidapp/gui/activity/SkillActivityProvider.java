@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +21,8 @@ import spell.TargetScope;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.FocusManager;
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;

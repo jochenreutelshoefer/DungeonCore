@@ -4,8 +4,8 @@ import spell.AbstractSpell;
 import spell.SpellInfo;
 
 import de.jdungeon.androidapp.gui.GUIImageManager;
-import de.jdungeon.androidapp.gui.itemWheel.Activity;
-import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.game.Image;
 
 public class SkillImageManager {

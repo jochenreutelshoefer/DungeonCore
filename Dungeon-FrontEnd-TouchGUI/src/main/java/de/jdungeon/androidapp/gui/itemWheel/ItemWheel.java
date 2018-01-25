@@ -9,6 +9,9 @@ import figure.hero.HeroInfo;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.FocusEvent;
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.ActivityPresenter;
+import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
@@ -29,7 +32,6 @@ public class ItemWheel extends ActivityPresenter {
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
 	private final Image itemBackgroundImage;
-	private final ItemWheelBindingSet binding;
 	private boolean justRotated = true;
 	private final int defaultImageWidth = 50;
 	private final int defaultImageHeight = 50;
@@ -49,13 +51,13 @@ public class ItemWheel extends ActivityPresenter {
 			+ doubleBackgroundPanelOffset;
 	private final int doubleHeightPlusOffset = doubleImageHeight
 			+ doubleBackgroundPanelOffset;
-
 	private float timer = 0;
+
 	private float velocity = 0;
 	private float startVelocity = 0;
 	private final float maxVelocity = 50;
-
 	private final int posY;
+
 	private final int xLeft;
 	private final int heightFullArea;
 	private final int backgroundX;
@@ -64,10 +66,12 @@ public class ItemWheel extends ActivityPresenter {
 	private final int stepDown;
 	private final int stepLength;
 
+	private final ItemWheelBindingSet binding;
+
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
 					 Image itemBackground, Image wheelBackgroundImage, String title) {
-		super(position, dim, screen, game);
+		super(position, dim, screen, game, provider);
 		this.hightlightItemPosition = selectedIndex;
 		this.wheelBackgroundImage = wheelBackgroundImage;
 		this.title = title;
@@ -147,9 +151,7 @@ public class ItemWheel extends ActivityPresenter {
 	public void highlightEntity(Object object) {
 		// we need to update the binding set to have the new item included
 		binding.update(0);
-
-		int index = getObjectIndex(object);
-		centerOnIndex(index);
+		centerOnIndex(getObjectActivity(object));
 	}
 
 	private int getObjectIndex(Object object) {
@@ -162,6 +164,18 @@ public class ItemWheel extends ActivityPresenter {
 			}
 		}
 		return -1;
+	}
+
+	private Activity getObjectActivity(Object object) {
+		for (int i = 0; i < binding.getBindingSize(); i++) {
+			Activity activity = binding.getActivity(i);
+			if (activity != null) {
+				if (activity.getObject().equals(object)) {
+					return activity;
+				}
+			}
+		}
+		return null;
 	}
 
 	private int getActivityIndex(Activity activity) {
@@ -178,11 +192,11 @@ public class ItemWheel extends ActivityPresenter {
 		if (i == markedPointIndex) {
 			Activity infoEntity = binding.getActivity(i);
 			if (infoEntity != null) {
-				binding.getProvider().activityPressed(infoEntity);
+				provider.activityPressed(infoEntity);
 			}
 		}
 		else {
-			centerOnIndex(i);
+			centerOnIndex(activity);
 		}
 	}
 
@@ -190,7 +204,6 @@ public class ItemWheel extends ActivityPresenter {
 	public Object highlightFirst() {
 		// we need to update the binding set to have the new item included
 
-		ActivityProvider provider = binding.getProvider();
 		List<Activity> activities = provider.getActivities();
 		if(!activities.isEmpty()) {
 			Activity activity = activities.get(0);
@@ -202,11 +215,13 @@ public class ItemWheel extends ActivityPresenter {
 	}
 
 	@Override
-	protected void centerOnIndex(int i) {
-		setMarkedIndex(i);
+	protected void centerOnIndex(Activity activity) {
+
+		int activityIndex = getActivityIndex(activity);
+		setMarkedIndex(activityIndex);
 
 		// scroll element to center position
-		int diff = hightlightItemPosition - i;
+		int diff = hightlightItemPosition - activityIndex;
 		this.currentRotationState = (float) PI_EIGHTEENTH * diff;
 		updatePointCoordinates();
 
@@ -359,7 +374,7 @@ public class ItemWheel extends ActivityPresenter {
 			if (activity != null) {
 
 
-				Image im = binding.getProvider().getActivityImage(activity);
+				Image im = provider.getActivityImage(activity);
 				if (im == null) {
 					Log.w("Warning", "Activity image is null: "
 							+ activity);

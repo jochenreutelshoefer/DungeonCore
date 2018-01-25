@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,8 @@ import figure.action.TakeItemAction;
 import item.ItemInfo;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.ItemActivityItemProvider;
 import de.jdungeon.androidapp.screen.GameScreen;
 
 /**

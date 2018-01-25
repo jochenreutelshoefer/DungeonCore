@@ -1,4 +1,4 @@
-package de.jdungeon.androidapp.gui.itemWheel;
+package de.jdungeon.androidapp.gui.activity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
