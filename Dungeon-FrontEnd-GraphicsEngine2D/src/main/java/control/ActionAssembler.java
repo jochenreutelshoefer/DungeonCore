@@ -76,7 +76,7 @@ public class ActionAssembler implements EventListener {
 		plugAction(a);
 	}
 
-	private FigureInfo getFigure() {
+	public FigureInfo getFigure() {
 		return gui.getFigure();
 	}
 
@@ -111,6 +111,8 @@ public class ActionAssembler implements EventListener {
 			plugAction(a);
 		}
 	}
+
+
 
 	public void wannaScout(RouteInstruction.Direction dir) {
 		wannaScout(dir.getValue());

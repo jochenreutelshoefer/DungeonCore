@@ -5,7 +5,7 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.smartcontrol.AnimatedSmartControlElement;
 import de.jdungeon.androidapp.gui.smartcontrol.Drawable;
-import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
+import de.jdungeon.androidapp.gui.smartcontrol.SmartControlRoomPanel;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
@@ -18,7 +18,7 @@ public class SubGUIElementRelative extends AnimatedSmartControlElement {
 
 	private final JDPoint posRelative;
 
-	public SubGUIElementRelative(final JDPoint posRelative, final JDDimension dimension, SmartControl smartControl) {
+	public SubGUIElementRelative(final JDPoint posRelative, final JDDimension dimension, SmartControlRoomPanel smartControl) {
 		super(posRelative, dimension, smartControl);
 		this.posRelative = posRelative;
 

@@ -8,23 +8,23 @@ import java.util.Map;
 import dungeon.ItemInfoOwner;
 import item.ItemInfo;
 
+import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
 import de.jdungeon.androidapp.gui.activity.Activity;
 import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
 public abstract class ItemActivityItemProvider implements ActivityProvider {
 
 	private final ItemInfoOwner info;
-	protected final GameScreen screen;
 	private final Map<Class, Image> imageCache = new HashMap<Class, Image>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public ItemActivityItemProvider(ItemInfoOwner info, GameScreen screen) {
+	public ItemActivityItemProvider(ItemInfoOwner info, Game game) {
 		this.info = info;
-		this.screen = screen;
-		inventoryImageManager = new InventoryImageManager(screen.getGuiImageManager());
+		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 	}
 
 	@Override

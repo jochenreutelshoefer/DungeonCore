@@ -27,30 +27,16 @@ public class ItemWheel extends ActivityPresenter {
 	private static final double TWO_PI = Math.PI * 2;
 	private final JDPoint[] points = new JDPoint[36];
 	private final int hightlightItemPosition;
+	private int markedPointIndex;
 	private final Image wheelBackgroundImage;
 	private final String title;
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
-	private final Image itemBackgroundImage;
 	private boolean justRotated = true;
-	private final int defaultImageWidth = 50;
-	private final int defaultImageHeight = 50;
-	private final int defaultImageWidthHalf = defaultImageWidth / 2;
-	private final int defaultImageHeightHalf = defaultImageHeight / 2;
-	private final int doubleImageWidth = defaultImageWidth * 2;
-	private final int doubleImageHeight = defaultImageHeight * 2;
-	private final int backgroundPanelOffset = 7;
-	private final int doubleBackgroundPanelOffset = 2 * backgroundPanelOffset;
-	private final int screenWidth = getGame().getScreenWidth();
-	private final int screenHeight = getGame().getScreenHeight();
 	private final int screenPlusDefaultImageWidth = screenWidth
 			+ defaultImageWidth;
 	private final int screenPlusDefaultImageHeight = screenHeight
 			+ defaultImageHeight;
-	private final int doubleWidthPlusOffset = doubleImageWidth
-			+ doubleBackgroundPanelOffset;
-	private final int doubleHeightPlusOffset = doubleImageHeight
-			+ doubleBackgroundPanelOffset;
 	private float timer = 0;
 
 	private float velocity = 0;
@@ -71,7 +57,7 @@ public class ItemWheel extends ActivityPresenter {
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
 					 Image itemBackground, Image wheelBackgroundImage, String title) {
-		super(position, dim, screen, game, provider);
+		super(position, dim, screen, game, provider, itemBackground);
 		this.hightlightItemPosition = selectedIndex;
 		this.wheelBackgroundImage = wheelBackgroundImage;
 		this.title = title;
@@ -79,7 +65,6 @@ public class ItemWheel extends ActivityPresenter {
 		info.getSpellBuffer();
 		this.binding = new ItemWheelBindingSetSimple(selectedIndex, 36, provider);
 		//markedPointIndex = selectedIndex;
-		this.itemBackgroundImage = itemBackground;
 
 		/*
 		 * init points
@@ -107,12 +92,10 @@ public class ItemWheel extends ActivityPresenter {
 
 	}
 
-
 	long lastEvent = 0;
 
 	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
-		long timeSinceLastEvent = System.currentTimeMillis() - lastEvent;
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
 		ScrollMotion.FloatDimension movement = scrolling.getMovement();
 		float movementX = movement.getX();
 		float rotation = movementX / 400;
@@ -129,17 +112,18 @@ public class ItemWheel extends ActivityPresenter {
 		}
 		startVelocity = velocity;
 		justRotated = true;
-
+		return true;
 	}
 
 	@Override
 	public boolean handleTouchEvent(TouchEvent touch) {
 		for (int i = 0; i < points.length; i++) {
-			double distance = Math.hypot(touch.x - points[i].getX(), touch.y
-					- points[i].getY());
+			double distance = Math.hypot(touch.x - points[i].getX(), touch.y - points[i].getY());
 			if (distance < 25) {
 				Activity activity = getActivityForIndex(i);
-				iconTouched(activity);
+				if(activity != null) {
+					iconTouched(activity);
+				}
 				break;
 			}
 		}
@@ -179,7 +163,11 @@ public class ItemWheel extends ActivityPresenter {
 	}
 
 	private int getActivityIndex(Activity activity) {
-		return getObjectIndex(activity.getObject());
+		Object object = activity.getObject();
+		if(object != null) {
+			return getObjectIndex(object);
+		}
+		return -1;
 	}
 
 	private Activity getActivityForIndex(int index) {
@@ -189,6 +177,7 @@ public class ItemWheel extends ActivityPresenter {
 	@Override
 	protected void iconTouched(Activity activity) {
 		int i = getActivityIndex(activity);
+		if(i == -1) return;
 		if (i == markedPointIndex) {
 			Activity infoEntity = binding.getActivity(i);
 			if (infoEntity != null) {
@@ -205,7 +194,7 @@ public class ItemWheel extends ActivityPresenter {
 		// we need to update the binding set to have the new item included
 
 		List<Activity> activities = provider.getActivities();
-		if(!activities.isEmpty()) {
+		if (!activities.isEmpty()) {
 			Activity activity = activities.get(0);
 			Object object = activity.getObject();
 			highlightEntity(object);
@@ -342,14 +331,12 @@ public class ItemWheel extends ActivityPresenter {
 		// headline and title
 
 		g.drawLine(xLeft, posY, xRight, posY, Colors.WHITE);
-
 		g.drawLine(xLeft - stepLength, posY + stepDown, xLeft, posY + stepDown, Colors.WHITE);
 		g.drawLine(xLeft, posY, xLeft, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY + stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
 		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
 		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getTextPaintWhite());
 		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getTextPaintWhite());
-
 
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
@@ -372,77 +359,18 @@ public class ItemWheel extends ActivityPresenter {
 
 			Activity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
-
-
-				Image im = provider.getActivityImage(activity);
-				if (im == null) {
-					Log.w("Warning", "Activity image is null: "
-							+ activity);
-				}
-
 				if (toDraw == this.markedPointIndex) {
-					int yMinusDefaultHeight = y - defaultImageHeight;
-					int xMinusDefaultWidth = x - defaultImageWidth;
-					/*
-					draw highlighting circle
-					 */
-					if(highlightOn) {
-						g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
-					}
-
-					/*
-					 * draw background if existing
-					 */
-					if (itemBackgroundImage != null) {
-						g.drawScaledImage(
-								itemBackgroundImage,
-								  xMinusDefaultWidth - backgroundPanelOffset,
-								yMinusDefaultHeight - backgroundPanelOffset,
-								doubleWidthPlusOffset,
-								doubleHeightPlusOffset,
-								0, 0,
-								itemBackgroundImage.getWidth(),
-								itemBackgroundImage.getHeight());
-					}
-
-					/*
-					 * draw actual item
-					 */
-					g.drawScaledImage(im, xMinusDefaultWidth,
-							yMinusDefaultHeight, doubleImageWidth,
-							doubleImageHeight, 0, 0, im.getWidth(),
-							im.getHeight());
+					drawActivityLarge(g, x, y, activity);
 				}
 				else {
-					int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
-					int yMinusDefaultHeightHalf = y - defaultImageHeightHalf;
-
-					/*
-					 * draw background if existing
-					 */
-					if (itemBackgroundImage != null) {
-						g.drawScaledImage(
-								itemBackgroundImage,
-								xMinusDefaultWidthHalf - backgroundPanelOffset,
-								yMinusDefaultHeightHalf - backgroundPanelOffset,
-								defaultImageWidth + doubleBackgroundPanelOffset,
-								defaultImageHeight + doubleBackgroundPanelOffset,
-								0, 0,
-								itemBackgroundImage.getWidth(),
-								itemBackgroundImage.getHeight());
-					}
-
-					/*
-					 * draw actual item
-					 */
-					g.drawScaledImage(im, xMinusDefaultWidthHalf,
-							yMinusDefaultHeightHalf, defaultImageWidth,
-							defaultImageHeight, 0, 0, im.getWidth(),
-							im.getHeight());
+					drawActivity(g, x, y, activity);
 				}
 			}
 
 		}
 
 	}
+
+
+
 }

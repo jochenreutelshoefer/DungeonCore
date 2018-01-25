@@ -58,10 +58,12 @@ public class InfoPanel extends SlidingGUIElement {
 	}
 
 	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
 		if (scrolling.getMovement().getX() < 0) {
 			timer = 0;
+			return true;
 		}
+		return false;
 	}
 
 	@Override

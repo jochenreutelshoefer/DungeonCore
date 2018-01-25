@@ -9,6 +9,7 @@ import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
+import de.jdungeon.game.ScrollMotion;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -29,6 +30,22 @@ public abstract class ContainerGUIElement extends AbstractGUIElement {
 		for (GUIElement guiElement : getAllSubElements()) {
 			if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
 				boolean taken = guiElement.handleTouchEvent(touch);
+				if(taken) {
+					handles = true;
+					break;
+				}
+			}
+		}
+		return handles;
+	}
+
+	@Override
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
+		JDPoint coordinates = screen.normalizeRawCoordinates(scrolling.getStartEvent());
+		boolean handles = false;
+		for (GUIElement guiElement : getAllSubElements()) {
+			if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+				boolean taken = guiElement.handleScrollEvent(scrolling);
 				if(taken) {
 					handles = true;
 					break;

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import control.ActionAssembler;
 import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
@@ -19,12 +20,13 @@ import game.RoomInfoEntity;
 import spell.SpellInfo;
 import spell.TargetScope;
 
+import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.FocusManager;
-import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.ActivityProvider;
+import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
 public class SkillActivityProvider implements ActivityProvider {
@@ -36,7 +38,8 @@ public class SkillActivityProvider implements ActivityProvider {
 	public static final String LOOK = "Ansehen";
 
 	private final HeroInfo info;
-	private final GameScreen screen;
+	private final Control actionAssembler;
+	private final FocusManager focusManager;
 	private boolean fightState = false;
 	private final List<Activity> activityCache = new ArrayList<Activity>();
 
@@ -48,12 +51,13 @@ public class SkillActivityProvider implements ActivityProvider {
 
 	private final SkillImageManager skillImageManager;
 
-	public SkillActivityProvider(HeroInfo info, GameScreen screen) {
+	public SkillActivityProvider(HeroInfo info, Game game, Control actionAssembler, FocusManager focusManager) {
 		super();
 		this.info = info;
-		this.screen = screen;
+		this.actionAssembler = actionAssembler;
+		this.focusManager = focusManager;
 		updateActivityList(false);
-		skillImageManager = new SkillImageManager(screen.getGuiImageManager());
+		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 	}
 
 	@Override
@@ -110,7 +114,6 @@ public class SkillActivityProvider implements ActivityProvider {
 			return;
 		}
 		Object o = activity.getObject();
-		FocusManager focusManager = screen.getFocusManager();
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 
 		if (o.equals(ATTACK)) {
@@ -129,12 +132,12 @@ public class SkillActivityProvider implements ActivityProvider {
 			if (hostileFigures.size() == 1
 					&& (!(highlightedEntity instanceof FigureInfo))) {
 				FigureInfo target = hostileFigures.get(0);
-				screen.getControl().getActionAssembler().wannaAttack(target);
+				actionAssembler.wannaAttack(target);
 				focusManager.setWorldFocusObject(target);
 			}
 			if (highlightedEntity instanceof FigureInfo) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler()
+				actionAssembler
 						.wannaAttack((FigureInfo) highlightedEntity);
 			}
 		}
@@ -146,7 +149,7 @@ public class SkillActivityProvider implements ActivityProvider {
 						possibleFleeDirection);
 				if (door != null) {
 					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-					screen.getControl().getActionAssembler()
+					actionAssembler
 							.wannaScout(possibleFleeDirection);
 				}
 			}
@@ -155,14 +158,14 @@ public class SkillActivityProvider implements ActivityProvider {
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler()
+				actionAssembler
 						.wannaScout(directionToScout);
 			}
 			else if (highlightedEntity instanceof DoorInfo) {
 				int directionToScout = ((DoorInfo) highlightedEntity)
 						.getDir(info.getRoomNumber());
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler()
+				actionAssembler
 						.wannaScout(directionToScout);
 			}
 
@@ -170,8 +173,7 @@ public class SkillActivityProvider implements ActivityProvider {
 		else if (o.equals(WALK)) {
 			if (highlightedEntity instanceof PositionInRoomInfo) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl()
-						.getActionAssembler()
+				actionAssembler
 						.wannaStepToPosition(
 								((PositionInRoomInfo) highlightedEntity));
 			}
@@ -180,7 +182,7 @@ public class SkillActivityProvider implements ActivityProvider {
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler()
+				actionAssembler
 						.wannaWalk(directionToWalk);
 			}
 		}
@@ -189,7 +191,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 			if (possibleFleeDirection != null) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler().wannaFlee();
+				actionAssembler.wannaFlee();
 			}
 		}
 		else if (o instanceof SpellInfo) {
@@ -202,14 +204,14 @@ public class SkillActivityProvider implements ActivityProvider {
 					// something completely wrong for this spell is selected by the user in the gui
 					// we discard the selection and see whether auto target detection will work
 					// or otherwise the user will be informed
-					screen.getFocusManager().setWorldFocusObject(null);
+					focusManager.setWorldFocusObject(null);
 				}
 				if (highlightedEntity != null) {
 					// some target selected
 					if (spell.getTargetClass().isAssignableFrom(highlightedEntity.getClass())) {
 						// target has matching object class
 						AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-						screen.getControl().getActionAssembler()
+						actionAssembler
 								.wannaSpell(spell, highlightedEntity);
 					}
 					else {
@@ -227,13 +229,13 @@ public class SkillActivityProvider implements ActivityProvider {
 					if (targetEntitiesInScope.size() == 1) {
 						RoomInfoEntity targetEntity = targetEntitiesInScope.get(0);
 						focusManager.setWorldFocusObject(targetEntity);
-						screen.getControl().getActionAssembler()
+						actionAssembler
 								.wannaSpell(spell, targetEntity);
 					}
 					else {
 						// we leave the message handling up to the core action handling triggering
 						// an action with target null
-						screen.getControl().getActionAssembler()
+						actionAssembler
 								.wannaSpell(spell, null);
 					}
 				}
@@ -241,28 +243,28 @@ public class SkillActivityProvider implements ActivityProvider {
 			} else {
 				// no target required
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler()
+				actionAssembler
 						.wannaSpell(spell, null);
 			}
 
 			/*
 			Class<? extends InfoEntity> targetClass = spell.getTargetClass();
 
-			InfoEntity uniqueTargetEntity = screen.getControl()
+			InfoEntity uniqueTargetEntity = screen.getActionAssembler()
 					.getUniqueTargetEntity(targetClass);
 			if (uniqueTargetEntity != null) {
 				screen.setHighlightedEntity(uniqueTargetEntity);
 				screen.setInfoEntity(uniqueTargetEntity);
 
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				screen.getControl().getActionAssembler()
+				screen.getActionAssembler().getActionAssembler()
 						.wannaSpell(spell, uniqueTargetEntity);
 			}
 			else {
 				if (highlightedEntity != null && targetClass.isAssignableFrom(highlightedEntity.getClass())) {
 
 					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-					screen.getControl().getActionAssembler()
+					screen.getActionAssembler().getActionAssembler()
 							.wannaSpell(spell, highlightedEntity);
 				}
 				else {

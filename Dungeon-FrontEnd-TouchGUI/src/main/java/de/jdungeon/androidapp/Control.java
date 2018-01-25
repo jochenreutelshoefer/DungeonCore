@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import audio.AudioEffectsManager;
 import control.ActionAssembler;
+import control.JDGUIEngine2D;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
@@ -24,19 +25,13 @@ import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
 import de.jdungeon.androidapp.gui.activity.Activity;
-@Deprecated
-public class Control implements EventListener {
+public class Control extends ActionAssembler implements EventListener {
 
-	private final ActionAssembler actionAssembler;
 	private final FigureInfo figure;
 
-	public ActionAssembler getActionAssembler() {
-		return actionAssembler;
-	}
-
-	public Control(FigureInfo figure, ActionAssembler actionAssembler) {
+	public Control(FigureInfo figure, JDGUIEngine2D gui) {
+		super(gui);
 		this.figure = figure;
-		this.actionAssembler = actionAssembler;
 		EventManager.getInstance().registerListener(this);
 	}
 
@@ -66,13 +61,6 @@ public class Control implements EventListener {
 
 	}
 
-	public void inventoryItemClicked(ItemInfo item, RoomInfoEntity target) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		actionAssembler.wannaUseItem(item, target, false);
-	}
-
-
-
 	public void itemWheelActivityClicked(Activity item,
 										 RoomInfoEntity target) {
 		if (item == null) {
@@ -80,41 +68,42 @@ public class Control implements EventListener {
 		}
 		Object o = item.getObject();
 		if (o instanceof ItemInfo) {
-			inventoryItemClicked((ItemInfo) o, target);
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+			wannaUseItem((ItemInfo) o, target, false);
 		}
 	}
 
 	private void handleDoorInfoClick(DoorInfo doorInfo, boolean doubleClick) {
-		actionAssembler.doorClicked(doorInfo, doubleClick);
+		doorClicked(doorInfo, doubleClick);
 
 	}
 
 	private void handleChestInfoClick(ChestInfo chestInfo, boolean doubleClick) {
-		actionAssembler.chestClicked(chestInfo, doubleClick);
+		chestClicked(chestInfo, doubleClick);
 
 	}
 
 	private void handleRoomInfoClick(RoomInfo room, boolean doubleClick) {
-		actionAssembler.roomClicked(room, doubleClick);
+		roomClicked(room, doubleClick);
 
 	}
 
 	private void handlePosInfoClick(PositionInRoomInfo pos, boolean doubleClick) {
-		actionAssembler.positionClicked(pos, doubleClick);
+		positionClicked(pos, doubleClick);
 	}
 
 	private void handleShrineInfoClick(ShrineInfo info, boolean doubleClick) {
-		actionAssembler.shrineClicked(doubleClick);
+		shrineClicked(doubleClick);
 
 	}
 
 	private void handleFigureInfoClick(FigureInfo figure, boolean doubleClick) {
-		actionAssembler.monsterClicked(figure, doubleClick);
+		monsterClicked(figure, doubleClick);
 
 	}
 
 	private void handleItemInfoClick(ItemInfo item, boolean doubleClick) {
-		actionAssembler.itemClicked(item, doubleClick);
+		itemClicked(item, doubleClick);
 	}
 
 	public void inventoryItemDoubleClicked(int itemType, EquipmentItemInfo info) {
@@ -128,16 +117,16 @@ public class Control implements EventListener {
 			}
 		}
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
-		actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
+		wannaSwitchEquipmentItem(itemType, weaponIndex);
 	}
 
 	public void inventoryItemLongClicked(int itemType, EquipmentItemInfo info) {
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
-		actionAssembler.wannaLayDownItem(info);
+		wannaLayDownItem(info);
 	}
 
 	public void endRound() {
-		actionAssembler.wannaEndRound();
+		wannaEndRound();
 	}
 
 
@@ -146,11 +135,13 @@ public class Control implements EventListener {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
 		events.add(InventoryItemClickedEvent.class);
 		events.add(EndRoundEvent.class);
+		events.addAll(super.getEvents());
 		return events;
 	}
 
 	@Override
 	public void notify(Event event) {
+		super.notify(event);
 		if (event instanceof InventoryItemClickedEvent) {
 			InventoryItemClickedEvent e = ((InventoryItemClickedEvent) event);
 			if (e.getClick() == ClickType.Double) {

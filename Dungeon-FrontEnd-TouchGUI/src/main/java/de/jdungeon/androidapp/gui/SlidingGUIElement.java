@@ -27,10 +27,12 @@ public abstract class SlidingGUIElement extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
 		if (scrolling.getMovement().getX() > 0) {
 			slideOut();
+			return true;
 		}
+		return false;
 	}
 
 	@Override

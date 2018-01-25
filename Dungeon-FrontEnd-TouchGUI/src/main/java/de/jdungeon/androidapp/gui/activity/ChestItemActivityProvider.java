@@ -14,6 +14,7 @@ import item.ItemInfo;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -23,8 +24,8 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 
 	private final FigureInfo info;
 
-	public ChestItemActivityProvider(FigureInfo info, GameScreen screen) {
-		super(info, screen);
+	public ChestItemActivityProvider(FigureInfo info, Game game) {
+		super(info, game);
 		this.info = info;
 	}
 

@@ -117,13 +117,15 @@ public class TextPerceptView extends AbstractGUIElement {
 	}
 
 	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
 		ScrollMotion.FloatDimension movement = scrolling.getMovement();
 		float movementY = movement.getY();
 		int newY = this.position.getY() - (int) movementY;
 		if (newY > -380 && newY < 0) {
 			this.position.setY(newY);
+			return true;
 		}
+		return false;
 	}
 
 }

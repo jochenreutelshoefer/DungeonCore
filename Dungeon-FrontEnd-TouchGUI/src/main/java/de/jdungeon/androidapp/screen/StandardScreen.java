@@ -8,6 +8,7 @@ import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.MotionEvent;
 import dungeon.JDPoint;
+import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.game.Game;
@@ -34,6 +35,11 @@ public abstract class StandardScreen extends Screen {
 	public GUIImageManager getGuiImageManager() {
 		return guiImageManager;
 	}
+
+	public JDDimension getScreenSize() {
+		return new JDDimension(game.getScreenWidth(), game.getScreenHeight());
+	}
+
 
 	@Override
 	public void init() {
@@ -117,8 +123,6 @@ public abstract class StandardScreen extends Screen {
 		 */
 
 		int x = (int) (longPressEvent.getRawX() * (game.getScreenWidth()) / 1915);
-		// int y = (int) (longPressEvent.getRawY() * (screenSize.getHeight()) /
-		// 1100);
 		int y = (int) (longPressEvent.getRawY() * (game.getScreenHeight()) / 1000);
 
 		return new JDPoint(x, y);

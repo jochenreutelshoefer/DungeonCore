@@ -96,8 +96,8 @@ public abstract class AbstractGUIElement implements GUIElement {
 	}
 
 	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
-
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
+		return false;
 	}
 
 	public Game getGame() {

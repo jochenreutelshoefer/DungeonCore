@@ -25,9 +25,11 @@ import figure.other.Fir;
 import figure.percept.Percept;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.AbstractImageLoader;
 
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
+import de.jdungeon.game.Screen;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
@@ -37,11 +39,10 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	private FigureInfo figure;
 
 	private PerceptHandler perceptHandler;
-	private final ActionAssembler actionAssembler;
 
 	public AndroidScreenJDGUI(JDungeonApp app) {
 		this.app = app;
-		actionAssembler = new ActionAssembler(this);
+
 	}
 
 
@@ -108,7 +109,10 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 			if (!actionQueue.isEmpty()) {
 				return actionQueue.remove(0);
 			} else {
-				actionAssembler.triggerPlannedActions();
+				Screen currentScreen = this.app.getCurrentScreen();
+				if(currentScreen instanceof GameScreen) {
+					((GameScreen)currentScreen).getActionAssembler().triggerPlannedActions();
+				}
 			}
 		}
 		return null;
@@ -155,10 +159,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	}
 
-	@Override
-	public ActionAssembler getActionAssembler() {
-		return actionAssembler;
-	}
 
 	@Override
 	public void gameRoundEnded() {

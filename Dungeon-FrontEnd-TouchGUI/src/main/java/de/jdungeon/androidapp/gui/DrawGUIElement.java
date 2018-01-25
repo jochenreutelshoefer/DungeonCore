@@ -55,8 +55,8 @@ public abstract class DrawGUIElement implements GUIElement{
 	}
 
 	@Override
-	public void handleScrollEvent(ScrollMotion scrolling) {
-
+	public boolean handleScrollEvent(ScrollMotion scrolling) {
+		return false;
 	}
 
 	@Override

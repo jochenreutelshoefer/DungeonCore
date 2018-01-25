@@ -13,6 +13,7 @@ import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.activity.Activity;
 import de.jdungeon.androidapp.gui.activity.ItemActivityItemProvider;
 import de.jdungeon.androidapp.screen.GameScreen;
+import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -22,8 +23,8 @@ public class TakeItemActivityProvider extends ItemActivityItemProvider {
 
 	private final FigureInfo info;
 
-	public TakeItemActivityProvider(FigureInfo info, GameScreen screen) {
-		super(info, screen);
+	public TakeItemActivityProvider(FigureInfo info, Game game) {
+		super(info, game);
 		this.info = info;
 	}
 

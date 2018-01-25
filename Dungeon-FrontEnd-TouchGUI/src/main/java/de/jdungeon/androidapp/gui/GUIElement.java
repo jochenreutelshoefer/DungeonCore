@@ -27,7 +27,7 @@ public interface GUIElement {
 
 	void handleLongPressEvent(MotionEvent touch);
 
-	void handleScrollEvent(ScrollMotion scrolling);
+	boolean handleScrollEvent(ScrollMotion scrolling);
 
 	void paint(Graphics g, JDPoint viewportPosition);
 

@@ -13,7 +13,6 @@ import animation.AnimationManager;
 import animation.DefaultAnimationSet;
 import animation.DefaultAnimationTask;
 import control.JDGUIEngine2D;
-import dungeon.ChestInfo;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Position;
@@ -34,7 +33,6 @@ import game.PerceptHandler;
 import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
-import graphics.ImageManager;
 import graphics.JDImageProxy;
 import gui.Paragraphable;
 import item.ItemInfo;
@@ -62,13 +60,8 @@ import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.ZoomButton;
-import de.jdungeon.androidapp.gui.activity.ChestItemActivityProvider;
 import de.jdungeon.androidapp.gui.smartcontrol.ChestItemButtonClickedEvent;
-import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
-import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
-import de.jdungeon.androidapp.gui.activity.TakeItemActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
-import de.jdungeon.androidapp.gui.activity.UseItemActivityProvider;
 import de.jdungeon.androidapp.gui.smartcontrol.ShrineButtonClickedEvent;
 import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
 import de.jdungeon.androidapp.movieSequence.DefaultMovieSequence;
@@ -112,7 +105,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
 	private final int minRoomSize = 100;
-	private final Control control;
+	private final Control actionAssembler;
 
 	private long lastDoubleTapEventTime = -1;
 	private final RenderTimeLog renderTimeLog = new RenderTimeLog();
@@ -121,6 +114,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private long lastScaleEventTime = -1;
 	private long lastScrollEventTime = -1;
 	private boolean touchEventAfterPaint = false;
+	private SmartControl smartControl;
 
 	public JDGUIEngine2D getGui() {
 		return gui;
@@ -132,15 +126,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private final GameScreenPerceptHandler perceptHandler;
 
-	private boolean roomItemWheelShowing = false;
-	private boolean skillItemWheelShowing = false;
-	private boolean chestItemWheelShowing = false;
-	private ItemWheel itemWheelRoomItems;
-	private ItemWheel itemWheelSkills;
-	private ItemWheel itemWheelChest;
 	private boolean worldHasChanged = true;
 	private FocusManager focusManager;
-	private ItemWheel itemWheelHeroItems;
 
 	public long counterCreatingRoomDrawingObjects = 0;
 	public long counterReusingRoomDrawingObjects = 0;
@@ -156,7 +143,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.gui = gui;
 		hero.setControl(gui);
 
-		control = new Control(figureInfo, gui.getActionAssembler());
+
+		actionAssembler = new Control(figureInfo, gui);
 
 		/*
 	 * init text messages panel
@@ -237,78 +225,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), this, getGUIImage(GUIImageManager.MINUS), false));
 		this.guiElements.add(magnifier);
 
-		/*
-		init smart control
-		 */
-		int smartControlSize = 220;
-		JDDimension screenSize = this.getScreenSize();
-		SmartControl smartControl = new SmartControl(
-				new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2),
-				new JDDimension(smartControlSize, smartControlSize), this, this
-				.getGame(), figureInfo, gui.getActionAssembler());
+		smartControl = new SmartControl(new JDPoint(0, 0), getScreenSize(), this, game, figureInfo, actionAssembler, focusManager);
 		this.guiElements.add(smartControl);
-
-		/*
-		 * init hero item wheel
-		 */
-		int screenWidth = getGame().getScreenWidth();
-		int selectedIndexItem = 17;
-		int screenWidthBy2 = screenWidth / 2;
-		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
-		double wheelCenterY = getGame().getScreenHeight() * 1.8;
-		UseItemActivityProvider useItemActivityProvider = new UseItemActivityProvider(figureInfo, this);
-		itemWheelHeroItems = new ItemWheel(new JDPoint(0, wheelCenterY),
-				itemWheelSize, figureInfo, this, this.getGame(),
-				useItemActivityProvider,
-				selectedIndexItem, null, null, "Rucksack");
-		this.guiElements.add(itemWheelHeroItems);
-
-		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 50, wheelCenterY);
-		/*
-		 * init skills wheel
-		 */
-		int selectedIndex = 19;
-		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
-		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, this);
-		itemWheelSkills = new ItemWheel(itemWheelPositionRightSide,
-				itemWheelSize, figureInfo, this, this.getGame(),
-				skillActivityProvider,
-				selectedIndex,
-				skillBackgroundImage, null, "Aktivitäten");
-		this.guiElements.add(itemWheelSkills);
-
-		/*
-		init room item wheel
-		it shares position with the skill wheel, toggled on/off by the user
-		 */
-		Image floorBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.FLOOR_BG, game.getFileIO()
-				.getImageLoader()).getImage();
-
-		TakeItemActivityProvider takeActivityProvider = new TakeItemActivityProvider(figureInfo, this);
-		itemWheelRoomItems = new ItemWheel(itemWheelPositionRightSide,
-				itemWheelSize, figureInfo, this, this.getGame(),
-				takeActivityProvider,
-				selectedIndex,
-				null, floorBackGroundImage, "Boden");
-		itemWheelRoomItems.setVisible(false);
-		this.guiElements.add(itemWheelRoomItems);
-
-
-		/*
-		init chest item wheel
-		it shares position with the skill wheel, toggled on/off by the user
-		 */
-		Image chestBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.CHEST_OPEN, game.getFileIO()
-				.getImageLoader()).getImage();
-		ChestItemActivityProvider chestTakeActivityProvider = new ChestItemActivityProvider(figureInfo, this);
-		itemWheelChest = new ItemWheel(itemWheelPositionRightSide,
-				itemWheelSize, figureInfo, this, this.getGame(),
-				chestTakeActivityProvider,
-				selectedIndex,
-				null, chestBackGroundImage, "Truhe");
-		itemWheelChest.setVisible(false);
-		this.guiElements.add(itemWheelChest);
-
 
 		/*
 		 * init inventory panel
@@ -320,7 +238,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 * init character panel
 		 */
 
-		//switch off
+		//switched off - no need
 		/*
 		CharAttributeView charView = new CharAttributeView(figureInfo, this, this.getGame());
 		this.guiElements.add(charView);
@@ -347,12 +265,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return game;
 	}
 
-	public JDDimension getScreenSize() {
-		return new JDDimension(game.getScreenWidth(), game.getScreenHeight());
-	}
 
-	public Control getControl() {
-		return control;
+	public Control getActionAssembler() {
+		return actionAssembler;
 	}
 
 	private void resetDungeonRenderer() {
@@ -591,14 +506,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public synchronized void update(float arg0) {
 
-		ChestInfo chest = this.gui.getFigure().getRoomInfo().getChest();
-		if ((this.roomItemWheelShowing && this.gui.getFigure().getRoomInfo().getItems().isEmpty())
-				||
-				(this.chestItemWheelShowing && (chest == null || chest.getItemList().isEmpty()))) {
-			// we need to switch back to skills mode as user has not the respective button in this case
-			switchRightItemWheel(null);
-		}
-
 
 		/*
 		 * trigger gui-elements
@@ -672,7 +579,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 						if (clickedObject.equals(getFocusManager().getWorldFocusObject())) {
 							// object was already highlighted before
 							// hence we can trigger an action
-							control.objectClicked(clickedObject, true);
+							actionAssembler.objectClicked(clickedObject, true);
 						}
 						else {
 							getFocusManager().setWorldFocusObject(((RoomInfoEntity) clickedObject));
@@ -913,7 +820,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (clickedObject != null) {
 			if (clickedObject.equals(focusManager.getWorldFocusObject())) {
 				// it was already selected, hence we should trigger an action new
-				control.objectClicked(clickedObject, false);
+				actionAssembler.objectClicked(clickedObject, false);
 			}
 			else {
 				focusManager.setWorldFocusObject(((RoomInfoEntity) clickedObject));
@@ -1073,9 +980,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	public void focusTakenItem(ItemInfo item) {
 		focusManager.setGuiFocusObject(item);
-		this.itemWheelHeroItems.highlightEntity(item);
-		this.itemWheelChest.setHighlightOn(false);
-		this.itemWheelRoomItems.setHighlightOn(false);
+		smartControl.focusTakenItem(item);
 	}
 
 	public void newStatement(Statement s) {
@@ -1220,9 +1125,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (event instanceof VisibilityIncreasedEvent) {
 			showVisibilityIncrease(((VisibilityIncreasedEvent) event).getPoints());
 		}
-		if (event instanceof TakeItemButtonClickedEvent || event instanceof ChestItemButtonClickedEvent) {
-			switchRightItemWheel(event);
-		}
+
 		if (event instanceof ShrineButtonClickedEvent) {
 			if (!(getFigureInfo().getPos().getIndex() == Position.Pos.NE.getValue())) {
 				EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NE.getValue())));
@@ -1232,73 +1135,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (event instanceof WorldChangedEvent) {
 			worldHasChanged = true;
 		}
-	}
-
-	/**
-	 * Switch/toggle between skill- and room-items ItemWheel
-	 *
-	 * @param event kind of the event
-	 */
-	private void switchRightItemWheel(Event event) {
-		if (event == null) {
-			setSkillWheelVisible();
-		}
-		else if (event instanceof TakeItemButtonClickedEvent) {
-			if (!roomItemWheelShowing) {
-				setRoomItemsWheelVisible();
-			}
-			else {
-				// switching room item wheel off
-				setSkillWheelVisible();
-			}
-		}
-		else if (event instanceof ChestItemButtonClickedEvent) {
-			if (!chestItemWheelShowing) {
-				if (!(getFigureInfo().getPos().getIndex() == Position.Pos.NW.getValue())) {
-					EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
-				}
-				setChestItemWheelVisible();
-			}
-			else {
-				// switching chest item wheel off
-				setSkillWheelVisible();
-			}
-		}
-	}
-
-	private void setSkillWheelVisible() {
-		itemWheelChest.setVisible(false);
-		itemWheelRoomItems.setVisible(false);
-		itemWheelSkills.setVisible(true);
-		roomItemWheelShowing = false;
-		chestItemWheelShowing = false;
-		skillItemWheelShowing = true;
-	}
-
-	private void setChestItemWheelVisible() {
-		Object firstObject = itemWheelChest.highlightFirst();
-		focusManager.setGuiFocusObject((Paragraphable)firstObject);
-		itemWheelHeroItems.setHighlightOn(false);
-
-		itemWheelChest.setVisible(true);
-		itemWheelRoomItems.setVisible(false);
-		itemWheelSkills.setVisible(false);
-		roomItemWheelShowing = false;
-		chestItemWheelShowing = true;
-		skillItemWheelShowing = false;
-	}
-
-	private void setRoomItemsWheelVisible() {
-		Object firstObject = itemWheelRoomItems.highlightFirst();
-		focusManager.setGuiFocusObject((Paragraphable)firstObject);
-		itemWheelHeroItems.setHighlightOn(false);
-
-		itemWheelChest.setVisible(false);
-		itemWheelRoomItems.setVisible(true);
-		itemWheelSkills.setVisible(false);
-		roomItemWheelShowing = true;
-		chestItemWheelShowing = false;
-		skillItemWheelShowing = false;
 	}
 
 }
