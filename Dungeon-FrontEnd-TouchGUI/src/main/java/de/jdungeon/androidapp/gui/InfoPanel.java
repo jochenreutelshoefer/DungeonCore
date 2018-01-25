@@ -12,7 +12,7 @@ import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
@@ -150,8 +150,8 @@ public class InfoPanel extends SlidingGUIElement {
 			}
 			return image;
 		}
-		if (content instanceof Activity) {
-			Activity activity = (Activity) content;
+		if (content instanceof DefaultActivity) {
+			DefaultActivity activity = (DefaultActivity) content;
 			if (activity.getObject() instanceof ItemInfo) {
 				Image image = inventoryImageManager.getImage(
 						(ItemInfo) activity.getObject());

@@ -14,11 +14,11 @@ import de.jdungeon.game.Input;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 27.12.17.
  */
-public class SubGUIElementRelative extends AnimatedSmartControlElement {
+public class SubGUIElementAnimated extends AnimatedSmartControlElement {
 
 	private final JDPoint posRelative;
 
-	public SubGUIElementRelative(final JDPoint posRelative, final JDDimension dimension, SmartControlRoomPanel smartControl) {
+	public SubGUIElementAnimated(final JDPoint posRelative, final JDDimension dimension, SmartControlRoomPanel smartControl) {
 		super(posRelative, dimension, smartControl);
 		this.posRelative = posRelative;
 

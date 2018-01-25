@@ -10,9 +10,6 @@ import item.ItemInfo;
 
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
-import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.ActivityProvider;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
@@ -29,14 +26,14 @@ public abstract class ItemActivityItemProvider implements ActivityProvider {
 
 	@Override
 	public List<Activity> getActivities() {
-		List<Activity> result = new ArrayList<Activity>();
+		List<Activity> result = new ArrayList<>();
 		List<ItemInfo> figureItemList = info.getItems();
 		if(figureItemList == null) {
 			return result;
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new Activity(itemInfo));
+				result.add(new DefaultActivity(itemInfo));
 			}
 		}
 		return result;

@@ -10,9 +10,6 @@ import figure.action.TakeItemAction;
 import item.ItemInfo;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
-import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.ItemActivityItemProvider;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Game;
 
 /**
@@ -30,14 +27,14 @@ public class TakeItemActivityProvider extends ItemActivityItemProvider {
 
 	@Override
 	public List<Activity> getActivities() {
-		List<Activity> result = new ArrayList<Activity>();
+		List<Activity> result = new ArrayList<>();
 		List<ItemInfo> figureItemList = info.getRoomInfo().getItems();
 		if(figureItemList == null) {
 			return result;
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new Activity(itemInfo));
+				result.add(new DefaultActivity(itemInfo));
 			}
 		}
 		return result;

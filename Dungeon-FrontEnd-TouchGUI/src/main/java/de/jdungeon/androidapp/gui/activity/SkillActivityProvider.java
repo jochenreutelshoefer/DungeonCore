@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import control.ActionAssembler;
 import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
+import event.ExitUsedEvent;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
 import game.RoomInfoEntity;
+import gui.Paragraph;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -25,7 +26,6 @@ import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
@@ -41,11 +41,11 @@ public class SkillActivityProvider implements ActivityProvider {
 	private final Control actionAssembler;
 	private final FocusManager focusManager;
 	private boolean fightState = false;
-	private final List<Activity> activityCache = new ArrayList<Activity>();
+	private final List<Activity> activityCache = new ArrayList<>();
 
-	private final Activity attack = new Activity(ATTACK);
-	private final Activity flee = new Activity(FLEE);
-	private final Activity scout = new Activity(SCOUT);
+	private final Activity attack = new DefaultActivity(ATTACK);
+	private final Activity flee = new DefaultActivity(FLEE);
+	//private final Activity scout = new DefaultActivity(SCOUT);
 
 	private final Map<Object, Image> imageCache = new HashMap<Object, Image>();
 
@@ -83,16 +83,32 @@ public class SkillActivityProvider implements ActivityProvider {
 			activityCache.add(flee);
 		}
 		else {
-			activityCache.add(scout);
+			activityCache.add(new AbstractExecutableActivity() {
+				@Override
+				public void execute() {
+					doScout(focusManager.getWorldFocusObject());
+				}
+
+				@Override
+				public Object getObject() {
+					return SCOUT;
+				}
+
+				@Override
+				public RoomInfoEntity getTarget() {
+					return null;
+				}
+
+			});
 		}
 
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
 			if (currentFightState && spell.isFight()) {
-				activityCache.add(new Activity(spell));
+				activityCache.add(new DefaultActivity(spell));
 			}
 			if (!currentFightState && spell.isNormal()) {
-				activityCache.add(new Activity(spell));
+				activityCache.add(new DefaultActivity(spell));
 			}
 		}
 	}
@@ -113,6 +129,12 @@ public class SkillActivityProvider implements ActivityProvider {
 		if (activity == null) {
 			return;
 		}
+
+		if(activity instanceof ExecutableActivity) {
+			((ExecutableActivity)activity).execute();
+			return;
+		}
+
 		Object o = activity.getObject();
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 
@@ -142,32 +164,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			}
 		}
 		else if (o.equals(SCOUT)) {
-			PositionInRoomInfo pos = info.getPos();
-			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
-			if (possibleFleeDirection != null) {
-				DoorInfo door = info.getRoomInfo().getDoor(
-						possibleFleeDirection);
-				if (door != null) {
-					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-					actionAssembler
-							.wannaScout(possibleFleeDirection);
-				}
-			}
-			else if (highlightedEntity instanceof RoomInfo) {
-				int directionToScout = Dir.getDirFromToIfNeighbour(
-						info.getRoomNumber(),
-						((RoomInfo) highlightedEntity).getNumber());
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				actionAssembler
-						.wannaScout(directionToScout);
-			}
-			else if (highlightedEntity instanceof DoorInfo) {
-				int directionToScout = ((DoorInfo) highlightedEntity)
-						.getDir(info.getRoomNumber());
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				actionAssembler
-						.wannaScout(directionToScout);
-			}
+			doScout(highlightedEntity);
 
 		}
 		else if (o.equals(WALK)) {
@@ -273,6 +270,35 @@ public class SkillActivityProvider implements ActivityProvider {
 
 			}
 */
+		}
+	}
+
+	private void doScout(RoomInfoEntity highlightedEntity) {
+		PositionInRoomInfo pos = info.getPos();
+		RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
+		if (possibleFleeDirection != null) {
+			DoorInfo door = info.getRoomInfo().getDoor(
+					possibleFleeDirection);
+			if (door != null) {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				actionAssembler
+						.wannaScout(possibleFleeDirection);
+			}
+		}
+		else if (highlightedEntity instanceof RoomInfo) {
+			int directionToScout = Dir.getDirFromToIfNeighbour(
+					info.getRoomNumber(),
+					((RoomInfo) highlightedEntity).getNumber());
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+			actionAssembler
+					.wannaScout(directionToScout);
+		}
+		else if (highlightedEntity instanceof DoorInfo) {
+			int directionToScout = ((DoorInfo) highlightedEntity)
+					.getDir(info.getRoomNumber());
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+			actionAssembler
+					.wannaScout(directionToScout);
 		}
 	}
 

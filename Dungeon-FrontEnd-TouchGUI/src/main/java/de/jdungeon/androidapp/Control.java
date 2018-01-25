@@ -25,6 +25,7 @@ import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
 import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 public class Control extends ActionAssembler implements EventListener {
 
 	private final FigureInfo figure;

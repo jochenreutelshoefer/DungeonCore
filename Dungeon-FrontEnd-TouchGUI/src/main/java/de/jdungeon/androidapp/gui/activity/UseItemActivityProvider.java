@@ -1,14 +1,10 @@
 package de.jdungeon.androidapp.gui.activity;
 
-import control.ActionAssembler;
 import dungeon.ItemInfoOwner;
 
 import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.FocusManager;
-import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.ItemActivityItemProvider;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Game;
 
 /**

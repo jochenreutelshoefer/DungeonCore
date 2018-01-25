@@ -5,6 +5,7 @@ import spell.SpellInfo;
 
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.game.Image;
 

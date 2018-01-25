@@ -29,11 +29,12 @@ import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
-import de.jdungeon.androidapp.gui.SubGUIElementRelative;
+import de.jdungeon.androidapp.gui.SubGUIElementAnimated;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Color;
@@ -57,7 +58,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final Collection<GUIElement> shrineElements = new ArrayList<>();
 	private final GUIElement frame;
 	private final FigureInfo figure;
-	private final ActionAssembler actionAssembler;
+	private final Control actionAssembler;
 	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
 	private final int doorThickness;
@@ -77,15 +78,15 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final int positionAreaSize;
 	private final int positionAreaOffset;
 	private final GraphicObjectRenderer renderer;
-	private final SubGUIElementRelative chestGUIELement;
-	private final SubGUIElementRelative takeGUIElement;
+	private final SubGUIElementAnimated chestGUIELement;
+	private final SubGUIElementAnimated takeGUIElement;
 	private final PositionElement[] freeStepPositionElements = new PositionElement[8];
 	private final PositionElement[] dotPositionElements = new PositionElement[8];
 	private final JDPoint[] positionElementPositions = new JDPoint[8];
 	private final JDDimension positionDimension;
-	private final SubGUIElementRelative shrineElement;
+	private final SubGUIElementAnimated shrineElement;
 
-	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
+	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, Control actionAssembler) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
 		this.actionAssembler = actionAssembler;
@@ -158,7 +159,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		final JDDimension shrineDimension = new JDDimension(shrineElementSize, shrineElementSize);
 		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 11 / 14, getDimension()
 				.getHeight() / 10);
-		shrineElement = new SubGUIElementRelative(posRelativeShrine, shrineDimension, this) {
+		shrineElement = new SubGUIElementAnimated(posRelativeShrine, shrineDimension, this) {
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
@@ -172,7 +173,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		int takeElementSizeY = 24;
 		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
 		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 6, getDimension().getHeight() / 10);
-		chestGUIELement = new SubGUIElementRelative(posRelative, chestDimension, this) {
+		chestGUIELement = new SubGUIElementAnimated(posRelative, chestDimension, this) {
 
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
@@ -187,7 +188,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		int takeElementSize = 28;
 		final JDDimension takeDimension = new JDDimension(takeElementSize, takeElementSize);
 		final JDPoint posRelativeTake = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
-		takeGUIElement = new SubGUIElementRelative(posRelativeTake, takeDimension, this) {
+		takeGUIElement = new SubGUIElementAnimated(posRelativeTake, takeDimension, this) {
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);

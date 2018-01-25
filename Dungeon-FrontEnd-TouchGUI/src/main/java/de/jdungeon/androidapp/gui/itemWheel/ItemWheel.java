@@ -2,7 +2,6 @@ package de.jdungeon.androidapp.gui.itemWheel;
 
 import java.util.List;
 
-import android.util.Log;
 import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
@@ -10,6 +9,7 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.event.FocusEvent;
 import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.activity.ActivityPresenter;
 import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.screen.StandardScreen;
@@ -356,7 +356,6 @@ public class ItemWheel extends ActivityPresenter {
 					|| y < 0 - doubleImageHeight) {
 				continue;
 			}
-
 			Activity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
 				if (toDraw == this.markedPointIndex) {

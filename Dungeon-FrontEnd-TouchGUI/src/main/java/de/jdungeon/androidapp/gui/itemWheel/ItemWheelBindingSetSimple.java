@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.jdungeon.androidapp.gui.activity.Activity;
+import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 
 public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
@@ -112,7 +113,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		 * remove items not possessed any more
 		 */
 		Iterator<Activity> iterator = mapping.values().iterator();
-		List<Activity> toRemove = new ArrayList<Activity>();
+		List<Activity> toRemove = new ArrayList<>();
 		while (iterator.hasNext()) {
 			Activity itemInfo = iterator.next();
 			if (!figureItemList.contains(itemInfo)) {
@@ -164,7 +165,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
 	}
 
-	private void removeBinding(Activity itemInfo) {
+	private void removeBinding(DefaultActivity itemInfo) {
 		Set<Integer> keySet = mapping.keySet();
 		/*
 		 * TODO: optimize this using bidirectional map

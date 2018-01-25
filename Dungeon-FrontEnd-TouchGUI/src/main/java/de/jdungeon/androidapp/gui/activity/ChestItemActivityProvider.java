@@ -13,7 +13,6 @@ import figure.action.TakeItemFromChestAction;
 import item.ItemInfo;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
-import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Game;
 
 /**
@@ -42,7 +41,7 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new Activity(itemInfo));
+				result.add(new DefaultActivity(itemInfo));
 			}
 		}
 		return result;
