@@ -121,10 +121,8 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 
 			@Override
 			public void paint(Graphics g, JDPoint viewportPosition) {
-				JDPoint absolutePosition = new JDPoint(parent.getPositionOnScreen().getX() + this.getPositionOnScreen()
-						.getX(), parent.getPositionOnScreen()
-						.getY() + this.getPositionOnScreen()
-						.getY());
+				JDPoint absolutePosition = new JDPoint(parent.getPositionOnScreen().getX() + this.getPositionOnScreen().getX(),
+						parent.getPositionOnScreen().getY() + this.getPositionOnScreen().getY());
 				Color borderColor = Colors.WHITE;
 				DrawUtils.drawRectangle(g, borderColor, absolutePosition, this.getDimension());
 			}

@@ -52,10 +52,7 @@ public class SubGUIElementRelative extends AnimatedSmartControlElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		JDPoint parentPosition = parent.getPositionOnScreen();
-		JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative
-				.getY());
-		g.fillRect(absolutePosition.getX(), absolutePosition.getY(), dimension.getWidth(), dimension.getHeight(), Colors.WHITE);
+		g.fillRect(getX(), getY(), dimension.getWidth(), dimension.getHeight(), Colors.WHITE);
 	}
 
 }
