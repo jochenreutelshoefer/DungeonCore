@@ -23,7 +23,7 @@ import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
-import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
+import de.jdungeon.androidapp.gui.itemWheel.Activity;
 @Deprecated
 public class Control implements EventListener {
 
@@ -73,7 +73,7 @@ public class Control implements EventListener {
 
 
 
-	public void itemWheelActivityClicked(ItemWheelActivity item,
+	public void itemWheelActivityClicked(Activity item,
 										 RoomInfoEntity target) {
 		if (item == null) {
 			return;

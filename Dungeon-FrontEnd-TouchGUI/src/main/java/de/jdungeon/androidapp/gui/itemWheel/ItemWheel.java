@@ -9,7 +9,6 @@ import figure.hero.HeroInfo;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.FocusEvent;
-import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
@@ -18,7 +17,7 @@ import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
 
-public class ItemWheel extends AbstractGUIElement {
+public class ItemWheel extends ActivityPresenter {
 
 	private static final double PI_EIGHTEENTH = Math.PI / 18;
 	private static final double PI_THIRTHYSIXTH = Math.PI / 36;
@@ -29,7 +28,6 @@ public class ItemWheel extends AbstractGUIElement {
 	private final String title;
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
-	private int markedPointIndex;
 	private final Image itemBackgroundImage;
 	private final ItemWheelBindingSet binding;
 	private boolean justRotated = true;
@@ -57,7 +55,6 @@ public class ItemWheel extends AbstractGUIElement {
 	private float startVelocity = 0;
 	private final float maxVelocity = 50;
 
-	private boolean visible = true;
 	private final int posY;
 	private final int xLeft;
 	private final int heightFullArea;
@@ -66,10 +63,9 @@ public class ItemWheel extends AbstractGUIElement {
 	private final int xRight;
 	private final int stepDown;
 	private final int stepLength;
-	private boolean highlightOn = false;
 
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
-					 StandardScreen screen, Game game, ItemWheelBindingSet binding, int selectedIndex,
+					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
 					 Image itemBackground, Image wheelBackgroundImage, String title) {
 		super(position, dim, screen, game);
 		this.hightlightItemPosition = selectedIndex;
@@ -77,7 +73,7 @@ public class ItemWheel extends AbstractGUIElement {
 		this.title = title;
 		radius = dimension.getWidth();
 		info.getSpellBuffer();
-		this.binding = binding;
+		this.binding = new ItemWheelBindingSetSimple(selectedIndex, 36, provider);
 		//markedPointIndex = selectedIndex;
 		this.itemBackgroundImage = itemBackground;
 
@@ -107,14 +103,6 @@ public class ItemWheel extends AbstractGUIElement {
 
 	}
 
-	@Override
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
 
 	long lastEvent = 0;
 
@@ -146,7 +134,8 @@ public class ItemWheel extends AbstractGUIElement {
 			double distance = Math.hypot(touch.x - points[i].getX(), touch.y
 					- points[i].getY());
 			if (distance < 25) {
-				iconTouched(i);
+				Activity activity = getActivityForIndex(i);
+				iconTouched(activity);
 				break;
 			}
 		}
@@ -154,42 +143,40 @@ public class ItemWheel extends AbstractGUIElement {
 		return super.handleTouchEvent(touch);
 	}
 
+	@Override
 	public void highlightEntity(Object object) {
 		// we need to update the binding set to have the new item included
 		binding.update(0);
 
+		int index = getObjectIndex(object);
+		centerOnIndex(index);
+	}
+
+	private int getObjectIndex(Object object) {
 		for (int i = 0; i < binding.getBindingSize(); i++) {
-			ItemWheelActivity activity = binding.getActivity(i);
+			Activity activity = binding.getActivity(i);
 			if (activity != null) {
 				if (activity.getObject().equals(object)) {
-					centerOnIndex(i);
-					break;
+					return i;
 				}
 			}
 		}
+		return -1;
 	}
 
-	public Object highlightFirst() {
-		// we need to update the binding set to have the new item included
-
-		ItemWheelActivityProvider provider = binding.getProvider();
-		List<ItemWheelActivity> activities = provider.getActivities();
-		if(!activities.isEmpty()) {
-			ItemWheelActivity activity = activities.get(0);
-			Object object = activity.getObject();
-			highlightEntity(object);
-			return object;
-		}
-		return null;
+	private int getActivityIndex(Activity activity) {
+		return getObjectIndex(activity.getObject());
 	}
 
-	public void setHighlightOn(boolean val) {
-		this.highlightOn = val;
+	private Activity getActivityForIndex(int index) {
+		return binding.getActivity(index);
 	}
 
-	private void iconTouched(int i) {
+	@Override
+	protected void iconTouched(Activity activity) {
+		int i = getActivityIndex(activity);
 		if (i == markedPointIndex) {
-			ItemWheelActivity infoEntity = binding.getActivity(i);
+			Activity infoEntity = binding.getActivity(i);
 			if (infoEntity != null) {
 				binding.getProvider().activityPressed(infoEntity);
 			}
@@ -199,7 +186,23 @@ public class ItemWheel extends AbstractGUIElement {
 		}
 	}
 
-	private void centerOnIndex(int i) {
+	@Override
+	public Object highlightFirst() {
+		// we need to update the binding set to have the new item included
+
+		ActivityProvider provider = binding.getProvider();
+		List<Activity> activities = provider.getActivities();
+		if(!activities.isEmpty()) {
+			Activity activity = activities.get(0);
+			Object object = activity.getObject();
+			highlightEntity(object);
+			return object;
+		}
+		return null;
+	}
+
+	@Override
+	protected void centerOnIndex(int i) {
 		setMarkedIndex(i);
 
 		// scroll element to center position
@@ -237,7 +240,7 @@ public class ItemWheel extends AbstractGUIElement {
 		highlightOn = true;
 
 		// show info about element
-		ItemWheelActivity activity = binding.getActivity(markedPointIndex);
+		Activity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
 			EventManager.getInstance().fireEvent(new FocusEvent(activity));
 		}
@@ -280,7 +283,7 @@ public class ItemWheel extends AbstractGUIElement {
 			}
 		}
 		binding.update(time);
-		ItemWheelActivity lastAdded = binding.getAndClearLastAdded();
+		Activity lastAdded = binding.getAndClearLastAdded();
 		if (lastAdded != null) {
 			this.highlightEntity(lastAdded.getObject());
 		}
@@ -352,7 +355,7 @@ public class ItemWheel extends AbstractGUIElement {
 				continue;
 			}
 
-			ItemWheelActivity activity = this.binding.getActivity(toDraw);
+			Activity activity = this.binding.getActivity(toDraw);
 			if (activity != null) {
 
 

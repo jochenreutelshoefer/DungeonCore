@@ -8,13 +8,11 @@ import java.util.Map;
 import dungeon.ItemInfoOwner;
 import item.ItemInfo;
 
-import de.jdungeon.androidapp.Control;
-import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;
 
-public abstract class ItemActivityItemProvider implements ItemWheelActivityProvider {
+public abstract class ItemActivityItemProvider implements ActivityProvider {
 
 	private final ItemInfoOwner info;
 	protected final GameScreen screen;
@@ -28,22 +26,22 @@ public abstract class ItemActivityItemProvider implements ItemWheelActivityProvi
 	}
 
 	@Override
-	public List<ItemWheelActivity> getActivities() {
-		List<ItemWheelActivity> result = new ArrayList<ItemWheelActivity>();
+	public List<Activity> getActivities() {
+		List<Activity> result = new ArrayList<Activity>();
 		List<ItemInfo> figureItemList = info.getItems();
 		if(figureItemList == null) {
 			return result;
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new ItemWheelActivity(itemInfo));
+				result.add(new Activity(itemInfo));
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public Image getActivityImage(ItemWheelActivity a) {
+	public Image getActivityImage(Activity a) {
 
 		ItemInfo item = (ItemInfo) a.getObject();
 		Class itemClass = item.getItemClass();

@@ -3,7 +3,6 @@ package de.jdungeon.androidapp.gui.itemWheel;
 import java.util.ArrayList;
 import java.util.List;
 
-import dungeon.ItemInfoOwner;
 import event.ActionEvent;
 import event.EventManager;
 import figure.FigureInfo;
@@ -27,22 +26,22 @@ public class TakeItemActivityProvider extends ItemActivityItemProvider {
 	}
 
 	@Override
-	public List<ItemWheelActivity> getActivities() {
-		List<ItemWheelActivity> result = new ArrayList<ItemWheelActivity>();
+	public List<Activity> getActivities() {
+		List<Activity> result = new ArrayList<Activity>();
 		List<ItemInfo> figureItemList = info.getRoomInfo().getItems();
 		if(figureItemList == null) {
 			return result;
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new ItemWheelActivity(itemInfo));
+				result.add(new Activity(itemInfo));
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public void activityPressed(ItemWheelActivity infoEntity) {
+	public void activityPressed(Activity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		EventManager.getInstance().fireEvent(new ActionEvent(new TakeItemAction((ItemInfo)infoEntity.getObject())));
 	}

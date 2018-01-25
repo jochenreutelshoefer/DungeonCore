@@ -17,7 +17,7 @@ public class UseItemActivityProvider extends ItemActivityItemProvider {
 	}
 
 	@Override
-	public void activityPressed(ItemWheelActivity infoEntity) {
+	public void activityPressed(Activity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		// TODO: refactor, remove control, direct event processing by ActionAssembler
 		Control control = screen.getControl();

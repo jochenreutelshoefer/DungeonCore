@@ -257,10 +257,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		int screenWidthBy2 = screenWidth / 2;
 		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
 		double wheelCenterY = getGame().getScreenHeight() * 1.8;
+		UseItemActivityProvider useItemActivityProvider = new UseItemActivityProvider(figureInfo, this);
 		itemWheelHeroItems = new ItemWheel(new JDPoint(0, wheelCenterY),
 				itemWheelSize, figureInfo, this, this.getGame(),
-				new ItemWheelBindingSetSimple(selectedIndexItem, 36,
-						new UseItemActivityProvider(figureInfo, this)),
+				useItemActivityProvider,
 				selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
@@ -270,10 +270,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		int selectedIndex = 19;
 		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
+		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, this);
 		itemWheelSkills = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, this, this.getGame(),
-				new ItemWheelBindingSetSimple(selectedIndex, 36,
-						new SkillActivityProvider(figureInfo, this)),
+				skillActivityProvider,
 				selectedIndex,
 				skillBackgroundImage, null, "Aktivitäten");
 		this.guiElements.add(itemWheelSkills);
@@ -285,10 +285,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		Image floorBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.FLOOR_BG, game.getFileIO()
 				.getImageLoader()).getImage();
 
+		TakeItemActivityProvider takeActivityProvider = new TakeItemActivityProvider(figureInfo, this);
 		itemWheelRoomItems = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, this, this.getGame(),
-				new ItemWheelBindingSetSimple(selectedIndex, 36,
-						new TakeItemActivityProvider(figureInfo, this)),
+				takeActivityProvider,
 				selectedIndex,
 				null, floorBackGroundImage, "Boden");
 		itemWheelRoomItems.setVisible(false);
@@ -301,10 +301,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		Image chestBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.CHEST_OPEN, game.getFileIO()
 				.getImageLoader()).getImage();
+		ChestItemActivityProvider chestTakeActivityProvider = new ChestItemActivityProvider(figureInfo, this);
 		itemWheelChest = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, this, this.getGame(),
-				new ItemWheelBindingSetSimple(selectedIndex, 36,
-						new ChestItemActivityProvider(figureInfo, this)),
+				chestTakeActivityProvider,
 				selectedIndex,
 				null, chestBackGroundImage, "Truhe");
 		itemWheelChest.setVisible(false);

@@ -4,7 +4,7 @@ import spell.AbstractSpell;
 import spell.SpellInfo;
 
 import de.jdungeon.androidapp.gui.GUIImageManager;
-import de.jdungeon.androidapp.gui.itemWheel.ItemWheelActivity;
+import de.jdungeon.androidapp.gui.itemWheel.Activity;
 import de.jdungeon.androidapp.gui.itemWheel.SkillActivityProvider;
 import de.jdungeon.game.Image;
 
@@ -16,7 +16,7 @@ public class SkillImageManager {
 		this.guiImageManager = guiImageManager;
 	}
 
-	public Image getSkillImage(ItemWheelActivity activity) {
+	public Image getSkillImage(Activity activity) {
 		return getImage(activity.getObject());
 	}
 

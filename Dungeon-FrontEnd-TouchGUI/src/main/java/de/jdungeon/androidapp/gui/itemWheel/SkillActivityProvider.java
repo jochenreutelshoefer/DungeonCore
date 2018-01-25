@@ -16,7 +16,6 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
 import game.RoomInfoEntity;
-import gui.Paragraphable;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -26,7 +25,7 @@ import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.game.Image;
 
-public class SkillActivityProvider implements ItemWheelActivityProvider {
+public class SkillActivityProvider implements ActivityProvider {
 
 	public static final String ATTACK = "Angreifen";
 	public static final String SCOUT = "Spähen";
@@ -37,11 +36,11 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 	private final HeroInfo info;
 	private final GameScreen screen;
 	private boolean fightState = false;
-	private final List<ItemWheelActivity> activityCache = new ArrayList<ItemWheelActivity>();
+	private final List<Activity> activityCache = new ArrayList<Activity>();
 
-	private final ItemWheelActivity attack = new ItemWheelActivity(ATTACK);
-	private final ItemWheelActivity flee = new ItemWheelActivity(FLEE);
-	private final ItemWheelActivity scout = new ItemWheelActivity(SCOUT);
+	private final Activity attack = new Activity(ATTACK);
+	private final Activity flee = new Activity(FLEE);
+	private final Activity scout = new Activity(SCOUT);
 
 	private final Map<Object, Image> imageCache = new HashMap<Object, Image>();
 
@@ -56,7 +55,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 	}
 
 	@Override
-	public List<ItemWheelActivity> getActivities() {
+	public List<Activity> getActivities() {
 		Boolean currentFightstate = info.getRoomInfo().fightRunning();
 		if (currentFightstate != null && currentFightstate == fightState) {
 			return activityCache;
@@ -84,16 +83,16 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
 			if (currentFightState && spell.isFight()) {
-				activityCache.add(new ItemWheelActivity(spell));
+				activityCache.add(new Activity(spell));
 			}
 			if (!currentFightState && spell.isNormal()) {
-				activityCache.add(new ItemWheelActivity(spell));
+				activityCache.add(new Activity(spell));
 			}
 		}
 	}
 
 	@Override
-	public Image getActivityImage(ItemWheelActivity a) {
+	public Image getActivityImage(Activity a) {
 		Image image = imageCache.get(a.getObject());
 		if (image != null) {
 			return image;
@@ -104,7 +103,7 @@ public class SkillActivityProvider implements ItemWheelActivityProvider {
 	}
 
 	@Override
-	public void activityPressed(ItemWheelActivity activity) {
+	public void activityPressed(Activity activity) {
 		if (activity == null) {
 			return;
 		}

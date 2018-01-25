@@ -1,17 +1,11 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
 
-public interface ItemWheelBindingSet {
+public interface ItemWheelBindingSet extends ActivitySource{
 
-	ItemWheelActivity getActivity(int index);
 
-	void update(float time);
-
-	ItemWheelActivityProvider getProvider();
-
-	int getNumberOfObjects();
 
 	int getBindingSize();
 
-	ItemWheelActivity getAndClearLastAdded();
+	Activity getAndClearLastAdded();
 }
