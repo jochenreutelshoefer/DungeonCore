@@ -8,16 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 import dungeon.Dir;
-import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
-import event.ExitUsedEvent;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import game.InfoEntity;
 import game.RoomInfoEntity;
-import gui.Paragraph;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -76,7 +73,7 @@ public class SkillActivityProvider implements ActivityProvider {
 		return activityCache;
 	}
 
-	private void updateActivityList(Boolean currentFightState) {
+	private void updateActivityList(final Boolean currentFightState) {
 		activityCache.clear();
 		if (currentFightState != null && currentFightState) {
 			activityCache.add(attack);
@@ -86,7 +83,12 @@ public class SkillActivityProvider implements ActivityProvider {
 			activityCache.add(new AbstractExecutableActivity() {
 				@Override
 				public void execute() {
-					doScout(focusManager.getWorldFocusObject());
+					actionAssembler.scoutingActivity(getTarget());
+				}
+
+				@Override
+				public boolean isCurrentlyPossible() {
+					return !currentFightState;
 				}
 
 				@Override
@@ -96,7 +98,7 @@ public class SkillActivityProvider implements ActivityProvider {
 
 				@Override
 				public RoomInfoEntity getTarget() {
-					return null;
+					return focusManager.getWorldFocusObject();
 				}
 
 			});
@@ -164,7 +166,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			}
 		}
 		else if (o.equals(SCOUT)) {
-			doScout(highlightedEntity);
+			actionAssembler.scoutingActivity(highlightedEntity);
 
 		}
 		else if (o.equals(WALK)) {
@@ -273,33 +275,10 @@ public class SkillActivityProvider implements ActivityProvider {
 		}
 	}
 
-	private void doScout(RoomInfoEntity highlightedEntity) {
-		PositionInRoomInfo pos = info.getPos();
-		RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
-		if (possibleFleeDirection != null) {
-			DoorInfo door = info.getRoomInfo().getDoor(
-					possibleFleeDirection);
-			if (door != null) {
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				actionAssembler
-						.wannaScout(possibleFleeDirection);
-			}
-		}
-		else if (highlightedEntity instanceof RoomInfo) {
-			int directionToScout = Dir.getDirFromToIfNeighbour(
-					info.getRoomNumber(),
-					((RoomInfo) highlightedEntity).getNumber());
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			actionAssembler
-					.wannaScout(directionToScout);
-		}
-		else if (highlightedEntity instanceof DoorInfo) {
-			int directionToScout = ((DoorInfo) highlightedEntity)
-					.getDir(info.getRoomNumber());
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			actionAssembler
-					.wannaScout(directionToScout);
-		}
+	@Override
+	public boolean isCurrentlyPossible(Activity infoEntity) {
+		// TODO : implement
+		return true;
 	}
 
 	private Set<Class<? extends InfoEntity>> getEntityClasses(List<? extends InfoEntity> targetEntitiesInScope) {

@@ -33,6 +33,10 @@ public class ItemWheel extends ActivityPresenter {
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
 	private boolean justRotated = true;
+
+	private static final int defaultImageWidth = 50;
+
+
 	private final int screenPlusDefaultImageWidth = screenWidth
 			+ defaultImageWidth;
 	private final int screenPlusDefaultImageHeight = screenHeight
@@ -57,7 +61,7 @@ public class ItemWheel extends ActivityPresenter {
 	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
 					 Image itemBackground, Image wheelBackgroundImage, String title) {
-		super(position, dim, screen, game, provider, itemBackground);
+		super(position, dim, screen, game, provider, itemBackground, defaultImageWidth);
 		this.hightlightItemPosition = selectedIndex;
 		this.wheelBackgroundImage = wheelBackgroundImage;
 		this.title = title;
@@ -90,6 +94,7 @@ public class ItemWheel extends ActivityPresenter {
 		stepDown = 10;
 		stepLength = 50;
 
+		positionCorrection = true;
 	}
 
 	long lastEvent = 0;

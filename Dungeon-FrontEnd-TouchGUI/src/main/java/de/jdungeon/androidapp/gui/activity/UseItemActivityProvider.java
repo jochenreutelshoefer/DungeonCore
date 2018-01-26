@@ -30,4 +30,9 @@ public class UseItemActivityProvider extends ItemActivityItemProvider {
 		actionAssembler.itemWheelActivityClicked(infoEntity,
 				focusManager.getWorldFocusObject());
 	}
+
+	@Override
+	public boolean isCurrentlyPossible(Activity infoEntity) {
+		return true;
+	}
 }

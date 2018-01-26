@@ -4,7 +4,6 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
-import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
@@ -22,41 +21,50 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 	protected boolean highlightOn = false;
 	protected Activity markedActivity;
 
-	protected final int defaultImageWidth = 50;
-	protected final int defaultImageHeight = 50;
-	protected final int defaultImageWidthHalf = defaultImageWidth / 2;
-	protected final int defaultImageHeightHalf = defaultImageHeight / 2;
-	protected final int doubleImageWidth = defaultImageWidth * 2;
-	protected final int doubleImageHeight = defaultImageHeight * 2;
 	protected final int backgroundPanelOffset = 7;
-	protected final int doubleBackgroundPanelOffset = 2 * backgroundPanelOffset;
-	protected final int screenWidth = getGame().getScreenWidth();
-	protected final int screenHeight = getGame().getScreenHeight();
-	private final int doubleWidthPlusOffset = doubleImageWidth
-			+ doubleBackgroundPanelOffset;
-	private final int doubleHeightPlusOffset = doubleImageHeight
-			+ doubleBackgroundPanelOffset;
 
+	protected int defaultImageWidth;
+	protected int defaultImageHeight;
+
+	protected  int defaultImageWidthHalf;
+	protected  int defaultImageHeightHalf;
+	protected  int doubleImageWidth;
+	protected  int doubleImageHeight;
+	protected  int doubleBackgroundPanelOffset;
+	private final int doubleWidthPlusOffset;
+	private final int doubleHeightPlusOffset;
+
+	private final int positionCorrectionLarge;
+	private final int positionCorrectionSmall;
+	protected boolean positionCorrection = false;
 
 	protected final Image itemBackgroundImage;
 
 
-	public ActivityPresenter(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, ActivityProvider provider, Image itemBg) {
+	protected final int screenWidth = getGame().getScreenWidth();
+	protected final int screenHeight = getGame().getScreenHeight();
+
+
+	public ActivityPresenter(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, ActivityProvider provider, Image itemBg, int defaultTileSize) {
 		super(position, dimension, screen, game);
 		this.provider = provider;
 		this.itemBackgroundImage = itemBg;
-	}
+		defaultImageWidth = defaultTileSize;
+		defaultImageHeight = defaultTileSize;
+		defaultImageWidthHalf = defaultImageWidth / 2;
+		defaultImageHeightHalf = defaultImageHeight / 2;
+		doubleImageWidth = defaultImageWidth * 2;
+		doubleImageHeight = defaultImageHeight * 2;
+		doubleBackgroundPanelOffset = 2 * backgroundPanelOffset;
+		doubleWidthPlusOffset = doubleImageWidth
+				+ doubleBackgroundPanelOffset;
+		doubleHeightPlusOffset = doubleImageHeight
+				+ doubleBackgroundPanelOffset;
 
-	public ActivityPresenter(JDPoint position, JDDimension dimension, ActivityProvider provider, Image itemBg) {
-		super(position, dimension);
-		this.provider = provider;
-		this.itemBackgroundImage = itemBg;
-	}
+		positionCorrectionLarge = defaultImageHeight;
+		positionCorrectionSmall = defaultImageHeightHalf;
 
-	public ActivityPresenter(JDPoint position, JDDimension dimension, GUIElement parent, ActivityProvider provider, Image itemBg) {
-		super(position, dimension, parent);
-		this.provider = provider;
-		this.itemBackgroundImage = itemBg;
+
 	}
 
 	@Override
@@ -95,42 +103,52 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 	}
 	protected void drawActivityLarge(Graphics g, int x, int y, Activity activity) {
 		Image im = provider.getActivityImage(activity);
-		int yMinusDefaultHeight = y - defaultImageHeight;
-		int xMinusDefaultWidth = x - defaultImageWidth;
+		int posX = x;
+		int posY = y;
+		if(positionCorrection) {
+			posX = x - positionCorrectionLarge;
+			posY = y - positionCorrectionLarge;
+		}
 					/*
 					draw highlighting circle
 					 */
-		drawHighlighting(g, yMinusDefaultHeight, xMinusDefaultWidth);
+		drawHighlighting(g, posY, posX);
 
 					/*
 					 * draw background if existing
 					 */
-		drawActivityBackgroundLarge(g, yMinusDefaultHeight, xMinusDefaultWidth);
+		drawActivityBackgroundLarge(g, posY, posX);
 
 					/*
 					 * draw actual item
 					 */
-		g.drawScaledImage(im, xMinusDefaultWidth,
-				yMinusDefaultHeight, doubleImageWidth,
+		g.drawScaledImage(im, posX,
+				posY, doubleImageWidth,
 				doubleImageHeight, 0, 0, im.getWidth(),
 				im.getHeight());
 	}
 
 	protected void drawActivity(Graphics g, int x, int y, Activity activity) {
 		Image im = provider.getActivityImage(activity);
-		int xMinusDefaultWidthHalf = x - defaultImageWidthHalf;
-		int yMinusDefaultHeightHalf = y - defaultImageHeightHalf;
+
+		int posX = x;
+		int posY = y;
+		if(positionCorrection) {
+			posX = x - positionCorrectionSmall;
+			posY = y - positionCorrectionSmall;
+		}
+
 
 					/*
 					 * draw background if existing
 					 */
-		drawActivityBackground(g, xMinusDefaultWidthHalf, yMinusDefaultHeightHalf);
+		drawActivityBackground(g, posX, posY);
 
 					/*
 					 * draw actual item
 					 */
-		g.drawScaledImage(im, xMinusDefaultWidthHalf,
-				yMinusDefaultHeightHalf, defaultImageWidth,
+		g.drawScaledImage(im, posX,
+				posY, defaultImageWidth,
 				defaultImageHeight, 0, 0, im.getWidth(),
 				im.getHeight());
 	}

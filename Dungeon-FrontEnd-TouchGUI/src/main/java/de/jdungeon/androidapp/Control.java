@@ -7,9 +7,11 @@ import audio.AudioEffectsManager;
 import control.ActionAssembler;
 import control.JDGUIEngine2D;
 import dungeon.ChestInfo;
+import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
+import dungeon.util.RouteInstruction;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -71,6 +73,36 @@ public class Control extends ActionAssembler implements EventListener {
 		if (o instanceof ItemInfo) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 			wannaUseItem((ItemInfo) o, target, false);
+		}
+	}
+
+	public void scoutingActivity(RoomInfoEntity highlightedEntity) {
+		if(highlightedEntity != null) {
+			if (highlightedEntity instanceof RoomInfo) {
+				int directionToScout = Dir.getDirFromToIfNeighbour(
+						figure.getRoomNumber(),
+						((RoomInfo) highlightedEntity).getNumber());
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				this.wannaScout(directionToScout);
+			}
+			else if (highlightedEntity instanceof DoorInfo) {
+				int directionToScout = ((DoorInfo) highlightedEntity).getDir(figure.getRoomNumber());
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				this.wannaScout(directionToScout);
+			}
+		}
+		else {
+			PositionInRoomInfo pos = figure.getPos();
+			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
+
+			if (possibleFleeDirection != null) {
+				DoorInfo door = figure.getRoomInfo().getDoor(
+						possibleFleeDirection);
+				if (door != null) {
+					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+					this.wannaScout(possibleFleeDirection);
+				}
+			}
 		}
 	}
 

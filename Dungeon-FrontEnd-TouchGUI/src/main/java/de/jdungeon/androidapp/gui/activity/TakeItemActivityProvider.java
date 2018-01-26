@@ -45,4 +45,9 @@ public class TakeItemActivityProvider extends ItemActivityItemProvider {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		EventManager.getInstance().fireEvent(new ActionEvent(new TakeItemAction((ItemInfo)infoEntity.getObject())));
 	}
+
+	@Override
+	public boolean isCurrentlyPossible(Activity infoEntity) {
+		return true;
+	}
 }

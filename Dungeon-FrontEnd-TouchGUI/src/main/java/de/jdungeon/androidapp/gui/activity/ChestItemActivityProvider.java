@@ -5,6 +5,7 @@ import java.util.List;
 
 import dungeon.ChestInfo;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import event.ActionEvent;
 import event.EventManager;
 import figure.FigureInfo;
@@ -54,5 +55,11 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 			EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
 		}
 		EventManager.getInstance().fireEvent(new ActionEvent(new TakeItemFromChestAction((ItemInfo)infoEntity.getObject())));
+	}
+
+	@Override
+	public boolean isCurrentlyPossible(Activity infoEntity) {
+		PositionInRoomInfo chestPos = info.getRoomInfo().getPositionInRoom(0);
+		return info.getRoomInfo().getChest() != null && (!chestPos.isOccupied() || chestPos.getFigure().equals(info));
 	}
 }

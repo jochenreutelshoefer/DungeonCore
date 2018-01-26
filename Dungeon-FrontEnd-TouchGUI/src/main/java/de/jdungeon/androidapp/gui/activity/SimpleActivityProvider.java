@@ -38,4 +38,9 @@ public class SimpleActivityProvider implements ActivityProvider{
 	public void activityPressed(Activity infoEntity) {
 
 	}
+
+	@Override
+	public boolean isCurrentlyPossible(Activity infoEntity) {
+		return false;
+	}
 }

@@ -12,4 +12,6 @@ public interface ActivityProvider {
 
 	void activityPressed(Activity infoEntity);
 
+	boolean isCurrentlyPossible(Activity infoEntity);
+
 }

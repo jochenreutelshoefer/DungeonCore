@@ -8,5 +8,6 @@ public interface ExecutableActivity extends Activity {
 
 	void execute();
 
+	boolean isCurrentlyPossible();
 
 }

@@ -4,38 +4,43 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import control.ActionAssembler;
 import dungeon.ChestInfo;
+import dungeon.Dir;
 import dungeon.JDPoint;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
+import dungeon.util.RouteInstruction;
 import event.ActionEvent;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
-import event.WorldChangedEvent;
-import figure.FigureInfo;
 import figure.action.StepAction;
 import figure.hero.HeroInfo;
+import game.RoomInfoEntity;
 import graphics.ImageManager;
 import gui.Paragraphable;
 import item.ItemInfo;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.Control;
-import de.jdungeon.androidapp.event.FocusEvent;
-import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
-import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GUIImageManager;
+import de.jdungeon.androidapp.gui.activity.AbstractExecutableActivity;
+import de.jdungeon.androidapp.gui.activity.Activity;
 import de.jdungeon.androidapp.gui.activity.ActivityPresenter;
+import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.gui.activity.ChestItemActivityProvider;
+import de.jdungeon.androidapp.gui.activity.SimpleActivityProvider;
+import de.jdungeon.androidapp.gui.activity.SingleActivityPresenter;
 import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
 import de.jdungeon.androidapp.gui.activity.UseItemActivityProvider;
 import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
+import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
@@ -92,12 +97,31 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		init smart control
 		 */
 		int smartControlSize = 220;
+		int directionActivityTilesSize = 35;
 		JDDimension screenSize = screen.getScreenSize();
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - smartControlSize - 2 * directionActivityTilesSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2);
+		JDDimension smartControlRoomPanelSize = new JDDimension(smartControlSize, smartControlSize);
 		SmartControlRoomPanel smartControl = new SmartControlRoomPanel(
-				new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2),
-				new JDDimension(smartControlSize, smartControlSize), screen, this
+				smartControlRoomPanelPosition,
+				smartControlRoomPanelSize, screen, this
 				.getGame(), figureInfo, actionAssembler);
 		this.guiElements.add(smartControl);
+
+		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
+
+		/*
+		add additional activities around the smart control room panel
+		 */
+		SkillImageManager skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+		JDDimension directionActivityDimension = new JDDimension(directionActivityTilesSize, directionActivityTilesSize);
+		JDPoint scoutWestPosition = new JDPoint(smartControlRoomPanelPosition.getX()-directionActivityTilesSize, smartControlRoomPanelPosition.getY()+smartControlSize/2 - directionActivityTilesSize/2);
+		JDPoint scoutEastPosition = new JDPoint(smartControlRoomPanelPosition.getX()+smartControlRoomPanelSize.getWidth(), smartControlRoomPanelPosition.getY()+smartControlSize/2 - directionActivityTilesSize/2);
+		JDPoint scoutNorthPosition = new JDPoint(smartControlRoomPanelPosition.getX()+smartControlRoomPanelSize.getWidth()/2 - directionActivityTilesSize/2, smartControlRoomPanelPosition.getY() - directionActivityTilesSize);
+		JDPoint scoutSouthPosition = new JDPoint(smartControlRoomPanelPosition.getX()+smartControlRoomPanelSize.getWidth()/2 - directionActivityTilesSize/2, smartControlRoomPanelPosition.getY() + smartControlRoomPanelSize.getHeight());
+		addScoutButton(scoutWestPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.West);
+		addScoutButton(scoutEastPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.East);
+		addScoutButton(scoutNorthPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.North);
+		addScoutButton(scoutSouthPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.South);
 
 		/*
 		 * init hero item wheel
@@ -119,7 +143,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		 * init skills wheel
 		 */
 		int selectedIndex = 19;
-		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
+
 		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, game, actionAssembler, focusManager);
 		itemWheelSkills = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, screen, this.getGame(),
@@ -161,6 +185,37 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		this.guiElements.add(itemWheelChest);
 
 
+	}
+
+	private void addScoutButton(JDPoint tilePosition, int directionActivityTilesSize, Image skillBackgroundImage, SkillImageManager skillImageManager, JDDimension directionActivityDimension, final RouteInstruction.Direction dir) {
+			Activity scoutActivity = new AbstractExecutableActivity() {
+			@Override
+			public void execute() {
+				actionAssembler.scoutingActivity(getTarget());
+			}
+
+			@Override
+			public boolean isCurrentlyPossible() {
+				RoomInfo room = figureInfo.getRoomInfo();
+				PositionInRoomInfo pos = room.getPositionInRoom(7);
+				Boolean noFight = !(room.fightRunning() != null && room.fightRunning().booleanValue());
+				return noFight && room.getDoor(dir) != null && (!pos.isOccupied() || pos
+						.getFigure().equals(figureInfo));
+			}
+
+			@Override
+			public Object getObject() {
+				return SkillActivityProvider.SCOUT;
+			}
+
+			@Override
+			public RoomInfoEntity getTarget() {
+				return figureInfo.getRoomInfo().getDoor(dir);
+			}
+		};
+		ActivityProvider simpleProvider = new SimpleActivityProvider(scoutActivity, skillImageManager.getImage(SkillActivityProvider.SCOUT));
+		ActivityPresenter scoutWestPresenter = new SingleActivityPresenter(tilePosition, directionActivityDimension, screen, game, simpleProvider, skillBackgroundImage, directionActivityTilesSize);
+		this.guiElements.add(scoutWestPresenter);
 	}
 
 	@Override
