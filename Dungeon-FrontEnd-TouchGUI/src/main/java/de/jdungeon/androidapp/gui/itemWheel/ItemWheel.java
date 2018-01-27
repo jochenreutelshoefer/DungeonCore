@@ -140,7 +140,10 @@ public class ItemWheel extends ActivityPresenter {
 	public void highlightEntity(Object object) {
 		// we need to update the binding set to have the new item included
 		binding.update(0);
-		centerOnIndex(getObjectActivity(object));
+		Activity objectActivity = getObjectActivity(object);
+		if(objectActivity != null) {
+			centerOnIndex(objectActivity);
+		}
 	}
 
 	private int getObjectIndex(Object object) {

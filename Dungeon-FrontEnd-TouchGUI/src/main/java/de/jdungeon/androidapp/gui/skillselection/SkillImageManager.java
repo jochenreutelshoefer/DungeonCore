@@ -28,7 +28,8 @@ public class SkillImageManager {
 		}
 		else if (o.equals(SkillActivityProvider.SCOUT)) {
 			//im = guiImageManager.getImage("guiItems/spy-icon.gif");
-			im = guiImageManager.getImage("guiItems/44741-eye-shape-variant-interface-view-symbol.png");
+			//im = guiImageManager.getImage("guiItems/44741-eye-shape-variant-interface-view-symbol.png");
+			im = guiImageManager.getImage("guiItems/eye130x130.png");
 			// } else if (o.equals(WALK)) {
 			// im = GUIImageManager.getImage(GUIImageManager.FOOT_ICON,
 			// screen.getGame());

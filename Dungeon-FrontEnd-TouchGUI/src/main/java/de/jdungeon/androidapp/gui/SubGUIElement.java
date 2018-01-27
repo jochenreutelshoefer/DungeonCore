@@ -3,6 +3,7 @@ package de.jdungeon.androidapp.gui;
 import dungeon.JDPoint;
 import util.JDDimension;
 
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 
 /**
@@ -14,8 +15,8 @@ public abstract class SubGUIElement extends AbstractGUIElement {
 	protected final GUIElement parent;
 
 	private final int x;
-	private final int y;
 
+	private final int y;
 	public SubGUIElement(JDPoint position, JDDimension dimension,
 						 GUIElement parent) {
 		super(position, dimension);
@@ -25,13 +26,17 @@ public abstract class SubGUIElement extends AbstractGUIElement {
 		x = parent.getPositionOnScreen().getX() + position.getX();
 	}
 
-
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		// for development only
 		/*
 		g.drawRect(parent.getPositionOnScreen().getX() +position.getX(), parent.getPositionOnScreen().getY() + position.getY(), dimension.getWidth(), dimension.getHeight(), Colors.BLUE);
 		*/
+	}
+
+
+	public GUIElement getParent() {
+		return parent;
 	}
 
 

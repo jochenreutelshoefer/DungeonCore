@@ -90,10 +90,10 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		/*
 		init smart control
 		 */
-		int smartControlSize = 220;
+		int smartControlSize = 290;
 		int directionActivityTilesSize = 35;
 		JDDimension screenSize = screen.getScreenSize();
-		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - smartControlSize - directionActivityTilesSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2);
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2);
 		JDDimension smartControlRoomPanelSize = new JDDimension(smartControlSize, smartControlSize);
 		smartControl = new SmartControlRoomPanel(
 				smartControlRoomPanelPosition,
@@ -106,6 +106,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		/*
 		add additional activities around the smart control room panel
 		 */
+		/*
 		SkillImageManager skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 		JDDimension directionActivityDimension = new JDDimension(directionActivityTilesSize, directionActivityTilesSize);
 		JDPoint scoutWestPosition = new JDPoint(smartControlRoomPanelPosition.getX()-directionActivityTilesSize, smartControlRoomPanelPosition.getY()+smartControlSize/2 - directionActivityTilesSize/2);
@@ -116,6 +117,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		addScoutButton(scoutEastPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.East);
 		addScoutButton(scoutNorthPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.North);
 		addScoutButton(scoutSouthPosition, directionActivityTilesSize, skillBackgroundImage, skillImageManager, directionActivityDimension, RouteInstruction.Direction.South);
+		*/
 
 		/*
 		 * init hero item wheel
@@ -128,8 +130,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		UseItemActivityProvider useItemActivityProvider = new UseItemActivityProvider(figureInfo, game, guiControl, focusManager);
 		itemWheelHeroItems = new ItemWheel(new JDPoint(0, wheelCenterY),
 				itemWheelSize, figureInfo, screen, this.getGame(),
-				useItemActivityProvider,
-				selectedIndexItem, null, null, "Rucksack");
+				useItemActivityProvider, selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
 
 		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 50, wheelCenterY);

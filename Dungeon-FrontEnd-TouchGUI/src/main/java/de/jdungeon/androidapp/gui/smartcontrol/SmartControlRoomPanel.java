@@ -10,6 +10,7 @@ import audio.AudioEffectsManager;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
+import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import event.Event;
@@ -22,7 +23,9 @@ import figure.action.FleeAction;
 import figure.action.LockAction;
 import figure.action.StepAction;
 import figure.action.result.ActionResult;
+import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
+import gui.Paragraph;
 import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
@@ -34,7 +37,11 @@ import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElementAnimated;
+import de.jdungeon.androidapp.gui.activity.AbstractExecutableActivity;
+import de.jdungeon.androidapp.gui.activity.ExecutableActivity;
+import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
+import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
@@ -53,6 +60,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final Collection<GUIElement> positionElements = new ArrayList<>();
 	private final Collection<GUIElement> doorElements = new ArrayList<>();
 	private final Collection<GUIElement> moveElements = new ArrayList<>();
+	private final Collection<GUIElement> scoutElements = new ArrayList<>();
 	private final Collection<GUIElement> takeItemElements = new ArrayList<>();
 	private final Collection<GUIElement> chestElements = new ArrayList<>();
 	private final Collection<GUIElement> shrineElements = new ArrayList<>();
@@ -67,6 +75,11 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final int x02;
 	private final int y13;
 	private final JDPoint[] doorCoordinates;
+	private final ActivityControlElement scoutNorth;
+	private final ActivityControlElement scoutSouth;
+	private final ActivityControlElement scoutWest;
+	private final ActivityControlElement scoutEast;
+	private final SkillImageManager skillImageManager;
 	private boolean worldHasChanged = true;
 
 	private final MoveElement moveWest;
@@ -91,15 +104,18 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		super(position, dimension, screen, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
-		positionAreaSize = (int) (dimension.getWidth() / 1.6);
+		positionAreaSize = (int) (dimension.getWidth() / 2.2);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
 		renderer = new GraphicObjectRenderer(positionAreaSize);
-		doorOuterBorderWidth = this.getDimension().getWidth() / 5;
+
+		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+
 
 		/*
 		some util variables for the door coordinates
 		 */
 		doorThickness = (int) (DOOR_WIDTH / 2.8);
+		doorOuterBorderWidth = MOVE_ELEMENT_SIZE;
 		eastWest = new JDDimension(doorThickness, DOOR_WIDTH);
 		southNorth = new JDDimension(DOOR_WIDTH, doorThickness);
 		x02 = this.getDimension().getWidth() / 2 - DOOR_WIDTH / 2;
@@ -146,6 +162,15 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		moveEast = createMoveEast(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveWest = createMoveWest(MOVE_ELEMENT_SIZE, moveElementDimension);
 		moveSouth = createMoveSouth(MOVE_ELEMENT_SIZE, moveElementDimension);
+
+		scoutNorth = createScoutElementNorth();
+		scoutSouth = createScoutElementSouth();
+		scoutWest = createScoutElementWest();
+		scoutEast = createScoutElementEast();
+		scoutElements.add(scoutNorth);
+		scoutElements.add(scoutSouth);
+		scoutElements.add(scoutWest);
+		scoutElements.add(scoutEast);
 
 		// shrine button
 		int shrineElementSize = 30;
@@ -200,6 +225,80 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		updateAllElementsIfNecessary();
 	}
 
+	private ActivityControlElement createScoutElementNorth() {
+		RouteInstruction.Direction north = RouteInstruction.Direction.North;
+		ScoutActivity scoutActivity = new ScoutActivity(north);
+		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
+		int x = moveNorth.getPositionOnScreen().getX();
+		int y = moveNorth.getPositionOnScreen().getY() + moveNorth.getDimension().getHeight() + doorThickness;
+		return new ActivityControlElement(new JDPoint(x, y), moveNorth.getDimension(), moveNorth.getParent(), north, figure, guiControl, scoutActivity, skillImage);
+	}
+
+	private ActivityControlElement createScoutElementSouth() {
+		RouteInstruction.Direction south = RouteInstruction.Direction.South;
+		ScoutActivity scoutActivity = new ScoutActivity(south);
+		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
+		int x = moveSouth.getPositionOnScreen().getX();
+		int y = moveSouth.getPositionOnScreen().getY() - moveSouth.getDimension().getHeight() - doorThickness;
+		return new ActivityControlElement(new JDPoint(x, y), moveSouth.getDimension(), moveSouth.getParent(), south, figure, guiControl, scoutActivity, skillImage);
+	}
+
+
+	private ActivityControlElement createScoutElementWest() {
+		RouteInstruction.Direction west = RouteInstruction.Direction.West;
+		ScoutActivity scoutActivity = new ScoutActivity(west);
+		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
+		int x = moveWest.getPositionOnScreen().getX() + moveWest.getDimension().getWidth() +  doorThickness;
+		int y = moveWest.getPositionOnScreen().getY();
+		return new ActivityControlElement(new JDPoint(x, y), moveWest.getDimension(), moveWest.getParent(), west, figure, guiControl, scoutActivity, skillImage);
+	}
+
+	private ActivityControlElement createScoutElementEast() {
+		RouteInstruction.Direction east = RouteInstruction.Direction.East;
+		ScoutActivity scoutActivity = new ScoutActivity(east);
+		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
+		int x = moveEast.getPositionOnScreen().getX() - moveEast.getDimension().getWidth() -  doorThickness;
+		int y = moveEast.getPositionOnScreen().getY();
+		return new ActivityControlElement(new JDPoint(x, y), moveEast.getDimension(), moveEast.getParent(), east, figure, guiControl, scoutActivity, skillImage);
+	}
+
+
+	class ScoutActivity extends AbstractExecutableActivity {
+
+		private final RouteInstruction.Direction direction;
+
+		public ScoutActivity(RouteInstruction.Direction direction) {
+			this.direction = direction;
+		}
+
+		@Override
+		public Object getObject() {
+			return SkillActivityProvider.SCOUT;
+		}
+
+		@Override
+		public RoomInfoEntity getTarget() {
+			// TODO
+			return null;
+		}
+
+		@Override
+		public void execute() {
+			guiControl.scoutingActivity(figure.getRoomInfo().getDoor(direction));
+		}
+
+		@Override
+		public boolean isCurrentlyPossible() {
+			Boolean fightRunning = figure.getRoomInfo().fightRunning();
+			DoorInfo door = figure.getRoomInfo()
+					.getDoor(direction);
+			if(door == null) return false;
+			PositionInRoomInfo scoutPosition = door
+					.getPositionAtDoor(figure.getRoomInfo(), false);
+			return fightRunning != null && !fightRunning && (!scoutPosition.isOccupied() || figure.equals(scoutPosition.getFigure()));
+		}
+	}
+
 	private SubGUIElement createRectGUIElement(JDPoint position, JDDimension dimension) {
 		return new SubGUIElement(
 				position,
@@ -232,6 +331,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			worldHasChanged = false;
 		}
 	}
+
 
 	private void updateMoveElements() {
 		moveElements.clear();
@@ -332,7 +432,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		ShrineInfo shrine = roomInfo.getShrine();
 
 		if (shrine != null) {
-
 			shrineElements.add(shrineElement);
 		}
 	}
@@ -405,6 +504,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		allGuiElements.addAll(doorElements);
 		allGuiElements.addAll(positionElements);
 		allGuiElements.addAll(moveElements);
+		allGuiElements.addAll(scoutElements);
 		allGuiElements.addAll(takeItemElements);
 		allGuiElements.addAll(chestElements);
 		allGuiElements.addAll(shrineElements);
