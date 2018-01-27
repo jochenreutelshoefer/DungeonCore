@@ -3,12 +3,11 @@ package de.jdungeon.androidapp.gui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import event.ActionEvent;
-import event.EventManager;
 import figure.FigureInfo;
 import figure.action.TakeItemAction;
 import item.ItemInfo;
 
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.game.Game;
 
@@ -19,10 +18,12 @@ import de.jdungeon.game.Game;
 public class TakeItemActivityProvider extends ItemActivityItemProvider {
 
 	private final FigureInfo info;
+	private final GUIControl guiControl;
 
-	public TakeItemActivityProvider(FigureInfo info, Game game) {
+	public TakeItemActivityProvider(FigureInfo info, Game game, GUIControl guiControl) {
 		super(info, game);
 		this.info = info;
+		this.guiControl = guiControl;
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class TakeItemActivityProvider extends ItemActivityItemProvider {
 	@Override
 	public void activityPressed(Activity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		EventManager.getInstance().fireEvent(new ActionEvent(new TakeItemAction((ItemInfo)infoEntity.getObject())));
+		guiControl.plugAction(new TakeItemAction((ItemInfo) infoEntity.getObject()));
 	}
 
 	@Override

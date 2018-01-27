@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import audio.AudioEffectsManager;
-import control.ActionAssembler;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
@@ -19,7 +18,6 @@ import event.EventManager;
 import event.WorldChangedEvent;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.FleeAction;
 import figure.action.LockAction;
 import figure.action.StepAction;
@@ -29,10 +27,11 @@ import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.Control;
 import de.jdungeon.androidapp.DrawUtils;
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.GUIElement;
+import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElementAnimated;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
@@ -41,6 +40,7 @@ import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
 
 /**
@@ -56,9 +56,9 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final Collection<GUIElement> takeItemElements = new ArrayList<>();
 	private final Collection<GUIElement> chestElements = new ArrayList<>();
 	private final Collection<GUIElement> shrineElements = new ArrayList<>();
-	private final GUIElement frame;
+	private final GUIElement outerFrame;
 	private final FigureInfo figure;
-	private final Control actionAssembler;
+	private final GUIControl guiControl;
 	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
 	private final int doorThickness;
@@ -85,11 +85,12 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final JDPoint[] positionElementPositions = new JDPoint[8];
 	private final JDDimension positionDimension;
 	private final SubGUIElementAnimated shrineElement;
+	private final GUIElement innerFrame;
 
-	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, Control actionAssembler) {
+	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, GUIControl actionAssembler) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
-		this.actionAssembler = actionAssembler;
+		this.guiControl = actionAssembler;
 		positionAreaSize = (int) (dimension.getWidth() / 1.6);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
 		renderer = new GraphicObjectRenderer(positionAreaSize);
@@ -110,24 +111,17 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				new JDPoint(doorOuterBorderWidth, y13)
 		};
 
-		// draw border frame
-		frame = new SubGUIElement(
-				new JDPoint(0, this.getDimension().getHeight() * 0.03),
-				new JDDimension(this.getDimension().getWidth(), (int) (this.getDimension().getHeight() * 0.94))
-				, this) {
-			@Override
-			public boolean isVisible() {
-				return true;
-			}
+		// draw border outerFrame
+		JDPoint positionOuterFrame = new JDPoint(0, this.getDimension().getHeight() * 0.03);
+		JDDimension dimensionOuterFrame = new JDDimension(this.getDimension().getWidth(), (int) (this.getDimension()
+				.getHeight() * 0.94));
+		outerFrame = createRectGUIElement(positionOuterFrame, dimensionOuterFrame);
 
-			@Override
-			public void paint(Graphics g, JDPoint viewportPosition) {
-				JDPoint absolutePosition = new JDPoint(parent.getPositionOnScreen().getX() + this.getPositionOnScreen().getX(),
-						parent.getPositionOnScreen().getY() + this.getPositionOnScreen().getY());
-				Color borderColor = Colors.WHITE;
-				DrawUtils.drawRectangle(g, borderColor, absolutePosition, this.getDimension());
-			}
-		};
+		int innerFrameNorthBoundY = doorCoordinates[0].getY();
+		int innerFrameEastBoundX = doorCoordinates[1].getX();
+		int innerFrameSouthBoundY = doorCoordinates[2].getY();
+		int innerFrameWestBoundX = doorCoordinates[3].getX();
+		innerFrame = createRectGUIElement(new JDPoint(innerFrameWestBoundX, innerFrameNorthBoundY), new JDDimension(innerFrameEastBoundX - innerFrameWestBoundX + doorThickness, innerFrameSouthBoundY - innerFrameNorthBoundY + doorThickness));
 
 		// prepare step position elements
 		int positionElementSize = 32;
@@ -141,11 +135,10 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			freeStepPositionElements[i] = new PositionElement(
 					positionElementPositions[i],
 					positionDimension,
-					this,
-					new StepAction(i), Colors.WHITE, null);
+					this, null, Colors.WHITE, null, actionAssembler, i);
 			dotPositionElements[i] = new PositionElement(
 					new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord.getY() + positionAreaOffset - 1),
-					new JDDimension(3, 3), this, null, Colors.GRAY, null);
+					new JDDimension(3, 3), this, null, Colors.GRAY, null, actionAssembler);
 		}
 
 		moveElementDimension = new JDDimension(MOVE_ELEMENT_SIZE, MOVE_ELEMENT_SIZE);
@@ -157,9 +150,11 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		// shrine button
 		int shrineElementSize = 30;
 		final JDDimension shrineDimension = new JDDimension(shrineElementSize, shrineElementSize);
-		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 11 / 14, getDimension()
-				.getHeight() / 10);
-		shrineElement = new SubGUIElementAnimated(posRelativeShrine, shrineDimension, this) {
+		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 19 / 28, getDimension()
+				.getHeight() * 5 / 24);
+		Image shrineImage = (Image) GUIImageManager.getImageProxy("guiItems/temple.png", game.getFileIO()
+				.getImageLoader()).getImage();
+		shrineElement = new SubGUIElementAnimated(posRelativeShrine, shrineDimension, this, shrineImage) {
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
@@ -169,11 +164,14 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		};
 
 		// chest button
-		int takeElementSizeX = 36;
-		int takeElementSizeY = 24;
+		int takeElementSizeX = 30;
+		int takeElementSizeY = 18;
 		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
-		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 6, getDimension().getHeight() / 10);
-		chestGUIELement = new SubGUIElementAnimated(posRelative, chestDimension, this) {
+		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
+		Image chestImage = (Image) GUIImageManager.getImageProxy("guiItems/Treasure-valuable-wealth-asset_3-512.png", game
+				.getFileIO()
+				.getImageLoader()).getImage();
+		chestGUIELement = new SubGUIElementAnimated(posRelative, chestDimension, this, chestImage) {
 
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
@@ -188,7 +186,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		int takeElementSize = 28;
 		final JDDimension takeDimension = new JDDimension(takeElementSize, takeElementSize);
 		final JDPoint posRelativeTake = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
-		takeGUIElement = new SubGUIElementAnimated(posRelativeTake, takeDimension, this) {
+		takeGUIElement = new SubGUIElementAnimated(posRelativeTake, takeDimension, this, null) {
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
@@ -199,6 +197,27 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
+	}
+
+	private SubGUIElement createRectGUIElement(JDPoint position, JDDimension dimension) {
+		return new SubGUIElement(
+				position,
+				dimension
+				, this) {
+			@Override
+			public boolean isVisible() {
+				return true;
+			}
+
+			@Override
+			public void paint(Graphics g, JDPoint viewportPosition) {
+				JDPoint absolutePosition = new JDPoint(parent.getPositionOnScreen().getX() + this.getPositionOnScreen()
+						.getX(),
+						parent.getPositionOnScreen().getY() + this.getPositionOnScreen().getY());
+				Color borderColor = Colors.WHITE;
+				DrawUtils.drawRectangle(g, borderColor, absolutePosition, this.getDimension());
+			}
+		};
 	}
 
 	private void updateAllElementsIfNecessary() {
@@ -265,21 +284,21 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	}
 
 	private MoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {
-		return new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West);
+		return new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West, figure, guiControl);
 	}
 
 	private MoveElement createMoveNorth(int moveElementSize, JDDimension moveElementDimension) {
-		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North);
+		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North, figure, guiControl);
 	}
 
 	private MoveElement createMoveEast(int moveElementSize, JDDimension moveElementDimension) {
 		return new MoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension()
-				.getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East);
+				.getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East, figure, guiControl);
 	}
 
 	private MoveElement createMoveSouth(int moveElementSize, JDDimension moveElementDimension) {
 		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
-				.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South);
+				.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South, figure, guiControl);
 	}
 
 	private void updateDoorElements() {
@@ -290,8 +309,9 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			DoorInfo door = doors[i];
 			if (door != null && door.hasLock()) {
 				Action action = new LockAction(door);
-				doorElements.add(new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
-						.isLocked(), this.figure.hasKey(door), action, door, actionAssembler));
+				DoorElement doorElement = new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
+						.isLocked(), this.figure.hasKey(door), action, door, guiControl.getActionAssembler());
+				doorElements.add(doorElement);
 			}
 		}
 	}
@@ -348,7 +368,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 									positionElementPositions[i],
 									positionDimension,
 									this,
-									new AttackAction(otherFigure.getFighterID()), Colors.RED, otherFigure));
+									otherFigure, Colors.RED, otherFigure, guiControl));
 				}
 				else {
 					de.jdungeon.game.Color color = Colors.GREEN;
@@ -360,7 +380,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 									positionElementPositions[i],
 									positionDimension,
 									this,
-									null, color, otherFigure));
+									null, color, otherFigure, guiControl));
 				}
 			}
 			else {
@@ -379,7 +399,8 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	public void update(float time) {
 		updateAllElementsIfNecessary();
 		allGuiElements.clear();
-		allGuiElements.add(frame);
+		//allGuiElements.add(outerFrame);
+		allGuiElements.add(innerFrame);
 		allGuiElements.addAll(doorElements);
 		allGuiElements.addAll(positionElements);
 		allGuiElements.addAll(moveElements);

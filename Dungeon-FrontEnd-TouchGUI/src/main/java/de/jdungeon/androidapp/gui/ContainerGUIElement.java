@@ -40,6 +40,16 @@ public abstract class ContainerGUIElement extends AbstractGUIElement {
 	}
 
 	@Override
+	public boolean hasPoint(JDPoint p) {
+		for (GUIElement guiElement : getAllSubElements()) {
+			if (guiElement.hasPoint(p) && guiElement.isVisible()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public boolean handleScrollEvent(ScrollMotion scrolling) {
 		JDPoint coordinates = screen.normalizeRawCoordinates(scrolling.getStartEvent());
 		boolean handles = false;

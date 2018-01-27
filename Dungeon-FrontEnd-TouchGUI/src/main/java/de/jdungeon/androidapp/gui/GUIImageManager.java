@@ -20,7 +20,6 @@ public class GUIImageManager {
 	public static final String BUNCH = "guiItems/bunch2.gif";
 	public static final String POTION_BLUE = "guiItems/mana-potion.gif";
 	public static final String ATTACK_SWORD = "guiItems/attack-sword.gif";
-	public static final String SPY_ICON = "guiItems/spy-icon.gif";
 	public static final String LUPE = "guiItems/lupe.gif";
 	public static final String LUPE2 = "guiItems/lupe2.gif";
 	public static final String LUPE2a = "guiItems/lupe2a.gif";
@@ -50,6 +49,10 @@ public class GUIImageManager {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static JDImageProxy<?> getImageProxy(String file,
 			AbstractImageLoader<?> loader) {
+		String prefix = "guiItems/";
+		if(!file.startsWith(prefix)) {
+			file = prefix + file;
+		}
 		return new JDImageProxy(loader, file);
 	}
 

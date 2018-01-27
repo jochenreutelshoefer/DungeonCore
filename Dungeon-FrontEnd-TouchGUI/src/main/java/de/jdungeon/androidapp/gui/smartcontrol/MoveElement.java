@@ -2,10 +2,10 @@ package de.jdungeon.androidapp.gui.smartcontrol;
 
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
-import event.EventManager;
-import event.WannaMoveEvent;
+import figure.FigureInfo;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
@@ -19,6 +19,8 @@ public class MoveElement extends AnimatedSmartControlElement {
 
 	private final GUIElement parent;
 	private final RouteInstruction.Direction direction;
+	private final FigureInfo figure;
+	private final GUIControl guiControl;
 	private JDPoint[] triangle;
 	private final int parentX;
 	private final int parentY;
@@ -29,15 +31,14 @@ public class MoveElement extends AnimatedSmartControlElement {
 	private final int x2;
 	private final int y2;
 
-	public MoveElement(JDPoint position, JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction) {
+	public MoveElement(JDPoint position, JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, GUIControl guiControl) {
 		super(position, dimension, parent);
 		this.parent = parent;
 		this.direction = direction;
+		this.figure = figure;
+		this.guiControl = guiControl;
 
 		JDDimension iconDimension = new JDDimension((int) (dimension.getWidth() * 0.8), (int) (dimension.getHeight() * 0.8));
-
-
-
 		if (direction == RouteInstruction.Direction.West) {
 			triangle = getTriangleWest(position, iconDimension, 1.0);
 			for (int i = 0; i < buttonAnimationSizes.length; i++) {
@@ -136,7 +137,12 @@ public class MoveElement extends AnimatedSmartControlElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
-		EventManager.getInstance().fireEvent(new WannaMoveEvent(direction));
+		if (figure.getRoomInfo().fightRunning()) {
+			guiControl.plugActions(guiControl.getActionAssembler().wannaFlee());
+		}
+		else {
+			guiControl.plugActions(guiControl.getActionAssembler().wannaWalk(direction.getValue()));
+		}
 		return true;
 	}
 

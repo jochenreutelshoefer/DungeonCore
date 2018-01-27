@@ -1,13 +1,14 @@
 package de.jdungeon.androidapp.gui.smartcontrol;
 
 import dungeon.JDPoint;
-import event.ActionEvent;
+import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import event.EventManager;
 import figure.FigureInfo;
-import figure.action.Action;
 import game.RoomInfoEntity;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.game.Color;
@@ -20,9 +21,11 @@ import de.jdungeon.game.Input;
  */
 public class PositionElement extends AnimatedSmartControlElement {
 
-	private final Action action;
+	private final RoomInfoEntity action;
 	private final Color color;
 	private final RoomInfoEntity clickableObject;
+	private final GUIControl actionAssembler;
+	private final int positionIndex;
 	private final int ballWidth;
 	private final int ballHeight;
 	private final int ballOffsetX;
@@ -30,11 +33,17 @@ public class PositionElement extends AnimatedSmartControlElement {
 	private final int x;
 	private final int y;
 
-	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, Action action, final Color color, RoomInfoEntity clickableObject) {
+	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, GUIControl actionAssembler) {
+		this(position, dimension, parent, action, color, clickableObject, actionAssembler, -1);
+	}
+
+	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, GUIControl actionAssembler, int positionIndex) {
 		super(position, dimension, parent);
 		this.action = action;
 		this.color = color;
 		this.clickableObject = clickableObject;
+		this.actionAssembler = actionAssembler;
+		this.positionIndex = positionIndex;
 		ballWidth = (int) (dimension.getWidth() / 1.5);
 		ballHeight = (int) (dimension.getHeight() / 1.5);
 		ballOffsetX = (dimension.getWidth() - ballWidth) / 2;
@@ -81,9 +90,16 @@ public class PositionElement extends AnimatedSmartControlElement {
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
 		if (action != null) {
-			EventManager.getInstance().fireEvent(new ActionEvent(action));
-			if (clickableObject != null) {
-				EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
+			if (action instanceof FigureInfo) {
+				actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaAttack((FigureInfo) action));
+			}
+		} else {
+			if(this.positionIndex > -1) {
+				actionAssembler.plugActions(actionAssembler.getActionAssembler()
+						.wannaStepToPosition(Position.Pos.fromValue(positionIndex)));
+				if (clickableObject != null) {
+					EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
+				}
 			}
 		}
 		return true;

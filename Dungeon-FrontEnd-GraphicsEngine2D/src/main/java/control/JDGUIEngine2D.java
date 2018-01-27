@@ -9,12 +9,7 @@ import dungeon.RoomInfo;
 
 public interface JDGUIEngine2D extends JDGUI {
 
-	/**
-	 * Sets the figure's action which will be processed next by the game.
-	 * 
-	 * @param a
-	 */
-	void plugAction(Action a);
+
 
 	int getSelectedItemIndex();
 

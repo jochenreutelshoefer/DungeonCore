@@ -5,17 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import dungeon.ChestInfo;
-import dungeon.Dir;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
-import event.ActionEvent;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
-import figure.action.StepAction;
 import figure.hero.HeroInfo;
 import game.RoomInfoEntity;
 import graphics.ImageManager;
@@ -23,7 +20,7 @@ import gui.Paragraphable;
 import item.ItemInfo;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.Control;
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.GUIElement;
@@ -53,7 +50,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private final List<GUIElement> guiElements = new ArrayList<>();
 	private final HeroInfo figureInfo;
-	private final Control actionAssembler;
+	private final GUIControl guiControl;
 	private final FocusManager focusManager;
 
 	private ActivityPresenter itemWheelRoomItems;
@@ -64,13 +61,12 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private boolean roomItemWheelShowing = false;
 	private boolean skillItemWheelShowing = false;
 	private boolean chestItemWheelShowing = false;
+	private SmartControlRoomPanel smartControl;
 
-
-
-	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, HeroInfo figure, Control actionAssembler, FocusManager focusManager) {
+	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, HeroInfo figure, GUIControl actionAssembler, FocusManager focusManager) {
 		super(position, dimension, screen, game);
 		this.figureInfo = figure;
-		this.actionAssembler = actionAssembler;
+		this.guiControl = actionAssembler;
 		this.focusManager = focusManager;
 
 		EventManager.getInstance().registerListener(this);
@@ -88,8 +84,6 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			// we need to switch back to skills mode as user has not the respective button in this case
 			switchRightItemWheel(null);
 		}
-
-
 	}
 
 	private void initGUIElements() {
@@ -99,12 +93,12 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		int smartControlSize = 220;
 		int directionActivityTilesSize = 35;
 		JDDimension screenSize = screen.getScreenSize();
-		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - smartControlSize - 2 * directionActivityTilesSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2);
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - smartControlSize - directionActivityTilesSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2);
 		JDDimension smartControlRoomPanelSize = new JDDimension(smartControlSize, smartControlSize);
-		SmartControlRoomPanel smartControl = new SmartControlRoomPanel(
+		smartControl = new SmartControlRoomPanel(
 				smartControlRoomPanelPosition,
 				smartControlRoomPanelSize, screen, this
-				.getGame(), figureInfo, actionAssembler);
+				.getGame(), figureInfo, guiControl);
 		this.guiElements.add(smartControl);
 
 		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
@@ -131,7 +125,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		int screenWidthBy2 = screenWidth / 2;
 		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
 		double wheelCenterY = getGame().getScreenHeight() * 1.8;
-		UseItemActivityProvider useItemActivityProvider = new UseItemActivityProvider(figureInfo, game, actionAssembler, focusManager);
+		UseItemActivityProvider useItemActivityProvider = new UseItemActivityProvider(figureInfo, game, guiControl, focusManager);
 		itemWheelHeroItems = new ItemWheel(new JDPoint(0, wheelCenterY),
 				itemWheelSize, figureInfo, screen, this.getGame(),
 				useItemActivityProvider,
@@ -144,7 +138,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		 */
 		int selectedIndex = 19;
 
-		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, game, actionAssembler, focusManager);
+		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, game, guiControl, focusManager);
 		itemWheelSkills = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, screen, this.getGame(),
 				skillActivityProvider,
@@ -159,7 +153,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		Image floorBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.FLOOR_BG, game.getFileIO()
 				.getImageLoader()).getImage();
 
-		TakeItemActivityProvider takeActivityProvider = new TakeItemActivityProvider(figureInfo, game);
+		TakeItemActivityProvider takeActivityProvider = new TakeItemActivityProvider(figureInfo, game, guiControl);
 		itemWheelRoomItems = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, screen, this.getGame(),
 				takeActivityProvider,
@@ -175,7 +169,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		 */
 		Image chestBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.CHEST_OPEN, game.getFileIO()
 				.getImageLoader()).getImage();
-		ChestItemActivityProvider chestTakeActivityProvider = new ChestItemActivityProvider(figureInfo, game);
+		ChestItemActivityProvider chestTakeActivityProvider = new ChestItemActivityProvider(figureInfo, game, this.guiControl);
 		itemWheelChest = new ItemWheel(itemWheelPositionRightSide,
 				itemWheelSize, figureInfo, screen, this.getGame(),
 				chestTakeActivityProvider,
@@ -191,7 +185,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			Activity scoutActivity = new AbstractExecutableActivity() {
 			@Override
 			public void execute() {
-				actionAssembler.scoutingActivity(getTarget());
+				guiControl.scoutingActivity(getTarget());
 			}
 
 			@Override
@@ -216,15 +210,6 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		ActivityProvider simpleProvider = new SimpleActivityProvider(scoutActivity, skillImageManager.getImage(SkillActivityProvider.SCOUT));
 		ActivityPresenter scoutWestPresenter = new SingleActivityPresenter(tilePosition, directionActivityDimension, screen, game, simpleProvider, skillBackgroundImage, directionActivityTilesSize);
 		this.guiElements.add(scoutWestPresenter);
-	}
-
-	@Override
-	public boolean hasPoint(JDPoint p) {
-		return super.hasPoint(p)
-				|| (itemWheelChest.isVisible() && itemWheelChest.hasPoint(p))
-				|| (itemWheelHeroItems.isVisible() && itemWheelHeroItems.hasPoint(p))
-				|| (itemWheelRoomItems.isVisible() && itemWheelRoomItems.hasPoint(p))
-				|| (itemWheelSkills.isVisible() && itemWheelSkills.hasPoint(p));
 	}
 
 	@Override
@@ -291,7 +276,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		else if (event instanceof ChestItemButtonClickedEvent) {
 			if (!chestItemWheelShowing) {
 				if (!(figureInfo.getPos().getIndex() == Position.Pos.NW.getValue())) {
-					EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
+					guiControl.getActionAssembler().wannaStepToPosition(Position.Pos.NW);
 				}
 				setChestItemWheelVisible();
 			}

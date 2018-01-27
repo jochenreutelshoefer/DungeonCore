@@ -26,11 +26,11 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 	protected int defaultImageWidth;
 	protected int defaultImageHeight;
 
-	protected  int defaultImageWidthHalf;
-	protected  int defaultImageHeightHalf;
-	protected  int doubleImageWidth;
-	protected  int doubleImageHeight;
-	protected  int doubleBackgroundPanelOffset;
+	protected int defaultImageWidthHalf;
+	protected int defaultImageHeightHalf;
+	protected int doubleImageWidth;
+	protected int doubleImageHeight;
+	protected int doubleBackgroundPanelOffset;
 	private final int doubleWidthPlusOffset;
 	private final int doubleHeightPlusOffset;
 
@@ -40,10 +40,8 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 
 	protected final Image itemBackgroundImage;
 
-
 	protected final int screenWidth = getGame().getScreenWidth();
 	protected final int screenHeight = getGame().getScreenHeight();
-
 
 	public ActivityPresenter(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, ActivityProvider provider, Image itemBg, int defaultTileSize) {
 		super(position, dimension, screen, game);
@@ -63,7 +61,6 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 
 		positionCorrectionLarge = defaultImageHeight;
 		positionCorrectionSmall = defaultImageHeightHalf;
-
 
 	}
 
@@ -88,7 +85,7 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 
 	protected void iconTouched(Activity activity) {
 		if (activity == markedActivity) {
-				provider.activityPressed(activity);
+			provider.activityPressed(activity);
 		}
 		else {
 			markedActivity = activity;
@@ -97,15 +94,16 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 	}
 
 	protected void drawHighlighting(Graphics g, int yMinusDefaultHeight, int xMinusDefaultWidth) {
-		if(highlightOn) {
+		if (highlightOn) {
 			g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
 		}
 	}
+
 	protected void drawActivityLarge(Graphics g, int x, int y, Activity activity) {
 		Image im = provider.getActivityImage(activity);
 		int posX = x;
 		int posY = y;
-		if(positionCorrection) {
+		if (positionCorrection) {
 			posX = x - positionCorrectionLarge;
 			posY = y - positionCorrectionLarge;
 		}
@@ -122,9 +120,9 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 					/*
 					 * draw actual item
 					 */
-		g.drawScaledImage(im, posX,
-				posY, doubleImageWidth,
-				doubleImageHeight, 0, 0, im.getWidth(),
+		g.drawScaledImage(im, posX + doubleImageWidth / 8,
+				posY + doubleImageWidth / 8, doubleImageWidth * 3 / 4,
+				doubleImageHeight * 3 / 4, 0, 0, im.getWidth(),
 				im.getHeight());
 	}
 
@@ -133,7 +131,7 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 
 		int posX = x;
 		int posY = y;
-		if(positionCorrection) {
+		if (positionCorrection) {
 			posX = x - positionCorrectionSmall;
 			posY = y - positionCorrectionSmall;
 		}
@@ -147,9 +145,9 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 					/*
 					 * draw actual item
 					 */
-		g.drawScaledImage(im, posX,
-				posY, defaultImageWidth,
-				defaultImageHeight, 0, 0, im.getWidth(),
+		g.drawScaledImage(im, posX + defaultImageWidth / 8,
+				posY + defaultImageWidth / 8, defaultImageWidth * 3 / 4,
+				defaultImageHeight * 3 / 4, 0, 0, im.getWidth(),
 				im.getHeight());
 	}
 
@@ -180,7 +178,5 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 					itemBackgroundImage.getHeight());
 		}
 	}
-
-
 
 }

@@ -5,7 +5,6 @@ import spell.SpellInfo;
 
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.game.Image;
 
@@ -28,7 +27,8 @@ public class SkillImageManager {
 			im = guiImageManager.getImage(GUIImageManager.SWORD_ICON);
 		}
 		else if (o.equals(SkillActivityProvider.SCOUT)) {
-			im = guiImageManager.getImage(GUIImageManager.SPY_ICON);
+			//im = guiImageManager.getImage("guiItems/spy-icon.gif");
+			im = guiImageManager.getImage("guiItems/44741-eye-shape-variant-interface-view-symbol.png");
 			// } else if (o.equals(WALK)) {
 			// im = GUIImageManager.getImage(GUIImageManager.FOOT_ICON,
 			// screen.getGame());

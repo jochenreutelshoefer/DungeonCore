@@ -123,7 +123,7 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 			possible = (doors[dir - 1] == 1 || doors[dir - 1] == 2);
 		}
 
-		Action a = Action.makeActionMove(h.getFighterID(), dir);
+		Action a = Action.makeActionMove(dir);
 
 		return a;
 	}

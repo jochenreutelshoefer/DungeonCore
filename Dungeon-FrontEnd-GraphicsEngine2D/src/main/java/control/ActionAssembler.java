@@ -8,6 +8,7 @@ package control;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,26 +18,17 @@ import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
-import dungeon.RoomEntity;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
-import event.ActionEvent;
-import event.Event;
-import event.EventListener;
-import event.EventManager;
-import event.WannaMoveEvent;
-import event.WannaStepEvent;
-import event.WannaTakeItemEvent;
 import figure.Figure;
 import figure.FigureInfo;
-import figure.RoomObservationStatus;
 import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
-import figure.action.ExpCodeChangeAction;
 import figure.action.LayDownItemAction;
 import figure.action.LearnSpellAction;
 import figure.action.LockAction;
+import figure.action.MoveAction;
 import figure.action.ScoutAction;
 import figure.action.ShrineAction;
 import figure.action.SkillUpAction;
@@ -45,132 +37,100 @@ import figure.action.StepAction;
 import figure.action.TakeItemAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
-import figure.hero.HeroInfo;
 import game.RoomInfoEntity;
 import item.ItemInfo;
-import shrine.ShrineInfo;
 import spell.SpellInfo;
 import spell.TargetScope;
 
-public class ActionAssembler implements EventListener {
+public class ActionAssembler {
 
-	// TODO: refactor in a way that this ActionAssembler does not refer to JDGUIEngine2D but JDGUI
-	// then move to core classes
-	private JDGUIEngine2D gui;
-	private boolean useWithTarget = false;
-	private boolean spellMeta = false;
-	private Action lastAction;
-	private int repeatActionCounter;
+	private final FigureInfo figure;
 
-	public ActionAssembler(JDGUIEngine2D gui) {
-		this.gui = gui;
-		EventManager.getInstance().registerListener(this);
+	public ActionAssembler(FigureInfo figure) {
+		this.figure = figure;
 	}
 
-	public void setGui(JDGUIEngine2D gui) {
-		this.gui = gui;
-	}
-
-	public void wannaAttack(FigureInfo o) {
+	public List<Action> wannaAttack(FigureInfo o) {
 		Action a = Action.makeActionAttack(o.getFighterID());
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
 	public FigureInfo getFigure() {
-		return gui.getFigure();
+		return figure;
 	}
 
-	public void wannaFlee() {
+	public List<Action> wannaFlee() {
 		Action a = Action.makeActionFlee();
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
-	public void wannaFleePanic(int dir) {
+	public List<Action> wannaFleePanic(int dir) {
 		Action a = Action.makeActionFlee(true);
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
-	public void wannaLernSpell(SpellInfo spell) {
+	public List<Action> wannaLernSpell(SpellInfo spell) {
 		Action a = new LearnSpellAction(spell);
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
-	public void wannaLockDoor(DoorInfo d) {
+	public List<Action> wannaLockDoor(DoorInfo d) {
+		List<Action> actions = new ArrayList<>();
 		PositionInRoomInfo positionAtDoor = d.getPositionAtDoor(this.getFigure().getRoomInfo(), false);
-		if(! getFigure().getPos().equals(positionAtDoor)) {
+		if (!getFigure().getPos().equals(positionAtDoor)) {
 			// we need to step towards the door first
-			boolean stepAction = wannaStepToPosition(positionAtDoor);
-			if (stepAction &&(!getFigure().getRoomInfo().fightRunning())) {
-				plugAction(new EndRoundAction());
+			List<Action> stepAction = wannaStepToPosition(positionAtDoor);
+			if (!stepAction.isEmpty() && (!getFigure().getRoomInfo().fightRunning())) {
+				actions.addAll(stepAction);
+				EndRoundAction endRoundAction = new EndRoundAction();
+				actions.add(endRoundAction);
 			}
 		}
 		FigureInfo f = getFigure();
 		RouteInstruction.Direction dir = d.getDirection(f.getRoomNumber());
 		if (dir != null) {
 			Action a = new LockAction(d);
-			plugAction(a);
+			actions.add(a);
 		}
+		return actions;
 	}
 
-
-
-	public void wannaScout(RouteInstruction.Direction dir) {
-		wannaScout(dir.getValue());
+	public List<Action> wannaScout(RouteInstruction.Direction dir) {
+		return wannaScout(dir.getValue());
 	}
 
-	public void wannaScout(int direction) {
+	public List<Action> wannaScout(int direction) {
+		List<Action> actions = new ArrayList<>();
 		Action a = new ScoutAction(this.getFigure(), direction);
 		int index = Figure.getDirPos(direction);
-		if (gui.getFigure().getPositionInRoomIndex() != index) {
-			doStepTo(index);
+		if (figure.getPositionInRoomIndex() != index) {
+			actions.addAll(doStepTo(index));
 		}
-		if (gui.getFigure().getActionPoints() < 1) {
-			plugAction(new EndRoundAction());
+		if (figure.getActionPoints() < 1) {
+			EndRoundAction endRoundAction = new EndRoundAction();
+			actions.add(endRoundAction);
 		}
-		this.plugAction(a);
+		actions.add(a);
+		return actions;
 	}
 
-	public void sorcButtonClicked(SpellInfo sp) {
-		if (gui.getFigure() instanceof HeroInfo) {
-			if (sp.needsTarget()) {
-				spellMeta = true;
-				gui.setSpellMetaDown(true);
-			}
-			else {
-				wannaSpell(sp, null);
-			}
-		}
-	}
-
-	public void useButtonClicked(ItemInfo it, boolean right) {
-		if (gui.getFigure() instanceof HeroInfo) {
-
-			if (it.needsTarget()) {
-				useWithTarget = true;
-				gui.setUseWithTarget(true);
-			}
-			else {
-				gui.setUseWithTarget(false);
-				wannaUseItem(it, null, right);
-			}
-		}
-	}
-
-	public void wannaSpell(SpellInfo sp, RoomInfoEntity target) {
+	public List<Action> wannaSpell(SpellInfo sp, RoomInfoEntity target) {
 		Action a = new SpellAction(sp, target);
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
-	public void wannaUseItem(ItemInfo it, RoomInfoEntity target, boolean meta) {
+	public List<Action> wannaUseItem(ItemInfo it, RoomInfoEntity target, boolean meta) {
+		List<Action> actions = new ArrayList<>();
 		if (target == null && it.needsTarget()) {
-			target = findAndStepTowardsTarget(it);
+			target = findAndStepTowardsTarget(it, actions);
 		}
 
 		Action a = new UseItemAction(it, target, meta);
-		plugAction(a);
+		actions.add(a);
+		return actions;
 	}
 
-	private RoomInfoEntity findAndStepTowardsTarget(ItemInfo item) {
+	private RoomInfoEntity findAndStepTowardsTarget(ItemInfo item, List<Action> actions) {
 		RoomInfoEntity target = null;
 		if (item.isUsableWithTarget()) {
 			TargetScope targetScope = item.getTargetScope();
@@ -203,7 +163,8 @@ public class ActionAssembler implements EventListener {
 					}
 					if (position != null) {
 						wannaStepToPosition(position);
-						plugAction(new EndRoundAction());
+						EndRoundAction endR = new EndRoundAction();
+						actions.add(endR);
 					}
 				}
 			}
@@ -211,152 +172,100 @@ public class ActionAssembler implements EventListener {
 		return target;
 	}
 
-	public void wannaUseShrine(RoomInfoEntity target, boolean right) {
+	public List<Action> wannaUseShrine(RoomInfoEntity target, boolean right) {
+		List<Action> actions = new ArrayList<>();
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
-			wannaStepToPosition(Position.Pos.NE);
+			actions.addAll(wannaStepToPosition(Position.Pos.NE));
 		}
 		Action a = new ShrineAction(target, right);
-		plugAction(a);
-
+		actions.add(a);
+		return actions;
 	}
 
-	public void wannaSwitchEquipmentItem(int type, int index) {
+	public List<Action> wannaSwitchEquipmentItem(int type, int index) {
 		Action a = new EquipmentChangeAction(type, index);
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
-	public void wannaLayDownItem(ItemInfo it) {
+	public List<Action> wannaLayDownItem(ItemInfo it) {
 		Action a = new LayDownItemAction(it);
-		plugAction(a);
+		return Collections.singletonList(a);
 	}
 
 	@Deprecated
-	public void wannaLayDownEquipmentItem(int type) {
-
+	public List<Action> wannaLayDownEquipmentItem(int type) {
 		Action a = new LayDownItemAction(true, type);
-		plugAction(a);
-
+		return Collections.singletonList(a);
 	}
 
 	@Deprecated
-	public void wannaLayDownItem(int index) {
-
+	public List<Action> wannaLayDownItem(int index) {
 		Action a = new LayDownItemAction(false, index);
-		plugAction(a);
-
+		return Collections.singletonList(a);
 	}
 
-	public void wannaUseChest(boolean right) {
-
+	public List<Action> wannaUseChest(boolean right) {
+		List<Action> actions = new ArrayList<>();
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NW.getValue()) {
-			wannaStepToPosition(Position.Pos.NW);
+			actions.addAll(wannaStepToPosition(Position.Pos.NW));
 		}
 		Action a = new UseChestAction(right);
-		plugAction(a);
-
+		actions.add(a);
+		return actions;
 	}
 
-	public void wannaTakeItem(ItemInfo item) {
-		plugAction(new TakeItemAction(item));
+	public List<Action> wannaTakeItem(ItemInfo item) {
+		Action take = new TakeItemAction(item);
+		return Collections.singletonList(take);
 	}
 
-	public void wannaWalk(int dir) {
-
+	public List<Action> wannaWalk(int dir) {
+		List<Action> actions = new ArrayList<>();
 		FigureInfo f = getFigure();
 		int index = Figure.getDirPos(dir);
 		if (f.getPositionInRoomIndex() != index) {
-			doStepTo(index);
+			actions.addAll(doStepTo(index));
 		}
 		if (f.getActionPoints() < 1) {
-			plugAction(new EndRoundAction());
+			EndRoundAction endRound = new EndRoundAction();
+			actions.add(endRound);
 		}
-		Action a = Action.makeActionMove(f.getFighterID(), dir);
-		plugAction(a);
-
+		MoveAction moveAction = new MoveAction(dir);
+		actions.add(moveAction);
+		return actions;
 	}
 
-	private void doStepTo(int i) {
+	private List<Action> doStepTo(int i) {
+		List<Action> actions = new ArrayList<>();
 		if (getFigure().getActionPoints() >= 1) {
 
-			plugAction(new StepAction(i));
+			StepAction step = new StepAction(i);
+			actions.add(step);
 			if (getFigure().getActionPoints() == 1) {
-				plugAction(new EndRoundAction());
+				EndRoundAction endRoundAction = new EndRoundAction();
+				actions.add(endRoundAction);
 			}
 
 		}
 		else {
-			plugAction(new EndRoundAction());
-			plugAction(new StepAction(i));
+			EndRoundAction ndRoundAction = new EndRoundAction();
+			StepAction stepAction = new StepAction(i);
+			actions.add(ndRoundAction);
+			actions.add(stepAction);
 		}
+		return actions;
 	}
 
-	public void monsterClicked(FigureInfo o, boolean right) {
-		SpellInfo sp = gui.getSelectedSpellInfo();
-		if (spellMeta) {
-			spellMeta = false;
-			gui.setSpellMetaDown(false);
-
-			if (!right) {
-				wannaSpell(sp, o);
-			}
-		}
-		else if (useWithTarget) {
-			useWithTarget = false;
-			gui.setUseWithTarget(false);
-			if (!right) {
-				int index = gui.getSelectedItemIndex();
-				HeroInfo hero = (HeroInfo) gui.getFigure();
-				ItemInfo it = (ItemInfo) hero.getAllItems().get(index);
-				wannaUseItem(it, o, right);
-			}
-		}
-		else {
-
-			if (right) {
-				wannaSpell(sp, o);
-
-			}
-			else {
-
-				wannaAttack((o));
-
-			}
-		}
+	public List<Action> monsterClicked(FigureInfo o, boolean right) {
+		return wannaAttack((o));
 	}
 
-	public void itemClicked(ItemInfo o, boolean right) {
-		SpellInfo sp = gui.getSelectedSpellInfo();
-		if (spellMeta) {
-			spellMeta = false;
-			gui.setSpellMetaDown(false);
-			if (!right) {
-				wannaSpell(sp, o);
-			}
-		}
-		else if (useWithTarget) {
-			useWithTarget = false;
-			gui.setUseWithTarget(false);
-
-			ItemInfo it = gui.getSelectedItem();
-			if (!right) {
-				wannaUseItem(it, o, right);
-			}
-		}
-		else {
-
-			if (right) {
-
-				wannaSpell(sp, o);
-			}
-			else {
-
-				Action a = new TakeItemAction(o);
-				plugAction(a);
-			}
-		}
+	public List<Action> itemClicked(ItemInfo o, boolean right) {
+		Action a = new TakeItemAction(o);
+		return Collections.singletonList(a);
 	}
 
-	public void roomClicked(Object o, boolean right) {
+	public List<Action> roomClicked(Object o, boolean right) {
 		FigureInfo f = getFigure();
 
 		int dir = -1;
@@ -368,218 +277,85 @@ public class ActionAssembler implements EventListener {
 			dir = Dir.getDirFromToIfNeighbour(f.getRoomNumber(), (JDPoint) o);
 		}
 		if (dir == -1) {
-			return;
+			return Collections.emptyList();
 		}
 		if (right) {
-			if (f.getRoomInfo().fightRunning().booleanValue()) {
+			if (f.getRoomInfo().fightRunning()) {
 
-				wannaFleePanic(dir);
+				return wannaFleePanic(dir);
 			}
 			else {
-				wannaScout(dir);
+				return wannaScout(dir);
 			}
 		}
 		else {
-			if (dir == -1) {
 
+			if (f.getRoomInfo().fightRunning() != null && f.getRoomInfo().fightRunning()) {
+				int pos = getFigure().getPositionInRoomIndex();
+				if ((dir == 1 & pos == 1) || (dir == 2 && pos == 3)
+						|| (dir == 3 && pos == 5) || (dir == 4 && pos == 7)) {
+					return this.wannaFlee();
+				}
 			}
 			else {
-
-				if (f.getRoomInfo().fightRunning() != null && f.getRoomInfo().fightRunning().booleanValue()) {
-					int pos = getFigure().getPositionInRoomIndex();
-					if ((dir == 1 & pos == 1) || (dir == 2 && pos == 3)
-							|| (dir == 3 && pos == 5) || (dir == 4 && pos == 7)) {
-						this.wannaFlee();
-					}
-				}
-				else {
-					this.wannaWalk(dir);
-				}
+				return this.wannaWalk(dir);
 			}
 		}
+		return Collections.emptyList();
 	}
 
-	public void spotClicked(Object o) {
-
+	public  List<Action> shrineClicked(boolean right) {
+		return wannaUseShrine(null, right);
 	}
 
-	public void shrineClicked(boolean right) {
-		ShrineInfo sh = gui.getFigure().getRoomInfo().getShrine();
-		if (spellMeta) {
-			SpellInfo sp = gui.getSelectedSpellInfo();
-			spellMeta = false;
-			gui.setSpellMetaDown(false);
-			if (!right) {
-				wannaSpell(sp, sh);
-			}
-		}
-		else if (useWithTarget) {
-			useWithTarget = false;
-			gui.setUseWithTarget(false);
-			if (!right) {
-				ItemInfo it = gui.getSelectedItem();
-				wannaUseItem(it, sh, right);
-			}
-		}
-		else {
-			wannaUseShrine(null, right);
-		}
-
-	}
-
-	public void chestClicked(Object o, boolean right) {
+	public List<Action>  chestClicked(Object o, boolean right) {
 		FigureInfo f = getFigure();
 		if (o instanceof ChestInfo) {
 			ChestInfo chest = ((ChestInfo) o);
 			if (chest.getLocation().equals(f.getRoomNumber())) {
-				wannaUseChest(right);
+				return wannaUseChest(right);
 
 			}
 		}
+		return Collections.emptyList();
 	}
 
-	public void positionClicked(PositionInRoomInfo pos, boolean right) {
-		if (useWithTarget) {
-			ItemInfo sp = gui.getSelectedItem();
-			useWithTarget = false;
-			gui.setSpellMetaDown(false);
-			if (!right) {
-				wannaUseItem(sp, pos, right);
-				gui.setUseWithTarget(false);
-			}
-		}
-		else {
-			// assume want to move normally
-			wannaStepToPosition(pos);
-		}
+	public  List<Action> positionClicked(PositionInRoomInfo pos, boolean right) {
+		return wannaStepToPosition(pos);
 	}
 
-	public boolean wannaStepToPosition(Position.Pos pos) {
-		return wannaStepToPosition(gui.getFigure().getRoomInfo().getPositionInRoom(pos.getValue()));
+	public List<Action> wannaStepToPosition(Position.Pos pos) {
+		return wannaStepToPosition(figure.getRoomInfo().getPositionInRoom(pos.getValue()));
 	}
 
-	public boolean  wannaStepToPosition(PositionInRoomInfo pos) {
+	public List<Action> wannaStepToPosition(PositionInRoomInfo pos) {
 		return wannaStepToPosition(pos, false);
 	}
 
-	public boolean wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
-
+	public List<Action> wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
 		Action a = new StepAction(pos.getIndex());
 		if (unanimated) {
 			a.setUnanimated();
 		}
-		plugAction(a);
-		return true;
-
-
+		return Collections.singletonList(a);
 	}
 
-	public void wannaSkillUp(int key) {
-		plugAction(new SkillUpAction(key));
+	public List<Action> wannaSkillUp(int key) {
+		Action a = new SkillUpAction(key);
+		return Collections.singletonList(a);
 	}
 
-	public void doorClicked(RoomInfoEntity o, boolean right) {
+	public List<Action> doorClicked(RoomInfoEntity o, boolean right) {
 		DoorInfo d = ((DoorInfo) o);
-		if (spellMeta) {
-			SpellInfo sp = gui.getSelectedSpellInfo();
-			spellMeta = false;
-			gui.setSpellMetaDown(false);
-			if (!right) {
-				wannaSpell(sp, d);
-			}
+		if (d.hasLock()) {
+			return wannaLockDoor(d);
 		}
-		else if (useWithTarget) {
-			useWithTarget = false;
-			gui.setUseWithTarget(false);
-			if (!right) {
-				ItemInfo it = gui.getSelectedItem();
-				wannaUseItem(it, d, right);
-			}
-		}
-		else {
-
-			if (right) {
-				SpellInfo sp = gui.getSelectedSpellInfo();
-				wannaSpell(sp, o);
-			}
-			else {
-				if (d.hasLock().booleanValue()) {
-					wannaLockDoor(d);
-				}
-			}
-
-		}
-
+		return Collections.emptyList();
 	}
 
-	public void wannaEndRound() {
-		plugAction(new EndRoundAction());
+	public List<Action> wannaEndRound() {
+		Action a = new EndRoundAction();
+		return Collections.singletonList(a);
 	}
 
-	public void wannaChangeExpCode(int i) {
-		Action a = new ExpCodeChangeAction(i);
-		plugAction(a);
-
-	}
-
-	private void plugAction(Action a) {
-		if (getFigure().getActionPoints() < 1) {
-			gui.plugAction(new EndRoundAction());
-		}
-		if(lastAction == a) {
-			repeatActionCounter++;
-		} else {
-			repeatActionCounter = 0;
-		}
-		lastAction = a;
-		gui.plugAction(a);
-	}
-
-	@Override
-	public Collection<Class<? extends Event>> getEvents() {
-		Collection<Class<? extends Event>> events = new ArrayList<>();
-		events.add(WannaMoveEvent.class);
-		events.add(WannaStepEvent.class);
-		events.add(WannaTakeItemEvent.class);
-		events.add(ActionEvent.class);
-		return events;
-	}
-
-	@Override
-	public void notify(Event event) {
-		if (event instanceof WannaMoveEvent) {
-			WannaMoveEvent moveEvent = ((WannaMoveEvent) event);
-			if (this.getFigure().getRoomInfo().fightRunning()) {
-				this.wannaFlee();
-			}
-			else {
-				this.wannaWalk(moveEvent.getDirection().getValue());
-			}
-		}
-		if (event instanceof WannaStepEvent) {
-			WannaStepEvent moveEvent = ((WannaStepEvent) event);
-			this.wannaStepToPosition(moveEvent.getTarget());
-		}
-		if (event instanceof WannaTakeItemEvent) {
-			WannaTakeItemEvent takeEvent = ((WannaTakeItemEvent) event);
-			this.wannaTakeItem(takeEvent.getItem());
-		}
-		if (event instanceof ActionEvent) {
-			plugAction(((ActionEvent) event).getAction());
-		}
-	}
-
-	public void triggerPlannedActions() {
-
-		// we repeat scout actions until scout was successful
-			if(lastAction instanceof ScoutAction) {
-				int direction = ((ScoutAction) lastAction).getDirection();
-				RoomInfo scoutedRoom = this.getFigure().getRoomInfo().getNeighbourRoom(direction);
-				if((scoutedRoom != null) && scoutedRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
-					if(!getFigure().getRoomInfo().fightRunning() && repeatActionCounter < 10) {
-						plugAction(lastAction);
-					}
-				}
-			}
-	}
 }

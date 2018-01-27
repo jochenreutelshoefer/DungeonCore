@@ -78,7 +78,7 @@ public class SingleActivityPresenter extends ActivityPresenter {
 			Activity activity = activities.iterator().next();
 			drawActivity(g, this.getPositionOnScreen().getX(), this.getPositionOnScreen().getY(), activity);
 		}
-		g.drawRect(this.getPositionOnScreen().getX(), this.getPositionOnScreen().getY(), this.dimension.getWidth(), this.getDimension().getHeight(), Colors.BLUE);
+		//g.drawRect(this.getPositionOnScreen().getX(), this.getPositionOnScreen().getY(), this.dimension.getWidth(), this.getDimension().getHeight(), Colors.BLUE);
 	}
 
 

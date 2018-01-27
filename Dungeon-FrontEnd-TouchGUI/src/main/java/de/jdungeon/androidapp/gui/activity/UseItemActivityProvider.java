@@ -2,7 +2,7 @@ package de.jdungeon.androidapp.gui.activity;
 
 import dungeon.ItemInfoOwner;
 
-import de.jdungeon.androidapp.Control;
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.game.Game;
@@ -13,10 +13,10 @@ import de.jdungeon.game.Game;
  */
 public class UseItemActivityProvider extends ItemActivityItemProvider {
 
-	private final Control actionAssembler;
+	private final GUIControl actionAssembler;
 	private final FocusManager focusManager;
 
-	public UseItemActivityProvider(ItemInfoOwner info, Game game, Control actionAssembler, FocusManager focusManager) {
+	public UseItemActivityProvider(ItemInfoOwner info, Game game, GUIControl actionAssembler, FocusManager focusManager) {
 		super(info, game);
 		this.actionAssembler = actionAssembler;
 		this.focusManager = focusManager;

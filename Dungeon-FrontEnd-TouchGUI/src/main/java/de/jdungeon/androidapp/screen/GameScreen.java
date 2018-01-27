@@ -17,12 +17,12 @@ import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.RoomInfo;
-import event.ActionEvent;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
 import event.WorldChangedEvent;
 import figure.FigureInfo;
+import figure.action.Action;
 import figure.action.ShrineAction;
 import figure.action.StepAction;
 import figure.hero.Hero;
@@ -41,7 +41,7 @@ import user.DefaultDungeonSession;
 import util.JDColor;
 import util.JDDimension;
 
-import de.jdungeon.androidapp.Control;
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.DrawUtils;
 import de.jdungeon.androidapp.GameScreenPerceptHandler;
 import de.jdungeon.androidapp.audio.MusicManager;
@@ -105,7 +105,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
 	private final int minRoomSize = 100;
-	private final Control actionAssembler;
+	private final GUIControl actionAssembler;
 
 	private long lastDoubleTapEventTime = -1;
 	private final RenderTimeLog renderTimeLog = new RenderTimeLog();
@@ -144,7 +144,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		hero.setControl(gui);
 
 
-		actionAssembler = new Control(figureInfo, gui);
+		actionAssembler = new GUIControl(figureInfo, gui);
 
 		/*
 	 * init text messages panel
@@ -266,7 +266,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 
-	public Control getActionAssembler() {
+	public GUIControl getActionAssembler() {
 		return actionAssembler;
 	}
 
@@ -1127,10 +1127,15 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		}
 
 		if (event instanceof ShrineButtonClickedEvent) {
+			List<Action> actions = new ArrayList<>();
 			if (!(getFigureInfo().getPos().getIndex() == Position.Pos.NE.getValue())) {
-				EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NE.getValue())));
+
+				StepAction stepAction = new StepAction(Position.Pos.NE.getValue());
+				actions.add(stepAction);
 			}
-			EventManager.getInstance().fireEvent(new ActionEvent(new ShrineAction(null, false)));
+			ShrineAction shrineAction = new ShrineAction(null, false);
+			actions.add(shrineAction);
+			this.actionAssembler.plugActions(actions);
 		}
 		if (event instanceof WorldChangedEvent) {
 			worldHasChanged = true;

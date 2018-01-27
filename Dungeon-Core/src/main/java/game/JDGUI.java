@@ -4,12 +4,21 @@
  */
 package game;
 
+import java.util.List;
+
 import figure.FigureInfo;
-
-
+import figure.action.Action;
 
 public interface JDGUI extends ControlUnit{
-	
+
+	/**
+	 * Sets the figure's action which will be processed next by the game.
+	 *
+	 * @param a
+	 */
+	void plugAction(Action a);
+
+	void plugActions(List<Action> actions);
 	
 
 	/**

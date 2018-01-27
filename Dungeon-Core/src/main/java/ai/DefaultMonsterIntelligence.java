@@ -637,17 +637,13 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		if (a <= 80) {
 			return null;
 		} else if (a <= 85) {
-			return Action.makeActionMove(monster.getFighterID(),
-					RouteInstruction.SOUTH);
+			return Action.makeActionMove(RouteInstruction.SOUTH);
 		} else if (a <= 90) {
-			return Action.makeActionMove(monster.getFighterID(),
-					RouteInstruction.EAST);
+			return Action.makeActionMove(RouteInstruction.EAST);
 		} else if (a <= 95) {
-			return Action.makeActionMove(monster.getFighterID(),
-					RouteInstruction.NORTH);
+			return Action.makeActionMove(RouteInstruction.NORTH);
 		} else {
-			return Action.makeActionMove(monster.getFighterID(),
-					RouteInstruction.WEST);
+			return Action.makeActionMove(RouteInstruction.WEST);
 		}
 	}
 

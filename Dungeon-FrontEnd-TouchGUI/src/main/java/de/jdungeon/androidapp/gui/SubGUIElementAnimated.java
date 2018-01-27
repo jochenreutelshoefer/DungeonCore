@@ -8,6 +8,7 @@ import de.jdungeon.androidapp.gui.smartcontrol.Drawable;
 import de.jdungeon.androidapp.gui.smartcontrol.SmartControlRoomPanel;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
 
 /**
@@ -17,10 +18,12 @@ import de.jdungeon.game.Input;
 public class SubGUIElementAnimated extends AnimatedSmartControlElement {
 
 	private final JDPoint posRelative;
+	private final Image image;
 
-	public SubGUIElementAnimated(final JDPoint posRelative, final JDDimension dimension, SmartControlRoomPanel smartControl) {
+	public SubGUIElementAnimated(final JDPoint posRelative, final JDDimension dimension, SmartControlRoomPanel smartControl, Image image) {
 		super(posRelative, dimension, smartControl);
 		this.posRelative = posRelative;
+		this.image = image;
 
 		// prepare highlight animation drawables
 		for (int i = 0; i < animationShapes.length; i++) {
@@ -52,7 +55,11 @@ public class SubGUIElementAnimated extends AnimatedSmartControlElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		g.fillRect(getX(), getY(), dimension.getWidth(), dimension.getHeight(), Colors.WHITE);
+		if(image != null) {
+			g.drawScaledImage(image, getX(), getY(),dimension.getWidth(), dimension.getHeight(), 0, 0, image.getWidth(), image.getHeight());
+		} else {
+			g.fillRect(getX(), getY(), dimension.getWidth(), dimension.getHeight(), Colors.WHITE);
+		}
 	}
 
 }

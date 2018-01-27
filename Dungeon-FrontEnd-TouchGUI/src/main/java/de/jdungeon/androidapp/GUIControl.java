@@ -2,6 +2,8 @@ package de.jdungeon.androidapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import audio.AudioEffectsManager;
 import control.ActionAssembler;
@@ -16,6 +18,10 @@ import event.Event;
 import event.EventListener;
 import event.EventManager;
 import figure.FigureInfo;
+import figure.RoomObservationStatus;
+import figure.action.Action;
+import figure.action.EndRoundAction;
+import figure.action.ScoutAction;
 import figure.hero.HeroInfo;
 import game.RoomInfoEntity;
 import item.ItemInfo;
@@ -27,15 +33,56 @@ import de.jdungeon.androidapp.event.ClickType;
 import de.jdungeon.androidapp.event.EndRoundEvent;
 import de.jdungeon.androidapp.event.InventoryItemClickedEvent;
 import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.DefaultActivity;
-public class Control extends ActionAssembler implements EventListener {
+
+public class GUIControl implements EventListener {
 
 	private final FigureInfo figure;
+	private final JDGUIEngine2D gui;
+	private Action lastAction;
+	private int repeatActionCounter;
 
-	public Control(FigureInfo figure, JDGUIEngine2D gui) {
-		super(gui);
+	private final ActionAssembler actionAssembler;
+
+	public GUIControl(FigureInfo figure, JDGUIEngine2D gui) {
 		this.figure = figure;
+		this.gui = gui;
+		actionAssembler = new ActionAssembler(figure);
 		EventManager.getInstance().registerListener(this);
+	}
+
+	public void triggerPlannedActions() {
+
+		// we repeat scout actions until scout was successful
+		if (lastAction instanceof ScoutAction) {
+			int direction = ((ScoutAction) lastAction).getDirection();
+			RoomInfo scoutedRoom = figure.getRoomInfo().getNeighbourRoom(direction);
+			if ((scoutedRoom != null) && scoutedRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
+				if (!figure.getRoomInfo().fightRunning() && repeatActionCounter < 10) {
+					plugAction(lastAction);
+				}
+			}
+		}
+	}
+
+	public void plugAction(Action action) {
+		plugActions(Collections.singletonList(action));
+	}
+
+	public void plugActions(List<Action> actions) {
+		if (figure.getActionPoints() < 1 && !(actions.get(0) instanceof EndRoundAction)) {
+			actions.add(new EndRoundAction());
+		}
+		for (Action a : actions) {
+			if (lastAction == a) {
+				repeatActionCounter++;
+			}
+			else {
+				repeatActionCounter = 0;
+			}
+			lastAction = a;
+			gui.plugAction(a);
+		}
+
 	}
 
 	public void objectClicked(Object clickedObject, boolean doubleClick) {
@@ -64,6 +111,10 @@ public class Control extends ActionAssembler implements EventListener {
 
 	}
 
+	public ActionAssembler getActionAssembler() {
+		return actionAssembler;
+	}
+
 	public void itemWheelActivityClicked(Activity item,
 										 RoomInfoEntity target) {
 		if (item == null) {
@@ -72,23 +123,26 @@ public class Control extends ActionAssembler implements EventListener {
 		Object o = item.getObject();
 		if (o instanceof ItemInfo) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			wannaUseItem((ItemInfo) o, target, false);
+			List<Action> actions = actionAssembler.wannaUseItem((ItemInfo) o, target, false);
+			plugActions(actions);
 		}
 	}
 
 	public void scoutingActivity(RoomInfoEntity highlightedEntity) {
-		if(highlightedEntity != null) {
+		if (highlightedEntity != null) {
 			if (highlightedEntity instanceof RoomInfo) {
 				int directionToScout = Dir.getDirFromToIfNeighbour(
 						figure.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				this.wannaScout(directionToScout);
+				List<Action> actions = actionAssembler.wannaScout(directionToScout);
+				plugActions(actions);
 			}
 			else if (highlightedEntity instanceof DoorInfo) {
 				int directionToScout = ((DoorInfo) highlightedEntity).getDir(figure.getRoomNumber());
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				this.wannaScout(directionToScout);
+				List<Action> actions = actionAssembler.wannaScout(directionToScout);
+				plugActions(actions);
 			}
 		}
 		else {
@@ -100,43 +154,47 @@ public class Control extends ActionAssembler implements EventListener {
 						possibleFleeDirection);
 				if (door != null) {
 					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-					this.wannaScout(possibleFleeDirection);
+					List<Action> actions = actionAssembler.wannaScout(possibleFleeDirection);
+					plugActions(actions);
 				}
 			}
 		}
 	}
 
 	private void handleDoorInfoClick(DoorInfo doorInfo, boolean doubleClick) {
-		doorClicked(doorInfo, doubleClick);
+		List<Action> actions = actionAssembler.doorClicked(doorInfo, doubleClick);
+		plugActions(actions);
 
 	}
 
 	private void handleChestInfoClick(ChestInfo chestInfo, boolean doubleClick) {
-		chestClicked(chestInfo, doubleClick);
-
+		List<Action> actions = actionAssembler.chestClicked(chestInfo, doubleClick);
+		plugActions(actions);
 	}
 
 	private void handleRoomInfoClick(RoomInfo room, boolean doubleClick) {
-		roomClicked(room, doubleClick);
-
+		List<Action> actions = actionAssembler.roomClicked(room, doubleClick);
+		plugActions(actions);
 	}
 
 	private void handlePosInfoClick(PositionInRoomInfo pos, boolean doubleClick) {
-		positionClicked(pos, doubleClick);
+		List<Action> actions = actionAssembler.positionClicked(pos, doubleClick);
+		plugActions(actions);
 	}
 
 	private void handleShrineInfoClick(ShrineInfo info, boolean doubleClick) {
-		shrineClicked(doubleClick);
-
+		List<Action> actions = actionAssembler.shrineClicked(doubleClick);
+		plugActions(actions);
 	}
 
 	private void handleFigureInfoClick(FigureInfo figure, boolean doubleClick) {
-		monsterClicked(figure, doubleClick);
-
+		List<Action> actions = actionAssembler.monsterClicked(figure, doubleClick);
+		plugActions(actions);
 	}
 
 	private void handleItemInfoClick(ItemInfo item, boolean doubleClick) {
-		itemClicked(item, doubleClick);
+		List<Action> actions = actionAssembler.itemClicked(item, doubleClick);
+		plugActions(actions);
 	}
 
 	public void inventoryItemDoubleClicked(int itemType, EquipmentItemInfo info) {
@@ -150,31 +208,31 @@ public class Control extends ActionAssembler implements EventListener {
 			}
 		}
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
-		wannaSwitchEquipmentItem(itemType, weaponIndex);
+		List<Action> actions = actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
+		plugActions(actions);
 	}
 
 	public void inventoryItemLongClicked(int itemType, EquipmentItemInfo info) {
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
-		wannaLayDownItem(info);
+		List<Action> actions = actionAssembler.wannaLayDownItem(info);
+		plugActions(actions);
 	}
 
 	public void endRound() {
-		wannaEndRound();
+		List<Action> actions = actionAssembler.wannaEndRound();
+		plugActions(actions);
 	}
-
 
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
 		events.add(InventoryItemClickedEvent.class);
 		events.add(EndRoundEvent.class);
-		events.addAll(super.getEvents());
 		return events;
 	}
 
 	@Override
 	public void notify(Event event) {
-		super.notify(event);
 		if (event instanceof InventoryItemClickedEvent) {
 			InventoryItemClickedEvent e = ((InventoryItemClickedEvent) event);
 			if (e.getClick() == ClickType.Double) {

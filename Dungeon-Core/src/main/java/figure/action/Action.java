@@ -26,7 +26,7 @@ public abstract class Action {
 		return new AttackAction(target);
 	}
 
-	public static MoveAction makeActionMove(int fighterIndex, int dir) {
+	public static MoveAction makeActionMove(int dir) {
 		return new MoveAction(dir);
 	}
 

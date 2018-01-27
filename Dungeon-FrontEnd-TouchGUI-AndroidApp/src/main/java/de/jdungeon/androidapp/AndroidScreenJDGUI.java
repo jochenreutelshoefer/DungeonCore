@@ -125,6 +125,12 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	}
 
 	@Override
+	public void plugActions(List<Action> actions) {
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		actionQueue.addAll(actions);
+	}
+
+	@Override
 	public int getSelectedItemIndex() {
 		// TODO Auto-generated method stub
 		return 0;

@@ -6,13 +6,13 @@ import java.util.List;
 import dungeon.ChestInfo;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
-import event.ActionEvent;
-import event.EventManager;
 import figure.FigureInfo;
+import figure.action.Action;
 import figure.action.StepAction;
 import figure.action.TakeItemFromChestAction;
 import item.ItemInfo;
 
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.game.Game;
 
@@ -23,10 +23,12 @@ import de.jdungeon.game.Game;
 public class ChestItemActivityProvider extends ItemActivityItemProvider {
 
 	private final FigureInfo info;
+	private final GUIControl guiControl;
 
-	public ChestItemActivityProvider(FigureInfo info, Game game) {
+	public ChestItemActivityProvider(FigureInfo info, Game game, GUIControl guiControl) {
 		super(info, game);
 		this.info = info;
+		this.guiControl = guiControl;
 	}
 
 	@Override
@@ -51,10 +53,15 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 	@Override
 	public void activityPressed(Activity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		List<Action> actions = new ArrayList<>();
 		if(! (this.info.getPos().getIndex() == Position.Pos.NW.getValue())) {
-			EventManager.getInstance().fireEvent(new ActionEvent(new StepAction(Position.Pos.NW.getValue())));
+			StepAction stepAction = new StepAction(Position.Pos.NW.getValue());
+			actions.add(stepAction);
 		}
-		EventManager.getInstance().fireEvent(new ActionEvent(new TakeItemFromChestAction((ItemInfo)infoEntity.getObject())));
+		TakeItemFromChestAction takeAction = new TakeItemFromChestAction((ItemInfo) infoEntity.getObject());
+		actions.add(takeAction);
+		this.guiControl.plugActions(actions);
+
 	}
 
 	@Override
