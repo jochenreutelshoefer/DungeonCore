@@ -132,7 +132,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			setupRoomQuests(dungeon, filler, entryRoom, entryPoint, roomQuests);
 
 			// remove some more doors
-			filler.removeDoors(3, entryPoint);
+			filler.removeDoors(2, entryPoint);
 
 			Collection<DeadEndPath> deadEnds = filler.getDeadEndsUnallocated();
 

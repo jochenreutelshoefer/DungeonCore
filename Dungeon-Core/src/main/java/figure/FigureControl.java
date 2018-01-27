@@ -114,7 +114,8 @@ public class FigureControl implements ControlUnit {
 
 		Action a = null;
 		// TODO: test that fight actions really are fight actions etc, to find errors in AIs quicker
-		if (f.getRoomInfo().fightRunning() != null && f.getRoomInfo().fightRunning()) {
+		Boolean fightRunning = f.getRoomInfo().fightRunning();
+		if (fightRunning != null && fightRunning) {
 			a = brain.chooseFightAction();
 		} else {
 			a = brain.chooseMovementAction();

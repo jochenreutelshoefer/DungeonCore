@@ -235,12 +235,8 @@ public class GameScreenPerceptHandler {
 		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if(fig.equals(this.figure)) {
-			Paragraphable worldFocusObject = screen.getFocusManager().getWorldFocusObject();
-			if(worldFocusObject instanceof RoomInfo
-					|| worldFocusObject instanceof ShrineInfo) {
 				// we reset the selected room, as hero has moved on
 				screen.getFocusManager().setWorldFocusObject(null);
-			}
 		}
 
 		if (set != null) {

@@ -4,7 +4,7 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package control;
+package ai;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -162,7 +162,7 @@ public class ActionAssembler {
 						}
 					}
 					if (position != null) {
-						wannaStepToPosition(position);
+						actions.addAll(wannaStepToPosition(position));
 						EndRoundAction endR = new EndRoundAction();
 						actions.add(endR);
 					}
@@ -309,6 +309,14 @@ public class ActionAssembler {
 	}
 
 	public List<Action>  chestClicked(Object o, boolean right) {
+		if(o == null) {
+			ChestInfo chest = this.figure.getRoomInfo().getChest();
+			if(chest != null) {
+				o = chest;
+			} else {
+				return Collections.emptyList();
+			}
+		}
 		FigureInfo f = getFigure();
 		if (o instanceof ChestInfo) {
 			ChestInfo chest = ((ChestInfo) o);

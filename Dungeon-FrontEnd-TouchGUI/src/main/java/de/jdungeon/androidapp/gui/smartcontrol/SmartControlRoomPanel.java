@@ -151,7 +151,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		int shrineElementSize = 30;
 		final JDDimension shrineDimension = new JDDimension(shrineElementSize, shrineElementSize);
 		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 19 / 28, getDimension()
-				.getHeight() * 5 / 24);
+				.getHeight() * 9 / 48);
 		Image shrineImage = (Image) GUIImageManager.getImageProxy("guiItems/temple.png", game.getFileIO()
 				.getImageLoader()).getImage();
 		shrineElement = new SubGUIElementAnimated(posRelativeShrine, shrineDimension, this, shrineImage) {
@@ -178,6 +178,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				super.handleTouchEvent(touch);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
 				EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
+				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
 				return true;
 			}
 		};
@@ -310,7 +311,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			if (door != null && door.hasLock()) {
 				Action action = new LockAction(door);
 				DoorElement doorElement = new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
-						.isLocked(), this.figure.hasKey(door), action, door, guiControl.getActionAssembler());
+						.isLocked(), this.figure.hasKey(door), action, door, guiControl);
 				doorElements.add(doorElement);
 			}
 		}

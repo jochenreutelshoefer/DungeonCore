@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import audio.AudioEffectsManager;
-import control.ActionAssembler;
+import ai.ActionAssembler;
 import control.JDGUIEngine2D;
 import dungeon.ChestInfo;
 import dungeon.Dir;
@@ -68,7 +68,8 @@ public class GUIControl implements EventListener {
 		plugActions(Collections.singletonList(action));
 	}
 
-	public void plugActions(List<Action> actions) {
+	public void plugActions(List<Action> l) {
+		List<Action>  actions = new ArrayList<>(l);
 		if (figure.getActionPoints() < 1 && !(actions.get(0) instanceof EndRoundAction)) {
 			actions.add(new EndRoundAction());
 		}

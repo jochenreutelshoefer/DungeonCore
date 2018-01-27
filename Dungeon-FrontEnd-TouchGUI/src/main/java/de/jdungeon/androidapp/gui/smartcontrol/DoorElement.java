@@ -1,18 +1,15 @@
 package de.jdungeon.androidapp.gui.smartcontrol;
 
-import control.ActionAssembler;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
-import event.ActionEvent;
 import event.EventManager;
 import figure.action.Action;
-import game.InfoEntity;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.DrawUtils;
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.event.InfoObjectClickedEvent;
 import de.jdungeon.androidapp.gui.GUIElement;
-import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
@@ -28,15 +25,15 @@ public class DoorElement extends AnimatedSmartControlElement {
 	private final boolean hasKey;
 	private final Action action;
 	private final DoorInfo clickableObject;
-	private final ActionAssembler actionAssembler;
+	private final GUIControl guiControl;
 
-	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, DoorInfo clickableObject, ActionAssembler actionAssembler) {
+	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, DoorInfo clickableObject, GUIControl guiControl) {
 		super(position, dimension, parent);
 		this.locked = locked;
 		this.hasKey = hasKey;
 		this.action = action;
 		this.clickableObject = clickableObject;
-		this.actionAssembler = actionAssembler;
+		this.guiControl = guiControl;
 
 		// prepare highlight animation drawables
 		for (int i = 0; i < animationShapes.length; i++) {
@@ -60,7 +57,7 @@ public class DoorElement extends AnimatedSmartControlElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
-		actionAssembler.wannaLockDoor(clickableObject);
+		guiControl.plugActions(guiControl.getActionAssembler().wannaLockDoor(clickableObject));
 		if(clickableObject != null) {
 			EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
 		}

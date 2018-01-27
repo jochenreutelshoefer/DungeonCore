@@ -1,5 +1,8 @@
 package ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
@@ -16,16 +19,18 @@ import figure.percept.Percept;
  */
 public class SurvivorBehaviour extends AbstractAI {
 
-	private FigureInfo figure;
+	private final FigureInfo figure;
 	private final HeroPositionLog heroLog = new HeroPositionLog();
-	private AbstractAI defaultAI;
+	private final AbstractAI defaultAI;
+	private final ActionAssembler actionAssembler;
+	List<Action> plannedActions = new ArrayList<>();
 
 	public SurvivorBehaviour(FigureInfo figure) {
 		super(new AttitudeMonsterDefault());
 		this.figure = figure;
 		defaultAI = new DefaultMonsterIntelligence();
 		defaultAI.setFigure(figure);
-
+		actionAssembler = new ActionAssembler(figure);
 	}
 
 	@Override
@@ -48,6 +53,9 @@ public class SurvivorBehaviour extends AbstractAI {
 
 	@Override
 	public Action chooseMovementAction() {
+		if(!plannedActions.isEmpty()) {
+			return plannedActions.remove(0);
+		}
 		heroLog.processPercepts();
 
 		if (figure.getHealthLevel() < HealthLevel.Good.getValue()) {
@@ -69,12 +77,11 @@ public class SurvivorBehaviour extends AbstractAI {
 				 dir = RouteInstruction.Direction.North;
 			}
 
-			// TODO: implement reusable multi-round strategy 'travel <DIRECTION>'
-
 			if(dir != null) {
 				DoorInfo door = figure.getRoomInfo().getDoor(dir);
 				if(door != null && door.isPassable()) {
-					return new MoveAction(dir);
+					List<Action> actions = actionAssembler.wannaWalk(dir.getValue());
+					plannedActions.addAll(actions);
 				}
  			}
 		}

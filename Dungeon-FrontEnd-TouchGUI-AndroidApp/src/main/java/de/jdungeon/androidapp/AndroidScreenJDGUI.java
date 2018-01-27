@@ -13,11 +13,8 @@ import java.util.Vector;
 
 import spell.SpellInfo;
 import text.StatementManager;
-import control.AbstractSwingMainFrame;
-import control.ActionAssembler;
 import control.JDGUIEngine2D;
 import dungeon.JDPoint;
-import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -26,7 +23,6 @@ import figure.percept.Percept;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.screen.GameScreen;
-import de.jdungeon.game.AbstractImageLoader;
 
 import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
 import de.jdungeon.game.Screen;
