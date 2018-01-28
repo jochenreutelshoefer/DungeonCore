@@ -1,11 +1,13 @@
 package de.jdungeon.androidapp.gui.activity;
 
+import java.util.Collections;
 import java.util.List;
 
 import android.util.Log;
 import dungeon.JDPoint;
 import util.JDDimension;
 
+import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
@@ -49,6 +51,12 @@ public class SingleActivityPresenter extends ActivityPresenter {
 		}
 		Log.w("warning", "activity is no executable activity");
 		return null;
+	}
+
+	@Override
+	protected List<? extends GUIElement> getAllSubElements() {
+		// TODO: refactor, currently implementing all gui handling mehtods itself
+		return Collections.emptyList();
 	}
 
 	@Override

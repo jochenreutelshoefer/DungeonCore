@@ -179,7 +179,7 @@ public class StartLevel extends AbstractDungeonFactory {
 
 			// for testing only
 			entryRoom.addItem(new VisibilityCheatBall());
-
+			entryRoom.addItem(new HealPotion(15));
 
 
 

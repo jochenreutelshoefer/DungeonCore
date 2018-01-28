@@ -8,19 +8,23 @@ import java.util.Map;
 import dungeon.ItemInfoOwner;
 import item.ItemInfo;
 
+import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.InventoryImageManager;
+import de.jdungeon.androidapp.gui.smartcontrol.ExecutableTakeItemActivity;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
 public abstract class ItemActivityItemProvider implements ActivityProvider {
 
 	private final ItemInfoOwner info;
+	private final GUIControl guiControl;
 	private final Map<Class, Image> imageCache = new HashMap<Class, Image>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public ItemActivityItemProvider(ItemInfoOwner info, Game game) {
+	public ItemActivityItemProvider(ItemInfoOwner info, Game game, GUIControl guiControl) {
 		this.info = info;
+		this.guiControl = guiControl;
 		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 	}
 
@@ -33,7 +37,7 @@ public abstract class ItemActivityItemProvider implements ActivityProvider {
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new DefaultActivity(itemInfo));
+				result.add(new ExecutableTakeItemActivity(guiControl, itemInfo));
 			}
 		}
 		return result;

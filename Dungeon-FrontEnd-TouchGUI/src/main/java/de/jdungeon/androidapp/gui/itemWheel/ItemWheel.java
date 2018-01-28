@@ -1,5 +1,6 @@
 package de.jdungeon.androidapp.gui.itemWheel;
 
+import java.util.Collections;
 import java.util.List;
 
 import dungeon.JDPoint;
@@ -8,6 +9,7 @@ import figure.hero.HeroInfo;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.event.FocusEvent;
+import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.activity.Activity;
 import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.activity.ActivityPresenter;
@@ -118,6 +120,12 @@ public class ItemWheel extends ActivityPresenter {
 		startVelocity = velocity;
 		justRotated = true;
 		return true;
+	}
+
+	@Override
+	protected List<? extends GUIElement> getAllSubElements() {
+		// TODO (currently ItemWheel does not use GUIElements for acitivity tiles)
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 	private final GUIControl guiControl;
 
 	public ChestItemActivityProvider(FigureInfo info, Game game, GUIControl guiControl) {
-		super(info, game);
+		super(info, game, guiControl);
 		this.info = info;
 		this.guiControl = guiControl;
 	}

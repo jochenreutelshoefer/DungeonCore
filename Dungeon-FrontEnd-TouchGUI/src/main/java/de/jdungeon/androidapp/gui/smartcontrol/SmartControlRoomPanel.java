@@ -40,6 +40,7 @@ import de.jdungeon.androidapp.gui.SubGUIElementAnimated;
 import de.jdungeon.androidapp.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.androidapp.gui.activity.ExecutableActivity;
 import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
+import de.jdungeon.androidapp.gui.activity.TakeItemActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.StandardScreen;
@@ -99,6 +100,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final JDDimension positionDimension;
 	private final SubGUIElementAnimated shrineElement;
 	private final GUIElement innerFrame;
+	private final FloorItemPresenter floorItemPresenter;
 
 	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, GUIControl actionAssembler) {
 		super(position, dimension, screen, game);
@@ -220,6 +222,9 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				return true;
 			}
 		};
+
+		floorItemPresenter = new FloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, screen, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
+
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
@@ -498,6 +503,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	@Override
 	public void update(float time) {
 		updateAllElementsIfNecessary();
+		// TODO: do we need to clear and reinsert all element for every update ??
 		allGuiElements.clear();
 		//allGuiElements.add(outerFrame);
 		allGuiElements.add(innerFrame);
@@ -508,6 +514,8 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		allGuiElements.addAll(takeItemElements);
 		allGuiElements.addAll(chestElements);
 		allGuiElements.addAll(shrineElements);
+		allGuiElements.add(floorItemPresenter);
+		floorItemPresenter.update(time);
 	}
 
 	@Override

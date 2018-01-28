@@ -4,6 +4,7 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
+import de.jdungeon.androidapp.gui.ContainerGUIElement;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
@@ -14,7 +15,7 @@ import de.jdungeon.game.Image;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 25.01.18.
  */
-public abstract class ActivityPresenter extends AbstractGUIElement {
+public abstract class ActivityPresenter extends ContainerGUIElement {
 
 	protected final ActivityProvider provider;
 	protected boolean visible = true;
@@ -126,7 +127,7 @@ public abstract class ActivityPresenter extends AbstractGUIElement {
 				im.getHeight());
 	}
 
-	protected void drawActivity(Graphics g, int x, int y, Activity activity) {
+	public void drawActivity(Graphics g, int x, int y, Activity activity) {
 		Image im = provider.getActivityImage(activity);
 
 		int posX = x;

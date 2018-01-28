@@ -17,7 +17,7 @@ public class UseItemActivityProvider extends ItemActivityItemProvider {
 	private final FocusManager focusManager;
 
 	public UseItemActivityProvider(ItemInfoOwner info, Game game, GUIControl actionAssembler, FocusManager focusManager) {
-		super(info, game);
+		super(info, game, actionAssembler);
 		this.actionAssembler = actionAssembler;
 		this.focusManager = focusManager;
 	}

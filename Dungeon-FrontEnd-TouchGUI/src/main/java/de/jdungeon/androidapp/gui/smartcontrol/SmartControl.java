@@ -106,6 +106,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		/*
 		add additional activities around the smart control room panel
 		 */
+
 		/*
 		SkillImageManager skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 		JDDimension directionActivityDimension = new JDDimension(directionActivityTilesSize, directionActivityTilesSize);

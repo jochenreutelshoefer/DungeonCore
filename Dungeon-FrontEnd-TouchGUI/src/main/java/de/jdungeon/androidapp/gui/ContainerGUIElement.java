@@ -21,7 +21,7 @@ public abstract class ContainerGUIElement extends AbstractGUIElement {
 		super(position, dimension, screen, game);
 	}
 
-	protected abstract List<GUIElement> getAllSubElements();
+	protected abstract List<? extends GUIElement> getAllSubElements();
 
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
