@@ -169,7 +169,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		chestRoom.setChest(chestWithRemainderItems);
 
 		// for testing only
-		entryRoom.addItem(new VisibilityCheatBall());
+		//entryRoom.addItem(new VisibilityCheatBall());
 		entryRoom.addItem(new ScrollMagic(new LionessConjuration(1)));
 		entryRoom.addItem(new ScrollMagic(new FirConjuration(1)));
 		// TODO: remove

@@ -14,8 +14,8 @@ import de.jdungeon.androidapp.gui.activity.AbstractExecutableActivity;
  */
 public class ExecutableTakeItemActivity extends AbstractExecutableActivity {
 
-	private final GUIControl guiControl;
-	private final ItemInfo item;
+	protected final GUIControl guiControl;
+	protected final ItemInfo item;
 
 	public ExecutableTakeItemActivity(GUIControl control, ItemInfo item) {
 		this.guiControl = control;

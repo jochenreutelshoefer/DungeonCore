@@ -25,7 +25,6 @@ import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
-import gui.Paragraph;
 import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
@@ -38,10 +37,8 @@ import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElementAnimated;
 import de.jdungeon.androidapp.gui.activity.AbstractExecutableActivity;
-import de.jdungeon.androidapp.gui.activity.ExecutableActivity;
 import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemActivityProvider;
-import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Color;
@@ -82,6 +79,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final ActivityControlElement scoutEast;
 	private final SkillImageManager skillImageManager;
 	private boolean worldHasChanged = true;
+	private boolean visible = true;
 
 	private final MoveElement moveWest;
 	private final MoveElement moveEast;
@@ -93,7 +91,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final int positionAreaOffset;
 	private final GraphicObjectRenderer renderer;
 	private final SubGUIElementAnimated chestGUIELement;
-	private final SubGUIElementAnimated takeGUIElement;
+	//private final SubGUIElementAnimated takeGUIElement;
 	private final PositionElement[] freeStepPositionElements = new PositionElement[8];
 	private final PositionElement[] dotPositionElements = new PositionElement[8];
 	private final JDPoint[] positionElementPositions = new JDPoint[8];
@@ -204,12 +202,14 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
-				EventManager.getInstance().fireEvent(new ChestItemButtonClickedEvent());
+				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
 				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
 				return true;
 			}
 		};
 
+
+		/*
 		// take from floor  button
 		int takeElementSize = 28;
 		final JDDimension takeDimension = new JDDimension(takeElementSize, takeElementSize);
@@ -222,6 +222,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				return true;
 			}
 		};
+		*/
 
 		floorItemPresenter = new FloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, screen, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
 
@@ -330,7 +331,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			updatePositionElements();
 			updateDoorElements();
 			updateMoveElements();
-			updateTakeElement();
+			//updateTakeElement();
 			updateChestElement();
 			updateShrineElement();
 			worldHasChanged = false;
@@ -422,6 +423,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		}
 	}
 
+	/*
 	private void updateTakeElement() {
 		takeItemElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
@@ -430,6 +432,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			takeItemElements.add(takeGUIElement);
 		}
 	}
+	*/
 
 	private void updateShrineElement() {
 		shrineElements.clear();
@@ -520,7 +523,11 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 
 	@Override
 	public boolean isVisible() {
-		return true;
+		return visible;
+	}
+
+	public void setVisible(boolean value) {
+		visible = value;
 	}
 
 	@Override

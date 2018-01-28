@@ -60,7 +60,7 @@ import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
 import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.ZoomButton;
-import de.jdungeon.androidapp.gui.smartcontrol.ChestItemButtonClickedEvent;
+import de.jdungeon.androidapp.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.androidapp.gui.activity.TakeItemButtonClickedEvent;
 import de.jdungeon.androidapp.gui.smartcontrol.ShrineButtonClickedEvent;
 import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
@@ -1107,7 +1107,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		events.add(InfoObjectClickedEvent.class);
 		events.add(VisibilityIncreasedEvent.class);
 		events.add(TakeItemButtonClickedEvent.class);
-		events.add(ChestItemButtonClickedEvent.class);
+		events.add(ToggleChestViewEvent.class);
 		events.add(ShrineButtonClickedEvent.class);
 		events.add(WorldChangedEvent.class);
 		return events;

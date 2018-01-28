@@ -14,6 +14,8 @@ import item.ItemInfo;
 
 import de.jdungeon.androidapp.GUIControl;
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.androidapp.gui.smartcontrol.ExecutableChestItemActivity;
+import de.jdungeon.androidapp.gui.smartcontrol.ExecutableTakeItemActivity;
 import de.jdungeon.game.Game;
 
 /**
@@ -44,7 +46,7 @@ public class ChestItemActivityProvider extends ItemActivityItemProvider {
 		}
 		for (ItemInfo itemInfo : figureItemList) {
 			if(itemInfo != null) {
-				result.add(new DefaultActivity(itemInfo));
+				result.add(new ExecutableChestItemActivity(guiControl, itemInfo));
 			}
 		}
 		return result;

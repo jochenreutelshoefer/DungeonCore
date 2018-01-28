@@ -21,19 +21,28 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
+import de.jdungeon.util.PaintBuilder;
 
 public class ItemWheel extends ActivityPresenter {
 
-	private static final double PI_EIGHTEENTH = Math.PI / 18;
-	private static final double PI_THIRTHYSIXTH = Math.PI / 36;
+	public enum CenterPositionMode {
+		topLeft, center;
+	}
+
+	private static  double PI_EIGHTEENTH;
+	private static  double PI_THIRTHYSIXTH;
+	private final JDPoint[] points;
 	private static final double TWO_PI = Math.PI * 2;
-	private final JDPoint[] points = new JDPoint[36];
 	private final int hightlightItemPosition;
 	private int markedPointIndex;
 	private final Image wheelBackgroundImage;
 	private final String title;
+	private final JDPoint drawBoundPositon;
+	private final JDDimension drawBoundsDimension;
+	private final CenterPositionMode centerMode;
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
+	private final int itemPositions;
 	private boolean justRotated = true;
 
 	private static final int defaultImageWidth = 50;
@@ -48,28 +57,38 @@ public class ItemWheel extends ActivityPresenter {
 	private float velocity = 0;
 	private float startVelocity = 0;
 	private final float maxVelocity = 50;
-	private final int posY;
+	//private final int posY;
 
-	private final int xLeft;
-	private final int heightFullArea;
-	private final int backgroundX;
-	private final int backgroundWidth;
-	private final int xRight;
-	private final int stepDown;
-	private final int stepLength;
+	//private final int xLeft;
 
 	private final ItemWheelBindingSet binding;
 
-	public ItemWheel(JDPoint position, JDDimension dim, HeroInfo info,
+	public ItemWheel(JDPoint wheelCenterPosition, JDDimension dim, HeroInfo info,
 					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
 					 Image itemBackground, Image wheelBackgroundImage, String title) {
-		super(position, dim, screen, game, provider, itemBackground, defaultImageWidth);
+			this(wheelCenterPosition, dim, info, screen, game, provider, selectedIndex, itemBackground, wheelBackgroundImage, title, new JDPoint(wheelCenterPosition.getX()-dim.getWidth(), wheelCenterPosition.getY()-dim.getHeight() ), new JDDimension(dim.getWidth()  * 2 , dim.getHeight() * 2), CenterPositionMode.topLeft, dim.getWidth(), 36);
+	}
+
+		public ItemWheel(JDPoint wheelCenterPosition, JDDimension dim, HeroInfo info,
+					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
+					 Image itemBackground, Image wheelBackgroundImage, String title, JDPoint drawBoundPositon, JDDimension drawBoundsDimension, CenterPositionMode centerMode, int radius, int itemPositions) {
+		super(wheelCenterPosition, dim, screen, game, provider, itemBackground, defaultImageWidth);
+
+
+			PI_EIGHTEENTH = Math.PI / 18;
+			PI_THIRTHYSIXTH = Math.PI / 36;
+			points = new JDPoint[36];
+
 		this.hightlightItemPosition = selectedIndex;
 		this.wheelBackgroundImage = wheelBackgroundImage;
 		this.title = title;
-		radius = dimension.getWidth();
-		info.getSpellBuffer();
-		this.binding = new ItemWheelBindingSetSimple(selectedIndex, 36, provider);
+			this.drawBoundPositon = drawBoundPositon;
+			this.drawBoundsDimension = drawBoundsDimension;
+			this.centerMode = centerMode;
+			this.radius = radius;
+			this.itemPositions = itemPositions;
+			info.getSpellBuffer();
+		this.binding = new ItemWheelBindingSetSimple(selectedIndex, itemPositions, provider);
 		//markedPointIndex = selectedIndex;
 
 		/*
@@ -81,20 +100,6 @@ public class ItemWheel extends ActivityPresenter {
 			int y = calcYCoordinate(degreeRad);
 			points[i] = new JDPoint(x, y);
 		}
-
-		posY = position.getY() - (this.getDimension().getHeight()) - this.getDimension().getHeight() / 12;
-		xLeft = position.getX() - this.getDimension().getWidth() * 2 / 5 - 20;
-
-		// calc background image size
-		int widthFullArea = game.getScreenWidth() - xLeft;
-		heightFullArea = game.getScreenHeight() - posY;
-		backgroundWidth = widthFullArea * 2 / 3;
-		backgroundX = xLeft + ((widthFullArea - backgroundWidth) / 2);
-
-		// top border line
-		xRight = position.getX() + this.getDimension().getWidth() * 2 / 5 + 20;
-		stepDown = 10;
-		stepLength = 50;
 
 		positionCorrection = true;
 	}
@@ -318,41 +323,31 @@ public class ItemWheel extends ActivityPresenter {
 	}
 
 	private int calcYCoordinate(double degreeRad) {
-		return (int) (this.position.getY() + (Math.cos(degreeRad) * radius));
+		int y = this.position.getY();
+
+		int result = (int) (y + (Math.cos(degreeRad) * radius));
+		if(centerMode == CenterPositionMode.center) {
+			result = result + (int)(this.getDimension().getWidth()/2);
+		}
+		return result;
 	}
 
 	private int calcXCoordinate(double degreeRad) {
-		return (int) (this.position.getX() + (Math.sin(degreeRad) * radius));
+		int x = this.position.getX();
+
+		int result =  (int) (x + (Math.sin(degreeRad) * radius));
+		if(centerMode == CenterPositionMode.center) {
+			result = result + (int)(this.getDimension().getWidth()/2);
+		}
+		return result;
 	}
 
+	protected boolean isInDrawBounds(int x, int y) {
+		return x >= drawBoundPositon.getX() && x <= drawBoundPositon.getX() + drawBoundsDimension.getWidth() &&
+				y >= drawBoundPositon.getY() && y <= drawBoundPositon.getY() + drawBoundsDimension.getHeight();
+	}
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
-
-
-		/*
-		 * draw item wheel background if existing
-		 */
-		if (wheelBackgroundImage != null) {
-			g.drawScaledImage(
-					wheelBackgroundImage,
-					backgroundX,
-					posY,
-					backgroundWidth,
-					heightFullArea,
-					0, 0,
-					wheelBackgroundImage.getWidth(),
-					wheelBackgroundImage.getHeight());
-		}
-
-		// headline and title
-
-		g.drawLine(xLeft, posY, xRight, posY, Colors.WHITE);
-		g.drawLine(xLeft - stepLength, posY + stepDown, xLeft, posY + stepDown, Colors.WHITE);
-		g.drawLine(xLeft, posY, xLeft, posY + stepDown, Colors.WHITE);
-		g.drawLine(xRight, posY + stepDown, xRight + stepLength, posY + stepDown, Colors.WHITE);
-		g.drawLine(xRight, posY, xRight, posY + stepDown, Colors.WHITE);
-		g.drawString(title, xLeft - 25, posY + stepDown - 1, g.getTextPaintWhite());
-		g.drawString(title, xRight + 25, posY + stepDown - 1, g.getTextPaintWhite());
 
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
@@ -360,16 +355,18 @@ public class ItemWheel extends ActivityPresenter {
 			int y = points[toDraw].getY();
 
 
+
 			/*
 			PaintBuilder numberPaint = new PaintBuilder();
 			numberPaint.setColor(Colors.RED);
 			//g.drawOval(x, y, 2, 2, Colors.GRAY);
-			g.drawString("" + toDraw, x, y, g.createPaint(numberPaint) );
+			g.drawString("" + toDraw, x, y, g.createTextPaint(numberPaint) );
+			g.drawRect(drawBoundPositon.getX(), drawBoundPositon.getY(), drawBoundsDimension.getWidth(), drawBoundsDimension.getHeight(), Colors.BLUE);
 			*/
 
 			if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
 					|| y > screenPlusDefaultImageHeight
-					|| y < 0 - doubleImageHeight) {
+					|| y < 0 - doubleImageHeight || !isInDrawBounds(x,y)) {
 				continue;
 			}
 			Activity activity = this.binding.getActivity(toDraw);

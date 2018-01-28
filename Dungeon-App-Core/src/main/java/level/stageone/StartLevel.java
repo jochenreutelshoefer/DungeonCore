@@ -178,7 +178,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			fountainRoom.setShrine(new HealthFountain(10, 1));
 
 			// for testing only
-			entryRoom.addItem(new VisibilityCheatBall());
+			//entryRoom.addItem(new VisibilityCheatBall());
 			entryRoom.addItem(new HealPotion(15));
 
 

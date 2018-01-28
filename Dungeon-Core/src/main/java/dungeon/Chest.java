@@ -180,7 +180,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 		p[0].setBold();
 
 		String s2 = new String();
-		if (!lock.equals("unlockable")) {
+		if (lock != null) {
 			s2 += JDEnv.getString("door_lock") + ": " + lock + "  "
 					+ JDEnv.getString("state") + ": ";
 			if (locked) {
