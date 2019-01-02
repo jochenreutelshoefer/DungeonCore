@@ -12,9 +12,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import ai.AI;
+import ai.AbstractAI;
 import ai.AbstractReflexBehavior;
 import ai.DefaultMonsterIntelligence;
-import ai.AbstractAI;
 import dungeon.Chest;
 import dungeon.Dir;
 import dungeon.Door;
@@ -102,6 +102,7 @@ import item.interfaces.Usable;
 import org.apache.log4j.Logger;
 import shrine.Shrine;
 import spell.AbstractSpell;
+import spell.KeyLocator;
 import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
@@ -231,7 +232,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					}
 				}
 			}
-
 		}
 	}
 
@@ -250,7 +250,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		// add current pos also, to allow a figure to interact with its own items
 		result.add(currentPos);
 		return result;
-	};
+	}
+
+	;
 
 	protected boolean wayPassable(Door d, Room toGo) {
 
@@ -373,7 +375,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		else {
 			return false;
 		}
-
 	}
 
 	public void tellPercept(Percept p) {
@@ -422,7 +423,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		else {
 			return false;
 		}
-
 	}
 
 	public boolean payDust(double value) {
@@ -455,7 +455,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		else {
 			healthAttr.setValue((healthAttr.getBasic()));
 		}
-
 	}
 
 	public void heal(int value) {
@@ -475,9 +474,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			Integer element = iter.next();
 			Figure f = allFigures.get(element);
 			f.createVisibilityMap(d);
-
 		}
-
 	}
 
 	public static void setMonsterControls() {
@@ -491,7 +488,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				AbstractAI ai = new DefaultMonsterIntelligence();
 				if (f.getSpecifiedAI() != null) {
 					ai = f.getSpecifiedAI();
-
 				}
 				ai.setFigure(info);
 				ControlUnit control = new FigureControl(info, ai);
@@ -499,7 +495,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					f.setControl(control);
 				}
 			}
-
 		}
 	}
 
@@ -600,7 +595,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (this.getActionPoints() > 0 && !isDead()) {
 			doActions(i);
 		}
-
 	}
 
 	protected abstract void sanction(int i);
@@ -614,7 +608,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		/*
 		 * cheat for debugging
 		 */
-		if (!Objects.equals(this.getName(), "Terminator")) {
+		if (! this.getName().equals("Terminator")) {
 			h.modValue(value * (-1));
 		}
 		this.setStatus(this.getHealthLevel());
@@ -767,7 +761,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				res = new SlapResult(allDmg, dies, this, allDmg, s);
 				p = new HitPercept(attacker, this, res);
 			}
-
 		}
 		else {
 			res = new SlapResult(allDmg, false, this, allDmg, s);
@@ -798,7 +791,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				// TODO: unify action processing in fight and non-fight case
 				ActionResult res = processAction(a);
 				if (res.equals(ActionResult.DONE)) {
-					EventManager.getInstance().fireEvent(new WorldChangedEvent());
+					EventManager.getInstanceDungeon().fireEvent(new WorldChangedEvent());
 				}
 				control.actionProcessed(a, res);
 
@@ -865,16 +858,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 						control.actionProcessed(a, res);
 					}
 				}
-
 			}
 
 			// TODO: unify action processing in fight and non-fight case
 			res = processAction(a);
 			if (res.equals(ActionResult.DONE)) {
-				EventManager.getInstance().fireEvent(new WorldChangedEvent());
+				EventManager.getInstanceDungeon().fireEvent(new WorldChangedEvent());
 			}
 			control.actionProcessed(a, res);
-
 		}
 		return false;
 	}
@@ -905,7 +896,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		else {
 			return false;
 		}
-
 	}
 
 	public boolean canPayFightActionPoint() {
@@ -1169,7 +1159,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			getDoorSmash(d, true);
 			return false;
 		}
-
 	}
 
 	public void doorSmashesBack(Door d) {
@@ -1222,7 +1211,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				Item item = getRoom().getChest().getItem(info);
 				if (this.isAbleToTakeItemInFight(item)) {
 					if (this.getRoom().getChest().hasItem(item)) {
-						if(! (this.getPos().getIndex() == Position.Pos.NW.getValue())) {
+						if (!(this.getPos().getIndex() == Position.Pos.NW.getValue())) {
 							return ActionResult.POSITION;
 						}
 						if (this.canTakeItem(item)) {
@@ -1263,7 +1252,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			}
 			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
 					ActionResult.IMPOSSIBLE_REASON_OTHER);
-
 		}
 	}
 
@@ -1342,7 +1330,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			else {
 				return ActionResult.POSSIBLE;
 			}
-
 		}
 		else {
 			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
@@ -1383,7 +1370,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			return ActionResult.POSSIBLE;
 		}
 		if (a instanceof EndRoundAction) {
-				return ActionResult.POSSIBLE;
+			return ActionResult.POSSIBLE;
 		}
 		if (!(a instanceof SpellAction)) {
 			if (lastSpell != null) {
@@ -1490,19 +1477,21 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				Usable usable = (Usable) it;
 				RoomInfoEntity target = a.getTarget();
 				InfoUnitUnwrapper unwrapper = this.getRoom().getDungeon().getUnwrapper();
-				if(((Usable) it).needsTarget() && target == null) {
+				if (((Usable) it).needsTarget() && target == null) {
 					return ActionResult.NO_TARGET;
 				}
-				if(((Usable)it).needsTarget()) {
+				if (((Usable) it).needsTarget()) {
 					Collection<PositionInRoomInfo> interactionPositions = target.getInteractionPositions();
 					Collection<Object> positions = unwrapper.unwrappObjects(interactionPositions);
-					if(! positions.contains(this.getPos())) {
+					if (!positions.contains(this.getPos())) {
 						return ActionResult.POSITION;
 					}
 				}
 				if (usable.canBeUsedBy(this)) {
 					if (doIt) {
-						boolean used = ((Usable) it).use(this, this.getActualDungeon().getUnwrapper().unwrappObject(target), a.isMeta());
+						boolean used = ((Usable) it).use(this, this.getActualDungeon()
+								.getUnwrapper()
+								.unwrappObject(target), a.isMeta());
 						this.payActionPoint();
 						Percept p = new UsePercept(this, (Usable) it);
 						getRoom().distributePercept(p);
@@ -1563,7 +1552,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 							doStepTo(targetIndex, oldPosIndex);
 							this.payFightActionPoint();
 							return ActionResult.DONE;
-
 						}
 						return ActionResult.POSSIBLE;
 					}
@@ -1576,7 +1564,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			else {
 				return ActionResult.NOAP;
 			}
-
 		}
 		else {
 			if (this.getActionPoints() < 1) {
@@ -1718,7 +1705,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					.getNewRoomVisibilityMap(roomVisibility);
 			roomVisibility.setMap(stats);
 			visibilities.put(d, roomVisibility);
-
 		}
 		return roomVisibility;
 	}
@@ -1893,7 +1879,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	public void setThief(boolean thief) {
 		this.thief = thief;
 	}
-
 
 	public boolean isRaiding() {
 		return raiding;
@@ -2110,18 +2095,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	private ActionResult handleLockAction(LockAction a, boolean doIt) {
 		DoorInfo info = a.getDoor();
+		RouteInstruction.Direction direction = info.getDirection(getRoom().getLocation());
+		if (direction == null) {
+			return ActionResult.WRONG_TARGET;
+		}
+		Door d = getRoom().getDoor(direction);
 		if (this.isAbleToLockDoor()) {
-
-			RouteInstruction.Direction direction = info.getDirection(getRoom().getLocation());
-			if (direction == null) {
-				return ActionResult.WRONG_TARGET;
-			}
-
-
-			Door d = getRoom().getDoor(direction);
-
 			Position positionAtDoor = d.getPositionAtDoor(this.getRoom(), false);
-			if(!this.getPos().equals(positionAtDoor)) {
+			if (!this.getPos().equals(positionAtDoor)) {
 				return ActionResult.POSITION;
 			}
 
@@ -2140,11 +2121,17 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
-
+			}
+			else if (info.isKeylocatable(this)) {
+				if (doIt) {
+					KeyLocator.tellKeyLocation(this, d);
+					return ActionResult.DONE;
+				}
+				return ActionResult.POSSIBLE;
 			}
 			return ActionResult.ITEM;
-
 		}
+
 		return ActionResult.OTHER;
 	}
 
@@ -2252,7 +2239,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				// the position is free so walk right in
 				goThroughDoor(oldRoom, toGo);
 				return true;
-
 			}
 			else {
 				if (standing.getControl().isHostileTo(FigureInfo.makeFigureInfo(this, standing.getRoomVisibility()))
@@ -2287,12 +2273,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					return true;
 				}
 			}
-
 		}
 		else {
 			return false;
 		}
-
 	}
 
 	protected abstract void lookInRoom();
@@ -2306,7 +2290,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		toGo.distributePercept(p);
 		oldRoom.distributePercept(p);
 		lookInRoom();
-
 	}
 
 	public Dungeon getActualDungeon() {
@@ -2346,7 +2329,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					&& a.equals(new SpellInfo(element, this.getRoomVisibility()))) {
 				return element;
 			}
-
 		}
 		return null;
 	}
@@ -2363,7 +2345,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 			if (canPayActionPoints(1)) {
 				return sp.fire(this, this.getActualDungeon().getUnwrapper().unwrappObject(a.getTarget()), doIt);
-
 			}
 			return ActionResult.NOAP;
 		}
@@ -2383,7 +2364,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (a.isMeta()) {
 			right = true;
 		}
-		if(! (this.getPos().getIndex() == Position.Pos.NW.getValue())) {
+		if (!(this.getPos().getIndex() == Position.Pos.NW.getValue())) {
 			return ActionResult.POSITION;
 		}
 		Chest s = this.getRoom().getChest();
@@ -2402,7 +2383,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	private ActionResult handleShrineAction(ShrineAction a, boolean doIt) {
 		Shrine s = this.getRoom().getShrine();
 		if (s != null && this.isAbleToUseShrine()) {
-			if(! (this.getPos().getIndex() == Position.Pos.NE.getValue())) {
+			if (!(this.getPos().getIndex() == Position.Pos.NE.getValue())) {
 				return ActionResult.POSITION;
 			}
 
@@ -2413,7 +2394,6 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					return ActionResult.DONE;
 				}
 				return ActionResult.OTHER;
-
 			}
 			else {
 				return ActionResult.POSSIBLE;

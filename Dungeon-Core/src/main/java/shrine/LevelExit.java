@@ -112,7 +112,8 @@ public class LevelExit extends Shrine {
 		}
 
 		f.setLocation((Room)null);
-		EventManager.getInstance().fireEvent(new ExitUsedEvent(f, this));
+		EventManager.getInstanceDungeon().fireEvent(new ExitUsedEvent(f, this));
+		EventManager.getInstanceMenu().fireEvent(new ExitUsedEvent(f, this));
 		return true;
 	}
 

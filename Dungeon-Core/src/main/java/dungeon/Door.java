@@ -56,6 +56,8 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 
 	private boolean isHidden = false;
 
+
+
 	private int difficultyToFind = 0;
 
 	public int getDifficultyToFind() {
@@ -346,4 +348,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		result.add(getPositionAtDoor(rooms[1]));
 		return result;
 	}
+
+
 }

@@ -81,8 +81,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.getClass();
 	}
 
-	public abstract int getMight();
-
 	public List<JDPoint> getShortestWayFromTo(JDPoint p1, JDPoint p2) {
 
 		List<Room> wayFromTo = DungeonUtils.findShortestWayFromTo(
@@ -93,29 +91,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		}
 		return result;
 	}
-
-//	/**
-//	 * Liefert die Information �ber das Vorhandensein eines
-//	 * Schreins/Oertlichkeit
-//	 * 
-//	 * Kodierung: SHRINE_NOSHRINE = 0; SHRINE_CORPSE= 1; SHRINE_DARK_MASTER = 2;
-//	 * SHRINE_HEALTH_FOUNTAIN = 3; SHRINE_INFO = 4; SHRINE_LUZIA = 5;
-//	 * SHRINE_QUEST = 6; SHRINE_REPAIR = 7; SHRINE_RUNEFINDER = 8; SHRINE_RUNE =
-//	 * 9; SHRINE_SORCER_LAB = 10; SHRINE_STATUE = 11; SHRINE_TRADER = 12;
-//	 * SHRINE_XMAS = 13; SHRINE_BROOD = 14;
-//	 * 
-//	 * 
-//	 * @return Index des Schreintyps
-//	 */
-//
-//
-//	public int getShrineIndex() {
-//		if (f.getRoom().getShrine() != null) {
-//			return f.getRoom().getShrine().getShrineIndex();
-//		} else {
-//			return Shrine.SHRINE_NOSHRINE;
-//		}
-//	}
 
 	public abstract List<ItemInfo> getAllItems();
 
@@ -148,14 +123,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.getControl().isHostileTo(fig);
 	}
 
-	public void controlLeaves() {
-		f.setControl(null);
-		DungeonGame.getInstance().controlLeft(f);
-	}
-
-	public int getFleeDistance() {
-		return DefaultMonsterIntelligence.getMinFleeDist(this);
-	}
 
 	public PositionInRoomInfo getPos() {
 		int vis = map.getVisibilityStatus(f.getLocation());
@@ -213,9 +180,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return null;
 	}
 
-	public int getVisStatus(RoomInfo r) {
-		return f.getRoomObservationStatus(r.getLocation()).getVisibilityStatus();
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -233,9 +197,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.hashCode();
 	}
 
-	public String getShortStatus() {
-		return f.getShortStatus();
-	}
 
 	@Override
 	public String toString() {
@@ -296,16 +257,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 
 	public boolean isThief() {
 		return f.isThief();
-	}
-
-	/**
-	 * Liefert ein Array von MonsterInfos mit allen Monstern, die sich in dem
-	 * selben Raum befinden (einschlie�lich this)
-	 *
-	 * @return Die Monster des Raumes
-	 */
-	public FigureInfo[] getMonsterInRoom() {
-		return f.getRoom().getMonsterInfoArray(map);
 	}
 
 	public int getLevel() {

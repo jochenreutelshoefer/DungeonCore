@@ -122,6 +122,7 @@ public class DungeonVisibilityMap {
 		cache.add(rooms[x][y]);
 	}
 
+	@Deprecated
 	public void setDiscoveryStatus(int x, int y, int status) {
 		rooms[x][y].setDiscoveryStatus(status);
 
@@ -176,6 +177,7 @@ public class DungeonVisibilityMap {
 		return getDiscoveryStatus(p.getX(), p.getY());
 	}
 
+	@Deprecated
 	public void setDiscoveryStatus(JDPoint p, int status) {
 		setDiscoveryStatus(p.getX(), p.getY(), status);
 	}

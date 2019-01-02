@@ -98,7 +98,7 @@ public class PositionElement extends AnimatedSmartControlElement {
 				actionAssembler.plugActions(actionAssembler.getActionAssembler()
 						.wannaStepToPosition(Position.Pos.fromValue(positionIndex)));
 				if (clickableObject != null) {
-					EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
+					EventManager.getInstanceDungeon().fireEvent(new InfoObjectClickedEvent(clickableObject));
 				}
 			}
 		}

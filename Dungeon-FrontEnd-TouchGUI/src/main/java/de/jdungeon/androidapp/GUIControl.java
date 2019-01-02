@@ -47,7 +47,7 @@ public class GUIControl implements EventListener {
 		this.figure = figure;
 		this.gui = gui;
 		actionAssembler = new ActionAssembler(figure);
-		EventManager.getInstance().registerListener(this);
+		EventManager.getInstanceDungeon().registerListener(this);
 	}
 
 	public void triggerPlannedActions() {
@@ -70,7 +70,7 @@ public class GUIControl implements EventListener {
 
 	public void plugActions(List<Action> l) {
 		List<Action>  actions = new ArrayList<>(l);
-		if (figure.getActionPoints() < 1 && !(actions.get(0) instanceof EndRoundAction)) {
+		if (figure.getActionPoints() < 1 &&  (actions.isEmpty() || !(actions.get(0) instanceof EndRoundAction))) {
 			actions.add(new EndRoundAction());
 		}
 		for (Action a : actions) {

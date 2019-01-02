@@ -52,24 +52,22 @@ public class Fight {
 				fightRoom.endFight();
 				break;
 			}
-			for (Iterator<Figure> iter = tempList.iterator(); iter.hasNext();) {
-				Figure element = (Figure) iter.next();
-				if(!element.isDead()) {
+			for (Figure element : tempList) {
+				if (!element.isDead()) {
 					boolean disappears = element.fight();
-					if(disappears) {
+					if (disappears) {
 						this.fighterList.remove(element);
 						this.fightRoom.figureLeaves(element);
 					}
-					
-					if(checkFightOn()) {
-						
-					}else {
+
+					if (checkFightOn()) {
+
+					}
+					else {
 						endFight = true;
 						break;
 					}
-						
 				}
-			
 			}
 			if(endFight) {
 				break;

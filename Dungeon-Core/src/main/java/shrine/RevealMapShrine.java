@@ -77,7 +77,7 @@ public class RevealMapShrine extends Shrine {
 			int discoveryStatus = f.getRoomVisibility().getDiscoveryStatus(revealedRoom.getNumber());
 			if(discoveryStatus < RoomObservationStatus.VISIBILITY_FIGURES) {
 				f.getRoomVisibility().setVisibilityStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
-				f.getRoomVisibility().setDiscoveryStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
+				//f.getRoomVisibility().setDiscoveryStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
 				revealedSomething = true;
 			} else {
 				// in this case for the user it is helpful to show target room(s)

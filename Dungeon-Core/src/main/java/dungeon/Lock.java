@@ -1,7 +1,10 @@
 package dungeon;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import figure.Figure;
 import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
@@ -22,6 +25,16 @@ public class Lock<T extends RoomEntity> implements Locatable, RoomEntity {
 
 	private final Key key;
 	private final T object;
+
+	private Set<Figure> figuresThatCanLocateKey = new HashSet<>();
+
+	public boolean isKeyLocatable(Figure f) {
+		return figuresThatCanLocateKey.contains(f);
+	}
+
+	public void setKeyLocatable(Figure f) {
+		figuresThatCanLocateKey.add(f);
+	}
 
 	public Lock(Key key, T object) {
 		this.key = key;

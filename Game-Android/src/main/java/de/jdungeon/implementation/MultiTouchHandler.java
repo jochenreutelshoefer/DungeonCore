@@ -2,6 +2,7 @@ package de.jdungeon.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.annotation.TargetApi;
@@ -26,7 +27,7 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
     int[] id = new int[MAX_TOUCHPOINTS];
     Pool<TouchEvent> touchEventPool;
     //List<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
-    List<TouchEvent> touchEventsBuffer = new ArrayList<TouchEvent>();
+    List<TouchEvent> touchEventsBuffer = new LinkedList<>();
     float scaleX;
     float scaleY;
 	float scaleFactor;
@@ -199,9 +200,9 @@ public class MultiTouchHandler implements TouchHandler, OnGestureListener,
 				return Collections.emptyList();
 			}
 			// recycle objects for further use (necessary ?)
-			for (int i = 0; i < len; i++) {
-				touchEventPool.free(touchEventsBuffer.get(i));
-			}
+			//for (int i = 0; i < len; i++) {
+			//	touchEventPool.free(touchEventsBuffer.get(i));
+			//}
 			// clear result container
 			touchEventsResult.clear();
 			// fill result container

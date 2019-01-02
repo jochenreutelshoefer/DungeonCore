@@ -36,13 +36,24 @@ import org.apache.log4j.Logger;
  */
 public class EventManager {
 
-	private static EventManager instance;
+	// this instance will hold its listeners forever (used for menu etc.)
+	private static EventManager instanceMenu;
 
-	public static EventManager getInstance() {
-		if (instance == null) {
-			instance = new EventManager();
+	public static EventManager getInstanceMenu() {
+		if (instanceMenu == null) {
+			instanceMenu = new EventManager();
 		}
-		return instance;
+		return instanceMenu;
+	}
+
+	// this instance will be cleared before a new dungeon is started
+	private static EventManager instanceDungeon;
+
+	public static EventManager getInstanceDungeon() {
+		if (instanceDungeon == null) {
+			instanceDungeon = new EventManager();
+		}
+		return instanceDungeon;
 	}
 
 	/*
@@ -51,6 +62,10 @@ public class EventManager {
 	 */
 	private final Map<Class<? extends Event>, WeakHashMap<EventListener, Object>> listenerMap =
 			new HashMap<Class<? extends Event>, WeakHashMap<EventListener, Object>>();
+
+	public void clearAllListeners() {
+		listenerMap.clear();
+	}
 
 	/**
 	 * Creates the listener map by fetching all EventListener extensions from
@@ -61,6 +76,11 @@ public class EventManager {
 	}
 
 	public synchronized void registerListener(EventListener listener) {
+		if(listenerMap.values().contains(listener)) {
+			Log.warning("Listener already registered: "+listener);
+			return;
+		}
+
 		// Get the classes of the events
 		Collection<Class<? extends Event>> eventClasses = listener.getEvents();
 

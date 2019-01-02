@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import dungeon.generate.DefaultHall;
 import dungeon.generate.Sector;
@@ -61,7 +62,7 @@ public class Room extends DungeonWorldObject implements
 	boolean isWall = false;
 
 	// TODO: is this the right place to store every figure that can observe this room?
-	private final Map<Figure, Integer> observer = new HashMap<>();
+	private final Map<Figure, Integer> observer = new ConcurrentHashMap<>();
 
 	private final Position[] positions = new Position[8];
 
@@ -88,7 +89,7 @@ public class Room extends DungeonWorldObject implements
 		boolean fight = false;
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
-			if(element.equals(movedIn)) {
+			if (element.equals(movedIn)) {
 				// should not start fight with himself
 				continue;
 			}
@@ -240,12 +241,11 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void setShrine(Shrine s) {
-		if(this.s != null) {
+		if (this.s != null) {
 			throw new IllegalStateException("check for shrine before setting one!");
 		}
 		this.getDungeon().addShrine(s);
 		setShrine(s, true);
-
 	}
 
 	public void setShrine(Shrine s, boolean setShrineLocation) {
@@ -348,7 +348,6 @@ public class Room extends DungeonWorldObject implements
 		else {
 			return null;
 		}
-
 	}
 
 	@Override
@@ -489,15 +488,14 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void distributePercept(Percept p) {
-
-		if (p instanceof OpticalPercept || p instanceof TextPercept || p instanceof InfoPercept) {
-			for (Iterator<Figure> iter = observer.keySet().iterator(); iter.hasNext(); ) {
-				Figure element = iter.next();
-				Integer visStat = observer.get(element);
-				if (visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
-					element.tellPercept(p);
+		synchronized (observer) {
+			if (p instanceof OpticalPercept || p instanceof TextPercept || p instanceof InfoPercept) {
+				for (Figure element : observer.keySet()) {
+					Integer visStat = observer.get(element);
+					if (visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
+						element.tellPercept(p);
+					}
 				}
-
 			}
 		}
 	}
@@ -508,7 +506,6 @@ public class Room extends DungeonWorldObject implements
 			if (element instanceof Hero) {
 				return true;
 			}
-
 		}
 		return false;
 	}
@@ -537,7 +534,6 @@ public class Room extends DungeonWorldObject implements
 		Room room = (Room) o;
 
 		return d.equals(room.d) && number.equals(room.number);
-
 	}
 
 	@Override
@@ -689,9 +685,9 @@ public class Room extends DungeonWorldObject implements
 
 	public void addDoor(Door d, int dir, boolean otherRoom) {
 		RouteInstruction.Direction direction = RouteInstruction.Direction.fromInteger(dir);
-		doors[dir-1] = d;
+		doors[dir - 1] = d;
 		Room neighbourRoom = this.getNeighbourRoom(direction);
-		if(otherRoom) {
+		if (otherRoom) {
 			neighbourRoom.addDoor(d, RouteInstruction.turnOpp(direction).getValue(), false);
 		}
 	}
@@ -702,7 +698,6 @@ public class Room extends DungeonWorldObject implements
 			if (doors[i] != null) {
 				cnt++;
 			}
-
 		}
 
 		return cnt;
@@ -714,7 +709,6 @@ public class Room extends DungeonWorldObject implements
 			if (d != null && d.isPassable(null)) {
 				return d.getOtherRoom(this);
 			}
-
 		}
 		return null;
 	}
@@ -726,7 +720,6 @@ public class Room extends DungeonWorldObject implements
 			if (d != null) {
 				l.add(d.getOtherRoom(this));
 			}
-
 		}
 		return l;
 	}
@@ -738,7 +731,6 @@ public class Room extends DungeonWorldObject implements
 			if (d != null) {
 				l.add(doors[i].getOtherRoom(this));
 			}
-
 		}
 		return l;
 	}
@@ -920,8 +912,6 @@ public class Room extends DungeonWorldObject implements
 
 	public void figureEnters(Figure figure, int fromDir) {
 
-
-
 		int inRoomIndex = -1;
 
 		if (fromDir == 0) {
@@ -1059,7 +1049,6 @@ public class Room extends DungeonWorldObject implements
 		}
 		else {
 			info += ("Stelle: " + number + ":\n" + ": ");
-
 		}
 		if (visited == 0) {
 			info += ("nein" + "\n");
@@ -1095,7 +1084,6 @@ public class Room extends DungeonWorldObject implements
 			else {
 				info += ("Keine Gegenstaende.");
 			}
-
 		}
 		if (!scouted) {
 			info += oldInfos;
@@ -1237,7 +1225,6 @@ public class Room extends DungeonWorldObject implements
 			s += " Schrein:  " + getShrine();
 		}
 		return s;
-
 	}
 
 	public void setSec(Sector sec) {
@@ -1315,5 +1302,4 @@ public class Room extends DungeonWorldObject implements
 			return 0;
 		}
 	}
-
 }

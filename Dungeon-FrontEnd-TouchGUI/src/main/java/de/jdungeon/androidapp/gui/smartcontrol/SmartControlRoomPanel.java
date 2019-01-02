@@ -183,7 +183,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
-				EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
+				EventManager.getInstanceDungeon().fireEvent(new ShrineButtonClickedEvent());
 				return true;
 			}
 		};
@@ -202,7 +202,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
-				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+				EventManager.getInstanceDungeon().fireEvent(new ToggleChestViewEvent());
 				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
 				return true;
 			}
@@ -227,7 +227,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		floorItemPresenter = new FloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, screen, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
 
 
-		EventManager.getInstance().registerListener(this);
+		EventManager.getInstanceDungeon().registerListener(this);
 		updateAllElementsIfNecessary();
 	}
 

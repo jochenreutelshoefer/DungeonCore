@@ -32,6 +32,7 @@ import util.JDColor;
  * 
  * 
  */
+@Deprecated
 public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity {
 
 	private final List<Item> items;

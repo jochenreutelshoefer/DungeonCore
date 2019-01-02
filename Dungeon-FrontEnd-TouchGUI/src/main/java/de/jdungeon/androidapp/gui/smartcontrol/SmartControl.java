@@ -56,7 +56,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		this.guiControl = actionAssembler;
 		this.focusManager = focusManager;
 
-		EventManager.getInstance().registerListener(this);
+		EventManager.getInstanceDungeon().registerListener(this);
 
 		initGUIElements();
 	}
@@ -68,7 +68,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		if (this.chestItemWheelShowing && (chest == null || chest.getItemList().isEmpty())) {
 			// we need to switch back to skills mode as user has not the respective button in this case
 			switchRightItemWheel(null);
-			EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+			EventManager.getInstanceDungeon().fireEvent(new ToggleChestViewEvent());
 		}
 	}
 

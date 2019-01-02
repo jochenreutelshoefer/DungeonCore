@@ -31,7 +31,7 @@ public class HeroChoiceButton extends ImageGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(TouchEvent touch) {
-		EventManager.getInstance().fireEvent(new HeroCategorySelectedEvent(heroType));
+		EventManager.getInstanceDungeon().fireEvent(new HeroCategorySelectedEvent(heroType));
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return true;
 	}

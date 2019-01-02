@@ -162,7 +162,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		resetDungeonRenderer();
 
 		// be event listener
-		EventManager.getInstance().registerListener(this);
+		EventManager.getInstanceDungeon().registerListener(this);
 	}
 
 	private void setSession(Session session) {
@@ -710,9 +710,11 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			long timeNow = System.currentTimeMillis();
 			if (timeNow - lastTouchEventTime < 200) {
 				/*
+				 * TODO: find out why in the hell duplicate touch event occur frequently
 				 * catch double event recognition; should have at least 0.2s
 				 * between events
 				 */
+				//Log.i("events", "skipping touch event (<200 msec)");
 				return;
 			}
 			lastTouchEventTime = timeNow;
@@ -897,6 +899,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	public void showVisibilityIncrease(List<JDPoint> points) {
+		if (points.isEmpty()) {
+			return;
+		}
+
 		JDPoint heroRoom = this.getFigureInfo().getRoomInfo().getPoint();
 		if (points.contains(heroRoom)) {
 			// entered current room, no need to do animation

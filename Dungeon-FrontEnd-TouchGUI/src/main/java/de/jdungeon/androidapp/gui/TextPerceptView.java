@@ -41,7 +41,7 @@ public class TextPerceptView extends AbstractGUIElement {
 
 	@Override
 	public boolean needsRepaint() {
-		return !cache.isEmpty();
+		return !cache.isEmpty() || currentInsert != null;
 	}
 
 	@Override

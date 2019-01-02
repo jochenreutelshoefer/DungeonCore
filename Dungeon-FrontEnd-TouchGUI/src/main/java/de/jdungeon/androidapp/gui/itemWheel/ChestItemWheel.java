@@ -36,14 +36,14 @@ public class ChestItemWheel extends ItemWheel {
 		super.handleTouchEvent(touch);
 		boolean itemAreaTouched = super.isInDrawBounds(touch.x, touch.y);
 		if(!itemAreaTouched) {
-			EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+			EventManager.getInstanceDungeon().fireEvent(new ToggleChestViewEvent());
 		} else {
 			// hack remove, when chest item wheel completed/fixed
 			List<Activity> activities = provider.getActivities();
 			if(!activities.isEmpty()) {
 				if(activities.size() == 1) {
 					// was last one
-					EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+					EventManager.getInstanceDungeon().fireEvent(new ToggleChestViewEvent());
 				}
 				((ExecutableActivity)activities.iterator().next()).execute();
 			}

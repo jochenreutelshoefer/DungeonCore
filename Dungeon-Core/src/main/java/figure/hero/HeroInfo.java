@@ -41,11 +41,6 @@ public class HeroInfo extends FigureInfo {
 		this.h = h;
 	}
 
-	public Map<String, String> getHighScoreString(String playerName,
-			String comment,
-			boolean reg, boolean liga) {
-		return h.getHighScoreData(playerName, comment, reg, liga, this);
-	}
 
 	@Override
 	public List getAllItems() {
@@ -62,49 +57,7 @@ public class HeroInfo extends FigureInfo {
 		return null;
 	}
 
-	public Boolean hasLuziaBall() {
-		if (map.getFigure().equals(h)) {
-			return new Boolean(h.hasLuziaBall());
-		}
-		return null;
 
-	}
-
-	@Override
-	public int getMight() {
-		int lvl = h.getLevel();
-		return (lvl + 1) * 500;
-	}
-
-	public Boolean LuziaBallSeesEnemy() {
-		if (map.getFigure().equals(h)) {
-			if (!hasLuziaBall().booleanValue()) {
-				return new Boolean(false);
-			}
-			return new Boolean(h.getLuziasBall().seesEnemy());
-		}
-		return null;
-	}
-
-	public EquipmentItemInfo getActualWeapon() {
-		if (map.getFigure().equals(h)) {
-			EquipmentItem i = h.getInventory().getWeapon1();
-			if (i != null) {
-				return new EquipmentItemInfo(i, map);
-			}
-		}
-		return null;
-	}
-
-	public EquipmentItemInfo getActualArmor() {
-		if (map.getFigure().equals(h)) {
-			EquipmentItem i = h.getInventory().getArmor1();
-			if (i != null) {
-				return new EquipmentItemInfo(i, map);
-			}
-		}
-		return null;
-	}
 
 	public int getHeroCode() {
 		if (map.getVisibilityStatus(h.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {

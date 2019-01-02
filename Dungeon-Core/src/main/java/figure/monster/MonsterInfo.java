@@ -45,11 +45,6 @@ public class MonsterInfo extends FigureInfo {
 		this.monster = monster;
 	}
 	
-	@Override
-	public int getMight() {
-		return monster.getWorth()/100;
-	}
-	
 	public static MonsterInfo makeMonsterInfo(Monster m, DungeonVisibilityMap map) {
 		if(m == null) {
 			return null;

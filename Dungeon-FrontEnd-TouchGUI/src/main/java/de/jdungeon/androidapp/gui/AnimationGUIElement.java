@@ -107,7 +107,8 @@ public abstract class AnimationGUIElement extends ImageGUIElement {
 		public boolean isFinished() {
 			boolean finished = System.currentTimeMillis() > endTime;
 			if(finished && finishedEvent != null) {
-				EventManager.getInstance().fireEvent(finishedEvent);
+				EventManager.getInstanceDungeon().fireEvent(finishedEvent);
+				EventManager.getInstanceMenu().fireEvent(finishedEvent);
 			}
 			return finished;
 		}

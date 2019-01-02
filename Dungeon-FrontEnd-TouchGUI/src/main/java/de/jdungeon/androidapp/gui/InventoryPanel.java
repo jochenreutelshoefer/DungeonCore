@@ -285,13 +285,13 @@ public class InventoryPanel extends SlidingGUIElement {
 		}
 
 		if (item != null) {
-			EventManager.getInstance().fireEvent(new FocusEvent(item));
+			EventManager.getInstanceDungeon().fireEvent(new FocusEvent(item));
 
 			if (action == ItemActionType.change) {
-				EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Double));
+				EventManager.getInstanceDungeon().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Double));
 			}
 			if (action == ItemActionType.drop) {
-				EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Long));
+				EventManager.getInstanceDungeon().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Long));
 			}
 		}
 

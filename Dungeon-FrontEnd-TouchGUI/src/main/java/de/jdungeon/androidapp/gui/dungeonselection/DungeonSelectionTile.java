@@ -47,7 +47,7 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		if(activeStage) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			EventManager.getInstance().fireEvent(new DungeonSelectedEvent(dungeon));
+			EventManager.getInstanceMenu().fireEvent(new DungeonSelectedEvent(dungeon));
 
 		} else {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);

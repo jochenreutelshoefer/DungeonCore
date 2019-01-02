@@ -46,7 +46,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	public JDungeonApp() {
 		super(new DefaultDungeonSession(new User("Hans Meiser")));
 		this.dungeonSession = (DungeonSession)super.session;
-		EventManager.getInstance().registerListener(this);
+		EventManager.getInstanceMenu().registerListener(this);
 
 		LogConfigurator logConfigurator = new LogConfigurator();
 		//logConfigurator.setFileName(Environment.getExternalStorageDirectory()
@@ -110,6 +110,10 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.setScreen(screen);
 		}
 		if(event instanceof DungeonStartEvent) {
+			// we register new listeners for dungeon and gui, therefore clear old ones from EventManager
+			EventManager.getInstanceDungeon().clearAllListeners();
+
+			// initialize new dungeon
 			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
 
 			// TODO: solve this weird bidirectional dependency in a better way..

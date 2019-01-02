@@ -1107,8 +1107,9 @@ public class GraphicObjectRenderer {
 			}
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
-			if (r.getMonsterInfos() != null && !r.getMonsterInfos().isEmpty()) {
-				GraphicObject[] monsterObs = drawMonster(r.getMonsterInfos());
+			final List<MonsterInfo> monsterInfos = r.getMonsterInfos();
+			if (monsterInfos != null && !monsterInfos.isEmpty()) {
+				GraphicObject[] monsterObs = drawMonster(monsterInfos);
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						boolean contains = animatedObs.contains(monsterObs[i]

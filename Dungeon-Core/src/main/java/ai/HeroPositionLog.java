@@ -35,50 +35,49 @@ public class HeroPositionLog {
 		perceptList.add(p);
 	}
 
-	public void processPercepts() {
+	public synchronized void processPercepts() {
 		Collections.sort(perceptList, new PerceptComparator());
-		for (Iterator<Percept> iter = perceptList.iterator(); iter.hasNext();) {
-			Percept element = iter.next();
-			if(element instanceof MovePercept) {
-				if(((MovePercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					this.lastHeroLocation = ((MovePercept)element).getTo().getPoint();
+		for (Percept element : perceptList) {
+			if (element instanceof MovePercept) {
+				if (((MovePercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					this.lastHeroLocation = ((MovePercept) element).getTo().getPoint();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
-			if(element instanceof FleePercept) {
-				if(((FleePercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					int dir = ((FleePercept)element).getDir();
-					RoomInfo r = ((FleePercept)element).getRoom();
+			if (element instanceof FleePercept) {
+				if (((FleePercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					int dir = ((FleePercept) element).getDir();
+					RoomInfo r = ((FleePercept) element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
-			if(element instanceof HitPercept) {
-				if(((HitPercept)element).getAttacker() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					RoomInfo r = ((HitPercept)element).getAttacker().getRoomInfo();
+			if (element instanceof HitPercept) {
+				if (((HitPercept) element).getAttacker() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					RoomInfo r = ((HitPercept) element).getAttacker().getRoomInfo();
 					this.lastHeroLocation = r.getNumber();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
-			if(element instanceof MissPercept) {
-				if(((MissPercept)element).getAttacker() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					RoomInfo r = ((MissPercept)element).getAttacker().getRoomInfo();
+			if (element instanceof MissPercept) {
+				if (((MissPercept) element).getAttacker() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					RoomInfo r = ((MissPercept) element).getAttacker().getRoomInfo();
 					this.lastHeroLocation = r.getNumber();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
 			// TODO: refactor
-			if(element instanceof StepPercept) {
-				if(((StepPercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					RoomInfo r = ((StepPercept)element).getFigure().getRoomInfo();
+			if (element instanceof StepPercept) {
+				if (((StepPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					RoomInfo r = ((StepPercept) element).getFigure().getRoomInfo();
 					this.lastHeroLocation = r.getNumber();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
-			if(element instanceof ScoutPercept) {
-				if(((ScoutPercept)element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					int dir = ((ScoutPercept)element).getDir();
-					RoomInfo r = ((ScoutPercept)element).getRoom();
+			if (element instanceof ScoutPercept) {
+				if (((ScoutPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					int dir = ((ScoutPercept) element).getDir();
+					RoomInfo r = ((ScoutPercept) element).getRoom();
 					this.lastHeroLocation = r.getNeighbourRoom(dir).getNumber();
 					lastHeroLocationInfoRound = element.getRound();
 				}

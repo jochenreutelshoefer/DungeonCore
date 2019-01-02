@@ -8,6 +8,7 @@ import game.PerceptHandler;
 import item.ItemInfo;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -29,7 +30,7 @@ import de.jdungeon.game.Screen;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
-	private final Vector<Action> actionQueue = new Vector<Action>();
+	private final LinkedList<Action> actionQueue = new LinkedList<>();
 	private final JDungeonApp app;
 
 	private FigureInfo figure;
@@ -59,7 +60,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public void onTurn() {
 
 		if(!visibilityIncreasedRooms.isEmpty()) {
-			EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(visibilityIncreasedRooms));
+			EventManager.getInstanceDungeon().fireEvent(new VisibilityIncreasedEvent(visibilityIncreasedRooms));
 			visibilityIncreasedRooms.clear();
 		}
 
@@ -102,7 +103,8 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public Action getAction() {
 		synchronized (actionQueue) {
 			if (!actionQueue.isEmpty()) {
-				return actionQueue.remove(0);
+				final Action action = actionQueue.remove(0);
+				return action;
 			} else {
 				Screen currentScreen = this.app.getCurrentScreen();
 				if(currentScreen instanceof GameScreen) {
@@ -114,13 +116,13 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	}
 
 	@Override
-	public void plugAction(Action a) {
+	public synchronized void plugAction(Action a) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionQueue.add(a);
 	}
 
 	@Override
-	public void plugActions(List<Action> actions) {
+	public synchronized void plugActions(List<Action> actions) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		actionQueue.addAll(actions);
 	}

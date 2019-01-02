@@ -54,7 +54,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 	public DungeonSelectionScreen(Game game) {
 		super(game);
-		EventManager.getInstance().registerListener(this);
+		EventManager.getInstanceMenu().registerListener(this);
 		this.session = (DungeonSession)game.getSession();
 		dungeonManager = session.getDungeonManager();
 		int currentStage = session.getCurrentStage();

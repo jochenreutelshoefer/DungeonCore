@@ -11,6 +11,7 @@ import java.util.Collection;
 
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
+import figure.Figure;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.memory.DoorMemory;
@@ -71,6 +72,11 @@ public class DoorInfo extends RoomInfoEntity {
 			return door.getLocked();
 		}
 		return null;
+	}
+
+
+	public Boolean isKeylocatable(Figure f) {
+		return door.getLock().isKeyLocatable(f);
 	}
 
 	public LockInfo getLock() {

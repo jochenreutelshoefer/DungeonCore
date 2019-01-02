@@ -36,7 +36,7 @@ import figure.hero.HeroInfo;
  * Aktionen (Klasse Action) erstellen und auffuehren.
  * 
  */
-public class DungeonGame implements Runnable, EventListener {
+public class DungeonGame implements Runnable {
 
 	private int round = 1;
 
@@ -118,16 +118,6 @@ public class DungeonGame implements Runnable, EventListener {
 		}
 	}
 
-	public void controlLeft(Figure f) {
-		if (guiFigures.containsKey(f)) {
-			guiFigures.remove(f);
-			if (guiFigures.isEmpty()) {
-				EventManager.getInstance().fireEvent(new PlayerDiedEvent());
-				gameOver = true;
-			}
-		}
-	}
-
 	private void spellsTurn() {
 		List<TimedSpellInstance> spells = AbstractSpell.timedSpells;
 		for (int i = 0; i < spells.size(); i++) {
@@ -168,126 +158,6 @@ public class DungeonGame implements Runnable, EventListener {
 	}
 
 
-	private final boolean sendHighscore = true;
-
-
-	public Map<String,String> getHighScoreString(String playerName, String comment,
-			boolean reg, boolean liga, HeroInfo h) {
-
-		if (!sendHighscore || playerName.equals("godmode1")
-				|| JDEnv.isBeginnerGame()) {
-			return null;
-		}
-
-		String codeString = "";
-
-		Map<String, String> map = new HashMap<String, String>();
-		Hero held = (Hero) InfoUnitUnwrapper.getFighter(h.getFighterID());
-		// String s = new String();
-		// String zeilenTrenn = new String("$$$");
-		// String trennZeichen = new String("���");
-
-		map.put("player_name", playerName);
-		codeString += playerName;
-		// s += "&player_name="+playerName;
-
-		map.put("hero_name", h.getName());
-		// s += "&hero_name="+h.getName();
-		int points = held.getCharacter().getTotalExp();
-		Integer expInt = new Integer(points);
-		map.put("exp", Integer.toString(expInt));
-		codeString += "" + expInt;
-		// s += "&exp="+held.getCharacter().getTotalExp();
-
-		map.put("level", Integer.toString(new Integer(held.getCharacter().getLevel())));
-		// s += "&level="+held.getCharacter().getLevel();
-
-		map.put("round", Integer.toString(new Integer(getRound())));
-		codeString += "" + getRound();
-		// s += "&round="+getRound();
-
-		map.put("kills", Integer.toString(new Integer(held.getKills())));
-		// s += "&kills"+held.getKills();
-
-		String type = new String();
-		int k = held.getHeroCode();
-		if (k == Hero.HEROCODE_DRUID) {
-			type = "Druide";
-		}
-		if (k == Hero.HEROCODE_HUNTER) {
-			type = "Dieb";
-		}
-		if (k == Hero.HEROCODE_MAGE) {
-			type = "Magier";
-		}
-		if (k == Hero.HEROCODE_WARRIOR) {
-			type = "Krieger";
-		}
-
-		map.put("type", type);
-		// s += "&type="+type;
-
-		map.put("comment", comment);
-		// s += "&comment="+comment;
-
-		String deadString = "0";
-		if (held.isDead()) {
-			deadString = "1";
-		}
-		map.put("dead", deadString);
-		codeString += deadString;
-		// s += "&dead="+deadString;
-
-		map.put("start_time", Long.toString(startTime));
-		codeString += Long.toString(startTime);
-		// s += "&start_time="+Long.toString(startTime);
-		long endTime = System.currentTimeMillis();
-		map.put("end_time", Long.toString(endTime));
-		codeString += Long.toString(endTime);
-		// s += "&end_time="+Long.toString(System.currentTimeMillis());
-
-		String regString = "0";
-		if (reg) {
-			regString = "1";
-		}
-		codeString += regString;
-		map.put("reg", regString);
-		// s += "&reg="+regString;
-
-		String ligaString = "0";
-		if (liga) {
-			ligaString = "1";
-		}
-		codeString += ligaString;
-		map.put("liga", ligaString);
-		// s += "&liga="+ligaString;
-
-		codeString += "sperrholz";
-		byte[] digest = null;
-		try {
-			byte[] theTextToDigestAsBytes = codeString.getBytes("UTF-8");
-
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(theTextToDigestAsBytes);
-			digest = md.digest();
-		} catch (Exception e) {
-			System.out.println("encoding highscore-string failed");
-			System.out.println(e.toString());
-		}
-		// String code = new String(digest);
-
-		String hex = "";
-		for (int i = 0; i < digest.length; i++) {
-			byte b = digest[i];
-			hex += Integer.toHexString(b & 0xff);
-		}
-
-		map.put("chk", "MD5" + hex);
-
-		return map;
-	}
-
-
 	public void setTestTracker(TestTracker tracker) {
 		this.tracker = tracker;
 	}
@@ -303,21 +173,4 @@ public class DungeonGame implements Runnable, EventListener {
 
 	}
 
-	@Override
-	public Collection<Class<? extends Event>> getEvents() {
-		List<Class<? extends Event>> events = new ArrayList<Class<? extends Event>>();
-		events.add(ExitUsedEvent.class);
-		events.add(PlayerDiedEvent.class);
-		return events;
-	}
-
-	@Override
-	public void notify(Event event) {
-		if(event instanceof ExitUsedEvent) {
-			this.heroLeft = true;
-		}
-		if(event instanceof PlayerDiedEvent) {
-			this.gameOver = true;
-		}
-	}
 }
