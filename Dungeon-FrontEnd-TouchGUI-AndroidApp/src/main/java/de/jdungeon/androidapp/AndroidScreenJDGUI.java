@@ -66,7 +66,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 		// if player does not have an action point left,
 		// preemptively cause an EndRoundAction
-		// TODO: can this ever happen
 		if(this.getFigure().getActionPoints() == 0) {
 			plugAction(new EndRoundAction());
 		}

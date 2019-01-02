@@ -3,7 +3,8 @@ package de.jdungeon.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import android.support.v4.view.GestureDetectorCompat;
+
+import android.annotation.TargetApi;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -14,6 +15,7 @@ import de.jdungeon.util.Pool;
 import de.jdungeon.util.Pool.PoolObjectFactory;
 import de.jdungeon.game.ScrollMotion;
 
+@TargetApi(23)
 public class MultiTouchHandler implements TouchHandler, OnGestureListener,
 		GestureDetector.OnDoubleTapListener {
     private static final int MAX_TOUCHPOINTS = 10;

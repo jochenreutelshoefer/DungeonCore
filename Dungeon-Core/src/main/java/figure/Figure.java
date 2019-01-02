@@ -1383,9 +1383,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			return ActionResult.POSSIBLE;
 		}
 		if (a instanceof EndRoundAction) {
-			if (!getRoom().fightRunning()) {
 				return ActionResult.POSSIBLE;
-			}
 		}
 		if (!(a instanceof SpellAction)) {
 			if (lastSpell != null) {

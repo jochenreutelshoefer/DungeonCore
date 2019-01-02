@@ -265,6 +265,8 @@ public class GameScreenPerceptHandler {
 			this.screen.getFocusManager().setWorldFocusObject(null);
 		}
 
+		newStatement(StatementManager.getStatement(p, figure));
+
 		DefaultAnimationSet set = AnimationUtils.getFigure_tipping_over(deadFigure);
 		if (set != null) {
 			int damage = p.getDamage();

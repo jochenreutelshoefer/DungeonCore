@@ -726,6 +726,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			while (listIterator.hasPrevious()) {
 				GUIElement guiElement = listIterator.previous();
 				if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+					//Log.i("touch event fired", this.getClass().getSimpleName()+": touch event fired");
 					guiElement.handleTouchEvent(touchDownEvent);
 					guiOP = true;
 					break;

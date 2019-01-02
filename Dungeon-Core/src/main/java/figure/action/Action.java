@@ -22,18 +22,22 @@ public abstract class Action {
 
 	}
 
+	@Deprecated
 	public static AttackAction makeActionAttack(int target) {
 		return new AttackAction(target);
 	}
 
+	@Deprecated
 	public static MoveAction makeActionMove(int dir) {
 		return new MoveAction(dir);
 	}
 
+	@Deprecated
 	public static FleeAction makeActionFlee(boolean panic) {
 		return new FleeAction(panic);
 	}
 
+	@Deprecated
 	public static FleeAction makeActionFlee() {
 		return makeActionFlee(false);
 	}
@@ -43,6 +47,7 @@ public abstract class Action {
 		return this.getClass().toString();
 	}
 
+	@Deprecated
 	public static EndRoundAction makeEndRoundAction() {
 
 		return new EndRoundAction();

@@ -185,7 +185,8 @@ public class InventoryPanel extends SlidingGUIElement {
 
 	@Override
 	public void handleLongPressEvent(MotionEvent touch) {
-		JDPoint coordinates = this.getScreen().normalizeRawCoordinates(touch);
+		//JDPoint coordinates = this.getScreen().normalizeRawCoordinates(touch);
+		JDPoint coordinates = new JDPoint(touch.getRawX(), touch.getRawY());
 		/*
 		 * if an icon is clicked, we trigger an inventory action
 		 */
@@ -199,7 +200,9 @@ public class InventoryPanel extends SlidingGUIElement {
 	@Override
 	public void handleDoubleTapEvent(MotionEvent touch) {
 
-		JDPoint coordinates = this.getScreen().normalizeRawCoordinates(touch);
+		//JDPoint coordinates = this.getScreen().normalizeRawCoordinates(touch);
+		JDPoint coordinates = new JDPoint(touch.getRawX(), touch.getRawY());
+
 
 		/*
 		 * if an icon is clicked, we trigger an inventory action

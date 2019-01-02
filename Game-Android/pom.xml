@@ -9,9 +9,13 @@
 
 
 		<repositories>
-			<repository>
+			<!--repository>
 				<id>des-public</id>
 				<url>https://repo.denkbares.com/repo-public</url>
+			</repository-->
+			<repository>
+				<id>android-support</id>
+				<url>https://mvnrepository.com/artifact/com.google.android/support-v4</url>
 			</repository>
 		</repositories>
 
@@ -22,18 +26,23 @@
 				<version>0.1.0</version>
 			</dependency>
 
-	<!--
+
+
+
 			<dependency>
 				<groupId>com.google.android</groupId>
 				<artifactId>support-v4</artifactId>
 				<version>r6</version>
 			</dependency>
-	-->
+
+
+			<!--
 		<dependency>
 			<groupId>android-support-v4</groupId>
 			<artifactId>android-support-v4</artifactId>
 			<version>android-support-v4</version>
 		</dependency>
+			-->
 
 		<dependency>
 			<groupId>com.google.android</groupId>

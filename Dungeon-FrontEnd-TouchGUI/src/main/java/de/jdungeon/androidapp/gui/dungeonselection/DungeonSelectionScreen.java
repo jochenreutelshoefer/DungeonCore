@@ -93,7 +93,9 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 	private JDPoint getDungeonTileHeroPosition(int level, DungeonFactory dungeonFactory) {
 		List<DungeonFactory> dungeonOptions = session.getDungeonManager().getDungeonOptions(level);
 		int selectionIndex = dungeonOptions.indexOf(dungeonFactory);
-
+		if(selectionIndex == -1) {
+			return null;
+		}
 		return new JDPoint(coordinatesX[dungeonOptions.size()-1][selectionIndex] - HERO_DIMENSION.getWidth() / 2, getY(level) - HERO_DIMENSION.getHeight() / 5);
 	}
 
