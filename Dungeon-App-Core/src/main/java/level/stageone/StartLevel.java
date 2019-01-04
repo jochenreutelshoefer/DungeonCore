@@ -65,7 +65,7 @@ public class StartLevel extends AbstractDungeonFactory {
 
 	@Override
 	public int getRoundScoringBaseValue() {
-		return 75;
+		return 150;
 	}
 
 	private Dungeon createStartDungeon() {
@@ -115,7 +115,6 @@ public class StartLevel extends AbstractDungeonFactory {
 			List<Item> itemsL = new ArrayList<>();
 			itemsL.add(new ScrollMagic(new KeyLocator(1, 0, 0, 0, 0, 0)));
 			Chest entryChest = new Chest(itemsL);
-			entryChest.takeItem(new HealPotion(10));
 			entryChest.takeItem(exitKey); // for reachability checking only, remove and set later
 			entryRoom.setChest(entryChest);
 
@@ -179,7 +178,7 @@ public class StartLevel extends AbstractDungeonFactory {
 
 			// for testing only
 			//entryRoom.addItem(new VisibilityCheatBall());
-			entryRoom.addItem(new HealPotion(15));
+			//entryRoom.addItem(new HealPotion(15));
 
 
 

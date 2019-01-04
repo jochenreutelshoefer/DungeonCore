@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import android.util.Log;
 import animation.AnimationSet;
 import animation.DefaultAnimationSet;
 import dungeon.JDPoint;
@@ -88,6 +89,7 @@ public abstract class AnimationGUIElement extends ImageGUIElement {
 		private final long endTime;
 		private final AnimationSet animation;
 		private Event finishedEvent;
+		private boolean fired = false;
 
 		public DefaultGUIAnimationTask(JDPoint startPos, JDPoint endPos, long startTime, int imageSize, AnimationSet animation, int iterations, Event finishedEvent) {
 			this(startPos, endPos, startTime, imageSize, animation, 1);
@@ -106,9 +108,10 @@ public abstract class AnimationGUIElement extends ImageGUIElement {
 		@Override
 		public boolean isFinished() {
 			boolean finished = System.currentTimeMillis() > endTime;
-			if(finished && finishedEvent != null) {
-				EventManager.getInstanceDungeon().fireEvent(finishedEvent);
-				EventManager.getInstanceMenu().fireEvent(finishedEvent);
+			if(finished && finishedEvent != null && !fired) {
+				Log.i("Initialization","Firing DungeonStartEvent");
+				EventManager.getInstance().fireEvent(finishedEvent);
+				fired = true;
 			}
 			return finished;
 		}

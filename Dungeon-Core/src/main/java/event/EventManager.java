@@ -36,20 +36,9 @@ import org.apache.log4j.Logger;
  */
 public class EventManager {
 
-	// this instance will hold its listeners forever (used for menu etc.)
-	private static EventManager instanceMenu;
-
-	public static EventManager getInstanceMenu() {
-		if (instanceMenu == null) {
-			instanceMenu = new EventManager();
-		}
-		return instanceMenu;
-	}
-
-	// this instance will be cleared before a new dungeon is started
 	private static EventManager instanceDungeon;
 
-	public static EventManager getInstanceDungeon() {
+	public static EventManager getInstance() {
 		if (instanceDungeon == null) {
 			instanceDungeon = new EventManager();
 		}
@@ -76,11 +65,6 @@ public class EventManager {
 	}
 
 	public synchronized void registerListener(EventListener listener) {
-		if(listenerMap.values().contains(listener)) {
-			Log.warning("Listener already registered: "+listener);
-			return;
-		}
-
 		// Get the classes of the events
 		Collection<Class<? extends Event>> eventClasses = listener.getEvents();
 

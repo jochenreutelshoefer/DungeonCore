@@ -2,7 +2,6 @@ package de.jdungeon.androidapp.gui.smartcontrol;
 
 import dungeon.JDPoint;
 import dungeon.Position;
-import dungeon.PositionInRoomInfo;
 import event.EventManager;
 import figure.FigureInfo;
 import game.RoomInfoEntity;
@@ -98,7 +97,7 @@ public class PositionElement extends AnimatedSmartControlElement {
 				actionAssembler.plugActions(actionAssembler.getActionAssembler()
 						.wannaStepToPosition(Position.Pos.fromValue(positionIndex)));
 				if (clickableObject != null) {
-					EventManager.getInstanceDungeon().fireEvent(new InfoObjectClickedEvent(clickableObject));
+					EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
 				}
 			}
 		}

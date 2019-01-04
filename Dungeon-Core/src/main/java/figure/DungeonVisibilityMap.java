@@ -32,7 +32,7 @@ public class DungeonVisibilityMap {
 
 	private static DungeonVisibilityMap allVis;
 
-	public Set<RoomObservationStatus> cache = new HashSet<>();
+	private Set<RoomObservationStatus> cache = new HashSet<>();
 
 	public static DungeonVisibilityMap getAllVisMap(Dungeon d) {
 		if (allVis == null) {
@@ -43,12 +43,6 @@ public class DungeonVisibilityMap {
 		}
 		return allVis;
 
-	}
-
-	public void setOtherDungeon(Dungeon d) {
-		dungeon = d;
-		RoomObservationStatus[][] stats = d.getNewRoomVisibilityMap(this);
-		rooms = stats;
 	}
 
 	public void setFigure(Figure f) {
@@ -69,18 +63,6 @@ public class DungeonVisibilityMap {
 
 	public void setVisCheat() {
 		hasVisCheat = true;
-	}
-
-	public JDPoint getSuperiorPoint(Door d) {
-		JDPoint p1 = d.getRooms()[0].getLocation();
-		JDPoint p2 = d.getRooms()[1].getLocation();
-		int status1 = getVisibilityStatus(p1);
-		int status2 = getVisibilityStatus(p2);
-
-		if (status1 >= status2) {
-			return p1;
-		}
-		return p2;
 	}
 
 	public void setMap(RoomObservationStatus[][] r) {
@@ -118,8 +100,11 @@ public class DungeonVisibilityMap {
 				control.notifyVisibilityStatusIncrease(new JDPoint(x, y));
 			}
 		}
+
 		rooms[x][y].setVisibilityStatus(status);
-		cache.add(rooms[x][y]);
+		synchronized (cache) {
+			cache.add(rooms[x][y]);
+		}
 	}
 
 	@Deprecated
@@ -206,10 +191,12 @@ public class DungeonVisibilityMap {
 	}
 
 	public void resetTemporalVisibilities() {
-		for (RoomObservationStatus roomObservationStatus : cache) {
-			roomObservationStatus.resetVisibilityStatus();
+		synchronized (cache) {
+			for (RoomObservationStatus roomObservationStatus : cache) {
+				roomObservationStatus.resetVisibilityStatus();
+			}
+			cache.clear();
 		}
-		cache.clear();
 
 	}
 

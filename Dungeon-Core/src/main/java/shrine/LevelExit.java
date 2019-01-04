@@ -106,14 +106,12 @@ public class LevelExit extends Shrine {
 			return false;
 		}
 
-		// items are given away when passing the exit
+		// level completion items are given away when passing the exit
 		for (Item requiredItem : requiredItems) {
 			f.removeItem(requiredItem);
 		}
 
-		f.setLocation((Room)null);
-		EventManager.getInstanceDungeon().fireEvent(new ExitUsedEvent(f, this));
-		EventManager.getInstanceMenu().fireEvent(new ExitUsedEvent(f, this));
+		EventManager.getInstance().fireEvent(new ExitUsedEvent(f, this));
 		return true;
 	}
 

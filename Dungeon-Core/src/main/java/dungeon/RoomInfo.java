@@ -253,34 +253,10 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	}
 
-	public List getNeighboursWithDoor() {
-		List l = r.getNeighboursWithDoor();
-		List res = new LinkedList();
-		for (Iterator iter = l.iterator(); iter.hasNext();) {
-			Room element = (Room) iter.next();
-			res.add(RoomInfo.makeRoomInfo(element, map));
-
-		}
-		return res;
-	}
-
 	public int getFloorIndex() {
 		return r.getFloorIndex();
 	}
 
-	public boolean isPart_scouted() {
-		return r.isPart_scouted();
-
-	}
-
-	public Door getConnectionTo(RoomInfo otherRoom) {
-
-		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND
-				&& !JDEnv.visCheat) {
-			return null;
-		}
-		return r.getConnectionTo(otherRoom.getLocation());
-	}
 
 	public HiddenSpot getSpot() {
 		return r.getSpot();
@@ -329,32 +305,9 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 
-	public int getItemCnt() {
-
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
-
-			Item[] itArray = r.getItemArray();
-			ItemInfo[] wrappedIts = new ItemInfo[itArray.length];
-			int items = 0;
-			for (int i = 0; i < itArray.length; i++) {
-				if (itArray[i] != null) {
-					wrappedIts[i] = (ItemInfo) itArray[i].makeInfoObject(map);
-					items++;
-				}
-			}
-			return items;
-		}
-		return -1;
-	}
-
-
 	public JDPoint getLocation() {
 		return r.getLocation();
 	}
-
-	// public Hero getHero() {
-	// return r.getHero();
-	// }
 
 	@Deprecated // try to treat all figures similarly
 	public HeroInfo getHeroInfo() {

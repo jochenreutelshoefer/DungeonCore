@@ -56,7 +56,7 @@ public class SkillSelectionTile extends AbstractGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
-		EventManager.getInstanceMenu().fireEvent(new SkillSelectedEvent(skill));
+		EventManager.getInstance().fireEvent(new SkillSelectedEvent(skill));
 		return super.handleTouchEvent(touch);
 	}
 

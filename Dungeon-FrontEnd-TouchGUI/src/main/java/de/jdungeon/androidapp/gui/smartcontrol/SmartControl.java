@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.util.Log;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
@@ -49,6 +50,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private boolean skillItemWheelShowing = false;
 	private boolean chestItemWheelShowing = false;
 	private SmartControlRoomPanel smartControl;
+	public static final int SMART_CONTROL_SIZE = 290;
 
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, HeroInfo figure, GUIControl actionAssembler, FocusManager focusManager) {
 		super(position, dimension, screen, game);
@@ -56,7 +58,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		this.guiControl = actionAssembler;
 		this.focusManager = focusManager;
 
-		EventManager.getInstanceDungeon().registerListener(this);
+		EventManager.getInstance().registerListener(this);
 
 		initGUIElements();
 	}
@@ -68,24 +70,13 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		if (this.chestItemWheelShowing && (chest == null || chest.getItemList().isEmpty())) {
 			// we need to switch back to skills mode as user has not the respective button in this case
 			switchRightItemWheel(null);
-			EventManager.getInstanceDungeon().fireEvent(new ToggleChestViewEvent());
+			EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
 		}
 	}
 
 	private void initGUIElements() {
-		/*
-		init smart control
-		 */
-		int smartControlSize = 290;
-		int directionActivityTilesSize = 35;
 		JDDimension screenSize = screen.getScreenSize();
-		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - smartControlSize, screenSize.getHeight() / 2 + 70 - smartControlSize / 2);
-		JDDimension smartControlRoomPanelSize = new JDDimension(smartControlSize, smartControlSize);
-		smartControl = new SmartControlRoomPanel(
-				smartControlRoomPanelPosition,
-				smartControlRoomPanelSize, screen, this
-				.getGame(), figureInfo, guiControl);
-		this.guiElements.add(smartControl);
+
 
 		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
 
@@ -119,6 +110,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 				itemWheelSize, figureInfo, screen, this.getGame(),
 				useItemActivityProvider, selectedIndexItem, null, null, "Rucksack");
 		this.guiElements.add(itemWheelHeroItems);
+		Log.i("Initialization","ItemWheel HeroItems Created");
 
 		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 50, wheelCenterY);
 		/*
@@ -133,14 +125,17 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 				selectedIndex,
 				skillBackgroundImage, null, "Aktivitäten");
 		this.guiElements.add(itemWheelSkills);
+		Log.i("Initialization","ItemWheel HeroSkills Created");
 
 		/*
-		init room item wheel
-		it shares position with the skill wheel, toggled on/off by the user
+		init smart control
 		 */
-		Image floorBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.FLOOR_BG, game.getFileIO()
-				.getImageLoader()).getImage();
-
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - SMART_CONTROL_SIZE, screenSize.getHeight() / 2 + 70 - SMART_CONTROL_SIZE / 2);
+		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
+		smartControl = new SmartControlRoomPanel(
+				smartControlRoomPanelPosition,
+				smartControlRoomPanelSize, screen, this
+				.getGame(), figureInfo, guiControl);
 
 		/*
 		init chest item wheel
@@ -149,7 +144,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		Image chestBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.CHEST_OPEN, game.getFileIO()
 				.getImageLoader()).getImage();
 		ChestItemActivityProvider chestTakeActivityProvider = new ChestItemActivityProvider(figureInfo, game, this.guiControl);
-		JDPoint chestWheelPosition = new JDPoint(smartControl.getPositionOnScreen().getX(), smartControl.getPositionOnScreen().getY() + smartControlSize/2);
+		JDPoint chestWheelPosition = new JDPoint(smartControl.getPositionOnScreen().getX(), smartControl.getPositionOnScreen().getY() + SMART_CONTROL_SIZE /2);
 		int chestWheelSizeX = screenSize.getWidth() / 6;
 		int chestWheelSizeY = screenSize.getWidth() / 6;
 		itemWheelChest = new ChestItemWheel(chestWheelPosition,
@@ -160,6 +155,9 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		itemWheelChest.setVisible(false);
 		this.guiElements.add(itemWheelChest);
 
+
+		// add smart control as last one
+		this.guiElements.add(smartControl);
 	}
 
 	@Override

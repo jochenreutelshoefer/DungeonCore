@@ -183,7 +183,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
-				EventManager.getInstanceDungeon().fireEvent(new ShrineButtonClickedEvent());
+				EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
 				return true;
 			}
 		};
@@ -202,7 +202,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
 				super.handleTouchEvent(touch);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
-				EventManager.getInstanceDungeon().fireEvent(new ToggleChestViewEvent());
+				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
 				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
 				return true;
 			}
@@ -227,7 +227,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		floorItemPresenter = new FloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, screen, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
 
 
-		EventManager.getInstanceDungeon().registerListener(this);
+		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
 	}
 
@@ -295,12 +295,16 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 
 		@Override
 		public boolean isCurrentlyPossible() {
-			Boolean fightRunning = figure.getRoomInfo().fightRunning();
-			DoorInfo door = figure.getRoomInfo()
+			final RoomInfo roomInfo = figure.getRoomInfo();
+			if(roomInfo == null) {
+				return false;
+			}
+			Boolean fightRunning = roomInfo.fightRunning();
+			DoorInfo door = roomInfo
 					.getDoor(direction);
 			if(door == null) return false;
 			PositionInRoomInfo scoutPosition = door
-					.getPositionAtDoor(figure.getRoomInfo(), false);
+					.getPositionAtDoor(roomInfo, false);
 			return fightRunning != null && !fightRunning && (!scoutPosition.isOccupied() || figure.equals(scoutPosition.getFigure()));
 		}
 	}

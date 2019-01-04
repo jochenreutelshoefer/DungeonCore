@@ -1,5 +1,6 @@
 package ai;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -32,12 +33,18 @@ public class HeroPositionLog {
 	}
 
 	public void tellPecept(Percept p) {
-		perceptList.add(p);
+		synchronized (perceptList) {
+			perceptList.add(p);
+		}
 	}
 
 	public synchronized void processPercepts() {
-		Collections.sort(perceptList, new PerceptComparator());
-		for (Percept element : perceptList) {
+		List<Percept> sortedList = new ArrayList<>(perceptList);
+		Collections.sort(sortedList, new PerceptComparator());
+		synchronized (perceptList) {
+			perceptList.clear();
+		}
+		for (Percept element : sortedList) {
 			if (element instanceof MovePercept) {
 				if (((MovePercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
 					this.lastHeroLocation = ((MovePercept) element).getTo().getPoint();
@@ -83,7 +90,7 @@ public class HeroPositionLog {
 				}
 			}
 		}
-		perceptList.clear();
+
 
 	}
 

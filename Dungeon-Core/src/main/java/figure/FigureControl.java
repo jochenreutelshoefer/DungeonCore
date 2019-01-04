@@ -45,7 +45,6 @@ public class FigureControl implements ControlUnit {
 
 	private final AI brain;
 
-	private List<Percept> perceptList = new LinkedList<Percept>();
 
 	public FigureControl(FigureInfo f, AI ai) {
 		if(f == null) {
@@ -87,8 +86,9 @@ public class FigureControl implements ControlUnit {
 
 	@Override
 	public void tellPercept(Percept p) {
-		brain.tellPercept(p);
-		perceptList.add(p);
+		if(p != null) {
+			brain.tellPercept(p);
+		}
 	}
 
 
@@ -120,7 +120,6 @@ public class FigureControl implements ControlUnit {
 		} else {
 			a = brain.chooseMovementAction();
 		}
-		perceptList = new LinkedList<Percept>();
 		return a;
 	}
 

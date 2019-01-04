@@ -274,11 +274,9 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return null;
 	}
 
-	public JDPoint getDungeonSize() {
-		return f.getRoom().getDungeon().getSize();
-	}
 
 	public RoomInfo getRoomInfo(int x, int y) {
+		if(f.getRoom() == null || f.getActualDungeon() == null) return null;
 		return f.getRoom().getDungeon().getRoomInfoNr(x, y, map);
 	}
 
@@ -286,65 +284,17 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return getRoomInfo(p.getX(), p.getY());
 	}
 
-//	public RoomInfo getMemory(int i, int j) {
-//		if(this instanceof HeroInfo) {
-//			return ((Hero)f).getMemory(i, j);
-//		}
-//		return null;
-//	}
 
-	//	public int getFighterIndex() {
-	//		return m.getFighterID();
-	//	}
 
-	public int getMonsterCntInRoom() {
-		return f.getRoom().getRoomFigures().size();
-	}
-
-	/**
-	 * Liefert den Gesundheitszustand des Monsters
-	 * <p>
-	 * Kodierung: > 50% --> HEALTHY = 4; > 30% -->WEAK = 3; > 15% -->INJURED =
-	 * 2; > 8% --> WOUNDED = 1; < 8% --> CRITICAL = 0;
-	 *
-	 * @return Gesundheitszustand
-	 */
 	public int getHealthLevel() {
 		return f.getHealthLevel();
 	}
 
-	/**
-	 * Liefert die Anzahl Kampfaktionspunkte die das Monster in der aktuellen
-	 * Kampfrunde noch zur Verf�gung hat.
-	 *
-	 * @return Anzahl Kampfaktionspunkte
-	 */
-	public int getFightAP() {
-		return f.getFightAP();
-	}
 
-	/**
-	 * Liefert die Anzahl Aktionspunkte, die das Monster in dieser Spielrunde
-	 * noch zur Verf�gung hat.
-	 *
-	 * @return Anzahl Aktionspunkte
-	 */
 	public int getActionPoints() {
 		return f.getActionPoints();
 	}
 
-	/**
-	 * Liefert die Spielrunde zur�ck
-	 *
-	 * @return Spielrunde
-	 */
-	public int getGameRound() {
-		return DungeonGame.getInstance().getRound();
-	}
-
-	/**
-	 * @return Identifikationsnummer der Figure
-	 */
 	public int getFighterID() {
 		return f.getFighterID();
 	}
@@ -353,12 +303,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.checkAction(a);
 	}
 
-	/**
-	 * Liefert ein Array von WrappedItem aller Gegenstaende, die das Monster mit
-	 * sich fuehrt.
-	 *
-	 * @return Gegenstaende der Figure
-	 */
 	public ItemInfo[] getFigureItems() {
 		return f.getItemInfos(map);
 	}

@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import ai.AI;
@@ -182,11 +181,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	protected boolean dead = false;
 
-	protected Map<Dungeon, DungeonVisibilityMap> visibilities = new HashMap<>();
+	protected DungeonVisibilityMap visibilities;
 
 	protected JDPoint location;
-
-	public Room before = null;
 
 	private boolean bonusLive = false;
 
@@ -588,7 +585,10 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			lastTurn = i;
 		}
 
-		this.getRoomVisibility().resetTemporalVisibilities();
+		final DungeonVisibilityMap roomVisibility = this.getRoomVisibility();
+		if(roomVisibility != null) {
+			roomVisibility.resetTemporalVisibilities();
+		}
 
 		setActionPoints(1);
 
@@ -608,7 +608,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		/*
 		 * cheat for debugging
 		 */
-		if (! this.getName().equals("Terminator")) {
+		if (!this.getName().equals("Terminator")) {
 			h.modValue(value * (-1));
 		}
 		this.setStatus(this.getHealthLevel());
@@ -781,9 +781,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 			Action a = retrieveMovementActionFromControl();
 			int cnt = 0;
+			final Room room = this.getRoom();
 			while (!(a instanceof EndRoundAction) && cnt < 8) {
 
-				if (this.getRoom().getDungeon().isGameOver()) {
+				if (room == null || room.getDungeon() == null || room.getDungeon().isGameOver()) {
+					// game is over or figure has left dungeon
 					break;
 				}
 				cnt++;
@@ -791,7 +793,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				// TODO: unify action processing in fight and non-fight case
 				ActionResult res = processAction(a);
 				if (res.equals(ActionResult.DONE)) {
-					EventManager.getInstanceDungeon().fireEvent(new WorldChangedEvent());
+					EventManager.getInstance().fireEvent(new WorldChangedEvent());
+				}
+
+				if(control == null) {
+					break;
 				}
 				control.actionProcessed(a, res);
 
@@ -803,7 +809,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				}
 				a = retrieveMovementActionFromControl();
 
-				if (this.getRoom().getDungeon().isGameOver()) {
+				if (room.getDungeon().isGameOver()) {
 					break;
 				}
 			}
@@ -812,7 +818,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				control.actionProcessed(a, new ActionResult(ActionResult.VALUE_DONE));
 				int ap = this.getActionPoints();
 				for (int j = 0; j < ap; j++) {
-					this.getRoom().distributePercept(new WaitPercept(this));
+					room.distributePercept(new WaitPercept(this));
 				}
 			}
 		}
@@ -848,7 +854,8 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 					break;
 				}
-				if (this.getRoom().getDungeon().isGameOver()) {
+				if (this.getRoom() == null || this.getActualDungeon() == null || this.getRoom().getDungeon().isGameOver()) {
+					// game is over or figure has left the building
 					return false;
 				}
 				a = retrieveFightActionFromControl();
@@ -863,9 +870,11 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 			// TODO: unify action processing in fight and non-fight case
 			res = processAction(a);
 			if (res.equals(ActionResult.DONE)) {
-				EventManager.getInstanceDungeon().fireEvent(new WorldChangedEvent());
+				EventManager.getInstance().fireEvent(new WorldChangedEvent());
 			}
-			control.actionProcessed(a, res);
+			if (control != null) {
+				control.actionProcessed(a, res);
+			}
 		}
 		return false;
 	}
@@ -1677,12 +1686,14 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	public void setActualDungeon(Dungeon d) {
 		actualDungeon = d;
-		createVisibilityMap(d);
-		if (ai != null) {
-			// TODO: this ai field should nou be used
-			FigureInfo info = FigureInfo.makeFigureInfo(this, getRoomVisibility());
-			ai.setFigure(info);
-			this.control = new FigureControl(info, ai);
+		if (d != null) {
+			createVisibilityMap(d);
+			if (ai != null) {
+				// TODO: this ai field should nou be used
+				FigureInfo info = FigureInfo.makeFigureInfo(this, getRoomVisibility());
+				ai.setFigure(info);
+				this.control = new FigureControl(info, ai);
+			}
 		}
 	}
 
@@ -1691,22 +1702,18 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	 * for level management.
 	 */
 	public void clearVisibilityMaps() {
-		visibilities.clear();
+		visibilities = null;
 	}
 
 	public DungeonVisibilityMap createVisibilityMap(Dungeon d) {
-
-		DungeonVisibilityMap roomVisibility = visibilities.get(d);
-
-		if (roomVisibility == null) {
-			roomVisibility = new DungeonVisibilityMap(d);
-			roomVisibility.setFigure(this);
+		if (visibilities == null) {
+			visibilities = new DungeonVisibilityMap(d);
+			visibilities.setFigure(this);
 			RoomObservationStatus[][] stats = d
-					.getNewRoomVisibilityMap(roomVisibility);
-			roomVisibility.setMap(stats);
-			visibilities.put(d, roomVisibility);
+					.getNewRoomVisibilityMap(visibilities);
+			visibilities.setMap(stats);
 		}
-		return roomVisibility;
+		return visibilities;
 	}
 
 	public abstract int getTumbleValue(Figure f);
@@ -2009,7 +2016,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	}
 
 	public DungeonVisibilityMap getRoomVisibility() {
-		return visibilities.get(this.getActualDungeon());
+		return visibilities;
 	}
 
 	public int getPositionInRoom() {
@@ -2059,6 +2066,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	public void setLocation(Room r) {
 		if (r == null) {
 			location = null;
+			room = null;
 			return;
 		}
 		this.location = r.getLocation();
@@ -2172,15 +2180,17 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 					Logger.getLogger(this.getClass()).error("Waiting for Action was interrupted: ", e);
 					e.printStackTrace();
 				}
-				if (this.getRoom().getDungeon().isGameOver()) {
-
+				if (this.getRoom() == null || this.getActualDungeon() == null || this.getRoom().getDungeon().isGameOver()) {
+					// game ended or figure has left dungeon
 					break;
 				}
-				a = control.getAction();
-				if (a == null && !(control instanceof JDGUI)) {
-					// some messed up AI returning null;
-					a = new DoNothingAction();
-					break;
+				if(control != null) {
+					a = control.getAction();
+					if (a == null && !(control instanceof JDGUI)) {
+						// some messed up AI returning null;
+						a = new DoNothingAction();
+						break;
+					}
 				}
 			}
 		}
@@ -2231,7 +2241,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 				dir);
 
 		if (passable) {
-			before = this.getRoom();
+			Room before = this.getRoom();
 			Door door = before.getDoor(dir);
 			Position destPos = door.getPositionAtDoor(toGo, false);
 			Figure standing = destPos.getFigure();

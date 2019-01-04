@@ -11,17 +11,14 @@ import util.JDDimension;
 import de.jdungeon.androidapp.event.FocusEvent;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.activity.Activity;
-import de.jdungeon.androidapp.gui.activity.DefaultActivity;
 import de.jdungeon.androidapp.gui.activity.ActivityPresenter;
 import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 import de.jdungeon.androidapp.screen.StandardScreen;
-import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
-import de.jdungeon.util.PaintBuilder;
 
 public class ItemWheel extends ActivityPresenter {
 
@@ -267,7 +264,7 @@ public class ItemWheel extends ActivityPresenter {
 		// show info about element
 		Activity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
-			EventManager.getInstanceDungeon().fireEvent(new FocusEvent(activity));
+			EventManager.getInstance().fireEvent(new FocusEvent(activity));
 		}
 	}
 

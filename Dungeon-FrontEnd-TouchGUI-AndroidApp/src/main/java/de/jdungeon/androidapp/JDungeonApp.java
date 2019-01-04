@@ -13,7 +13,6 @@ import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
 import figure.hero.Hero;
 import game.DungeonGame;
-import level.DungeonSelectedEvent;
 import level.DungeonStartEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -29,7 +28,6 @@ import de.jdungeon.androidapp.gui.skillselection.SkillSelectedEvent;
 import de.jdungeon.androidapp.gui.skillselection.SkillSelectionScreen;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.start.HeroCategorySelectedEvent;
-import de.jdungeon.androidapp.screen.start.HeroSelectionScreen;
 import de.jdungeon.androidapp.screen.start.WelcomeScreen;
 import de.jdungeon.game.Configuration;
 import de.jdungeon.util.DefaultConfiguration;
@@ -42,11 +40,15 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 
 	private boolean firstTimeCreate = true;
 	private final DungeonSession dungeonSession;
+	private  AndroidScreenJDGUI gui;
+	private  GameScreen gamescreen;
 
 	public JDungeonApp() {
 		super(new DefaultDungeonSession(new User("Hans Meiser")));
 		this.dungeonSession = (DungeonSession)super.session;
-		EventManager.getInstanceMenu().registerListener(this);
+		EventManager.getInstance().registerListener(this);
+
+
 
 		LogConfigurator logConfigurator = new LogConfigurator();
 		//logConfigurator.setFileName(Environment.getExternalStorageDirectory()
@@ -61,7 +63,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		logConfigurator.setUseLogCatAppender(true);
 		logConfigurator.configure();
 		Logger log = Logger.getLogger(JDungeonApp.class);
-		log.info("My Application Created");
+		Log.i("Initialization","Dungeon App Created");
 	}
 
 	@Override
@@ -75,6 +77,15 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		events.add(HeroCategorySelectedEvent.class);
 		events.add(SkillSelectedEvent.class);
 		return events;
+	}
+
+	@Override
+	protected void onCreateHook() {
+		// TODO: solve this weird bidirectional dependency in a better way..
+		gui = new AndroidScreenJDGUI(this);
+		gamescreen = new GameScreen(this, gui);
+		gui.setPerceptHandler(gamescreen);
+		Log.i("Initialization","App on CreateHook done");
 	}
 
 	@Override
@@ -95,12 +106,13 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.finish();
 		}
 		if(event instanceof ExitUsedEvent) {
-			GameScreen gameScreen = (GameScreen) this.getCurrentScreen();
-			//Log.w("Rendering:", "Created drawing objects: "+gameScreen.counterCreatingRoomDrawingObjects);
-			//Log.w("Rendering:", "Reused drawing objects: "+gameScreen.counterReusingRoomDrawingObjects);
+			DungeonGame.getInstance().stopRunning();
+			this.renderView.pause();
+
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			SkillSelectionScreen screen = new SkillSelectionScreen(this);
 			this.setScreen(screen);
+			this.renderView.resume();
 
 		}
 		if(event instanceof SkillSelectedEvent) {
@@ -110,17 +122,11 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			this.setScreen(screen);
 		}
 		if(event instanceof DungeonStartEvent) {
-			// we register new listeners for dungeon and gui, therefore clear old ones from EventManager
-			EventManager.getInstanceDungeon().clearAllListeners();
-
+			Log.i("Initialization","App: processing DungeonStartEvent");
 			// initialize new dungeon
 			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
-
-			// TODO: solve this weird bidirectional dependency in a better way..
-			AndroidScreenJDGUI gui = new AndroidScreenJDGUI(this);
-			GameScreen screen = new GameScreen(this, gui);
-			gui.setPerceptHandler(screen);
-			setScreen(screen);
+			DungeonGame.getInstance().restartRunning();
+			setScreen(gamescreen);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();

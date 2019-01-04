@@ -1,15 +1,5 @@
 package game;
 
-import dungeon.util.InfoUnitUnwrapper;
-import event.Event;
-import event.EventListener;
-import event.EventManager;
-import event.ExitUsedEvent;
-import event.PlayerDiedEvent;
-import item.Item;
-import item.ItemPool;
-
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,30 +8,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import dungeon.Dungeon;
+import figure.Figure;
+import figure.hero.Hero;
+import item.Item;
+import item.ItemPool;
 import spell.AbstractSpell;
 import spell.TimedSpellInstance;
 import test.TestTracker;
-import dungeon.Dungeon;
-import figure.DungeonVisibilityMap;
-import figure.Figure;
-import figure.FigureInfo;
-import figure.hero.Hero;
-import figure.hero.HeroInfo;
-
 
 /**
  * Die Klasse Game verwaltet den ganzen Spielablauf. Sie verwaltet Dungeon, Held
  * und GUI. Abwechselnd bekommt der Held und dann wieder der Dungeon eine
  * Spielrunde. Sie enthaelt die Methoden, die aus den GUI-Befehlen entsprechende
  * Aktionen (Klasse Action) erstellen und auffuehren.
- * 
  */
 public class DungeonGame implements Runnable {
 
 	private int round = 1;
-
-	private boolean gameOver = false;
-	private boolean heroLeft = false;
 
 	private Dungeon derDungeon;
 
@@ -52,17 +36,17 @@ public class DungeonGame implements Runnable {
 	private TestTracker tracker;
 
 	private static DungeonGame instance = null;
+	private boolean running = true;
 
 	//TODO: this should certainly NOT be a singleton!
 
 	@Deprecated
 	public static DungeonGame getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new DungeonGame();
 		}
 		return instance;
 	}
-
 
 	private DungeonGame() {
 		startTime = System.currentTimeMillis();
@@ -77,19 +61,17 @@ public class DungeonGame implements Runnable {
 		return round;
 	}
 
-
 	private void checkGuiFigures() {
 		Collection<Figure> l = guiFigures.keySet();
 		List<Figure> toDelete = new LinkedList<Figure>();
-		for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
+		for (Iterator<Figure> iter = l.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
 			if (element.isDead()) {
 				toDelete.add(element);
 			}
-
 		}
 
-		for (Iterator<Figure> iter = toDelete.iterator(); iter.hasNext();) {
+		for (Iterator<Figure> iter = toDelete.iterator(); iter.hasNext(); ) {
 			Object element = iter.next();
 			guiFigures.remove(element);
 		}
@@ -98,23 +80,39 @@ public class DungeonGame implements Runnable {
 	private void tickGuis() {
 		Collection<Figure> l = guiFigures.keySet();
 
-		for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
+		for (Iterator<Figure> iter = l.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
 			JDGUI gui = guiFigures.get(element);
 			gui.gameRoundEnded();
-
 		}
+	}
+
+	public void stopRunning() {
+		running = false;
+	}
+
+	public void restartRunning() {
+		running = true;
 	}
 
 	@Override
 	public void run() {
-		while (!gameOver && !heroLeft) {
-			checkGuiFigures();
-			if (guiFigures.isEmpty()) {
-				break;
+		while (true) {
+			if (running) {
+				checkGuiFigures();
+				if (guiFigures.isEmpty()) {
+					break;
+				}
+				worldTurn();
+				tickGuis();
+			} else {
+				try {
+					Thread.sleep(10);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-			worldTurn();
-			tickGuis();
 		}
 	}
 
@@ -129,15 +127,14 @@ public class DungeonGame implements Runnable {
 
 	public void addTurnableItem(Item i) {
 		if (i instanceof Turnable) {
-			turnableItems.add((Turnable)i);
+			turnableItems.add((Turnable) i);
 		}
 	}
 
 	private void itemsTurn() {
-		for (Iterator<Turnable> iter = turnableItems.iterator(); iter.hasNext();) {
+		for (Iterator<Turnable> iter = turnableItems.iterator(); iter.hasNext(); ) {
 			Turnable element = iter.next();
 			element.turn(round);
-
 		}
 	}
 
@@ -148,8 +145,6 @@ public class DungeonGame implements Runnable {
 		round++;
 	}
 
-
-
 	public void init(Dungeon d) {
 		this.round = 0;
 		ItemPool.setGame(this);
@@ -157,20 +152,15 @@ public class DungeonGame implements Runnable {
 		Figure.setMonsterControls();
 	}
 
-
 	public void setTestTracker(TestTracker tracker) {
 		this.tracker = tracker;
 	}
 
-
 	public void putGuiFigure(Hero held, JDGUI gui) {
 		guiFigures.put(held, gui);
-
 	}
 
 	public void setDungeon(Dungeon d) {
 		this.derDungeon = d;
-
 	}
-
 }

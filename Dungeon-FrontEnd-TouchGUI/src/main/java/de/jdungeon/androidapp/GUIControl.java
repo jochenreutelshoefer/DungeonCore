@@ -47,7 +47,7 @@ public class GUIControl implements EventListener {
 		this.figure = figure;
 		this.gui = gui;
 		actionAssembler = new ActionAssembler(figure);
-		EventManager.getInstanceDungeon().registerListener(this);
+		EventManager.getInstance().registerListener(this);
 	}
 
 	public void triggerPlannedActions() {

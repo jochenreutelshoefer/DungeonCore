@@ -32,8 +32,7 @@ public class GameOverView extends AbstractGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(TouchEvent touch) {
-		EventManager.getInstanceDungeon().fireEvent(new PlayerDiedEvent());
-		EventManager.getInstanceMenu().fireEvent(new PlayerDiedEvent());
+		EventManager.getInstance().fireEvent(new PlayerDiedEvent());
 		return true;
 	}
 

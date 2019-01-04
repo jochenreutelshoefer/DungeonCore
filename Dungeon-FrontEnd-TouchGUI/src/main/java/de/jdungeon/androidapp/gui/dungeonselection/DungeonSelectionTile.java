@@ -1,5 +1,6 @@
 package de.jdungeon.androidapp.gui.dungeonselection;
 
+import android.util.Log;
 import dungeon.JDPoint;
 import event.EventManager;
 import graphics.ImageManager;
@@ -28,6 +29,7 @@ public class DungeonSelectionTile extends ImageGUIElement {
 
 	private final DungeonFactory dungeon;
 	private final boolean activeStage;
+	boolean fired = false;
 
 	public DungeonSelectionTile(DungeonFactory dungeon, JDPoint position, Image im, boolean activeStage) {
 		super(position, new JDDimension(TILE_WIDTH, TILE_HEIGHT), im, (Image) ImageManager.inventory_box_normal.getImage());
@@ -46,8 +48,13 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		if(activeStage) {
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			EventManager.getInstanceMenu().fireEvent(new DungeonSelectedEvent(dungeon));
+			Log.i("Initialization","handle touch to fire DungeonSelectedEvent");
+			if(!fired) {
+				Log.i("Initialization","firing DungeonSelectedEvent");
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				EventManager.getInstance().fireEvent(new DungeonSelectedEvent(dungeon));
+			}
+			fired = true;
 
 		} else {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);

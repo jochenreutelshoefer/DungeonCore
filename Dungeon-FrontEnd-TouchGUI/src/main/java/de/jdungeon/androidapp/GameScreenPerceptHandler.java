@@ -47,10 +47,14 @@ public class GameScreenPerceptHandler {
 
 	private final GameScreen screen;
 
-	private final FigureInfo figure;
+	private FigureInfo figure;
 
 	public GameScreenPerceptHandler(GameScreen screen) {
 		this.screen = screen;
+
+	}
+
+	public void init() {
 		figure = screen.getFigureInfo();
 	}
 

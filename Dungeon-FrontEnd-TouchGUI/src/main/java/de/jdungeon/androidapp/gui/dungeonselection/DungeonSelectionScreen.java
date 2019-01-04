@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import android.util.Log;
 import animation.DefaultAnimationSet;
 import animation.Motion;
 import dungeon.JDPoint;
@@ -54,7 +55,8 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 	public DungeonSelectionScreen(Game game) {
 		super(game);
-		EventManager.getInstanceMenu().registerListener(this);
+		EventManager.getInstance().registerListener(this);
+		Log.i("Initialization","creating DungeonSelectionScreen");
 		this.session = (DungeonSession)game.getSession();
 		dungeonManager = session.getDungeonManager();
 		int currentStage = session.getCurrentStage();
@@ -213,6 +215,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 	@Override
 	public void notify(Event event) {
 		if(event instanceof  DungeonSelectedEvent) {
+			Log.i("Initialization","processing DungeonSelectedEvent");
 			DungeonSelectedEvent selectedEvent = (DungeonSelectedEvent) event;
 			DungeonFactory dungeonFactory = selectedEvent.getDungeon();
 			int currentStage = session.getCurrentStage();

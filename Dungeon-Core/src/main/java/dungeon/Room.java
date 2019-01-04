@@ -122,11 +122,13 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void setObserverStatus(Figure f, int vis) {
-		if (vis < RoomObservationStatus.VISIBILITY_FIGURES) {
-			observer.remove(f);
-		}
-		else {
-			observer.put(f, vis);
+		synchronized (observer) {
+			if (vis < RoomObservationStatus.VISIBILITY_FIGURES) {
+				observer.remove(f);
+			}
+			else {
+				observer.put(f, vis);
+			}
 		}
 	}
 
@@ -957,6 +959,12 @@ public class Room extends DungeonWorldObject implements
 				RoomObservationStatus.VISIBILITY_ITEMS);
 		figure.getRoomVisibility().getStatusObject(getNumber())
 				.addVisibilityModifier(figure);
+
+		// we 'discover' also all neighbour rooms of the entered room
+		final List<Room> neighboursWithDoor = getNeighboursWithDoor();
+		for (Room neighbourRoom : neighboursWithDoor) {
+			figure.getRoomVisibility().setVisibilityStatus(neighbourRoom.number, RoomObservationStatus.VISIBILITY_SHRINE);
+		}
 
 		position.figureEntersHere(figure);
 		figure.setLocation(this);

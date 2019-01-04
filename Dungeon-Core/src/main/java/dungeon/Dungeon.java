@@ -47,7 +47,7 @@ public class Dungeon implements Turnable, EventListener {
 	private final InfoUnitUnwrapper unwrapper;
 
 	public Dungeon(int sizeX, int sizeY) {
-		EventManager.getInstanceDungeon().registerListener(this);
+		EventManager.getInstance().registerListener(this);
 		unwrapper = new InfoUnitUnwrapper(this);
 		theDungeon = new Room[sizeX][sizeY];
 		size = new JDPoint(sizeX, sizeY);

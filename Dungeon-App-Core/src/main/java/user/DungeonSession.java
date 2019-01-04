@@ -35,4 +35,7 @@ public interface DungeonSession {
 	int getTotalScore();
 
 	void learnSkill(Spell spell);
+
+
+
 }

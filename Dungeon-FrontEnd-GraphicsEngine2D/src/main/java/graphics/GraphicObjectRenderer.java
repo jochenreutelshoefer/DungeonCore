@@ -937,8 +937,7 @@ public class GraphicObjectRenderer {
 	}
 
 	private JDImageLocated getImage(HeroInfo info, RelativeRectangle rect) {
-		int code = info.getHeroCode();
-		RouteInstruction.Direction direction = info.getLookDirection();
+		if(info == null) return null;
 		JDImageLocated im = null;
 		JDImageProxy imageProxy = null;
 		if (info.isDead()) {

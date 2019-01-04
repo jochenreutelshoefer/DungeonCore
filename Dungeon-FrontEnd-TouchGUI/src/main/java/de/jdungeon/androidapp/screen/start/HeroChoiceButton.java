@@ -6,7 +6,6 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
-import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 
@@ -31,7 +30,7 @@ public class HeroChoiceButton extends ImageGUIElement {
 
 	@Override
 	public boolean handleTouchEvent(TouchEvent touch) {
-		EventManager.getInstanceDungeon().fireEvent(new HeroCategorySelectedEvent(heroType));
+		EventManager.getInstance().fireEvent(new HeroCategorySelectedEvent(heroType));
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return true;
 	}

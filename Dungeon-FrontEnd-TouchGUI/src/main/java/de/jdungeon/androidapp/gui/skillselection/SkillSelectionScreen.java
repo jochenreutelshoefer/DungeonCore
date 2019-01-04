@@ -23,8 +23,10 @@ public class SkillSelectionScreen extends MenuScreen {
 
 		Pair<Spell, Spell> options = SkillSelectionManager.getInstance().getOptions(session.getCurrentStage());
 
-		this.guiElements.add(addTile(options.getA(), true));
-		this.guiElements.add(addTile(options.getB(), false));
+		if(options != null) {
+			this.guiElements.add(addTile(options.getA(), true));
+			this.guiElements.add(addTile(options.getB(), false));
+		}
 	}
 
 	private SkillSelectionTile addTile(Spell option, boolean rightHandSide) {

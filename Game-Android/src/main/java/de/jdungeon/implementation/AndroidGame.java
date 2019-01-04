@@ -20,7 +20,7 @@ import de.jdungeon.user.Session;
 
 public abstract class AndroidGame extends Activity implements Game {
 
-	private AndroidFastRenderView renderView;
+	protected AndroidFastRenderView renderView;
 	private Graphics graphics;
 	private Audio audio;
 	private Input input;
@@ -77,8 +77,11 @@ public abstract class AndroidGame extends Activity implements Game {
        
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "MyGame");
+
+        onCreateHook();
     }
 
+	protected abstract void onCreateHook();
 
 	@Override
 	public int getScreenWidth() {

@@ -7,6 +7,7 @@
 package figure;
 
 import dungeon.Room;
+import game.ControlUnit;
 import game.JDEnv;
 
 import java.util.Collections;
@@ -84,7 +85,11 @@ public class RoomObservationStatus {
 		 */
 		if(max < VISIBILITY_FIGURES) {
 			// TODO: shouldn't we compare to the previous vis level for level change notification?
-			map.getFigure().getControl().notifyVisibilityStatusDecrease(point);
+			final Figure figure = map.getFigure();
+			final ControlUnit control = figure.getControl();
+			if(control != null) {
+				control.notifyVisibilityStatusDecrease(point);
+			}
 		}
 
 		/*

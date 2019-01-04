@@ -8,7 +8,6 @@ import game.PerceptHandler;
 import item.ItemInfo;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -30,7 +29,7 @@ import de.jdungeon.game.Screen;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
-	private final LinkedList<Action> actionQueue = new LinkedList<>();
+	private final Vector<Action> actionQueue = new Vector<>();
 	private final JDungeonApp app;
 
 	private FigureInfo figure;
@@ -60,7 +59,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	public void onTurn() {
 
 		if(!visibilityIncreasedRooms.isEmpty()) {
-			EventManager.getInstanceDungeon().fireEvent(new VisibilityIncreasedEvent(visibilityIncreasedRooms));
+			EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(visibilityIncreasedRooms));
 			visibilityIncreasedRooms.clear();
 		}
 

@@ -25,9 +25,23 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
         renderThread = new Thread(this);
         renderThread.start();  
 
-    }      
+    }
 
-   
+    public void pause() {
+        running = false;
+        while(true) {
+            try {
+                renderThread.join();
+                break;
+            } catch (InterruptedException e) {
+                // retry
+            }
+
+        }
+    }
+
+
+
     @Override
 	public void run() {
         Rect dstRect = new Rect();
@@ -59,18 +73,6 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
         }
     }
 
-    public void pause() {                        
-        running = false;                        
-        while(true) {
-            try {
-                renderThread.join();
-                break;
-            } catch (InterruptedException e) {
-                // retry
-            }
-           
-        }
-    }    
-   
+
  
 }

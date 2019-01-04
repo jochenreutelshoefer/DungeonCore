@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -20,6 +21,7 @@ import dungeon.RoomInfo;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
+import event.ExitUsedEvent;
 import event.WorldChangedEvent;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -85,8 +87,8 @@ import de.jdungeon.util.Pair;
 public class GameScreen extends StandardScreen implements EventListener, PerceptHandler {
 
 	public static final int SCALE_ROOM_FIGHT_MODE = 180;
-	public static final int SCALE_ROOM_DEFAULT = 160;
-	private final Dungeon derDungeon;
+	public static final int SCALE_ROOM_DEFAULT = 150;
+	private Dungeon derDungeon;
 	private HeroInfo figureInfo;
 
 	private GraphicObjectRenderer dungeonRenderer;
@@ -95,7 +97,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private final Map<JDPoint, Image> drawnRooms = new HashMap<>();
 	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
 	private InfoPanel infoPanel;
-	private final TextPerceptView textPerceptView;
+	private TextPerceptView textPerceptView;
 	private GameOverView gameOverView = null;
 
 	private JDPoint viewportPosition;
@@ -105,7 +107,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
 	private final int minRoomSize = 100;
-	private final GUIControl actionAssembler;
+	private GUIControl actionAssembler;
 
 	private long lastDoubleTapEventTime = -1;
 	private final RenderTimeLog renderTimeLog = new RenderTimeLog();
@@ -115,6 +117,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private long lastScrollEventTime = -1;
 	private boolean touchEventAfterPaint = false;
 	private SmartControl smartControl;
+	//private boolean exitUsed = false;
 
 	public JDGUIEngine2D getGui() {
 		return gui;
@@ -124,7 +127,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private DefaultDungeonSession session;
 
-	private final GameScreenPerceptHandler perceptHandler;
+	private GameScreenPerceptHandler perceptHandler;
 
 	private boolean worldHasChanged = true;
 	private FocusManager focusManager;
@@ -135,22 +138,34 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	public GameScreen(Game game, JDGUIEngine2D gui) {
 		super(game);
 		setSession(game.getSession());
+		this.gui = gui;
+		perceptHandler = new GameScreenPerceptHandler(this);
+
+		// be event listener
+		EventManager.getInstance().registerListener(this);
+
+		Log.i("Initialization","GameScreen Created");
+	}
+
+	@Override
+	public void init() {
+		Log.i("Initialization","GameScreen init start");
+		Music music = this.game.getAudio().createMusic("music/" + "Eyes_Gone_Wrong.mp3");
+		MusicManager.getInstance().playMusic(music);
 
 		Hero hero = this.session.getCurrentHero();
 		figureInfo = this.session.getHeroInfo();
-		perceptHandler = new GameScreenPerceptHandler(this);
+
+		perceptHandler.init();
+
 		gui.setFigure(figureInfo);
-		this.gui = gui;
+
 		hero.setControl(gui);
 
 
 		actionAssembler = new GUIControl(figureInfo, gui);
 
-		/*
-	 * init text messages panel
-	 */
-		textPerceptView = new TextPerceptView(this);
-		this.guiElements.add(textPerceptView);
+
 		initGUIElements();
 		this.session.startGame(gui);
 
@@ -160,9 +175,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		scrollTo(heroRoomNumber, 100f, "init");
 
 		resetDungeonRenderer();
-
-		// be event listener
-		EventManager.getInstanceDungeon().registerListener(this);
+		Log.i("Initialization","GameScreen init finished");
 	}
 
 	private void setSession(Session session) {
@@ -176,6 +189,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void initGUIElements() {
+		Log.i("Initialization","Start init GUI-elements");
+		/*
+		 * init text messages panel
+		 */
+		this.guiElements.clear();
+		textPerceptView = new TextPerceptView(this);
+		this.guiElements.add(textPerceptView);
+
 		/*
 		 * init info panel
 		 */
@@ -255,6 +276,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
 				2 * heightFifth), this, this.getGame());
 		this.guiElements.add(gameOverView);
+
+		Log.i("Initialization","Finished init GUI-elements");
 	}
 
 	private Image getGUIImage(String filename) {
@@ -305,11 +328,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	}
 
-	@Override
-	public void init() {
-		Music music = this.game.getAudio().createMusic("music/" + "Eyes_Gone_Wrong.mp3");
-		MusicManager.getInstance().playMusic(music);
-	}
 
 	private static class RenderTimeLog {
 
@@ -506,7 +524,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	@Override
 	public synchronized void update(float arg0) {
 
-
 		/*
 		 * trigger gui-elements
 		 */
@@ -651,10 +668,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 					Math.min(maxRoomSize, newRoomSize));
 			viewportPosition = new JDPoint(viewportPosition.getX() * scaleFactor, viewportPosition.getY() * scaleFactor);
 			changeRoomSize(newRoomSize);
-			Pair<Float, Float> currentViewCenterRoomCoordinates = getCurrentViewCenterRoomCoordinates();
 
 			// flush events and quit processing
-			List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+			game.getInput().getTouchEvents();
 			lastScaleEventTime = System.currentTimeMillis();
 			return;
 
@@ -907,14 +923,28 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		if (points.contains(heroRoom)) {
 			// entered current room, no need to do animation
 			points.remove(heroRoom);
-			if (points.isEmpty()) {
-				return;
+
+		}
+
+		final Iterator<JDPoint> pointIterator = points.iterator();
+		while(pointIterator.hasNext()) {
+			final JDPoint point = pointIterator.next();
+			if(heroRoom.isNeighbour(point)) {
+				pointIterator.remove();
 			}
 		}
+
+		if (points.isEmpty()) {
+			return;
+		}
+
+		// we dont animate discovered neighbour rooms any more
+		/*
 		if (points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
 			scrollTo(points.get(0), 50, "show Visibility increase 1 room hero neighbour");
 			return;
 		}
+		*/
 
 		// zoom out
 		int flightScale = 70;
@@ -1117,11 +1147,13 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		events.add(ToggleChestViewEvent.class);
 		events.add(ShrineButtonClickedEvent.class);
 		events.add(WorldChangedEvent.class);
+		//events.add(ExitUsedEvent.class);
 		return events;
 	}
 
 	@Override
 	public void notify(Event event) {
+
 		if (event instanceof FocusEvent) {
 			Paragraphable infoEntity = ((FocusEvent) event).getObject();
 			focusManager.setGuiFocusObject(infoEntity);

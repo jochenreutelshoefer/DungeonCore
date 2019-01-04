@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import dungeon.Dungeon;
+import dungeon.Room;
 import dungeon.util.DungeonUtils;
 import figure.Figure;
 import figure.hero.Hero;
@@ -106,6 +107,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		dungeonThread.start();
 	}
 
+
+
 	/**
 	 * Returns the hero object that is currently played by this session
 	 * @return
@@ -170,12 +173,15 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 		derDungeon = dungeonFactory.createDungeon();
 		Hero currentHero = getCurrentHero();
-		// we make a copy of this hero for potential restart after death
-		this.currentHero.clearVisibilityMaps();
-		heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
 
 		// we need to clear the keys from the last dungeonFactory (as they would work in the new one also)
 		currentHero.getInventory().clearKeys();
+
+		// we make a copy of this hero for potential restart after death
+		this.currentHero.clearVisibilityMaps();
+		//makeHeroBackup();
+
+
 		heroInfo = DungeonUtils.enterDungeon(currentHero, derDungeon,
 				dungeonFactory.getHeroEntryPoint());
 
@@ -207,8 +213,20 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 				completedDungeons.put(lastSelectedDungeonFactory, dungeonGame.getRound());
 				lastCompletedDungeonFactory = lastSelectedDungeonFactory;
 			}
+			makeHeroBackup();
 			derDungeon = null;
 		}
 	}
 
+	private void makeHeroBackup() {
+		// we need to clear all references to dungeon objects to allow a deep copy of the hero object via serialization
+		Figure f = getCurrentHero();
+		f.setLocation((Room)null);
+		f.setPos(null);
+		f.setActualDungeon(null);
+		f.clearVisibilityMaps();
+		f.setRespawnRoom(null);
+		f.setControl(null);
+		heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
+	}
 }
