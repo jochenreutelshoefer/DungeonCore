@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ai.DefaultMonsterIntelligence;
 import dungeon.DoorInfo;
 import dungeon.ItemInfoOwner;
 import dungeon.JDPoint;
@@ -30,7 +29,6 @@ import figure.hero.HeroInfo;
 import figure.memory.FigureMemory;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
-import game.DungeonGame;
 import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
@@ -112,7 +110,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		// todo: handle this situation reasonable
 		Log.warning("No look direction found for: " + this);
 		return RouteInstruction.Direction.fromInteger((int) (Math.random() * 4 + 1));
-
 	}
 
 	public boolean isHostile(FigureInfo fig) {
@@ -122,7 +119,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		}
 		return f.getControl().isHostileTo(fig);
 	}
-
 
 	public PositionInRoomInfo getPos() {
 		int vis = map.getVisibilityStatus(f.getLocation());
@@ -134,14 +130,21 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		}
 	}
 
+	private int positionInRoomIndexBackup;
+
 	public int getPositionInRoomIndex() {
-		// elvis has left the building
-		if (f.getLocation() == null) return -1;
+
+		if (f.isDead()) {
+			// might be helpful for drawing dead corpses
+			return positionInRoomIndexBackup;
+		}
 
 		int vis = map.getVisibilityStatus(f.getLocation());
 
 		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return f.getPositionInRoom();
+			final int positionInRoom = f.getPositionInRoom();
+			positionInRoomIndexBackup = positionInRoom;
+			return positionInRoom;
 		}
 		else {
 			//System.out.println("verschweige PosIndex!");
@@ -150,12 +153,8 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public Boolean isDead() {
-		if (map.getDungeon().equals(f.actualDungeon)) {
-			if (map.getVisibilityStatus(f.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-				return f.isDead();
-			}
-		}
-		return null;
+		// in principle one should verify access via visibility state here also..
+		return f.isDead();
 	}
 
 	public Boolean hasKey(DoorInfo d) {
@@ -180,7 +179,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return null;
 	}
 
-
 	@Override
 	public boolean equals(Object o) {
 
@@ -196,7 +194,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	public int hashCode() {
 		return f.hashCode();
 	}
-
 
 	@Override
 	public String toString() {
@@ -274,9 +271,8 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return null;
 	}
 
-
 	public RoomInfo getRoomInfo(int x, int y) {
-		if(f.getRoom() == null || f.getActualDungeon() == null) return null;
+		if (f.getRoom() == null || f.getActualDungeon() == null) return null;
 		return f.getRoom().getDungeon().getRoomInfoNr(x, y, map);
 	}
 
@@ -284,12 +280,9 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return getRoomInfo(p.getX(), p.getY());
 	}
 
-
-
 	public int getHealthLevel() {
 		return f.getHealthLevel();
 	}
-
 
 	public int getActionPoints() {
 		return f.getActionPoints();

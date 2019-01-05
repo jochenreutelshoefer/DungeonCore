@@ -14,12 +14,15 @@ import de.jdungeon.androidapp.gui.activity.ActivityProvider;
 
 public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
+	public static final int DEFAULT_REOCURRENCE_CYCLE_SIZE = 3;
+
 	private final int itemWheelSize;
 	private final int initValue;
 	private final Map<Integer, Activity> mapping = new HashMap<>();
 	private final Map<Integer, Activity> completedMapping = new HashMap<>();
 	private final ActivityProvider provider;
 	Activity addedLast = null;
+	private int reoccurrenceCycleSize;
 
 	@Override
 	public ActivityProvider getProvider() {
@@ -44,12 +47,18 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 	}
 
 	public ItemWheelBindingSetSimple(int initialValue, int itemWheelSize,
-									 ActivityProvider provider) {
+									 ActivityProvider provider, int reoccurrenceCycleSize) {
 		this.initValue = initialValue;
 		this.itemWheelSize = itemWheelSize;
 		this.provider = provider;
+		this.reoccurrenceCycleSize = reoccurrenceCycleSize;
 
 		initMapping();
+	}
+
+	public ItemWheelBindingSetSimple(int initialValue, int itemWheelSize,
+									 ActivityProvider provider) {
+		this(initialValue, itemWheelSize, provider, 3);
 	}
 
 	private void initMapping() {
@@ -75,7 +84,7 @@ public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 		int completionIndex = initValue + activities.size();
 		completedMapping.putAll(mapping);
 		int activityCounter = activities.size();
-		int reoccurrenceCycleSize = 3;
+
 		// its less than 3 items, we fill up mapping with empty entries
 		// for not rendering an item multiple times on the display
 		if (activities.size() > reoccurrenceCycleSize) {

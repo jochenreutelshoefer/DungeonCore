@@ -34,6 +34,9 @@ public abstract class AnimatedSmartControlElement extends SubGUIElement {
 		return false;
 	}
 
+	public void startAnimation() {
+		buttonAnimationStart = System.currentTimeMillis();
+	}
 
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {

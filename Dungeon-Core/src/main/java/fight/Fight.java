@@ -16,8 +16,8 @@ import game.ControlUnit;
  */
 public class Fight {
 
-	private Room fightRoom;
-	private List<Figure> fighterList;
+	private final Room fightRoom;
+	private final List<Figure> fighterList;
 
 
 	public Fight(Room r, List<Figure> figures) {
@@ -32,8 +32,6 @@ public class Fight {
 
 	}
 
-
-	
 	public void figureLeaves(Figure f) {
 		fighterList.remove(f);
 	}
@@ -46,8 +44,7 @@ public class Fight {
 		
 		boolean endFight = false;
 		for(int i = 0; i < 3; i++) {
-			List<Figure> tempList = new LinkedList<Figure>();
-			tempList.addAll(fighterList);
+			List<Figure> tempList = new LinkedList<>(fighterList);
 			if(tempList.size() <= 1) {
 				fightRoom.endFight();
 				break;
@@ -60,10 +57,7 @@ public class Fight {
 						this.fightRoom.figureLeaves(element);
 					}
 
-					if (checkFightOn()) {
-
-					}
-					else {
+					if (!checkFightOn()) {
 						endFight = true;
 						break;
 					}
@@ -82,13 +76,13 @@ public class Fight {
 		
 		boolean fightOn = false;
 		for (Iterator<Figure> iter = fighterList.iterator(); iter.hasNext();) {
-			Figure element = (Figure) iter.next();
+			Figure element = iter.next();
 			ControlUnit c = element.getControl();
 			if(c == null) {
 				return false;
 			}
 			for (Iterator<Figure> iter2 = fighterList.iterator(); iter2.hasNext();) {
-				Figure element2 = (Figure) iter2.next();
+				Figure element2 = iter2.next();
 				if(element != element2) {
 					boolean b = element.getControl().isHostileTo(FigureInfo.makeFigureInfo(element2,element.getRoomVisibility()));
 					if(b) {
@@ -97,15 +91,12 @@ public class Fight {
 					}
 				}
 				if(fightOn) {
-					fightOn = true;
 					break;
 				}
 			}
 		}
 		return fightOn;
 	}
-
-
 
 	public List<Figure> getFightFigures() {
 		return fightRoom.getRoomFigures();

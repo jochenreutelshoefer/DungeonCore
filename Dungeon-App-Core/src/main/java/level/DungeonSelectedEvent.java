@@ -1,7 +1,5 @@
 package level;
 
-import org.w3c.dom.events.Event;
-
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 01.04.16.

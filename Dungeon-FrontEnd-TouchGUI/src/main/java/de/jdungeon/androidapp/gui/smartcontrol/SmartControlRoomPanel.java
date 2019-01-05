@@ -40,6 +40,7 @@ import de.jdungeon.androidapp.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.androidapp.gui.activity.SkillActivityProvider;
 import de.jdungeon.androidapp.gui.activity.TakeItemActivityProvider;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
+import de.jdungeon.androidapp.screen.InfoMessagePopupEvent;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Color;
 import de.jdungeon.game.Colors;
@@ -89,6 +90,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final JDDimension moveElementDimension;
 	private final int positionAreaSize;
 	private final int positionAreaOffset;
+	private final SmartControl smartControl;
 	private final GraphicObjectRenderer renderer;
 	private final SubGUIElementAnimated chestGUIELement;
 	//private final SubGUIElementAnimated takeGUIElement;
@@ -100,12 +102,13 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final GUIElement innerFrame;
 	private final FloorItemPresenter floorItemPresenter;
 
-	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, GUIControl actionAssembler) {
+	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, GUIControl actionAssembler, SmartControl smartControl) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
 		positionAreaSize = (int) (dimension.getWidth() / 2.2);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
+		this.smartControl = smartControl;
 		renderer = new GraphicObjectRenderer(positionAreaSize);
 
 		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
@@ -208,21 +211,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			}
 		};
 
-
-		/*
-		// take from floor  button
-		int takeElementSize = 28;
-		final JDDimension takeDimension = new JDDimension(takeElementSize, takeElementSize);
-		final JDPoint posRelativeTake = new JDPoint(getDimension().getWidth() / 2 - takeElementSize / 2, getDimension().getHeight() / 2 - takeElementSize / 2);
-		takeGUIElement = new SubGUIElementAnimated(posRelativeTake, takeDimension, this, null) {
-			@Override
-			public boolean handleTouchEvent(Input.TouchEvent touch) {
-				super.handleTouchEvent(touch);
-				EventManager.getInstance().fireEvent(new TakeItemButtonClickedEvent());
-				return true;
-			}
-		};
-		*/
 
 		floorItemPresenter = new FloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, screen, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
 
@@ -335,7 +323,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			updatePositionElements();
 			updateDoorElements();
 			updateMoveElements();
-			//updateTakeElement();
 			updateChestElement();
 			updateShrineElement();
 			worldHasChanged = false;
@@ -427,17 +414,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		}
 	}
 
-	/*
-	private void updateTakeElement() {
-		takeItemElements.clear();
-		RoomInfo roomInfo = figure.getRoomInfo();
-		List<ItemInfo> items = roomInfo.getItems();
-		if (items != null && !items.isEmpty()) {
-			takeItemElements.add(takeGUIElement);
-		}
-	}
-	*/
-
 	private void updateShrineElement() {
 		shrineElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
@@ -510,7 +486,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	@Override
 	public void update(float time) {
 		updateAllElementsIfNecessary();
-		// TODO: do we need to clear and reinsert all element for every update ??
+		// TODO: do we need to clear and reinsert all elements for every update ??
 		allGuiElements.clear();
 		//allGuiElements.add(outerFrame);
 		allGuiElements.add(innerFrame);
@@ -523,6 +499,24 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		allGuiElements.addAll(shrineElements);
 		allGuiElements.add(floorItemPresenter);
 		floorItemPresenter.update(time);
+
+
+		if(smartControl.getMessage() != null) {
+			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(smartControl.getMessage().getMessage()));
+			// TODO: test
+			// should animate red enemy blobs if there are multiple and no enemy is selected
+			for (GUIElement positionElement : positionElements) {
+				if(positionElement instanceof PositionElement) {
+					final RoomInfoEntity clickableObject = ((PositionElement) positionElement).getClickableObject();
+					if(clickableObject instanceof FigureInfo) {
+						if(((FigureInfo)clickableObject).isHostile(this.figure)) {
+							((PositionElement) positionElement).startAnimation();
+						}
+					}
+				}
+			};
+		}
+
 	}
 
 	@Override
@@ -548,26 +542,4 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		}
 	}
 
-	/*
-	@Override
-	public void paint(Graphics g, JDPoint viewportPosition) {
-
-		JDPoint pos = this.getPositionOnScreen();
-		JDDimension dimension = this.getDimension();
-		DrawUtils.drawRectangle(g, Color.BLUE, pos, dimension);
-
-		paintElements(g, doorElements);
-		paintElements(g, positionElements);
-		paintElements(g, moveElements);
-
-	}
-
-	private void paintElements(Graphics g, Collection<GUIElement> elements) {
-		for (GUIElement guiElement : elements) {
-			if (guiElement.isVisible()) {
-				guiElement.paint(g, null);
-			}
-		}
-	}
-	*/
 }

@@ -55,11 +55,13 @@ public class DarkMaster extends Monster {
 	/* (non-Javadoc)
 	 * @see monster#hunting()
 	 */
+	@Override
 	public int hunting() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@Override
 	public double getAntiFleeFactor() {
 		return 0.5;
 	}
@@ -73,6 +75,7 @@ public class DarkMaster extends Monster {
 
 	}
 
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
 		attack(op);
@@ -132,6 +135,7 @@ public class DarkMaster extends Monster {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 	
+	@Override
 	protected int getSCATTER() {
 		return this.SCATTER;
 	}
@@ -142,10 +146,12 @@ public class DarkMaster extends Monster {
 		wayToHero = null;
 	}
 	
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
 
+	@Override
 	public Slap slay(Figure m) {
 		return null;
 //		if (m == null) {

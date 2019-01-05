@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -26,6 +27,8 @@ public class HeroPositionLog {
 
 	private JDPoint lastHeroLocation = null;
 	private int lastHeroLocationInfoRound;
+
+	// make the list thread safe
 	private final List<Percept> perceptList = new LinkedList<>();
 
 	JDPoint getLastHeroPosition(){
@@ -39,9 +42,10 @@ public class HeroPositionLog {
 	}
 
 	public synchronized void processPercepts() {
-		List<Percept> sortedList = new ArrayList<>(perceptList);
-		Collections.sort(sortedList, new PerceptComparator());
+		List<Percept> sortedList = null;
 		synchronized (perceptList) {
+			sortedList = new ArrayList<>(perceptList);
+			Collections.sort(sortedList, new PerceptComparator());
 			perceptList.clear();
 		}
 		for (Percept element : sortedList) {

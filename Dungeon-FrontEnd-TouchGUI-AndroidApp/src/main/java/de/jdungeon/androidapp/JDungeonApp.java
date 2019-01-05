@@ -82,7 +82,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 	@Override
 	protected void onCreateHook() {
 		// TODO: solve this weird bidirectional dependency in a better way..
-		gui = new AndroidScreenJDGUI(this);
+		gui = AndroidScreenJDGUI.getInstance(this);
 		gamescreen = new GameScreen(this, gui);
 		gui.setPerceptHandler(gamescreen);
 		Log.i("Initialization","App on CreateHook done");

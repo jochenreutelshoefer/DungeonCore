@@ -20,6 +20,8 @@ import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 import de.jdungeon.game.ScrollMotion;
 
+import static de.jdungeon.androidapp.gui.itemWheel.ItemWheelBindingSetSimple.DEFAULT_REOCURRENCE_CYCLE_SIZE;
+
 public class ItemWheel extends ActivityPresenter {
 
 	public enum CenterPositionMode {
@@ -32,14 +34,12 @@ public class ItemWheel extends ActivityPresenter {
 	private static final double TWO_PI = Math.PI * 2;
 	private final int hightlightItemPosition;
 	private int markedPointIndex;
-	private final Image wheelBackgroundImage;
 	private final String title;
 	private final JDPoint drawBoundPositon;
 	private final JDDimension drawBoundsDimension;
 	private final CenterPositionMode centerMode;
 	private float currentRotationState = (float) TWO_PI;
 	private final int radius;
-	private final int itemPositions;
 	private boolean justRotated = true;
 
 	private static final int defaultImageWidth = 50;
@@ -60,15 +60,75 @@ public class ItemWheel extends ActivityPresenter {
 
 	private final ItemWheelBindingSet binding;
 
-	public ItemWheel(JDPoint wheelCenterPosition, JDDimension dim, HeroInfo info,
-					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
-					 Image itemBackground, Image wheelBackgroundImage, String title) {
-			this(wheelCenterPosition, dim, info, screen, game, provider, selectedIndex, itemBackground, wheelBackgroundImage, title, new JDPoint(wheelCenterPosition.getX()-dim.getWidth(), wheelCenterPosition.getY()-dim.getHeight() ), new JDDimension(dim.getWidth()  * 2 , dim.getHeight() * 2), CenterPositionMode.topLeft, dim.getWidth(), 36);
+	public ItemWheel(JDPoint wheelCenterPosition,
+					 JDDimension dim,
+					 HeroInfo info,
+					 StandardScreen screen,
+					 Game game,
+					 ActivityProvider provider,
+					 int selectedIndex,
+					 Image itemBackground,
+					 Image wheelBackgroundImage,
+					 String title, float rotationOffset) {
+		this(wheelCenterPosition,
+				dim,
+				info,
+				screen,
+				game,
+				provider,
+				selectedIndex,
+				itemBackground,
+				title,
+				new JDPoint(wheelCenterPosition.getX()-dim.getWidth(), wheelCenterPosition.getY()-dim.getHeight() ),
+				new JDDimension(dim.getWidth()  * 2 , dim.getHeight() * 2),
+				CenterPositionMode.topLeft,
+				dim.getWidth(),
+				36,
+				DEFAULT_REOCURRENCE_CYCLE_SIZE);
+		currentRotationState = (float)TWO_PI - rotationOffset;
 	}
 
-		public ItemWheel(JDPoint wheelCenterPosition, JDDimension dim, HeroInfo info,
-					 StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex,
-					 Image itemBackground, Image wheelBackgroundImage, String title, JDPoint drawBoundPositon, JDDimension drawBoundsDimension, CenterPositionMode centerMode, int radius, int itemPositions) {
+	public ItemWheel(JDPoint wheelCenterPosition,
+					 JDDimension dim,
+					 HeroInfo info,
+					 StandardScreen screen,
+					 Game game,
+					 ActivityProvider provider,
+					 int selectedIndex,
+					 Image itemBackground,
+					 String title) {
+			this(wheelCenterPosition,
+					dim,
+					info,
+					screen,
+					game,
+					provider,
+					selectedIndex,
+					itemBackground,
+					title,
+					new JDPoint(wheelCenterPosition.getX()-dim.getWidth(), wheelCenterPosition.getY()-dim.getHeight() ),
+					new JDDimension(dim.getWidth()  * 2 , dim.getHeight() * 2),
+					CenterPositionMode.topLeft,
+					dim.getWidth(),
+					36,
+					DEFAULT_REOCURRENCE_CYCLE_SIZE);
+	}
+
+		public ItemWheel(JDPoint wheelCenterPosition,
+						 JDDimension dim,
+						 HeroInfo info,
+						 StandardScreen screen,
+						 Game game,
+						 ActivityProvider provider,
+						 int selectedIndex,
+						 Image itemBackground,
+						 String title,
+						 JDPoint drawBoundPositon,
+						 JDDimension drawBoundsDimension,
+						 CenterPositionMode centerMode,
+						 int radius,
+						 int itemPositions,
+						 int reoccurrenceCycleSize) {
 		super(wheelCenterPosition, dim, screen, game, provider, itemBackground, defaultImageWidth);
 
 
@@ -77,15 +137,13 @@ public class ItemWheel extends ActivityPresenter {
 			points = new JDPoint[36];
 
 		this.hightlightItemPosition = selectedIndex;
-		this.wheelBackgroundImage = wheelBackgroundImage;
 		this.title = title;
 			this.drawBoundPositon = drawBoundPositon;
 			this.drawBoundsDimension = drawBoundsDimension;
 			this.centerMode = centerMode;
 			this.radius = radius;
-			this.itemPositions = itemPositions;
 			info.getSpellBuffer();
-		this.binding = new ItemWheelBindingSetSimple(selectedIndex, itemPositions, provider);
+		this.binding = new ItemWheelBindingSetSimple(selectedIndex, itemPositions, provider, reoccurrenceCycleSize);
 		//markedPointIndex = selectedIndex;
 
 		/*

@@ -118,7 +118,7 @@ public class AndroidGraphics implements Graphics {
 		if (alignment == Paint.Alignment.RIGHT) {
 			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
 		}
-		return new AndroidTextPaint(paint);
+		return new AndroidTextPaint(paint, builder.getFontSize());
 	}
 
 	@Override
@@ -487,6 +487,8 @@ public class AndroidGraphics implements Graphics {
 
 
 		TextPaint textPaint = ((AndroidTextPaint) p).getPaint();
+		int fontsize = ((AndroidTextPaint) p).getFontsize();
+		textPaint.setTextSize(fontsize);
 
 		Layout.Alignment layoutAlignment = Layout.Alignment.ALIGN_CENTER;
 		if(textPaint.getTextAlign() == android.graphics.Paint.Align.LEFT) {
@@ -495,7 +497,6 @@ public class AndroidGraphics implements Graphics {
 		if(textPaint.getTextAlign() == android.graphics.Paint.Align.RIGHT) {
 			layoutAlignment = Layout.Alignment.ALIGN_OPPOSITE;
 		}
-
 		StaticLayout layout = new StaticLayout(text, textPaint, width,
 				layoutAlignment, 1, 1, true);
 

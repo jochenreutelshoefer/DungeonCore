@@ -51,10 +51,6 @@ public class Fir extends ConjuredMagicFigure {
 		return 0;
 	}
 
-	public void heroHasFleen(Room r, int monsterCnt) {
-		// this.dispose?
-	}
-
 	@Override
 	protected double getAntiFleeFactor() {
 		return 0;

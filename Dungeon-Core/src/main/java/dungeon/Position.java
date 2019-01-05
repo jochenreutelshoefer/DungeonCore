@@ -15,6 +15,7 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.memory.PositionMemory;
 import game.InfoEntity;
+import log.Log;
 
 public class Position extends DungeonWorldObject implements RoomEntity {
 
@@ -76,7 +77,17 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 	}
 
 	public void setFigure(Figure info) {
+		checkFigureAlreadyOnAPosition(info);
 		figure = info;
+	}
+
+	private void checkFigureAlreadyOnAPosition(Figure info) {
+		final Position[] positions = room.getPositions();
+		for (Position position : positions) {
+			if(info.equals(position.getFigure())) {
+				Log.severe("Figure is already in Room!!");
+			}
+		}
 	}
 
 	/**
@@ -87,6 +98,7 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 	}
 
 	public void figureEntersHere(Figure fig) {
+		checkFigureAlreadyOnAPosition(fig);
 		if (figure == null) {
 			figure = fig;
 			fig.setPos(this);
@@ -156,9 +168,10 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 		if (p.getRoom() != room) {
 			return -1;
 		}
-		if (p == this) {
-			System.out.println("position mit mehr als 1 figur");
-		}
+
+
+
+
 		return getDistance(p.index);
 
 	}
@@ -280,7 +293,6 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 			DungeonVisibilityMap roomVisibility = figure.getRoomVisibility();
 			if (roomVisibility != null) {
 				roomVisibility.removeScoutedVisibility(this);
-
 			}
 		}
 		figure = null;

@@ -52,10 +52,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		InfoProvider {
 
 
-	public final static int DT_STANDARD = 0;
-
-	public final static int DT_FIRE = 1;
-
 	@Deprecated
 	public final static int BEAR = 1;
 
@@ -98,22 +94,8 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	public final static int GHUL_HUNTING = 0;
 
-	public final static int MISSION_NONE = 0;
-
-	public final static int MISSION_DARK_MASTER = 1;
-
-	public final static int MISSION_FLEE = 2;
-
-	public final static int MISSION_HUNT = 3;
-
-	public final static int MISSION_ROAM = 4;
-
-	protected boolean firstBlood = false;
-
-	
 	protected int specialAttackCounter = 0;
 
-	protected boolean fighted = false;
 
 	protected String[] lvl_names;
 
@@ -128,7 +110,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return false;
 	}
 
-	protected List modifications = new LinkedList();
+	protected List<TimedAttributeModification> modifications = new LinkedList<>();
 
 	protected Attribute strength ;
 	protected Attribute dexterity = new Attribute(Attribute.DEXTERITY,7);
@@ -137,14 +119,10 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	public Attribute getStrength() {
 		if (strength == null) {
-			System.out.println("st�rke-attribut von Monster ist null: "
-					+ this.toString());
 			return new Attribute(Attribute.STRENGTH, 3);
 		}
 		return strength;
 	}
-
-	protected boolean hasJustBeenThreaten = false;
 
 	protected int lastMove = 0;
 
@@ -191,15 +169,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 				getCHANCE_TO_HIT() + cth_modifier);
 	}
 
-	protected boolean hasJustFleen = false;
-
-	protected boolean thundered = false;
-
-	protected boolean justGotSlap = false;
-
 	protected int healthRecover = 1;
-
-	//protected String Mclass;
 
 	@Override
 	public Item getItem(ItemInfo it) {
@@ -230,10 +200,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	protected double poisonResistRate = 1.0;
 
 	protected boolean spitted = false;
-
-	protected int firstBloodRounds = 0;
-
-	int convinced = 0;
 
 	public boolean luzia;
 
@@ -276,17 +242,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		construcHelp(value);
 	}
 
-	/*
-
-	public Monster(int value) {
-		super();
-		if(JDEnv.isBeginnerGame()) {
-			value *= JDEnv.BEGINNER_RATE;
-		}
-		construcHelp(value);
-	}
-*/
-
 	@Override
 	public int getTumbleValue(Figure f) {
 		return tumbleValue;
@@ -315,29 +270,13 @@ public abstract class Monster extends Figure implements Paragraphable,
 			return null;
 	}
 
-	
-	
-	
-	protected double getFire_resist_rate() {
-		return fireResistRate;
-	}
 
-	
-	protected double getLightning_resist_rate() {
-		return lightningResistRate;
-	}
-
-	
 	@Override
 	public int getAntiTumbleValue() {
 		return antiTumbleValue;
 	}
 
 	
-	protected double getMagic_resist_rate() {
-		return magicResistRate;
-	}
-
 	@Override
 	public double getFireResistRate() {
 		return fireResistRate;
@@ -370,31 +309,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	public abstract int hunting();
-
-	/**
-	 * Random-Konstruktor der unterschiedliche Viecher liefert
-	 * 
-	 * @param value
-	 *            an <code>int</code> value
-	 * @return a <code>monster</code> value
-	 */
-	public static Monster newMonster(int value, Dungeon d, int x, int y,
-			DungeonGame game) {
-		int a = (int) (Math.random() * 100);
-		// System.out.println("bis 100: " + a);
-		if (a <= 10)
-			return new Ogre(value);
-		else if (a <= 20)
-			return new Spider(value);
-		else if (a <= 30)
-			return new Ghul(value);
-		else if (a <= 50)
-			return new Orc(value);
-		else if (a <= 70)
-			return new Skeleton(value);
-		else
-			return new Wolf(value);
-	}
 
 	protected abstract double getAntiFleeFactor();
 
@@ -448,10 +362,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return array;
 	}
 
-	public boolean specialAttackAvailable() {
-		return this.specialAttackCounter == 0;
-	}
-
 	@Override
 	public List<Item> getAllItems() {
 		return items;
@@ -483,11 +393,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public void recDust(double value) {
-		// //System.out.println("Dust erh�hen um: "+value);
-		// getCharacter().getDust().modValue(value);
-		// if (getCharacter().getDust().getValue() >=
-		// getCharacter().getDust().getBasic())
-		// getCharacter().getDust().setValue(getCharacter().getDust().getBasic());
+
 	}
 
 	@Override
@@ -495,123 +401,35 @@ public abstract class Monster extends Figure implements Paragraphable,
 		modifications.add(mod);
 	}
 
-	/**
-	 * Describe <code>getworth</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 * 
-	 * @uml.property name="worth"
-	 */
+
 	@Override
 	public int getWorth() {
 		return worth;
 	}
 
-	/**
-	 * Describe <code>getname</code> method here.
-	 * 
-	 * @return a <code>String</code> value
-	 * 
-	 * @uml.property name="name"
-	 */
+
 	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
-	public int getItemIndex(Item it) {
 
-		for (int i = 0; i < items.size(); i++) {
-			if (items.get(i) == it) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Describe <code>getMin_Damage</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 * 
-	 * @uml.property name="min_Damage"
-	 */
-	public int getMin_Damage() {
-		return minDamage;
-	}
-
-	/**
-	 * Describe <code>getMax_Damage</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 * 
-	 * @uml.property name="max_Damage"
-	 */
-	public int getMax_Damage() {
-		return maxDamage;
-	}
-
-	/**
-	 * Describe <code>getHealth</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 * 
-	 * @uml.property name="health"
-	 */
 	@Override
 	public Attribute getHealth() {
 		return health;
 	}
 
-	/**
-	 * Describe <code>getHealth_Value</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 */
-	public int getHealth_Value() {
-		return (int) health.getValue();
-	}
 
-	/**
-	 * Describe <code>getpsycho</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 * 
-	 * @uml.property name="psycho"
-	 */
 	@Override
 	public Attribute getPsycho() {
 		return psycho;
 	}
 
-	/**
-	 * Describe <code>gerpsycho_Value</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 */
-	public int getpsycho_Value() {
-		return (int) psycho.getValue();
-	}
-
-	public int getBrave_Value() {
-		return (int) bravery.getValue();
-	}
-
-	/**
-	 * Describe <code>getChance_to_hit</code> method here.
-	 * 
-	 * @return an <code>int</code> value
-	 */
 	public int getChance_to_hit() {
 		return (int) chanceToHit.getValue();
 	}
 
 
-	@Override
-	protected int getTypeSkill(Figure m) {
-		return 1;
-	}
 
 	@Override
 	protected int getAllArmor(Slap s) {
@@ -619,42 +437,8 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	public Action getForcedFightAction() {
-		return null;
-	}
-
-	@Override
-	public Action getForcedMovementAction() {
-		return null;
-	}
-
-	public MonsterInfo makeMonsterInfo(DungeonVisibilityMap map) {
-		return MonsterInfo.makeMonsterInfo(this, map);
-	}
-
-	// /**
-	// * Schlaegt zu. Ist ein Faktor 1.5 drin!!
-	// *
-	// * @return an <code>int</code> value
-	// */
-	// public int slay (fighterI f) {
-	//       
-	// if(Chance_to_hit.getValue() >= (Math.random() * 100)) {
-	//	    
-	// return (int)( 1.5 * (int)(Min_Damage + ((int)(Math.random() * (Max_Damage
-	// - Min_Damage+1)))));
-	//       
-	// }
-	// else return 0;
-	//
-	// }
-
-	@Override
 	public float getActualChanceToHit(Figure m) {
 
-		// game.newStatement(
-		// this.getName() + " Chance_to_hit:" + Chance_to_hit.getValue(),
-		// 4);
 		if (this.makesgoldenHit) {
 			makesgoldenHit = false;
 			return 100;
@@ -684,7 +468,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		// Faktor 1,0 !!
 		int k = (int) (1.0 * (minDamage + ((int) (Math.random() * (maxDamage
 				- minDamage + 1)))));
-		// game.newStatement(this.getName() + " Schlagst�rke:" + k, 4);
 		int h = this.getHealthLevel();
 		if (h == 4) {
 
@@ -699,14 +482,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 		return (int) (k * 0.2);
 
-	}
-
-	@Override
-	public int getElude(Figure m) {
-		int k = 5;
-		// game.newStatement(this.getName() + " Chance ausweichen:" + k, 4);
-
-		return k;
 	}
 
 	protected void setLevel(int value) {
@@ -724,17 +499,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 	}
 	
-	protected String getLvlName(int worth, String[] array) {
-		
-				if (level > array.length) {
-					return "Bestie";
-				} else {
-					return array[level - 1];
-				}
-
-			
-	}
-
 	@Override
 	public int getLevel() {
 		int potenz = 2;
@@ -745,9 +509,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 			if (worth >= pot(i, potenz) * unit) {
 			} else {
 				return i;
-				// //System.out.println("Level: " + i);
 			}
-
 			i++;
 		}
 
@@ -758,9 +520,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		for (int i = 0; i < pot; i++) {
 			erg = erg * base;
 		}
-		// //System.out.println("" + base + " hoch " + pot + " = " + erg);
 		return erg;
-
 	}
 
 
@@ -812,63 +572,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return items.remove(i);
 	}
 
-	public void heroHasFleen(Room r, int monsterCnt) {
-		double d = ((double) 1) / monsterCnt;
-		double l = Math.random();
-		if (l < d) {
-			int hunt = this.hunting();
-			int k = (int) (Math.random() * hunt);
-			if (k >= 5) {
-				// sofort Verfolgen
-				this.addRouteInstruction(new RouteInstruction(r));
-
-			} else if (k >= 3) {
-				// eine Runde sp�ter verfolgen
-				this.addRouteInstruction(new RouteInstruction(0));
-				this.addRouteInstruction(new RouteInstruction(r));
-
-			} else if (k >= 1) {
-				// 3 Runden sp�ter verfolgen
-				this.addRouteInstruction(new RouteInstruction(0));
-				this.addRouteInstruction(new RouteInstruction(0));
-				this.addRouteInstruction(new RouteInstruction(r));
-			} else {
-				// nicht verfolgen
-
-			}
-		} else {
-			// bei mehrerern Monstern nicht
-		}
-
-	}
-
-	@Override
-	public boolean giveAwayItem(Item i, ItemOwner o) {
-		if (items.contains(i)) {
-			o.takeItem(i);
-			items.remove(i);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-
-	public boolean goEast() {
-		Room wannaGo = actualDungeon.getRoomNr(location.getX() + 1, location
-				.getY());
-		Door d = actualDungeon.getRoom(location).getConnectionTo(wannaGo);
-		if ((d != null) && (d.isPassable(this)) && (wannaGo != null)
-				&& (!wannaGo.hasStatue())) {
-
-			move(wannaGo);
-			lastMove = RouteInstruction.EAST;
-
-			return true;
-		} else {
-			return false;
-		}
-	}
 
 	public boolean goWest() {
 		Room wannaGo = actualDungeon.getRoomNr(location.getX() - 1, location
@@ -883,37 +586,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		} else
 			return false;
 	}
-
-	public boolean goNorth() {
-		Room wannaGo = actualDungeon.getRoomNr(location.getX(),
-				location.getY() - 1);
-		Door d = actualDungeon.getRoom(location).getConnectionTo(wannaGo);
-		if ((d != null) && (d.isPassable(this)) && (wannaGo != null)
-				&& (!wannaGo.hasStatue())) {
-
-			move(wannaGo);
-			lastMove = RouteInstruction.NORTH;
-
-			return true;
-		} else
-			return false;
-	}
-
-	public boolean goSouth() {
-		Room wannaGo = actualDungeon.getRoomNr(location.getX(),
-				location.getY() + 1);
-		Door d = actualDungeon.getRoom(location).getConnectionTo(wannaGo);
-		if ((d != null) && (d.isPassable(this)) && (wannaGo != null)
-				&& (!wannaGo.hasStatue())) {
-
-			move(wannaGo);
-			lastMove = RouteInstruction.SOUTH;
-
-			return true;
-		} else
-			return false;
-	}
-
 
 
 	@Override
@@ -936,31 +608,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	}
 
-	public void getThreaten(int k, int count/* , Fight w */) {
-		hasJustBeenThreaten = true;
-		if (count > 0) {
-			if (count == 1) {
-				// newStatement("Zweite Drohung:", 4);
-				k = k / 2;
-			} else if (count == 2) {
-				// newStatement("dritte Drohung:", 4);
-				k = k / 3;
-			} else if (count == 3) {
-				// newStatement("vierte Drohung:", 4);
-				k = 0;
-			} else {
-				// newStatement("Xte Drohung: Keine Drohung", 4);
-				hasJustBeenThreaten = false;
-			}
-		}
-		int x = k * (-1);
-		// getGame().newStatement(" Mut erniedrigt um: " + x, 4);
-
-		bravery.modValue(x);
-
-	}
-
-
 	@Override
 	public Attribute getBrave() {
 		return bravery;
@@ -981,57 +628,12 @@ public abstract class Monster extends Figure implements Paragraphable,
 		// macht noch nichts
 	}
 
-	public void incConvinced(int k) {
-		convinced += k;
-	}
-
 	@Override
 	public int getKnowledgeBalance(Figure f) {
 		return level - f.getLevel();
 	}
 
-	public int calcFearLevel() {
-		int level = 0;
-		// //System.out.println("Mut: "+Integer.toString(brave.getValue()));
-		int handycap = 50;
-		int k = (int) bravery.getValue();
-		if (k == 0)
-			k = 1;
-		for (int i = 0; i < k; i++) { // brave gibt den Wert wie oft gepr�ft
-										// wird, der beste Wert
-			// wird genommen
-			int a = fleeHelp(handycap);
-			// //System.out.println("Durchlauf: "+Integer.toString(i)+" Wert:
-			// "+Integer.toString(a));
-			if (a > level)
-				level = a;
-		}
-		if (thundered) {
-			level = 0;
-			thundered = false;
-		}
-		return level;
-
-	}
-
-	public boolean hasJustBeenThreaten() {
-		return hasJustBeenThreaten;
-	}
-
 	protected abstract boolean makeSpecialAttack(Figure target);
-
-	public void break_special_attack() {
-		if (this.makingSpecialAttack) {
-
-			this.makingSpecialAttack = false;
-			// getGame().newStatement("Spezialangriff unterbrochen", 2);
-		}
-	}
-
-	@Override
-	public boolean isAbleToUseItem() {
-		return false;
-	}
 
 	@Override
 	public boolean isAbleToTakeItem(Item it) {
@@ -1077,7 +679,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return RouteInstruction.Direction.fromInteger(getFleeDir());
 	}
 
-	public int getFleeDir(/* Fight w */) {
+	public int getFleeDir() {
 		if (lastMove == RouteInstruction.WEST) {
 			if (this.getRoom().directionPassable(RouteInstruction.EAST)) {
 				return RouteInstruction.EAST;
@@ -1132,15 +734,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return 0;
 	}
 
-	public void looseItems() {
-		Iterator<Item> iterator = items.iterator();
-		while(iterator.hasNext()) {
-			Item j = iterator.next();
-			iterator.remove();
-			actualDungeon.getRoom(location).takeItem(j);
-		}
-		
-	}
 	@Override
 	protected boolean layDown(Item i) {
 		actualDungeon.getRoom(location).takeItem(i);
@@ -1167,21 +760,14 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public int getKilled(int damage) {
-		dead = true;
 
-		try {
-			Thread.sleep(600);
-		} catch (Exception e) {
-			Log.warning("sleep interupted");
-		}
+
 		if (!items.isEmpty()) {
 			getRoom().distributePercept(new ItemDroppedPercept(items, this));
 			getRoom().addItems(items, null);
 		}
 
-		pos.figureLeaves();
-		Figure.removeFigure(this);
-		this.getRoom().figureLeaves(this);
+		dieAndLeave();
 
 		if (health.getValue() > 0) {
 			return (int) health.getValue();
@@ -1190,35 +776,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 
-	/**
-	 * Returns the thundered.
-	 * 
-	 * @return boolean
-	 * 
-	 */
-	public boolean isThundered() {
-		return thundered;
-	}
-
-	/**
-	 * Sets the thundered.
-	 * 
-	 * @param thundered
-	 *            The thundered to set
-	 * 
-	 */
-	public void setThundered(boolean thundered) {
-		this.thundered = thundered;
-	}
-
-	public Object getMasterKey() {
-		for (int i = 0; i < this.items.size(); i++) {
-			if (items.get(i) instanceof DarkMasterKey) {
-				return items.get(i);
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public boolean isAbleToUseShrine() {
@@ -1228,14 +785,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	public boolean isAbleToUseChest() {
 		return false;
-	}
-
-	/**
-	 * @return
-	 * 
-	 */
-	public boolean isSpitted() {
-		return spitted;
 	}
 
 	/**
@@ -1266,41 +815,4 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return lastMove;
 	}
 
-	/**
-	 * @param lastMove
-	 *            The lastMove to set.
-	 */
-	public void setLastMove(int lastMove) {
-		this.lastMove = lastMove;
-	}
-
-	/**
-	 * @return Returns the fighted.
-	 */
-	public boolean hasFighted() {
-		return fighted;
-	}
-
-	/**
-	 * @param fighted
-	 *            The fighted to set.
-	 */
-	public void setFighted(boolean fighted) {
-		this.fighted = fighted;
-	}
-
-	/**
-	 * @return Returns the routing.
-	 */
-	public Stack<RouteInstruction> getRouting() {
-		return routing;
-	}
-
-	/**
-	 * @param routing
-	 *            The routing to set.
-	 */
-	public void setRouting(Stack<RouteInstruction> routing) {
-		this.routing = routing;
-	}
 }

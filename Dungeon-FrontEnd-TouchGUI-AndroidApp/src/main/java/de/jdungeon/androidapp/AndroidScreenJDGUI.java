@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import log.Log;
 import spell.SpellInfo;
 import text.StatementManager;
 import control.JDGUIEngine2D;
@@ -36,7 +37,21 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	private PerceptHandler perceptHandler;
 
-	public AndroidScreenJDGUI(JDungeonApp app) {
+	private static AndroidScreenJDGUI instance;
+
+	public static AndroidScreenJDGUI getInstance(JDungeonApp app) {
+		if(instance == null) {
+			instance = new AndroidScreenJDGUI(app);
+		} else {
+			if(! (instance.app == app)) {
+				Log.severe("Duplicate AndroidScreenJDGUI instance creation with different App objects");
+				System.exit(0);
+			}
+		}
+		return instance;
+	}
+
+	private AndroidScreenJDGUI(JDungeonApp app) {
 		this.app = app;
 
 	}

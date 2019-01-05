@@ -53,11 +53,12 @@ public class Ogre extends CreatureMonster {
 		}
 	}
 	
+	@Override
 	protected int getSCATTER() {
 		return this.SCATTER;
 	}
 
-	public static String SPECIAL_ATTACK_GUI_STATEMENT = " zimmert Dir so ein �ber den Kopf, dass Du bonommen umhertaumelst!";
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
 		
@@ -81,6 +82,7 @@ public class Ogre extends CreatureMonster {
 
 	}
 	
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
@@ -89,41 +91,12 @@ public class Ogre extends CreatureMonster {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 
-//	public Action turnElse(int c) {
-//		recover();
-//		if (c == 0) {
-//			if (spitted) {
-//				return null;
-//			}
-//		} else {
-//			////System.out.println("Oger geht vom Rudel weg");
-//			boolean b = false;
-//			while (!b) {
-//				int a = (int) (Math.random() * 80) + 20;
-//				if (a <= 20) {
-//					return null;
-//				} else if (a <= 40) {
-//					return new ActionMove(RouteInstruction.SOUTH);
-//					//goSouth(); //////System.out.println(name+" geht suedlich");
-//				} else if (a <= 60) {
-//					return new ActionMove(RouteInstruction.EAST);
-//					//goEast();//////System.out.println(name+" get oestlich");
-//				} else if (a <= 80) {
-//					return new ActionMove(RouteInstruction.NORTH);
-//					//goNorth();//////System.out.println(name+" get noerdlich");
-//				} else {
-//					return new ActionMove(RouteInstruction.WEST);
-//					//goWest();//////System.out.println(name+" get westlich");
-//				}
-//			}
-//		}
-//		return null;
-//	}
-
+	@Override
 	public double getAntiFleeFactor() {
 		return 0.3;
 	}
 
+	@Override
 	public int hunting() {
 		return Monster.OGRE_HUNTING;
 	}

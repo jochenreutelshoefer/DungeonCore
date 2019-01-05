@@ -16,6 +16,7 @@ import java.util.List;
 
 import ai.AI;
 import dungeon.JDPoint;
+import log.Log;
 
 public class FigureControl implements ControlUnit {
 
@@ -120,6 +121,7 @@ public class FigureControl implements ControlUnit {
 		} else {
 			a = brain.chooseMovementAction();
 		}
+		Log.info(this.f.getName()+" "+a.getClass().getSimpleName());
 		return a;
 	}
 

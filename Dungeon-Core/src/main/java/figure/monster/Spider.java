@@ -87,6 +87,7 @@ public class Spider extends NatureMonster {
 		name = Texts.getName("bear");
 	}
 	
+	@Override
 	protected int getSCATTER() {
 		return this.SCATTER;
 	}
@@ -95,6 +96,7 @@ public class Spider extends NatureMonster {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 	
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
@@ -102,6 +104,7 @@ public class Spider extends NatureMonster {
 	public static String GUI_STATEMENT = ("Br�t Dir derma�en eine �ber, dass Deine R�stung in Fetzen von Dir f�llt1");
 	
 	
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 			//Fighter op = getTarget();
 			if(op instanceof Hero) {
@@ -163,10 +166,12 @@ public class Spider extends NatureMonster {
 //
 //	}
 	
+	@Override
 	public double getAntiFleeFactor() {
 		return 0.4;
 	}
 	
+	@Override
 	public int hunting() {
 		return Monster.BEAR_HUNTING;	
 	}

@@ -174,7 +174,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			} else {
 				fountainRoom = filler.getUnallocatedRandomRoom();
 			}
-			fountainRoom.setShrine(new HealthFountain(10, 1));
+			fountainRoom.setShrine(new HealthFountain(30, 1));
 
 			// for testing only
 			//entryRoom.addItem(new VisibilityCheatBall());

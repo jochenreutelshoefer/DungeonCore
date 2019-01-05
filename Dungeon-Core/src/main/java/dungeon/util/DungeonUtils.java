@@ -165,24 +165,7 @@ public class DungeonUtils {
 		}
 	}
 
-	/**
-	 * The hero enters the dungeon at the specified point. Creates a FigureInfo
-	 * object with a corresponding VisibilityMap.
-	 *
-	 * @param h
-	 * @param derDungeon
-	 * @return
-	 */
-	public static HeroInfo enterDungeon(Hero h, Dungeon derDungeon, JDPoint p) {
-		DungeonGame dungeonGame = DungeonGame.getInstance();
 
-		dungeonGame.setDungeon(derDungeon);
-		h.setActualDungeon(derDungeon);
-		derDungeon.getRoomNr(p.getX(), p.getY()).figureEnters(h, 0);
-		DungeonVisibilityMap heroVisMap = h.getRoomVisibility();
-
-		return new HeroInfo(h, heroVisMap);
-	}
 
 	private int getLastDir(List<Room> way) {
 		if (way.size() < 2) {

@@ -71,7 +71,6 @@ public class AnimationFrame {
 			return null;
 		}
 		if(from == null) {
-			System.out.println("Warning, for some reason the from position in AnimationFrame is null! ("+image.getFilename());
 			from = to;
 		}
 		JDPoint positionFromOffset = renderer.getPositionCoordinates(from);

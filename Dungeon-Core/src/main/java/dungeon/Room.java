@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import dungeon.generate.DefaultHall;
 import dungeon.generate.Sector;
@@ -191,8 +192,8 @@ public class Room extends DungeonWorldObject implements
 
 	public Room(int x, int y, Dungeon d) {
 		this.d = d;
-		roomFigures = new LinkedList<Figure>();
-		items = new LinkedList<Item>();
+		roomFigures = new CopyOnWriteArrayList<>();
+		items = new CopyOnWriteArrayList<>();
 		number = d.getPoint(x, y);
 		oldInfos = new String("");
 		for (int i = 0; i < positions.length; i++) {

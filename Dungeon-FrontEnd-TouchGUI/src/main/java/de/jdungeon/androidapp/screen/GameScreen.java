@@ -60,6 +60,7 @@ import de.jdungeon.androidapp.gui.HourGlassTimer;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
 import de.jdungeon.androidapp.gui.InfoPanel;
 import de.jdungeon.androidapp.gui.InventoryPanel;
+import de.jdungeon.androidapp.gui.Popup;
 import de.jdungeon.androidapp.gui.TextPerceptView;
 import de.jdungeon.androidapp.gui.ZoomButton;
 import de.jdungeon.androidapp.gui.smartcontrol.ToggleChestViewEvent;
@@ -99,6 +100,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private InfoPanel infoPanel;
 	private TextPerceptView textPerceptView;
 	private GameOverView gameOverView = null;
+	private Popup messagePopup = null;
 
 	private JDPoint viewportPosition;
 	private JDPoint targetViewportPosition;
@@ -276,6 +278,14 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
 				2 * heightFifth), this, this.getGame());
 		this.guiElements.add(gameOverView);
+
+		/*
+		 * init general message popup
+		 */
+		messagePopup = new Popup(new JDPoint((width / 2) - widthFifth,
+				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
+				2 * heightFifth), this, this.getGame(), new InfoMessageClearPopupEvent());
+		this.guiElements.add(messagePopup);
 
 		Log.i("Initialization","Finished init GUI-elements");
 	}
@@ -726,7 +736,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			long timeNow = System.currentTimeMillis();
 			if (timeNow - lastTouchEventTime < 200) {
 				/*
-				 * TODO: find out why in the hell duplicate touch event occur frequently
+				 * TODO: find out why in the hell duplicate touch events occur frequently
 				 * catch double event recognition; should have at least 0.2s
 				 * between events
 				 */
@@ -948,7 +958,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 		// zoom out
 		int flightScale = 70;
-		int stepDuration = 30;
+		int stepDuration = 40;
 		zoomToSize(stepDuration, flightScale, "show visibility increase PART 1 zoom out");
 		JDPoint last = getCurrentViewCenterRoomCoordinatesPoint();
 		for (JDPoint p : points) {
@@ -1029,7 +1039,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	public void startAnimation(DefaultAnimationSet ani, FigureInfo info) {
-		startAnimation(ani, info, null, null, info.getRoomInfo(), null, false, false, false, null, null);
+		startAnimation(ani, info, null, Position.Pos.fromValue(info.getPositionInRoomIndex()), info.getRoomInfo(), null, false, false, false, null, null);
 	}
 
 	public void startAnimation(DefaultAnimationSet ani, FigureInfo info, Position.Pos from, Position.Pos to) {
@@ -1147,12 +1157,25 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		events.add(ToggleChestViewEvent.class);
 		events.add(ShrineButtonClickedEvent.class);
 		events.add(WorldChangedEvent.class);
+		events.add(InfoMessagePopupEvent.class);
+		events.add(InfoMessageClearPopupEvent.class);
 		//events.add(ExitUsedEvent.class);
 		return events;
 	}
 
 	@Override
 	public void notify(Event event) {
+
+		if(event instanceof InfoMessagePopupEvent) {
+			final String message = ((InfoMessagePopupEvent) event).getMessage();
+			messagePopup.setText(message);
+			messagePopup.setShow(true);
+		}
+
+		if(event instanceof InfoMessageClearPopupEvent) {
+			messagePopup.setShow(false);
+			smartControl.setMessage(null);
+		}
 
 		if (event instanceof FocusEvent) {
 			Paragraphable infoEntity = ((FocusEvent) event).getObject();

@@ -70,7 +70,8 @@ public class GUIControl implements EventListener {
 
 	public void plugActions(List<Action> l) {
 		List<Action>  actions = new ArrayList<>(l);
-		if (figure.getActionPoints() < 1 &&  (actions.isEmpty() || !(actions.get(0) instanceof EndRoundAction))) {
+		final Boolean fight = figure.getRoomInfo().fightRunning();
+		if ((fight == null || !fight) && figure.getActionPoints() < 1 &&  (actions.isEmpty() || !(actions.get(0) instanceof EndRoundAction))) {
 			actions.add(new EndRoundAction());
 		}
 		for (Action a : actions) {
@@ -148,6 +149,10 @@ public class GUIControl implements EventListener {
 		}
 		else {
 			PositionInRoomInfo pos = figure.getPos();
+			if(pos == null) {
+				// hero dead, game over but gui still active
+				return;
+			}
 			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 
 			if (possibleFleeDirection != null) {

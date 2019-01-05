@@ -140,8 +140,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private final Zodiac sign;
 
-	private boolean isDead = false;
-
 	boolean paused = false;
 
 	@Override
@@ -217,17 +215,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private Room[][] memory;
 
-
-	@Override
-	public int getItemIndex(Item it) {
-		List<Item> items = inv.getItems();
-		for (int i = 0; i < items.size(); i++) {
-			if (items.get(i) == it) {
-				return i;
-			}
-		}
-		return -1;
-	}
 
 	@Override
 	public void addModification(TimedAttributeModification mod) {
@@ -309,16 +296,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public Action getForcedFightAction() {
-		return null;
-	}
-
-	@Override
-	public Action getForcedMovementAction() {
-		return null;
-	}
-
-	@Override
 	public List<Item> getItems() {
 		return Collections.unmodifiableList(getInventory().getItems());
 	}
@@ -343,29 +320,9 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		return poison_resist_rate;
 	}
 
-	public void setMemory() {
-		memory = new Room[getRoom().getDungeon().getSize().getX()][getRoom().getDungeon()
-				.getSize().getY()];
-
-	}
-
-	@Override
-	public boolean giveAwayItem(Item i, ItemOwner o) {
-		return getInventory().giveAwayItem(i, o);
-	}
-
-
 	@Override
 	public Attribute getHealth() {
 		return getCharacter().getHealth();
-	}
-
-	public int getKills() {
-		return kills;
-	}
-
-	public void incKills() {
-		kills++;
 	}
 
 	public int getHeroCode() {
@@ -408,11 +365,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			return w.getRangeCapability(range);
 		}
 		return 20;
-	}
-
-	@Override
-	public int getTypeSkill(Figure m) {
-		return c.giveType_skill(m);
 	}
 
 	@Override
@@ -539,11 +491,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public boolean isAbleToUseItem() {
-		return true;
-	}
-
-	@Override
 	public boolean isAbleToTakeItem(Item it) {
 		if(it instanceof DustItem) {
 			if(getDust().getValue() == getDust().getBasic()) {
@@ -554,43 +501,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	}
 
-	@Override
-	public int getElude(Figure m) {
-		int k;
-		if (getInventory().getShield1() == null) {
-			k = 0;
-		} else {
-			int shield = (getInventory().getShield1().getBlockValue());
-
-			double skillValue = shield
-					* (((double) getCharacter()
-							.getKnowledgeBalance((Monster) m)) + 1)
-					+ (((((double) (getCharacter()
-							.getKnowledgeBalance((Monster) m)) + 1) * ((getCharacter()
-							.getDexterity().getValue()) - 3)) / 50));
-			if (skillValue < 0) {
-				skillValue = 0;
-			}
-			k = (int) Math.round(shield + skillValue);
-		}
-		if (k > (int) (Math.random() * 100)) {
-			getInventory().getShield1().madeBlock(10);
-			getRoom().distributePercept(new ShieldBlockPercept(this));
-			// getGame().newStatement(Texts.blocked(), 1);
-			return -1;
-		} else {
-			float dex = (float) getCharacter().getDexterity().getValue();
-			float dex_3 = dex / 3;
-			int know = getCharacter().getKnowledge((Monster) m);
-			int ret = (int) (dex_3 * know);
-
-			// 0 soll nur sein wenn er gel�hmt, versteinert etc ist
-			// weil bei null immer getroffen
-			ret += 2;
-
-			return ret;
-		}
-	}
 
 	@Override
 	public Attribute getDust() {
@@ -623,10 +533,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 		return c;
 
-	}
-
-	public boolean hasLuziaBall() {
-		return this.inv.hasLuziaBall();
 	}
 
 	@Override
@@ -775,7 +681,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		int handycap = 90;
 		int k = getCharacter().getKnowledge(m)
 				+ (int) getCharacter().getThreat().getValue();
-		// game.newStatement("Drohungswert hier: " + k, 4);
 
 		int l = 0;
 		for (int i = 0; i < k; i++) {
@@ -789,9 +694,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			l = 0;
 		}
 		return l;
-	}
-
-	public void roundEnd() {
 	}
 
 	@Override
@@ -815,10 +717,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		return location;
 	}
 
-	public LuziasBall getLuziasBall() {
-		return inv.getLuziasBall();
-	}
-
 	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		return inv.getItemInfos(map);
@@ -835,29 +733,19 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			respawnRoom2.distributePercept(new InfoPercept(InfoPercept.RESPAWN));
 			return 1;
 		}
+		else {
+			dieAndLeave();
+		}
 		
 		Percept p = new DiePercept(this, getRoom(), damage);
 		getRoom().distributePercept(p);
 		
-		isDead = true;
 		return 0;
 	}
 
-	@Override
-	public boolean isDead() {
-		return isDead;
-	}
 
 	public Room[][] getMemory() {
 		return memory;
-	}
-
-	public RoomInfo getMemory(int i, int j) {
-		return RoomInfo.makeRoomInfo(memory[i][j], this.getRoomVisibility());
-	}
-
-	public void resetMemory(int x, int y) {
-		memory = new Room[x][y];
 	}
 
 	@Override
@@ -901,15 +789,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		}
 		return false;
 	}
-
-	public boolean hasKey(Door d) {
-		if (d.hasLock()) {
-			return hasKey(d.getKey().getType());
-		}
-		return false;
-	}
-
-	private final List threatings = new LinkedList();
 
 	@Override
 	protected void lookInRoom() {

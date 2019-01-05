@@ -23,6 +23,7 @@ public class Wolf extends NatureMonster {
 	/**
 	 * @return Returns the cHANCE_TO_HIT.
 	 */
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
@@ -85,10 +86,12 @@ public class Wolf extends NatureMonster {
 		}
 	}
 	
+	@Override
 	protected int getSCATTER() {
 		return this.SCATTER;
 	}
 
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
 		attack(op);
@@ -102,10 +105,12 @@ public class Wolf extends NatureMonster {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 
+	@Override
 	public double getAntiFleeFactor() {
 		return 1.0;
 	}
 
+	@Override
 	public int hunting() {
 		return Monster.WOLF_HUNTING;
 	}

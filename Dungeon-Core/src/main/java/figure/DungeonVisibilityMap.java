@@ -19,6 +19,7 @@ import dungeon.Room;
 import dungeon.util.RouteInstruction;
 import figure.action.ScoutResult;
 import game.ControlUnit;
+import log.Log;
 
 public class DungeonVisibilityMap {
 
@@ -168,6 +169,9 @@ public class DungeonVisibilityMap {
 	}
 
 	public void setVisibilityStatus(JDPoint p, int status) {
+		if(dungeon.getRooms()[p.getX()][p.getY()].isWall()) {
+			Log.warning("Setting room visibility for wall room");
+		}
 		setVisibilityStatus(p.getX(), p.getY(), status);
 	}
 

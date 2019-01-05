@@ -31,6 +31,7 @@ import de.jdungeon.androidapp.gui.itemWheel.ItemWheel;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
+import de.jdungeon.game.Input;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -46,6 +47,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private ActivityPresenter itemWheelSkills;
 	private ActivityPresenter itemWheelChest;
 	private ActivityPresenter itemWheelHeroItems;
+
+	private UIFeedback message = null;
 
 	private boolean skillItemWheelShowing = false;
 	private boolean chestItemWheelShowing = false;
@@ -64,8 +67,18 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	}
 
 	@Override
+	public boolean handleTouchEvent(Input.TouchEvent touch) {
+		boolean processed = super.handleTouchEvent(touch);
+		if (processed) {
+			clearMessage();
+		}
+		return processed;
+	}
+
+	@Override
 	public void update(float time) {
 		super.update(time);
+
 		ChestInfo chest = figureInfo.getRoomInfo().getChest();
 		if (this.chestItemWheelShowing && (chest == null || chest.getItemList().isEmpty())) {
 			// we need to switch back to skills mode as user has not the respective button in this case
@@ -76,7 +89,6 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private void initGUIElements() {
 		JDDimension screenSize = screen.getScreenSize();
-
 
 		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
 
@@ -106,11 +118,21 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
 		double wheelCenterY = getGame().getScreenHeight() * 1.8;
 		UseItemActivityProvider useItemActivityProvider = new UseItemActivityProvider(figureInfo, game, guiControl, focusManager);
-		itemWheelHeroItems = new ItemWheel(new JDPoint(0, wheelCenterY),
-				itemWheelSize, figureInfo, screen, this.getGame(),
-				useItemActivityProvider, selectedIndexItem, null, null, "Rucksack");
+		itemWheelHeroItems = new ItemWheel(
+				new JDPoint(0, wheelCenterY),
+				itemWheelSize,
+				figureInfo,
+				screen,
+				this.getGame(),
+				useItemActivityProvider,
+				selectedIndexItem,
+				null,
+				null,
+				"Rucksack",
+				0.1f
+		);
 		this.guiElements.add(itemWheelHeroItems);
-		Log.i("Initialization","ItemWheel HeroItems Created");
+		Log.i("Initialization", "ItemWheel HeroItems Created");
 
 		@SuppressWarnings("SuspiciousNameCombination") JDPoint itemWheelPositionRightSide = new JDPoint(screenWidth - screenWidth / 50, wheelCenterY);
 		/*
@@ -118,14 +140,18 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		 */
 		int selectedIndex = 19;
 
-		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, game, guiControl, focusManager);
+		SkillActivityProvider skillActivityProvider = new SkillActivityProvider(figureInfo, game, guiControl, focusManager, this);
 		itemWheelSkills = new ItemWheel(itemWheelPositionRightSide,
-				itemWheelSize, figureInfo, screen, this.getGame(),
+				itemWheelSize,
+				figureInfo,
+				screen,
+				this.getGame(),
 				skillActivityProvider,
 				selectedIndex,
-				skillBackgroundImage, null, "Aktivitäten");
+				skillBackgroundImage,
+				"Aktivitäten");
 		this.guiElements.add(itemWheelSkills);
-		Log.i("Initialization","ItemWheel HeroSkills Created");
+		Log.i("Initialization", "ItemWheel HeroSkills Created");
 
 		/*
 		init smart control
@@ -135,7 +161,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		smartControl = new SmartControlRoomPanel(
 				smartControlRoomPanelPosition,
 				smartControlRoomPanelSize, screen, this
-				.getGame(), figureInfo, guiControl);
+				.getGame(), figureInfo, guiControl, this);
 
 		/*
 		init chest item wheel
@@ -144,17 +170,23 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		Image chestBackGroundImage = (Image) GUIImageManager.getImageProxy(GUIImageManager.CHEST_OPEN, game.getFileIO()
 				.getImageLoader()).getImage();
 		ChestItemActivityProvider chestTakeActivityProvider = new ChestItemActivityProvider(figureInfo, game, this.guiControl);
-		JDPoint chestWheelPosition = new JDPoint(smartControl.getPositionOnScreen().getX(), smartControl.getPositionOnScreen().getY() + SMART_CONTROL_SIZE /2);
+		JDPoint chestWheelPosition = new JDPoint(smartControl.getPositionOnScreen()
+				.getX() + SMART_CONTROL_SIZE / 4, smartControl.getPositionOnScreen().getY() + SMART_CONTROL_SIZE / 2);
 		int chestWheelSizeX = screenSize.getWidth() / 6;
 		int chestWheelSizeY = screenSize.getWidth() / 6;
 		itemWheelChest = new ChestItemWheel(chestWheelPosition,
-				new JDDimension(chestWheelSizeX, chestWheelSizeY), figureInfo, screen, this.getGame(),
+				new JDDimension(chestWheelSizeX, chestWheelSizeY),
+				figureInfo,
+				screen,
+				this.getGame(),
 				chestTakeActivityProvider,
 				9,
-				null, chestBackGroundImage, "Truhe");
+				null,
+				chestBackGroundImage,
+				"Truhe",
+				16);
 		itemWheelChest.setVisible(false);
 		this.guiElements.add(itemWheelChest);
-
 
 		// add smart control as last one
 		this.guiElements.add(smartControl);
@@ -177,14 +209,13 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private void setChestItemWheelVisible() {
 		Object firstObject = itemWheelChest.highlightFirst();
-		focusManager.setGuiFocusObject((Paragraphable)firstObject);
+		focusManager.setGuiFocusObject((Paragraphable) firstObject);
 		itemWheelHeroItems.setHighlightOn(false);
 		itemWheelChest.setVisible(true);
 		itemWheelSkills.setVisible(false);
 		chestItemWheelShowing = true;
 		skillItemWheelShowing = false;
 	}
-
 
 	/**
 	 * Switch/toggle between skill- and room-items ItemWheel
@@ -227,8 +258,20 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	@Override
 	public void notify(Event event) {
-		if ( event instanceof ToggleChestViewEvent) {
+		if (event instanceof ToggleChestViewEvent) {
 			switchRightItemWheel(event);
 		}
+	}
+
+	public UIFeedback getMessage() {
+		return message;
+	}
+
+	private void clearMessage() {
+		message = null;
+	}
+
+	public void setMessage(UIFeedback message) {
+		this.message = message;
 	}
 }

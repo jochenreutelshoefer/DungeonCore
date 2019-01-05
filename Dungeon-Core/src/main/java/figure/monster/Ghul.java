@@ -38,17 +38,20 @@ public class Ghul extends UndeadMonster {
 
 	}
 	
+	@Override
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
 	
 	
+	@Override
 	protected int getSCATTER() {
 		return this.SCATTER;
 	}
 	
 	public static String GUI_STATEMENT = " umh�llt Dich mit einer vergifteten Verwesungswolke!";
 	
+	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 			//Fighter op = getTarget();
 			Poisoning p = new Poisoning(this,4,8);
@@ -94,10 +97,12 @@ public class Ghul extends UndeadMonster {
 //	}
 	
 	
+	@Override
 	public int hunting() {
 		return Monster.GHUL_HUNTING;	
 	}
 	
+	@Override
 	public double getAntiFleeFactor() {
 			return 0.2;
 		}

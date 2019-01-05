@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.Set;
 
 import dungeon.Dungeon;
+import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.util.DungeonUtils;
+import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -182,9 +184,29 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		//makeHeroBackup();
 
 
-		heroInfo = DungeonUtils.enterDungeon(currentHero, derDungeon,
+		heroInfo = enterDungeon(currentHero, derDungeon,
 				dungeonFactory.getHeroEntryPoint());
 
+	}
+
+	/**
+	 * The hero enters the dungeon at the specified point. Creates a FigureInfo
+	 * object with a corresponding VisibilityMap.
+	 *
+	 * @param h
+	 * @param derDungeon
+	 * @return
+	 */
+	private static HeroInfo enterDungeon(Hero h, Dungeon derDungeon, JDPoint p) {
+		DungeonGame dungeonGame = DungeonGame.getInstance();
+
+		Figure.addFigure(h);
+		dungeonGame.setDungeon(derDungeon);
+		h.setActualDungeon(derDungeon);
+		derDungeon.getRoomNr(p.getX(), p.getY()).figureEnters(h, 0);
+		DungeonVisibilityMap heroVisMap = h.getRoomVisibility();
+
+		return new HeroInfo(h, heroVisMap);
 	}
 
 	@Override

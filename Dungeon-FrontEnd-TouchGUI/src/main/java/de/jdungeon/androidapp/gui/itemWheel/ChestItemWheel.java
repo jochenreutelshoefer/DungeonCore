@@ -25,8 +25,32 @@ public class ChestItemWheel extends ItemWheel {
 
 	private final Image wheelBackgroundImage;
 
-	public ChestItemWheel(JDPoint position, JDDimension dim, HeroInfo info, StandardScreen screen, Game game, ActivityProvider provider, int selectedIndex, Image itemBackground, Image wheelBackgroundImage, String title) {
-		super(position, dim, info, screen, game, provider, selectedIndex, itemBackground, wheelBackgroundImage, title, position, new JDDimension( dim.getWidth(),100), CenterPositionMode.center, dim.getWidth()/4, 16);
+	public ChestItemWheel(JDPoint position,
+						  JDDimension dim,
+						  HeroInfo info,
+						  StandardScreen screen,
+						  Game game,
+						  ActivityProvider provider,
+						  int selectedIndex,
+						  Image itemBackground,
+						  Image wheelBackgroundImage,
+						  String title,
+						  int reocurrenceCycleSize) {
+		super(position,
+				dim,
+				info,
+				screen,
+				game,
+				provider,
+				selectedIndex,
+				itemBackground,
+				title,
+				position,
+				new JDDimension( dim.getWidth() * 2,200),
+				CenterPositionMode.center,
+				dim.getWidth()/2,
+				16,
+				reocurrenceCycleSize);
 		this.wheelBackgroundImage = wheelBackgroundImage;
 	}
 

@@ -101,6 +101,7 @@ public class RoomObservationStatus {
 			room.setObserverStatus(map.getFigure(), visibilityStatus);
 		} else {
 			Log.warning("Could not find room for Point: "+ point);
+
 		}
 	}
 

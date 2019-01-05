@@ -22,6 +22,8 @@ public class PositionElement extends AnimatedSmartControlElement {
 
 	private final RoomInfoEntity action;
 	private final Color color;
+
+
 	private final RoomInfoEntity clickableObject;
 	private final GUIControl actionAssembler;
 	private final int positionIndex;
@@ -80,6 +82,11 @@ public class PositionElement extends AnimatedSmartControlElement {
 		}
 	}
 
+	public RoomInfoEntity getClickableObject() {
+		return clickableObject;
+	}
+
+
 	@Override
 	public boolean isVisible() {
 		return true;
@@ -90,6 +97,7 @@ public class PositionElement extends AnimatedSmartControlElement {
 		super.handleTouchEvent(touch);
 		if (action != null) {
 			if (action instanceof FigureInfo) {
+				EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(action));
 				actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaAttack((FigureInfo) action));
 			}
 		} else {

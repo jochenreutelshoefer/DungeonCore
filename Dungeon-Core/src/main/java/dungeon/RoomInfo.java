@@ -194,9 +194,8 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 	public Boolean fightRunning() {
-
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return new Boolean(r.fightRunning());
+			return Boolean.valueOf(r.fightRunning());
 		}
 		return null;
 	}

@@ -137,7 +137,8 @@ public class MoveElement extends AnimatedSmartControlElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
-		if (figure.getRoomInfo().fightRunning()) {
+		final Boolean fightRunning = figure.getRoomInfo().fightRunning();
+		if (fightRunning != null && fightRunning) {
 			guiControl.plugActions(guiControl.getActionAssembler().wannaFlee());
 		}
 		else {

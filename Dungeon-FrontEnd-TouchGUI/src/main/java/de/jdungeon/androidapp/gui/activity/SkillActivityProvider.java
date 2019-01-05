@@ -23,6 +23,8 @@ import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.FocusManager;
 import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.skillselection.SkillImageManager;
+import de.jdungeon.androidapp.gui.smartcontrol.SmartControl;
+import de.jdungeon.androidapp.gui.smartcontrol.UIFeedback;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
@@ -37,6 +39,7 @@ public class SkillActivityProvider implements ActivityProvider {
 	private final HeroInfo info;
 	private final GUIControl guiControl;
 	private final FocusManager focusManager;
+	private final SmartControl smartControl;
 	private boolean fightState = false;
 	private final List<Activity> activityCache = new ArrayList<>();
 
@@ -48,11 +51,12 @@ public class SkillActivityProvider implements ActivityProvider {
 
 	private final SkillImageManager skillImageManager;
 
-	public SkillActivityProvider(HeroInfo info, Game game, GUIControl actionAssembler, FocusManager focusManager) {
+	public SkillActivityProvider(HeroInfo info, Game game, GUIControl actionAssembler, FocusManager focusManager, SmartControl smartControl) {
 		super();
 		this.info = info;
 		this.guiControl = actionAssembler;
 		this.focusManager = focusManager;
+		this.smartControl = smartControl;
 		updateActivityList(false);
 		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 	}
@@ -153,16 +157,18 @@ public class SkillActivityProvider implements ActivityProvider {
 					hostileFigures.add(figureInfo);
 				}
 			}
-			if (hostileFigures.size() == 1
+			if (highlightedEntity instanceof FigureInfo) {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack((FigureInfo) highlightedEntity));
+			} else if (hostileFigures.size() == 1
 					&& (!(highlightedEntity instanceof FigureInfo))) {
 				FigureInfo target = hostileFigures.get(0);
 				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack(target));
 				focusManager.setWorldFocusObject(target);
+			} else {
+				smartControl.setMessage(UIFeedback.SelectEnemy);
 			}
-			if (highlightedEntity instanceof FigureInfo) {
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack((FigureInfo) highlightedEntity));
-			}
+
 		}
 		else if (o.equals(SCOUT)) {
 			guiControl.scoutingActivity(highlightedEntity);
