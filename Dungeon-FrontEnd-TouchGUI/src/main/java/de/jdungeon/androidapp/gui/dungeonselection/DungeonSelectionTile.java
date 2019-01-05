@@ -31,8 +31,8 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	private final boolean activeStage;
 	boolean fired = false;
 
-	public DungeonSelectionTile(DungeonFactory dungeon, JDPoint position, Image im, boolean activeStage) {
-		super(position, new JDDimension(TILE_WIDTH, TILE_HEIGHT), im, (Image) ImageManager.inventory_box_normal.getImage());
+	public DungeonSelectionTile(DungeonFactory dungeon, JDPoint position, Image im, boolean activeStage, Game game) {
+		super(position, new JDDimension(TILE_WIDTH, TILE_HEIGHT), im, (Image) ImageManager.inventory_box_normal.getImage(), game);
 		this.dungeon = dungeon;
 		this.activeStage = activeStage;
 	}
@@ -40,9 +40,6 @@ public class DungeonSelectionTile extends ImageGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		super.paint(g, viewportPosition);
-		//g.drawString(dungeon.getName(), this.getPositionOnScreen().getX()+getDimension().getWidth()/2, this.getPositionOnScreen().getY() + TILE_HEIGHT + 20 , g.getPaintWhite());
-		//g.drawRect(this.position.getX(), this.position.getY(),
-		//		this.dimension.getWidth(), this.dimension.getHeight(), Colors.YELLOW);
 	}
 
 	@Override

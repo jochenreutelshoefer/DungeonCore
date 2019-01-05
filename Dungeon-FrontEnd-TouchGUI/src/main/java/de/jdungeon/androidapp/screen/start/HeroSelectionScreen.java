@@ -23,19 +23,19 @@ public class HeroSelectionScreen extends MenuScreen {
 		int screenWidthBy5 = (screenWidth - 2 * border) / 5;
 
 		HeroChoiceButton warriorButton = new HeroChoiceButton(new JDPoint(border + screenWidthBy5,
-				200), Hero.HeroCategory.Warrior, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Warrior, Motion.Walking, south).getImagesNr(0).getImage());
+				200), Hero.HeroCategory.Warrior, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Warrior, Motion.Walking, south).getImagesNr(0).getImage(), game);
 		this.guiElements.add(warriorButton);
 
 		HeroChoiceButton thiefButton = new HeroChoiceButton(new JDPoint(border + 2 * screenWidthBy5,
-				200), Hero.HeroCategory.Thief, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Thief, Motion.Walking, south).getImagesNr(0).getImage());
+				200), Hero.HeroCategory.Thief, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Thief, Motion.Walking, south).getImagesNr(0).getImage(), game);
 		this.guiElements.add(thiefButton);
 
 		HeroChoiceButton druidButton = new HeroChoiceButton(new JDPoint(border + 3 * screenWidthBy5,
-				200), Hero.HeroCategory.Druid, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, south).getImagesNr(0).getImage());
+				200), Hero.HeroCategory.Druid, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, south).getImagesNr(0).getImage(), game);
 		this.guiElements.add(druidButton);
 
 		HeroChoiceButton mageButton = new HeroChoiceButton(
-				new JDPoint(border + 4 * screenWidthBy5, 200), Hero.HeroCategory.Mage, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Mage, Motion.Walking, south).getImagesNr(0).getImage());
+				new JDPoint(border + 4 * screenWidthBy5, 200), Hero.HeroCategory.Mage, (Image) ImageManager.getAnimationSet(Hero.HeroCategory.Mage, Motion.Walking, south).getImagesNr(0).getImage(), game);
 		this.guiElements.add(mageButton);
 	}
 

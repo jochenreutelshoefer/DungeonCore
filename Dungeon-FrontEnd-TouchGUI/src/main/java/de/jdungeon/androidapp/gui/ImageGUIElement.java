@@ -5,6 +5,7 @@ import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 import util.JDDimension;
 
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 
@@ -16,22 +17,29 @@ public abstract class ImageGUIElement extends AbstractGUIElement {
 
 	private JDImageProxy jdImage;
 	protected Image im;
-	private final Image backGround;
+	private Image backGround = null;
 	private int relativeOffsetX = 0;
 	private int relativeOffsetY = 0;
 
-	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im) {
-		this(position, dimension, im, null);
+	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Game game) {
+		super(position, dimension, game);
+		this.im = im;
 	}
 
-	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Image backGround) {
-		super(position, dimension);
+	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Image backGround, Game game) {
+		super(position, dimension, game);
 		this.im = im;
 		this.backGround = backGround;
 	}
 
-	public ImageGUIElement(JDPoint position, JDDimension dimension, JDImageProxy jdImage) {
-		this(position, dimension, (Image) jdImage.getImage(), null);
+	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Image backGround, GUIElement parent) {
+		super(position, dimension, parent.getGame());
+		this.im = im;
+		this.backGround = backGround;
+	}
+
+	public ImageGUIElement(JDPoint position, JDDimension dimension, JDImageProxy jdImage, GUIElement parent) {
+		this(position, dimension, (Image) jdImage.getImage(), parent.getGame());
 		this.jdImage = jdImage;
 	}
 

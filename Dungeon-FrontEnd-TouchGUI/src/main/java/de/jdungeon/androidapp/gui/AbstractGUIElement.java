@@ -3,6 +3,7 @@ package de.jdungeon.androidapp.gui;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.screen.StandardScreen;
+import de.jdungeon.game.Configuration;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input.TouchEvent;
@@ -30,10 +31,11 @@ public abstract class AbstractGUIElement implements GUIElement {
 		this.game = game;
 	}
 
-	public AbstractGUIElement(JDPoint position, JDDimension dimension) {
+	public AbstractGUIElement(JDPoint position, JDDimension dimension, Game game) {
 		super();
 		this.position = position;
 		this.dimension = dimension;
+		this.game = game;
 	}
 
 	// TODO: remove this constructor
@@ -100,19 +102,41 @@ public abstract class AbstractGUIElement implements GUIElement {
 		return false;
 	}
 
+	@Override
 	public Game getGame() {
-		return game;
+		return getScreen().getGame();
 	}
 
 	public void setGame(Game game) {
 		this.game = game;
 	}
 
-	protected void drawBorder(Graphics g) {
-		GUIUtils.drawDoubleBorder(g, position.getX(), position.getY(), dimension, 20);
+	protected void drawBackground(Graphics g) {
+		drawBackground(g, position.getX(), position.getY());
 	}
 
-	protected void drawBackground(Graphics g) {
-		GUIUtils.drawBackground(g,  position.getX(), position.getY(), dimension);
+	protected void drawBackground(Graphics g, int currentX, int currentY) {
+		final Configuration.GUIStyle guiStyle = game.getConfiguration().getGUIStyle();
+		if(guiStyle == Configuration.GUIStyle.retro) {
+			GUIUtils.drawBackgroundRetro(g, currentX, currentY, dimension);
+		} else {
+			GUIUtils.drawBackgroundSimple(g, currentX, currentY, dimension);
+		}
 	}
+
+
+	protected void drawBorder(Graphics g, int currentX, int currentY) {
+		final Configuration.GUIStyle guiStyle = game.getConfiguration().getGUIStyle();
+		if(guiStyle == Configuration.GUIStyle.retro) {
+			GUIUtils.drawDoubleBorderRetro(g, currentX, currentY, dimension, 20);
+		} else {
+			GUIUtils.drawBorderSimple(g, currentX, currentY, this.dimension);
+		}
+	}
+
+	protected void drawBorder(Graphics g) {
+		drawBorder(g, position.getX(), position.getY());
+	}
+
+
 }

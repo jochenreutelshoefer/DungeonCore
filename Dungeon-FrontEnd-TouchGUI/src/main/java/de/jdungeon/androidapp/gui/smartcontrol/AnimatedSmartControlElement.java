@@ -7,6 +7,7 @@ import util.JDDimension;
 import de.jdungeon.androidapp.gui.GUIElement;
 import de.jdungeon.androidapp.gui.SubGUIElement;
 import de.jdungeon.game.Colors;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 

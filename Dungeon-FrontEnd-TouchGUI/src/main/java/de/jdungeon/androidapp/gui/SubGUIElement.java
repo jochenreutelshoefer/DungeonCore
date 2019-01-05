@@ -4,6 +4,7 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.game.Colors;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 
 /**
@@ -19,7 +20,7 @@ public abstract class SubGUIElement extends AbstractGUIElement {
 	private final int y;
 	public SubGUIElement(JDPoint position, JDDimension dimension,
 						 GUIElement parent) {
-		super(position, dimension);
+		super(position, dimension, parent.getGame());
 		this.parent = parent;
 
 		y  = parent.getPositionOnScreen().getY() + position.getY();

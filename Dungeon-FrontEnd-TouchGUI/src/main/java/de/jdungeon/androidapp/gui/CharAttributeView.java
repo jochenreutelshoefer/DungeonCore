@@ -44,9 +44,8 @@ public class CharAttributeView extends SlidingGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		
 		int x = this.getCurrentX();
-		GUIUtils.drawBackground(g, x, position.getY(), dimension);
-
-		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
+		this.drawBackground(g);
+		this.drawBorder(g);
 
 		g.drawString("Punkte: " + info.getTotalExp(), this.getCurrentX() + 15,
 				position.getY() + 25, g.getTextPaintBlack());

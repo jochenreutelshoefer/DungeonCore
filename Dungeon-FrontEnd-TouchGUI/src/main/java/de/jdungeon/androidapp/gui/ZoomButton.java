@@ -21,7 +21,7 @@ public class ZoomButton extends ImageGUIElement {
 	private final boolean plus;
 
 	public ZoomButton(JDPoint position, JDDimension dimension, GameScreen screen, Image image, boolean plus) {
-		super(position, dimension, image);
+		super(position, dimension, image, screen.getGame());
 		this.screen = screen;
 		this.plus = plus;
 	}

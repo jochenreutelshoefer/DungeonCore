@@ -6,6 +6,7 @@ import util.JDDimension;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input.TouchEvent;
 
@@ -18,13 +19,13 @@ public class HeroChoiceButton extends ImageGUIElement {
 	private static final int SIZE = 120;
 
 	@Deprecated
-	public HeroChoiceButton(JDPoint position, int heroType, Image im) {
-		super(position, new JDDimension(SIZE, SIZE), im);
+	public HeroChoiceButton(JDPoint position, int heroType, Image im, Game game) {
+		super(position, new JDDimension(SIZE, SIZE), im, game);
 		this.heroType = heroType;
 	}
 
-	public HeroChoiceButton(JDPoint position, Hero.HeroCategory category, Image im) {
-		super(position, new JDDimension(SIZE, SIZE), im);
+	public HeroChoiceButton(JDPoint position, Hero.HeroCategory category, Image im, Game game) {
+		super(position, new JDDimension(SIZE, SIZE), im, game);
 		this.heroType = category.getCode();
 	}
 

@@ -6,6 +6,7 @@ import event.EventManager;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 
@@ -18,8 +19,8 @@ public class SimpleButton extends AbstractGUIElement {
 	private final String text;
 	private final Event event;
 
-	public SimpleButton(String text, Event event, JDPoint position) {
-		super(position, getDefaultDimension());
+	public SimpleButton(String text, Event event, JDPoint position, Game game) {
+		super(position, getDefaultDimension(), game);
 		this.text = text;
 		this.event = event;
 	}
@@ -45,10 +46,10 @@ public class SimpleButton extends AbstractGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 		drawBackground(g);
+		drawBorder(g);
 
 		g.drawString(text, this.getPositionOnScreen().getX()+this.getDimension().getWidth()/2, this.getPositionOnScreen().getY()+44, g.getDefaultPaint());
 
-		drawBorder(g);
 
 	}
 }

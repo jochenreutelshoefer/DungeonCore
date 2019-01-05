@@ -77,10 +77,12 @@ public class InfoPanel extends SlidingGUIElement {
 		 * draw background
 		 */
 		int x = getCurrentX();
-		g.drawRect(x, position.getY(), dimension.getWidth(),
-				dimension.getHeight(), Colors.GRAY);
+		this.drawBackground(g, x, position.getY());
+		/*
+		 * paint border
+		 */
+		this.drawBorder(g, x, position.getY());
 
-		GUIUtils.drawBackground(g, x, position.getY(), dimension);
 
 		Image im = getImage();
 		if (im != null) {
@@ -113,10 +115,7 @@ public class InfoPanel extends SlidingGUIElement {
 			}
 		}
 
-		/*
-		 * paint border
-		 */
-		GUIUtils.drawDoubleBorder(g, x, position.getY(), dimension, 20);
+
 
 	}
 

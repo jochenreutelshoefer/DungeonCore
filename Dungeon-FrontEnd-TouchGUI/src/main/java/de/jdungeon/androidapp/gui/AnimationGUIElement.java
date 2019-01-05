@@ -14,6 +14,7 @@ import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 import util.JDDimension;
 
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 
@@ -26,8 +27,8 @@ public abstract class AnimationGUIElement extends ImageGUIElement {
 	private final DefaultAnimationSet animation;
 	private final Collection<DefaultGUIAnimationTask> animationTasks = new ArrayList<>();
 
-	public AnimationGUIElement(JDPoint position, JDDimension dimension, DefaultAnimationSet animation) {
-		super(position, dimension, (Image)animation.getImagesNr(0).getImage());
+	public AnimationGUIElement(JDPoint position, JDDimension dimension, DefaultAnimationSet animation, Game game) {
+		super(position, dimension, (Image)animation.getImagesNr(0).getImage(), game);
 		this.animation = animation;
 	}
 

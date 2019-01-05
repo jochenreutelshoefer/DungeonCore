@@ -108,7 +108,7 @@ public class FloorItemPresenter extends ActivityPresenter implements EventListen
 		for (Activity activity : newActivities) {
 			if(tileIndex < this.itemTilePositions.length) {
 				Image image = inventoryImageManager.getImage((ItemInfo) activity.getObject());
-				activities.add(new ActivityGUIElement(itemTilePositions[tileIndex], tileDimension, this, (ExecutableActivity)activity, image, null));
+				activities.add(new ActivityGUIElement(itemTilePositions[tileIndex], tileDimension, this, (ExecutableActivity)activity, image, null, game));
 			}
 			tileIndex++;
 		}

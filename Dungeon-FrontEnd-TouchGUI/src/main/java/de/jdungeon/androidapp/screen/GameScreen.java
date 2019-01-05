@@ -129,7 +129,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private DefaultDungeonSession session;
 
-	private GameScreenPerceptHandler perceptHandler;
+	private final GameScreenPerceptHandler perceptHandler;
 
 	private boolean worldHasChanged = true;
 	private FocusManager focusManager;
@@ -202,10 +202,10 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		/*
 		 * init info panel
 		 */
-		int quarterScreenX = (int) (game.getScreenWidth() * 0.25);
-		int halfScreenY = (int) (game.getScreenHeight() * 0.5);
-		infoPanel = new InfoPanel(new JDPoint(3 * quarterScreenX, 0),
-				new JDDimension(quarterScreenX, halfScreenY), this, this.getGame());
+		int infoPanelWidth = (int) (game.getScreenWidth() * 0.2);
+		int infoPanelHeight = (int) (game.getScreenHeight() * 0.4);
+		infoPanel = new InfoPanel(new JDPoint(game.getScreenWidth()  - infoPanelWidth, 0),
+				new JDDimension(infoPanelWidth, infoPanelHeight), this, this.getGame());
 		this.guiElements.add(infoPanel);
 		focusManager = new FocusManager(infoPanel, figureInfo);
 
@@ -236,7 +236,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		/*
 		add +/- magnifier
 		 */
-		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE2)) {
+		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE2), getGame()) {
 
 			@Override
 			public boolean handleTouchEvent(TouchEvent touch) {
@@ -294,6 +294,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
 	}
 
+	@Override
 	public Game getGame() {
 		return game;
 	}

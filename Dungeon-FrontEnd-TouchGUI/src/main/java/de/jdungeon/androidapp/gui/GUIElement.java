@@ -1,6 +1,8 @@
 package de.jdungeon.androidapp.gui;
 
 import util.JDDimension;
+
+import de.jdungeon.game.Game;
 import de.jdungeon.game.MotionEvent;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Graphics;
@@ -34,5 +36,7 @@ public interface GUIElement {
 	void update(float time);
 	
 	StandardScreen getScreen();
+
+	Game getGame();
 
 }

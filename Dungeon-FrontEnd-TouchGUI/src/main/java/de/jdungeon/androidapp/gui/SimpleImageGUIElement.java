@@ -3,6 +3,7 @@ package de.jdungeon.androidapp.gui;
 import dungeon.JDPoint;
 import util.JDDimension;
 
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
 
 /**
@@ -11,7 +12,7 @@ import de.jdungeon.game.Image;
  */
 public class SimpleImageGUIElement extends ImageGUIElement{
 
-	public SimpleImageGUIElement(JDPoint position, JDDimension dimension, Image im) {
-		super(position, dimension, im);
+	public SimpleImageGUIElement(JDPoint position, JDDimension dimension, Image im, Game game) {
+		super(position, dimension, im, game);
 	}
 }

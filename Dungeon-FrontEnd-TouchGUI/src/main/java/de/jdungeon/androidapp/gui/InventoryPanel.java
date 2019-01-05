@@ -303,9 +303,9 @@ public class InventoryPanel extends SlidingGUIElement {
 	public void paint(Graphics g, JDPoint viewportPosition) {
 
 		int currentX = this.getCurrentX();
-		GUIUtils.drawBackground(g, currentX, position.getY(), dimension);
 
-		GUIUtils.drawDoubleBorder(g, currentX, position.getY(), dimension, 20);
+		this.drawBackground(g, currentX, position.getY());
+		this.drawBorder(g, currentX, position.getY());
 
 		g.drawScaledImage(image, currentX + 70, posY40, 110, 288, 0, 0,
 				image.getWidth(), image.getHeight());

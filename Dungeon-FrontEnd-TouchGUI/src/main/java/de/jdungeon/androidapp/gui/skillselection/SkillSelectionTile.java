@@ -63,9 +63,9 @@ public class SkillSelectionTile extends AbstractGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 
-		GUIUtils.drawBackground(g, position.getX(), position.getY(), dimension);
+		this.drawBackground(g);
 
-		GUIUtils.drawDoubleBorder(g, position.getX(), position.getY(), dimension, 20);
+		this.drawBorder(g);
 
 
 		int iconSize = dimension.getWidth()/2;

@@ -5,6 +5,7 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.AnimationGUIElement;
+import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -12,8 +13,8 @@ import de.jdungeon.androidapp.gui.AnimationGUIElement;
  */
 public class DungeonSelectionHeroFigure extends AnimationGUIElement {
 
-	public DungeonSelectionHeroFigure(JDPoint position, JDDimension dimension, DefaultAnimationSet animation) {
-		super(position, dimension, animation);
+	public DungeonSelectionHeroFigure(JDPoint position, JDDimension dimension, DefaultAnimationSet animation, Game game) {
+		super(position, dimension, animation, game);
 	}
 
 }

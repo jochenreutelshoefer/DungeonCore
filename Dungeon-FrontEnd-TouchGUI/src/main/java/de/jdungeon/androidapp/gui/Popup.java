@@ -69,7 +69,7 @@ public class Popup extends AbstractGUIElement {
 	@Override
 	public void paint(Graphics g, JDPoint viewportPosition) {
 
-		GUIUtils.drawBackground(g, this);
+		drawBackground(g);
 
 		int textStartRow = this.position.getY()
 				+ this.getDimension().getHeight() / 4;
@@ -80,7 +80,7 @@ public class Popup extends AbstractGUIElement {
 		g.drawString(text, this.position.getX() + 100,
 				textStartRow - 10, g.getTextPaintBlack());
 
-		GUIUtils.drawDoubleBorder(g, this, 20);
+		drawBorder(g);
 	}
 
 }

@@ -17,14 +17,12 @@ import de.jdungeon.game.Input;
  */
 public class ActivityGUIElement extends SubGUIElement {
 
-	private final ActivityPresenter parent;
 	private final ExecutableActivity activity;
 	private final Image activityImage;
 	private final Image itemBg;
 
-	public ActivityGUIElement(JDPoint position, JDDimension dimension, ActivityPresenter parent, ExecutableActivity activity, Image activityImage, Image itemBg) {
+	public ActivityGUIElement(JDPoint position, JDDimension dimension, ActivityPresenter parent, ExecutableActivity activity, Image activityImage, Image itemBg, Game game) {
 		super(position, dimension, parent);
-		this.parent = parent;
 		this.activity = activity;
 		this.activityImage = activityImage;
 		this.itemBg = itemBg;

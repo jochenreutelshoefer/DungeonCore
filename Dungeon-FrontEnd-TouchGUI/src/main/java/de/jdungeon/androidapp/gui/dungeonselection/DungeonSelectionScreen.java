@@ -75,7 +75,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		//guiElements.add(new SimpleImageGUIElement(new JDPoint(xCenterValue-heroDimension.getWidth()/2, getDotY(getY(i)) + dotSize - heroDimension.getHeight()*2/3 ), heroDimension, (Image)heroImage.getImage()));
 		JDPoint heroSelectionPos = new JDPoint(xCenterValue - HERO_DIMENSION.getWidth() / 2, getDotY(getY(currentStage)) + dotSize - HERO_DIMENSION
 				.getHeight() * 2 / 3);
-		heroFigure = new DungeonSelectionHeroFigure(heroSelectionPos, HERO_DIMENSION, animationSet);
+		heroFigure = new DungeonSelectionHeroFigure(heroSelectionPos, HERO_DIMENSION, animationSet, this.getGame());
 		guiElements.add(heroFigure);
 
 		heroFigure.addTask(getHeroStartPoint(), heroSelectionPos, 4);
@@ -121,6 +121,11 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			public void paint(Graphics g, JDPoint viewportPosition) {
 				g.drawLine(0, dotY, game.getScreenWidth(), dotY, Colors.GRAY);
 			}
+
+			@Override
+			public Game getGame() {
+				return game;
+			}
 		});
 
 		// draw stage vertices as dots
@@ -128,6 +133,11 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			@Override
 			public void paint(Graphics g, JDPoint viewportPosition) {
 				g.fillOval(dotX - dotSize /2, dotY - dotSize /2, dotSize, dotSize, Colors.WHITE);
+			}
+
+			@Override
+			public Game getGame() {
+				return game;
 			}
 		});
 
@@ -146,11 +156,16 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 					g.drawLine(x, y+DungeonSelectionTile.TILE_WIDTH/10, dotX, dotY - stageHeightOffset, Colors.WHITE);
 					g.drawLine(x, y+DungeonSelectionTile.TILE_WIDTH*9/10, dotX, dotY, Colors.WHITE);
 				}
+
+				@Override
+				public Game getGame() {
+					return game;
+				}
 			});
 
 			Image image = LevelIconImageManager.getInstance().getIcon(imageLoader, iconIndex++);
 			JDPoint tilePosition = new JDPoint(x-DungeonSelectionTile.TILE_WIDTH/2, y);
-			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage));
+			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage, game));
 
 			DungeonCompletionScore achievedScoreForOption = session.getAchievedScoreFor(dungeonOption);
 			if(achievedScoreForOption != null ) {
