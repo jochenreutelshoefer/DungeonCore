@@ -35,11 +35,12 @@ public class AndroidGraphics implements Graphics {
 	private final Rect dstRect = new Rect();
 	private final Rect tmpDstRect = new Rect();
 
-	public static android.text.TextPaint defaultPaint;
+	private final android.text.TextPaint defaultPaint = new android.text.TextPaint();;
 	private final android.text.TextPaint smallPaint = new android.text.TextPaint();
 	private final android.graphics.Paint black = new android.graphics.Paint();
 	private final android.text.TextPaint blackText = new TextPaint();
 	private final android.text.TextPaint whiteText = new TextPaint();
+	private final android.text.TextPaint whiteText25 = new TextPaint();
 	private final android.text.TextPaint redText = new TextPaint();
 	private final android.text.TextPaint grayText = new TextPaint();
 	private final android.graphics.Paint gray = new android.graphics.Paint();
@@ -65,11 +66,15 @@ public class AndroidGraphics implements Graphics {
 		blackText.setColor(Color.BLACK);
 		blackText.setTextSize(12);
 
-		defaultPaint = new android.text.TextPaint();
 		defaultPaint.setTextSize(25);
 		defaultPaint.setTextAlign(android.graphics.Paint.Align.CENTER);
 		defaultPaint.setAntiAlias(true);
 		defaultPaint.setColor(Color.RED);
+
+		whiteText25.setTextSize(25);
+		whiteText25.setTextAlign(android.graphics.Paint.Align.CENTER);
+		whiteText25.setAntiAlias(true);
+		whiteText25.setColor(Color.WHITE);
 
 		smallPaint.setColor(Color.RED);
 		smallPaint.setTextSize(14);
@@ -140,6 +145,12 @@ public class AndroidGraphics implements Graphics {
 	public de.jdungeon.game.TextPaint getTextPaintWhite() {
 		return new AndroidTextPaint(whiteText);
 	}
+
+	@Override
+	public de.jdungeon.game.TextPaint getTextPaintWhite25() {
+		return new AndroidTextPaint(whiteText25);
+	}
+
 	@Override
 	public de.jdungeon.game.TextPaint getTextPaintRed() {
 		return new AndroidTextPaint(redText);

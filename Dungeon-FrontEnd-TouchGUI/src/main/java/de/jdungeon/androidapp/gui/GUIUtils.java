@@ -10,11 +10,6 @@ import de.jdungeon.game.Image;
 
 public class GUIUtils {
 
-	public static void drawBackgroundRetro(Graphics g, GUIElement e) {
-		drawBackgroundRetro(g, e.getPositionOnScreen().getX(), e
-				.getPositionOnScreen().getY(), e.getDimension());
-	}
-
 	public static void drawBackgroundRetro(Graphics g, int x, int posY,
 										   JDDimension dimension) {
 		JDImageProxy<?> background = ImageManager.paperBackground;
@@ -34,14 +29,9 @@ public class GUIUtils {
 										JDDimension dimension) {
 		g.drawRect(x, posY, dimension.getWidth(),
 				dimension.getHeight(),
-				Colors.WHITE);
+				Colors.GRAY);
 	}
 
-	public static void drawDoubleBorderRetro(Graphics g, GUIElement e,
-											 int borderWidth) {
-		drawDoubleBorderRetro(g, e.getPositionOnScreen().getX(), e
-				.getPositionOnScreen().getY(), e.getDimension(), borderWidth);
-	}
 
 	public static void drawDoubleBorderRetro(Graphics g, int x, int posY,
 											 JDDimension dimension, int borderWidth) {

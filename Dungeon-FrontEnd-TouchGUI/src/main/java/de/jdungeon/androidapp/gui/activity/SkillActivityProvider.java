@@ -160,8 +160,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			if (highlightedEntity instanceof FigureInfo) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack((FigureInfo) highlightedEntity));
-			} else if (hostileFigures.size() == 1
-					&& (!(highlightedEntity instanceof FigureInfo))) {
+			} else if (hostileFigures.size() == 1) {
 				FigureInfo target = hostileFigures.get(0);
 				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack(target));
 				focusManager.setWorldFocusObject(target);

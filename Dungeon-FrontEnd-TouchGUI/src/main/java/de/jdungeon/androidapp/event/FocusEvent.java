@@ -11,11 +11,18 @@ public class FocusEvent extends Event {
 
 	private final Paragraphable infoEntity;
 
-	public FocusEvent(Paragraphable infoEntity) {
+	private final Object source;
+
+	public FocusEvent(Paragraphable infoEntity, Object source) {
 		this.infoEntity = infoEntity;
+		this.source = source;
 	}
 
 	public Paragraphable getObject() {
 		return infoEntity;
+	}
+
+	public Object getSource() {
+		return source;
 	}
 }

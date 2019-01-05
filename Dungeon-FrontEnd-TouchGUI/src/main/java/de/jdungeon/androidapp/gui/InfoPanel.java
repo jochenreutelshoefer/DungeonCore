@@ -45,7 +45,11 @@ public class InfoPanel extends SlidingGUIElement {
 	public void setContent(Paragraphable entity) {
 		this.content = entity;
 		visible = true;
-		timer = DISPLAY_TIME;
+		if(entity == null) {
+			timer = 100f;
+		} else {
+			timer = DISPLAY_TIME;
+		}
 	}
 
 	public Paragraphable getContent() {

@@ -22,6 +22,8 @@ public interface Graphics {
 
 	TextPaint getTextPaintWhite();
 
+	TextPaint getTextPaintWhite25();
+
 	TextPaint getTextPaintRed();
 
 	Paint createPaint(PaintBuilder builder);

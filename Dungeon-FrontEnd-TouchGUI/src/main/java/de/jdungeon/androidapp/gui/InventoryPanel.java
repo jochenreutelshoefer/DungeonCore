@@ -285,7 +285,7 @@ public class InventoryPanel extends SlidingGUIElement {
 		}
 
 		if (item != null) {
-			EventManager.getInstance().fireEvent(new FocusEvent(item));
+			EventManager.getInstance().fireEvent(new FocusEvent(item, this));
 
 			if (action == ItemActionType.change) {
 				EventManager.getInstance().fireEvent(new InventoryItemClickedEvent(item, type, ClickType.Double));

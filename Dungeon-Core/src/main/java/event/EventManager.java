@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import log.Log;
 import org.apache.log4j.Logger;
 
 /**
@@ -93,7 +92,7 @@ public class EventManager {
 	/**
 	 * Fires events; the calls are distributed in the system where the
 	 * corresponding events should be fired (also plugin may fire events)
-	 * 
+	 *
 	 * @param event the fired event
 	 */
 	public void fireEvent(Event event) {

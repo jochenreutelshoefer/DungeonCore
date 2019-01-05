@@ -12,7 +12,6 @@ import util.JDDimension;
 import de.jdungeon.androidapp.gui.AbstractGUIElement;
 import de.jdungeon.androidapp.gui.ColorConverter;
 import de.jdungeon.androidapp.gui.GUIImageManager;
-import de.jdungeon.androidapp.gui.GUIUtils;
 import de.jdungeon.androidapp.screen.StandardScreen;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;

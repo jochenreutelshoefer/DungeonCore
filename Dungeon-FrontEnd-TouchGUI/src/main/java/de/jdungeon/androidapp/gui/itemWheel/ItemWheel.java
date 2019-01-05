@@ -322,7 +322,7 @@ public class ItemWheel extends ActivityPresenter {
 		// show info about element
 		Activity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
-			EventManager.getInstance().fireEvent(new FocusEvent(activity));
+			EventManager.getInstance().fireEvent(new FocusEvent(activity, this));
 		}
 	}
 

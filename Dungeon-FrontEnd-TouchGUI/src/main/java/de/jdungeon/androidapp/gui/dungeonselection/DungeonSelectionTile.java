@@ -9,10 +9,7 @@ import level.DungeonSelectedEvent;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
-import de.jdungeon.androidapp.gui.GUIImageManager;
 import de.jdungeon.androidapp.gui.ImageGUIElement;
-import de.jdungeon.androidapp.gui.InventoryImageManager;
-import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
