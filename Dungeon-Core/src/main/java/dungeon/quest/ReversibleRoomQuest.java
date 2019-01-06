@@ -29,14 +29,21 @@ public abstract class ReversibleRoomQuest extends RoomQuest {
 		actions = createActionList();
 		if(actions == null) return false;
 		for (DungeonChangeAction action : actions) {
-			action.doAction();
+			boolean works = action.doAction();
+			if(!works) {
+				return false;
+			}
 		}
 		return true;
 	}
 
 	@Override
 	public boolean setUp() {
-		return insert();
+		final boolean possible = insert();
+		if(!possible) {
+			undo();
+		}
+		return possible;
 	}
 
 	abstract List<DungeonChangeAction> createActionList();

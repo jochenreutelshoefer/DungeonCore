@@ -27,11 +27,11 @@ public class RoomObservationStatus {
 	public static final int VISIBILITY_FOUND = 1;
 
 	public static final int VISIBILITY_ITEMS = 4;
-
+	// todo: visibility degree items and figures is equal
 	public static final int VISIBILITY_FIGURES = 3;
 
 	public static final int VISIBILITY_SECRET = 5;
-
+	// todo: visibility degree found and shrine is equal
 	public static final int VISIBILITY_SHRINE = 2;
 
 	public static final int VISIBILITY_UNDISCOVERED = 0;

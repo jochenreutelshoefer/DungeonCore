@@ -152,7 +152,6 @@ public class GraphicObjectRenderer {
 			throw new NullPointerException();
 		}
 		init(roomSize);
-
 	}
 
 	private void init(int roomSize) {
@@ -197,7 +196,8 @@ public class GraphicObjectRenderer {
 				- (northDoorDimension.getWidth() / 2), 0), northDoorDimension.getWidth(), northDoorDimension.getHeight());
 
 		JDDimension eastDoorDimension = getDoorDimension(true, roomSize);
-		eastDoorRect = new RelativeRectangle(new JDPoint((roomSize) - (eastDoorDimension.getWidth()), (roomSize / 2) - (eastDoorDimension.getHeight() / 2)), eastDoorDimension.getWidth(), eastDoorDimension.getHeight());
+		eastDoorRect = new RelativeRectangle(new JDPoint((roomSize) - (eastDoorDimension.getWidth()), (roomSize / 2) - (eastDoorDimension
+				.getHeight() / 2)), eastDoorDimension.getWidth(), eastDoorDimension.getHeight());
 
 		JDDimension southDoorDimension = getDoorDimension(false, roomSize);
 		southDoorRect = new RelativeRectangle((roomSize / 2) - (southDoorDimension.getWidth() / 2), roomSize - (southDoorDimension
@@ -302,7 +302,6 @@ public class GraphicObjectRenderer {
 		int xsize = (int) (roomSize / 2.9);
 		int ysize = (int) (roomSize / 2.2);
 		shrineRect = new RelativeRectangle(new JDPoint(xpos, ypos), xsize, ysize);
-
 	}
 
 	public int getPosSize() {
@@ -387,7 +386,6 @@ public class GraphicObjectRenderer {
 								JDColor.YELLOW,
 								ImageManager.getImage(itemArray[i]));
 					}
-
 				}
 				else if (itemArray[i].getItemClass().equals(DustItem.class)) {
 					itemObs[i] = new GraphicObject(itemArray[i],
@@ -486,7 +484,6 @@ public class GraphicObjectRenderer {
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, sizeX, sizeY),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
-
 				}
 				else if (itemArray[i].getItemClass().equals(Rune.class)) {
 
@@ -512,7 +509,6 @@ public class GraphicObjectRenderer {
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
-
 				}
 				else if (Thing.class.isAssignableFrom(itemArray[i]
 						.getItemClass())) {
@@ -537,7 +533,7 @@ public class GraphicObjectRenderer {
 
 	private void drawDoors(RoomInfo r, Collection<GraphicObject> drawObjects) {
 		DoorInfo[] doors = r.getDoors();
-		if(doors == null) return;
+		if (doors == null) return;
 		if (doors[0] != null) {
 			JDGraphicObject door0;
 			if (!doors[0].hasLock()) {
@@ -601,7 +597,6 @@ public class GraphicObjectRenderer {
 		else {
 			drawObjects.add(doorWestNone);
 		}
-
 	}
 
 	private JDDimension getDoorDimension(boolean vertical, int roomSize) {
@@ -616,7 +611,6 @@ public class GraphicObjectRenderer {
 			heigth = roomSize / 8;
 		}
 		return new JDDimension(width, heigth);
-
 	}
 
 	private JDPoint[] getItemPoints(int xcoord, int ycoord) {
@@ -731,7 +725,8 @@ public class GraphicObjectRenderer {
 												   int roomOffsetY) {
 		// TODO: refactor this, we shouldn't need to create new objects here, use RelativeRectangles
 		JDGraphicObject ob = null;
-		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN|| s.getShrineClass().equals(MoonRuneFinderShrine.class)) {
+		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN || s.getShrineClass()
+				.equals(MoonRuneFinderShrine.class)) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
 			int ypos = roomOffsetY + (1 * ROOMSIZE_BY_16);
 			int xsize = ROOMSIZE_BY_3;
@@ -836,7 +831,6 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
-
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_RUNE) {
 			int xpos = roomOffsetX + (13 * roomSize / 20);
@@ -876,7 +870,6 @@ public class GraphicObjectRenderer {
 
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
-
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_RUNEFINDER) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
@@ -886,7 +879,6 @@ public class GraphicObjectRenderer {
 			JDImageProxy<?> im = ImageManager.getImage(s);
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
-
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_REVEALMAP) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
@@ -906,7 +898,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA  ) {
+		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
 			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
 			int xsize = (int) (roomSize / 3.6);
@@ -924,7 +916,6 @@ public class GraphicObjectRenderer {
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
 		return ob;
-
 	}
 
 	private JDGraphicObject getHeroGraphicObject(HeroInfo info) {
@@ -947,7 +938,7 @@ public class GraphicObjectRenderer {
 	}
 
 	private JDImageLocated getImage(HeroInfo info, RelativeRectangle rect) {
-		if(info == null) return null;
+		if (info == null) return null;
 		JDImageLocated im = null;
 		JDImageProxy imageProxy = null;
 		if (info.isDead()) {
@@ -959,7 +950,6 @@ public class GraphicObjectRenderer {
 				return null;
 			}
 			imageProxy = animationSet.getImagesNr(animationSet.getLength() - 1);
-
 		}
 		else {
 			Motion motion = null;
@@ -1018,12 +1008,11 @@ public class GraphicObjectRenderer {
 		return null;
 	}
 
-
 	private JDDimension getSpotDimension() {
 		return spotDimension;
 	}
 
-	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, Object obj, int roomOffsetX, int roomOffsetY, List<?> animatedObs) {
+	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, int roomOffsetX, int roomOffsetY) {
 		List<GraphicObject> graphObs = new ArrayList<>();
 		if (r == null) {
 			return graphObs;
@@ -1048,7 +1037,6 @@ public class GraphicObjectRenderer {
 
 			graphObs.add(new GraphicObject(r, wallRect, null,
 					ImageManager.wall_northImage));
-
 		}
 
 		/*
@@ -1103,12 +1091,10 @@ public class GraphicObjectRenderer {
 				GraphicObject chestOb = graphicObjectCache.get(chest);
 				if (chestOb == null) {
 					if (chest.hasLock()) {
-						chestOb = new GraphicObject(chest,
-								chestRect, null, ImageManager.chest_lockImage);
+						chestOb = new GraphicObject(chest, chestRect, null, ImageManager.chest_lockImage);
 					}
 					else {
-						chestOb = new GraphicObject(chest,
-								chestRect, null, ImageManager.chestImage);
+						chestOb = new GraphicObject(chest, chestRect, null, ImageManager.chestImage);
 					}
 					graphicObjectCache.put(chest, chestOb);
 				}
@@ -1121,16 +1107,21 @@ public class GraphicObjectRenderer {
 				GraphicObject[] monsterObs = drawMonster(monsterInfos);
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
-						boolean contains = animatedObs.contains(monsterObs[i]
-								.getClickableObject());
-						if (!contains) {
-							if (!(monsterObs[i].getClickableObject().equals(obj))) {
-								graphObs.add(monsterObs[i]);
-							}
-						}
+						graphObs.add(monsterObs[i]);
 					}
 				}
 			}
+			/*
+			final List<FigureInfo> deadFigures = r.getDeadFigureInfos();
+			if (deadFigures != null && !deadFigures.isEmpty()) {
+				GraphicObject[] deadFigureObs = drawDeadFigures(deadFigures);
+				for (int i = 0; i < deadFigureObs.length; i++) {
+					if (deadFigureObs[i] != null) {
+								graphObs.add(deadFigureObs[i]);
+					}
+				}
+			}
+			*/
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
 
@@ -1141,7 +1132,6 @@ public class GraphicObjectRenderer {
 					graphObs.add(o);
 				}
 			}
-
 		}
 
 		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
@@ -1155,11 +1145,9 @@ public class GraphicObjectRenderer {
 		List<HeroInfo> heroInfos = r.getHeroInfos();
 		if (!heroInfos.isEmpty()) {
 			for (HeroInfo heroInfo : heroInfos) {
-				if (!animatedObs.contains(heroInfo)) {
-					GraphicObject heroObject = drawHero(heroInfo);
-					if (heroObject != null) {
-						graphObs.add(heroObject);
-					}
+				GraphicObject heroObject = drawHero(heroInfo);
+				if (heroObject != null) {
+					graphObs.add(heroObject);
 				}
 			}
 		}
@@ -1172,5 +1160,4 @@ public class GraphicObjectRenderer {
 		}
 		return this.getHeroGraphicObject(info);
 	}
-
 }
