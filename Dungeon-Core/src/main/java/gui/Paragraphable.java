@@ -13,5 +13,6 @@ package gui;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public interface Paragraphable {
-	public Paragraph[] getParagraphs();
+
+	Paragraph[] getParagraphs();
 }

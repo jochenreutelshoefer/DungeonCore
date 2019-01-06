@@ -10,6 +10,7 @@ import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 import shrine.ShrineInfo;
+import util.JDColor;
 import util.JDDimension;
 
 import de.jdungeon.androidapp.gui.activity.DefaultActivity;
@@ -101,10 +102,17 @@ public class InfoPanel extends SlidingGUIElement {
 			Paragraph[] paragraphs = this.content.getParagraphs();
 			if (paragraphs != null) {
 				int posCounterY = 35;
+				boolean first = true;
 				for (Paragraph paragraph : paragraphs) {
+					// TODO: refactor Paragraph thing...
+					JDColor color = paragraph.getColor();
+					if(first) {
+						first = false;
+						color = JDColor.WHITE;
+					}
 
 					PaintBuilder paintBuilder = new PaintBuilder();
-					paintBuilder.setColor(ColorConverter.getColor(paragraph.getColor()));
+					paintBuilder.setColor(ColorConverter.getColor(color));
 					paintBuilder.setAlignment(de.jdungeon.game.Paint.Alignment.CENTER);
 					paintBuilder.setFontSize(13);
 					String text = paragraph.getText();

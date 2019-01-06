@@ -6,6 +6,14 @@
  */
 package dungeon;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
@@ -21,15 +29,6 @@ import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import shrine.ShrineInfo;
 import util.JDColor;
 
@@ -47,8 +46,9 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 	public static RoomInfo makeRoomInfo(Room r, DungeonVisibilityMap stats) {
-		if (r == null)
+		if (r == null) {
 			return null;
+		}
 
 		return new RoomInfo(r, stats);
 	}
@@ -64,7 +64,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public DoorInfo getDoor(RouteInstruction.Direction dir) {
 		Door door = r.getDoor(dir);
-		if(door != null) {
+		if (door != null) {
 			return new DoorInfo(door, map);
 		}
 		return null;
@@ -77,7 +77,6 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 			return Boolean.valueOf(r.hasHero());
 		}
 		return null;
-
 	}
 
 	public Boolean hasConnectionTo(RoomInfo r1) {
@@ -132,7 +131,6 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 					room += "\n Halle: " + r.getHall().getName();
 				}
 			}
-
 		}
 		Paragraph[] p = new Paragraph[4];
 		p[0] = new Paragraph(room);
@@ -158,7 +156,6 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 			monster = JDEnv.getResourceBundle().getString("figures") + ": "
 					+ getFigureInfos().size();
-
 		}
 		p[2] = new Paragraph(monster);
 		p[2].setSize(14);
@@ -170,7 +167,6 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 			itemS = JDEnv.getResourceBundle().getString("items") + ": "
 					+ cntEntrys(getItemArray());
-
 		}
 		p[3] = new Paragraph(itemS);
 		p[3].setSize(14);
@@ -206,11 +202,10 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 			List<Figure> l = r.getRoomFigures();
 			List<MonsterInfo> res = new LinkedList<MonsterInfo>();
-			for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
+			for (Iterator<Figure> iter = l.iterator(); iter.hasNext(); ) {
 				Figure element = iter.next();
 				if (element instanceof Monster) {
 					res.add(MonsterInfo.makeMonsterInfo((Monster) element, map));
-
 				}
 			}
 			return res;
@@ -230,11 +225,31 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 			for (int i = 0; i < 8; i++) {
 				if (r.getPositions()[i].getFigure() != null) {
 					Figure f = r.getPositions()[i].getFigure();
+					// todo: harmonize - treat equally
 					if (f instanceof Monster) {
 						res.add(MonsterInfo.makeMonsterInfo((Monster) f, map));
-					} else {
+					}
+					else {
 						res.add(new HeroInfo((Hero) f, map));
 					}
+				}
+			}
+			return res;
+		}
+		return Collections.emptyList();
+	}
+
+	public List<FigureInfo> getDeadFigureInfos() {
+		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+			final Collection<Figure> deadFigures = r.getDeadFigures();
+			List<FigureInfo> res = new LinkedList<FigureInfo>();
+			for (Figure f : deadFigures) {
+				// todo: harmonize - treat equally
+				if (f instanceof Monster) {
+					res.add(MonsterInfo.makeMonsterInfo((Monster) f, map));
+				}
+				else {
+					res.add(new HeroInfo((Hero) f, map));
 				}
 			}
 			return res;
@@ -249,13 +264,11 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	public int getVisibilityStatus() {
 
 		return map.getVisibilityStatus(r.getLocation());
-
 	}
 
 	public int getFloorIndex() {
 		return r.getFloorIndex();
 	}
-
 
 	public HiddenSpot getSpot() {
 		return r.getSpot();
@@ -297,12 +310,11 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 			result = new ArrayList<>();
 			List<Item> items = r.getItems();
 			for (Item item : items) {
-				result.add((ItemInfo)item.makeInfoObject(this.map));
+				result.add((ItemInfo) item.makeInfoObject(this.map));
 			}
 		}
 		return result;
 	}
-
 
 	public JDPoint getLocation() {
 		return r.getLocation();
@@ -314,12 +326,11 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			Collection figures = getFigureInfos();
-			for (Iterator iter = figures.iterator(); iter.hasNext();) {
+			for (Iterator iter = figures.iterator(); iter.hasNext(); ) {
 				FigureInfo element = (FigureInfo) iter.next();
 				if (element instanceof HeroInfo) {
 					return (HeroInfo) element;
 				}
-
 			}
 		}
 		return null;
@@ -331,7 +342,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 			Collection figures = getFigureInfos();
 			List<HeroInfo> result = new ArrayList<>();
-			for (Iterator iter = figures.iterator(); iter.hasNext();) {
+			for (Iterator iter = figures.iterator(); iter.hasNext(); ) {
 				FigureInfo element = (FigureInfo) iter.next();
 				if (element instanceof HeroInfo) {
 					result.add((HeroInfo) element);
@@ -350,7 +361,8 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		}
 		if (r.getChest() == null) {
 			return null;
-		} else {
+		}
+		else {
 			return (ChestInfo) r.getChest().makeInfoObject(map);
 		}
 	}

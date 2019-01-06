@@ -118,8 +118,8 @@ import util.JDColor;
  * @see Hero
  */
 
-public abstract class Figure extends DungeonWorldObject implements ItemOwner,
-		Turnable, VisibilityModifier, Paragraphable, Serializable, RoomEntity {
+public abstract class Figure extends DungeonWorldObject
+		implements ItemOwner, Turnable, VisibilityModifier, Paragraphable, Serializable, RoomEntity {
 
 	public static final int STATUS_HEALTHY = 4;
 
@@ -392,8 +392,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 
 	protected void dieAndLeave() {
 		dead = true;
-		pos.figureLeaves();
-		this.getRoom().figureLeaves(this);
+		this.getRoom().figureDies(this);
 
 		Figure.removeFigure(this);
 
@@ -1938,6 +1937,9 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 	public int getPositionInRoom() {
 		if (pos != null) {
 			return pos.getIndex();
+		}
+		if(isDead()) {
+			return getRoom().getDeadFigurePos(this);
 		}
 		return 0;
 	}

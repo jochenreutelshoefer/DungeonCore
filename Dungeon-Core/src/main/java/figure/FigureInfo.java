@@ -130,20 +130,13 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		}
 	}
 
-	private int positionInRoomIndexBackup;
 
 	public int getPositionInRoomIndex() {
-
-		if (f.isDead()) {
-			// might be helpful for drawing dead corpses
-			return positionInRoomIndexBackup;
-		}
 
 		int vis = map.getVisibilityStatus(f.getLocation());
 
 		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			final int positionInRoom = f.getPositionInRoom();
-			positionInRoomIndexBackup = positionInRoom;
 			return positionInRoom;
 		}
 		else {

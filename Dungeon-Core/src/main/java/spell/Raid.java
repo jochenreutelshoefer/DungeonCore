@@ -71,6 +71,9 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 			@Override
 			public List<? extends RoomInfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
 				PositionInRoomInfo position = actor.getPos();
+				if (position == null) {
+					return Collections.emptyList();
+				}
 				RouteInstruction.Direction possibleRaidDirection =
 						position.getPossibleFleeDirection();
 				if (possibleRaidDirection == null) {

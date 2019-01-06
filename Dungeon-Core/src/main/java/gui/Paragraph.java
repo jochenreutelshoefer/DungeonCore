@@ -11,7 +11,8 @@ package gui;
 
 import util.JDColor;
 
-
+// TODO: layout information should not live in core!
+@Deprecated
 public class Paragraph {
 
 	// private final SimpleAttributeSet style;

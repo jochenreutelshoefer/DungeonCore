@@ -59,8 +59,7 @@ public class DrawUtils {
 					JDPoint textOffset = null;
 					if (clickedObject instanceof FigureInfo) {
 						FigureInfo figureInfo = (FigureInfo) clickedObject;
-						AnimationFrame frame = AnimationManager.getInstance()
-								.getAnimationImage(figureInfo, roomInfo);
+						AnimationFrame frame = AnimationManager.getInstance().getAnimationImage(figureInfo, roomInfo);
 
 						if (frame != null) {
 							JDImageProxy<?> animationImage = frame.getImage();
@@ -160,6 +159,7 @@ public class DrawUtils {
 		// this is necessary as they have already been removed from the model after their death instantly
 		// and hence are not called for being painted any more
 		// here we just flush their queued animations
+		/*
 		Collection<FigureInfo> deadFigures = AnimationManager.getInstance().getDeadFigures();
 		for (FigureInfo deadFigure : deadFigures) {
 			if(roomInfo.equals(deadFigure.getRoomInfo())) {
@@ -199,8 +199,9 @@ public class DrawUtils {
 					Logger.getLogger(DrawUtils.class).error("Could not find image for dead figure: "+ deadFigure + " (Direction: "+deadFigure.getLookDirection()+")");
 				}
 			}
-		}
 
+		}
+		*/
 		// we return the off screen image of this room for later reuse
 		return g.getTempImage();
 	}

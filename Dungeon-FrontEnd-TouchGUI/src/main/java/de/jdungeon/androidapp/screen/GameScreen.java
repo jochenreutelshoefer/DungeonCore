@@ -171,6 +171,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		centerOn(heroRoomNumber);
 		scrollTo(heroRoomNumber, 100f, "init");
 
+		// trigger complete re-render
+		worldHasChanged = true;
+
 		resetDungeonRenderer();
 		Log.i("Initialization","GameScreen init finished");
 	}
@@ -466,11 +469,19 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 						}
 					}
 
-					if (worldHasChanged || !this.drawnRooms.containsKey(roomInfo.getPoint()) || AnimationManager.getInstance()
-							.hasAnimations(roomInfo)) {
-						Image roomOffscreenImage = DrawUtils.drawObjects(gr, graphicObjectsForRoom,
-								getViewportPosition(), roomInfo,
-								roomOffsetX, roomOffsetY, this, dungeonRenderer, (int)roomSize);
+					if (worldHasChanged
+							|| !this.drawnRooms.containsKey(roomInfo.getPoint())
+							|| AnimationManager.getInstance().hasAnimations(roomInfo)) {
+						Image roomOffscreenImage = DrawUtils.drawObjects(gr,
+								graphicObjectsForRoom,
+								getViewportPosition(),
+								roomInfo,
+								roomOffsetX,
+								roomOffsetY,
+								this,
+								dungeonRenderer,
+								(int)roomSize);
+
 						if (roomOffscreenImage != null) {
 							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);
 							gr.drawScaledImage(roomOffscreenImage, roomOffsetX - viewportPosition.getX(), roomOffsetY - viewportPosition
@@ -1007,7 +1018,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 				text, figure, from, to, room);
 		task.setUrgent(urgent);
 		task.setPercept(percept);
-		AnimationManager.getInstance().startAnimation(task, figure, text, delayed, postDelay, delayImage);
+		AnimationManager.getInstance().startAnimation(task, figure,  delayed, postDelay, delayImage);
 	}
 
 	public JDPoint getViewportPosition() {

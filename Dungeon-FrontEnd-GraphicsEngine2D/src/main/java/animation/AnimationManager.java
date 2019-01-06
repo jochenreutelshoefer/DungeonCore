@@ -108,7 +108,7 @@ public class AnimationManager {
 		return true;
 	}
 
-	public synchronized void startAnimation(AnimationTask task, FigureInfo figure, String text, boolean delayed, boolean postDelayed, JDImageProxy delayImage) {
+	public synchronized void startAnimation(AnimationTask task, FigureInfo figure, boolean delayed, boolean postDelayed, JDImageProxy delayImage) {
 		Queue<AnimationTask> queue = animations.get(figure);
 		if(queue == null) {
 			queue = new LinkedList<>();

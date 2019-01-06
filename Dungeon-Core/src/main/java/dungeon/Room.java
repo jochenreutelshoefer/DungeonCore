@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -80,6 +82,8 @@ public class Room extends DungeonWorldObject implements
 	private final List<Quest> quests = new LinkedList<Quest>();
 
 	private List<Figure> roomFigures;
+
+	private final Map<Position, Set<Figure>> deadFigures = new HashMap<>();
 
 	private List<Item> items;
 
@@ -978,6 +982,27 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
+	public int getDeadFigurePos(Figure figure) {
+		// TODO: refactor data structure for storing dead figures, not efficient for required access
+		final Set<Position> positions = deadFigures.keySet();
+		for (Position position : positions) {
+			if(deadFigures.get(position).contains(figure)) {
+				return position.getIndex();
+			}
+		}
+		return 0;
+	}
+
+	public Collection<Figure> getDeadFigures() {
+		// TODO: refactor data structure for storing dead figures, not efficient for required access
+		Collection<Figure> result = new HashSet<>();
+		final Collection<Set<Figure>> collection = deadFigures.values();
+		for (Set<Figure> figures : collection) {
+			result.addAll(figures);
+		}
+		return result;
+	}
+
 	public void figureEntersAtPosition(Figure m, int position) {
 		figureEntersAtPosition(m, 0, position);
 	}
@@ -1025,20 +1050,43 @@ public class Room extends DungeonWorldObject implements
 		oldInfos = ("\n\nLetzter Stand\n" + getInfoText(ALL, true));
 	}
 
-	public boolean figureLeaves(Figure m) {
-		prepareFigureLeaves(m);
-		return roomFigures.remove(m);
+
+
+
+
+	public void figureDies(Figure figure) {
+		if(figure.getRoom() != this) {
+			throw new IllegalArgumentException();
+		}
+
+		// add figure to collection of dead figures in this room
+		final Position currentPosition = figure.getPos();
+		Set<Figure> deadFiguresOnPos = this.deadFigures.get(currentPosition);
+		if(deadFiguresOnPos == null) {
+			// TODO: use multi map
+			deadFiguresOnPos = new HashSet<>();
+			deadFigures.put(currentPosition, deadFiguresOnPos);
+		}
+		deadFiguresOnPos.add(figure);
+
+		// finally leave position
+		figureLeaves(figure);
 	}
 
-	private void prepareFigureLeaves(Figure m) {
-		m.getRoomVisibility().getStatusObject(getNumber())
-				.removeVisibilityModifier(m);
-		m.getRoomVisibility().resetVisibilityStatus(this.number);
+	public boolean figureLeaves(Figure m) {
+
+		if(!getDeadFigures().contains(m)) {
+			// dead figures may retain their vis status (for GUI's sake)
+			m.getRoomVisibility().getStatusObject(getNumber())
+					.removeVisibilityModifier(m);
+			m.getRoomVisibility().resetVisibilityStatus(this.number);
+		}
 
 		m.getPos().figureLeaves();
 		if (fight != null) {
 			fight.figureLeaves(m);
 		}
+		return roomFigures.remove(m);
 	}
 
 	private void remItemFromArray(Item i) {
@@ -1278,11 +1326,21 @@ public class Room extends DungeonWorldObject implements
 			boolean disappears = element.fightEnded(roomFigures);
 			if (disappears) {
 				// prevent concurrent modification
-				prepareFigureLeaves(element);
+
+				element.getRoomVisibility().getStatusObject(getNumber())
+						.removeVisibilityModifier(element);
+				element.getRoomVisibility().resetVisibilityStatus(this.number);
+
+				element.getPos().figureLeaves();
+				if (fight != null) {
+					fight.figureLeaves(element);
+				}
 				iter.remove();
 			}
 		}
 	}
+
+
 
 	static class MyFightOrderComparator implements Comparator<Figure> {
 

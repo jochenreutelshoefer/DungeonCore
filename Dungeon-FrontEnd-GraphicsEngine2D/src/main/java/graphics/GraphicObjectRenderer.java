@@ -1,12 +1,12 @@
 package graphics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import animation.AnimationUtils;
 import animation.DefaultAnimationSet;
 import animation.Motion;
 import dungeon.ChestInfo;
@@ -133,7 +133,6 @@ public class GraphicObjectRenderer {
 	private JDPoint spotPosition;
 
 	private final Map<RoomInfoEntity, GraphicObject> graphicObjectCache = new HashMap<>();
-	private RelativeRectangle roomBlackBackGroundRect;
 	private GraphicObject roomUndiscovered;
 	private RelativeRectangle roomRect;
 	private RelativeRectangle wallRect;
@@ -180,7 +179,6 @@ public class GraphicObjectRenderer {
 		chestRect = new RelativeRectangle(chestPosition,
 				chestDimension);
 
-		assert positionCoord != null;
 		for (int i = 0; i < positionCoord.length; i++) {
 			positionCoord[i] = getPositionCoordinates(Position.Pos.fromValue(i), roomSize);
 			positionCoordModified[i] = new JDPoint(positionCoord[i].getX() + ROOMSIZE_BY_20, positionCoord[i].getY());
@@ -649,25 +647,26 @@ public class GraphicObjectRenderer {
 		int sizeY = figureInfoSize.getHeight();
 		RelativeRectangle monsterDrawRect = new RelativeRectangle(relativeCoordinates.getX() - (sizeX / 2),
 				relativeCoordinates.getY() - (sizeY / 2), sizeX, sizeY);
-		JDImageLocated ob = new JDImageLocated(ImageManager.getImage(m, m.getLookDirection()), monsterDrawRect);
-
-		if (m.isDead() != null && m.isDead()) {
-			DefaultAnimationSet set = AnimationUtils.getFigure_tipping_over(m);
-			if (set != null && set.getLength() > 0) {
-				JDImageProxy<?> i = set.getImagesNr(set.getLength() - 1);
-				ob = new JDImageLocated(i, monsterDrawRect);
+		JDImageProxy<?> image = ImageManager.getImage(m, m.getLookDirection());
+		if(m.isDead()) {
+			final DefaultAnimationSet dyingAnimationSet = ImageManager.getAnimationSet(m, Motion.TippingOver, m.getLookDirection());
+			if(dyingAnimationSet != null) {
+				image = dyingAnimationSet.getImagesNr(dyingAnimationSet.getLength() - 1);
 			}
 		}
+		JDImageLocated ob = new JDImageLocated(image, monsterDrawRect);
 
 		int fifthRoomSize = roomSize / 5;
 		RelativeRectangle monsterClickRect = new RelativeRectangle(
-				relativeCoordinates.getX() - fifthRoomSize / 2, relativeCoordinates.getY() - fifthRoomSize / 2, fifthRoomSize,
+				relativeCoordinates.getX() - fifthRoomSize / 2,
+				relativeCoordinates.getY() - fifthRoomSize / 2,
+				fifthRoomSize,
 				fifthRoomSize);
 
 		return new JDGraphicObject(ob, m, monsterDrawRect, JDColor.WHITE, monsterClickRect);
 	}
 
-	public JDDimension getMonsterSize(MonsterInfo m) {
+	private JDDimension getMonsterSize(MonsterInfo m) {
 		Class<? extends Monster> mClass = m.getMonsterClass();
 		if (mClass == Wolf.class) {
 			return monsterSizeS;
@@ -707,6 +706,29 @@ public class GraphicObjectRenderer {
 			GraphicObject gr = drawAMonster(m, getPositionCoordModified(position));
 			if (i >= 8) {
 				break;
+			}
+			obs[i] = gr;
+		}
+
+		return obs;
+	}
+
+	private GraphicObject[] drawDeadFigures(List<FigureInfo> figures) {
+		if (figures == null) {
+			return new GraphicObject[] {};
+		}
+		int k = figures.size();
+		GraphicObject obs[] = new GraphicObject[k];
+		for (int i = 0; i < figures.size(); i++) {
+
+			FigureInfo m = (figures.get(i));
+			int position = m.getPositionInRoomIndex();
+			GraphicObject gr;
+			if (m instanceof MonsterInfo) {
+				gr = drawAMonster((MonsterInfo) m, getPositionCoordModified(position));
+			}
+			else {
+				gr = drawHero((HeroInfo) m);
 			}
 			obs[i] = gr;
 		}
@@ -933,6 +955,7 @@ public class GraphicObjectRenderer {
 				- (yHeroSize / 2), xHeroSize, yHeroSize);
 
 		JDImageLocated im = getImage(info, heroRectangle);
+
 		return new JDGraphicObject(im, info, heroRectangle, JDColor.WHITE,
 				getHalfSizeRect(heroRectangle));
 	}
@@ -1111,17 +1134,12 @@ public class GraphicObjectRenderer {
 					}
 				}
 			}
-			/*
+
 			final List<FigureInfo> deadFigures = r.getDeadFigureInfos();
 			if (deadFigures != null && !deadFigures.isEmpty()) {
 				GraphicObject[] deadFigureObs = drawDeadFigures(deadFigures);
-				for (int i = 0; i < deadFigureObs.length; i++) {
-					if (deadFigureObs[i] != null) {
-								graphObs.add(deadFigureObs[i]);
-					}
-				}
+				graphObs.addAll(Arrays.asList(deadFigureObs));
 			}
-			*/
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
 
@@ -1134,7 +1152,9 @@ public class GraphicObjectRenderer {
 			}
 		}
 
-		if ((r.getSpot() != null) && (r.getSpot().isFound())) {
+		if ((r.getSpot() != null) && (r.getSpot().
+
+				isFound())) {
 			GraphicObject spotOb = new GraphicObject(r.getSpot(),
 					new RelativeRectangle(spotPosition,
 							getSpotDimension()), null,

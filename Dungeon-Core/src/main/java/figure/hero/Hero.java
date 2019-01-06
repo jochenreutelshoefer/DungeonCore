@@ -727,7 +727,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		if(isBonusLive()) {
 			this.setBonusLive(false);
 			this.getHealth().setValue(1);
-			this.getRoom().figureLeaves(this);
+			this.getRoom().figureDies(this);
 			Room respawnRoom2 = this.getRespawnRoom();
 			respawnRoom2.figureEnters(this,0);
 			respawnRoom2.distributePercept(new InfoPercept(InfoPercept.RESPAWN));
