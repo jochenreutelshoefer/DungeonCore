@@ -37,6 +37,7 @@ public abstract class ActivityPresenter extends ContainerGUIElement {
 
 	private final int positionCorrectionLarge;
 	private final int positionCorrectionSmall;
+	// TODO : rework this thing
 	protected boolean positionCorrection = false;
 
 	protected final Image itemBackgroundImage;

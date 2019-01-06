@@ -49,6 +49,10 @@ public abstract class ReversibleRoomQuest extends RoomQuest {
 	abstract List<DungeonChangeAction> createActionList();
 
 	public void undo() {
+		if(actions == null) {
+			//action list could not be created, therefore nothing to undo
+			return;
+		}
 		List<DungeonChangeAction> undoList = new ArrayList<>(actions);
 		Collections.reverse(undoList);
 		for (DungeonChangeAction dungeonChangeAction : undoList) {

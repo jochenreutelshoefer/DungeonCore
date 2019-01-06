@@ -53,7 +53,7 @@ public class LionessConjuration extends AbstractSpell {
 
 	@Override
 	public void sorcer(Figure mage, RoomEntity target) {
-		Lioness lioness = Lioness.createLioness(600 * level, mage.getRoom()
+		Lioness lioness = Lioness.createLioness(800 * level, mage.getRoom()
 				.getDungeon(), FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility()));
 		Room room = mage.getRoom();
 		int targetPosition = Position.getFreePositionNear(mage.getRoom(), mage.getPositionInRoom());

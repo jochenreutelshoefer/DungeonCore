@@ -78,7 +78,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 	@Override
 	public int getRoundScoringBaseValue() {
-		return 150;
+		return 250;
 	}
 
 	private Dungeon createStartDungeon() {
@@ -87,7 +87,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 		List<Key> allKeys = Key.generateKeylist();
 		Key exitKey = allKeys.get(0);
-		List<Key> remainingKeys = new ArrayList<Key>();
+		List<Key> remainingKeys = new ArrayList<>();
 
 		SimpleDungeonFiller filler = null;
 
@@ -115,8 +115,8 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 			// show exit on a map in entry room
 			entryRoom = dungeon.getRoom(this.getHeroEntryPoint());
-			filler.addAllocatedRoom(entryRoom);
 			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+			filler.addAllocatedRoom(entryRoom);
 
 
 
@@ -134,8 +134,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 			Chest ch = new Chest(itemsL);
 			entryRoom.setChest(ch);
 
-			remainingKeys.addAll(allKeys);
-			remainingKeys.remove(exitKey);
+
 			Set<RouteInstruction.Direction> doorDirections = getExitDirections();
 
 			boolean setDoorsAndKey = setDoorsWithKeys(exitRoom, exitKey, doorDirections, filler);
@@ -149,9 +148,14 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 		// prevent removal of doors for statue room (make RQ?)
 		// todo: statue should not be with guards
-		filler.getUnallocatedRandomRoom().setShrine(new Statue());
+		final Room statueRoom = filler.getUnallocatedRandomRoom();
+		statueRoom.setShrine(new Statue());
+		filler.addAllocatedRoom(statueRoom);
+
 		// situate HF more near entrance/exit
-		filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(10, 1));
+		final Room fountainRoom = filler.getUnallocatedRandomRoom();
+		fountainRoom.setShrine(new HealthFountain(30, 1));
+		filler.addAllocatedRoom(fountainRoom);
 
 		List<Item> items = new ArrayList<Item>();
 		for (int i = 0; i < 5; i++) {
@@ -203,9 +207,9 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		exitRoom.setFloorIndex(FLOOR_INDEX_EXIT);
 		List<Monster> gateKeepers = new ArrayList<Monster>();
 
-		gateKeepers.add(new Orc(900));
-		gateKeepers.add(new Wolf(900));
-		gateKeepers.add(new Skeleton(900));
+		gateKeepers.add(new Orc(1000));
+		gateKeepers.add(new Wolf(1000));
+		gateKeepers.add(new Skeleton(1000));
 
 
 		Iterator<RouteInstruction.Direction> directionsIterator = doorDirections.iterator();

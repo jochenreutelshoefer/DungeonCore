@@ -49,6 +49,9 @@ public class InfoUnitUnwrapper {
 	}
 
 	public RoomEntity unwrappObject(InfoEntity o) {
+		if(o == null) {
+			return null;
+		}
 		if (o instanceof ItemInfo) {
 			InfoEntity info = ((ItemInfo) o).getOwner();
 			ItemOwner owner = (ItemOwner) unwrappObject(info);

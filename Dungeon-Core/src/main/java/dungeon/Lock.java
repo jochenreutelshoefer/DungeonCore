@@ -42,6 +42,12 @@ public class Lock<T extends RoomEntity> implements Locatable, RoomEntity {
 	}
 
 	@Override
+	public String toString() {
+		// todo : factor out String
+		return "Schloss: "+key.getType();
+	}
+
+	@Override
 	public JDPoint getLocation() {
 		return object.getLocation();
 	}
