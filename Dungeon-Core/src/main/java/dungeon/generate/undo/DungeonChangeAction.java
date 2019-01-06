@@ -8,7 +8,7 @@ import dungeon.Dungeon;
  */
 public interface DungeonChangeAction {
 
-	void doAction();
+	boolean doAction();
 
 	void undo();
 }

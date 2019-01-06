@@ -22,9 +22,10 @@ public class RemoveDoor implements DungeonChangeAction {
 	}
 
 	@Override
-	public void doAction() {
+	public boolean doAction() {
 		previousDoor = room.getDoor(direction);
 		room.removeDoor(previousDoor, true);
+		return true;
 	}
 
 	@Override

@@ -18,7 +18,6 @@ import de.jdungeon.util.PaintBuilder;
  */
 public class Popup extends AbstractGUIElement {
 
-
 	protected String text;
 	private  Event event = null;;
 
@@ -40,11 +39,9 @@ public class Popup extends AbstractGUIElement {
 		this.event = fireWhenTouched;
 	}
 
-
 	public void setText(String text) {
 		this.text = text;
 	}
-
 
 	private boolean show = false;
 
@@ -78,7 +75,7 @@ public class Popup extends AbstractGUIElement {
 		red.setColor(Colors.RED);
 		red.setFontSize(36);
 		g.drawString(text, this.position.getX() + 100,
-				textStartRow - 10, g.getTextPaintBlack());
+				textStartRow - 10, g.getTextPaintWhite25());
 
 		drawBorder(g);
 	}

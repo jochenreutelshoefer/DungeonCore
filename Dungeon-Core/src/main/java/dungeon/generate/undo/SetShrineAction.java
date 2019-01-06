@@ -12,6 +12,7 @@ public class SetShrineAction implements DungeonChangeAction {
 
 	private final Shrine shrine;
 	private final Room room;
+	private boolean possible;
 
 	public SetShrineAction(Shrine shrine, Room room) {
 		this.shrine = shrine;
@@ -19,13 +20,20 @@ public class SetShrineAction implements DungeonChangeAction {
 	}
 
 	@Override
-	public void doAction() {
-		assert(room.getShrine() == null);
-		room.setShrine(shrine);
+	public boolean doAction() {
+		if(room.getShrine() != null) {
+			possible = false;
+		} else {
+			room.setShrine(shrine);
+			possible = true;
+		}
+		return possible;
 	}
 
 	@Override
 	public void undo() {
-		room.setShrine(null);
+		if(possible) {
+			room.setShrine(null);
+		}
 	}
 }

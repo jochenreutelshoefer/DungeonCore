@@ -59,6 +59,7 @@ import shrine.Angel;
 import shrine.Brood;
 import shrine.Luzia;
 import shrine.MoonRuneFinderShrine;
+import shrine.ScoutShrine;
 import shrine.Shrine;
 import shrine.ShrineInfo;
 import util.JDColor;
@@ -750,6 +751,15 @@ public class GraphicObjectRenderer {
 					shrineRect, JDColor.YELLOW);
 		}
 		else if (s.getShrineIndex() == Shrine.SHRINE_STATUE) {
+			int xpos = roomOffsetX + (16 * ROOMSIZE_BY_24);
+			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
+			int xsize = ROOMSIZE_BY_3;
+			int ysize = (int) (roomSize / 2.5);
+			ob = new JDGraphicObject(new JDImageLocated(
+					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
+					shrineRect, JDColor.YELLOW);
+		}
+		else if (s.getShrineClass().equals(ScoutShrine.class)) {
 			int xpos = roomOffsetX + (16 * ROOMSIZE_BY_24);
 			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
 			int xsize = ROOMSIZE_BY_3;

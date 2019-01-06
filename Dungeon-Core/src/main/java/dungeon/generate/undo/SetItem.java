@@ -11,6 +11,7 @@ public class SetItem implements DungeonChangeAction {
 
 	private final ItemOwner itemOwner;
 	private final Item item;
+	private boolean possible;
 
 	public SetItem(ItemOwner owner, Item item) {
 		itemOwner = owner;
@@ -18,14 +19,15 @@ public class SetItem implements DungeonChangeAction {
 	}
 
 	@Override
-	public void doAction() {
-		boolean taken = itemOwner.takeItem(item);
-		assert taken;
+	public boolean doAction() {
+		possible = itemOwner.takeItem(item);
+		return possible;
 	}
 
 	@Override
 	public void undo() {
-		boolean removed = itemOwner.removeItem(item);
-		assert removed;
+		if(possible) {
+			itemOwner.removeItem(item);
+		}
 	}
 }

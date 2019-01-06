@@ -69,6 +69,7 @@ import shrine.MoonRuneFinderShrine;
 import shrine.QuestShrine;
 import shrine.RepairShrine;
 import shrine.RevealMapShrine;
+import shrine.ScoutShrine;
 import shrine.Shrine;
 import shrine.ShrineInfo;
 import shrine.SorcerLab;
@@ -261,6 +262,7 @@ public class ImageManager {
 	public static JDImageProxy<?> floorImage7;
 
 	public static JDImageProxy<?> fountainImage;
+	public static JDImageProxy<?> saeuleImage;
 
 	public static AnimationSetDirections ghul1_been_hit;
 
@@ -848,6 +850,7 @@ public class ImageManager {
 
 			repairImage = new JDImageProxy<>(a, "amboss.gif");
 			fountainImage = new JDImageProxy<>(a, "fountain.gif");
+			saeuleImage = new JDImageProxy<>(a, "sauele.gif");
 			statueImage = new JDImageProxy<>(a, "statue.gif");
 			chest_lockImage = new JDImageProxy<>(a, "chest_schloss.gif");
 			door_north_lock = new JDImageProxy<>(a, "tuer_nord_schloss.gif");
@@ -1308,6 +1311,7 @@ public class ImageManager {
 		shrineMap.put(Xmas.class, ImageManager.xmasImage);
 		shrineMap.put(DarkMasterShrine.class, ImageManager.pentagrammImage);
 		shrineMap.put(LevelExit.class, ImageManager.falltuerImage);
+		shrineMap.put(ScoutShrine.class, ImageManager.saeuleImage);
 		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, RouteInstruction.Direction.South).getImagesNr(0));
 	}
 

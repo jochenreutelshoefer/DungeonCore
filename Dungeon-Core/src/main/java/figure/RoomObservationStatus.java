@@ -126,11 +126,12 @@ public class RoomObservationStatus {
 	public  synchronized void setVisibilityStatus(int newVisbility) {
 		this.visibilityStatus = newVisbility;
 		discoveryStatus = Math.min(VISIBILITY_SHRINE, Math.max(discoveryStatus, newVisbility));
-		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), newVisbility);
+		final Room room = map.getDungeon().getRoom(point);
+		room.setObserverStatus(map.getFigure(), newVisbility);
 		
 	}
 
-	public synchronized void addVisibilityModifier(VisibilityModifier mod) {
+	synchronized void addVisibilityModifier(VisibilityModifier mod) {
 		if(!visibilityModifier.contains(mod)) {
 			visibilityModifier.add(mod);
 			this.setVisibilityStatus(mod.getVisibilityStatus());

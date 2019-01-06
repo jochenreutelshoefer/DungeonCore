@@ -952,7 +952,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			s += ("Das funktioniert so jetzt gerade nicht...");
 		}
 		tellPercept(new TextPercept(s));
-		return new ScoutResult(action, this, visStatusResult, s);
+		return new ScoutResult(this, visStatusResult);
 	}
 
 	public boolean learnSpell(AbstractSpell s) {

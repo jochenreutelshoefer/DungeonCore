@@ -12,7 +12,7 @@ import dungeon.util.RouteInstruction;
 public class AddDoor implements DungeonChangeAction {
 
 	private final Room room;
-	private Door door;
+	private final Door door;
 	private final RouteInstruction.Direction dir;
 	private Door previousDoor = null;
 
@@ -29,9 +29,10 @@ public class AddDoor implements DungeonChangeAction {
 	}
 
 	@Override
-	public void doAction() {
+	public boolean doAction() {
 		previousDoor = room.getDoor(dir);
 		room.setDoor(door, dir, true);
+		return true;
 	}
 
 	@Override

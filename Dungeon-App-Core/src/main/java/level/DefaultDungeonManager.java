@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import level.stageone.PreliminaryStartLevelFactory;
 import level.stageone.StartLevel;
-import level.stageone.StartLevelOLD;
+import level.stagethree.StartLevelOLD;
 import level.stagetwo.EscortLevel2A;
-import level.stagetwo.LevelTwoB;
 import level.stagetwo.MoonRuneChase;
 
 /**
@@ -33,8 +31,6 @@ public class DefaultDungeonManager implements DungeonManager {
 		stages.put(1 , stageOneList);
 
 		List<DungeonFactory> stageTwoList = new ArrayList<>();
-		stageTwoList.add(new StartLevelOLD());
-		stageTwoList.add(new StartLevelOLD());
 		stageTwoList.add(new StartLevelOLD());
 		stages.put(2 , stageTwoList);
 	}

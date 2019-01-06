@@ -19,8 +19,9 @@ public class InsertFigure implements DungeonChangeAction {
 	}
 
 	@Override
-	public void doAction() {
+	public boolean doAction() {
 		room.figureEnters(figure, 0);
+		return true;
 	}
 
 	@Override

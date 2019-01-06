@@ -13,7 +13,7 @@ public class SetChestAction implements DungeonChangeAction {
 	private final Chest chest;
 
 	private final Room room;
-
+	private boolean possible;
 
 	public SetChestAction(Chest chest, Room room) {
 		this.chest = chest;
@@ -21,14 +21,21 @@ public class SetChestAction implements DungeonChangeAction {
 	}
 
 	@Override
-	public void doAction() {
-		assert(room.getChest() == null);
-		room.setChest(chest);
+	public boolean doAction() {
+		if(room.getShrine() != null) {
+			possible = false;
+		} else {
+			room.setChest(chest);
+			possible = true;
+		}
+		return possible;
 	}
 
 	@Override
 	public void undo() {
-		room.setChest(null);
+		if(possible) {
+			room.setChest(null);
+		}
 	}
 
 	public Chest getChest() {

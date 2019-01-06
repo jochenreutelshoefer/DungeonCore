@@ -222,8 +222,8 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		rooms.add(location);
 		for (int i = 0; i < rooms.size(); i++) {
 			Room toView = rooms.get(i);
-			f.getRoomObservationStatus(toView.getLocation())
-					.addVisibilityModifier(this);
+			// TODO: maybe better do this scouting as done at scout shrine, via ScoutResult objects?
+			f.getRoomVisibility().addVisibilityModifier(toView.getLocation(), this);
 
 		}
 		String s = JDEnv.getResourceBundle().getString("sorcLab_setup");

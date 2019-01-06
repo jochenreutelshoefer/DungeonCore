@@ -958,8 +958,7 @@ public class Room extends DungeonWorldObject implements
 		}
 		figure.getRoomVisibility().setVisibilityStatus(getNumber(),
 				RoomObservationStatus.VISIBILITY_ITEMS);
-		figure.getRoomVisibility().getStatusObject(getNumber())
-				.addVisibilityModifier(figure);
+		figure.getRoomVisibility().addVisibilityModifier(getNumber(), figure);
 
 		// we 'discover' also all neighbour rooms of the entered room
 		final List<Room> neighboursWithDoor = getNeighboursWithDoor();

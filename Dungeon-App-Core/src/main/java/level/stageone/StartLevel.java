@@ -12,6 +12,7 @@ import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DeadEndPath;
 import dungeon.generate.DistanceAtLeastConstraint;
+import dungeon.generate.DistanceAtMostConstraint;
 import dungeon.generate.DungeonFiller;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuestWall;
@@ -28,6 +29,7 @@ import shrine.Corpse;
 import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;
+import shrine.ScoutShrine;
 import shrine.Statue;
 import spell.KeyLocator;
 
@@ -112,6 +114,8 @@ public class StartLevel extends AbstractDungeonFactory {
 			filler.addAllocatedRoom(statueRoom);
 
 
+
+
 			List<Item> itemsL = new ArrayList<>();
 			itemsL.add(new ScrollMagic(new KeyLocator(1, 0, 0, 0, 0, 0)));
 			Chest entryChest = new Chest(itemsL);
@@ -175,6 +179,12 @@ public class StartLevel extends AbstractDungeonFactory {
 				fountainRoom = filler.getUnallocatedRandomRoom();
 			}
 			fountainRoom.setShrine(new HealthFountain(30, 1));
+			filler.addAllocatedRoom(fountainRoom);
+
+			// set scout shrine
+			Room scoutShrineRoom = filler.getUnallocatedRoomNearCenter();
+			scoutShrineRoom.setShrine(new ScoutShrine(scoutShrineRoom));
+			filler.addAllocatedRoom(scoutShrineRoom);
 
 			// for testing only
 			//entryRoom.addItem(new VisibilityCheatBall());

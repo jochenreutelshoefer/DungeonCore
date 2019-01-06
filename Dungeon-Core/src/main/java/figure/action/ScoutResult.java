@@ -10,17 +10,13 @@ import figure.VisibilityModifier;
  */
 public class ScoutResult implements VisibilityModifier {
 
-	private final ScoutAction action;
 	private final Figure actor;
 	private final int visLevel;
-	private final String text;
 	private final Position position;
 
-	public ScoutResult(ScoutAction action, Figure actor, int visLevel, String text) {
-		this.action = action;
+	public ScoutResult(Figure actor, int visLevel) {
 		this.actor = actor;
 		this.visLevel = visLevel;
-		this.text = text;
 		this.position = actor.getPos();
 	}
 

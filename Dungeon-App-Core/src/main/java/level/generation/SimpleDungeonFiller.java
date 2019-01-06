@@ -268,6 +268,19 @@ public class SimpleDungeonFiller implements DungeonFiller {
 
 	}
 
+	public Room getUnallocatedRoomNearCenter() {
+		int centerX = getDungeon().getSize().getX() / 2;
+		int centerY = getDungeon().getSize().getY() / 2;
+		JDPoint centerPoint = new JDPoint(centerX, centerY);
+		final Room centerRoom = getDungeon().getRoom(centerPoint);
+		if(centerRoom != null && !centerRoom.isWall() && !isAllocated(centerRoom)) {
+			return centerRoom;
+		} else {
+			return getUnallocatedRandomRoom(centerPoint);
+		}
+
+	}
+
 	@Override
 	public RectArea getValidArea(Room entryRoom, int sizeX, int sizeY) {
 		int maxTrials = 100;

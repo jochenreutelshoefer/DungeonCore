@@ -33,6 +33,7 @@ import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.MoonRuneFinderShrine;
 import shrine.RevealMapShrine;
+import shrine.ScoutShrine;
 import shrine.Statue;
 import spell.KeyLocator;
 import spell.Steal;
@@ -185,9 +186,12 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 				fountainRoom = filler.getUnallocatedRandomRoom();
 			}
 			fountainRoom.setShrine(new HealthFountain(30, 1));
+			filler.addAllocatedRoom(fountainRoom);
 
-			// for testing only
-			//entryRoom.addItem(new VisibilityCheatBall());
+			// set scout shrine
+			Room scoutShrineRoom = filler.getUnallocatedRoomNearCenter();
+			scoutShrineRoom.setShrine(new ScoutShrine(scoutShrineRoom));
+			filler.addAllocatedRoom(scoutShrineRoom);
 
 
 

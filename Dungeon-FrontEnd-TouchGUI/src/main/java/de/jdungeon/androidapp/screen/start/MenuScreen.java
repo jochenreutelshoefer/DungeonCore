@@ -21,7 +21,7 @@ public abstract class MenuScreen extends StandardScreen {
 		g.fillRect(0, 0, this.game.getScreenWidth(), HEADER_HEIGHT, Colors.BLACK);
 		g.drawLine(0, HEADER_HEIGHT, this.game.getScreenWidth(), HEADER_HEIGHT, Colors.GRAY);
 		g.drawString(headerString, this.game.getScreenWidth()/2, 60, g
-				.getDefaultPaint());
+				.getTextPaintWhite25());
 	}
 
 	protected abstract String getHeaderString();

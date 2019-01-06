@@ -2,7 +2,7 @@ package level;
 
 import dungeon.Dungeon;
 import game.JDEnv;
-import level.stageone.StartLevelOLD;
+import level.stagethree.StartLevelOLD;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

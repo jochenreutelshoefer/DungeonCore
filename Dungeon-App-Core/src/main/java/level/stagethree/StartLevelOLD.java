@@ -1,4 +1,4 @@
-package level.stageone;
+package level.stagethree;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +36,7 @@ import level.generation.SimpleDungeonFiller;
 import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.RevealMapShrine;
+import shrine.ScoutShrine;
 import shrine.Statue;
 import spell.conjuration.FirConjuration;
 import spell.conjuration.LionessConjuration;
@@ -88,7 +89,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		Key exitKey = allKeys.get(0);
 		List<Key> remainingKeys = new ArrayList<Key>();
 
-		DungeonFiller filler = null;
+		SimpleDungeonFiller filler = null;
 
 		Room entryRoom = null;
 		JDPoint entryPoint = this.getHeroEntryPoint();
@@ -186,6 +187,12 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 		setupRoomQuests(dungeon, filler, entryRoom, entryPoint, roomQuests);
 
+
+
+		// set scout shrine
+		Room scoutShrineRoom = filler.getUnallocatedRoomNearCenter();
+		scoutShrineRoom.setShrine(new ScoutShrine(scoutShrineRoom));
+		filler.addAllocatedRoom(scoutShrineRoom);
 
 		return dungeon;
 	}

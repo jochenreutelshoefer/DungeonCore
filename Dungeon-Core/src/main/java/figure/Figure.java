@@ -1548,10 +1548,7 @@ public abstract class Figure extends DungeonWorldObject implements ItemOwner,
 		if (doIt) {
 			lookDir = dir;
 			ScoutResult result = scout(action);
-
-			//getRoomVisibility().setVisibilityStatus(toScout.getNumber(),
-			//		result.getVisibilityStatus());
-			getRoomVisibility().getStatusObject(toScout.getNumber()).addVisibilityModifier(result);
+			getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(this, this.getRoom(), dir);
 			getRoom().distributePercept(p);
 			return ActionResult.DONE;

@@ -350,7 +350,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	protected ScoutResult scout(ScoutAction action) {
 		// by default monster cannot scout
-		return new ScoutResult(action, this, 0, "");
+		return new ScoutResult(this, 0);
 	}
 
 	@Override
