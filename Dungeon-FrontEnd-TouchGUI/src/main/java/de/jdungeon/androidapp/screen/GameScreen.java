@@ -87,9 +87,8 @@ import de.jdungeon.util.Pair;
 
 public class GameScreen extends StandardScreen implements EventListener, PerceptHandler {
 
-	public static final int SCALE_ROOM_FIGHT_MODE = 180;
-	public static final int SCALE_ROOM_DEFAULT = 150;
-	private Dungeon derDungeon;
+	private static final int SCALE_ROOM_FIGHT_MODE = 180;
+	private static final int SCALE_ROOM_DEFAULT = 150;
 	private HeroInfo figureInfo;
 
 	private GraphicObjectRenderer dungeonRenderer;
@@ -103,8 +102,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private Popup messagePopup = null;
 
 	private JDPoint viewportPosition;
-	private JDPoint targetViewportPosition;
-	private final double diffRatio = 1;
 	private float roomSize = 180;
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
@@ -119,7 +116,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private long lastScrollEventTime = -1;
 	private boolean touchEventAfterPaint = false;
 	private SmartControl smartControl;
-	//private boolean exitUsed = false;
 
 	public JDGUIEngine2D getGui() {
 		return gui;
@@ -171,7 +167,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		initGUIElements();
 		this.session.startGame(gui);
 
-		derDungeon = this.session.getCurrentDungeon();
 		JDPoint heroRoomNumber = figureInfo.getRoomNumber();
 		centerOn(heroRoomNumber);
 		scrollTo(heroRoomNumber, 100f, "init");
@@ -256,16 +251,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		InventoryPanel inventory = new InventoryPanel(figureInfo, this);
 		this.guiElements.add(inventory);
-
-		/*
-		 * init character panel
-		 */
-
-		//switched off - no need
-		/*
-		CharAttributeView charView = new CharAttributeView(figureInfo, this, this.getGame());
-		this.guiElements.add(charView);
-		*/
 
 		/*
 		 * init game over view
@@ -399,8 +384,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			guiPaintingCache.clear();
 			touchEventAfterPaint = false;
 		}
-		List<GUIElement> elements = this.guiElements;
-		for (GUIElement guiElement : elements) {
+		for (GUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
 				if (guiElement.needsRepaint()) {
 					guiElement.paint(gr, viewportPosition);
@@ -666,12 +650,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			 * handle scale event
 			 */
 
-			//if (roomSize < 90 && scaleFactor > 1) {
-			//	scaleFactor += scaleFactor - 1;
-			//}
-
-			//scaleFactor = (float) Math.pow(scaleFactor, 2);
-
 			int newRoomSize = (int) (roomSize * scaleFactor);
 
 			newRoomSize = Math.max(minRoomSize,
@@ -766,46 +744,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			}
 		}
 
-		/*
-		 * viewport moves towards target-viewport
-		 */
-		if (targetViewportPosition != null
-				&& (!targetViewportPosition.equals(viewportPosition))) {
-
-			int positionDiffX = viewportPosition.getX()
-					- targetViewportPosition.getX();
-			int positionDiffY = viewportPosition.getY()
-					- targetViewportPosition.getY();
-
-			int newX;
-			int newY;
-
-			int stepSize = 8;
-
-			if (positionDiffX > 10) {
-				newX = (int) Math.round(viewportPosition.getX()
-						- (stepSize * diffRatio));
-			}
-			else if (positionDiffX < -10) {
-				newX = (int) (viewportPosition.getX() + Math.round(stepSize
-						* diffRatio));
-			}
-			else {
-				newX = targetViewportPosition.getX();
-			}
-
-			if (positionDiffY > 10) {
-				newY = viewportPosition.getY() - stepSize;
-			}
-			else if (positionDiffY < -10) {
-				newY = viewportPosition.getY() + stepSize;
-			}
-			else {
-				newY = targetViewportPosition.getY();
-			}
-
-			viewportPosition = new JDPoint(newX, newY);
-		}
 	}
 
 	private Pair<Float, Float> getCurrentViewCenterRoomCoordinates() {
@@ -912,16 +850,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			}
 		}
 		return clickedObject;
-	}
-
-	private JDDimension getDragDistance(List<TouchEvent> touchEvents) {
-		TouchEvent startEvent = touchEvents.get(0);
-		TouchEvent endEvent = touchEvents.get(touchEvents.size() - 1);
-
-		int dx = endEvent.x - startEvent.x;
-		int dy = endEvent.y - startEvent.y;
-
-		return new JDDimension(dx, dy);
 	}
 
 	public void showVisibilityIncrease(List<JDPoint> points) {
@@ -1080,10 +1008,6 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		task.setUrgent(urgent);
 		task.setPercept(percept);
 		AnimationManager.getInstance().startAnimation(task, figure, text, delayed, postDelay, delayImage);
-	}
-
-	public float getRoomSize() {
-		return roomSize;
 	}
 
 	public JDPoint getViewportPosition() {
