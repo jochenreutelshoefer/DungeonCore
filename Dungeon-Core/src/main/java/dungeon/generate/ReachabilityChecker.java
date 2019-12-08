@@ -56,6 +56,14 @@ public class ReachabilityChecker {
 	}
 
 	public boolean check(Collection<JDPoint> ignoredRooms) {
+		return checkForUnreachableRooms(ignoredRooms).isEmpty();
+	}
+
+	public Collection<JDPoint> checkForUnreachableRooms() {
+		return checkForUnreachableRooms(Collections.<JDPoint>emptyList());
+	}
+
+	public Collection<JDPoint> checkForUnreachableRooms(Collection<JDPoint> ignoredRooms) {
 		// TODO: improve: do not allow to 'cross' exit room
 		// everything should be accessible without going 'through' exit
 
@@ -99,7 +107,7 @@ public class ReachabilityChecker {
 
 		if(closed.size() == numberOfRooms) {
 			// all rooms have been expanded
-			return true;
+			return Collections.emptySet();
 		}
 
 		// some rooms have not been reached, create some debug information - which ones?
@@ -115,13 +123,11 @@ public class ReachabilityChecker {
 		allRooms.removeAll(postPonedPoints);
 		// allRooms now contains the rooms that have not been reached
 
-		if(ignoredRooms.containsAll(allRooms)) {
-			// only ignored rooms are not reachable -> success
-			return true;
-		}
+		// rule out ignored rooms
+		allRooms.removeAll(ignoredRooms);
 
 
-		return false;
+		return allRooms;
 
 	}
 
@@ -170,7 +176,7 @@ public class ReachabilityChecker {
 			//if(!allowThroughExit) {
 				// everything should be reachable without going 'over'/'through' exit
 				Shrine shrine = dungeon.getRoom(point).getShrine();
-				if(shrine != null && shrine instanceof LevelExit) {
+				if(shrine instanceof LevelExit) {
 					// we do not expand the exit room
 					return result;
 				}

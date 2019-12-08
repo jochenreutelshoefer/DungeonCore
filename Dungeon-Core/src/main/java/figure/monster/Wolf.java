@@ -27,15 +27,6 @@ public class Wolf extends NatureMonster {
 	public int getCHANCE_TO_HIT() {
 		return CHANCE_TO_HIT;
 	}
-//	public Wolf(int value, Dungeon d, JDPoint p) {
-//		super();
-//
-//		
-//		
-//		contrucHelpWolf(value);
-//		construcHelp(value);
-//
-//	}
 
 	public static Wolf buildCustomWolf(int chance_to_hit, int damage, int health,int scatter, double healthRec, String name) {
 		int value = (int) (((double)chance_to_hit * damage * health) / 5.8);

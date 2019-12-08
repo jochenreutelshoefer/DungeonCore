@@ -14,6 +14,7 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -27,13 +28,14 @@ import util.JDColor;
  * oder mit dem Entdeckenzauberspruch gefunden werden. Es kann Gegenstaende enthalten.
  *
  */
+@Deprecated
 public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider, RoomEntity {
 
 	
 	private boolean found = false;
 
 	
-	private List<Item> items = new LinkedList<Item>();
+	private List<Item> items = new ArrayList<Item>();
 
 	
 	private int difficulty;

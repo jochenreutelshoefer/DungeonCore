@@ -21,7 +21,7 @@ public class Slap {
 
 	private final Figure target = null;
 
-	private final int precision;
+	private final float precision;
 
 
 	private int type;
@@ -51,7 +51,7 @@ public class Slap {
 		return s;
 	}
 	
-	public Slap(Figure attacker, int value, int tumble, int precision) {
+	public Slap(Figure attacker, int value, int tumble, float precision) {
 		this.actor = attacker;
 		this.valueStandard = value;
 		this.valueTumble = tumble;
@@ -170,7 +170,7 @@ public class Slap {
 		return valueTumble;
 	}
 
-	public int getPrecision() {
+	public float getPrecision() {
 		return precision;
 	}
 

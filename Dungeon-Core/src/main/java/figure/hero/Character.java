@@ -319,16 +319,8 @@ public class Character implements Serializable {
 	}
 
 	public void giveExp(SlapResult r) {
-		if (expCode == 0) {
-			giveSelfExp(r.getExp());
-		} else if (expCode == 1) {
-			giveWeaponExp(r.getExp());
-		} else if (expCode == 2) {
-			giveKnowExp(r.getExp(), (Monster) r.getVictim());
-		}
-
+		// TODO: rework or remove
 		testLevel();
-
 	}
 
 	public void giveExp(int r, Figure m) {

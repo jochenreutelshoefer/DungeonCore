@@ -54,7 +54,7 @@ public class LuziaRunner {
 				int otherDir = getOtherDir(dir, m);
 				if (otherDir != -1) {
 					//System.out.println("will nach: "+otherDir);
-					int pos = Room.getDoorPosIndex(otherDir);
+					int pos = 1; // TODO: refactor
 					int monsterPos = m.getPositionInRoomIndex();
 					if(pos != monsterPos) {
 					Action a = new MoveAction(otherDir);
@@ -79,7 +79,7 @@ public class LuziaRunner {
 					&& doorInfos[i].isPassable().booleanValue()) {
 				int newDir = i + 1;
 				if (newDir!= dir) {
-					int posIndex = Room.getDoorPosIndex(newDir);
+					int posIndex = 0; // TODO: refactor
 					if (!roomInfo.getPositionInRoom(posIndex).isOccupied() || roomInfo.getPositionInRoom(posIndex).getFigure().equals(m)) {
 						dirs.add(new Integer(newDir));
 					}

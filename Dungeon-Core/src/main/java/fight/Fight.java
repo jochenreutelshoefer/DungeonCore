@@ -1,5 +1,7 @@
 package fight;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,9 +12,7 @@ import figure.FigureInfo;
 import game.ControlUnit;
 
 /**
- * Ein Kampf enthaelt zwei Parteien, den Helden und die Monster. Wird der Kampf
- * gestartet kommen beide immer abwechseln zum Zug, bis der Kampf ended.
- * 
+ *
  */
 public class Fight {
 
@@ -20,8 +20,10 @@ public class Fight {
 	private final List<Figure> fighterList;
 
 
-	public Fight(Room r, List<Figure> figures) {
-		fighterList = figures;
+	public Fight(Room r) {
+		List<Figure> figuresSorted = new LinkedList<Figure>(r.getRoomFigures());
+		Collections.sort(figuresSorted, new MyFightOrderComparator());
+		fighterList = figuresSorted;
 		fightRoom = r;
 
 		List<Figure> l = r.getRoomFigures();
@@ -30,6 +32,33 @@ public class Fight {
 			mon.fightBegins(l);
 		}
 
+	}
+
+	static class MyFightOrderComparator implements Comparator<Figure> {
+
+		@Override
+		public int compare(Figure o1, Figure o2) {
+			if (o1 != null && o2 != null) {
+				double readiness1 = o1.getReadiness();
+				double readiness2 = o2.getReadiness();
+				if (o1.isRaiding()) {
+					return -1;
+				}
+				if (o2.isRaiding()) {
+					return 1;
+				}
+				if (readiness1 > readiness2) {
+					return -1;
+				}
+				else if (readiness1 < readiness2) {
+					return 1;
+				}
+			}
+			else {
+				return 0;
+			}
+			return 0;
+		}
 	}
 
 	public void figureLeaves(Figure f) {

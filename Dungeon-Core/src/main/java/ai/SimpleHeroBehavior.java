@@ -6,6 +6,9 @@
  */
 package ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -13,7 +16,6 @@ import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import figure.percept.Percept;
 import game.ControlUnit;
-import item.DustItem;
 import dungeon.Door;
 import dungeon.JDPoint;
 
@@ -23,6 +25,9 @@ import dungeon.JDPoint;
 public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 
 	private HeroInfo h;
+	private ActionAssembler actionAssembler;
+	private List<Action> moveActionQueue = new ArrayList<>();
+	private List<Action> fightActionQueue = new ArrayList<>();
 
 	public SimpleHeroBehavior() {
 		super(new AttitudeDefaultHero());
@@ -33,6 +38,7 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 		if (f instanceof HeroInfo) {
 			h = (HeroInfo) f;
 		}
+		actionAssembler = new ActionAssembler(h);
 	}
 
 
@@ -64,9 +70,11 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 	public Action getAction() {
 		if (h.getRoomInfo().fightRunning() != null
 				&& h.getRoomInfo().fightRunning().booleanValue()) {
-			return chooseFightAction();
+			Action action = chooseFightAction();
+			return action;
 		} else {
-			return chooseMovementAction();
+			Action action = chooseMovementAction();
+			return action;
 		}
 	}
 
@@ -99,15 +107,8 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 
 	@Override
 	public Action chooseMovementAction() {
-		if (h.getRoomItems().length > 0) {
-			if ((h.getRoomItems())[0].getItemClass() != DustItem.class) {
-
-			} else {
-				// return Action.makeActionTakeItem(h.getFighterID(),i);
-			}
-		}
-		if (h.getActionPoints() < 2) {
-			return Action.makeEndRoundAction();
+		if(!moveActionQueue.isEmpty()) {
+			return moveActionQueue.remove(0);
 		}
 
 		boolean possible = false;
@@ -123,9 +124,9 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 			possible = (doors[dir - 1] == 1 || doors[dir - 1] == 2);
 		}
 
-		Action a = Action.makeActionMove(dir);
+		moveActionQueue.addAll(actionAssembler.wannaWalk(dir));
 
-		return a;
+		return moveActionQueue.remove(0);
 	}
 
 	@Override
@@ -137,10 +138,31 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 
 			return a;
 		}
-		a = Action.makeActionAttack(0);
-		this.h.checkAction(a);
 
-		return a;
+		if(!fightActionQueue.isEmpty()) {
+			return fightActionQueue.remove(0);
+		}
+
+		List<FigureInfo> figureInfos = h.getRoomInfo().getFigureInfos();
+		FigureInfo hostileFigure = null;
+		for (FigureInfo figureInfo : figureInfos) {
+			if(figureInfo.isHostile(this.h)) {
+				hostileFigure = figureInfo;
+				continue;
+			}
+		}
+		if(hostileFigure != null) {
+			fightActionQueue.clear();
+			fightActionQueue.addAll(actionAssembler.wannaAttack(hostileFigure));
+
+		}
+
+		if(!fightActionQueue.isEmpty()) {
+			return fightActionQueue.remove(0);
+
+		} else {
+			return actionAssembler.wannaFlee().remove(0);
+		}
 	}
 
 }

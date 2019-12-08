@@ -129,10 +129,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	@Override
 	public Action chooseMovementAction() {
 
-		if (monster.getName().equals("Vim Wadenbei�er")) {
-			System.out.println("Vim ist dran");
-		}
-
 		if (monster.getActionPoints() == 0) {
 			Action a = Action.makeEndRoundAction(/* monster.getFighterID() */);
 			lastAction = a;
@@ -181,7 +177,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		if (dir == Dir.NORTH) {
 			pos = 1;
 		}
-
 		if (dir == Dir.SOUTH) {
 			pos = 5;
 		}
@@ -209,7 +204,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		}
 
 		if (!dirExisting) {
-
 			return 0;
 		}
 		int k = -1;
@@ -220,7 +214,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			}
 			dir = ((int) (Math.random() * 4));
 		}
-		// System.out.println("returning: "+k );
 		return k + 1;
 	}
 
@@ -309,15 +302,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 	}
 
-	public static int getMinFleeDist(FigureInfo info) {
-		DoorStep[] a = getDoorSteps(info);
-		if (a == null || a.length == 0) {
-			return -1;
-		}
-
-		return a[0].getDistance();
-	}
-
 	private static DoorStep calcDoorStep(int door, FigureInfo monster) {
 		RoomInfo info = monster.getRoomInfo();
 		int pos = monster.getPositionInRoomIndex();
@@ -382,72 +366,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			}
 		}
 		return poses;
-	}
-
-	protected int getFleeDir() {
-		int doors[] = monster.getRoomDoors();
-		boolean poss[] = new boolean[4];
-		boolean dirExisting = false;
-		for (int i = 0; i < doors.length; i++) {
-			if (doors[i] == Door.DOOR || doors[i] == Door.DOOR_LOCK_OPEN) {
-				poss[i] = true;
-				dirExisting = true;
-			} else {
-				poss[i] = false;
-			}
-		}
-
-		if (!dirExisting) {
-			System.out
-					.println("AbstractFightIntelligence.getRandomFleeDir() - NO VALID DIRECTION!!!");
-			return 0;
-		}
-		int pos = monster.getPositionInRoomIndex();
-		if (pos == 0) {
-			if (poss[0]) {
-				return 0;
-			} else if (poss[3]) {
-				return 3;
-			} else if (poss[1]) {
-				return 1;
-			} else if (poss[2]) {
-				return 2;
-			}
-		}
-		if (pos == 2) {
-			if (poss[0]) {
-				return 0;
-			} else if (poss[1]) {
-				return 1;
-			} else if (poss[3]) {
-				return 3;
-			} else if (poss[2]) {
-				return 2;
-			}
-		}
-		if (pos == 4) {
-			if (poss[1]) {
-				return 1;
-			} else if (poss[2]) {
-				return 2;
-			} else if (poss[3]) {
-				return 3;
-			} else if (poss[0]) {
-				return 0;
-			}
-		}
-		if (pos == 6) {
-			if (poss[2]) {
-				return 2;
-			} else if (poss[3]) {
-				return 3;
-			} else if (poss[1]) {
-				return 1;
-			} else if (poss[0]) {
-				return 0;
-			}
-		}
-		return -1;
 	}
 
 	protected StepAction stepToEnemy() {

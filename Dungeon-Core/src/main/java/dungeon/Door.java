@@ -271,11 +271,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 				+ rooms[1].toString();
 	}
 
-	/**
-	 * F�r Monster (1) nicht passierbar wenn Heldenstatue im Raum
-	 *
-	 * @return
-	 */
 	public boolean isPassable(Figure f) {
 		statueBlocks = false;
 			for (int i = 0; i < 2; i++) {
@@ -284,7 +279,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 					statueBlocks = true;
 				}
 			}
-		//}
 		return !locked & !statueBlocks & blockings.isEmpty();
 	}
 
@@ -292,17 +286,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		return (rooms[0].getRoomQuest() != null)
 				|| (rooms[1].getRoomQuest() != null);
 
-	}
-
-	public boolean isDoor(Door d) {
-		for (int i = 0; i < 2; i++) {
-			if (!this.hasRoom(d.getRooms()[i])) {
-				return false;
-			}
-			break;
-
-		}
-		return true;
 	}
 
 	public Room getOtherRoom(Room r) {

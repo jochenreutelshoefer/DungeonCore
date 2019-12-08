@@ -67,6 +67,7 @@
 						<platform>23</platform>
 						<path>/Users/jochenreutelshofer/Library/Android/sdk</path>
 					</sdk>
+					<extractDuplicates>true</extractDuplicates>
 					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 				</configuration>

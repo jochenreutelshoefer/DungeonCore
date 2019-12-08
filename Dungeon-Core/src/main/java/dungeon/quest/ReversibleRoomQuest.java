@@ -18,6 +18,7 @@ import item.Item;
 public abstract class ReversibleRoomQuest extends RoomQuest {
 
 	private List<DungeonChangeAction> actions;
+	private List<DungeonChangeAction> performedActions = new ArrayList<>();
 	public ReversibleRoomQuest(JDPoint p, DungeonFiller df, int x, int y) {
 		super(p, df, x, y);
 	}
@@ -26,10 +27,12 @@ public abstract class ReversibleRoomQuest extends RoomQuest {
 	}
 
 	protected boolean insert() {
+		performedActions.clear();
 		actions = createActionList();
 		if(actions == null) return false;
 		for (DungeonChangeAction action : actions) {
 			boolean works = action.doAction();
+			performedActions.add(action);
 			if(!works) {
 				return false;
 			}
@@ -53,7 +56,7 @@ public abstract class ReversibleRoomQuest extends RoomQuest {
 			//action list could not be created, therefore nothing to undo
 			return;
 		}
-		List<DungeonChangeAction> undoList = new ArrayList<>(actions);
+		List<DungeonChangeAction> undoList = new ArrayList<>(performedActions);
 		Collections.reverse(undoList);
 		for (DungeonChangeAction dungeonChangeAction : undoList) {
 			dungeonChangeAction.undo();

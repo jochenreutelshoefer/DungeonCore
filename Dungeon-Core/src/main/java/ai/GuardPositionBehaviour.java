@@ -3,8 +3,10 @@ package ai;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.util.RouteInstruction;
+import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
+import figure.action.AttackAction;
 import figure.action.DoNothingAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
@@ -44,11 +46,29 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 			int leftDist = Position.getDistanceFromTo(info.getPositionInRoomIndex(), pos.getIndex(),
 					false);
 			if (rightDist > leftDist) {
-				// TODO: check if is blocked
-				return new StepAction(info.getPos().getLastIndex());
+				int lastIndex = info.getPos().getLastIndex();
+				FigureInfo otherFigure = info.getRoomInfo().getPositionInRoom(lastIndex).getFigure();
+				if(otherFigure != null) {
+					// someone in the way
+					if(otherFigure.isHostile(this.info)) {
+						return new AttackAction(otherFigure.getFighterID());
+					} else {
+						return new StepAction(info.getPos().getNextIndex());
+					}
+				}
+				return new StepAction(lastIndex);
 			} else {
-				// TODO: check if is blocked
-				return new StepAction(info.getPos().getNextIndex());
+				int nextIndex = info.getPos().getNextIndex();
+				FigureInfo otherFigure = info.getRoomInfo().getPositionInRoom(nextIndex).getFigure();
+				if(otherFigure != null) {
+					// someone in the way
+					if(otherFigure.isHostile(this.info)) {
+						return new AttackAction(otherFigure.getFighterID());
+					} else {
+						return new StepAction(info.getPos().getLastIndex());
+					}
+				}
+				return new StepAction(nextIndex);
 			}
 		}
 		return defaultFightAI.chooseFightAction();

@@ -25,13 +25,12 @@ import test.TestTracker;
  */
 public class DungeonGame implements Runnable {
 
-	private int round = 1;
+	private int round = 0;
 
 	private Dungeon derDungeon;
 
 	private final Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
 
-	private final long startTime;
 
 	private TestTracker tracker;
 
@@ -49,7 +48,6 @@ public class DungeonGame implements Runnable {
 	}
 
 	private DungeonGame() {
-		startTime = System.currentTimeMillis();
 		tracker = new TestTracker();
 	}
 

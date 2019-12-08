@@ -3,7 +3,6 @@ package dungeon;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,7 +27,6 @@ import figure.hero.Hero;
 import figure.memory.MemoryObject;
 import figure.memory.RoomMemory;
 import figure.monster.Monster;
-import figure.monster.MonsterInfo;
 import figure.percept.InfoPercept;
 import figure.percept.OpticalPercept;
 import figure.percept.Percept;
@@ -78,7 +75,7 @@ public class Room extends DungeonWorldObject implements
 
 	private Chest chest;
 
-	private final Dungeon d;
+	private final Dungeon dungeon;
 
 	private final List<Quest> quests = new LinkedList<Quest>();
 
@@ -91,7 +88,6 @@ public class Room extends DungeonWorldObject implements
 	private final JDPoint number;
 
 	public void checkFight(Figure movedIn) {
-
 		boolean fight = false;
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
@@ -110,16 +106,12 @@ public class Room extends DungeonWorldObject implements
 			}
 		}
 		if (fight) {
-			startFight(movedIn);
+			startFight();
 		}
 	}
 
-	private void startFight(Figure movedIn) {
-		List<Figure> l = new LinkedList<Figure>();
-		l.addAll(this.roomFigures);
-		Comparator<Figure> comp = new MyFightOrderComparator();
-		Collections.sort(l, comp);
-		this.fight = new Fight(this, l);
+	private void startFight() {
+		this.fight = new Fight(this);
 	}
 
 	@Override
@@ -195,11 +187,11 @@ public class Room extends DungeonWorldObject implements
 
 	private Door[] doors = new Door[4];
 
-	public Room(int x, int y, Dungeon d) {
-		this.d = d;
+	public Room(int x, int y, Dungeon dungeon) {
+		this.dungeon = dungeon;
 		roomFigures = new CopyOnWriteArrayList<>();
 		items = new CopyOnWriteArrayList<>();
-		number = d.getPoint(x, y);
+		number = dungeon.getPoint(x, y);
 		oldInfos = new String("");
 		for (int i = 0; i < positions.length; i++) {
 			positions[i] = new Position(this, i);
@@ -240,7 +232,7 @@ public class Room extends DungeonWorldObject implements
 		List<Figure> figures = new LinkedList<Figure>();
 		figures.addAll(roomFigures);
 		for (Iterator<Figure> iter = figures.iterator(); iter.hasNext(); ) {
-			if (this.d.isGameOver()) {
+			if (this.dungeon.isGameOver()) {
 				break;
 			}
 			Figure element = iter.next();
@@ -342,16 +334,16 @@ public class Room extends DungeonWorldObject implements
 
 	public Room getNeighbourRoom(int dir) {
 		if (dir == 1) {
-			return d.getRoom(d.getPoint(number.getX(), number.getY() - 1));
+			return dungeon.getRoom(dungeon.getPoint(number.getX(), number.getY() - 1));
 		}
 		else if (dir == 2) {
-			return d.getRoom(d.getPoint(number.getX() + 1, number.getY()));
+			return dungeon.getRoom(dungeon.getPoint(number.getX() + 1, number.getY()));
 		}
 		else if (dir == 3) {
-			return d.getRoom(d.getPoint(number.getX(), number.getY() + 1));
+			return dungeon.getRoom(dungeon.getPoint(number.getX(), number.getY() + 1));
 		}
 		else if (dir == 4) {
-			return d.getRoom(d.getPoint(number.getX() - 1, number.getY()));
+			return dungeon.getRoom(dungeon.getPoint(number.getX() - 1, number.getY()));
 		}
 		else {
 			return null;
@@ -442,6 +434,7 @@ public class Room extends DungeonWorldObject implements
 		return s + " ";
 	}
 
+	@Override
 	public List<Item> getItems() {
 		return Collections.unmodifiableList(items);
 	}
@@ -484,15 +477,6 @@ public class Room extends DungeonWorldObject implements
 			}
 		}
 		return itemArray;
-	}
-
-	public FigureInfo[] getMonsterInfoArray(DungeonVisibilityMap map) {
-		FigureInfo[] mons = new FigureInfo[roomFigures.size()];
-		for (int i = 0; i < roomFigures.size(); i++) {
-			mons[i] = MonsterInfo.makeFigureInfo((roomFigures.get(i)),
-					map);
-		}
-		return mons;
 	}
 
 	public void distributePercept(Percept p) {
@@ -541,12 +525,12 @@ public class Room extends DungeonWorldObject implements
 
 		Room room = (Room) o;
 
-		return d.equals(room.d) && number.equals(room.number);
+		return dungeon.equals(room.dungeon) && number.equals(room.number);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = d.hashCode();
+		int result = dungeon.hashCode();
 		result = 31 * result + number.hashCode();
 		return result;
 	}
@@ -785,12 +769,8 @@ public class Room extends DungeonWorldObject implements
 		return -1;
 	}
 
-	public static int getDoorPosIndex(int dir) {
-		return Room.getDoorPosIndex(dir);
-	}
-
 	public int getConnectionDirectionTo(JDPoint p) {
-		return getConnectionDirectionTo(this.d.getRoom(p));
+		return getConnectionDirectionTo(this.dungeon.getRoom(p));
 	}
 
 	public int getConnectionDirectionTo(RoomInfo r) {
@@ -820,7 +800,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public Door getConnectionTo(JDPoint p) {
-		return getConnectionTo(d.getRoom(p));
+		return getConnectionTo(dungeon.getRoom(p));
 	}
 
 	public boolean hasLockedDoor() {
@@ -959,7 +939,7 @@ public class Room extends DungeonWorldObject implements
 			figure.setLookDir(fromDir);
 		}
 		if (figure.getRoomVisibility() == null) {
-			figure.createVisibilityMap(d);
+			figure.createVisibilityMap(dungeon);
 		}
 		figure.getRoomVisibility().setVisibilityStatus(getNumber(),
 				RoomObservationStatus.VISIBILITY_ITEMS);
@@ -1086,7 +1066,8 @@ public class Room extends DungeonWorldObject implements
 		}
 
 		final Position pos = m.getPos();
-		if(pos != null) {
+		// might already be a new position in other room after fleeing
+		if(pos != null && pos.getRoom().equals(this)) {
 			pos.figureLeaves();
 		}
 		if (fight != null) {
@@ -1179,7 +1160,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public Room getKlon(Room r) {
-		Room x = new Room(r.getPoint().getX(), r.getPoint().getY(), r.d);
+		Room x = new Room(r.getPoint().getX(), r.getPoint().getY(), r.dungeon);
 		x.setDoors(r.getDoors());
 		x.setDieMonster(new LinkedList<>(r.getRoomFigures()));
 		x.setItems(new LinkedList<>(r.getItems()));
@@ -1191,6 +1172,14 @@ public class Room extends DungeonWorldObject implements
 		return x;
 	}
 
+	/**
+	 * A room marked as wall is no room actually,
+	 * its just an empty placehodler within the grid
+	 *
+	 * A room cannot change its change-state during the game
+	 *
+	 * @return true if this room is marked as wall, false otherwise
+	 */
 	public boolean isWall() {
 		return isWall;
 	}
@@ -1298,7 +1287,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public Dungeon getDungeon() {
-		return d;
+		return dungeon;
 	}
 
 	public HiddenSpot getSpot() {
@@ -1348,30 +1337,5 @@ public class Room extends DungeonWorldObject implements
 		roomFigures.removeAll(removeTMP);
 	}
 
-	static class MyFightOrderComparator implements Comparator<Figure> {
 
-		@Override
-		public int compare(Figure o1, Figure o2) {
-			if (o1 != null && o2 != null) {
-				double readiness1 = o1.getReadiness();
-				double readiness2 = o2.getReadiness();
-				if (o1.isRaiding()) {
-					return -1;
-				}
-				if (o2.isRaiding()) {
-					return 1;
-				}
-				if (readiness1 > readiness2) {
-					return -1;
-				}
-				else if (readiness1 < readiness2) {
-					return 1;
-				}
-			}
-			else {
-				return 0;
-			}
-			return 0;
-		}
-	}
 }

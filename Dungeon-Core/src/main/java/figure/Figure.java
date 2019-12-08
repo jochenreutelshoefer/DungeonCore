@@ -98,6 +98,7 @@ import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
+import log.Log;
 import org.apache.log4j.Logger;
 import shrine.Shrine;
 import spell.AbstractSpell;
@@ -555,15 +556,8 @@ public abstract class Figure extends DungeonWorldObject
 	protected abstract void sanction(int i);
 
 	public boolean hurt(int value) {
-
 		Attribute h = this.getHealth();
-
-		/*
-		 * cheat for debugging
-		 */
-		if (!this.getName().equals("Terminator")) {
-			h.modValue(value * (-1));
-		}
+		h.modValue(value * (-1));
 		this.setStatus(this.getHealthLevel());
 		return (h.getValue() <= 0);
 	}
@@ -640,7 +634,7 @@ public abstract class Figure extends DungeonWorldObject
 		return slapDmg + fireDmg + lightningDmg + poisonDmg + magicDmg;
 	}
 
-	protected void spellBreak() {
+	private void spellBreak() {
 		if (lastSpell != null) {
 			int cost = lastSpell.getCost();
 			int pay = cost / 3;
@@ -658,7 +652,7 @@ public abstract class Figure extends DungeonWorldObject
 
 		int eludeValue = calcEludeValue();
 
-		int precision = s.getPrecision();
+		float precision = s.getPrecision();
 
 		int chance = (int) (precision - precision
 				* ((((double) eludeValue) / 100)));
@@ -677,7 +671,7 @@ public abstract class Figure extends DungeonWorldObject
 
 			if (getBlock(s.getValueStandard())) {
 				p = new ShieldBlockPercept(this);
-				res = new SlapResult(allDmg, false, this, allDmg, s);
+				res = new SlapResult(false, this, allDmg, s);
 			}
 			else {
 				allDmg = hit(s);
@@ -696,15 +690,16 @@ public abstract class Figure extends DungeonWorldObject
 					sanction(healthBefore - healthAfter);
 				}
 				if (dies) {
+					Log.info(this+ " dies!");
 					getKilled(allDmg);
 					gameOver();
 				}
-				res = new SlapResult(allDmg, dies, this, allDmg, s);
+				res = new SlapResult( dies, this, allDmg, s);
 				p = new HitPercept(attacker, this, res);
 			}
 		}
 		else {
-			res = new SlapResult(allDmg, false, this, allDmg, s);
+			res = new SlapResult( false, this, allDmg, s);
 			p = new MissPercept(attacker, this);
 		}
 
@@ -1555,6 +1550,13 @@ public abstract class Figure extends DungeonWorldObject
 		return ActionResult.POSSIBLE;
 	}
 
+	/**
+	 * Returns the position index that is required to be at
+	 * to move in the given direction
+	 *
+	 * @param dir
+	 * @return
+	 */
 	public static int getDirPos(int dir) {
 		if (dir == Dir.NORTH) {
 			return 1;
@@ -1735,7 +1737,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 
 		return new Slap(this, value,
-				(int) (tumbleFactor * getTumbleValue(m)), (int) precision);
+				(int) (tumbleFactor * getTumbleValue(m)), precision);
 	}
 
 	public abstract int getSlapStrength(Figure m);
