@@ -8,10 +8,10 @@
 	<version>0.1.0</version>
 
 		<repositories>
-			<repository>
+			<!--repository>
 				<id>des-public</id>
 				<url>https://repo.denkbares.com/repo-public</url>
-			</repository>
+			</repository-->
 		</repositories>
 
 		<dependencies>
@@ -22,22 +22,12 @@
 			</dependency>
 			<dependency>
 				<groupId>de.reutelshoefer.dungeon</groupId>
-				<artifactId>Dungeon-App-Core</artifactId>
-				<version>0.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>de.reutelshoefer.dungeon</groupId>
 				<artifactId>Game-Android</artifactId>
 				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.reutelshoefer.dungeon</groupId>
 				<artifactId>Dungeon-FrontEnd-TouchGUI</artifactId>
-				<version>0.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>de.reutelshoefer.dungeon</groupId>
-				<artifactId>Dungeon-FrontEnd-GraphicsEngine2D</artifactId>
 				<version>0.1.0</version>
 			</dependency>
 			<dependency>
