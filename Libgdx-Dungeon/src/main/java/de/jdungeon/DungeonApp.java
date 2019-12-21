@@ -22,7 +22,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import control.JDGUIEngine2D;
 import event.Event;
 import event.EventListener;
 import event.ExitUsedEvent;
@@ -47,12 +46,14 @@ import de.jdungeon.app.gui.skillselection.SkillSelectedEvent;
 import de.jdungeon.app.gui.skillselection.SkillSelectionScreen;
 import de.jdungeon.app.screen.GameScreen;
 import de.jdungeon.app.screen.start.HeroCategorySelectedEvent;
+import de.jdungeon.app.screen.start.WelcomeScreen;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Configuration;
 import de.jdungeon.game.FileIO;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Screen;
+import de.jdungeon.adapter.io.LibgdxFileIO;
 import de.jdungeon.io.ResourceBundleLoader;
 import de.jdungeon.user.Session;
 import de.jdungeon.user.User;
@@ -75,11 +76,15 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 	private Sound dropSound;
 	private Music rainMusic;
 
-	private final LibgdxGraphics graphics = new LibgdxGraphics();
+	private LibgdxGraphics graphics;
 	private final LibgdxAudio audio = new LibgdxAudio();
 	private Logger log;
 	private LibgdxJDGUI gui;
+	private final LibgdxFileIO fileIO = new LibgdxFileIO();
 	private GameScreen gamescreen;
+	private Screen currentScreen;
+
+	private boolean firstTimeCreate = true;
 
 	public DungeonApp(ResourceBundleLoader resourceBundleLoader) {
 		this.resourceBundleLoader = resourceBundleLoader;
@@ -100,6 +105,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		JDEnv.init(textsBundle);
 		this.session = new DefaultDungeonSession(new User("Hans Meiser"));
 		this.dungeonSession = (DungeonSession)session; // Todo: improve
+
 
 		// TODO: solve this weird bidirectional dependency in a better way..
 		gui = LibgdxJDGUI.getInstance(this);
@@ -136,6 +142,10 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		// create the raindrops array and spawn the first raindrop
 		raindrops = new Array<Rectangle>();
 		spawnRaindrop();
+
+
+
+
 	}
 
 	private void initLogging() {
@@ -174,6 +184,11 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public void render() {
+
+		if(graphics == null) {
+			graphics = new LibgdxGraphics();
+		}
+
 		// clear the screen with a dark blue color. The
 		// arguments to glClearColor are the red, green
 		// blue and alpha component in the range [0,1]
@@ -260,7 +275,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public FileIO getFileIO() {
-		return null;
+		return new LibgdxFileIO();
 	}
 
 	@Override
@@ -270,17 +285,21 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public void setScreen(Screen screen) {
-
+		currentScreen = screen;
 	}
 
 	@Override
 	public Screen getCurrentScreen() {
-		return null;
+		return currentScreen;
 	}
 
 	@Override
 	public Screen getInitScreen() {
-		return null;
+		if (firstTimeCreate) {
+			Assets.load(this);
+			firstTimeCreate = false;
+		}
+		return new WelcomeScreen(this);
 	}
 
 	@Override
@@ -300,7 +319,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public Session getSession() {
-		return null;
+		return session;
 	}
 
 	@Override
