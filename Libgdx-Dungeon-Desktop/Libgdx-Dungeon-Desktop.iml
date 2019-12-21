@@ -19,8 +19,8 @@
     <orderEntry type="library" name="Maven: junit:junit:3.8.2" level="project" />
     <orderEntry type="module" module-name="Game-Core" />
     <orderEntry type="module" module-name="Dungeon-App-Core" />
-    <orderEntry type="library" name="Maven: com.google.android:android:jo" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
+    <orderEntry type="library" name="Maven: de.mindpipe.android:android-logging-log4j:1.0.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.badlogicgames.gdx:gdx-parent:1.9.10" level="project" />
   </component>
 </module>

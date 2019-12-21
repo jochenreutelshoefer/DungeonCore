@@ -88,24 +88,6 @@ public class AndroidGraphics implements Graphics {
 		this.canvas = new Canvas(frameBuffer);
 	}
 
-	@Override
-	public Paint createPaint(PaintBuilder builder) {
-		android.graphics.Paint paint = new android.graphics.Paint();
-		paint.setColor(AndroidGraphics.convertColor(builder.getColor()));
-		paint.setTextSize(builder.getFontSize());
-
-		Paint.Alignment alignment = builder.getAlignment();
-		if (alignment == Paint.Alignment.CENTER) {
-			paint.setTextAlign(android.graphics.Paint.Align.CENTER);
-		}
-		if (alignment == Paint.Alignment.LEFT) {
-			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
-		}
-		if (alignment == Paint.Alignment.RIGHT) {
-			paint.setTextAlign(android.graphics.Paint.Align.RIGHT);
-		}
-		return new AndroidPaint(paint);
-	}
 
 	@Override
 	public de.jdungeon.game.TextPaint createTextPaint(PaintBuilder builder) {
@@ -126,35 +108,19 @@ public class AndroidGraphics implements Graphics {
 		return new AndroidTextPaint(paint, builder.getFontSize());
 	}
 
-	@Override
-	public de.jdungeon.game.TextPaint getDefaultPaint() {
-		return new AndroidTextPaint(defaultPaint);
-	}
 
 	@Override
 	public de.jdungeon.game.TextPaint getSmallPaint() {
 		return new AndroidTextPaint(smallPaint);
 	}
 
-	@Override
-	public Paint getPaintBlack() {
-		return new AndroidPaint(black);
-	}
-
-	@Override
-	public de.jdungeon.game.TextPaint getTextPaintWhite() {
-		return new AndroidTextPaint(whiteText);
-	}
 
 	@Override
 	public de.jdungeon.game.TextPaint getTextPaintWhite25() {
 		return new AndroidTextPaint(whiteText25);
 	}
 
-	@Override
-	public de.jdungeon.game.TextPaint getTextPaintRed() {
-		return new AndroidTextPaint(redText);
-	}
+
 
 	@Override
 	public de.jdungeon.game.TextPaint getTextPaintBlack() {
@@ -166,18 +132,6 @@ public class AndroidGraphics implements Graphics {
 		return new AndroidTextPaint(grayText);
 	}
 
-	@Override
-	public Paint getPaintWhite() {
-		return new AndroidPaint(labelPaint);
-	}
-
-
-	@Override
-	public Paint getPaintGray() {
-		return new AndroidPaint(gray);
-	}
-
-	@Override
 	public Image newImage(String fileName, ImageFormat format) {
 
 		Config config = null;
@@ -236,12 +190,6 @@ public class AndroidGraphics implements Graphics {
 		return new AndroidImage(bitmap, format);
 	}
 
-	@Override
-	public void clearScreen(de.jdungeon.game.Color color) {
-		int colorCode = convertColor(color);
-		canvas.drawRGB((colorCode & 0xff0000) >> 16, (colorCode & 0xff00) >> 8,
-				(colorCode & 0xff));
-	}
 
 	@Override
 	public void drawLine(int x, int y, int x2, int y2, de.jdungeon.game.Color color) {
@@ -409,15 +357,6 @@ public class AndroidGraphics implements Graphics {
 		return -1;
 	}
 
-	@Override
-	public void drawARGB(int a, int r, int g, int b) {
-		if (tmpCanvas == null) {
-			canvas.drawARGB(a, r, g, b);
-		}
-		else {
-			tmpCanvas.drawARGB(a, r, g, b);
-		}
-	}
 
 	@Override
 	public void setTempCanvas(int x, int y, int width, int height) {
@@ -529,29 +468,6 @@ public class AndroidGraphics implements Graphics {
 		}
 	}
 
-	@Override
-	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
-		srcRect.left = srcX;
-		srcRect.top = srcY;
-		srcRect.right = srcX + srcWidth;
-		srcRect.bottom = srcY + srcHeight;
-
-		dstRect.left = x;
-		dstRect.top = y;
-		dstRect.right = x + srcWidth;
-		dstRect.bottom = y + srcHeight;
-
-		if (tmpCanvas == null) {
-			canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
-		}
-		else {
-			tmpDstRect.left = dstRect.left - tmpCanvasX;
-			tmpDstRect.top = dstRect.top - tmpCanvasY;
-			tmpDstRect.right = dstRect.right - tmpCanvasX;
-			tmpDstRect.bottom = dstRect.bottom - tmpCanvasY;
-			tmpCanvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, tmpDstRect, null);
-		}
-	}
 
 	@Override
 	public void drawImage(Image image, int x, int y, boolean nonTmp) {
@@ -597,13 +513,4 @@ public class AndroidGraphics implements Graphics {
 		}
 	}
 
-	@Override
-	public int getWidth() {
-		return frameBuffer.getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return frameBuffer.getHeight();
-	}
 }

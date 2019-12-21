@@ -10,6 +10,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import de.jdungeon.DungeonApp;
+import de.jdungeon.androidapp.io.AndroidResourceBundleLoader;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -18,6 +19,6 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
-		initialize(new DungeonApp(), config);
+		initialize(new DungeonApp(new AndroidResourceBundleLoader(this.getApplicationContext(), "")), config);
 	}
 }

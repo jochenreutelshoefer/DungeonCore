@@ -1,8 +1,9 @@
 package de.jdungeon.game;
 
 public interface Image {
-    public int getWidth();
-    public int getHeight();
-    public Graphics.ImageFormat getFormat();
-    public void dispose();
+
+    int getWidth();
+    int getHeight();
+    Graphics.ImageFormat getFormat();
+    void dispose();
 }

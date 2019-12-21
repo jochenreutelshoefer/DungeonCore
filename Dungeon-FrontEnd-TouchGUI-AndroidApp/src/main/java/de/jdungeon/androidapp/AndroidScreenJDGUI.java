@@ -1,31 +1,29 @@
 package de.jdungeon.androidapp;
 
-import event.EventManager;
-import figure.action.EndRoundAction;
-import figure.other.Lioness;
-import figure.percept.TextPercept;
-import game.PerceptHandler;
-import item.ItemInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import control.JDGUIEngine2D;
+import dungeon.JDPoint;
+import event.EventManager;
+import figure.FigureInfo;
+import figure.action.Action;
+import figure.action.EndRoundAction;
+import figure.action.result.ActionResult;
+import figure.other.Fir;
+import figure.other.Lioness;
+import figure.percept.Percept;
+import figure.percept.TextPercept;
+import game.PerceptHandler;
+import item.ItemInfo;
 import log.Log;
 import spell.SpellInfo;
 import text.StatementManager;
-import control.JDGUIEngine2D;
-import dungeon.JDPoint;
-import figure.FigureInfo;
-import figure.action.Action;
-import figure.action.result.ActionResult;
-import figure.other.Fir;
-import figure.percept.Percept;
 
-import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
-import de.jdungeon.androidapp.screen.GameScreen;
-
-import de.jdungeon.androidapp.event.VisibilityIncreasedEvent;
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.event.VisibilityIncreasedEvent;
+import de.jdungeon.app.screen.GameScreen;
 import de.jdungeon.game.Screen;
 
 public class AndroidScreenJDGUI implements JDGUIEngine2D {
@@ -40,10 +38,11 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	private static AndroidScreenJDGUI instance;
 
 	public static AndroidScreenJDGUI getInstance(JDungeonApp app) {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new AndroidScreenJDGUI(app);
-		} else {
-			if(! (instance.app == app)) {
+		}
+		else {
+			if (!(instance.app == app)) {
 				Log.severe("Duplicate AndroidScreenJDGUI instance creation with different App objects");
 				System.exit(0);
 			}
@@ -53,9 +52,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	private AndroidScreenJDGUI(JDungeonApp app) {
 		this.app = app;
-
 	}
-
 
 	@Override
 	public void actionProcessed(Action a, ActionResult res) {
@@ -73,15 +70,14 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 	@Override
 	public void onTurn() {
 
-		if(!visibilityIncreasedRooms.isEmpty()) {
+		if (!visibilityIncreasedRooms.isEmpty()) {
 			EventManager.getInstance().fireEvent(new VisibilityIncreasedEvent(visibilityIncreasedRooms));
 			visibilityIncreasedRooms.clear();
 		}
 
-
 		// if player does not have an action point left,
 		// preemptively cause an EndRoundAction
-		if(this.getFigure().getActionPoints() == 0) {
+		if (this.getFigure().getActionPoints() == 0) {
 			plugAction(new EndRoundAction());
 		}
 	}
@@ -94,7 +90,7 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 
 	@Override
 	public boolean isHostileTo(FigureInfo otherFigure) {
-		if(otherFigure.equals(this.figure)) {
+		if (otherFigure.equals(this.figure)) {
 			// hopefully not called, but you never know..
 			return false;
 		}
@@ -112,17 +108,17 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 		return false;
 	}
 
-
 	@Override
 	public Action getAction() {
 		synchronized (actionQueue) {
 			if (!actionQueue.isEmpty()) {
 				final Action action = actionQueue.remove(0);
 				return action;
-			} else {
+			}
+			else {
 				Screen currentScreen = this.app.getCurrentScreen();
-				if(currentScreen instanceof GameScreen) {
-					((GameScreen)currentScreen).getActionAssembler().triggerPlannedActions();
+				if (currentScreen instanceof GameScreen) {
+					((GameScreen) currentScreen).getActionAssembler().triggerPlannedActions();
 				}
 			}
 		}
@@ -175,7 +171,6 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 		// TODO Auto-generated method stub
 
 	}
-
 
 	@Override
 	public void gameRoundEnded() {

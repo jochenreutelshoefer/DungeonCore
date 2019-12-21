@@ -8,6 +8,8 @@ import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Graphics.ImageFormat;
 import de.jdungeon.game.Image;
 import de.jdungeon.implementation.AndroidGame;
+import de.jdungeon.implementation.AndroidGraphics;
+
 public class AndroidImageLoader implements AbstractImageLoader<Image> {
 
 	private final AndroidGame game;
@@ -24,8 +26,7 @@ public class AndroidImageLoader implements AbstractImageLoader<Image> {
 			fullFilename = "pics/" + filename;
 		}
 		if (fileExists(fullFilename)) {
-			return game.getGraphics()
-					.newImage(fullFilename, ImageFormat.RGB565);
+			return ((AndroidGraphics)game.getGraphics()).newImage(fullFilename, ImageFormat.RGB565);
 		}
 		return null;
 	}

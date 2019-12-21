@@ -10,8 +10,8 @@ import android.util.Log;
 import audio.AudioEffectsManager;
 import graphics.ImageManager;
 
-import de.jdungeon.androidapp.audio.AudioManagerTouchGUI;
-import de.jdungeon.androidapp.gui.dungeonselection.LevelIconImageManager;
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.AudioLoader;
 import de.jdungeon.game.Configuration;
