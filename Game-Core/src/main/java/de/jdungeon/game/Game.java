@@ -4,23 +4,23 @@ import de.jdungeon.user.Session;
 
 public interface Game {
 
-		Audio getAudio();
+	Audio getAudio();
 
-		Input getInput();
+	Input getInput();
 
-	    FileIO getFileIO();
+	FileIO getFileIO();
 
-	    Graphics getGraphics();
+	Graphics getGraphics();
 
-	    void setScreen(Screen screen);
+	void setScreen(Screen screen);
 
-	    Screen getCurrentScreen();
+	Screen getCurrentScreen();
 
-	    Screen getInitScreen();
+	Screen getInitScreen();
 
-		int getScreenWidth();
+	int getScreenWidth();
 
-		int getScreenHeight();
+	int getScreenHeight();
 
 	Configuration getConfiguration();
 
@@ -29,6 +29,6 @@ public interface Game {
 	 *
 	 * @return the user representing the current player
 	 */
-		Session getSession();
-	}
+	Session getSession();
+}
 

@@ -58,7 +58,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	public DefaultDungeonSession(User user) {
 		this.user = user;
 		manager = new DefaultDungeonManager();
-		JDEnv.init();
+
+
 	}
 
 	@Override

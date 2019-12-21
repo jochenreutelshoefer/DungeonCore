@@ -10,6 +10,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.Window;
 import android.view.WindowManager;
+
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.FileIO;
 import de.jdungeon.game.Game;
@@ -32,9 +33,12 @@ public abstract class AndroidGame extends Activity implements Game {
 	//public static final int SCREEN_HEIGHT = 1104;
 	public static final int SCREEN_HEIGHT = 550;
 
-	public AndroidGame(Session session) {
-		this.session = session;
+	public AndroidGame() {
 
+	}
+
+	public void init(Session session) {
+		this.session = session;
 	}
 
 	@Override
@@ -44,42 +48,42 @@ public abstract class AndroidGame extends Activity implements Game {
 
 	protected Session session;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+		boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 		// 1920 * 1104
 		// 1824 * 1200
 		//int frameBufferWidth = isPortrait ? 480: 800;
 		int frameBufferWidth = isPortrait ? SCREEN_HEIGHT : SCREEN_WIDTH;
-        int frameBufferHeight = isPortrait ? SCREEN_WIDTH : SCREEN_HEIGHT;
-        Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
-                frameBufferHeight, Config.RGB_565);
-       
-        float scaleX = (float) frameBufferWidth
-                / getWindowManager().getDefaultDisplay().getWidth();
-        float scaleY = (float) frameBufferHeight
-                / getWindowManager().getDefaultDisplay().getHeight();
+		int frameBufferHeight = isPortrait ? SCREEN_WIDTH : SCREEN_HEIGHT;
+		Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
+				frameBufferHeight, Config.RGB_565);
 
-        renderView = new AndroidFastRenderView(this, frameBuffer);
-        graphics = new AndroidGraphics(getAssets(), frameBuffer);
-        fileIO = new AndroidFileIO(this);
-        audio = new AndroidAudio(this);
-        input = new AndroidInput(this, renderView, scaleX, scaleY);
-        screen = getInitScreen();
+		float scaleX = (float) frameBufferWidth
+				/ getWindowManager().getDefaultDisplay().getWidth();
+		float scaleY = (float) frameBufferHeight
+				/ getWindowManager().getDefaultDisplay().getHeight();
+
+		renderView = new AndroidFastRenderView(this, frameBuffer);
+		graphics = new AndroidGraphics(getAssets(), frameBuffer);
+		fileIO = new AndroidFileIO(this);
+		audio = new AndroidAudio(this);
+		input = new AndroidInput(this, renderView, scaleX, scaleY);
+		screen = getInitScreen();
 		screen.init();
-        setContentView(renderView);
-       
-        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "MyGame");
+		setContentView(renderView);
 
-        onCreateHook();
-    }
+		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "MyGame");
+
+		onCreateHook();
+	}
 
 	protected abstract void onCreateHook();
 
@@ -105,44 +109,45 @@ public abstract class AndroidGame extends Activity implements Game {
 		//return 400;
 	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        wakeLock.acquire();
-        screen.resume();
-        renderView.resume();
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		wakeLock.acquire();
+		screen.resume();
+		renderView.resume();
+	}
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        wakeLock.release();
-        renderView.pause();
-        screen.pause();
+	@Override
+	public void onPause() {
+		super.onPause();
+		wakeLock.release();
+		renderView.pause();
+		screen.pause();
 
-        if (isFinishing())
-            screen.dispose();
-    }
+		if (isFinishing()) {
+			screen.dispose();
+		}
+	}
 
-    @Override
-    public Input getInput() {
-        return input;
-    }
+	@Override
+	public Input getInput() {
+		return input;
+	}
 
-    @Override
-    public FileIO getFileIO() {
-        return fileIO;
-    }
+	@Override
+	public FileIO getFileIO() {
+		return fileIO;
+	}
 
-    @Override
-    public Graphics getGraphics() {
-        return graphics;
-    }
+	@Override
+	public Graphics getGraphics() {
+		return graphics;
+	}
 
-    @Override
-    public Audio getAudio() {
-        return audio;
-    }
+	@Override
+	public Audio getAudio() {
+		return audio;
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -150,20 +155,21 @@ public abstract class AndroidGame extends Activity implements Game {
 	}
 
 	@Override
-    public void setScreen(Screen screen) {
-        if (screen == null)
-            throw new IllegalArgumentException("Screen must not be null");
+	public void setScreen(Screen screen) {
+		if (screen == null) {
+			throw new IllegalArgumentException("Screen must not be null");
+		}
 
-        this.screen.pause();
-        this.screen.dispose();
-        screen.resume();
-        //screen.update(0);
-        this.screen = screen;
+		this.screen.pause();
+		this.screen.dispose();
+		screen.resume();
+		//screen.update(0);
+		this.screen = screen;
 		screen.init();
-    }
-   
-    @Override
+	}
+
+	@Override
 	public Screen getCurrentScreen() {
-        return screen;
-    }
+		return screen;
+	}
 }

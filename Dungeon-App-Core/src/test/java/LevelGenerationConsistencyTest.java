@@ -1,5 +1,7 @@
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import dungeon.Door;
 import dungeon.Dungeon;
@@ -20,7 +22,7 @@ import level.DungeonManager;
 public class LevelGenerationConsistencyTest extends TestCase {
 
 	public void testStartLevel() {
-		JDEnv.init();
+		JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
 		DungeonManager manager = new DefaultDungeonManager();
 
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {

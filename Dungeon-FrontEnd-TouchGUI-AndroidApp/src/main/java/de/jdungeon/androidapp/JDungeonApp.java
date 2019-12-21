@@ -3,6 +3,8 @@ package de.jdungeon.androidapp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
 import figure.hero.Hero;
 import game.DungeonGame;
+import game.JDEnv;
 import level.DungeonStartEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -26,6 +29,7 @@ import de.jdungeon.androidapp.event.StartNewGameEvent;
 import de.jdungeon.androidapp.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.androidapp.gui.skillselection.SkillSelectedEvent;
 import de.jdungeon.androidapp.gui.skillselection.SkillSelectionScreen;
+import de.jdungeon.androidapp.io.AndroidResourceBundleLoader;
 import de.jdungeon.androidapp.screen.GameScreen;
 import de.jdungeon.androidapp.screen.start.HeroCategorySelectedEvent;
 import de.jdungeon.androidapp.screen.start.WelcomeScreen;
@@ -39,16 +43,16 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
 public class JDungeonApp extends AndroidGame implements EventListener {
 
 	private boolean firstTimeCreate = true;
-	private final DungeonSession dungeonSession;
+	private DungeonSession dungeonSession;
 	private  AndroidScreenJDGUI gui;
 	private  GameScreen gamescreen;
 
+	static {
+
+	}
+
 	public JDungeonApp() {
-		super(new DefaultDungeonSession(new User("Hans Meiser")));
-		this.dungeonSession = (DungeonSession)super.session;
-		EventManager.getInstance().registerListener(this);
-
-
+		super();
 
 		LogConfigurator logConfigurator = new LogConfigurator();
 		//logConfigurator.setFileName(Environment.getExternalStorageDirectory()
@@ -64,6 +68,13 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		logConfigurator.configure();
 		Logger log = Logger.getLogger(JDungeonApp.class);
 		Log.i("Initialization","Dungeon App Created");
+
+
+		EventManager.getInstance().registerListener(this);
+
+
+
+
 	}
 
 	@Override
@@ -81,6 +92,15 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 
 	@Override
 	protected void onCreateHook() {
+		AndroidResourceBundleLoader resourceBundleLoader = new AndroidResourceBundleLoader(this.getApplicationContext(), "");
+		ResourceBundle textsBundle = resourceBundleLoader.getBundle(JDEnv.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this.getClassLoader());
+		if(textsBundle == null) {
+			Log.e("Initialization", "Could not load resource bundle for texts");
+		}
+		JDEnv.init(textsBundle);
+		init(new DefaultDungeonSession(new User("Hans Meiser")));
+		this.dungeonSession = (DungeonSession)super.session;
+
 		// TODO: solve this weird bidirectional dependency in a better way..
 		gui = AndroidScreenJDGUI.getInstance(this);
 		gamescreen = new GameScreen(this, gui);

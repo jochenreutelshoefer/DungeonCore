@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import ai.SimpleHeroBehavior;
@@ -30,7 +32,7 @@ import user.DefaultDungeonSession;
 public class DungeonWorldTest extends TestCase {
 
 	public void testDungeonWorld() {
-		JDEnv.init();
+		JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
 		DungeonManager manager = new DefaultDungeonManager();
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);

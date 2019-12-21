@@ -55,6 +55,10 @@ public class DungeonGame implements Runnable {
 		return derDungeon;
 	}
 
+	public void setDungeon(Dungeon d) {
+		this.derDungeon = d;
+	}
+
 	public int getRound() {
 		return round;
 	}
@@ -158,7 +162,5 @@ public class DungeonGame implements Runnable {
 		guiFigures.put(held, gui);
 	}
 
-	public void setDungeon(Dungeon d) {
-		this.derDungeon = d;
-	}
+
 }

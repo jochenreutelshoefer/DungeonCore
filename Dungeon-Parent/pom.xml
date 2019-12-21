@@ -15,6 +15,11 @@
 		<module>../Dungeon-FrontEnd-GraphicsEngine2D</module>
 		<module>../Dungeon-FrontEnd-TouchGUI-AndroidApp</module>
 		<module>../Dungeon-FrontEnd-TouchGUI</module>
+		<!--
+		<module>../Libgdx-Game-Adapter</module>
+		<module>../Libgdx-Android</module>
+		<module>../Libgdx-Desktop</module>
+		-->
 	</modules>
 
 </project>
