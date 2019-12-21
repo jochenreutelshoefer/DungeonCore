@@ -6,6 +6,8 @@ import java.util.Iterator;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,14 +33,17 @@ public class MyDemo implements ApplicationListener {
 	private Rectangle bucket;
 	private Array<Rectangle> raindrops;
 	private long lastDropTime;
+	private Sound dropSound;
+	private Music rainMusic;
 
+	@Override
 	public void create() {
 
 		// load the images for the droplet and the bucket, 64x64 pixels each
 		dropImage = new Texture(Gdx.files.internal("data/droplet.png"));
 		bucketImage = new Texture(Gdx.files.internal("data/bucket.png"));
 
-		/*
+
 		// load the drop sound effect and the rain background "music"
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
 		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
@@ -46,7 +51,7 @@ public class MyDemo implements ApplicationListener {
 		// start the playback of the background music immediately
 		rainMusic.setLooping(true);
 		rainMusic.play();
-		*/
+
 
 		// create the camera and the SpriteBatch
 		camera = new OrthographicCamera();
@@ -130,7 +135,7 @@ public class MyDemo implements ApplicationListener {
 			raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
 			if(raindrop.y + 64 < 0) iter.remove();
 			if(raindrop.overlaps(bucket)) {
-				//dropSound.play();
+				dropSound.play();
 				iter.remove();
 			}
 		}

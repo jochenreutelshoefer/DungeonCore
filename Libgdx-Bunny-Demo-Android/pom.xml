@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>Libgdx-Test</groupId>
+	<artifactId>Libgdx-Bunny-Demo-Android</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>apk</packaging>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
+		<dependency>
+			<groupId>Libgdx-Test</groupId>
+			<artifactId>Libgdx-Bunny-Demo</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-backend-android -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-android</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.1.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<!--version>3.9.0-rc.1</version-->
+				<version>3.9.0-rc.1</version>
+				<configuration>
+					<sdk>
+						<platform>23</platform>
+						<path>/Users/jochenreutelshofer/Library/Android/sdk</path>
+					</sdk>
+					<extractDuplicates>true</extractDuplicates>
+					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
