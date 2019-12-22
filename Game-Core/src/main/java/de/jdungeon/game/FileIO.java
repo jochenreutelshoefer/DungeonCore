@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface FileIO {
 
+	boolean fileExists(String file) throws IOException;
+
 	InputStream readFile(String file) throws IOException;
 
 	List<String> readFileNamesOfFolder(String file) throws IOException;

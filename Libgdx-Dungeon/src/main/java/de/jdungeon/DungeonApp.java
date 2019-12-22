@@ -29,6 +29,7 @@ import event.PlayerDiedEvent;
 import figure.hero.Hero;
 import game.DungeonGame;
 import game.JDEnv;
+import graphics.ImageManager;
 import level.DungeonStartEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -36,8 +37,11 @@ import spell.Spell;
 import user.DefaultDungeonSession;
 import user.DungeonSession;
 
+import de.jdungeon.adapter.LibgdxConfiguration;
 import de.jdungeon.adapter.audio.LibgdxAudio;
 import de.jdungeon.adapter.graphics.LibgdxGraphics;
+import de.jdungeon.adapter.graphics.LibgdxImage;
+import de.jdungeon.adapter.input.LibgdxInput;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.QuitGameEvent;
 import de.jdungeon.app.event.StartNewGameEvent;
@@ -65,6 +69,9 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
  */
 public class DungeonApp implements ApplicationListener, Game, EventListener {
 
+	public static final int SCREEN_WIDTH = 1000;
+	public static final int SCREEN_HEIGHT = 550;
+
 	private final ResourceBundleLoader resourceBundleLoader;
 	private Texture dropImage;
 	private Texture bucketImage;
@@ -78,13 +85,16 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	private LibgdxGraphics graphics;
 	private final LibgdxAudio audio = new LibgdxAudio();
+	private LibgdxInput input = new LibgdxInput();
 	private Logger log;
 	private LibgdxJDGUI gui;
 	private final LibgdxFileIO fileIO = new LibgdxFileIO();
+	private final LibgdxConfiguration configuration = new LibgdxConfiguration();
 	private GameScreen gamescreen;
 	private Screen currentScreen;
 
 	private boolean firstTimeCreate = true;
+	private boolean firstTimeRender = true;
 
 	public DungeonApp(ResourceBundleLoader resourceBundleLoader) {
 		this.resourceBundleLoader = resourceBundleLoader;
@@ -111,20 +121,18 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		gui = LibgdxJDGUI.getInstance(this);
 		gamescreen = new GameScreen(this, gui);
 		gui.setPerceptHandler(gamescreen);
+
+
+
+		currentScreen = getInitScreen();
+		currentScreen.init();
+
 		log.info("App on CreateHook done");
 
 		// load the images for the droplet and the bucket, 64x64 pixels each
 		dropImage = new Texture(Gdx.files.internal("data/droplet.png"));
 		bucketImage = new Texture(Gdx.files.internal("data/bucket.png"));
 
-
-		// load the drop sound effect and the rain background "music"
-		dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-
-		// start the playback of the background music immediately
-		rainMusic.setLooping(true);
-		rainMusic.play();
 
 
 		// create the camera and the SpriteBatch
@@ -143,9 +151,6 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		raindrops = new Array<Rectangle>();
 		spawnRaindrop();
 
-
-
-
 	}
 
 	private void initLogging() {
@@ -162,7 +167,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		logConfigurator.setUseLogCatAppender(true);
 		logConfigurator.configure();
 		log = Logger.getLogger(DungeonApp.class);
-		log.info("Dungeon App Libgdx Created");
+		log.info("Logging initialized");
 
 	}
 
@@ -185,14 +190,32 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 	@Override
 	public void render() {
 
+		if(firstTimeRender) {
+			log.info("First render frame");
+			firstTimeRender = false;
+		}
+
 		if(graphics == null) {
 			graphics = new LibgdxGraphics();
 		}
+
+
+		batch.begin();
+		batch.draw(((LibgdxImage)ImageManager.cristall_blueImage.getImage()).getTexture(), 50, 50);
+		batch.end();
+
+		currentScreen.update(-1);
+		currentScreen.paint(-1);
 
 		// clear the screen with a dark blue color. The
 		// arguments to glClearColor are the red, green
 		// blue and alpha component in the range [0,1]
 		// of the color to be used to clear the screen.
+
+		//renderRainDropGame();
+	}
+
+	private void renderRainDropGame() {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -229,8 +252,6 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		// check if we need to create a new raindrop
 		if(TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
 
-
-
 		// move the raindrops, remove any that are beneath the bottom edge of
 		// the screen or that hit the bucket. In the latter case we play back
 		// a sound effect as well.
@@ -243,8 +264,6 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 				iter.remove();
 			}
 		}
-
-
 	}
 
 	@Override
@@ -270,12 +289,12 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public de.jdungeon.game.Input getInput() {
-		return null;
+		return input;
 	}
 
 	@Override
 	public FileIO getFileIO() {
-		return new LibgdxFileIO();
+		return fileIO;
 	}
 
 	@Override
@@ -304,17 +323,17 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public int getScreenWidth() {
-		return Gdx.graphics.getWidth();
+		return SCREEN_WIDTH;
 	}
 
 	@Override
 	public int getScreenHeight() {
-		return Gdx.graphics.getHeight();
+		return SCREEN_HEIGHT;
 	}
 
 	@Override
 	public Configuration getConfiguration() {
-		return null;
+		return configuration;
 	}
 
 	@Override

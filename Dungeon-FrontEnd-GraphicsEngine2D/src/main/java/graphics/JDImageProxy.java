@@ -34,7 +34,7 @@ public class JDImageProxy<T extends Object> {
 	}
 	
 	public boolean fileExists() {
-		return getImage(loader) != null;
+		return loader.fileExists(this.filename);
 	}
 	
 	public T getImage(AbstractImageLoader<T> loader) {

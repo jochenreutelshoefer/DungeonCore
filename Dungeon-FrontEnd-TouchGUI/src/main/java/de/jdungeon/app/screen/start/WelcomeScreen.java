@@ -26,7 +26,7 @@ public class WelcomeScreen extends MenuScreen {
 
 	@Override
 	protected String getHeaderString() {
-		return "Willkommen bei Dungeon Forever";
+		return "Willkommen bei <todo: find game title>";
 	}
 
 	@Override

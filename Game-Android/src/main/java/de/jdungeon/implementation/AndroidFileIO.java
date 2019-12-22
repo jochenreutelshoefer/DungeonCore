@@ -49,6 +49,11 @@ public class AndroidFileIO implements FileIO {
 	}
 
 	@Override
+	public boolean fileExists(String file) throws IOException {
+		return readFile(file) != null;
+	}
+
+	@Override
     public InputStream readFile(String file) throws IOException {
         return new FileInputStream(externalStoragePath + file);
     }

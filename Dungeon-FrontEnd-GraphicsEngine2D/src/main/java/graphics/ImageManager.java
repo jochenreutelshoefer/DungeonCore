@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import animation.DefaultAnimationSet;
 import animation.AnimationSetDirections;
@@ -599,12 +600,14 @@ public class ImageManager {
 	public void loadImages() {
 
 		if (!imagesLoaded) {
-
+			Logger.getLogger(ImageManager.class.getName()).info("Start initializing images..");
 			AbstractImageLoader<?> a = this.loader;
 
 			puff = new DefaultAnimationSet(loadArray(a, "wolke", 8), getArray(25, 8));
 
 			warrior_slays = load4Animations(a, "animation/warrior/", "warrior_attack_");
+			Logger.getLogger(ImageManager.class.getName()).info("Initializing images: completed warrior_slays");
+
 			thief_slays = load4Animations(a, "animation/thief/", "thief_attack_");
 			druid_slays = load4Animations(a, "animation/druid/", "druid_attack_");
 			mage_slays = load4Animations(a, "animation/mage/", "mage_attack_");
@@ -951,6 +954,9 @@ public class ImageManager {
 			createHeroAnimationMap();
 			createMonsterAnimationMap(a);
 			createShrineClassMap();
+
+			Logger.getLogger(ImageManager.class.getName()).info("Completed initializing images..");
+
 
 		}
 

@@ -32,6 +32,7 @@ public class AndroidImageLoader implements AbstractImageLoader<Image> {
 	}
 
 	
+	@Override
 	public boolean fileExists(String file) {
 		AssetManager mg = game.getResources().getAssets();
 		try {
