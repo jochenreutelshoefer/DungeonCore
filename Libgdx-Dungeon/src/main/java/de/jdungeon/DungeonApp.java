@@ -3,14 +3,18 @@ package de.jdungeon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,6 +28,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import event.Event;
 import event.EventListener;
+import event.EventManager;
 import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
 import figure.hero.Hero;
@@ -41,7 +46,9 @@ import de.jdungeon.adapter.LibgdxConfiguration;
 import de.jdungeon.adapter.audio.LibgdxAudio;
 import de.jdungeon.adapter.graphics.LibgdxGraphics;
 import de.jdungeon.adapter.graphics.LibgdxImage;
+import de.jdungeon.adapter.graphics.LibgdxImageLoader;
 import de.jdungeon.adapter.input.LibgdxInput;
+import de.jdungeon.adapter.input.MyInputProcessor;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.QuitGameEvent;
 import de.jdungeon.app.event.StartNewGameEvent;
@@ -95,6 +102,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	private boolean firstTimeCreate = true;
 	private boolean firstTimeRender = true;
+	private LibgdxInput input1;
 
 	public DungeonApp(ResourceBundleLoader resourceBundleLoader) {
 		this.resourceBundleLoader = resourceBundleLoader;
@@ -121,8 +129,9 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		gui = LibgdxJDGUI.getInstance(this);
 		gamescreen = new GameScreen(this, gui);
 		gui.setPerceptHandler(gamescreen);
+		EventManager.getInstance().registerListener(this);
 
-
+		Gdx.input.setInputProcessor(new MyInputProcessor(input));
 
 		currentScreen = getInitScreen();
 		currentScreen.init();
@@ -133,6 +142,26 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		dropImage = new Texture(Gdx.files.internal("data/droplet.png"));
 		bucketImage = new Texture(Gdx.files.internal("data/bucket.png"));
 
+		Map<String, Long> durations = LibgdxImageLoader.durations;
+		Long sum = 0l;
+		Long max = -1l;
+		Long min = Long.MAX_VALUE;
+		int count = 0;
+		for (Long duration : durations.values()) {
+			count++;
+			sum += duration;
+			if(duration > max) {
+				max = duration;
+			}
+			if(duration < min) {
+				min = duration;
+			}
+		}
+		Logger.getLogger(this.getClass().getName()).info("Number of File-exists operations: "+count);
+		Logger.getLogger(this.getClass().getName()).info("Average time for operation: "+sum/count);
+		Logger.getLogger(this.getClass().getName()).info("Max: "+max);
+		Logger.getLogger(this.getClass().getName()).info("Min: "+min);
+		Logger.getLogger(this.getClass().getName()).info("Map: "+durations);
 
 
 		// create the camera and the SpriteBatch
@@ -199,7 +228,15 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 			graphics = new LibgdxGraphics();
 		}
 
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		// tell the camera to update its matrices.
+		camera.update();
+
+		// tell the SpriteBatch to render in the
+		// coordinate system specified by the camera.
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(((LibgdxImage)ImageManager.cristall_blueImage.getImage()).getTexture(), 50, 50);
 		batch.end();
@@ -304,7 +341,12 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public void setScreen(Screen screen) {
+		currentScreen.pause();
+		currentScreen.dispose();
+		screen.resume();
+		//screen.update(0);
 		currentScreen = screen;
+		screen.init();
 	}
 
 	@Override

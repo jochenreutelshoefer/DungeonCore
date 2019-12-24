@@ -600,6 +600,7 @@ public class ImageManager {
 	public void loadImages() {
 
 		if (!imagesLoaded) {
+			long startTime = System.currentTimeMillis();
 			Logger.getLogger(ImageManager.class.getName()).info("Start initializing images..");
 			AbstractImageLoader<?> a = this.loader;
 
@@ -955,7 +956,7 @@ public class ImageManager {
 			createMonsterAnimationMap(a);
 			createShrineClassMap();
 
-			Logger.getLogger(ImageManager.class.getName()).info("Completed initializing images..");
+			Logger.getLogger(ImageManager.class.getName()).info("Completed initializing images in: "+Long.toString(System.currentTimeMillis()-startTime));
 
 
 		}

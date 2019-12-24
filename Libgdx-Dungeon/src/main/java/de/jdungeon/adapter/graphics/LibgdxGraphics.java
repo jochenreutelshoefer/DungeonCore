@@ -1,5 +1,8 @@
 package de.jdungeon.adapter.graphics;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import de.jdungeon.game.Color;
+import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.TextPaint;
@@ -22,48 +26,76 @@ public class LibgdxGraphics implements Graphics {
 	private final SpriteBatch batch;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private final BitmapFont font = new BitmapFont();
+	private final BitmapFont fontWhite = new BitmapFont();
+	private final BitmapFont fontGray = new BitmapFont();
+	private final BitmapFont fontBlack = new BitmapFont();
+
+	private LibgdxTextpaint paintWhite = new LibgdxTextpaint(fontWhite);
+	private LibgdxTextpaint paintGray = new LibgdxTextpaint(fontGray);
+	private LibgdxTextpaint paintBlack = new LibgdxTextpaint(fontBlack);
+
+	Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
+
 
 	public LibgdxGraphics() {
 		// create the camera and the SpriteBatch
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
+
+		colorMap.put(Colors.BLACK, com.badlogic.gdx.graphics.Color.BLACK);
+		colorMap.put(Colors.BLUE, com.badlogic.gdx.graphics.Color.BLUE);
+		colorMap.put(Colors.GRAY, com.badlogic.gdx.graphics.Color.GRAY);
+		colorMap.put(Colors.GREEN, com.badlogic.gdx.graphics.Color.GREEN);
+		colorMap.put(Colors.RED, com.badlogic.gdx.graphics.Color.RED);
+		colorMap.put(Colors.WHITE, com.badlogic.gdx.graphics.Color.WHITE);
+		colorMap.put(Colors.YELLOW, com.badlogic.gdx.graphics.Color.YELLOW);
+
+		fontWhite.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+		fontGray.setColor(com.badlogic.gdx.graphics.Color.GRAY);
+		fontBlack.setColor(com.badlogic.gdx.graphics.Color.BLACK);
 	}
 
 	@Override
 	public TextPaint getSmallPaint() {
-		throw new NotImplementedException();
+		return paintBlack;
 	}
 
 	@Override
 	public TextPaint getTextPaintGray() {
-		throw new NotImplementedException();
+		return paintGray;
 	}
 
 	@Override
 	public TextPaint getTextPaintBlack() {
-		throw new NotImplementedException();
+		return paintBlack;
 	}
-
 
 	@Override
 	public TextPaint getTextPaintWhite25() {
-		throw new NotImplementedException();
+		return paintWhite;
 	}
 
 
 	@Override
 	public TextPaint createTextPaint(PaintBuilder builder) {
-		throw new NotImplementedException();
+		com.badlogic.gdx.graphics.Color color = colorMap.get(builder.getColor());
+		if(color == null) {
+			return null;
+		}
+		BitmapFont font = new BitmapFont();
+		font.setColor(color);
+		return new LibgdxTextpaint(font);
+
 	}
 
 	private void prepareDraw(Color color) {
-		shapeRenderer.setColor(((LibgdxColor)color).getColor());
+		shapeRenderer.setColor(colorMap.get(color));
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 	}
 
 	private void prepareFill(Color color) {
-		shapeRenderer.setColor(((LibgdxColor)color).getColor());
+		shapeRenderer.setColor(colorMap.get(color));
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 	}
 
@@ -71,6 +103,7 @@ public class LibgdxGraphics implements Graphics {
 	public void drawLine(int x, int y, int x2, int y2, Color color) {
 		prepareDraw(color);
 		shapeRenderer.line(x, y, x2, y2);
+		shapeRenderer.end();
 	}
 
 	@Override
@@ -143,6 +176,7 @@ public class LibgdxGraphics implements Graphics {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		font.draw(batch, text, x, y);
+		batch.end();
 	}
 
 	@Override
@@ -151,6 +185,7 @@ public class LibgdxGraphics implements Graphics {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		font.draw(batch, text, x, y);
+		batch.end();
 	}
 
 	@Override

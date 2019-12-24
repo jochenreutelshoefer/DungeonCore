@@ -1,7 +1,10 @@
 package de.jdungeon.adapter.graphics;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Image;
 
@@ -11,12 +14,19 @@ import de.jdungeon.game.Image;
  */
 public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 
+	public static Map<String, Long> durations = new HashMap<>();
+
 	@Override
 	public Image loadImage(String filename) {
 		if(! filename.startsWith(PREFIX)) {
 			filename = PREFIX + filename;
 		}
-		return new LibgdxImage(new Texture(Gdx.files.internal(filename)));
+		//if(fileExists(filename)) {
+			return new LibgdxImage(filename);
+		//} else {
+		//	Log.warning("File not found: "+filename);
+		//	return null;
+		//}
 	}
 
 	@Override
@@ -24,7 +34,17 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 		if(! filename.startsWith(PREFIX)) {
 			filename = PREFIX + filename;
 		}
-		return Gdx.files.internal(filename).exists();
+		long before = System.currentTimeMillis();
+		boolean exists = true;
+		try {
+			Gdx.files.internal(filename).read().close();
+			exists = true;
+
+		} catch (Exception e) {
+			exists = false;
+		}
+		durations.put(filename, System.currentTimeMillis() - before);
+		return exists;
 	}
 
 }

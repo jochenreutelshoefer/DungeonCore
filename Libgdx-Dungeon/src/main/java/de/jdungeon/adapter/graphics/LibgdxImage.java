@@ -1,5 +1,7 @@
 package de.jdungeon.adapter.graphics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 
 import de.jdungeon.game.Graphics;
@@ -11,20 +13,29 @@ import de.jdungeon.game.Image;
  */
 public class LibgdxImage implements Image {
 
+	private final String filename;
+	private Texture texture;
 
-	private final Texture texture;
+	public LibgdxImage(String filename) {
+		this.filename = filename;
+	}
 
-	public LibgdxImage(Texture texture) {
-		this.texture = texture;
+	private void init() {
+		if(texture == null) {
+			FileHandle handle = Gdx.files.internal(filename);
+			texture = new Texture(handle);
+		}
 	}
 
 	@Override
 	public int getWidth() {
+		init();
 		return texture.getWidth();
 	}
 
 	@Override
 	public int getHeight() {
+		init();
 		return texture.getHeight();
 	}
 
@@ -35,11 +46,14 @@ public class LibgdxImage implements Image {
 
 
 	public Texture getTexture() {
+		init();
 		return texture;
 	}
 
 	@Override
 	public void dispose() {
-		texture.dispose();
+		if(texture != null) {
+			texture.dispose();
+		}
 	}
 }
