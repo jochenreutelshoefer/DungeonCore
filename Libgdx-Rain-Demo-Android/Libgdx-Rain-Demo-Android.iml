@@ -4,12 +4,10 @@
     <facet type="android" name="Android">
       <configuration>
         <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/target/generated-sources/r" />
-        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/target/generated-source/aidl" />
-        <option name="APK_PATH" value="/target/Libgdx-Bunny-Demo-Android.apk" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/target/generated-sources/aidl" />
+        <option name="CUSTOM_APK_RESOURCE_FOLDER" value="/target/generated-sources/combined-resources/res" />
+        <option name="APK_PATH" value="/target/Libgdx-Rain-Demo-Android.apk" />
         <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="false" />
-        <proGuardCfgFiles>
-          <file>file:///Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/tools/proguard/proguard-android.txt</file>
-        </proGuardCfgFiles>
         <option name="COMPILE_CUSTOM_GENERATED_SOURCES" value="false" />
         <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
         <resOverlayFolders>
@@ -25,7 +23,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Bunny-Demo-Android-1.0-SNAPSHOT.ap_" />
       <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Bunny-Demo-Android-1.0-SNAPSHOT.apk" />
@@ -39,9 +36,9 @@
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
     </content>
-    <orderEntry type="jdk" jdkName="Maven Android API 23 Platform" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Libgdx-Bunny-Demo" />
+    <orderEntry type="module" module-name="Libgdx-Rain-Demo" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-android:1.9.10" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.1.1.4" level="project" />

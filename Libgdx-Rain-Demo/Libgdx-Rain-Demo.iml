@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -11,16 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Libgdx-Dungeon" />
-    <orderEntry type="module" module-name="Dungeon-FrontEnd-TouchGUI" />
-    <orderEntry type="module" module-name="Dungeon-FrontEnd-GraphicsEngine2D" />
-    <orderEntry type="module" module-name="Dungeon-Core" />
-    <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
-    <orderEntry type="library" name="Maven: junit:junit:3.8.2" level="project" />
-    <orderEntry type="module" module-name="Game-Core" />
-    <orderEntry type="module" module-name="Dungeon-App-Core" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
-    <orderEntry type="library" name="Maven: de.mindpipe.android:android-logging-log4j:1.0.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.badlogicgames.gdx:gdx-parent:1.9.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.badlogicgames.gdx:gdx-platform:1.9.10" level="project" />
   </component>
 </module>
