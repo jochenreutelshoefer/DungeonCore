@@ -1,5 +1,9 @@
 package de.jdungeon.example;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,7 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 24.12.19.
  */
-public class WorldController {
+public class WorldController extends InputAdapter {
 
 	private static final String TAG = WorldController.class.getName();
 
@@ -21,7 +25,21 @@ public class WorldController {
 	}
 
 	private void init() {
+		Gdx.input.setInputProcessor(this);
 		initTestObjects();
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		if (keycode == Input.Keys.R) {
+			init();
+			Gdx.app.debug(TAG, "Game World resetted");
+		}
+		else if (keycode == Input.Keys.SPACE) {
+			selectedSprite = (selectedSprite + 1) % testSprites.length;
+			Gdx.app.debug(TAG, "Sprite #" + selectedSprite + " selected");
+		}
+		return false;
 	}
 
 	private void initTestObjects() {
@@ -34,10 +52,10 @@ public class WorldController {
 
 		Texture texture = new Texture(pixmap);
 
-		for (int i =  0; i < testSprites.length; i++) {
+		for (int i = 0; i < testSprites.length; i++) {
 			Sprite spr = new Sprite(texture);
-			spr.setSize(1,1);
-			spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight()/ 2.0f);
+			spr.setSize(1, 1);
+			spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f);
 
 			float randomX = MathUtils.random(-2.0f, 2.0f);
 			float randomY = MathUtils.random(-2.0f, 2.0f);
@@ -64,7 +82,22 @@ public class WorldController {
 	}
 
 	public void update(float deltaTime) {
+		handleDebugInput(deltaTime);
 		updateTestObjects(deltaTime);
+	}
+
+	private void handleDebugInput(float deltaTime) {
+		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
+
+		float sprMovedSpeed = 5 * deltaTime;
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) moveSelectedSprite(-sprMovedSpeed, 0);
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) moveSelectedSprite(sprMovedSpeed, 0);
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) moveSelectedSprite(0, sprMovedSpeed);
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) moveSelectedSprite(0, -sprMovedSpeed);
+	}
+
+	private void moveSelectedSprite(float x, float y) {
+		testSprites[selectedSprite].translate(x, y);
 	}
 
 	private void updateTestObjects(float deltaTime) {
