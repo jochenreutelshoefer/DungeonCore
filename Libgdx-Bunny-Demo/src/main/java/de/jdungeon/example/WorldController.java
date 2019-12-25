@@ -104,6 +104,33 @@ public class WorldController extends InputAdapter {
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) moveSelectedSprite(sprMovedSpeed, 0);
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) moveSelectedSprite(0, sprMovedSpeed);
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) moveSelectedSprite(0, -sprMovedSpeed);
+
+
+		// camera controls move
+		float camMoveSpeed = 5 * deltaTime;
+		float cameraMoveSpeedAcceleratorFactor = 5;
+		if(Gdx.input.isKeyPressed((Input.Keys.SHIFT_LEFT))) camMoveSpeed *= cameraMoveSpeedAcceleratorFactor;
+		if(Gdx.input.isKeyPressed((Input.Keys.LEFT))) moveCamera(-camMoveSpeed, 0);
+		if(Gdx.input.isKeyPressed((Input.Keys.RIGHT))) moveCamera(camMoveSpeed, 0);
+		if(Gdx.input.isKeyPressed((Input.Keys.UP))) moveCamera(0, camMoveSpeed);
+		if(Gdx.input.isKeyPressed((Input.Keys.LEFT))) moveCamera(-camMoveSpeed, 0);
+		if(Gdx.input.isKeyPressed((Input.Keys.DOWN))) moveCamera(0, -camMoveSpeed);
+		if(Gdx.input.isKeyPressed((Input.Keys.BACKSPACE))) cameraHelper.setPosition(0, 0);
+
+
+		// camera controls zoom
+		float camZoomSpeed = 1 * deltaTime;
+		float camZoomSpeedAccel = 5;
+		if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) camZoomSpeed *= camZoomSpeedAccel;
+		if(Gdx.input.isKeyPressed(Input.Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
+		if(Gdx.input.isKeyPressed(Input.Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
+		if(Gdx.input.isKeyPressed(Input.Keys.SLASH)) cameraHelper.setZoom(1);
+	}
+
+	private void moveCamera(float x, float y) {
+		x += cameraHelper.getPosition().x;
+		y += cameraHelper.getPosition().y;
+		cameraHelper.setPosition(x, y);
 	}
 
 	private void moveSelectedSprite(float x, float y) {

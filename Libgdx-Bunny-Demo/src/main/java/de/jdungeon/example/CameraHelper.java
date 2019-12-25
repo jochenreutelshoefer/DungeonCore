@@ -35,15 +35,15 @@ public class CameraHelper {
 	}
 
 	public void setPosition(float x, float y) {
-		this.setPosition(x, y);
+		this.position.set(x, y);
 	}
 
 	public void addZoom(float amount) {
 		setZoom(zoom + amount);
 	}
 
-	private void setZoom(float value) {
-		this.zoom = MathUtils.clamp(zoom, MAX_ZOOM_IN, MAX_ZOOM_OUT);
+	public void setZoom(float value) {
+		this.zoom = MathUtils.clamp(value, MAX_ZOOM_IN, MAX_ZOOM_OUT);
 	}
 
 	public float getZoom() {
@@ -69,5 +69,9 @@ public class CameraHelper {
 		camera.position.y = position.y;
 		camera.zoom = zoom;
 		camera.update();
+	}
+
+	public Vector2 getPosition() {
+		return this.position;
 	}
 }
