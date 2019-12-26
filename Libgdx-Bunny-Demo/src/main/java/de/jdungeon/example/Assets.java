@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -21,7 +22,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public AssetBucket bucket;
 	public AssetDrop drop;
-
+	public AssetFonts fonts;
 	private Assets() {
 	}
 
@@ -46,6 +47,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		bucket = new AssetBucket(atlas);
 		drop = new AssetDrop(atlas);
+		fonts = new AssetFonts();
 
 	}
 
@@ -72,6 +74,27 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		public AssetDrop(TextureAtlas atlas) {
 			this.drop = atlas.findRegion("droplet");
+		}
+	}
+
+	static class AssetFonts {
+
+		public final BitmapFont defaultSmall;
+		public final BitmapFont defaultNormal;
+		public final BitmapFont defaultBig;
+
+		public AssetFonts() {
+			defaultBig = new BitmapFont(Gdx.files.internal("font/arial-15.fnt"), true);
+			defaultBig.getData().setScale(2f);
+			defaultBig.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+
+			defaultNormal = new BitmapFont(Gdx.files.internal("font/arial-15.fnt"), true);
+			defaultNormal.getData().setScale(1f);
+			defaultNormal.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
+
+			defaultSmall = new BitmapFont(Gdx.files.internal("font/arial-15.fnt"), true);
+			defaultSmall.getData().setScale(0.75f);
+			defaultSmall.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
 		}
 	}
 }
