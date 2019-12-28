@@ -61,7 +61,8 @@ public class WorldRenderer implements Disposable {
 	private void renderGuiScore(SpriteBatch batch) {
 		float x = -15;
 		float y = -15;
-		batch.draw(Assets.instance.bucket.bucket,x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+		batch.draw(Assets.instance.bucket.bucket, 110, 110);
+		batch.draw(Assets.instance.drop.drop,x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
 		Assets.instance.fonts.defaultBig.draw(batch, ""+worldController.selectedSprite, x + 75, y + 37);
 	}
 
