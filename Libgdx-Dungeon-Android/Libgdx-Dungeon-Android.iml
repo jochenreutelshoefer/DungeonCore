@@ -19,15 +19,26 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../Libgdx-Comp-Dungeon-Android" />
-    <content url="file://$MODULE_DIR$/../Libgdx-Comp-Dungeon-Android/src/main/java" />
-    <content url="file://$MODULE_DIR$/../Libgdx-Comp-Dungeon-Android/src/main/resources" />
-    <content url="file://$MODULE_DIR$/../Libgdx-Comp-Dungeon-Android/src/test/java" />
-    <content url="file://$MODULE_DIR$/../Libgdx-Comp-Dungeon-Android/target/generated-sources/combined-assets" />
-    <content url="file://$MODULE_DIR$/../Libgdx-Comp-Dungeon-Android/target/generated-sources/r" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Bunny-Demo-Android-1.0-SNAPSHOT.ap_" />
+      <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Bunny-Demo-Android-1.0-SNAPSHOT.apk" />
+      <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Bunny-Demo-Android-1.0-SNAPSHOT.jar" />
+      <excludeFolder url="file://$MODULE_DIR$/target/R.txt" />
+      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/classes.dex" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Libgdx-Comp-Dungeon" />
+    <orderEntry type="module" module-name="Libgdx-Dungeon" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-android:1.9.10" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.1.1.4" level="project" />
