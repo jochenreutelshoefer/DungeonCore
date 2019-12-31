@@ -1,19 +1,22 @@
-package de.jdungeon;
+package de.jdungeon.world;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
+import de.jdungeon.AbstractGameScreen;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.19.
  */
-public class GameScreen extends AbstractGameScreen{
+public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
 
 	private WorldController worldController;
 	private WorldRenderer worldRenderer;
+	private GUIRenderer guiRenderer;
 
 	private boolean paused;
 
@@ -25,6 +28,7 @@ public class GameScreen extends AbstractGameScreen{
 	public void show() {
 		worldController = new WorldController(game);
 		worldRenderer = new WorldRenderer(worldController);
+		guiRenderer = new GUIRenderer(worldController);
 	}
 
 	@Override
@@ -37,11 +41,13 @@ public class GameScreen extends AbstractGameScreen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		worldRenderer.render();
+		guiRenderer.render();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		worldRenderer.resize(width, height);
+		guiRenderer.resize(width, height);
 	}
 
 	@Override

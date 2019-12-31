@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
+import de.jdungeon.asset.Assets;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.19.

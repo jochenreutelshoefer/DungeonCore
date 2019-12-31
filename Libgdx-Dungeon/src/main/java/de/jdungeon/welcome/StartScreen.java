@@ -1,4 +1,4 @@
-package de.jdungeon;
+package de.jdungeon.welcome;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -10,6 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.asset.AssetFonts;
+import de.jdungeon.Constants;
+import de.jdungeon.world.GameScreen;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

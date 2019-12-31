@@ -1,4 +1,4 @@
-package de.jdungeon;
+package de.jdungeon.world;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+
+import de.jdungeon.asset.Assets;
+import de.jdungeon.CameraHelper;
+import de.jdungeon.welcome.StartScreen;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

@@ -1,56 +1,40 @@
-package de.jdungeon;
+package de.jdungeon.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
+import de.jdungeon.Constants;
+import de.jdungeon.asset.AssetFonts;
+import de.jdungeon.asset.Assets;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
- * @created 24.12.19.
+ * @created 31.12.19.
  */
-public class WorldRenderer implements Disposable {
+public class GUIRenderer implements Disposable {
 
-	private OrthographicCamera camera;
+	private final WorldController worldController;
 	private OrthographicCamera cameraGUI;
 	private SpriteBatch batch;
-	private final WorldController worldController;
 
-	public WorldRenderer(WorldController worldController) {
+	public GUIRenderer(WorldController worldController) {
 		this.worldController = worldController;
 		init();
 	}
 
 	private void init() {
 		batch = new SpriteBatch();
-		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-		camera.position.set(0, 0, 0);
-		camera.update();
 
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
-		camera.update();
+		cameraGUI.update();
 	}
 
 	public void render() {
-		renderTestObjects();
-		renderGUI(batch);
-	}
-
-	private void renderTestObjects() {
-		worldController.cameraHelper.applyTo(camera);
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		for (Sprite sprite : worldController.testSprites) {
-			sprite.draw(batch);
-		}
-		batch.end();
-	}
-
-	private void renderGUI(SpriteBatch batch) {
 		batch.setProjectionMatrix(cameraGUI.combined);
 		batch.begin();
 		renderGuiScore(batch);
@@ -83,9 +67,6 @@ public class WorldRenderer implements Disposable {
 	}
 
 	public void resize(int width, int height) {
-		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
-		camera.update();
-
 		cameraGUI.viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
 		cameraGUI.viewportWidth =  (Constants.VIEWPORT_GUI_HEIGHT / height) * width;
 		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight/2, 0);

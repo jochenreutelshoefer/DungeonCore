@@ -1,4 +1,4 @@
-package de.jdungeon;
+package de.jdungeon.asset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

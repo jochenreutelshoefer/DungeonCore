@@ -40,6 +40,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Libgdx-Dungeon" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
+    <orderEntry type="module" module-name="Dungeon-FrontEnd-TouchGUI" />
+    <orderEntry type="module" module-name="Dungeon-FrontEnd-GraphicsEngine2D" />
+    <orderEntry type="module" module-name="Dungeon-Core" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:3.8.2" level="project" />
+    <orderEntry type="module" module-name="Game-Core" />
+    <orderEntry type="module" module-name="Dungeon-App-Core" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-android:1.9.10" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.1.1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />

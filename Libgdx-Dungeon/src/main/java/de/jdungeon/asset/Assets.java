@@ -1,4 +1,4 @@
-package de.jdungeon;
+package de.jdungeon.asset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -7,6 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+
+import de.jdungeon.Constants;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
