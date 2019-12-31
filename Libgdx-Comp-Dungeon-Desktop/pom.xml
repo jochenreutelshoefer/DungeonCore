@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>Libgdx-Dungeon-Desktop</artifactId>
+	<artifactId>Libgdx-Comp-Dungeon-Desktop</artifactId>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->

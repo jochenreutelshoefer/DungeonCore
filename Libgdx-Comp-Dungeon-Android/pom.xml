@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>apk</packaging>
 
-	<artifactId>Libgdx-Dungeon-Android</artifactId>
+	<artifactId>Libgdx-Comp-Dungeon-Android</artifactId>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
