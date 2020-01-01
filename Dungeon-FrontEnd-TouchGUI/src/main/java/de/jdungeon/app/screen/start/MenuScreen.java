@@ -30,7 +30,7 @@ public abstract class MenuScreen extends StandardScreen {
 	public void paint(float deltaTime) {
 		super.paint(deltaTime);
 
-		Graphics g = game.getGraphics();
+		Graphics g = game.getGraphics(null);
 
 		String headerString = getHeaderString();
 		drawHeader(g, headerString);

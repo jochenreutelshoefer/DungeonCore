@@ -10,9 +10,9 @@ public interface Game {
 
 	FileIO getFileIO();
 
-	Graphics getGraphics();
+	Graphics getGraphics(ScreenContext context);
 
-	void setScreen(Screen screen);
+	void setCurrentScreen(Screen screen);
 
 	Screen getCurrentScreen();
 

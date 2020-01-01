@@ -3,6 +3,7 @@ package de.jdungeon.welcome;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,8 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
+import de.jdungeon.game.ScreenContext;
 import de.jdungeon.world.GameScreen;
 
 /**
@@ -35,14 +38,20 @@ public class StartScreen extends AbstractGameScreen {
 	private boolean debugEnabled = false;
 	private float debugRebuildStage;
 
-	public StartScreen(Game game) {
+	public StartScreen(LibgdxDungeonMain game) {
 		super(game);
 		init();
 	}
 
+	@Override
 	public void init() {
 		bgImageTx = new Texture(Gdx.files.internal("data/haunted-castle.jpg"));
 		buttImageTx = new Texture(Gdx.files.internal("data/vector-button.png"));
+
+	}
+
+	@Override
+	public void backButton() {
 
 	}
 
@@ -104,6 +113,22 @@ public class StartScreen extends AbstractGameScreen {
 	@Override
 	public void resize(int i, int i1) {
 	 // todo: how to set Viewport to stage?
+	}
+
+	@Override
+	public void update(float deltaTime) {
+
+	}
+
+	@Override
+	public void paint(float deltaTime) {
+		render(deltaTime);
+	}
+
+	@Override
+	public OrthographicCamera getCamera(ScreenContext context) {
+		// currently we have not camera here as we use Scene2D for rendering
+		return null;
 	}
 
 	@Override

@@ -53,6 +53,7 @@ import de.jdungeon.game.FileIO;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Screen;
+import de.jdungeon.game.ScreenContext;
 import de.jdungeon.io.ResourceBundleLoader;
 import de.jdungeon.libgdx.LibgdxAudio;
 import de.jdungeon.libgdx.LibgdxConfiguration;
@@ -221,7 +222,9 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		}
 
 		if(graphics == null) {
-			graphics = new LibgdxGraphics();
+			camera = new OrthographicCamera();
+			camera.setToOrtho(false, 800, 480);
+			graphics = new LibgdxGraphics(camera);
 		}
 
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -331,12 +334,12 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 	}
 
 	@Override
-	public Graphics getGraphics() {
+	public Graphics getGraphics(ScreenContext context) {
 		return graphics;
 	}
 
 	@Override
-	public void setScreen(Screen screen) {
+	public void setCurrentScreen(Screen screen) {
 		currentScreen.pause();
 		currentScreen.dispose();
 		screen.resume();
@@ -398,7 +401,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		if(event instanceof StartNewGameEvent) {
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Thief.getCode());
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
-			this.setScreen(screen);
+			this.setCurrentScreen(screen);
 		}
 		if(event instanceof QuitGameEvent) {
 			this.dispose();
@@ -411,7 +414,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			SkillSelectionScreen screen = new SkillSelectionScreen(this);
-			this.setScreen(screen);
+			this.setCurrentScreen(screen);
 
 
 			// todo : implement libgdx resume
@@ -422,18 +425,18 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 			Spell spell = ((SkillSelectedEvent) event).getSpell();
 			dungeonSession.learnSkill(spell);
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
-			this.setScreen(screen);
+			this.setCurrentScreen(screen);
 		}
 		if(event instanceof DungeonStartEvent) {
 			log.info("App: processing DungeonStartEvent");
 			// initialize new dungeon
 			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
 			DungeonGame.getInstance().restartRunning();
-			setScreen(gamescreen);
+			setCurrentScreen(gamescreen);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();
-			setScreen(new DungeonSelectionScreen(this));
+			setCurrentScreen(new DungeonSelectionScreen(this));
 		}
 	}
 }

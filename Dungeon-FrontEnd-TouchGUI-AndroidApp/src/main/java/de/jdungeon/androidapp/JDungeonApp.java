@@ -120,7 +120,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 		if(event instanceof StartNewGameEvent) {
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Thief.getCode());
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
-			this.setScreen(screen);
+			this.setCurrentScreen(screen);
 		}
 		if(event instanceof QuitGameEvent) {
 			this.finish();
@@ -131,7 +131,7 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			SkillSelectionScreen screen = new SkillSelectionScreen(this);
-			this.setScreen(screen);
+			this.setCurrentScreen(screen);
 			this.renderView.resume();
 
 		}
@@ -139,25 +139,25 @@ public class JDungeonApp extends AndroidGame implements EventListener {
 			Spell spell = ((SkillSelectedEvent) event).getSpell();
 			dungeonSession.learnSkill(spell);
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
-			this.setScreen(screen);
+			this.setCurrentScreen(screen);
 		}
 		if(event instanceof DungeonStartEvent) {
 			Log.i("Initialization","App: processing DungeonStartEvent");
 			// initialize new dungeon
 			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
 			DungeonGame.getInstance().restartRunning();
-			setScreen(gamescreen);
+			setCurrentScreen(gamescreen);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();
-			setScreen(new DungeonSelectionScreen(this));
+			setCurrentScreen(new DungeonSelectionScreen(this));
 		}
 		/*
 		if(event instanceof HeroCategorySelectedEvent) {
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(((HeroCategorySelectedEvent)event).getHeroType());
 			DungeonSelectionScreen screen = new DungeonSelectionScreen(this, dungeonSession);
-			this.setScreen(screen);
-			//setScreen(new GameScreen(this));
+			this.setCurrentScreen(screen);
+			//setCurrentScreen(new GameScreen(this));
 		}
 		*/
 	}

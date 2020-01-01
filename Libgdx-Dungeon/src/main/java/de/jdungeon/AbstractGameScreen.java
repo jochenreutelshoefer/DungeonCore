@@ -3,18 +3,22 @@ package de.jdungeon;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.asset.Assets;
+import de.jdungeon.game.ScreenContext;
+import de.jdungeon.libgdx.LibgdxScreenContext;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.19.
  */
-public abstract class AbstractGameScreen implements Screen {
+public abstract class AbstractGameScreen extends de.jdungeon.game.Screen implements Screen {
 
-	protected Game game;
+	protected LibgdxDungeonMain game;
 
-	public AbstractGameScreen(Game game) {
+	public AbstractGameScreen(LibgdxDungeonMain game) {
+		super(game);
 		this.game = game;
 	}
 
@@ -33,4 +37,27 @@ public abstract class AbstractGameScreen implements Screen {
 	public void dispose() {
 		Assets.instance.dispose();
 	}
+
+	@Override
+	public void update(float deltaTime) {
+
+	}
+
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public void backButton() {
+
+	}
+
+
+	@Override
+	public void paint(float deltaTime) {
+		this.render(deltaTime);
+	}
+
+	public abstract OrthographicCamera getCamera(ScreenContext context);
 }

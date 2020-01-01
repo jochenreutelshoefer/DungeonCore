@@ -26,7 +26,7 @@ public class AndroidImageLoader implements AbstractImageLoader<Image> {
 			fullFilename = "pics/" + filename;
 		}
 		if (fileExists(fullFilename)) {
-			return ((AndroidGraphics)game.getGraphics()).newImage(fullFilename, ImageFormat.RGB565);
+			return ((AndroidGraphics)game.getGraphics(null)).newImage(fullFilename, ImageFormat.RGB565);
 		}
 		return null;
 	}

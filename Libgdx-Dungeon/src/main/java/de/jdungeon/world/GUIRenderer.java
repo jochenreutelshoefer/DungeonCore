@@ -20,17 +20,14 @@ public class GUIRenderer implements Disposable {
 	private OrthographicCamera cameraGUI;
 	private SpriteBatch batch;
 
-	public GUIRenderer(WorldController worldController) {
+	public GUIRenderer(WorldController worldController, OrthographicCamera cameraGUI) {
 		this.worldController = worldController;
+		this.cameraGUI = cameraGUI;
 		init();
 	}
 
 	private void init() {
 		batch = new SpriteBatch();
-
-		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-		cameraGUI.position.set(0, 0, 0);
-		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
 	}
 

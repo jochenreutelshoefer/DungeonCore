@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
+import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.welcome.StartScreen;
@@ -27,9 +28,9 @@ public class WorldController extends InputAdapter {
 	public int selectedSprite;
 
 	public CameraHelper cameraHelper;
-	private final Game game;
+	private final LibgdxDungeonMain game;
 
-	public WorldController(Game game) {
+	public WorldController(LibgdxDungeonMain game) {
 		this.game = game;
 		init();
 	}

@@ -132,7 +132,7 @@ public abstract class StandardScreen extends Screen {
 
 	@Override
 	public void paint(float deltaTime) {
-		Graphics gr = game.getGraphics();
+		Graphics gr = game.getGraphics(null);
 		/*
 		 * clear background
 		 */

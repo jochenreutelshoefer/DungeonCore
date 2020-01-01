@@ -3,8 +3,13 @@ package de.jdungeon.world;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.Constants;
+import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.game.ScreenContext;
+import de.jdungeon.libgdx.LibgdxScreenContext;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -19,16 +24,30 @@ public class GameScreen extends AbstractGameScreen {
 	private GUIRenderer guiRenderer;
 
 	private boolean paused;
+	private OrthographicCamera camera;
+	private OrthographicCamera cameraGUI;
 
-	public GameScreen(Game game) {
+	public GameScreen(LibgdxDungeonMain game) {
 		super(game);
 	}
 
 	@Override
 	public void show() {
 		worldController = new WorldController(game);
-		worldRenderer = new WorldRenderer(worldController);
-		guiRenderer = new GUIRenderer(worldController);
+
+
+		// init world camera and world renderer
+		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
+		camera.position.set(0, 0, 0);
+		camera.update();
+		worldRenderer = new WorldRenderer(worldController, camera);
+
+		// init gui camera and gui renderer
+		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+		cameraGUI.position.set(0, 0, 0);
+		cameraGUI.setToOrtho(true);
+		cameraGUI.update();
+		guiRenderer = new GUIRenderer(worldController, cameraGUI);
 	}
 
 	@Override
@@ -50,6 +69,7 @@ public class GameScreen extends AbstractGameScreen {
 		guiRenderer.resize(width, height);
 	}
 
+
 	@Override
 	public void pause() {
 		paused = true;
@@ -59,5 +79,17 @@ public class GameScreen extends AbstractGameScreen {
 	public void resume() {
 		super.resume();
 		paused = false;
+	}
+
+	@Override
+	public OrthographicCamera getCamera(ScreenContext context) {
+		if(context == LibgdxScreenContext.Context.GUI) {
+			return this.cameraGUI;
+		}
+		if(context == LibgdxScreenContext.Context.WORLD) {
+			return this.camera;
+		}
+		// may not happen
+		return null;
 	}
 }

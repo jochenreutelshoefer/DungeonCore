@@ -38,9 +38,9 @@ import de.jdungeon.game.Image;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 31.12.19.
  */
-public class StageSelectionScreen /*extends MenuScreen implements EventListener*/ {
+public class StageSelectionScreen /*extends MenuScreen implements EventListener*/ { /*
 
-	/*
+
 
 	public static final JDDimension HERO_DIMENSION = new JDDimension(130, 130);
 	public static final int X_DISTANCE = 150;
@@ -226,6 +226,6 @@ public class StageSelectionScreen /*extends MenuScreen implements EventListener*
 			heroFigure.addTask(heroFigure.getPositionOnScreen(), dungeonTileHeroPosition, 4, new DungeonStartEvent(selectedEvent));
 		}
 	}
+*/
 
-	*/
 }

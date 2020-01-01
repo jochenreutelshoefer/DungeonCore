@@ -364,7 +364,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	public void paint(float arg0) {
 
 		long renderStart = System.currentTimeMillis();
-		Graphics gr = game.getGraphics();
+		Graphics gr = game.getGraphics(null);
 
 		/*
 		 * clear background

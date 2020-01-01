@@ -1,14 +1,10 @@
 package de.jdungeon.world;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
-import de.jdungeon.asset.AssetFonts;
-import de.jdungeon.asset.Assets;
 import de.jdungeon.Constants;
 
 /**
@@ -21,15 +17,14 @@ public class WorldRenderer implements Disposable {
 	private SpriteBatch batch;
 	private final WorldController worldController;
 
-	public WorldRenderer(WorldController worldController) {
+	public WorldRenderer(WorldController worldController, OrthographicCamera camera) {
 		this.worldController = worldController;
+		this.camera = camera;
 		init();
 	}
 
 	private void init() {
 		batch = new SpriteBatch();
-		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-		camera.position.set(0, 0, 0);
 		camera.update();
 
 	}

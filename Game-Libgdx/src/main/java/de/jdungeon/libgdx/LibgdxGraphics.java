@@ -37,10 +37,9 @@ public class LibgdxGraphics implements Graphics {
 	Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
 
 
-	public LibgdxGraphics() {
+	public LibgdxGraphics(OrthographicCamera camera) {
+		this.camera = camera;
 		// create the camera and the SpriteBatch
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
 
 		colorMap.put(Colors.BLACK, com.badlogic.gdx.graphics.Color.BLACK);

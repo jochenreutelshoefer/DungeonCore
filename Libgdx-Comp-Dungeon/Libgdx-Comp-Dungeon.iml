@@ -20,7 +20,7 @@
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.badlogicgames.gdx:gdx-platform:1.9.10" level="project" />
     <orderEntry type="library" name="Maven: de.mindpipe.android:android-logging-log4j:1.0.3" level="project" />
-    <orderEntry type="library" name="Maven: de.reutelshoefer.dungeon:Game-Libgdx:0.1.0" level="project" />
+    <orderEntry type="module" module-name="Game-Libgdx" />
     <orderEntry type="module" module-name="Game-Core" />
   </component>
 </module>

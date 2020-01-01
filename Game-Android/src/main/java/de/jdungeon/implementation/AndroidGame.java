@@ -17,6 +17,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.Screen;
+import de.jdungeon.game.ScreenContext;
 import de.jdungeon.user.Session;
 
 public abstract class AndroidGame extends Activity implements Game {
@@ -140,7 +141,7 @@ public abstract class AndroidGame extends Activity implements Game {
 	}
 
 	@Override
-	public Graphics getGraphics() {
+	public Graphics getGraphics(ScreenContext context) {
 		return graphics;
 	}
 
@@ -155,7 +156,7 @@ public abstract class AndroidGame extends Activity implements Game {
 	}
 
 	@Override
-	public void setScreen(Screen screen) {
+	public void setCurrentScreen(Screen screen) {
 		if (screen == null) {
 			throw new IllegalArgumentException("Screen must not be null");
 		}
