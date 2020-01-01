@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -26,9 +27,9 @@ public class LibgdxGraphics implements Graphics {
 	private final SpriteBatch batch;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private final BitmapFont font = new BitmapFont();
-	private final BitmapFont fontWhite = new BitmapFont();
-	private final BitmapFont fontGray = new BitmapFont();
-	private final BitmapFont fontBlack = new BitmapFont();
+	private final BitmapFont fontWhite = new BitmapFont(true);
+	private final BitmapFont fontGray = new BitmapFont(true);
+	private final BitmapFont fontBlack = new BitmapFont(true);
 
 	private LibgdxTextpaint paintWhite = new LibgdxTextpaint(fontWhite);
 	private LibgdxTextpaint paintGray = new LibgdxTextpaint(fontGray);
@@ -89,11 +90,15 @@ public class LibgdxGraphics implements Graphics {
 	}
 
 	private void prepareDraw(Color color) {
+		batch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.setColor(colorMap.get(color));
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 	}
 
 	private void prepareFill(Color color) {
+		batch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.setColor(colorMap.get(color));
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 	}
@@ -149,6 +154,7 @@ public class LibgdxGraphics implements Graphics {
 
 	@Override
 	public void drawImage(Image image, int x, int y, boolean nonTmp) {
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(((LibgdxImage)image).getTexture(), x, y);
 		batch.end();
@@ -157,6 +163,7 @@ public class LibgdxGraphics implements Graphics {
 	@Override
 	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight, boolean nonTmp) {
 		// todo: consider scale
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(((LibgdxImage)image).getTexture(), x, y);
 		batch.end();
@@ -165,6 +172,7 @@ public class LibgdxGraphics implements Graphics {
 	@Override
 	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight) {
 		// todo: consider scale
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(((LibgdxImage)image).getTexture(), x, y);
 		batch.end();
@@ -172,19 +180,34 @@ public class LibgdxGraphics implements Graphics {
 
 	@Override
 	public void drawString(String text, int x, int y, TextPaint paint) {
+		LibgdxTextpaint textpaint = null;
+		if(paint instanceof LibgdxTextpaint) {
+			textpaint = (LibgdxTextpaint) paint;
+		}
+		if(paint instanceof PaintBuilder) {
+			textpaint = new LibgdxTextpaint(createBitMapFont(((PaintBuilder)paint)));
+		}
+
+		GlyphLayout layout = new GlyphLayout();
+		layout.setText(textpaint.getFont(), text ,textpaint.getFont().getColor(), 50, 0, false);
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		font.draw(batch, text, x, y);
+		textpaint.getFont().draw(batch, layout, x, y);
+		//textpaint.getFont().draw(batch, text, x, y);
 		batch.end();
+	}
+
+	private BitmapFont createBitMapFont(PaintBuilder paint) {
+		BitmapFont font = new BitmapFont(true);
+		font.setColor(colorMap.get(paint.getColor()));
+		return font;
 	}
 
 	@Override
 	public void drawString(String text, int x, int y, int width, TextPaint paint) {
-		// TODO: consider width
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		font.draw(batch, text, x, y);
-		batch.end();
+		// todo: consider width
+		drawString(text, x, y, paint);
 	}
 
 	@Override

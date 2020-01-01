@@ -7,8 +7,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import graphics.ImageManager;
 
 import de.jdungeon.Constants;
+import de.jdungeon.LibgdxDungeonMain;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -27,7 +29,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	private Assets() {
 	}
 
-	public void init(AssetManager assetManager) {
+	public void init(AssetManager assetManager, LibgdxDungeonMain game) {
 		this.assetManager = assetManager;
 
 		assetManager.setErrorListener(this);
@@ -49,6 +51,12 @@ public class Assets implements Disposable, AssetErrorListener {
 		bucket = new AssetBucket(atlas);
 		drop = new AssetDrop(atlas);
 		fonts = new AssetFonts();
+
+		// Initialize all game images
+		// TODO: do we need to initialize them _all_ here?
+		ImageManager.getInstance(game.getFileIO().getImageLoader()).loadImages();
+
+
 
 	}
 

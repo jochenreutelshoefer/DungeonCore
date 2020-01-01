@@ -29,7 +29,7 @@ public class GameAdapter implements Game {
 	private final LibgdxDungeonMain game;
 	private LibgdxGraphics graphics;
 	private final LibgdxAudio audio = new LibgdxAudio();
-	private LibgdxInput input = new LibgdxInput();
+	private final LibgdxInput input = new LibgdxInput();
 	private final LibgdxFileIO fileIO = new LibgdxFileIO();
 	private final LibgdxConfiguration configuration = new LibgdxConfiguration();
 

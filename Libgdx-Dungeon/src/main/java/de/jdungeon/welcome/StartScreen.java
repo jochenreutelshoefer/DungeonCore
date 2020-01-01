@@ -11,9 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import event.EventManager;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
 import de.jdungeon.game.ScreenContext;
@@ -87,7 +89,8 @@ public class StartScreen extends AbstractGameScreen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if(Gdx.input.isTouched()) {
-			game.setScreen(new GameScreen(game));
+			EventManager.getInstance().fireEvent(new StartNewGameEvent());
+			//game.setScreen(new GameScreen(game));
 		}
 
 		if(debugEnabled) {
@@ -117,7 +120,7 @@ public class StartScreen extends AbstractGameScreen {
 
 	@Override
 	public void update(float deltaTime) {
-
+		int foo = 0;
 	}
 
 	@Override

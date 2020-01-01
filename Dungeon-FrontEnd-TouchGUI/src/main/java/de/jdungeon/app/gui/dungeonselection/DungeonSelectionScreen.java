@@ -42,10 +42,10 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 	private final DungeonSession session;
 	private final DungeonManager dungeonManager;
-	private final int offset;
+	private int offset;
 	private final AbstractImageLoader imageLoader;
-	private final int stageHeightOffset;
-	private final int xCenterValue;
+	private int stageHeightOffset;
+	private int xCenterValue;
 	private final DungeonSelectionHeroFigure heroFigure;
 
 	private int dotX;
@@ -53,22 +53,21 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 	private int[][] coordinatesX;
 	private int iconIndex = 0;
 
-	public DungeonSelectionScreen(Game game) {
+	public DungeonSelectionScreen(final Game game) {
 		super(game);
 		EventManager.getInstance().registerListener(this);
 		Logger.getLogger(this.getClass().getName()).info("creating DungeonSelectionScreen");
-		this.session = (DungeonSession)game.getSession();
+		this.session = (DungeonSession) game.getSession();
 		dungeonManager = session.getDungeonManager();
 		int currentStage = session.getCurrentStage();
-		stageHeightOffset = 180;
-		offset = (int) (game.getScreenHeight() /1.8 + (stageHeightOffset * currentStage));
-		xCenterValue = game.getScreenWidth()/2;
+		imageLoader = game.getFileIO().getImageLoader();
+
+		calcScreenCoordinates();
 
 		DefaultAnimationSet animationSet = ImageManager.getAnimationSet(Hero.HeroCategory.fromValue(session.getCurrentHero()
 				.getHeroCode()), Motion.Running, RouteInstruction.Direction.North);
 
-		imageLoader = game.getFileIO().getImageLoader();
-		for(int i = 0; i < dungeonManager.getNumberOfStages(); i++) {
+		for (int i = 0; i < dungeonManager.getNumberOfStages(); i++) {
 			addGUIElementsForStage(i, dungeonManager.getDungeonOptions(i));
 		}
 
@@ -78,34 +77,69 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		heroFigure = new DungeonSelectionHeroFigure(heroSelectionPos, HERO_DIMENSION, animationSet, this.getGame());
 		guiElements.add(heroFigure);
 
-		heroFigure.addTask(getHeroStartPoint(), heroSelectionPos, 4);
+		/* start debug */
+
+		for (int i = 0; i < 10; i++) {
+			final int dotPos = i * 100;
+			DrawGUIElement redDot = new DrawGUIElement() {
+				@Override
+				public void paint(Graphics g, JDPoint viewportPosition) {
+					g.fillOval(dotPos, dotPos, DungeonSelectionScreen.this.dotSize, DungeonSelectionScreen.this.dotSize, Colors.RED);
+				}
+
+				@Override
+				public Game getGame() {
+					return game;
+				}
+			};
+
+			this.guiElements.add(redDot);
+
+			this.guiElements.add(new StringGUIElement(new JDPoint(dotPos + 5, dotPos), new JDDimension(100, 50), this, game, "Dot: " + i));
+		}
+		/*end debug */
+
+		heroFigure.addTask(
+
+				getHeroStartPoint(), heroSelectionPos, 4);
+	}
+
+	private void calcScreenCoordinates() {
+		stageHeightOffset = 180;
+		offset = (int) (game.getScreenHeight() / 1.8 + (stageHeightOffset * session.getCurrentStage()));
+		xCenterValue = game.getScreenWidth() / 2;
+	}
+
+	public void resize(int width, int height) {
+		calcScreenCoordinates();
 	}
 
 	private JDPoint getHeroStartPoint() {
 		int currentStage = session.getCurrentStage();
-		if(currentStage == 0) {
-			return new JDPoint(xCenterValue - HERO_DIMENSION.getWidth() / 2, getDotY(getY(currentStage)) + dotSize );
+		if (currentStage == 0) {
+			return new JDPoint(xCenterValue - HERO_DIMENSION.getWidth() / 2, getDotY(getY(currentStage)) + dotSize);
 		}
 		else {
 			DungeonFactory lastCompleted = session.getLastCompleted();
-			return getDungeonTileHeroPosition(currentStage-1, lastCompleted);
+			return getDungeonTileHeroPosition(currentStage - 1, lastCompleted);
 		}
 	}
 
 	private JDPoint getDungeonTileHeroPosition(int level, DungeonFactory dungeonFactory) {
 		List<DungeonFactory> dungeonOptions = session.getDungeonManager().getDungeonOptions(level);
 		int selectionIndex = dungeonOptions.indexOf(dungeonFactory);
-		if(selectionIndex == -1) {
+		if (selectionIndex == -1) {
 			return null;
 		}
-		return new JDPoint(coordinatesX[dungeonOptions.size()-1][selectionIndex] - HERO_DIMENSION.getWidth() / 2, getY(level) - HERO_DIMENSION.getHeight() / 5);
+		return new JDPoint(coordinatesX[dungeonOptions.size() - 1][selectionIndex] - HERO_DIMENSION.getWidth() / 2, getY(level) - HERO_DIMENSION
+				.getHeight() / 5);
 	}
 
 	private void addGUIElementsForStage(int stage, List<DungeonFactory> dungeonOptions) {
 
 		coordinatesX = new int[][] {
-				{ xCenterValue, -1, -1},
-				{ xCenterValue - X_DISTANCE /2,  xCenterValue + X_DISTANCE /2, -1 },
+				{ xCenterValue, -1, -1 },
+				{ xCenterValue - X_DISTANCE / 2, xCenterValue + X_DISTANCE / 2, -1 },
 				{ xCenterValue - X_DISTANCE, xCenterValue, xCenterValue + X_DISTANCE },
 		};
 
@@ -132,7 +166,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		this.guiElements.add(new DrawGUIElement() {
 			@Override
 			public void paint(Graphics g, JDPoint viewportPosition) {
-				g.fillOval(dotX - dotSize /2, dotY - dotSize /2, dotSize, dotSize, Colors.WHITE);
+				g.fillOval(dotX - dotSize / 2, dotY - dotSize / 2, dotSize, dotSize, Colors.WHITE);
 			}
 
 			@Override
@@ -141,20 +175,19 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			}
 		});
 
-
 		DungeonCompletionScore achievedScore = null;
 
 		//
 		int innerStageIndex = 0;
 		for (DungeonFactory dungeonOption : dungeonOptions) {
-			final int x = coordinatesX[dungeonOptions.size()-1][innerStageIndex];
+			final int x = coordinatesX[dungeonOptions.size() - 1][innerStageIndex];
 
 			// we draw the track lines between the tiles also as GUIElements
 			this.guiElements.add(new DrawGUIElement() {
 				@Override
 				public void paint(Graphics g, JDPoint viewportPosition) {
-					g.drawLine(x, y+DungeonSelectionTile.TILE_WIDTH/10, dotX, dotY - stageHeightOffset, Colors.WHITE);
-					g.drawLine(x, y+DungeonSelectionTile.TILE_WIDTH*9/10, dotX, dotY, Colors.WHITE);
+					g.drawLine(x, y + DungeonSelectionTile.TILE_WIDTH / 10, dotX, dotY - stageHeightOffset, Colors.WHITE);
+					g.drawLine(x, y + DungeonSelectionTile.TILE_WIDTH * 9 / 10, dotX, dotY, Colors.WHITE);
 				}
 
 				@Override
@@ -164,22 +197,23 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 			});
 
 			Image image = LevelIconImageManager.getInstance().getIcon(imageLoader, iconIndex++);
-			JDPoint tilePosition = new JDPoint(x-DungeonSelectionTile.TILE_WIDTH/2, y);
+			JDPoint tilePosition = new JDPoint(x - DungeonSelectionTile.TILE_WIDTH / 2, y);
 			this.guiElements.add(new DungeonSelectionTile(dungeonOption, tilePosition, image, session.getCurrentStage() == stage, game));
 
 			DungeonCompletionScore achievedScoreForOption = session.getAchievedScoreFor(dungeonOption);
-			if(achievedScoreForOption != null ) {
-				achievedScore  = achievedScoreForOption;
+			if (achievedScoreForOption != null) {
+				achievedScore = achievedScoreForOption;
 			}
 
 			innerStageIndex++;
 		}
 
-		int textY = y + stageHeightOffset/3;
-		this.guiElements.add(new StringGUIElement(new JDPoint(100, textY), new JDDimension(100, 50), this, game,"Level: "+stage));
+		int textY = y + stageHeightOffset / 3;
+		this.guiElements.add(new StringGUIElement(new JDPoint(100, textY), new JDDimension(100, 50), this, game, "Level: " + stage));
 
-		if(achievedScore != null) {
-				this.guiElements.add(new StringGUIElement(new JDPoint(game.getScreenWidth()-175, textY), new JDDimension(100, 50), this, game,"Punkte: "+achievedScore.getScore()+ " ("+achievedScore.getRounds()+" Runden)"));
+		if (achievedScore != null) {
+			this.guiElements.add(new StringGUIElement(new JDPoint(game.getScreenWidth() - 175, textY), new JDDimension(100, 50), this, game, "Punkte: " + achievedScore
+					.getScore() + " (" + achievedScore.getRounds() + " Runden)"));
 		}
 	}
 
@@ -188,7 +222,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 	}
 
 	private int getDotY(int y) {
-		return y + stageHeightOffset*14/18;
+		return y + stageHeightOffset * 14 / 18;
 	}
 
 	@Override
@@ -214,10 +248,9 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		*/
 	}
 
-
 	@Override
 	protected String getHeaderString() {
-		return "Punkte gesamt: "+ session.getTotalScore();
+		return "Punkte gesamt: " + session.getTotalScore();
 	}
 
 	@Override
@@ -229,7 +262,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof  DungeonSelectedEvent) {
+		if (event instanceof DungeonSelectedEvent) {
 			Logger.getLogger(this.getClass().getName()).info("processing DungeonSelectedEvent");
 			DungeonSelectedEvent selectedEvent = (DungeonSelectedEvent) event;
 			DungeonFactory dungeonFactory = selectedEvent.getDungeon();

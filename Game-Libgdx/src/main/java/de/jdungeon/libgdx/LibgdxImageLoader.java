@@ -14,19 +14,20 @@ import de.jdungeon.game.Image;
  */
 public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 
-	public static Map<String, Long> durations = new HashMap<>();
+	private static final String TAG = LibgdxImageLoader.class.getName();
+
 
 	@Override
 	public Image loadImage(String filename) {
 		if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
 			filename = AbstractImageLoader.PREFIX + filename;
 		}
-		//if(fileExists(filename)) {
+		if(fileExists(filename)) {
 			return new LibgdxImage(filename);
-		//} else {
-		//	Log.warning("File not found: "+filename);
-		//	return null;
-		//}
+		} else {
+			Gdx.app.error(TAG, "File not found: "+filename);
+			return null;
+		}
 	}
 
 	@Override
@@ -43,7 +44,6 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 		} catch (Exception e) {
 			exists = false;
 		}
-		durations.put(filename, System.currentTimeMillis() - before);
 		return exists;
 	}
 

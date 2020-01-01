@@ -38,6 +38,7 @@ import spell.Spell;
 import user.DefaultDungeonSession;
 import user.DungeonSession;
 
+import de.jdungeon.app.SessionEvents;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.QuitGameEvent;
 import de.jdungeon.app.event.StartNewGameEvent;
@@ -384,15 +385,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {
-		List<Class<? extends Event>> events = new ArrayList<Class<? extends Event>>();
-		events.add(ExitUsedEvent.class);
-		events.add(PlayerDiedEvent.class);
-		events.add(StartNewGameEvent.class);
-		events.add(QuitGameEvent.class);
-		events.add(DungeonStartEvent.class);
-		events.add(HeroCategorySelectedEvent.class);
-		events.add(SkillSelectedEvent.class);
-		return events;
+		return SessionEvents.getSessionEventClasses();
 	}
 
 	@Override

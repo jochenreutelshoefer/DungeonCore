@@ -69,6 +69,10 @@ public class GameScreen extends AbstractGameScreen {
 		guiRenderer.resize(width, height);
 	}
 
+	@Override
+	public void update(float deltaTime) {
+
+	}
 
 	@Override
 	public void pause() {

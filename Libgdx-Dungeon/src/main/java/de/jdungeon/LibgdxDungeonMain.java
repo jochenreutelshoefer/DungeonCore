@@ -1,11 +1,35 @@
 package de.jdungeon;
 
+import java.util.Collection;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import event.Event;
+import event.EventListener;
+import event.EventManager;
+import event.ExitUsedEvent;
+import event.PlayerDiedEvent;
+import figure.hero.Hero;
+import game.DungeonGame;
+import game.JDEnv;
+import level.DungeonStartEvent;
+import log.Log;
+import spell.Spell;
+import user.DefaultDungeonSession;
+import user.DungeonSession;
 
+import de.jdungeon.app.SessionEvents;
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.event.QuitGameEvent;
+import de.jdungeon.app.event.StartNewGameEvent;
+import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
+import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
+import de.jdungeon.app.gui.skillselection.SkillSelectedEvent;
+import de.jdungeon.app.gui.skillselection.SkillSelectionScreen;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Configuration;
@@ -14,8 +38,12 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.Screen;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.io.ResourceBundleLoader;
+import de.jdungeon.stage.StageSelectionScreen;
 import de.jdungeon.user.Session;
+import de.jdungeon.user.User;
 import de.jdungeon.welcome.StartScreen;
+import de.jdungeon.world.GameScreen;
 import de.jdungeon.world.WorldController;
 import de.jdungeon.world.WorldRenderer;
 
@@ -23,25 +51,40 @@ import de.jdungeon.world.WorldRenderer;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 14.12.19.
  */
-public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game {
+public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, EventListener {
 
 	private static final String TAG = LibgdxDungeonMain.class.getName();
+	private final ResourceBundleLoader resourceBundleLoader;
 
-	private WorldController worldController;
 	private boolean pause;
 
 	private GameAdapter adapter;
+
+	private DungeonSession dungeonSession;
+
+	public LibgdxDungeonMain(ResourceBundleLoader resourceBundleLoader) {
+		this.resourceBundleLoader = resourceBundleLoader;
+	}
 
 	@Override
 	public void create() {
 
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-		Assets.instance.init(new AssetManager());
-
-		worldController = new WorldController(this);
-
+		ResourceBundle textsBundle = resourceBundleLoader.getBundle(JDEnv.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this.getClass().getClassLoader());
+		if(textsBundle == null) {
+			Gdx.app.error(TAG, "Could not load resource bundle for texts");
+		}
+		JDEnv.init(textsBundle);
 		adapter = new GameAdapter(this);
+
+		Assets.instance.init(new AssetManager(), this);
+
+
+
+
+
+		EventManager.getInstance().registerListener(this);
 
 		super.setScreen(new StartScreen(this));
 
@@ -101,6 +144,57 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game {
 
 	@Override
 	public Session getSession() {
-		return adapter.getSession();
+		return (DefaultDungeonSession)dungeonSession;
+	}
+
+	@Override
+	public Collection<Class<? extends Event>> getEvents() {
+		return SessionEvents.getSessionEventClasses();
+	}
+
+	@Override
+	public void notify(Event event) {
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		if(event instanceof StartNewGameEvent) {
+			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
+			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Thief.getCode());
+			StageSelectionScreen screen = new StageSelectionScreen(this);
+			this.setCurrentScreen(screen);
+		}
+		if(event instanceof QuitGameEvent) {
+			this.dispose();
+		}
+		if(event instanceof ExitUsedEvent) {
+			DungeonGame.getInstance().stopRunning();
+
+			// todo : implement libgdx pause
+			//this.renderView.pause();
+
+			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
+			SkillSelectionScreen screen = new SkillSelectionScreen(this);
+			this.setCurrentScreen(screen);
+
+
+			// todo : implement libgdx resume
+			//this.renderView.resume();
+
+		}
+		if(event instanceof SkillSelectedEvent) {
+			Spell spell = ((SkillSelectedEvent) event).getSpell();
+			dungeonSession.learnSkill(spell);
+			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
+			this.setCurrentScreen(screen);
+		}
+		if(event instanceof DungeonStartEvent) {
+			Gdx.app.log(TAG, "App: processing DungeonStartEvent");
+			// initialize new dungeon
+			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
+			DungeonGame.getInstance().restartRunning();
+			setCurrentScreen(new GameScreen(this));
+		}
+		if(event instanceof PlayerDiedEvent) {
+			this.dungeonSession.revertHero();
+			setCurrentScreen(new DungeonSelectionScreen(this));
+		}
 	}
 }

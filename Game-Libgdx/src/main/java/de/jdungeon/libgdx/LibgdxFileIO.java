@@ -34,7 +34,9 @@ public class LibgdxFileIO implements FileIO {
 
 	@Override
 	public List<String> readFileNamesOfFolder(String file) throws IOException {
-		FileHandle[] fileHandles = Gdx.files.getFileHandle(file, Files.FileType.Internal).list();
+		String classPathLocation = this.getClass().getClassLoader().getResource(file).getFile();
+		FileHandle fileHandleFolder = Gdx.files.getFileHandle(classPathLocation, Files.FileType.Internal);
+		FileHandle[] fileHandles = fileHandleFolder.list();
 		List<String> filenames = new ArrayList<>();
 		for (FileHandle fileHandle : fileHandles) {
 			filenames.add(fileHandle.name());

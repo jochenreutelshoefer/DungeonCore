@@ -24,6 +24,11 @@ public class CameraHelper {
 		position = new Vector2();
 		zoom = 1.0f;
 	}
+
+	public CameraHelper(int posX, int posY) {
+		position = new Vector2(posX, posY);
+		zoom = 1.0f;
+	}
 	private float zoom;
 
 

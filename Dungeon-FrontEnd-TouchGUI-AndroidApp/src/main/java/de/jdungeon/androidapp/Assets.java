@@ -65,8 +65,8 @@ public class Assets {
 			e.printStackTrace();
 		}
 
-		// images
-		imageManager = ImageManager.getInstance(game.getFileIO().getImageLoader());
+		// initialize images
+		ImageManager imageManager = ImageManager.getInstance(game.getFileIO().getImageLoader());
 		imageManager.loadImages();
 	}
 

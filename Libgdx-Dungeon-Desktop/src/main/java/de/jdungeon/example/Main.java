@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 
+import de.jdungeon.DesktopResourceBundleLoader;
 import de.jdungeon.LibgdxDungeonMain;
 
 /**
@@ -28,6 +29,6 @@ public class Main {
 		cfg.useGL30 = false;
 		cfg.width = 800;
 		cfg.height = 480;
-		new LwjglApplication(new LibgdxDungeonMain(), cfg);
+		new LwjglApplication(new LibgdxDungeonMain(new DesktopResourceBundleLoader()), cfg);
 	}
 }

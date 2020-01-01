@@ -25,7 +25,7 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 
 	@Override
 	public void resume() {
-		Assets.instance.init(new AssetManager());
+		Assets.instance.init(new AssetManager(), game);
 	}
 
 	@Override
@@ -38,10 +38,6 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 		Assets.instance.dispose();
 	}
 
-	@Override
-	public void update(float deltaTime) {
-
-	}
 
 	@Override
 	public void init() {
