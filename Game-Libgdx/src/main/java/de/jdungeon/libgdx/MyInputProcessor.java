@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.input;
+package de.jdungeon.libgdx;
 
 import com.badlogic.gdx.InputProcessor;
 

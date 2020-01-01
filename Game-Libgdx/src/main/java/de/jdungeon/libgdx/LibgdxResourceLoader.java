@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.io;
+package de.jdungeon.libgdx;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

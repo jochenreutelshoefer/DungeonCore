@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.audio;
+package de.jdungeon.libgdx;
 
 import de.jdungeon.game.Music;
 

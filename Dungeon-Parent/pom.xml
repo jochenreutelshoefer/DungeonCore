@@ -15,11 +15,11 @@
 		<module>../Dungeon-FrontEnd-GraphicsEngine2D</module>
 		<module>../Dungeon-FrontEnd-TouchGUI-AndroidApp</module>
 		<module>../Dungeon-FrontEnd-TouchGUI</module>
-		<!--
-		<module>../Libgdx-Game-Adapter</module>
-		<module>../Libgdx-Android</module>
-		<module>../Libgdx-Desktop</module>
-		-->
+		<module>../Game-Libgdx</module>
+		<module>../Libgdx-Dungeon</module>
+		<module>../Libgdx-Dungeon-Android</module>
+		<module>../Libgdx-Dungeon-Desktop</module>
+
 	</modules>
 
 </project>

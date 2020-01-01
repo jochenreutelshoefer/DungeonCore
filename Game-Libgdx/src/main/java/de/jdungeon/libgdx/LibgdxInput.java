@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.input;
+package de.jdungeon.libgdx;
 
 import java.util.LinkedList;
 import java.util.List;

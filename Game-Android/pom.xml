@@ -4,11 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.reutelshoefer.dungeon</groupId>
 	<artifactId>Game-Android</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>0.1.0</version>
 
+	<!-- wtf?
+	<modules>
+		<module>../Game-Android</module>
+	</modules>
+	-->
 
-		<repositories>
+	<repositories>
 			<!--repository>
 				<id>des-public</id>
 				<url>https://repo.denkbares.com/repo-public</url>

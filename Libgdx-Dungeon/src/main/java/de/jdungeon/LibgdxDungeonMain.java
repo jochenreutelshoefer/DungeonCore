@@ -37,23 +37,6 @@ public class LibgdxDungeonMain extends Game  {
 
 		pause = false;
 
-		/*
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
-
-		// create the camera and the SpriteBatch
-		camera = new OrthographicCamera(1, height / width);
-		camera.setToOrtho(false, 800, 480);
-		batch = new SpriteBatch();
-		texture = new Texture(Gdx.files.internal("data/droplet.png"));
-		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(10, 10);
-		sprite.setPosition(50, 50);
-		*/
 	}
 
 }

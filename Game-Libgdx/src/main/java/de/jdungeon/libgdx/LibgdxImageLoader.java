@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.graphics;
+package de.jdungeon.libgdx;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +18,8 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 
 	@Override
 	public Image loadImage(String filename) {
-		if(! filename.startsWith(PREFIX)) {
-			filename = PREFIX + filename;
+		if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
+			filename = AbstractImageLoader.PREFIX + filename;
 		}
 		//if(fileExists(filename)) {
 			return new LibgdxImage(filename);
@@ -31,8 +31,8 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 
 	@Override
 	public boolean fileExists(String filename) {
-		if(! filename.startsWith(PREFIX)) {
-			filename = PREFIX + filename;
+		if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
+			filename = AbstractImageLoader.PREFIX + filename;
 		}
 		long before = System.currentTimeMillis();
 		boolean exists = true;

@@ -5,15 +5,16 @@
 		<artifactId>Dungeon-Parent</artifactId>
 		<groupId>de.reutelshoefer.dungeon</groupId>
 		<version>0.1.0</version>
+		<relativePath>../Dungeon-Parent/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>Libgdx-Comp-Dungeon</artifactId>
+	<artifactId>Game-Libgdx</artifactId>
 
 	<dependencies>
 		<dependency>
-			<artifactId>Dungeon-FrontEnd-TouchGUI</artifactId>
 			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Game-Core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
@@ -28,16 +29,6 @@
 			<artifactId>gdx-platform</artifactId>
 			<version>1.9.10</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.mindpipe.android</groupId>
-			<artifactId>android-logging-log4j</artifactId>
-			<version>1.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>de.reutelshoefer.dungeon</groupId>
-			<artifactId>Game-Libgdx</artifactId>
-			<version>0.1.0</version>
 		</dependency>
 	</dependencies>
 

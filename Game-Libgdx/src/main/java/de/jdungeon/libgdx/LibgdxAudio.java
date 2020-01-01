@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.audio;
+package de.jdungeon.libgdx;
 
 import com.badlogic.gdx.Gdx;
 

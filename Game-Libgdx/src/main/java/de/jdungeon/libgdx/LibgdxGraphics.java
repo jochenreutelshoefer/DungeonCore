@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.graphics;
+package de.jdungeon.libgdx;
 
 import java.util.HashMap;
 import java.util.Map;

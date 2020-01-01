@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
  */
 public class AssetFonts {
 
-	public static final float FONT_SIZE_BIG = 0.75f;
+	public static final float FONT_SIZE_BIG = 2f;
 	public static final String FONT_FILE = "font/arial-15.fnt";
 	public static final float FONT_SIZE_NORMAL = 1f;
-	public static final float FONT_SIZE_SMALL = 2f;
+	public static final float FONT_SIZE_SMALL = 0.75f;
 	public final BitmapFont defaultSmallFlipped;
 	public final BitmapFont defaultNormalFlipped;
 	public final BitmapFont defaultBigFlipped;

@@ -1,4 +1,4 @@
-package de.jdungeon.adapter.io;
+package de.jdungeon.libgdx;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import de.jdungeon.adapter.graphics.LibgdxImageLoader;
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.FileIO;
 
