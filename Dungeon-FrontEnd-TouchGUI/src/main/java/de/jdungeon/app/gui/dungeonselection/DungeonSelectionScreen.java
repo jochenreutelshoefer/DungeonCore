@@ -77,7 +77,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 		heroFigure = new DungeonSelectionHeroFigure(heroSelectionPos, HERO_DIMENSION, animationSet, this.getGame());
 		guiElements.add(heroFigure);
 
-		/* start debug */
+		/* start debug
 
 		for (int i = 0; i < 10; i++) {
 			final int dotPos = i * 100;
@@ -97,7 +97,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 			this.guiElements.add(new StringGUIElement(new JDPoint(dotPos + 5, dotPos), new JDDimension(100, 50), this, game, "Dot: " + i));
 		}
-		/*end debug */
+		end debug */
 
 		heroFigure.addTask(
 
