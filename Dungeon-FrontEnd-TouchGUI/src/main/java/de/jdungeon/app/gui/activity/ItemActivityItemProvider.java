@@ -8,7 +8,7 @@ import java.util.Map;
 import dungeon.ItemInfoOwner;
 import item.ItemInfo;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.smartcontrol.ExecutableTakeItemActivity;
@@ -18,11 +18,11 @@ import de.jdungeon.game.Image;
 public abstract class ItemActivityItemProvider implements ActivityProvider {
 
 	private final ItemInfoOwner info;
-	private final GUIControl guiControl;
+	private final ActionController guiControl;
 	private final Map<Class, Image> imageCache = new HashMap<Class, Image>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public ItemActivityItemProvider(ItemInfoOwner info, Game game, GUIControl guiControl) {
+	public ItemActivityItemProvider(ItemInfoOwner info, Game game, ActionController guiControl) {
 		this.info = info;
 		this.guiControl = guiControl;
 		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));

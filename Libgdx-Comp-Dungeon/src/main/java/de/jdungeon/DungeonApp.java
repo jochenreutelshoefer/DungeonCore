@@ -140,28 +140,6 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		dropImage = new Texture(Gdx.files.internal("data/droplet.png"));
 		bucketImage = new Texture(Gdx.files.internal("data/bucket.png"));
 
-		Map<String, Long> durations = LibgdxImageLoader.durations;
-		Long sum = 0l;
-		Long max = -1l;
-		Long min = Long.MAX_VALUE;
-		int count = 0;
-		for (Long duration : durations.values()) {
-			count++;
-			sum += duration;
-			if(duration > max) {
-				max = duration;
-			}
-			if(duration < min) {
-				min = duration;
-			}
-		}
-		Logger.getLogger(this.getClass().getName()).info("Number of File-exists operations: "+count);
-		Logger.getLogger(this.getClass().getName()).info("Average time for operation: "+sum/count);
-		Logger.getLogger(this.getClass().getName()).info("Max: "+max);
-		Logger.getLogger(this.getClass().getName()).info("Min: "+min);
-		Logger.getLogger(this.getClass().getName()).info("Map: "+durations);
-
-
 		// create the camera and the SpriteBatch
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);

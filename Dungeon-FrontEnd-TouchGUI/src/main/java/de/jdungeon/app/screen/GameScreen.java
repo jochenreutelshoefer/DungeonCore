@@ -41,7 +41,7 @@ import user.DefaultDungeonSession;
 import util.JDColor;
 import util.JDDimension;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.DrawUtils;
 import de.jdungeon.app.GameScreenPerceptHandler;
 import de.jdungeon.app.audio.MusicManager;
@@ -104,7 +104,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
 	private final int minRoomSize = 100;
-	private GUIControl actionAssembler;
+	private ActionController actionAssembler;
 
 	private long lastDoubleTapEventTime = -1;
 	private final RenderTimeLog renderTimeLog = new RenderTimeLog();
@@ -159,7 +159,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		hero.setControl(gui);
 
 
-		actionAssembler = new GUIControl(figureInfo, gui);
+		actionAssembler = new ActionController(figureInfo, gui);
 
 
 		initGUIElements();
@@ -286,7 +286,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 
-	public GUIControl getActionAssembler() {
+	public ActionController getActionAssembler() {
 		return actionAssembler;
 	}
 

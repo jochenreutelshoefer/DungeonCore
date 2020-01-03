@@ -18,7 +18,7 @@ import game.RoomInfoEntity;
 import spell.SpellInfo;
 import spell.TargetScope;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -37,7 +37,7 @@ public class SkillActivityProvider implements ActivityProvider {
 	public static final String LOOK = "Ansehen";
 
 	private final HeroInfo info;
-	private final GUIControl guiControl;
+	private final ActionController guiControl;
 	private final FocusManager focusManager;
 	private final SmartControl smartControl;
 	private boolean fightState = false;
@@ -51,7 +51,7 @@ public class SkillActivityProvider implements ActivityProvider {
 
 	private final SkillImageManager skillImageManager;
 
-	public SkillActivityProvider(HeroInfo info, Game game, GUIControl actionAssembler, FocusManager focusManager, SmartControl smartControl) {
+	public SkillActivityProvider(HeroInfo info, Game game, ActionController actionAssembler, FocusManager focusManager, SmartControl smartControl) {
 		super();
 		this.info = info;
 		this.guiControl = actionAssembler;

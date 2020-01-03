@@ -4,7 +4,7 @@ import figure.action.TakeItemAction;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
 
@@ -14,10 +14,10 @@ import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
  */
 public class ExecutableTakeItemActivity extends AbstractExecutableActivity {
 
-	protected final GUIControl guiControl;
+	protected final ActionController guiControl;
 	protected final ItemInfo item;
 
-	public ExecutableTakeItemActivity(GUIControl control, ItemInfo item) {
+	public ExecutableTakeItemActivity(ActionController control, ItemInfo item) {
 		this.guiControl = control;
 		this.item = item;
 	}

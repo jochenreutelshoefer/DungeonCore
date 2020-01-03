@@ -1,15 +1,16 @@
 package de.jdungeon.world;
 
-import com.badlogic.gdx.Game;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import figure.percept.Percept;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.game.ScreenContext;
-import de.jdungeon.libgdx.LibgdxScreenContext;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -18,6 +19,7 @@ import de.jdungeon.libgdx.LibgdxScreenContext;
 public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
+	private final PlayerController playerController;
 
 	private WorldController worldController;
 	private WorldRenderer worldRenderer;
@@ -26,9 +28,12 @@ public class GameScreen extends AbstractGameScreen {
 	private boolean paused;
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
+	private final GameScreenPerceptHandler perceptHandler;
 
-	public GameScreen(LibgdxDungeonMain game) {
+	public GameScreen(LibgdxDungeonMain game, PlayerController playerController) {
 		super(game);
+		this.playerController = playerController;
+		perceptHandler = new GameScreenPerceptHandler(this);
 	}
 
 	@Override
@@ -71,7 +76,9 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void update(float deltaTime) {
-
+		// TODO: fetch and show visibility increased rooms from PlayerController/JDGUI
+		List<Percept> percepts = playerController.getPercepts();
+		// TODO: handle and display percepts
 	}
 
 	@Override

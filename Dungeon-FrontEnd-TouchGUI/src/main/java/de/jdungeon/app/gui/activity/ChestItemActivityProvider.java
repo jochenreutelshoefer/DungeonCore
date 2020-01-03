@@ -12,7 +12,7 @@ import figure.action.StepAction;
 import figure.action.TakeItemFromChestAction;
 import item.ItemInfo;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.smartcontrol.ExecutableChestItemActivity;
 import de.jdungeon.game.Game;
@@ -24,9 +24,9 @@ import de.jdungeon.game.Game;
 public class ChestItemActivityProvider extends ItemActivityItemProvider {
 
 	private final FigureInfo info;
-	private final GUIControl guiControl;
+	private final ActionController guiControl;
 
-	public ChestItemActivityProvider(FigureInfo info, Game game, GUIControl guiControl) {
+	public ChestItemActivityProvider(FigureInfo info, Game game, ActionController guiControl) {
 		super(info, game, guiControl);
 		this.info = info;
 		this.guiControl = guiControl;

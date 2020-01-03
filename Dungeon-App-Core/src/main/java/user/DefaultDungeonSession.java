@@ -7,7 +7,6 @@ import java.util.Set;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.util.DungeonUtils;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.hero.Hero;
@@ -16,7 +15,6 @@ import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
 import game.DungeonGame;
-import game.JDEnv;
 import game.JDGUI;
 import level.DefaultDungeonManager;
 import level.DungeonFactory;
@@ -171,7 +169,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	}
 
 	@Override
-	public void initDungeon(DungeonFactory dungeonFactory) {
+	public HeroInfo initDungeon(DungeonFactory dungeonFactory) {
 		lastSelectedDungeonFactory = dungeonFactory;
 		dungeonGame = DungeonGame.getInstance();
 
@@ -186,7 +184,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		//makeHeroBackup();
 
 
-		heroInfo = enterDungeon(currentHero, derDungeon,
+		return enterDungeon(currentHero, derDungeon,
 				dungeonFactory.getHeroEntryPoint());
 
 	}

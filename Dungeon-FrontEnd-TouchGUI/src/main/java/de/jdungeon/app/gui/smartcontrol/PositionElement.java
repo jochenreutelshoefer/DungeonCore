@@ -7,7 +7,7 @@ import figure.FigureInfo;
 import game.RoomInfoEntity;
 import util.JDDimension;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.game.Color;
@@ -25,7 +25,7 @@ public class PositionElement extends AnimatedSmartControlElement {
 
 
 	private final RoomInfoEntity clickableObject;
-	private final GUIControl actionAssembler;
+	private final ActionController actionAssembler;
 	private final int positionIndex;
 	private final int ballWidth;
 	private final int ballHeight;
@@ -34,11 +34,11 @@ public class PositionElement extends AnimatedSmartControlElement {
 	private final int x;
 	private final int y;
 
-	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, GUIControl actionAssembler) {
+	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, ActionController actionAssembler) {
 		this(position, dimension, parent, action, color, clickableObject, actionAssembler, -1);
 	}
 
-	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, GUIControl actionAssembler, int positionIndex) {
+	public PositionElement(JDPoint position, JDDimension dimension, final GUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, ActionController actionAssembler, int positionIndex) {
 		super(position, dimension, parent);
 		this.action = action;
 		this.color = color;

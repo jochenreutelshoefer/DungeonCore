@@ -23,6 +23,7 @@ import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.action.ScoutAction;
 import figure.hero.HeroInfo;
+import game.JDGUI;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
@@ -34,16 +35,22 @@ import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.event.InventoryItemClickedEvent;
 import de.jdungeon.app.gui.activity.Activity;
 
-public class GUIControl implements EventListener {
+/**
+ * The Action controller takes User Interface interactions, such as clicked objects,
+ * and translates it to Actions or sequences of Action that can be performed by the game character.
+ *
+ */
+
+public class ActionController implements EventListener {
 
 	private final FigureInfo figure;
-	private final JDGUIEngine2D gui;
+	private final JDGUI gui;
 	private Action lastAction;
 	private int repeatActionCounter;
 
 	private final ActionAssembler actionAssembler;
 
-	public GUIControl(FigureInfo figure, JDGUIEngine2D gui) {
+	public ActionController(FigureInfo figure, JDGUI gui) {
 		this.figure = figure;
 		this.gui = gui;
 		actionAssembler = new ActionAssembler(figure);
@@ -64,10 +71,20 @@ public class GUIControl implements EventListener {
 		}
 	}
 
+	/**
+	 * Adds a particular Action to the action sequence to be executed
+	 *
+	 * @param action action to be executed
+	 */
 	public void plugAction(Action action) {
 		plugActions(Collections.singletonList(action));
 	}
 
+	/**
+	 * Adds a sequences of Actions to the characters' action sequence to be executed
+	 *
+	 * @param l actions to be executed
+	 */
 	public void plugActions(List<Action> l) {
 		List<Action>  actions = new ArrayList<>(l);
 		final Boolean fight = figure.getRoomInfo().fightRunning();
@@ -87,6 +104,12 @@ public class GUIControl implements EventListener {
 
 	}
 
+	/**
+	 * Handles a clicked objects and transforms it to an executable action or a sequence of actions
+	 *
+	 * @param clickedObject object that has been clicked
+	 * @param doubleClick true if it was a double click, false otherwise
+	 */
 	public void objectClicked(Object clickedObject, boolean doubleClick) {
 		if (clickedObject instanceof ItemInfo) {
 			handleItemInfoClick(((ItemInfo) clickedObject), doubleClick);

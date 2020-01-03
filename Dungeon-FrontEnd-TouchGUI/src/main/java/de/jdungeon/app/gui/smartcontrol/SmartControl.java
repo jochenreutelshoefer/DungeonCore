@@ -17,7 +17,7 @@ import gui.Paragraphable;
 import item.ItemInfo;
 import util.JDDimension;
 
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.gui.ContainerGUIElement;
 import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIElement;
@@ -41,7 +41,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 
 	private final List<GUIElement> guiElements = new ArrayList<>();
 	private final HeroInfo figureInfo;
-	private final GUIControl guiControl;
+	private final ActionController guiControl;
 	private final FocusManager focusManager;
 
 	private ActivityPresenter itemWheelSkills;
@@ -55,7 +55,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	private SmartControlRoomPanel smartControl;
 	public static final int SMART_CONTROL_SIZE = 290;
 
-	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, HeroInfo figure, GUIControl actionAssembler, FocusManager focusManager) {
+	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, HeroInfo figure, ActionController actionAssembler, FocusManager focusManager) {
 		super(position, dimension, screen, game);
 		this.figureInfo = figure;
 		this.guiControl = actionAssembler;

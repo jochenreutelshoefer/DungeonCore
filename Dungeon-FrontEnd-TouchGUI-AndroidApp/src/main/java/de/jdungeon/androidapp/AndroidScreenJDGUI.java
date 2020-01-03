@@ -193,8 +193,8 @@ public class AndroidScreenJDGUI implements JDGUIEngine2D {
 		// TODO Auto-generated method stub
 
 	}
-
 	private final List<JDPoint> visibilityIncreasedRooms = new ArrayList<>();
+
 
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {

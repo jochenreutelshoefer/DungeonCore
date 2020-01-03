@@ -30,7 +30,7 @@ import shrine.ShrineInfo;
 import util.JDDimension;
 
 import de.jdungeon.app.DrawUtils;
-import de.jdungeon.app.GUIControl;
+import de.jdungeon.app.ActionController;
 import de.jdungeon.app.gui.ContainerGUIElement;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -65,7 +65,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final Collection<GUIElement> shrineElements = new ArrayList<>();
 	private final GUIElement outerFrame;
 	private final FigureInfo figure;
-	private final GUIControl guiControl;
+	private final ActionController guiControl;
 	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
 	private final int doorThickness;
@@ -102,7 +102,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final GUIElement innerFrame;
 	private final FloorItemPresenter floorItemPresenter;
 
-	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, GUIControl actionAssembler, SmartControl smartControl) {
+	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionController actionAssembler, SmartControl smartControl) {
 		super(position, dimension, screen, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;

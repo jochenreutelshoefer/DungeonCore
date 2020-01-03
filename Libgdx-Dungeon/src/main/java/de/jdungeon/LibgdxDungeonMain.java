@@ -14,10 +14,10 @@ import event.EventManager;
 import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
 import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import game.DungeonGame;
 import game.JDEnv;
 import level.DungeonStartEvent;
-import log.Log;
 import spell.Spell;
 import user.DefaultDungeonSession;
 import user.DungeonSession;
@@ -27,7 +27,6 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.QuitGameEvent;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
-import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.app.gui.skillselection.SkillSelectedEvent;
 import de.jdungeon.app.gui.skillselection.SkillSelectionScreen;
 import de.jdungeon.asset.Assets;
@@ -44,8 +43,7 @@ import de.jdungeon.user.Session;
 import de.jdungeon.user.User;
 import de.jdungeon.welcome.StartScreen;
 import de.jdungeon.world.GameScreen;
-import de.jdungeon.world.WorldController;
-import de.jdungeon.world.WorldRenderer;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -188,9 +186,11 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		if(event instanceof DungeonStartEvent) {
 			Gdx.app.log(TAG, "App: processing DungeonStartEvent");
 			// initialize new dungeon
-			this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
+			HeroInfo heroInfo = this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
 			DungeonGame.getInstance().restartRunning();
-			setCurrentScreen(new GameScreen(this));
+			PlayerController controller = new PlayerController(heroInfo);
+			GameScreen gameScreen = new GameScreen(this, controller);
+			setCurrentScreen(gameScreen);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();
