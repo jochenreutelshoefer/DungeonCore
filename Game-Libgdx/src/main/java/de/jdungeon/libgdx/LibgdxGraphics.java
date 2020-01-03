@@ -162,19 +162,17 @@ public class LibgdxGraphics implements Graphics {
 
 	@Override
 	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight, boolean nonTmp) {
-		// todo: consider scale
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(((LibgdxImage)image).getTexture(), x, y);
+		batch.draw(((LibgdxImage)image).getTexture(),  x,  y,  width, height,  srcX,  srcY, srcWidth, srcHeight, false, true);
 		batch.end();
 	}
 
 	@Override
 	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight) {
-		// todo: consider scale
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(((LibgdxImage)image).getTexture(), x, y);
+		batch.draw(((LibgdxImage)image).getTexture(),  x,  y,  width, height,  srcX,  srcY, srcWidth, srcHeight, false, true);
 		batch.end();
 	}
 

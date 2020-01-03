@@ -3,6 +3,7 @@ package de.jdungeon.stage;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.AbstractGameScreen;
@@ -11,6 +12,8 @@ import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.libgdx.LibgdxInput;
+import de.jdungeon.libgdx.MyInputProcessor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -20,7 +23,7 @@ public class StageSelectionScreen extends AbstractGameScreen {
 
 	private final OrthographicCamera camera;
 	private final CameraHelper cameraHelper;
-	DungeonSelectionScreen selectionScreen;
+	private final DungeonSelectionScreen selectionScreen;
 
 	public StageSelectionScreen(LibgdxDungeonMain game) {
 		super(game);
@@ -40,11 +43,14 @@ public class StageSelectionScreen extends AbstractGameScreen {
 
 		cameraHelper = new CameraHelper(camStartPosX, camStartPosY);
 
+		Gdx.input.setInputProcessor(new MyInputProcessor((LibgdxInput)game.getInput()));
+
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		cameraHelper.update(deltaTime);
+		selectionScreen.update(deltaTime);
 		checkControls(deltaTime);
 	}
 
