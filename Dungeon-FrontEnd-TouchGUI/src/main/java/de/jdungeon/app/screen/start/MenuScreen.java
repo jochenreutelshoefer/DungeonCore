@@ -4,6 +4,7 @@ import de.jdungeon.app.screen.StandardScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.ScreenContext;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -30,7 +31,7 @@ public abstract class MenuScreen extends StandardScreen {
 	public void paint(float deltaTime) {
 		super.paint(deltaTime);
 
-		Graphics g = game.getGraphics(null);
+		Graphics g = game.getGraphics(ScreenContext.Context.GUI);
 
 		String headerString = getHeaderString();
 		drawHeader(g, headerString);

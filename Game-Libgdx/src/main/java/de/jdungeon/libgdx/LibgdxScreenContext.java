@@ -8,8 +8,10 @@ import de.jdungeon.game.ScreenContext;
  */
 public class LibgdxScreenContext implements ScreenContext {
 
+	/*
 	public enum Context implements ScreenContext {
 		GUI,
 		WORLD;
 	}
+	*/
 }

@@ -5,4 +5,9 @@ package de.jdungeon.game;
  * @created 01.01.20.
  */
 public interface ScreenContext {
+
+	enum Context implements ScreenContext {
+		GUI,
+		WORLD;
+	}
 }

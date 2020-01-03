@@ -87,10 +87,10 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public OrthographicCamera getCamera(ScreenContext context) {
-		if(context == LibgdxScreenContext.Context.GUI) {
+		if(context == ScreenContext.Context.GUI) {
 			return this.cameraGUI;
 		}
-		if(context == LibgdxScreenContext.Context.WORLD) {
+		if(context == ScreenContext.Context.WORLD) {
 			return this.camera;
 		}
 		// may not happen
