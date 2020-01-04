@@ -71,21 +71,17 @@ public class WorldController extends InputAdapter {
 
 		testSprites = new Sprite[5];
 
-		int width = 32;
-		int height = 32;
-
 		Array<TextureRegion> regions = new Array<TextureRegion>();
 		regions.add(Assets.instance.bucket.bucket);
 		regions.add(Assets.instance.drop.drop);
 
 		for (int i = 0; i < testSprites.length; i++) {
 			Sprite spr = new Sprite(regions.random());
-
-			spr.setSize(1, 1);
+			spr.setSize(100, 100);
 			spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f);
 
-			float randomX = MathUtils.random(-2.0f, 2.0f);
-			float randomY = MathUtils.random(-2.0f, 2.0f);
+			float randomX = MathUtils.random(-200, 200);
+			float randomY = MathUtils.random(-200, 200);
 			spr.setPosition(randomX, randomY);
 
 			testSprites[i] = spr;
@@ -114,6 +110,7 @@ public class WorldController extends InputAdapter {
 		*/
 	}
 
+	/*
 	private Pixmap createProceduralPixMap(int width, int height) {
 		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
 
@@ -127,7 +124,7 @@ public class WorldController extends InputAdapter {
 		pixmap.drawRectangle(0, 0, width, height);
 		return pixmap;
 	}
-
+*/
 	public void update(float deltaTime) {
 		handleDebugInput(deltaTime);
 		updateTestObjects(deltaTime);
@@ -137,21 +134,21 @@ public class WorldController extends InputAdapter {
 	private void handleDebugInput(float deltaTime) {
 		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
 
-		float sprMovedSpeed = 5 * deltaTime;
+		float sprMovedSpeed = 500 * deltaTime;
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) moveSelectedSprite(-sprMovedSpeed, 0);
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) moveSelectedSprite(sprMovedSpeed, 0);
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) moveSelectedSprite(0, sprMovedSpeed);
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) moveSelectedSprite(0, -sprMovedSpeed);
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) moveSelectedSprite(0, sprMovedSpeed);
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) moveSelectedSprite(0, -sprMovedSpeed);
 
 		// camera controls move
-		float camMoveSpeed = 5 * deltaTime;
+		float camMoveSpeed = 500 * deltaTime;
 		float cameraMoveSpeedAcceleratorFactor = 5;
 		if (Gdx.input.isKeyPressed((Input.Keys.SHIFT_LEFT))) camMoveSpeed *= cameraMoveSpeedAcceleratorFactor;
 		if (Gdx.input.isKeyPressed((Input.Keys.LEFT))) moveCamera(-camMoveSpeed, 0);
 		if (Gdx.input.isKeyPressed((Input.Keys.RIGHT))) moveCamera(camMoveSpeed, 0);
-		if (Gdx.input.isKeyPressed((Input.Keys.UP))) moveCamera(0, camMoveSpeed);
+		if (Gdx.input.isKeyPressed((Input.Keys.DOWN))) moveCamera(0, camMoveSpeed);
 		if (Gdx.input.isKeyPressed((Input.Keys.LEFT))) moveCamera(-camMoveSpeed, 0);
-		if (Gdx.input.isKeyPressed((Input.Keys.DOWN))) moveCamera(0, -camMoveSpeed);
+		if (Gdx.input.isKeyPressed((Input.Keys.UP))) moveCamera(0, -camMoveSpeed);
 		if (Gdx.input.isKeyPressed((Input.Keys.BACKSPACE))) cameraHelper.setPosition(0, 0);
 
 		// camera controls zoom

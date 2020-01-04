@@ -8,6 +8,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import dungeon.JDPoint;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -165,16 +166,16 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		if(event instanceof ExitUsedEvent) {
 			DungeonGame.getInstance().stopRunning();
 
-			// todo : implement libgdx pause
-			//this.renderView.pause();
+			// pause screen rendering
+			this.getScreen().pause();
 
+			// change screen to skill selection
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			SkillSelectionScreen screen = new SkillSelectionScreen(this);
 			this.setCurrentScreen(screen);
 
-
-			// todo : implement libgdx resume
-			//this.renderView.resume();
+			// resume/start rendering of screen
+			this.getScreen().resume();
 
 		}
 		if(event instanceof SkillSelectedEvent) {
@@ -189,7 +190,8 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 			HeroInfo heroInfo = this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
 			DungeonGame.getInstance().restartRunning();
 			PlayerController controller = new PlayerController(heroInfo);
-			GameScreen gameScreen = new GameScreen(this, controller);
+			JDPoint dungeonSize = DungeonGame.getInstance().getDungeon().getSize();
+			GameScreen gameScreen = new GameScreen(this, controller, dungeonSize);
 			setCurrentScreen(gameScreen);
 		}
 		if(event instanceof PlayerDiedEvent) {

@@ -5,7 +5,11 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import dungeon.JDPoint;
+import figure.FigureInfo;
 import figure.percept.Percept;
+import util.JDDimension;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
@@ -22,30 +26,38 @@ public class GameScreen extends AbstractGameScreen {
 	private final PlayerController playerController;
 
 	private WorldController worldController;
+	private ViewModel viewModel;
 	private WorldRenderer worldRenderer;
 	private GUIRenderer guiRenderer;
 
 	private boolean paused;
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
-	private final GameScreenPerceptHandler perceptHandler;
+	private GameScreenPerceptHandler perceptHandler;
+	private FigureInfo figure;
 
-	public GameScreen(LibgdxDungeonMain game, PlayerController playerController) {
+	private final int dungeonSizeX;
+	private final int dungeonSizeY;
+
+	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
-		perceptHandler = new GameScreenPerceptHandler(this);
+		this.dungeonSizeX = dungeonSize.getX();
+		this.dungeonSizeY = dungeonSize.getY();
 	}
 
 	@Override
 	public void show() {
 		worldController = new WorldController(game);
-
-
+		perceptHandler = new GameScreenPerceptHandler(this);
+		figure = playerController.getFigure();
+		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
 		// init world camera and world renderer
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
+		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		camera.position.set(0, 0, 0);
 		camera.update();
-		worldRenderer = new WorldRenderer(worldController, camera);
+		worldRenderer = new WorldRenderer(worldController, playerController, viewModel, camera);
 
 		// init gui camera and gui renderer
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
