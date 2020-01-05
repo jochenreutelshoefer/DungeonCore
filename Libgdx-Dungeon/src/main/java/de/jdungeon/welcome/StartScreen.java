@@ -47,8 +47,8 @@ public class StartScreen extends AbstractGameScreen {
 
 	@Override
 	public void init() {
-		bgImageTx = new Texture(Gdx.files.internal("data/haunted-castle.jpg"));
-		buttImageTx = new Texture(Gdx.files.internal("data/vector-button.png"));
+		bgImageTx = new Texture(Gdx.files.internal("haunted-castle.jpg"));
+		buttImageTx = new Texture(Gdx.files.internal("vector-button.png"));
 
 	}
 

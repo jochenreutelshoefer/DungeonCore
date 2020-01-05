@@ -17,13 +17,17 @@ public class Main {
 	public static final boolean drawDebugOutline = true;
 
 	public static void main(String[] args) {
+
 		if(rebuildAtlas) {
 			TexturePacker.Settings settings = new TexturePacker.Settings();
 			settings.maxWidth = 1024;
 			settings.maxHeight = 1024;
 			settings.debug = drawDebugOutline;
-			TexturePacker.process(settings, "Libgdx-Bunny-Demo-Desktop/assets/data", "Libgdx-Bunny-Demo-Desktop/assets/packs/", "canyonbunny.pack");
+			TexturePacker.process(settings, "Libgdx-Dungeon-Desktop/assets/data", "Libgdx-Dungeon-Desktop/assets/packs/", "canyonbunny.pack");
+			//TexturePacker.process(settings, "Libgdx-Dungeon-Desktop/assets/pics/dungeon", "Libgdx-Dungeon-Desktop/assets/packs/", "dungeon.pack");
+
 		}
+
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Java Dungeon Libgdx";
 		cfg.useGL30 = false;

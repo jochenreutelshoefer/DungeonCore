@@ -45,8 +45,7 @@ public class DrawUtils {
 				JDImageProxy<?> imageProxy = graphicObject.getImage();
 				if (graphicObject instanceof JDGraphicObject) {
 					JDGraphicObject jdGraphicObject = (JDGraphicObject) graphicObject;
-
-					JDImageLocated jdImage = jdGraphicObject.getAWTImage();
+					JDImageLocated jdImage = jdGraphicObject.getLocatedImage();
 					Image imageResource = (Image) jdImage.getImage().getImage();
 
 					// check for animation image

@@ -1012,7 +1012,7 @@ public class GraphicObjectRenderer {
 		JDImageProxy<?> im = null; //ImageManager.floorImageArray[floorType];
 		if (status < RoomObservationStatus.VISIBILITY_FOUND) {
 			// not found, just draw dark background
-			return roomUndiscovered;
+			return null;
 		}
 		else if (status == RoomObservationStatus.VISIBILITY_FOUND || status == RoomObservationStatus.VISIBILITY_SHRINE) {
 			im = ImageManager.floorImage_mediumArray[floorType];

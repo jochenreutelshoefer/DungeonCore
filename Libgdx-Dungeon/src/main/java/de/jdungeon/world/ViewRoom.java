@@ -1,8 +1,11 @@
 package de.jdungeon.world;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dungeon.RoomInfo;
+import graphics.GraphicObject;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -12,6 +15,8 @@ public class ViewRoom {
 
 	private RoomInfo roomInfo;
 	private Sprite sprite;
+
+	private List<GraphicObject> graphicObjectsForRoom;
 
 	public Sprite getSprite() {
 		return sprite;
@@ -29,4 +34,11 @@ public class ViewRoom {
 		return roomInfo;
 	}
 
+	public void setGraphicObjects(List<GraphicObject> graphicObjectsForRoom) {
+		this.graphicObjectsForRoom = graphicObjectsForRoom;
+	}
+
+	public List<GraphicObject> getGraphicObjectsForRoom() {
+		return graphicObjectsForRoom;
+	}
 }

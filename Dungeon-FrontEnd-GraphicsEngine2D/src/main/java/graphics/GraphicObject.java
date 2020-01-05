@@ -43,7 +43,6 @@ public class GraphicObject {
 	protected JDImageProxy<?> image;
 
 	public GraphicObject(Object ob, DrawingRectangle rectangle, JDColor c, JDImageProxy<?> i) {
-
 		this.rect = rectangle;
 		this.c = c;
 		clickedObject = ob;

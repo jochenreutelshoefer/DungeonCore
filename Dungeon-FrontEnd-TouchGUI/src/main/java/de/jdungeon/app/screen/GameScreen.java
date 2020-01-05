@@ -508,8 +508,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private List<GraphicObject> createGraphicObjectsForRoom(RoomInfo roomInfo, int roomOffsetX, int roomOffsetY) {
-		List<GraphicObject> graphicObjectsForRoom = this.dungeonRenderer
-				.createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
+		List<GraphicObject> graphicObjectsForRoom = this.dungeonRenderer.createGraphicObjectsForRoom(roomInfo, roomOffsetX, roomOffsetY);
 		drawnObjects.put(roomInfo.getPoint(), graphicObjectsForRoom);
 		return graphicObjectsForRoom;
 	}

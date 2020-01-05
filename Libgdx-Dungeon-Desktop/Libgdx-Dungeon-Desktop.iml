@@ -22,6 +22,7 @@
     <orderEntry type="module" module-name="Dungeon-App-Core" />
     <orderEntry type="module" module-name="Game-Libgdx" />
     <orderEntry type="module" module-name="Game-Core" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl:2.9.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.3" level="project" />

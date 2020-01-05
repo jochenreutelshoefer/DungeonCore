@@ -23,6 +23,13 @@ public class JDGraphicObject extends GraphicObject {
 
 	}
 
+	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle o, JDColor c,
+						   DrawingRectangle clickRect) {
+		super(ob, o, c, null, clickRect);
+		image = i;
+
+	}
+
 	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle rectangle) {
 		this(i, ob, rectangle, null, null);
 	}
@@ -36,15 +43,8 @@ public class JDGraphicObject extends GraphicObject {
 		}
 	}
 
-	public JDImageLocated getAWTImage() {
+	public JDImageLocated getLocatedImage() {
 		return image;
-	}
-
-	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle o, JDColor c,
-						   DrawingRectangle clickRect) {
-		super(ob, o, c, null, clickRect);
-		image = i;
-
 	}
 
 }

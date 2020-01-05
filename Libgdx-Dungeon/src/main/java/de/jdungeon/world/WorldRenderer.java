@@ -1,15 +1,26 @@
 package de.jdungeon.world;
 
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.RoomInfo;
 import figure.RoomObservationStatus;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
+import graphics.JDGraphicObject;
+import graphics.JDImageLocated;
+import graphics.JDImageProxy;
+import graphics.util.DrawingRectangle;
 
 import de.jdungeon.Constants;
+import de.jdungeon.asset.Assets;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -17,22 +28,29 @@ import de.jdungeon.Constants;
  */
 public class WorldRenderer implements Disposable {
 
+	private static final String TAG = WorldRenderer.class.getName();
+
 	private final PlayerController playerController;
 	private final ViewModel viewModel;
 	private final OrthographicCamera camera;
 	private SpriteBatch batch;
 	private final WorldController worldController;
+	private final GraphicObjectRenderer dungeonObjectRenderer;
+	public static final int roomSize = 80;
 
 	public WorldRenderer(WorldController worldController, PlayerController playerController, ViewModel viewModel, OrthographicCamera camera) {
 		this.worldController = worldController;
 		this.playerController = playerController;
 		this.viewModel = viewModel;
 		this.camera = camera;
+		dungeonObjectRenderer = new GraphicObjectRenderer(roomSize, playerController);
+
 		init();
 	}
 
 	private void init() {
 		batch = new SpriteBatch();
+		viewModel.initGraphicObjects(dungeonObjectRenderer);
 		camera.update();
 	}
 
@@ -54,16 +72,48 @@ public class WorldRenderer implements Disposable {
 					room.setSprite(sprite);
 				}
 				sprite.draw(batch);
+
+
+				List<GraphicObject> graphicObjectsForRoom = room.getGraphicObjectsForRoom();
+				if(graphicObjectsForRoom == null || graphicObjectsForRoom.size() == 0) {
+					graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(room.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
+					room.setGraphicObjects(graphicObjectsForRoom);
+				}
+				drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
+
+
 			}
 		}
 		batch.end();
 	}
 
+	private void drawGraphicObjectsToSpritebatch(List<GraphicObject> graphicObjectsForRoom, int x, int y) {
+		for (GraphicObject graphicObject : graphicObjectsForRoom) {
+			if(graphicObject instanceof JDGraphicObject) {
+				JDGraphicObject object = ((JDGraphicObject)graphicObject);
+				JDImageLocated locatedImage = object.getLocatedImage();
+				TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getTexture(locatedImage.getImage());
+				if (atlasRegion != null) {
+					int posX = locatedImage.getX(x * WorldRenderer.roomSize);
+					int posY = locatedImage.getY(y * WorldRenderer.roomSize);
+					batch.draw(atlasRegion, posX, posY, locatedImage.getWidth(), locatedImage.getHeight());
+				}
+			} else {
+				DrawingRectangle destinationRectangle = graphicObject.getRectangle();
+				JDImageProxy<?> image = graphicObject.getImage();
+				TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getTexture(image);
+				if (atlasRegion != null) {
+					int posX = destinationRectangle.getX(x * WorldRenderer.roomSize);
+					int posY = destinationRectangle.getY(y * WorldRenderer.roomSize);
+					batch.draw(atlasRegion, posX, posY, destinationRectangle.getWidth(), destinationRectangle.getHeight());
+				}
+			}
+		}
+	}
+
 	private Sprite createRoomSprite(RoomInfo roomInfo, int x, int y) {
-		int roomSize = 60;
+
 		Pixmap pixmap = new Pixmap(roomSize, roomSize, Pixmap.Format.RGB888);
-		pixmap.setColor(0, 0, 0, 1);
-		pixmap.fill();
 		if (roomInfo.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_ITEMS) {
 			pixmap.setColor(0, 0, 1, 1);
 		}

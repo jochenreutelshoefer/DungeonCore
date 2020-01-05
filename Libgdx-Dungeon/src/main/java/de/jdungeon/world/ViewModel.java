@@ -1,6 +1,10 @@
 package de.jdungeon.world;
 
+import java.util.List;
+
 import figure.FigureInfo;
+import graphics.GraphicObject;
+import graphics.GraphicObjectRenderer;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -22,6 +26,16 @@ public class ViewModel {
 			for(int y = 0; y < roomViews[0].length; y++) {
 				roomViews[x][y] = new ViewRoom();
 				roomViews[x][y].setRoomInfo(figure.getRoomInfo(x, y));
+			}
+		}
+	}
+
+	public void initGraphicObjects(GraphicObjectRenderer renderer) {
+		for (int x = 0; x < roomViews.length; x++) {
+			for (int y = 0; y < roomViews[0].length; y++) {
+				ViewRoom currentViewRoom = roomViews[x][y];
+				List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
+				currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 			}
 		}
 	}

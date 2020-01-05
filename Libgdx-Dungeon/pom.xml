@@ -32,6 +32,18 @@
 			<artifactId>Game-Libgdx</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-tools</artifactId>
+			<version>1.9.10</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 
