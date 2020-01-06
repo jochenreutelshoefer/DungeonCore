@@ -16,11 +16,11 @@ import de.jdungeon.asset.Assets;
  */
 public class GUIRenderer implements Disposable {
 
-	private final WorldController worldController;
+	private final InputController worldController;
 	private OrthographicCamera cameraGUI;
 	private SpriteBatch batch;
 
-	public GUIRenderer(WorldController worldController, OrthographicCamera cameraGUI) {
+	public GUIRenderer(InputController worldController, OrthographicCamera cameraGUI) {
 		this.worldController = worldController;
 		this.cameraGUI = cameraGUI;
 		init();

@@ -1,5 +1,7 @@
 package de.jdungeon.world;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Pixmap;
@@ -16,7 +18,8 @@ public class ViewRoom {
 	private RoomInfo roomInfo;
 	private Sprite sprite;
 
-	private List<GraphicObject> graphicObjectsForRoom;
+	private final List<GraphicObject> graphicObjectsForRoom = new ArrayList<>();
+	private final List<GraphicObject> graphicObjectsForRoomTransport = new ArrayList<>();
 
 	public Sprite getSprite() {
 		return sprite;
@@ -35,10 +38,14 @@ public class ViewRoom {
 	}
 
 	public void setGraphicObjects(List<GraphicObject> graphicObjectsForRoom) {
-		this.graphicObjectsForRoom = graphicObjectsForRoom;
+		this.graphicObjectsForRoom.clear();
+		this.graphicObjectsForRoom.addAll(graphicObjectsForRoom);
 	}
 
 	public List<GraphicObject> getGraphicObjectsForRoom() {
-		return graphicObjectsForRoom;
+		// use transport list to overcome concurrent modification problem efficiently
+		graphicObjectsForRoomTransport.clear();
+		graphicObjectsForRoomTransport.addAll(graphicObjectsForRoom);
+		return graphicObjectsForRoomTransport;
 	}
 }

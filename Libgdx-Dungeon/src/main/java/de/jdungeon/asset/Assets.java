@@ -116,18 +116,26 @@ public class Assets implements Disposable, AssetErrorListener {
 		assetManager.dispose();
 	}
 
-	private final Map<String, TextureAtlas.AtlasRegion> textureCache = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDungeon = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWarrior = new HashMap<>();
 
-	/**
-	 * note: may return null if texture is not found!
-	 *
-	 * @param image image to be retrieved
-	 * @return AtlasRegion from TextureAtlas assets
-	 */
-	public TextureAtlas.AtlasRegion getTexture(JDImageProxy<?> image) {
+
+	public TextureAtlas.AtlasRegion getWarriorTexture(JDImageProxy<?> image) {
+		return getAtlasRegion(image, textureCacheWarrior, warriorAtlas);
+	}
+
+	public TextureAtlas.AtlasRegion getDungeonTexture(JDImageProxy<?> image) {
+		return getAtlasRegion(image, textureCacheDungeon, dungeonAtlas);
+	}
+
+	private TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, Map<String, TextureAtlas.AtlasRegion> textureCache, TextureAtlas atlas) {
 		String filename = image.getFilename();
-		if(filename.endsWith(".gif")) {
+		if(filename.toLowerCase().endsWith(".gif")) {
 			filename = filename.substring(0, filename.length()-4);
+		}
+		String pathSeparator = "/"; // todo: does this work on all platforms???
+		if(filename.contains(pathSeparator)) {
+			filename = filename.substring(filename.lastIndexOf(pathSeparator)+1);
 		}
 		if(textureCache.containsKey(filename)) {
 			// if texture already loaded, retrieve from cache
@@ -135,7 +143,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 		else {
 			// called first time, hence load texture from atlas
-			TextureAtlas.AtlasRegion region = dungeonAtlas.findRegion(filename);
+			TextureAtlas.AtlasRegion region = atlas.findRegion(filename);
 			if(region != null) {
 				region.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 				region.flip(false, true);

@@ -16,13 +16,10 @@ import figure.other.Lioness;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
-import game.PerceptHandler;
 import text.StatementManager;
 
 import de.jdungeon.app.ActionController;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.world.GameScreen;
-import de.jdungeon.world.GameScreenPerceptHandler;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -31,10 +28,14 @@ import de.jdungeon.world.GameScreenPerceptHandler;
 public class PlayerController implements JDGUI {
 
 	private final HeroInfo heroInfo;
+
 	private final ActionController actionController;
+
 	private final List<JDPoint> visibilityIncreasedRooms = new ArrayList<>();
+	private final List<JDPoint> visibilityDecreasedRooms = new ArrayList<>();
 	private final Vector<Action> actionQueue = new Vector<>();
 	private final Vector<Percept> perceptQueue = new Vector<>();
+	private ViewModel viewModel;
 
 	public PlayerController(HeroInfo heroInfo) {
 		this.heroInfo = heroInfo;
@@ -56,6 +57,10 @@ public class PlayerController implements JDGUI {
 	@Override
 	public void gameOver() {
 
+	}
+
+	public ActionController getActionController() {
+		return actionController;
 	}
 
 	@Override
@@ -117,12 +122,18 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void notifyVisibilityStatusDecrease(JDPoint p) {
-
+		updateRoomViewModel(p);
+		//visibilityDecreasedRooms.add(p);
 	}
 
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
-		visibilityIncreasedRooms.add(p);
+		updateRoomViewModel(p);
+		//visibilityIncreasedRooms.add(p);
+	}
+
+	private void updateRoomViewModel(JDPoint p) {
+		this.viewModel.updateRoom(p.getX(), p.getY());
 	}
 
 	@Override
@@ -140,6 +151,19 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void tellPercept(Percept p) {
+		JDPoint number = null;
+		List<FigureInfo> involvedFigures = p.getInvolvedFigures();
+		for (FigureInfo involvedFigure : involvedFigures) {
+			JDPoint pos = involvedFigure.getRoomInfo().getNumber();
+			if(pos != null) {
+				number = pos;
+				break;
+			}
+
+		}
+		if(number!= null) {
+			updateRoomViewModel(number);
+		}
 		perceptQueue.add(p);
 	}
 
@@ -149,9 +173,19 @@ public class PlayerController implements JDGUI {
 		return result;
 	}
 
+	public List<JDPoint> getVisibilityDecreasedRooms() {
+		List<JDPoint> result = Collections.unmodifiableList(this.visibilityDecreasedRooms);
+		this.visibilityDecreasedRooms.clear();
+		return result;
+	}
+
 	public List<JDPoint> getVisibilityIncreasedRooms() {
 		List<JDPoint> result = Collections.unmodifiableList(this.visibilityIncreasedRooms);
 		this.visibilityIncreasedRooms.clear();
 		return result;
+	}
+
+	public void setViewModel(ViewModel viewModel) {
+		this.viewModel = viewModel;
 	}
 }

@@ -2,7 +2,6 @@ package de.jdungeon.world;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.RoomInfo;
 import figure.RoomObservationStatus;
+import figure.hero.Hero;
+import figure.hero.HeroInfo;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
@@ -34,11 +35,11 @@ public class WorldRenderer implements Disposable {
 	private final ViewModel viewModel;
 	private final OrthographicCamera camera;
 	private SpriteBatch batch;
-	private final WorldController worldController;
+	private final InputController worldController;
 	private final GraphicObjectRenderer dungeonObjectRenderer;
 	public static final int roomSize = 80;
 
-	public WorldRenderer(WorldController worldController, PlayerController playerController, ViewModel viewModel, OrthographicCamera camera) {
+	public WorldRenderer(InputController worldController, PlayerController playerController, ViewModel viewModel, OrthographicCamera camera) {
 		this.worldController = worldController;
 		this.playerController = playerController;
 		this.viewModel = viewModel;
@@ -55,8 +56,10 @@ public class WorldRenderer implements Disposable {
 	}
 
 	public void render() {
+		worldController.cameraHelper.applyTo(camera);
+		batch.setProjectionMatrix(camera.combined);
 		renderDungeon();
-		renderTestObjects();
+		//renderTestObjects();
 	}
 
 	private void renderDungeon() {
@@ -92,7 +95,7 @@ public class WorldRenderer implements Disposable {
 			if(graphicObject instanceof JDGraphicObject) {
 				JDGraphicObject object = ((JDGraphicObject)graphicObject);
 				JDImageLocated locatedImage = object.getLocatedImage();
-				TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getTexture(locatedImage.getImage());
+				TextureAtlas.AtlasRegion atlasRegion = findAtlasRegion(locatedImage.getImage(), graphicObject);
 				if (atlasRegion != null) {
 					int posX = locatedImage.getX(x * WorldRenderer.roomSize);
 					int posY = locatedImage.getY(y * WorldRenderer.roomSize);
@@ -101,7 +104,7 @@ public class WorldRenderer implements Disposable {
 			} else {
 				DrawingRectangle destinationRectangle = graphicObject.getRectangle();
 				JDImageProxy<?> image = graphicObject.getImage();
-				TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getTexture(image);
+				TextureAtlas.AtlasRegion atlasRegion = findAtlasRegion(image, graphicObject);
 				if (atlasRegion != null) {
 					int posX = destinationRectangle.getX(x * WorldRenderer.roomSize);
 					int posY = destinationRectangle.getY(y * WorldRenderer.roomSize);
@@ -109,6 +112,25 @@ public class WorldRenderer implements Disposable {
 				}
 			}
 		}
+	}
+
+	private TextureAtlas.AtlasRegion findAtlasRegion(JDImageProxy<?> image, GraphicObject object) {
+		// TODO: The result of this method should be cached in view model too!
+
+		Object clickableObject = object.getClickableObject();
+		if(clickableObject instanceof HeroInfo) {
+			int heroCode = ((HeroInfo) clickableObject).getHeroCode();
+			Hero.HeroCategory heroCategory = Hero.HeroCategory.fromValue(heroCode);
+			if(heroCategory == Hero.HeroCategory.Warrior) {
+				return Assets.instance.getWarriorTexture(image);
+			}
+		}
+
+
+
+
+		// else look into default atlas
+		return Assets.instance.getDungeonTexture(image);
 	}
 
 	private Sprite createRoomSprite(RoomInfo roomInfo, int x, int y) {
@@ -133,8 +155,7 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void renderTestObjects() {
-		worldController.cameraHelper.applyTo(camera);
-		batch.setProjectionMatrix(camera.combined);
+
 		batch.begin();
 		for (Sprite sprite : worldController.testSprites) {
 			sprite.draw(batch);

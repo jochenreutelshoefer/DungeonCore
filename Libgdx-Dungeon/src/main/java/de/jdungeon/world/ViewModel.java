@@ -14,6 +14,7 @@ public class ViewModel {
 
 	private final FigureInfo figure;
 	private final ViewRoom [][] roomViews;
+	private GraphicObjectRenderer renderer;
 
 	public ViewModel(FigureInfo figure, int sizeX, int sizeY) {
 		this.figure = figure;
@@ -31,6 +32,7 @@ public class ViewModel {
 	}
 
 	public void initGraphicObjects(GraphicObjectRenderer renderer) {
+		this.renderer = renderer;
 		for (int x = 0; x < roomViews.length; x++) {
 			for (int y = 0; y < roomViews[0].length; y++) {
 				ViewRoom currentViewRoom = roomViews[x][y];
@@ -38,6 +40,12 @@ public class ViewModel {
 				currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 			}
 		}
+	}
+
+	public void updateRoom(int x, int y) {
+		ViewRoom currentViewRoom = roomViews[x][y];
+		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
+		currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 	}
 
 	public int getDungeonWidth() {

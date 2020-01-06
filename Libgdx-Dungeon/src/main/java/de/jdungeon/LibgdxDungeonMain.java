@@ -156,7 +156,7 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		if(event instanceof StartNewGameEvent) {
 			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
-			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Thief.getCode());
+			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Warrior.getCode());
 			StageSelectionScreen screen = new StageSelectionScreen(this);
 			this.setCurrentScreen(screen);
 		}
@@ -188,11 +188,18 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 			Gdx.app.log(TAG, "App: processing DungeonStartEvent");
 			// initialize new dungeon
 			HeroInfo heroInfo = this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
-			DungeonGame.getInstance().restartRunning();
+
+			// create new controller
 			PlayerController controller = new PlayerController(heroInfo);
-			JDPoint dungeonSize = DungeonGame.getInstance().getDungeon().getSize();
-			GameScreen gameScreen = new GameScreen(this, controller, dungeonSize);
+			((DefaultDungeonSession)this.dungeonSession).getCurrentHero().setControl(controller);
+
+			// create and set new GameScreen
+			GameScreen gameScreen = new GameScreen(this, controller, DungeonGame.getInstance().getDungeon().getSize());
 			setCurrentScreen(gameScreen);
+
+			// start world game loop
+			((DefaultDungeonSession)this.dungeonSession).startGame(controller);
+			DungeonGame.getInstance().restartRunning();
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();

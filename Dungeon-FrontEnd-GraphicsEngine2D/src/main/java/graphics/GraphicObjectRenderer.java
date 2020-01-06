@@ -986,7 +986,7 @@ public class GraphicObjectRenderer {
 			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), motion, RouteInstruction.Direction
 					.fromInteger(info.getLookDirection().getValue()));
 			if (animationSet == null) {
-				Log.warning("No image found for motion " + motion + " (info.toString()+");
+				Log.warning("No image found for motion " + motion + " + "+info.toString());
 				return null;
 			}
 			imageProxy = animationSet.getImagesNr(0);

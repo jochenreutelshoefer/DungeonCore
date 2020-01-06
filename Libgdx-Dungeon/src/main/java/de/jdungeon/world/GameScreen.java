@@ -5,11 +5,9 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import dungeon.JDPoint;
 import figure.FigureInfo;
 import figure.percept.Percept;
-import util.JDDimension;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
@@ -25,7 +23,7 @@ public class GameScreen extends AbstractGameScreen {
 	private final static String TAG = GameScreen.class.getName();
 	private final PlayerController playerController;
 
-	private WorldController worldController;
+	private InputController worldController;
 	private ViewModel viewModel;
 	private WorldRenderer worldRenderer;
 	private GUIRenderer guiRenderer;
@@ -48,10 +46,11 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void show() {
-		worldController = new WorldController(game);
+		worldController = new InputController(game, playerController);
 		perceptHandler = new GameScreenPerceptHandler(this);
 		figure = playerController.getFigure();
 		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
+		playerController.setViewModel(viewModel);
 		// init world camera and world renderer
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
@@ -65,6 +64,7 @@ public class GameScreen extends AbstractGameScreen {
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
 		guiRenderer = new GUIRenderer(worldController, cameraGUI);
+
 	}
 
 	@Override
