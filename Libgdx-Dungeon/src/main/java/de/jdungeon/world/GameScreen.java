@@ -121,18 +121,16 @@ public class GameScreen extends AbstractGameScreen {
 	}
 
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
-		Vector3 cameraPosition = camera.position;
-		int worldX = ((int)cameraPosition.x - ((int)(Gdx.app.getGraphics().getWidth()/2))) + screenX;
-		int worldY = ((int)cameraPosition.y - ((int)(Gdx.app.getGraphics().getHeight()/2))) + screenY;
 
-		int roomX = worldX / WorldRenderer.roomSize;
-		//int inRoomX = worldX % WorldRenderer.roomSize;
+		Vector3 worldPosUnprojected = camera.unproject(new Vector3(screenX, screenY, 0));
+		int worldXunprojected = Math.round(worldPosUnprojected.x);
+		int worldYunprojected = Math.round(worldPosUnprojected.y);
 
-		int roomY = worldY / WorldRenderer.roomSize;
-		//int inRoomY = worldY % WorldRenderer.roomSize;
+		int roomX = worldXunprojected / WorldRenderer.roomSize;
+		int roomY = worldYunprojected / WorldRenderer.roomSize;
 
 		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
-		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldX, worldY), roomX * WorldRenderer.roomSize, roomY * WorldRenderer.roomSize);
+		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * WorldRenderer.roomSize, roomY * WorldRenderer.roomSize);
 		if(clickedObjectInRoom != null) {
 			playerController.getActionController().objectClicked(clickedObjectInRoom, false);
 		}
