@@ -5,7 +5,9 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import dungeon.JDPoint;
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.percept.Percept;
 
@@ -46,7 +48,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void show() {
-		worldController = new InputController(game, playerController);
+		worldController = new InputController(game, playerController, this);
 		perceptHandler = new GameScreenPerceptHandler(this);
 		figure = playerController.getFigure();
 		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
@@ -54,7 +56,9 @@ public class GameScreen extends AbstractGameScreen {
 		// init world camera and world renderer
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-		camera.position.set(0, 0, 0);
+		JDPoint number = figure.getRoomInfo().getNumber();
+		// todo: set camera start position correctly - how?
+		camera.position.set(number.getX() * worldRenderer.roomSize +1000, number.getY() * worldRenderer.roomSize +1000, 0);
 		camera.update();
 		worldRenderer = new WorldRenderer(worldController, playerController, viewModel, camera);
 
@@ -114,5 +118,24 @@ public class GameScreen extends AbstractGameScreen {
 		}
 		// may not happen
 		return null;
+	}
+
+	public boolean clicked(int screenX, int screenY, int pointer, int button) {
+		Vector3 cameraPosition = camera.position;
+		int worldX = ((int)cameraPosition.x - ((int)(Gdx.app.getGraphics().getWidth()/2))) + screenX;
+		int worldY = ((int)cameraPosition.y - ((int)(Gdx.app.getGraphics().getHeight()/2))) + screenY;
+
+		int roomX = worldX / WorldRenderer.roomSize;
+		//int inRoomX = worldX % WorldRenderer.roomSize;
+
+		int roomY = worldY / WorldRenderer.roomSize;
+		//int inRoomY = worldY % WorldRenderer.roomSize;
+
+		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
+		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldX, worldY), roomX * WorldRenderer.roomSize, roomY * WorldRenderer.roomSize);
+		if(clickedObjectInRoom != null) {
+			playerController.getActionController().objectClicked(clickedObjectInRoom, false);
+		}
+		return false;
 	}
 }

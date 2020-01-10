@@ -44,7 +44,7 @@ public class GUIRenderer implements Disposable {
 		float y = -15;
 		batch.draw(Assets.instance.bucket.bucket, 110, 110);
 		batch.draw(Assets.instance.drop.drop,x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
-		AssetFonts.instance.defaultBigFlipped.draw(batch, ""+worldController.selectedSprite, x + 75, y + 37);
+		AssetFonts.instance.defaultBigFlipped.draw(batch, "0", x + 75, y + 37);
 	}
 
 	private void renderFPSCounter(SpriteBatch batch) {

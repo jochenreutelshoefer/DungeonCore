@@ -21,9 +21,9 @@ public class AtlasGenerator {
 
 
 	public static void main (String[] args) throws Exception {
-		//String atlasName = Assets.DUNGEON_ATLAS;
-		String atlasName = "all";
-		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/assets/pics/"; //animation/
+		String atlasName = Assets.SKEL_ATLAS;
+		//String atlasName = "all";
+		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/assets/pics/animation/"+atlasName; //
 
 		//Delete old pack
 		File oldPackFile = new File(TARGET_DIR + "/" + atlasName + Assets.ATLAS_FILE_EXTENSION);

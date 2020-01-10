@@ -1,6 +1,7 @@
 package de.jdungeon.world;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,9 +11,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.RoomInfo;
+import figure.Figure;
+import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.monster.Orc;
+import figure.monster.Skeleton;
+import figure.monster.Wolf;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
@@ -63,37 +69,54 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void renderDungeon() {
-		int dungeonWidth = viewModel.getDungeonWidth();
-		int dungeonHeight = viewModel.getDungeonHeight();
 		batch.begin();
-		for (int x = 0; x < dungeonWidth; x++) {
-			for (int y = 0; y < dungeonHeight; y++) {
+		renderDungeonBackgroundObjectsForAllRooms();
+		renderFigureObjectsForAllRooms();
+		batch.end();
+	}
+
+	private void renderDungeonBackgroundObjectsForAllRooms() {
+		for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
+			for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
 				ViewRoom room = viewModel.getRoom(x, y);
+				/*
 				Sprite sprite = room.getSprite();
 				if (sprite == null) {
 					sprite = createRoomSprite(room.getRoomInfo(), x, y);
 					room.setSprite(sprite);
 				}
 				sprite.draw(batch);
+				*/
 
-
-				List<GraphicObject> graphicObjectsForRoom = room.getGraphicObjectsForRoom();
-				if(graphicObjectsForRoom == null || graphicObjectsForRoom.size() == 0) {
+				List<GraphicObject> graphicObjectsForRoom = room.getBackgroundObjectsForRoom();
+				if (graphicObjectsForRoom == null || graphicObjectsForRoom.isEmpty()) {
 					graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(room.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
 					room.setGraphicObjects(graphicObjectsForRoom);
 				}
 				drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
-
-
 			}
 		}
-		batch.end();
+	}
+
+	private void renderFigureObjectsForAllRooms() {
+		Class<? extends Figure>[] figureClasses = new Class[] { Hero.class, Orc.class, Wolf.class, Skeleton.class };
+
+		// iterate first for figure classes to have less atlas switches as each figure has a distinct atlas
+		for (Class<? extends Figure> figureClass : figureClasses) {
+			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
+				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
+					ViewRoom room = viewModel.getRoom(x, y);
+					List<GraphicObject> graphicObjectsForRoom = room.getFigureObjects(figureClass);
+					drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
+				}
+			}
+		}
 	}
 
 	private void drawGraphicObjectsToSpritebatch(List<GraphicObject> graphicObjectsForRoom, int x, int y) {
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {
-			if(graphicObject instanceof JDGraphicObject) {
-				JDGraphicObject object = ((JDGraphicObject)graphicObject);
+			if (graphicObject instanceof JDGraphicObject) {
+				JDGraphicObject object = ((JDGraphicObject) graphicObject);
 				JDImageLocated locatedImage = object.getLocatedImage();
 				TextureAtlas.AtlasRegion atlasRegion = findAtlasRegion(locatedImage.getImage(), graphicObject);
 				if (atlasRegion != null) {
@@ -101,7 +124,8 @@ public class WorldRenderer implements Disposable {
 					int posY = locatedImage.getY(y * WorldRenderer.roomSize);
 					batch.draw(atlasRegion, posX, posY, locatedImage.getWidth(), locatedImage.getHeight());
 				}
-			} else {
+			}
+			else {
 				DrawingRectangle destinationRectangle = graphicObject.getRectangle();
 				JDImageProxy<?> image = graphicObject.getImage();
 				TextureAtlas.AtlasRegion atlasRegion = findAtlasRegion(image, graphicObject);
@@ -118,16 +142,20 @@ public class WorldRenderer implements Disposable {
 		// TODO: The result of this method should be cached in view model too!
 
 		Object clickableObject = object.getClickableObject();
-		if(clickableObject instanceof HeroInfo) {
+		Class<? extends Figure> figureClass = null;
+		if (clickableObject instanceof FigureInfo) {
+			figureClass = ((FigureInfo) clickableObject).getFigureClass();
+		}
+		if (Hero.class.equals(figureClass)) {
 			int heroCode = ((HeroInfo) clickableObject).getHeroCode();
 			Hero.HeroCategory heroCategory = Hero.HeroCategory.fromValue(heroCode);
-			if(heroCategory == Hero.HeroCategory.Warrior) {
+			if (heroCategory == Hero.HeroCategory.Warrior) {
 				return Assets.instance.getWarriorTexture(image);
 			}
 		}
-
-
-
+		if(figureClass != null) {
+			return Assets.instance.getFigureTexture(figureClass, image);
+		}
 
 		// else look into default atlas
 		return Assets.instance.getDungeonTexture(image);
@@ -154,14 +182,6 @@ public class WorldRenderer implements Disposable {
 		pixmap.drawLine(roomSize, 0, 0, roomSize);
 	}
 
-	private void renderTestObjects() {
-
-		batch.begin();
-		for (Sprite sprite : worldController.testSprites) {
-			sprite.draw(batch);
-		}
-		batch.end();
-	}
 
 	public void resize(int width, int height) {
 		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;

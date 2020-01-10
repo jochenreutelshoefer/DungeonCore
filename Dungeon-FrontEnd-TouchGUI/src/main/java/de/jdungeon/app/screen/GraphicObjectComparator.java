@@ -16,7 +16,7 @@ import shrine.ShrineInfo;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 18.01.18.
  */
-class GraphicObjectComparator implements Comparator<GraphicObject> {
+public class GraphicObjectComparator implements Comparator<GraphicObject> {
 
 	private static final int FLOOR = 0;
 	private static final int SHRINE = 1;
