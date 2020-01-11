@@ -211,12 +211,11 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		int posX = 22;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
 		HealthBar healthView = new HealthBar(healthBarPosition,
-				new JDDimension(160, 20), figureInfo, HealthBar.Kind.health,
-				this, this.getGame());
+				new JDDimension(160, 20), figureInfo, HealthBar.Kind.health, this.getGame());
 		this.guiElements.add(healthView);
 		JDPoint dustBarPosition = new JDPoint(posX, 25);
 		HealthBar dustView = new HealthBar(dustBarPosition,
-				new JDDimension(160, 20), figureInfo, HealthBar.Kind.dust, this, this.getGame());
+				new JDDimension(160, 20), figureInfo, HealthBar.Kind.dust,  this.getGame());
 		this.guiElements.add(dustView);
 
 		/*
@@ -270,7 +269,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		messagePopup = new Popup(new JDPoint((width / 2) - widthFifth,
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
-				2 * heightFifth), this, this.getGame(), new InfoMessageClearPopupEvent());
+				2 * heightFifth),  this.getGame(), new InfoMessageClearPopupEvent());
 		this.guiElements.add(messagePopup);
 
 		Logger.getLogger(this.getClass().getName()).info("Finished init GUI-elements");

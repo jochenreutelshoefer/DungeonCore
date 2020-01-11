@@ -24,7 +24,7 @@ public class CharAttributeView extends SlidingGUIElement {
 
 	public CharAttributeView(HeroInfo info, GameScreen screen, Game game) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
-				(size.getWidth() * -1) + 20, yPosition), screen, game);
+				(size.getWidth() * -1) + 20, yPosition), game);
 		this.info = info;
 		this.screen = screen;
 

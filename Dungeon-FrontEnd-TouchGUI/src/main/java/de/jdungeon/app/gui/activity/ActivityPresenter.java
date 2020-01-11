@@ -45,7 +45,7 @@ public abstract class ActivityPresenter extends ContainerGUIElement {
 	protected final int screenHeight = getGame().getScreenHeight();
 
 	public ActivityPresenter(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, ActivityProvider provider, Image itemBg, int defaultTileSize) {
-		super(position, dimension, screen, game);
+		super(position, dimension, game);
 		this.provider = provider;
 		this.itemBackgroundImage = itemBg;
 		defaultImageWidth = defaultTileSize;

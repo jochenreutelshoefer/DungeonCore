@@ -11,13 +11,18 @@ import de.jdungeon.game.Image;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 21.12.19.
  */
-public class LibgdxImage implements Image {
+public class LibgdxFileImage implements Image {
 
 	private final String filename;
 	private Texture texture;
 
-	public LibgdxImage(String filename) {
+	public LibgdxFileImage(String filename) {
 		this.filename = filename;
+	}
+
+	public LibgdxFileImage(String filename, Texture texture) {
+		this.filename = filename;
+		this.texture = texture;
 	}
 
 	private void init() {

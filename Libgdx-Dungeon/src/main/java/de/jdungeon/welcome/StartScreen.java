@@ -31,7 +31,6 @@ public class StartScreen extends AbstractGameScreen {
 
 	SpriteBatch batch = new SpriteBatch();
 	Texture bgImageTx;
-	Texture buttImageTx;
 
 
 	private Stage stage;
@@ -48,7 +47,6 @@ public class StartScreen extends AbstractGameScreen {
 	@Override
 	public void init() {
 		bgImageTx = new Texture(Gdx.files.internal("haunted-castle.jpg"));
-		buttImageTx = new Texture(Gdx.files.internal("vector-button.png"));
 
 	}
 

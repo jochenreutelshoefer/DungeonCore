@@ -1,8 +1,12 @@
 package de.jdungeon;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.apache.log4j.Logger;
 
+import de.jdungeon.asset.LibgdxAssetImageLoader;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Configuration;
 import de.jdungeon.game.FileIO;
@@ -30,9 +34,10 @@ public class GameAdapter implements Game {
 	private LibgdxGraphics graphics;
 	private final LibgdxAudio audio = new LibgdxAudio();
 	private final LibgdxInput input = new LibgdxInput();
-	private final LibgdxFileIO fileIO = new LibgdxFileIO();
+	private final LibgdxFileIO fileIO = new LibgdxFileIO(new LibgdxAssetImageLoader());
 	private final LibgdxConfiguration configuration = new LibgdxConfiguration();
 
+	Map<AbstractGameScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
 
 	public GameAdapter(LibgdxDungeonMain game) {
 		this.game = game;
@@ -55,7 +60,13 @@ public class GameAdapter implements Game {
 
 	@Override
 	public Graphics getGraphics(ScreenContext context) {
-		return new LibgdxGraphics(((AbstractGameScreen)getCurrentScreen()).getCamera(context));
+		Screen currentScreen = getCurrentScreen();
+		LibgdxGraphics graphics = graphicsMap.get(currentScreen);
+		if(graphics == null) {
+			graphics = new LibgdxGraphics(((AbstractGameScreen) currentScreen).getCamera(context));
+			graphicsMap.put((AbstractGameScreen)currentScreen, graphics);
+		}
+		return graphics;
 	}
 
 	@Override

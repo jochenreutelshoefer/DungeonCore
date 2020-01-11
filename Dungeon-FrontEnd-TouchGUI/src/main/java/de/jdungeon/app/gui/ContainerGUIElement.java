@@ -17,8 +17,8 @@ import de.jdungeon.game.ScrollMotion;
  */
 public abstract class ContainerGUIElement extends AbstractGUIElement {
 
-	public ContainerGUIElement(JDPoint position, JDDimension dimension, StandardScreen screen, Game game) {
-		super(position, dimension, screen, game);
+	public ContainerGUIElement(JDPoint position, JDDimension dimension, Game game) {
+		super(position, dimension, game);
 	}
 
 	protected abstract List<? extends GUIElement> getAllSubElements();

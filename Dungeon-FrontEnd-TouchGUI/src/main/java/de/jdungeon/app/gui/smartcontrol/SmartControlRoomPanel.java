@@ -103,7 +103,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final FloorItemPresenter floorItemPresenter;
 
 	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionController actionAssembler, SmartControl smartControl) {
-		super(position, dimension, screen, game);
+		super(position, dimension, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
 		positionAreaSize = (int) (dimension.getWidth() / 2.2);

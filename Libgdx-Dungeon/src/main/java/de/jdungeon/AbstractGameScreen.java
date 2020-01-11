@@ -16,6 +16,7 @@ import de.jdungeon.libgdx.LibgdxScreenContext;
 public abstract class AbstractGameScreen extends de.jdungeon.game.Screen implements Screen {
 
 	protected LibgdxDungeonMain game;
+	protected boolean paused = false;
 
 	public AbstractGameScreen(LibgdxDungeonMain game) {
 		super(game);
@@ -26,11 +27,17 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 	@Override
 	public void resume() {
 		Assets.instance.init(new AssetManager(), game);
+		paused = false;
 	}
 
 	@Override
 	public void hide() {
 
+	}
+
+	@Override
+	public void pause() {
+		paused = true;
 	}
 
 	@Override

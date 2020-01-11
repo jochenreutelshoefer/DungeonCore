@@ -21,21 +21,18 @@ public class Popup extends AbstractGUIElement {
 	protected String text;
 	private  Event event = null;;
 
-	public Popup(JDPoint position, JDDimension dimension,
-				 StandardScreen screen, Game game, Event fireWhenTouched) {
-		super(position, dimension, screen, game);
+	public Popup(JDPoint position, JDDimension dimension, Game game, Event fireWhenTouched) {
+		super(position, dimension, game);
 		this.event = fireWhenTouched;
 	}
 
-	public Popup(JDPoint position, JDDimension dimension,
-					  StandardScreen screen, Game game, String text) {
-		super(position, dimension, screen, game);
+	public Popup(JDPoint position, JDDimension dimension, Game game, String text) {
+		super(position, dimension, game);
 		this.text = text;
 	}
 
-	public Popup(JDPoint position, JDDimension dimension,
-				 StandardScreen screen, Game game, String text, Event fireWhenTouched) {
-		this(position, dimension, screen, game,text);
+	public Popup(JDPoint position, JDDimension dimension, Game game, String text, Event fireWhenTouched) {
+		this(position, dimension, game,text);
 		this.event = fireWhenTouched;
 	}
 

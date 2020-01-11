@@ -11,7 +11,7 @@ public class GameOverView extends Popup {
 
 	public GameOverView(JDPoint position, JDDimension dimension,
 						StandardScreen screen, Game game) {
-		super(position, dimension, screen, game, "Game Over", new PlayerDiedEvent());
+		super(position, dimension, game, "Game Over", new PlayerDiedEvent());
 
 	}
 }

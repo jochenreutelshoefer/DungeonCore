@@ -20,7 +20,15 @@ import de.jdungeon.game.FileIO;
  */
 public class LibgdxFileIO implements FileIO {
 
-	AbstractImageLoader imageLoader = new LibgdxImageLoader();
+	AbstractImageLoader imageLoader;
+
+	public LibgdxFileIO(AbstractImageLoader imageLoader) {
+		this.imageLoader = imageLoader;
+	}
+
+	public LibgdxFileIO() {
+		imageLoader = new LibgdxImageLoader();
+	}
 
 	@Override
 	public boolean fileExists(String file) throws IOException {

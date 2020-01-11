@@ -29,6 +29,8 @@ public abstract class MenuScreen extends StandardScreen {
 
 	@Override
 	public void paint(float deltaTime) {
+		if(pause) return;
+
 		super.paint(deltaTime);
 
 		Graphics g = game.getGraphics(ScreenContext.Context.GUI);

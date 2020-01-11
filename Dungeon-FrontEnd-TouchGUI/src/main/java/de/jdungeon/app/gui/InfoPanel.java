@@ -30,7 +30,7 @@ public class InfoPanel extends SlidingGUIElement {
 
 	public InfoPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game) {
 		super(position, dimension, new JDPoint(position.getX()
-				+ dimension.getWidth() - 10, position.getY()), screen, game);
+				+ dimension.getWidth() - 10, position.getY()), game);
 		inventoryImageManager = new InventoryImageManager(screen.getGuiImageManager());
 		skillImageManager = new SkillImageManager(screen.getGuiImageManager());
 

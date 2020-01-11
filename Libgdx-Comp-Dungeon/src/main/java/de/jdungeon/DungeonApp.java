@@ -1,11 +1,8 @@
 package de.jdungeon;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -46,7 +43,6 @@ import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.skillselection.SkillSelectedEvent;
 import de.jdungeon.app.gui.skillselection.SkillSelectionScreen;
 import de.jdungeon.app.screen.GameScreen;
-import de.jdungeon.app.screen.start.HeroCategorySelectedEvent;
 import de.jdungeon.app.screen.start.WelcomeScreen;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Configuration;
@@ -60,8 +56,7 @@ import de.jdungeon.libgdx.LibgdxAudio;
 import de.jdungeon.libgdx.LibgdxConfiguration;
 import de.jdungeon.libgdx.LibgdxFileIO;
 import de.jdungeon.libgdx.LibgdxGraphics;
-import de.jdungeon.libgdx.LibgdxImage;
-import de.jdungeon.libgdx.LibgdxImageLoader;
+import de.jdungeon.libgdx.LibgdxFileImage;
 import de.jdungeon.libgdx.LibgdxInput;
 import de.jdungeon.libgdx.MyInputProcessor;
 import de.jdungeon.user.Session;
@@ -216,7 +211,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		// coordinate system specified by the camera.
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(((LibgdxImage)ImageManager.cristall_blueImage.getImage()).getTexture(), 50, 50);
+		batch.draw(((LibgdxFileImage)ImageManager.cristall_blueImage.getImage()).getTexture(), 50, 50);
 		batch.end();
 
 		currentScreen.update(-1);

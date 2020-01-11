@@ -8,7 +8,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import dungeon.JDPoint;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -78,10 +77,6 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		adapter = new GameAdapter(this);
 
 		Assets.instance.init(new AssetManager(), this);
-
-
-
-
 
 		EventManager.getInstance().registerListener(this);
 
@@ -193,9 +188,13 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 			PlayerController controller = new PlayerController(heroInfo);
 			((DefaultDungeonSession)this.dungeonSession).getCurrentHero().setControl(controller);
 
+			getCurrentScreen().pause();
+
 			// create and set new GameScreen
 			GameScreen gameScreen = new GameScreen(this, controller, DungeonGame.getInstance().getDungeon().getSize());
 			setCurrentScreen(gameScreen);
+
+			getCurrentScreen().resume();
 
 			// start world game loop
 			((DefaultDungeonSession)this.dungeonSession).startGame(controller);

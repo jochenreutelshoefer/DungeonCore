@@ -919,9 +919,9 @@ public class ImageManager {
 			border_double_left = new JDImageProxy<>(a, "border_double_left.gif");
 			border_double_right = new JDImageProxy<>(a, "border_double_right.gif");
 
-			health_bar_empty = new JDImageProxy<>(a, "health_bar_empty.gif");
-			health_bar_red = new JDImageProxy<>(a, "health_bar_red.gif");
-			health_bar_yellow = new JDImageProxy<>(a, "health_bar_yellow.gif");
+			health_bar_empty = new JDImageProxy<>(a, "guiItems/health_bar_empty.gif");
+			health_bar_red = new JDImageProxy<>(a, "guiItems/health_bar_red.gif");
+			health_bar_yellow = new JDImageProxy<>(a, "guiItems/health_bar_yellow.gif");
 
 			inventory_figure_background = new JDImageProxy<>(a,
 					"figure-shadow1.gif");

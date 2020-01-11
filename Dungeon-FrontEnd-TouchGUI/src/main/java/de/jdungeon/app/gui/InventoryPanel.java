@@ -69,7 +69,7 @@ public class InventoryPanel extends SlidingGUIElement {
 
 	public InventoryPanel(HeroInfo hero, GameScreen screen) {
 		super(new JDPoint(0, yPosition), size, new JDPoint(
-				(size.getWidth() * -1) + 20, yPosition), screen, screen.getGame());
+				(size.getWidth() * -1) + 20, yPosition), screen.getGame());
 		this.hero = hero;
 
 		InventoryImageManager inventoryImageManager = new InventoryImageManager(screen.getGuiImageManager());

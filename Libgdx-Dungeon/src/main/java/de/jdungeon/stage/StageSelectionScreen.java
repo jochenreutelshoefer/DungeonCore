@@ -11,7 +11,9 @@ import de.jdungeon.CameraHelper;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
+import de.jdungeon.game.Graphics;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.libgdx.LibgdxInput;
 import de.jdungeon.libgdx.MyInputProcessor;
 
@@ -97,9 +99,12 @@ public class StageSelectionScreen extends AbstractGameScreen {
 
 	@Override
 	public void render(float deltaTime) {
+		if(paused) return;
 		update(deltaTime);
 		cameraHelper.applyTo(camera);
+		//((LibgdxGraphics)game.getGraphics(null)).beginSpriteBatch();
 		selectionScreen.paint(deltaTime);
+		//((LibgdxGraphics)game.getGraphics(null)).endSpriteBatch();
 	}
 
 	@Override
@@ -109,6 +114,13 @@ public class StageSelectionScreen extends AbstractGameScreen {
 
 	@Override
 	public void pause() {
+		super.pause();
 		selectionScreen.pause();
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		selectionScreen.resume();
 	}
 }

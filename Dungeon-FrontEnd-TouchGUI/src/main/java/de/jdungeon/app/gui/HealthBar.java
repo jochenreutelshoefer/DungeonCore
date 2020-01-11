@@ -22,8 +22,8 @@ public class HealthBar extends AbstractGUIElement {
 	};
 
 	public HealthBar(JDPoint position, JDDimension dimension, HeroInfo info,
-					 Kind kind, StandardScreen screen, Game game) {
-		super(position, dimension, screen, game);
+					 Kind kind, Game game) {
+		super(position, dimension, game);
 		this.figure = info;
 		this.kind = kind;
 	}

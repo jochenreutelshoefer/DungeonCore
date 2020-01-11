@@ -56,7 +56,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 	public static final int SMART_CONTROL_SIZE = 290;
 
 	public SmartControl(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, HeroInfo figure, ActionController actionAssembler, FocusManager focusManager) {
-		super(position, dimension, screen, game);
+		super(position, dimension, game);
 		this.figureInfo = figure;
 		this.guiControl = actionAssembler;
 		this.focusManager = focusManager;

@@ -19,6 +19,7 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
-		initialize(new LibgdxDungeonMain(), config);
+		// todo: add resourceBundle loader
+		initialize(new LibgdxDungeonMain(null), config);
 	}
 }

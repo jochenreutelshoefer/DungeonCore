@@ -34,7 +34,7 @@ public class SkillSelectionScreen extends MenuScreen {
 		int posX = rightHandSide?this.game.getScreenWidth() / 2 + this.game.getScreenWidth() / 12:this.game.getScreenWidth() / 12;
 		int width = this.game.getScreenWidth() /3;
 		int height = this.game.getScreenHeight() * 2 / 3;
-		return new SkillSelectionTile(new JDPoint(posX, posY), new JDDimension(width,  height), this, this.game, option);
+		return new SkillSelectionTile(new JDPoint(posX, posY), new JDDimension(width,  height),  this.game, option);
 	}
 
 	@Override

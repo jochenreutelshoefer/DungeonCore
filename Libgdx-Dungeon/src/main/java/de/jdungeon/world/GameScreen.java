@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import figure.hero.HeroInfo;
 import figure.percept.Percept;
 
 import de.jdungeon.AbstractGameScreen;
@@ -58,6 +59,7 @@ public class GameScreen extends AbstractGameScreen {
 		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		JDPoint number = figure.getRoomInfo().getNumber();
 		// todo: set camera start position correctly - how?
+		//camera.lookAt(0, 0, 0);
 		camera.position.set(number.getX() * worldRenderer.roomSize +1000, number.getY() * worldRenderer.roomSize +1000, 0);
 		camera.update();
 		worldRenderer = new WorldRenderer(worldController, playerController, viewModel, camera);
@@ -67,7 +69,7 @@ public class GameScreen extends AbstractGameScreen {
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
-		guiRenderer = new GUIRenderer(worldController, cameraGUI);
+		guiRenderer = new GUIRenderer(worldController, cameraGUI, this.game, (HeroInfo)figure);
 
 	}
 

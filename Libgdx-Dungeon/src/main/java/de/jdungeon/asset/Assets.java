@@ -34,6 +34,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static String WOLF_ATLAS = "wolf";
 	public static String ORC_ATLAS = "orc";
 	public static String SKEL_ATLAS = "skel";
+	public static String GUI_ATLAS = "gui";
 
 	public static final Assets instance = new Assets();
 	private AssetManager assetManager;
@@ -43,6 +44,12 @@ public class Assets implements Disposable, AssetErrorListener {
 	private TextureAtlas wolfAtlas;
 	private TextureAtlas skelAtlas;
 	private TextureAtlas lionessAtlas;
+
+	public TextureAtlas getGuiAtlas() {
+		return guiAtlas;
+	}
+
+	private TextureAtlas guiAtlas;
 
 	public AssetBucket bucket;
 	public AssetDrop drop;
@@ -63,6 +70,10 @@ public class Assets implements Disposable, AssetErrorListener {
 		// general dungeon images
 		String dungeonAtlasPath = PACKS + DUNGEON_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(dungeonAtlasPath, TextureAtlas.class);
+
+		// gui images
+		String guiAtlasPath = PACKS + GUI_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(guiAtlasPath, TextureAtlas.class);
 
 		// warrior
 		String warriorAtlasPath = PACKS + WARRIOR_ATLAS + ATLAS_FILE_EXTENSION;
@@ -86,23 +97,31 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		assetManager.finishLoading();
 		dungeonAtlas = assetManager.get(dungeonAtlasPath);
+		cacheMap.put(dungeonAtlas, textureCacheDungeon);
+
 		orcAtlas = assetManager.get(orcAtlasPath);
+		cacheMap.put(orcAtlas, textureCacheOrc);
+
 		wolfAtlas = assetManager.get(wolfAtlasPath);
+		cacheMap.put(wolfAtlas, textureCacheWolf);
+
 		warriorAtlas = assetManager.get(warriorAtlasPath);
+		cacheMap.put(warriorAtlas, textureCacheWarrior);
+
 		lionessAtlas = assetManager.get(lionessAtlasPath);
+		cacheMap.put(lionessAtlas, textureCacheLioness);
+
+		skelAtlas = assetManager.get(skelAtlasPath);
+		cacheMap.put(skelAtlas, textureCacheSkeleton);
+
+		guiAtlas = assetManager.get(guiAtlasPath);
+		cacheMap.put(guiAtlas, textureCacheGUI);
 
 		Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
 		for (String a : assetManager.getAssetNames()) {
 			Gdx.app.debug(TAG, "asset: " + a);
 		}
 
-		TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
-		for (Texture texture : atlas.getTextures()) {
-			texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		}
-
-		bucket = new AssetBucket(atlas);
-		drop = new AssetDrop(atlas);
 		fonts = new AssetFonts();
 
 		// Initialize all game images
@@ -125,28 +144,38 @@ public class Assets implements Disposable, AssetErrorListener {
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOrc = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWolf = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSkeleton = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGUI = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheLioness = new HashMap<>();
+
+	private final Map<TextureAtlas, Map<String, TextureAtlas.AtlasRegion>> cacheMap = new HashMap<>();
+
+
+	public TextureAtlas.AtlasRegion getGUITexture(JDImageProxy<?> image) {
+		return getAtlasRegion(image, guiAtlas);
+	}
 
 	public TextureAtlas.AtlasRegion getWarriorTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, textureCacheWarrior, warriorAtlas);
+		return getAtlasRegion(image, warriorAtlas);
 	}
 
 	public TextureAtlas.AtlasRegion getWolfTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, textureCacheWolf, wolfAtlas);
+		return getAtlasRegion(image, wolfAtlas);
 	}
 
 	public TextureAtlas.AtlasRegion getOrcTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, textureCacheOrc, orcAtlas);
+		return getAtlasRegion(image, orcAtlas);
 	}
 
 	public TextureAtlas.AtlasRegion getSkeletonTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, textureCacheSkeleton, skelAtlas);
+		return getAtlasRegion(image, skelAtlas);
 	}
 
 	public TextureAtlas.AtlasRegion getDungeonTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, textureCacheDungeon, dungeonAtlas);
+		return getAtlasRegion(image, dungeonAtlas);
 	}
 
-	private TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, Map<String, TextureAtlas.AtlasRegion> textureCache, TextureAtlas atlas) {
+	public TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, TextureAtlas atlas) {
+		Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
 		String filename = image.getFilename();
 		if (filename.toLowerCase().endsWith(".gif")) {
 			filename = filename.substring(0, filename.length() - 4);

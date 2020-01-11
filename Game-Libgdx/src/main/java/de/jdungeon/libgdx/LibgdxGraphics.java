@@ -3,6 +3,7 @@ package de.jdungeon.libgdx;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -17,25 +18,29 @@ import de.jdungeon.game.Image;
 import de.jdungeon.game.TextPaint;
 import de.jdungeon.util.PaintBuilder;
 
+import static de.jdungeon.libgdx.LibgdxImageLoader.TAG;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 21.12.19.
  */
 public class LibgdxGraphics implements Graphics {
 
-	private final OrthographicCamera camera;
-	private final SpriteBatch batch;
+	private static final String TAG = LibgdxGraphics.class.getName();
+
+	protected final OrthographicCamera camera;
+	protected final SpriteBatch batch;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private final BitmapFont font = new BitmapFont();
 	private final BitmapFont fontWhite = new BitmapFont(true);
 	private final BitmapFont fontGray = new BitmapFont(true);
 	private final BitmapFont fontBlack = new BitmapFont(true);
 
-	private LibgdxTextpaint paintWhite = new LibgdxTextpaint(fontWhite);
-	private LibgdxTextpaint paintGray = new LibgdxTextpaint(fontGray);
-	private LibgdxTextpaint paintBlack = new LibgdxTextpaint(fontBlack);
+	private final LibgdxTextpaint paintWhite = new LibgdxTextpaint(fontWhite);
+	private final LibgdxTextpaint paintGray = new LibgdxTextpaint(fontGray);
+	private final LibgdxTextpaint paintBlack = new LibgdxTextpaint(fontBlack);
 
-	Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
+	private final Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
 
 
 	public LibgdxGraphics(OrthographicCamera camera) {
@@ -43,6 +48,26 @@ public class LibgdxGraphics implements Graphics {
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 
+		initColors();
+	}
+
+	public LibgdxGraphics(OrthographicCamera camera, SpriteBatch batch) {
+		this.camera = camera;
+		// create the camera and the SpriteBatch
+		this.batch = batch;
+
+		initColors();
+	}
+
+	public void beginSpriteBatch() {
+		batch.begin();
+	}
+
+	public void endSpriteBatch() {
+		batch.end();
+	}
+
+	private void initColors() {
 		colorMap.put(Colors.BLACK, com.badlogic.gdx.graphics.Color.BLACK);
 		colorMap.put(Colors.BLUE, com.badlogic.gdx.graphics.Color.BLUE);
 		colorMap.put(Colors.GRAY, com.badlogic.gdx.graphics.Color.GRAY);
@@ -155,24 +180,30 @@ public class LibgdxGraphics implements Graphics {
 	@Override
 	public void drawImage(Image image, int x, int y, boolean nonTmp) {
 		batch.setProjectionMatrix(camera.combined);
+
 		batch.begin();
-		batch.draw(((LibgdxImage)image).getTexture(), x, y);
+		if(image instanceof LibgdxFileImage) {
+			batch.draw(((LibgdxFileImage)image).getTexture(), x, y);
+		} else if(image instanceof LibgdxAssetImage) {
+			batch.draw(((LibgdxAssetImage)image).getAtlasRegion(), x, y);
+		}
 		batch.end();
 	}
 
 	@Override
 	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight, boolean nonTmp) {
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		batch.draw(((LibgdxImage)image).getTexture(),  x,  y,  width, height,  srcX,  srcY, srcWidth, srcHeight, false, true);
-		batch.end();
+		drawScaledImage(image, x, y, width, height, srcX, srcY, srcWidth, srcHeight);
 	}
 
 	@Override
 	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight) {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(((LibgdxImage)image).getTexture(),  x,  y,  width, height,  srcX,  srcY, srcWidth, srcHeight, false, true);
+		if(image instanceof LibgdxFileImage) {
+			batch.draw(((LibgdxFileImage)image).getTexture(), x, y, width, height,  srcX,  srcY, srcWidth, srcHeight, false, true);
+		} else if(image instanceof LibgdxAssetImage) {
+			batch.draw(((LibgdxAssetImage)image).getAtlasRegion(), x, y, width, height);
+		}
 		batch.end();
 	}
 

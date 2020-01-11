@@ -25,7 +25,7 @@ public class TextPerceptView extends AbstractGUIElement {
 	private static final int lineHeight = 20;
 
 	public TextPerceptView(GameScreen screen) {
-		super(new JDPoint(200, -340), new JDDimension(600, 400), screen, screen.getGame());
+		super(new JDPoint(200, -340), new JDDimension(600, 400), screen.getGame());
 	}
 
 	public void addTextPercept(Statement p) {

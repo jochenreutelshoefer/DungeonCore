@@ -22,6 +22,7 @@ import de.jdungeon.game.Screen;
  */
 public abstract class StandardScreen extends Screen {
 
+	protected boolean pause = false;
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
 	private final long screenCreatedTime;
 	private final GUIImageManager guiImageManager;
@@ -48,13 +49,13 @@ public abstract class StandardScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		pause = true;
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
+		pause = false;
 
 	}
 
@@ -132,6 +133,7 @@ public abstract class StandardScreen extends Screen {
 
 	@Override
 	public void paint(float deltaTime) {
+		if(pause) return;
 		Graphics gr = game.getGraphics(null);
 		/*
 		 * clear background

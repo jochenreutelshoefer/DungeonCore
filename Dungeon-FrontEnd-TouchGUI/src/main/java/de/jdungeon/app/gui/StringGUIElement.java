@@ -19,7 +19,7 @@ public class StringGUIElement extends AbstractGUIElement {
 	private final PaintBuilder paint;
 
 	public StringGUIElement(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, String text) {
-		super(position, dimension, screen, game);
+		super(position, dimension, game);
 		this.text = text;
 		paint = new PaintBuilder();
 		paint.setColor(Colors.WHITE);

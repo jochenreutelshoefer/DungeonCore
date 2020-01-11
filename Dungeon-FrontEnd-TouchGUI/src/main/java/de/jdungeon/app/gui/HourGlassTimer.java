@@ -21,7 +21,7 @@ public class HourGlassTimer extends AbstractGUIElement {
 	private final PaintBuilder paint;
 
 	public HourGlassTimer(JDPoint position, JDDimension dimension, StandardScreen screen, HeroInfo hero, Game game) {
-		super(position, dimension, screen, game);
+		super(position, dimension, game);
 		this.hero = hero;
 		paint = new PaintBuilder();
 		paint.setFontSize(14);

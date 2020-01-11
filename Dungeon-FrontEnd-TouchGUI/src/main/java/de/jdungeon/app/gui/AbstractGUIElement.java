@@ -22,15 +22,6 @@ public abstract class AbstractGUIElement implements GUIElement {
 	protected Game game;
 
 
-	public AbstractGUIElement(JDPoint position, JDDimension dimension,
-			StandardScreen screen, Game game) {
-		super();
-		this.position = position;
-		this.dimension = dimension;
-		this.screen = screen;
-		this.game = game;
-	}
-
 	public AbstractGUIElement(JDPoint position, JDDimension dimension, Game game) {
 		super();
 		this.position = position;
@@ -45,7 +36,6 @@ public abstract class AbstractGUIElement implements GUIElement {
 		this.position = position;
 		this.dimension = dimension;
 		this.parent = parent;
-		this.screen = parent.getScreen();
 	}
 
 	@Override
@@ -104,7 +94,7 @@ public abstract class AbstractGUIElement implements GUIElement {
 
 	@Override
 	public Game getGame() {
-		return getScreen().getGame();
+		return this.game;
 	}
 
 	public void setGame(Game game) {

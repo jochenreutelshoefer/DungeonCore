@@ -31,9 +31,8 @@ public class SkillSelectionTile extends AbstractGUIElement {
 	private final PaintBuilder textPaint;
 	private final SkillImageManager imageManager;
 
-	public SkillSelectionTile(JDPoint position, JDDimension dimension,
-							  StandardScreen screen, Game game, Spell skill) {
-		super(position, dimension, screen, game);
+	public SkillSelectionTile(JDPoint position, JDDimension dimension, Game game, Spell skill) {
+		super(position, dimension, game);
 		this.skill = skill;
 		headerPaint = new PaintBuilder();
 		headerPaint.setColor(ColorConverter.getColor(JDColor.black));

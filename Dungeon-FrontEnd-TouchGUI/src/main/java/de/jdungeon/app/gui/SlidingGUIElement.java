@@ -15,8 +15,8 @@ public abstract class SlidingGUIElement extends AbstractGUIElement {
 	protected final JDPoint targetPos;
 
 	public SlidingGUIElement(JDPoint position, JDDimension dimension,
-							 JDPoint targetPos, StandardScreen screen, Game game) {
-		super(position, dimension, screen, game);
+							 JDPoint targetPos, Game game) {
+		super(position, dimension, game);
 		this.targetPos = targetPos;
 
 		this.slideOut();

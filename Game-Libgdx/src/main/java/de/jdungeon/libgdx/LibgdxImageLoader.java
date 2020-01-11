@@ -1,8 +1,5 @@
 package de.jdungeon.libgdx;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.gdx.Gdx;
 
 import de.jdungeon.game.AbstractImageLoader;
@@ -14,7 +11,7 @@ import de.jdungeon.game.Image;
  */
 public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 
-	private static final String TAG = LibgdxImageLoader.class.getName();
+	protected static final String TAG = LibgdxImageLoader.class.getName();
 
 
 	@Override
@@ -23,7 +20,7 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 			filename = AbstractImageLoader.PREFIX + filename;
 		}
 		if(fileExists(filename)) {
-			return new LibgdxImage(filename);
+			return new LibgdxFileImage(filename);
 		} else {
 			Gdx.app.error(TAG, "File not found: "+filename);
 			return null;
@@ -35,7 +32,6 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 		if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
 			filename = AbstractImageLoader.PREFIX + filename;
 		}
-		long before = System.currentTimeMillis();
 		boolean exists = true;
 		try {
 			Gdx.files.internal(filename).read().close();
