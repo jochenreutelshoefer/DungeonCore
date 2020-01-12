@@ -166,14 +166,14 @@ public class LibgdxGraphics implements Graphics {
 	@Override
 	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color) {
 		prepareFill(color);
-		shapeRenderer.triangle(x1, y1, x2, y2, y3, y3);
+		shapeRenderer.triangle(x1, y1, x2, y2, x3, y3);
 		shapeRenderer.end();
 	}
 
 	@Override
 	public void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Color color) {
 		prepareDraw(color);
-		shapeRenderer.triangle(x1, y1, x2, y2, y3, y3);
+		shapeRenderer.triangle(x1, y1, x2, y2, x3, y3);
 		shapeRenderer.end();
 	}
 

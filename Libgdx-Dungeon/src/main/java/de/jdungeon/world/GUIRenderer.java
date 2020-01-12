@@ -4,9 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
@@ -123,6 +125,7 @@ public class GUIRenderer implements Disposable {
 		renderGUIElements();
 		renderGuiScore();
 		renderFPSCounter();
+		renderGrid();
 		//batch.end();
 
 	}
@@ -144,6 +147,18 @@ public class GUIRenderer implements Disposable {
 				}
 			}
 		}
+
+	}
+	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private void renderGrid() {
+		batch.setProjectionMatrix(cameraGUI.combined);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		shapeRenderer.setProjectionMatrix(cameraGUI.combined);
+		shapeRenderer.setColor(Color.GREEN);
+		for(int i = 0; i < 10; i++) {
+			shapeRenderer.ellipse((i*100)-2, (i*100)-2, 4, 4);
+		}
+		shapeRenderer.end();
 
 	}
 

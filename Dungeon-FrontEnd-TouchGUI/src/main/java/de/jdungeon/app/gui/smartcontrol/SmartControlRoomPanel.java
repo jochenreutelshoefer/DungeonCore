@@ -106,7 +106,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		super(position, dimension, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
-		positionAreaSize = (int) (dimension.getWidth() / 2.2);
+					positionAreaSize = (int) (dimension.getWidth() / 2.2);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
 		this.smartControl = smartControl;
 		renderer = new GraphicObjectRenderer(positionAreaSize);

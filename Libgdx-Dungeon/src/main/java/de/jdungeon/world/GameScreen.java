@@ -135,11 +135,15 @@ public class GameScreen extends AbstractGameScreen {
 		/*
 		Check for gui element click
 		 */
+		Vector3 guiPosUnprojected = cameraGUI.unproject(new Vector3(screenX, screenY, 0));
+		int guiXunprojected = Math.round(guiPosUnprojected.x);
+		int guiYunprojected = Math.round(guiPosUnprojected.y);
+
 		List<GUIElement> guiElements = guiRenderer.guiElements;
 		ListIterator<GUIElement> listIterator = guiElements.listIterator(guiElements.size());
 		while (listIterator.hasPrevious()) {
 			GUIElement guiElement = listIterator.previous();
-			if (guiElement.hasPoint(new JDPoint(screenX, screenY)) && guiElement.isVisible()) {
+			if (guiElement.hasPoint(new JDPoint(guiXunprojected, guiYunprojected)) && guiElement.isVisible()) {
 				//Log.i("touch event fired", this.getClass().getSimpleName()+": touch event fired");
 				Input.TouchEvent touchEvent = new Input.TouchEvent();
 				touchEvent.x = screenX;
