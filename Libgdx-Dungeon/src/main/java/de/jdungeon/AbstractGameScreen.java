@@ -23,10 +23,11 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 		this.game = game;
 	}
 
+	public abstract boolean clicked(int screenX, int screenY, int pointer, int button);
 
 	@Override
 	public void resume() {
-		Assets.instance.init(new AssetManager(), game);
+		//Assets.instance.init(new AssetManager(), game);
 		paused = false;
 	}
 

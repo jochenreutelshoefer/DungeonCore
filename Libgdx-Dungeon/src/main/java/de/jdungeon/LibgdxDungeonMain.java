@@ -166,7 +166,7 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 
 			// change screen to skill selection
 			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
-			SkillSelectionScreen screen = new SkillSelectionScreen(this);
+			de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
 			this.setCurrentScreen(screen);
 
 			// resume/start rendering of screen
@@ -176,7 +176,7 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		if(event instanceof SkillSelectedEvent) {
 			Spell spell = ((SkillSelectedEvent) event).getSpell();
 			dungeonSession.learnSkill(spell);
-			DungeonSelectionScreen screen = new DungeonSelectionScreen(this);
+			StageSelectionScreen screen = new StageSelectionScreen(this);
 			this.setCurrentScreen(screen);
 		}
 		if(event instanceof DungeonStartEvent) {

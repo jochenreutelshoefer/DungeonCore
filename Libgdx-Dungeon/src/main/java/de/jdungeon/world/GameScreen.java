@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import dungeon.JDPoint;
-import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
@@ -29,7 +28,7 @@ public class GameScreen extends AbstractGameScreen {
 	private final static String TAG = GameScreen.class.getName();
 	private final PlayerController playerController;
 
-	private InputController worldController;
+	private GameScreenInputController worldController;
 	private ViewModel viewModel;
 	private WorldRenderer worldRenderer;
 	private GUIRenderer guiRenderer;
@@ -52,7 +51,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void show() {
-		worldController = new InputController(game, playerController, this);
+		worldController = new GameScreenInputController(game, playerController, this);
 		perceptHandler = new GameScreenPerceptHandler(this);
 		figure = playerController.getFigure();
 		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
@@ -78,8 +77,11 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void render(float deltaTime) {
+
 		if(!paused) {
-			worldController.update(deltaTime);
+			// update gui and everything
+			update(deltaTime);
+
 			Gdx.gl.glClearColor(0, 0, 0, 0xff/255.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -96,6 +98,9 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void update(float deltaTime) {
+		worldController.update(deltaTime);
+		guiRenderer.update(deltaTime);
+		worldRenderer.update(deltaTime);
 		// TODO: fetch and show visibility increased rooms from PlayerController/JDGUI
 		List<Percept> percepts = playerController.getPercepts();
 		// TODO: handle and display percepts
@@ -124,6 +129,7 @@ public class GameScreen extends AbstractGameScreen {
 		return null;
 	}
 
+	@Override
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
 
 		/*

@@ -6,17 +6,11 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
 
-import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.ActionController;
-import de.jdungeon.asset.Assets;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.welcome.StartScreen;
 
@@ -24,9 +18,9 @@ import de.jdungeon.welcome.StartScreen;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 24.12.19.
  */
-public class InputController extends InputAdapter {
+public class GameScreenInputController extends InputAdapter {
 
-	private static final String TAG = InputController.class.getName();
+	private static final String TAG = GameScreenInputController.class.getName();
 
 	public CameraHelper cameraHelper;
 
@@ -35,7 +29,7 @@ public class InputController extends InputAdapter {
 	private final PlayerController playerController;
 
 	private final GameScreen gameScreen;
-	public InputController(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
+	public GameScreenInputController(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
 		this.game = game;
 		this.playerController = playerController;
 		this.gameScreen = gameScreen;

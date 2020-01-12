@@ -1,19 +1,13 @@
 package de.jdungeon.world;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
-import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
-import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Orc;
@@ -41,11 +35,11 @@ public class WorldRenderer implements Disposable {
 	private final ViewModel viewModel;
 	private final OrthographicCamera camera;
 	private SpriteBatch batch;
-	private final InputController worldController;
+	private final GameScreenInputController worldController;
 	private final GraphicObjectRenderer dungeonObjectRenderer;
 	public static final int roomSize = 80;
 
-	public WorldRenderer(InputController worldController, PlayerController playerController, ViewModel viewModel, OrthographicCamera camera) {
+	public WorldRenderer(GameScreenInputController worldController, PlayerController playerController, ViewModel viewModel, OrthographicCamera camera) {
 		this.worldController = worldController;
 		this.playerController = playerController;
 		this.viewModel = viewModel;
@@ -66,6 +60,10 @@ public class WorldRenderer implements Disposable {
 		batch.setProjectionMatrix(camera.combined);
 		renderDungeon();
 		//renderTestObjects();
+	}
+
+	public void update(float deltaTime) {
+		// nothing yet
 	}
 
 	private void renderDungeon() {

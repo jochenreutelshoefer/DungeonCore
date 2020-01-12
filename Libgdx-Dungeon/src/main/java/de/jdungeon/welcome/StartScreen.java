@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import event.EventManager;
 
 import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.DefaultGuiInputController;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
@@ -45,8 +46,15 @@ public class StartScreen extends AbstractGameScreen {
 	}
 
 	@Override
+	public boolean clicked(int screenX, int screenY, int pointer, int button) {
+		// uses Scene2d voodoo
+		return false;
+	}
+
+	@Override
 	public void init() {
 		bgImageTx = new Texture(Gdx.files.internal("haunted-castle.jpg"));
+		//Gdx.input.setInputProcessor(new DefaultGuiInputController(game, this));
 
 	}
 

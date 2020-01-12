@@ -50,6 +50,12 @@ public class StageSelectionScreen extends AbstractGameScreen {
 	}
 
 	@Override
+	public boolean clicked(int screenX, int screenY, int pointer, int button) {
+		// uses legacy input processor
+		return false;
+	}
+
+	@Override
 	public void update(float deltaTime) {
 		cameraHelper.update(deltaTime);
 		selectionScreen.update(deltaTime);

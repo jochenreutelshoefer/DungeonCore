@@ -4,12 +4,10 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.app.gui.ImageGUIElement;
-import de.jdungeon.app.screen.GameScreen;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.MotionEvent;
-import de.jdungeon.world.InputController;
-import de.jdungeon.world.WorldRenderer;
+import de.jdungeon.world.GameScreenInputController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -17,10 +15,10 @@ import de.jdungeon.world.WorldRenderer;
  */
 public class ZoomButton extends ImageGUIElement {
 
-	private final InputController screen;
+	private final GameScreenInputController screen;
 	private final boolean plus;
 
-	public ZoomButton(JDPoint position, JDDimension dimension, InputController screen, Image image, boolean plus) {
+	public ZoomButton(JDPoint position, JDDimension dimension, GameScreenInputController screen, Image image, boolean plus) {
 		super(position, dimension, image, screen.getGame());
 		this.screen = screen;
 		this.plus = plus;

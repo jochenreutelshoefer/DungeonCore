@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.JDPoint;
-import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import util.JDDimension;
 
@@ -24,12 +23,9 @@ import de.jdungeon.app.gui.ImageGUIElement;
 import de.jdungeon.app.gui.InfoPanel;
 import de.jdungeon.app.gui.smartcontrol.SmartControl;
 import de.jdungeon.asset.AssetFonts;
-import de.jdungeon.asset.Assets;
-import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
-import de.jdungeon.game.ScreenContext;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.libgdx.LibgdxGraphics;
 
@@ -39,7 +35,7 @@ import de.jdungeon.libgdx.LibgdxGraphics;
  */
 public class GUIRenderer implements Disposable {
 
-	private final InputController worldController;
+	private final GameScreenInputController worldController;
 	private final OrthographicCamera cameraGUI;
 	private final LibgdxDungeonMain game;
 	private final HeroInfo figure;
@@ -53,7 +49,7 @@ public class GUIRenderer implements Disposable {
 	private GUIImageManager guiImageManager;
 
 
-	public GUIRenderer(InputController worldController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
+	public GUIRenderer(GameScreenInputController worldController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
 		this.worldController = worldController;
 		this.cameraGUI = cameraGUI;
 		this.game = game;
@@ -121,8 +117,6 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void render() {
-			updateGUIElements();
-
 
 		batch.setProjectionMatrix(cameraGUI.combined);
 		//batch.begin();
@@ -133,10 +127,10 @@ public class GUIRenderer implements Disposable {
 
 	}
 
-	private void updateGUIElements() {
+	private void updateGUIElements(float deltaTime) {
 		for (GUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
-				guiElement.update(Gdx.app.getGraphics().getDeltaTime());
+				guiElement.update(deltaTime);
 			}
 		}
 	}
@@ -190,5 +184,9 @@ public class GUIRenderer implements Disposable {
 	@Override
 	public void dispose() {
 		batch.dispose();
+	}
+
+	public void update(float deltaTime) {
+		updateGUIElements(deltaTime);
 	}
 }
