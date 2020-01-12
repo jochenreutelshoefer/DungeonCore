@@ -24,17 +24,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Dungeon-Android-1.0-SNAPSHOT.ap_" />
-      <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Dungeon-Android-1.0-SNAPSHOT.apk" />
-      <excludeFolder url="file://$MODULE_DIR$/target/Libgdx-Dungeon-Android-1.0-SNAPSHOT.jar" />
-      <excludeFolder url="file://$MODULE_DIR$/target/R.txt" />
-      <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/classes.dex" />
-      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
-      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" />
-      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
-      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
+      <sourceFolder url="file://$MODULE_DIR$/assets" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -43,11 +34,9 @@
     <orderEntry type="module" module-name="Dungeon-FrontEnd-TouchGUI" />
     <orderEntry type="module" module-name="Dungeon-FrontEnd-GraphicsEngine2D" />
     <orderEntry type="module" module-name="Dungeon-Core" />
-    <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:3.8.2" level="project" />
     <orderEntry type="module" module-name="Dungeon-App-Core" />
     <orderEntry type="module" module-name="Game-Libgdx" />
-    <orderEntry type="module" module-name="Game-Core" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-tools:1.9.10" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.10" level="project" />
@@ -75,5 +64,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: xerces:xmlParserAPIs:2.6.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: xpp3:xpp3:1.1.4c" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.json:json:20080701" level="project" />
+    <orderEntry type="module" module-name="Game-Android" />
+    <orderEntry type="module" module-name="Game-Core" />
+    <orderEntry type="library" name="Maven: com.google.android:support-v4:r6" level="project" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
   </component>
 </module>

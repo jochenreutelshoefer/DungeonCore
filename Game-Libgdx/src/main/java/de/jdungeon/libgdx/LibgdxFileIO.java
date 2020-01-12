@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -42,7 +43,12 @@ public class LibgdxFileIO implements FileIO {
 
 	@Override
 	public List<String> readFileNamesOfFolder(String file) throws IOException {
-		String classPathLocation = this.getClass().getClassLoader().getResource(file).getFile();
+		String classPathLocation = null;
+		if(Gdx.app.getType().equals(Application.ApplicationType.Android)) {
+			classPathLocation = file;
+		} else if(Gdx.app.getType().equals(Application.ApplicationType.Desktop)) {
+			classPathLocation = this.getClass().getClassLoader().getResource(file).getFile();
+		}
 		FileHandle fileHandleFolder = Gdx.files.getFileHandle(classPathLocation, Files.FileType.Internal);
 		FileHandle[] fileHandles = fileHandleFolder.list();
 		List<String> filenames = new ArrayList<>();

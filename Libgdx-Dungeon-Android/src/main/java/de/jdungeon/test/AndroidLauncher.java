@@ -11,6 +11,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.androidapp.io.AndroidResourceBundleLoader;
+import de.jdungeon.io.ResourceBundleLoader;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -19,7 +21,8 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
+		ResourceBundleLoader loader;
 		// todo: add resourceBundle loader
-		initialize(new LibgdxDungeonMain(null), config);
+		initialize(new LibgdxDungeonMain(new AndroidResourceBundleLoader(this.getApplicationContext(), "")), config);
 	}
 }
