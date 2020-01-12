@@ -60,7 +60,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		this.figureInfo = figure;
 		this.guiControl = actionAssembler;
 		this.focusManager = focusManager;
-
+		this.screen = screen;
 		EventManager.getInstance().registerListener(this);
 
 		initGUIElements();

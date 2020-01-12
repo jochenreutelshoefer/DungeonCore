@@ -1,6 +1,7 @@
 package de.jdungeon.world;
 
 import java.util.List;
+import java.util.ListIterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,6 +16,8 @@ import figure.percept.Percept;
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.gui.GUIElement;
+import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
 
 /**
@@ -79,7 +82,7 @@ public class GameScreen extends AbstractGameScreen {
 			worldController.update(deltaTime);
 		}
 
-		Gdx.gl.glClearColor(0x64/255.0f, 0x95/255.0f, 0xed/255.0f, 0xff/255.0f);
+		Gdx.gl.glClearColor(0, 0, 0, 0xff/255.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		worldRenderer.render();
@@ -124,6 +127,26 @@ public class GameScreen extends AbstractGameScreen {
 
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
 
+		/*
+		Check for gui element click
+		 */
+		List<GUIElement> guiElements = guiRenderer.guiElements;
+		ListIterator<GUIElement> listIterator = guiElements.listIterator(guiElements.size());
+		while (listIterator.hasPrevious()) {
+			GUIElement guiElement = listIterator.previous();
+			if (guiElement.hasPoint(new JDPoint(screenX, screenY)) && guiElement.isVisible()) {
+				//Log.i("touch event fired", this.getClass().getSimpleName()+": touch event fired");
+				Input.TouchEvent touchEvent = new Input.TouchEvent();
+				touchEvent.x = screenX;
+				touchEvent.y = screenY;
+				guiElement.handleTouchEvent(touchEvent);
+				return true;
+			}
+		}
+
+		/*
+		Check for dungeon click
+		 */
 		Vector3 worldPosUnprojected = camera.unproject(new Vector3(screenX, screenY, 0));
 		int worldXunprojected = Math.round(worldPosUnprojected.x);
 		int worldYunprojected = Math.round(worldPosUnprojected.y);
@@ -132,6 +155,8 @@ public class GameScreen extends AbstractGameScreen {
 		int roomY = worldYunprojected / WorldRenderer.roomSize;
 
 		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
+		if(room == null) return false;
+
 		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * WorldRenderer.roomSize, roomY * WorldRenderer.roomSize);
 		if(clickedObjectInRoom != null) {
 			playerController.getActionController().objectClicked(clickedObjectInRoom, false);

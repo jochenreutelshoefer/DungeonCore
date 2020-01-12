@@ -18,6 +18,9 @@ public class LibgdxAssetImage implements Image {
 	private final TextureAtlas.AtlasRegion atlasRegion;
 
 	public LibgdxAssetImage(String filename, TextureAtlas.AtlasRegion atlasRegion) {
+		if(atlasRegion == null) {
+			throw new IllegalArgumentException("AtlasRegion was null: "+filename);
+		}
 		this.filename = filename;
 		this.atlasRegion = atlasRegion;
 	}

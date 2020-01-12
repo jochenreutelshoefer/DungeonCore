@@ -177,7 +177,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, TextureAtlas atlas) {
 		Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
 		String filename = image.getFilename();
-		if (filename.toLowerCase().endsWith(".gif")) {
+		if (filename.toLowerCase().endsWith(".gif") || filename.toLowerCase().endsWith(".png")) {
 			filename = filename.substring(0, filename.length() - 4);
 		}
 		String pathSeparator = "/"; // todo: does this work on all platforms???

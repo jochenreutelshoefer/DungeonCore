@@ -29,6 +29,14 @@ public abstract class AbstractGUIElement implements GUIElement {
 		this.game = game;
 	}
 
+	public AbstractGUIElement(JDPoint position, JDDimension dimension, StandardScreen screen, Game game) {
+		super();
+		this.position = position;
+		this.dimension = dimension;
+		this.game = game;
+		this.screen = screen;
+	}
+
 	// TODO: remove this constructor
 	public AbstractGUIElement(JDPoint position, JDDimension dimension,
 			GUIElement parent) {

@@ -96,7 +96,7 @@ public class GameAdapter implements Game {
 
 	@Override
 	public Configuration getConfiguration() {
-		return null;
+		return new LibgdxConfiguration();
 	}
 
 	@Override

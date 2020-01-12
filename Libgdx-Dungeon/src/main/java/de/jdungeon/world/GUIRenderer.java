@@ -15,15 +15,22 @@ import util.JDDimension;
 
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.HealthBar;
+import de.jdungeon.app.gui.HourGlassTimer;
+import de.jdungeon.app.gui.ImageGUIElement;
+import de.jdungeon.app.gui.InfoPanel;
+import de.jdungeon.app.gui.smartcontrol.SmartControl;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
+import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.libgdx.LibgdxGraphics;
 
 /**
@@ -38,6 +45,9 @@ public class GUIRenderer implements Disposable {
 	private final HeroInfo figure;
 	private SpriteBatch batch;
 	private Graphics graphics;
+	private SmartControl smartControl;
+	private InfoPanel infoPanel;
+	private FocusManager focusManager;
 
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
 	private GUIImageManager guiImageManager;
@@ -58,18 +68,56 @@ public class GUIRenderer implements Disposable {
 		graphics = new LibgdxGraphics(cameraGUI, batch);
 
 		/*
+		 * init info panel
+		 */
+		int infoPanelWidth = (int) (game.getScreenWidth() * 0.2);
+		int infoPanelHeight = (int) (game.getScreenHeight() * 0.4);
+		infoPanel = new InfoPanel(new JDPoint(game.getScreenWidth()  - infoPanelWidth, 0),
+				new JDDimension(infoPanelWidth, infoPanelHeight), new ScreenAdapter(game), game);
+		this.guiElements.add(infoPanel);
+		focusManager = new FocusManager(infoPanel, figure);
+
+		/*
 		 * init health bars
 		 */
 		int posX = 22;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
-		HealthBar healthView = new HealthBar(healthBarPosition,
-				new JDDimension(160, 20), figure, HealthBar.Kind.health, this.game);
+		HealthBar healthView = new HealthBar(healthBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.health, this.game);
 		this.guiElements.add(healthView);
 		JDPoint dustBarPosition = new JDPoint(posX, 25);
-		HealthBar dustView = new HealthBar(dustBarPosition,
-				new JDDimension(160, 20), figure, HealthBar.Kind.dust, this.game);
+		HealthBar dustView = new HealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust, this.game);
 		this.guiElements.add(dustView);
 
+		/*
+		 * init hour glass
+		 */
+		HourGlassTimer hourglass = new HourGlassTimer(new JDPoint(30, 50), new JDDimension(36, 60), new ScreenAdapter(game),figure,  this.game);
+		this.guiElements.add(hourglass);
+
+
+		/*
+		add +/- magnifier
+		 */
+		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE2), game) {
+
+			@Override
+			public boolean handleTouchEvent(Input.TouchEvent touch) {
+				//scrollTo(figure.getRoomNumber(), 30, SCALE_ROOM_DEFAULT, "user reseted view port with magnifier button");
+				return true;
+			}
+		};
+		this.guiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), worldController, getGUIImage(GUIImageManager.PLUS), true));
+		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), worldController, getGUIImage(GUIImageManager.MINUS), false));
+		this.guiElements.add(magnifier);
+
+		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
+		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, worldController.getPlayerController().getActionController(), focusManager);
+		this.guiElements.add(smartControl);
+
+	}
+
+	private Image getGUIImage(String filename) {
+		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
 	}
 
 	public void render() {

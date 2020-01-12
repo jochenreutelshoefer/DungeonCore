@@ -223,8 +223,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 */
 		HourGlassTimer hourglass = new HourGlassTimer(new JDPoint(
 				30,
-				50), new JDDimension(36, 60),
-				this, figureInfo, this.getGame());
+				50), new JDDimension(36, 60), this, figureInfo,  this.getGame());
 		this.guiElements.add(hourglass);
 
 

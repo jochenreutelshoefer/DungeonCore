@@ -161,27 +161,6 @@ public class WorldRenderer implements Disposable {
 		return Assets.instance.getDungeonTexture(image);
 	}
 
-	private Sprite createRoomSprite(RoomInfo roomInfo, int x, int y) {
-
-		Pixmap pixmap = new Pixmap(roomSize, roomSize, Pixmap.Format.RGB888);
-		if (roomInfo.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_ITEMS) {
-			pixmap.setColor(0, 0, 1, 1);
-		}
-		else {
-			pixmap.setColor(0, 1, 0, 1);
-		}
-		drawCross(roomSize, pixmap);
-		pixmap.drawRectangle(0, 0, roomSize, roomSize);
-		Sprite sprite = new Sprite(new Texture(pixmap));
-		sprite.setPosition(roomSize * x, roomSize * y);
-		return sprite;
-	}
-
-	private void drawCross(int roomSize, Pixmap pixmap) {
-		pixmap.drawLine(0, 0, roomSize, roomSize);
-		pixmap.drawLine(roomSize, 0, 0, roomSize);
-	}
-
 
 	public void resize(int width, int height) {
 		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;

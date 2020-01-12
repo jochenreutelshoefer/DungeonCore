@@ -7,10 +7,10 @@ import de.jdungeon.game.Image;
 
 public class GUIImageManager {
 
-	public static final String HOUR_GLASS_EMPTY = "hour-glass-empty.gif";
-	public static final String HOUR_GLASS_THIRD = "hour-glass-third.gif";
-	public static final String HOUR_GLASS_FULL = "hour-glass-full.gif";
-	public static final String HOUR_GLASS_HALF = "hour-glass-half.gif";
+	public static final String HOUR_GLASS_EMPTY = "guiItems/hour-glass-empty.gif";
+	public static final String HOUR_GLASS_THIRD = "guiItems/hour-glass-third.gif";
+	public static final String HOUR_GLASS_FULL = "guiItems/hour-glass-full.gif";
+	public static final String HOUR_GLASS_HALF = "guiItems/hour-glass-half.gif";
 
 	public static final String SCROLL = "guiItems/Scroll.gif";
 	public static final String BOOK = "guiItems/Book.gif";

@@ -29,15 +29,26 @@ public class InputController extends InputAdapter {
 	private static final String TAG = InputController.class.getName();
 
 	public CameraHelper cameraHelper;
-	private final LibgdxDungeonMain game;
-	private final PlayerController playerController;
-	private final GameScreen gameScreen;
 
+	private final LibgdxDungeonMain game;
+
+	private final PlayerController playerController;
+
+	private final GameScreen gameScreen;
 	public InputController(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
 		this.game = game;
 		this.playerController = playerController;
 		this.gameScreen = gameScreen;
 		init();
+	}
+
+
+	public PlayerController getPlayerController() {
+		return playerController;
+	}
+
+	public LibgdxDungeonMain getGame() {
+		return game;
 	}
 
 	private void init() {
@@ -124,4 +135,11 @@ public class InputController extends InputAdapter {
 		cameraHelper.setPosition(x, y);
 	}
 
+	public void zoomIn() {
+		cameraHelper.addZoom(-0.1f);
+	}
+
+	public void zoomOut() {
+		cameraHelper.addZoom(0.1f);
+	}
 }

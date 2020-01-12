@@ -25,6 +25,6 @@ public class LibgdxConfiguration implements Configuration {
 
 	@Override
 	public GUIStyle getGUIStyle() {
-		return null;
+		return GUIStyle.simple;
 	}
 }

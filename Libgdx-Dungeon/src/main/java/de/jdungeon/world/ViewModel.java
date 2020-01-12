@@ -57,6 +57,7 @@ public class ViewModel {
 	}
 
 	public ViewRoom getRoom(int x, int y) {
+		if(x < 0 || y < 0 || x >= roomViews.length || y >= roomViews[0].length) return null;
 		return roomViews[x][y];
 	}
 }

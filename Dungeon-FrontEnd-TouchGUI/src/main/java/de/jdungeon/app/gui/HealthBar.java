@@ -51,6 +51,11 @@ public class HealthBar extends AbstractGUIElement {
 			coloredBar = (Image) ImageManager.health_bar_yellow.getImage();
 		}
 
+		if(actualValue < 0) {
+			// we do not display values below zero
+			actualValue = 0;
+		}
+
 		int totalWidthPixels = this.getDimension().getWidth();
 		double percentage = (actualValue / baseValue);
 		int coloredWidthPixels = (int) (percentage * totalWidthPixels);
