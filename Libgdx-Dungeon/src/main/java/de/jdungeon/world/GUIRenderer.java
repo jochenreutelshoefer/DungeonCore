@@ -123,9 +123,9 @@ public class GUIRenderer implements Disposable {
 		batch.setProjectionMatrix(cameraGUI.combined);
 		//batch.begin();
 		renderGUIElements();
-		renderGuiScore();
+		//renderGuiScore();
 		renderFPSCounter();
-		renderGrid();
+		//renderGrid();
 		//batch.end();
 
 	}

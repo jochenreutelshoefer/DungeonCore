@@ -25,7 +25,7 @@ public class HourGlassTimer extends AbstractGUIElement {
 		this.hero = hero;
 		paint = new PaintBuilder();
 		paint.setFontSize(14);
-		paint.setColor(Colors.BLUE);
+		paint.setColor(Colors.WHITE);
 
 	}
 
