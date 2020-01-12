@@ -80,13 +80,12 @@ public class GameScreen extends AbstractGameScreen {
 	public void render(float deltaTime) {
 		if(!paused) {
 			worldController.update(deltaTime);
+			Gdx.gl.glClearColor(0, 0, 0, 0xff/255.0f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+			worldRenderer.render();
+			guiRenderer.render();
 		}
-
-		Gdx.gl.glClearColor(0, 0, 0, 0xff/255.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		worldRenderer.render();
-		guiRenderer.render();
 	}
 
 	@Override

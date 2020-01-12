@@ -33,7 +33,7 @@ public class InfoPanel extends SlidingGUIElement {
 				+ dimension.getWidth() - 10, position.getY()), game);
 		inventoryImageManager = new InventoryImageManager(screen.getGuiImageManager());
 		skillImageManager = new SkillImageManager(screen.getGuiImageManager());
-
+		this.screen = screen;
 	}
 
 	private Paragraphable content;

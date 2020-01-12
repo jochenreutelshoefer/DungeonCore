@@ -121,6 +121,9 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void render() {
+			updateGUIElements();
+
+
 		batch.setProjectionMatrix(cameraGUI.combined);
 		//batch.begin();
 		renderGUIElements();
@@ -128,6 +131,14 @@ public class GUIRenderer implements Disposable {
 		renderFPSCounter();
 		//batch.end();
 
+	}
+
+	private void updateGUIElements() {
+		for (GUIElement guiElement : this.guiElements) {
+			if (guiElement.isVisible()) {
+				guiElement.update(Gdx.app.getGraphics().getDeltaTime());
+			}
+		}
 	}
 
 	private void renderGUIElements() {
