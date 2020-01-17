@@ -22,6 +22,7 @@ import graphics.util.DrawingRectangle;
 
 import de.jdungeon.Constants;
 import de.jdungeon.asset.Assets;
+import de.jdungeon.util.Pair;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -77,21 +78,16 @@ public class WorldRenderer implements Disposable {
 		for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 			for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
 				ViewRoom room = viewModel.getRoom(x, y);
-				/*
-				Sprite sprite = room.getSprite();
-				if (sprite == null) {
-					sprite = createRoomSprite(room.getRoomInfo(), x, y);
-					room.setSprite(sprite);
-				}
-				sprite.draw(batch);
-				*/
 
-				List<GraphicObject> graphicObjectsForRoom = room.getBackgroundObjectsForRoom();
-				if (graphicObjectsForRoom == null || graphicObjectsForRoom.isEmpty()) {
-					graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(room.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
+				// fetch prepared render information
+				List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = room.getBackgroundObjectsForRoom();
+				if (renderInformation == null || renderInformation.isEmpty()) {
+					// no render information yet, we need to fetch object information about the room and update the ViewRoom with it
+					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(room.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
 					room.setGraphicObjects(graphicObjectsForRoom);
+					renderInformation = room.getBackgroundObjectsForRoom();
 				}
-				drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
+				drawGraphicObjectsToSpritebatch(renderInformation, x, y);
 			}
 		}
 	}
@@ -104,30 +100,29 @@ public class WorldRenderer implements Disposable {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
 					ViewRoom room = viewModel.getRoom(x, y);
-					List<GraphicObject> graphicObjectsForRoom = room.getFigureObjects(figureClass);
+					List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = room.getFigureObjects(figureClass);
 					drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
 				}
 			}
 		}
 	}
 
-	private void drawGraphicObjectsToSpritebatch(List<GraphicObject> graphicObjectsForRoom, int x, int y) {
-		for (GraphicObject graphicObject : graphicObjectsForRoom) {
+	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
+		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
+			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
+			GraphicObject graphicObject = pair.getA();
 			if (graphicObject instanceof JDGraphicObject) {
-				JDGraphicObject object = ((JDGraphicObject) graphicObject);
-				JDImageLocated locatedImage = object.getLocatedImage();
-				TextureAtlas.AtlasRegion atlasRegion = findAtlasRegion(locatedImage.getImage(), graphicObject);
 				if (atlasRegion != null) {
+					JDGraphicObject object = ((JDGraphicObject) graphicObject);
+					JDImageLocated locatedImage = object.getLocatedImage();
 					int posX = locatedImage.getX(x * WorldRenderer.roomSize);
 					int posY = locatedImage.getY(y * WorldRenderer.roomSize);
 					batch.draw(atlasRegion, posX, posY, locatedImage.getWidth(), locatedImage.getHeight());
 				}
 			}
 			else {
-				DrawingRectangle destinationRectangle = graphicObject.getRectangle();
-				JDImageProxy<?> image = graphicObject.getImage();
-				TextureAtlas.AtlasRegion atlasRegion = findAtlasRegion(image, graphicObject);
 				if (atlasRegion != null) {
+					DrawingRectangle destinationRectangle = graphicObject.getRectangle();
 					int posX = destinationRectangle.getX(x * WorldRenderer.roomSize);
 					int posY = destinationRectangle.getY(y * WorldRenderer.roomSize);
 					batch.draw(atlasRegion, posX, posY, destinationRectangle.getWidth(), destinationRectangle.getHeight());
@@ -136,28 +131,6 @@ public class WorldRenderer implements Disposable {
 		}
 	}
 
-	private TextureAtlas.AtlasRegion findAtlasRegion(JDImageProxy<?> image, GraphicObject object) {
-		// TODO: The result of this method should be cached in view model too!
-
-		Object clickableObject = object.getClickableObject();
-		Class<? extends Figure> figureClass = null;
-		if (clickableObject instanceof FigureInfo) {
-			figureClass = ((FigureInfo) clickableObject).getFigureClass();
-		}
-		if (Hero.class.equals(figureClass)) {
-			int heroCode = ((HeroInfo) clickableObject).getHeroCode();
-			Hero.HeroCategory heroCategory = Hero.HeroCategory.fromValue(heroCode);
-			if (heroCategory == Hero.HeroCategory.Warrior) {
-				return Assets.instance.getWarriorTexture(image);
-			}
-		}
-		if(figureClass != null) {
-			return Assets.instance.getFigureTexture(figureClass, image);
-		}
-
-		// else look into default atlas
-		return Assets.instance.getDungeonTexture(image);
-	}
 
 
 	public void resize(int width, int height) {
