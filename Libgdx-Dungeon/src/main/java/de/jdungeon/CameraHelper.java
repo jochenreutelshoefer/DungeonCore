@@ -17,19 +17,19 @@ public class CameraHelper {
 	private final float MAX_ZOOM_OUT = 10.0f;
 
 	private final Vector2 position;
+	private float zoom;
 
 	private Sprite target;
+
 
 	public CameraHelper() {
 		position = new Vector2();
 		zoom = 1.0f;
 	}
-
 	public CameraHelper(int posX, int posY) {
 		position = new Vector2(posX, posY);
 		zoom = 1.0f;
 	}
-	private float zoom;
 
 
 	public void update(float deltaTime) {

@@ -6,6 +6,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
 
@@ -18,11 +20,11 @@ import de.jdungeon.welcome.StartScreen;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 24.12.19.
  */
-public class GameScreenInputController extends InputAdapter {
+public class GameScreenInputController extends GestureDetector {
 
 	private static final String TAG = GameScreenInputController.class.getName();
 
-	public CameraHelper cameraHelper;
+	public static CameraHelper cameraHelper = new CameraHelper();;
 
 	private final LibgdxDungeonMain game;
 
@@ -30,6 +32,7 @@ public class GameScreenInputController extends InputAdapter {
 
 	private final GameScreen gameScreen;
 	public GameScreenInputController(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
+		super(new MyGestureListener(cameraHelper));
 		this.game = game;
 		this.playerController = playerController;
 		this.gameScreen = gameScreen;
@@ -47,7 +50,7 @@ public class GameScreenInputController extends InputAdapter {
 
 	private void init() {
 		Gdx.input.setInputProcessor(this);
-		cameraHelper = new CameraHelper();
+
 	}
 
 	private void backToMenu() {
@@ -136,4 +139,78 @@ public class GameScreenInputController extends InputAdapter {
 	public void zoomOut() {
 		cameraHelper.addZoom(0.1f);
 	}
+
+	static class MyGestureListener implements GestureDetector.GestureListener {
+
+		public CameraHelper cameraHelper;
+
+		public MyGestureListener(CameraHelper cameraHelper) {
+			this.cameraHelper = cameraHelper;
+		}
+
+		@Override
+		public boolean touchDown(float v, float v1, int i, int i1) {
+			return false;
+		}
+
+		@Override
+		public boolean tap(float v, float v1, int i, int i1) {
+			return false;
+		}
+
+		@Override
+		public boolean longPress(float v, float v1) {
+			return false;
+		}
+
+		@Override
+		public boolean fling(float v, float v1, int i) {
+			return false;
+		}
+
+		@Override
+		public boolean pan(float x, float y, float dx, float dy) {
+			int threshold = 100;
+			if(Math.abs(dx) > threshold || Math.abs(dy) > threshold) return false;
+
+			float moveFactor = 0.4f;
+			if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+				// on desktop we need a faster move factor than on android
+				moveFactor = 1.0f;
+			}
+			if(Gdx.app.getType() == Application.ApplicationType.Android) {
+				// on desktop we need a faster move factor than on android
+				moveFactor = 0.4f;
+			}
+
+
+			cameraHelper.getPosition().x = cameraHelper.getPosition().x - (dx * moveFactor);
+			cameraHelper.getPosition().y = cameraHelper.getPosition().y - (dy * moveFactor);
+			Gdx.app.error(TAG, "Pan dx: " + dx+ " dy: "+dy);
+			return true;
+		}
+
+		@Override
+		public boolean panStop(float x, float y, int a, int b) {
+			Gdx.app.error(TAG, "Pan stop x: " + x+ " y: "+y+ " a: "+a +" b: "+b);
+			return false;
+		}
+
+		@Override
+		public boolean zoom(float v, float v1) {
+			cameraHelper.addZoom(v+v1);
+			return true;
+		}
+
+		@Override
+		public boolean pinch(Vector2 vector2, Vector2 vector21, Vector2 vector22, Vector2 vector23) {
+			return false;
+		}
+
+		@Override
+		public void pinchStop() {
+
+		}
+	}
+
 }

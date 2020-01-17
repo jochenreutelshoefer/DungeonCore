@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector3;
 import dungeon.JDPoint;
 import figure.FigureInfo;
@@ -41,6 +42,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private final int dungeonSizeX;
 	private final int dungeonSizeY;
+	private GLProfiler glProfiler;
 
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
@@ -51,6 +53,8 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void show() {
+		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler.enable();
 		worldController = new GameScreenInputController(game, playerController, this);
 		perceptHandler = new GameScreenPerceptHandler(this);
 		figure = playerController.getFigure();
@@ -87,6 +91,14 @@ public class GameScreen extends AbstractGameScreen {
 
 			worldRenderer.render();
 			guiRenderer.render();
+
+			// for profiling only
+			/*
+			Gdx.app.error(TAG, "Open GL calls: " + glProfiler.getCalls());
+			Gdx.app.error(TAG, "Open GL draw calls: " + glProfiler.getDrawCalls());
+			Gdx.app.error(TAG, "Open GL texture bindings: " + glProfiler.getTextureBindings());
+			glProfiler.reset();
+			*/
 		}
 	}
 
