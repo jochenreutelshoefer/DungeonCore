@@ -26,6 +26,10 @@ public class LibgdxAssetImageLoader extends LibgdxImageLoader {
 					.getGuiAtlas());
 			return new LibgdxAssetImage(filename, atlasRegion);
 		}
+		TextureAtlas.AtlasRegion region = Assets.instance.getDungeonTexture(new JDImageProxy<>(filename, this));
+		if(region != null) {
+			return new LibgdxAssetImage(filename, region);
+		}
 
 		if (fileExists(filename)) {
 			return new LibgdxFileImage(filename);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
@@ -32,8 +31,7 @@ public class GraphicObjectRenderCollection {
 
 	private final List<GraphicObject> graphicObjects = new ArrayList<>();
 
-	// use transport list to overcome concurrent modification problem efficiently
-
+	// use transport list to overcome concurrent modification problem efficiently (is fetched by other thread)
 	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new ArrayList<>();
 	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedObjectsTransport = new ArrayList<>();
 
