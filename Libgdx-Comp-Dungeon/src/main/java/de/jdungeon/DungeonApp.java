@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -198,7 +199,7 @@ public class DungeonApp implements ApplicationListener, Game, EventListener {
 		if(graphics == null) {
 			camera = new OrthographicCamera();
 			camera.setToOrtho(false, 800, 480);
-			graphics = new LibgdxGraphics(camera);
+			graphics = new LibgdxGraphics(camera, (BitmapFont)null);
 		}
 
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);

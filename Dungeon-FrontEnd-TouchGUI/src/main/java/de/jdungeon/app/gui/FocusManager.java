@@ -2,6 +2,7 @@ package de.jdungeon.app.gui;
 
 import figure.FigureInfo;
 import game.RoomInfoEntity;
+import graphics.GraphicObject;
 import gui.Paragraphable;
 
 /**
@@ -12,15 +13,16 @@ public class FocusManager {
 
 	private Paragraphable guiFocusObject;
 
-	private RoomInfoEntity worldFocusObject;
+	private GraphicObject graphicObject;
 
+	private RoomInfoEntity worldFocusObject;
 	private final InfoPanel infoPanel;
+
 	private final FigureInfo figure;
 	public FocusManager(InfoPanel infoPanel, FigureInfo figure) {
 		this.infoPanel = infoPanel;
 		this.figure = figure;
 	}
-
 	public void setGuiFocusObject(Paragraphable object) {
 		if (object == null) {
 			this.infoPanel.setContent(null);
@@ -54,5 +56,14 @@ public class FocusManager {
 			this.infoPanel.setContent(object);
 		}
 		this.worldFocusObject = object;
+	}
+
+	public GraphicObject getGraphicObject() {
+		return graphicObject;
+	}
+
+	public void setWorldFocusObject(GraphicObject object) {
+		graphicObject = object;
+		setWorldFocusObject((RoomInfoEntity)object.getClickableObject());
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.JDPoint;
 import figure.Figure;
@@ -21,6 +22,8 @@ import graphics.util.DrawingRectangle;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
+import de.jdungeon.app.gui.FocusManager;
+import de.jdungeon.game.Color;
 import de.jdungeon.util.Pair;
 
 /**
@@ -35,22 +38,25 @@ public class WorldRenderer implements Disposable {
 
 	private final ViewModel viewModel;
 	private final OrthographicCamera camera;
+	private final FocusManager focusManager;
 	private final GraphicObjectRenderer dungeonObjectRenderer;
 	private final CameraHelper cameraHelper;
 	private SpriteBatch batch;
 	public static final int ROOM_SIZE = 80;
+	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper) {
+	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, FocusManager focusManager) {
 		this.dungeonObjectRenderer = graphicObjectRenderer;
 		this.cameraHelper = cameraHelper;
 		this.viewModel = viewModel;
 		this.camera = camera;
+		this.focusManager = focusManager;
 		init();
 	}
 
 	public static Pair<Float, Float> getPlayerRoomWorldPosition(FigureInfo figure) {
 		JDPoint number = figure.getRoomInfo().getNumber();
-		return new Pair<>((float) number.getX() * ROOM_SIZE + ROOM_SIZE /2, (float)number.getY() * ROOM_SIZE + ROOM_SIZE /2);
+		return new Pair<>((float) number.getX() * ROOM_SIZE + ROOM_SIZE / 2, (float) number.getY() * ROOM_SIZE + ROOM_SIZE / 2);
 	}
 
 	private void init() {
@@ -77,6 +83,23 @@ public class WorldRenderer implements Disposable {
 		renderDungeonBackgroundObjectsForAllRooms();
 		renderFigureObjectsForAllRooms();
 		batch.end();
+	}
+
+	private void highlight(DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
+		int x1 = rectangle.getX(roomOffsetX);
+		int y1 = rectangle.getY(roomOffsetY);
+		int x2 = x1 + rectangle.getWidth();
+		int y2 = y1 + rectangle.getHeight();
+		batch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.YELLOW);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		shapeRenderer.rect(x1, y1, x2 - x1, y2 - y1);
+		shapeRenderer.end();
+	}
+
+	private void prepareDraw(Color color) {
+
 	}
 
 	private void renderDungeonBackgroundObjectsForAllRooms() {
@@ -113,6 +136,7 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
+		GraphicObject highlightedObject = focusManager.getGraphicObject();
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
 			GraphicObject graphicObject = pair.getA();
@@ -123,6 +147,11 @@ public class WorldRenderer implements Disposable {
 					int posX = locatedImage.getX(x * WorldRenderer.ROOM_SIZE);
 					int posY = locatedImage.getY(y * WorldRenderer.ROOM_SIZE);
 					batch.draw(atlasRegion, posX, posY, locatedImage.getWidth(), locatedImage.getHeight());
+					// highlight focus object
+					if (highlightedObject != null) {
+						checkForHighlightedObject(highlightedObject, graphicObject, posX, posY, locatedImage.getWidth(), locatedImage
+								.getHeight());
+					}
 				}
 			}
 			else {
@@ -131,12 +160,27 @@ public class WorldRenderer implements Disposable {
 					int posX = destinationRectangle.getX(x * WorldRenderer.ROOM_SIZE);
 					int posY = destinationRectangle.getY(y * WorldRenderer.ROOM_SIZE);
 					batch.draw(atlasRegion, posX, posY, destinationRectangle.getWidth(), destinationRectangle.getHeight());
+					if (highlightedObject != null) {
+						checkForHighlightedObject(highlightedObject, graphicObject, posX, posY, destinationRectangle.getWidth(), destinationRectangle
+								.getHeight());
+					}
 				}
 			}
 		}
 	}
 
-
+	private void checkForHighlightedObject(GraphicObject highlightedObject, GraphicObject graphicObject, int posX, int posY, int width, int height) {
+		/*
+		if (graphicObject.equals(highlightedObject)) {
+			batch.setProjectionMatrix(camera.combined);
+			shapeRenderer.setProjectionMatrix(camera.combined);
+			shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.YELLOW);
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+			shapeRenderer.rect(posX, posY, width, height);
+			shapeRenderer.end();
+		}
+		*/
+	}
 
 	public void resize(int width, int height) {
 		camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;

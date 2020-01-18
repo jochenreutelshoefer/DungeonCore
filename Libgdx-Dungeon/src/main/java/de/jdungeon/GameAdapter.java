@@ -3,9 +3,11 @@ package de.jdungeon;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.apache.log4j.Logger;
 
+import de.jdungeon.asset.Assets;
 import de.jdungeon.asset.LibgdxAssetImageLoader;
 import de.jdungeon.game.Audio;
 import de.jdungeon.game.Configuration;
@@ -63,7 +65,7 @@ public class GameAdapter implements Game {
 		Screen currentScreen = getCurrentScreen();
 		LibgdxGraphics graphics = graphicsMap.get(currentScreen);
 		if(graphics == null) {
-			graphics = new LibgdxGraphics(((AbstractGameScreen) currentScreen).getCamera(context));
+			graphics = new LibgdxGraphics(((AbstractGameScreen) currentScreen).getCamera(context), Assets.instance.fonts.defaultSmallFlipped);
 			graphicsMap.put((AbstractGameScreen)currentScreen, graphics);
 		}
 		return graphics;

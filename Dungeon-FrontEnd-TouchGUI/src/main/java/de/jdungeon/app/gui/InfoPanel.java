@@ -90,7 +90,7 @@ public class InfoPanel extends SlidingGUIElement {
 
 		Image im = getImage();
 		if (im != null) {
-			g.drawScaledImage(im, getCurrentX() + 20, position.getY() + 20, 60,
+			g.drawScaledImage(im, getCurrentX() + 2, position.getY() + 20, 60,
 					60, 0, 0, im.getWidth(), im.getHeight());
 		}
 
@@ -118,8 +118,7 @@ public class InfoPanel extends SlidingGUIElement {
 					if(text == null) {
 						text = "null";
 					}
-					g.drawString(text,
-								x + (this.dimension.getWidth() / 2),
+					g.drawString(text, x + (this.dimension.getWidth() / 3),
 								position.getY() + posCounterY, g.createTextPaint(paintBuilder));
 					posCounterY += 30;
 				}

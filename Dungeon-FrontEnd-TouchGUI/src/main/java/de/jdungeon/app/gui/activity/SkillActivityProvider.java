@@ -147,7 +147,7 @@ public class SkillActivityProvider implements ActivityProvider {
 		if (o.equals(ATTACK)) {
 			if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(info.getRoomInfo().getLocation())) {
 				// moved out of room since last figure focus hence reset focus
-				focusManager.setWorldFocusObject(null);
+				focusManager.setWorldFocusObject((RoomInfoEntity)null);
 				highlightedEntity = null;
 			}
 			List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
@@ -205,7 +205,7 @@ public class SkillActivityProvider implements ActivityProvider {
 					// something completely wrong for this spell is selected by the user in the gui
 					// we discard the selection and see whether auto target detection will work
 					// or otherwise the user will be informed
-					focusManager.setWorldFocusObject(null);
+					focusManager.setWorldFocusObject((RoomInfoEntity)null);
 				}
 				if (highlightedEntity != null) {
 					// some target selected

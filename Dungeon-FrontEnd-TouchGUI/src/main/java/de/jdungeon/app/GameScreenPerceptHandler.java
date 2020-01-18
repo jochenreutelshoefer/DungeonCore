@@ -3,6 +3,7 @@ package de.jdungeon.app;
 import java.util.List;
 
 import dungeon.Position;
+import game.RoomInfoEntity;
 import text.Statement;
 import text.StatementManager;
 import animation.DefaultAnimationSet;
@@ -235,7 +236,7 @@ public class GameScreenPerceptHandler {
 
 		if(fig.equals(this.figure)) {
 				// we reset the selected room, as hero has moved on
-				screen.getFocusManager().setWorldFocusObject(null);
+				screen.getFocusManager().setWorldFocusObject((RoomInfoEntity)null);
 		}
 
 		if (set != null) {
@@ -261,7 +262,7 @@ public class GameScreenPerceptHandler {
 		}
 		// we reset highlighted entity if a selected figure was killed
 		if(deadFigure.equals(this.screen.getFocusManager().getWorldFocusObject())) {
-			this.screen.getFocusManager().setWorldFocusObject(null);
+			this.screen.getFocusManager().setWorldFocusObject((RoomInfoEntity)null);
 		}
 
 		newStatement(StatementManager.getStatement(p, figure));

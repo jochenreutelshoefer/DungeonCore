@@ -66,16 +66,16 @@ public class ViewRoom {
 		}
 	}
 
-	public Object findClickedObjectInRoom(JDPoint inGameLocation, int roomOffsetX, int roomOffsetY) {
+	public GraphicObject findClickedObjectInRoom(JDPoint inGameLocation, int roomOffsetX, int roomOffsetY) {
 		List<GraphicObject> allRoomObjects = new ArrayList<>(backGroundObjects.getGraphicObjects());
 		for (GraphicObjectRenderCollection figures : figureObjects.values()) {
 			allRoomObjects.addAll(figures.getGraphicObjects());
 		}
 		Collections.sort(allRoomObjects, new GraphicObjectComparator());
-		Object clickedObject = null;
+		GraphicObject clickedObject = null;
 		for (GraphicObject object : allRoomObjects) {
 			if (object.hasPoint(inGameLocation, roomOffsetX, roomOffsetY)) {
-				clickedObject = object.getClickableObject();
+				clickedObject = object;
 				break;
 			}
 		}

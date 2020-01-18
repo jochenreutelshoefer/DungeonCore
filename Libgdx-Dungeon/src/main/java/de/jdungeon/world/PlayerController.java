@@ -138,7 +138,9 @@ public class PlayerController implements JDGUI {
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
 		updateRoomViewModel(p);
-		visibilityIncreasedRooms.add(p);
+		synchronized (visibilityIncreasedRooms) {
+			visibilityIncreasedRooms.add(p);
+		}
 	}
 
 	private void updateRoomViewModel(JDPoint p) {

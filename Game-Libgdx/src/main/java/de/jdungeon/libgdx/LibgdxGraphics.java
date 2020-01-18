@@ -40,22 +40,24 @@ public class LibgdxGraphics implements Graphics {
 	private final LibgdxTextpaint paintGray = new LibgdxTextpaint(fontGray);
 	private final LibgdxTextpaint paintBlack = new LibgdxTextpaint(fontBlack);
 
+	BitmapFont fpsFont;
+
 	private final Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
 
 
-	public LibgdxGraphics(OrthographicCamera camera) {
+	public LibgdxGraphics(OrthographicCamera camera, BitmapFont font) {
 		this.camera = camera;
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
-
+		this.fpsFont = font;
 		initColors();
 	}
 
-	public LibgdxGraphics(OrthographicCamera camera, SpriteBatch batch) {
+	public LibgdxGraphics(OrthographicCamera camera, BitmapFont font, SpriteBatch batch) {
 		this.camera = camera;
 		// create the camera and the SpriteBatch
 		this.batch = batch;
-
+		this.fpsFont = font;
 		initColors();
 	}
 
@@ -217,6 +219,7 @@ public class LibgdxGraphics implements Graphics {
 			textpaint = new LibgdxTextpaint(createBitMapFont(((PaintBuilder)paint)));
 		}
 
+		/*
 		GlyphLayout layout = new GlyphLayout();
 		layout.setText(textpaint.getFont(), text ,textpaint.getFont().getColor(), 50, 0, false);
 
@@ -224,6 +227,13 @@ public class LibgdxGraphics implements Graphics {
 		batch.begin();
 		textpaint.getFont().draw(batch, layout, x, y);
 		//textpaint.getFont().draw(batch, text, x, y);
+		batch.end();
+		*/
+
+
+		fpsFont.setColor(textpaint.getFont().getColor());
+		batch.begin();
+		fpsFont.draw(batch, text, x, y);
 		batch.end();
 	}
 

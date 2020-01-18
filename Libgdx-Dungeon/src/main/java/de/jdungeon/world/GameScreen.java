@@ -11,10 +11,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import dungeon.ChestInfo;
 import dungeon.JDPoint;
+import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
+import game.RoomInfoEntity;
+import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 
 import de.jdungeon.AbstractGameScreen;
@@ -22,6 +26,7 @@ import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIElement;
+import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
 import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
@@ -94,14 +99,16 @@ public class GameScreen extends AbstractGameScreen {
 		JDPoint number = figure.getRoomInfo().getNumber();
 		camera.position.set(number.getX() * ROOM_SIZE, number.getY() * ROOM_SIZE, 0);
 		camera.update();
-		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper);
+
 
 		// init gui camera and gui renderer
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
+
 		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure);
+		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, guiRenderer.getFocusManager());
 
 		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 	}
@@ -245,14 +252,6 @@ public class GameScreen extends AbstractGameScreen {
 			return;
 		}
 
-		// we dont animate discovered neighbour rooms any more
-		/*
-		if (points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
-			scrollTo(points.get(0), 50, "show Visibility increase 1 room hero neighbour");
-			return;
-		}
-		*/
-
 		// zoom out
 		float flightScale = cameraHelper.getCurrentZoom();
 		float stepDuration = 0.7f;
@@ -337,9 +336,25 @@ public class GameScreen extends AbstractGameScreen {
 		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
 		if (room == null) return false;
 
-		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * ROOM_SIZE, roomY * ROOM_SIZE);
-		if (clickedObjectInRoom != null) {
-			playerController.getActionController().objectClicked(clickedObjectInRoom, false);
+		GraphicObject clickedGraphicObject = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * ROOM_SIZE, roomY * ROOM_SIZE);
+		if (clickedGraphicObject != null) {
+			Object clickedObject = clickedGraphicObject.getClickableObject();
+			if (button == 1 // button 1 is right-click
+					|| clickedObject.equals(guiRenderer.getFocusManager().getWorldFocusObject())) {
+				// object was already highlighted before
+				// hence we can trigger an action
+				//actionAssembler.objectClicked(clickedObject, true);
+
+				playerController.getActionController().objectClicked(clickedObject, false);
+
+				// exception for chest handing, to be solved better one day
+				if(clickedObject instanceof ChestInfo) {
+					EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+				}
+			}
+			else {
+				guiRenderer.getFocusManager().setWorldFocusObject((clickedGraphicObject));
+			}
 		}
 		return false;
 	}
@@ -358,10 +373,9 @@ public class GameScreen extends AbstractGameScreen {
 		// TODO: we need to work with camera project/unproject as roomSize is world coordinates and calculation is in screen coordinates
 		Vector2 currentCameraPosition = cameraHelper.getPosition();
 		Vector3 cameraPosScreenCoord = camera.project(new Vector3(currentCameraPosition, 0));
-		double lookAheadMarginX = ROOM_SIZE * 2.5 * cameraHelper.getZoom();  // for some reason we need more as expected on X to make it work as desired, todo: is weird - clarify
-		double lookAheadMarginY = ROOM_SIZE * 2.5 * cameraHelper.getZoom();
-		if(			Math.abs(cameraPosScreenCoord.x - playerWorldScreenCoord.x) + lookAheadMarginX >  screenWidth  / 2
-				||	Math.abs(cameraPosScreenCoord.y - playerWorldScreenCoord.y) + lookAheadMarginY >  screenHeight / 2) {
+		double lookAheadMargin = ROOM_SIZE * 2.5 * cameraHelper.getZoom();
+		if(			Math.abs(cameraPosScreenCoord.x - playerWorldScreenCoord.x) + lookAheadMargin >  screenWidth  / 2
+				||	Math.abs(cameraPosScreenCoord.y - playerWorldScreenCoord.y) + lookAheadMargin >  screenHeight / 2) {
 			// neighbour room not visible on screen, hence we need camera re-positioning
 			scollToPlayerPosition();
 		}

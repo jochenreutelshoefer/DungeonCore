@@ -26,6 +26,7 @@ import de.jdungeon.app.gui.ImageGUIElement;
 import de.jdungeon.app.gui.InfoPanel;
 import de.jdungeon.app.gui.smartcontrol.SmartControl;
 import de.jdungeon.asset.AssetFonts;
+import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
@@ -48,11 +49,12 @@ public class GUIRenderer implements Disposable {
 	private Graphics graphics;
 	private SmartControl smartControl;
 	private InfoPanel infoPanel;
+
 	private FocusManager focusManager;
 
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
-	private GUIImageManager guiImageManager;
 
+	private GUIImageManager guiImageManager;
 	private GameOverView gameOverView;
 
 	public GUIRenderer(GameScreenInputController inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
@@ -67,7 +69,7 @@ public class GUIRenderer implements Disposable {
 		guiImageManager = new GUIImageManager(game.getFileIO().getImageLoader());
 		batch = new SpriteBatch();
 		cameraGUI.update();
-		graphics = new LibgdxGraphics(cameraGUI, batch);
+		graphics = new LibgdxGraphics(cameraGUI, Assets.instance.fonts.defaultSmallFlipped, batch);
 
 		/*
 		 * init info panel
@@ -134,6 +136,10 @@ public class GUIRenderer implements Disposable {
 
 	private Image getGUIImage(String filename) {
 		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
+	}
+
+	public FocusManager getFocusManager() {
+		return focusManager;
 	}
 
 	public void render() {
