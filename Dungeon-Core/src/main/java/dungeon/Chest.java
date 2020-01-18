@@ -144,6 +144,17 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 		return false;
 	}
 
+	/*
+	if (items != null) {
+			String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
+			f.tellPercept(new TextPercept(s));
+			Percept p = new UsePercept(f, this);
+			this.location.addItems(items, null);
+			f.getRoom().distributePercept(p);
+			items = null;
+		}
+	 */
+
 	public void clicked(Figure f, boolean right) {
 		if (lock == null) {
 			if (right) {

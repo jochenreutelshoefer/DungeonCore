@@ -1,6 +1,7 @@
 package de.jdungeon.world;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -29,33 +30,39 @@ public class GraphicObjectRenderCollection {
 
 	private boolean initialized = false;
 
-	private final List<GraphicObject> graphicObjects = new ArrayList<>();
+	private final List<GraphicObject> graphicObjects = new LinkedList<>();
 
 	// use transport list to overcome concurrent modification problem efficiently (is fetched by other thread)
-	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new ArrayList<>();
-	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedObjectsTransport = new ArrayList<>();
+	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new LinkedList<>();
+	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedObjectsTransport = new LinkedList<>();
 
 	public List<GraphicObject> getGraphicObjects() {
 		return graphicObjects;
 	}
 
 	public void clear() {
-		graphicObjects.clear();
+		synchronized (graphicObjects) {
+			graphicObjects.clear();
+		}
 		initialized = false;
 	}
 
 	public void addObject(GraphicObject object) {
-		graphicObjects.add(object);
+		synchronized (graphicObjects) {
+			graphicObjects.add(object);
+		}
 	}
 
 
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getRenderInformation() {
-		if(! initialized) {
-			// initialize textures lazy BY THE RENDERING THREAD because of OPEN GL Context issues
-			for (GraphicObject object : graphicObjects) {
-				preparedOjects.add(createAtlasRegionPair(object));
+		synchronized (graphicObjects) {
+			if(! initialized) {
+				// initialize textures lazy BY THE RENDERING THREAD because of OPEN GL Context issues
+				for (GraphicObject object : graphicObjects) {
+					preparedOjects.add(createAtlasRegionPair(object));
+				}
+				initialized = true;
 			}
-			initialized = true;
 		}
 		preparedObjectsTransport.clear();
 		preparedObjectsTransport.addAll(preparedOjects);

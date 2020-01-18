@@ -1,9 +1,11 @@
 package de.jdungeon.app.movieSequence;
 
 
-public interface MovieSequence extends ChangeScaleSequence,
+public interface CameraFlightSequence extends ChangeScaleSequence,
 		ChangeViewportSequence {
 
 	boolean isFinished(float timePassed);
+
+	String getTitle();
 
 }

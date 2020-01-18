@@ -228,8 +228,7 @@ public class GraphicObjectRenderer {
 				- getDoorDimension(true, roomSize).getWidth(),
 				roomSize, roomSize));
 
-		JDDimension doorDimension = this.getDoorDimension(true,
-				roomSize);
+		JDDimension doorDimension = this.getDoorDimension(true, roomSize);
 
 		doorEastNone = new JDGraphicObject(new JDImageLocated(
 				ImageManager.door_east_none, new RelativeRectangle(0, 0
@@ -270,18 +269,18 @@ public class GraphicObjectRenderer {
 				roomSize, roomSize);
 
 		// room floor
-		JDDimension roomBlackBackgroundDimension = new JDDimension(roomSize - 2
-				* getDoorDimension(true, roomSize).getWidth(),
+		JDDimension roomBlackBackgroundDimension = new JDDimension(
+				roomSize - 2 * getDoorDimension(true, roomSize).getWidth(),
 				roomSize - 2 * getDoorDimension(true, roomSize).getWidth());
 		RelativeRectangle roomBlackBackGroundRect = new RelativeRectangle(new JDPoint(
 				getDoorDimension(true, roomSize).getWidth(),
 				getDoorDimension(true, roomSize).getWidth()),
 				roomBlackBackgroundDimension);
 		roomUndiscovered = new GraphicObject(null, roomBlackBackGroundRect, JDColor.DARK_GRAY, false, null);
-		JDDimension roomBackgroundDimension = new JDDimension(roomSize, roomSize
-				- this.getDoorDimension(true, roomSize).getWidth());
-		roomRect = new RelativeRectangle(
-				new JDPoint(0, 0), roomBackgroundDimension);
+		JDDimension roomBackgroundDimension = new JDDimension(roomSize, (roomSize - (this.getDoorDimension(true, roomSize).getWidth()))
+				+ 1  // for some reason we need an additional pixel here to prevent a black gap (probably due to rounding issues somewhere)
+		);
+		roomRect = new RelativeRectangle(new JDPoint(0, 0), roomBackgroundDimension);
 
 		heroDimension = new JDDimension((int) (((double) roomSize) / HERO_SIZE_QUOTIENT_X), (int) (((double) roomSize) / HERO_SIZE_QUOTIENT_Y));
 
@@ -602,11 +601,11 @@ public class GraphicObjectRenderer {
 		int heigth;
 		if (vertical) {
 			width = roomSize / 15;
-			heigth = roomSize / 4;
+			heigth = (roomSize / 4);
 		}
 		else {
 			width = roomSize / 4;
-			heigth = roomSize / 8;
+			heigth = roomSize / 8 ;
 		}
 		return new JDDimension(width, heigth);
 	}

@@ -176,7 +176,7 @@ public class GameScreenInputController extends GestureDetector {
 			float moveFactor = 0.4f;
 			if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
 				// on desktop we need a faster move factor than on android
-				moveFactor = 1.0f;
+				moveFactor = 0.7f;
 			}
 			if(Gdx.app.getType() == Application.ApplicationType.Android) {
 				// on desktop we need a faster move factor than on android
@@ -186,13 +186,11 @@ public class GameScreenInputController extends GestureDetector {
 
 			cameraHelper.getPosition().x = cameraHelper.getPosition().x - (dx * moveFactor);
 			cameraHelper.getPosition().y = cameraHelper.getPosition().y - (dy * moveFactor);
-			Gdx.app.error(TAG, "Pan dx: " + dx+ " dy: "+dy);
 			return true;
 		}
 
 		@Override
 		public boolean panStop(float x, float y, int a, int b) {
-			Gdx.app.error(TAG, "Pan stop x: " + x+ " y: "+y+ " a: "+a +" b: "+b);
 			return false;
 		}
 

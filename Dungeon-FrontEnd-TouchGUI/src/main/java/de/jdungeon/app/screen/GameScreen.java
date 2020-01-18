@@ -66,8 +66,8 @@ import de.jdungeon.app.gui.activity.TakeItemButtonClickedEvent;
 import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 import de.jdungeon.app.gui.smartcontrol.SmartControl;
 import de.jdungeon.app.movieSequence.DefaultMovieSequence;
-import de.jdungeon.app.movieSequence.MovieSequence;
-import de.jdungeon.app.movieSequence.MovieSequenceManager;
+import de.jdungeon.app.movieSequence.CameraFlightSequence;
+import de.jdungeon.app.movieSequence.CameraFlightSequenceManager;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
 import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
@@ -93,7 +93,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private final Map<JDPoint, List<GraphicObject>> drawnObjects = new HashMap<>();
 	private final Map<JDPoint, Image> drawnRooms = new HashMap<>();
-	private final MovieSequenceManager sequenceManager = new MovieSequenceManager();
+	private final CameraFlightSequenceManager sequenceManager = new CameraFlightSequenceManager();
 	private InfoPanel infoPanel;
 	private TextPerceptView textPerceptView;
 	private GameOverView gameOverView = null;
@@ -535,8 +535,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 			/*
 			 * check for movie sequences
 			 */
-			MovieSequence currentSequence = sequenceManager
-					.getCurrentSequence(arg0);
+			CameraFlightSequence currentSequence = sequenceManager
+					. 	getCurrentSequence(arg0);
 			if (currentSequence != null) {
 				// movie running
 				int movieRoomSize = currentSequence.getScale(arg0);
@@ -917,7 +917,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void zoomToSize(int duration, float startScale, float targetScale, JDPoint position, String title) {
-		MovieSequence sequence = new DefaultMovieSequence(
+		CameraFlightSequence sequence = new DefaultMovieSequence(
 				new ZoomSequence(startScale, targetScale, duration),
 				new StraightLineScroller(getCurrentViewCenterRoomCoordinates(), floatPair(position), duration), duration, title);
 		this.sequenceManager.addSequence(sequence);
@@ -1033,7 +1033,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void scrollFromTo(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int roomScale, String title) {
-		MovieSequence sequence = new DefaultMovieSequence(
+		CameraFlightSequence sequence = new DefaultMovieSequence(
 				new TrivialScaleSequence(roomScale),
 				new StraightLineScroller(start,
 						target, duration), duration, title);
@@ -1045,7 +1045,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 	private void scrollFromToScale(Pair<Float, Float> start, Pair<Float, Float> target, float duration, int startScale, int endScale, String title) {
-		MovieSequence sequence = new DefaultMovieSequence(
+		CameraFlightSequence sequence = new DefaultMovieSequence(
 				new ZoomSequence(startScale, endScale, duration),
 				new StraightLineScroller(start,
 						target, duration), duration, title);

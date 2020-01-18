@@ -1518,8 +1518,8 @@ public abstract class Figure extends DungeonWorldObject
 
 				Percept p = new StepPercept(this, pos.getIndex(),
 						newPos.getIndex());
-				getRoom().distributePercept(p);
 				pos = newPos;
+				getRoom().distributePercept(p);
 				this.payMoveActionPoint();
 				return ActionResult.DONE;
 			}
@@ -2122,13 +2122,14 @@ public abstract class Figure extends DungeonWorldObject
 		return passable;
 	}
 
-	public void move(Room r) {
+	public void move(Room target) {
 
 		Room toLeave = getRoom();
+		Percept p = new MovePercept(this, toLeave, target);
 
-		if (toLeave != null && toLeave != r) {
-
+		if (toLeave != null && toLeave != target) {
 			toLeave.figureLeaves(this);
+			toLeave.distributePercept(p);
 		}
 
 		int dir;
@@ -2136,13 +2137,14 @@ public abstract class Figure extends DungeonWorldObject
 			dir = Dir.NORTH;
 		}
 		else {
-			dir = DungeonUtils.getNeighbourDirectionFromTo(toLeave, r)
+			dir = DungeonUtils.getNeighbourDirectionFromTo(toLeave, target)
 					.getValue();
 		}
 
-		r.figureEnters(this, dir);
-
+		target.figureEnters(this, dir);
 		lookInRoom();
+		target.distributePercept(p);
+
 	}
 
 	public boolean walk(RouteInstruction.Direction dir) {
@@ -2209,10 +2211,7 @@ public abstract class Figure extends DungeonWorldObject
 		// actual movement
 		move(toGo);
 
-		Percept p = new MovePercept(this, oldRoom, toGo);
-		toGo.distributePercept(p);
-		oldRoom.distributePercept(p);
-		lookInRoom();
+
 	}
 
 	public Dungeon getActualDungeon() {

@@ -19,6 +19,7 @@ import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
+import de.jdungeon.app.gui.GameOverView;
 import de.jdungeon.app.gui.HealthBar;
 import de.jdungeon.app.gui.HourGlassTimer;
 import de.jdungeon.app.gui.ImageGUIElement;
@@ -50,6 +51,7 @@ public class GUIRenderer implements Disposable {
 	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
 	private GUIImageManager guiImageManager;
 
+	private GameOverView gameOverView;
 
 	public GUIRenderer(GameScreenInputController worldController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
 		this.worldController = worldController;
@@ -112,6 +114,19 @@ public class GUIRenderer implements Disposable {
 		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, worldController.getPlayerController().getActionController(), focusManager);
 		this.guiElements.add(smartControl);
 
+
+		/*
+		 * init game over view
+		 */
+		int width = game.getScreenWidth();
+		int height = game.getScreenHeight();
+		int widthFifth = (width / 5);
+		int heightFifth = (height / 4);
+		gameOverView = new GameOverView(new JDPoint((width / 2) - widthFifth,
+				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
+				2 * heightFifth), new ScreenAdapter(game), game);
+		this.guiElements.add(gameOverView);
+
 	}
 
 	private Image getGUIImage(String filename) {
@@ -119,6 +134,8 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void render() {
+
+
 
 		batch.setProjectionMatrix(cameraGUI.combined);
 		//batch.begin();
@@ -136,6 +153,10 @@ public class GUIRenderer implements Disposable {
 				guiElement.update(deltaTime);
 			}
 		}
+	}
+
+	public GameOverView getGameOverView() {
+		return gameOverView;
 	}
 
 	private void renderGUIElements() {

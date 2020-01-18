@@ -37,9 +37,15 @@ public class PlayerController implements JDGUI {
 	private final Vector<Percept> perceptQueue = new Vector<>();
 	private ViewModel viewModel;
 
+	private GameScreen gameScreen;
+
 	public PlayerController(HeroInfo heroInfo) {
 		this.heroInfo = heroInfo;
 		this.actionController = new ActionController(heroInfo, this);
+	}
+
+	public void setGameScreen(GameScreen gameScreen) {
+		this.gameScreen = gameScreen;
 	}
 
 	@Override
@@ -165,6 +171,7 @@ public class PlayerController implements JDGUI {
 			updateRoomViewModel(number);
 		}
 		perceptQueue.add(p);
+		gameScreen.checkCameraPosition();
 	}
 
 	public List<Percept> getPercepts() {

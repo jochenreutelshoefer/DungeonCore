@@ -29,8 +29,6 @@ import de.jdungeon.util.Pair;
 public class ViewRoom {
 
 	private RoomInfo roomInfo;
-	private Sprite sprite;
-
 
 	private final GraphicObjectRenderCollection backGroundObjects = new GraphicObjectRenderCollection();
 
@@ -47,21 +45,23 @@ public class ViewRoom {
 
 	public void setGraphicObjects(List<GraphicObject> graphicObjectsForRoom) {
 		backGroundObjects.clear();
-		figureObjects.clear();
 
-		for (GraphicObject graphicObject : graphicObjectsForRoom) {
-			Object clickableObject = graphicObject.getClickableObject();
-			if (clickableObject instanceof FigureInfo) {
-				Class<? extends Figure> figureClass = ((FigureInfo) clickableObject).getFigureClass();
-				GraphicObjectRenderCollection figureList = figureObjects.get(figureClass);
-				if (figureList == null) {
-					figureList = new GraphicObjectRenderCollection();
-					figureObjects.put(figureClass, figureList);
+		synchronized (figureObjects) {
+			figureObjects.clear();
+			for (GraphicObject graphicObject : graphicObjectsForRoom) {
+				Object clickableObject = graphicObject.getClickableObject();
+				if (clickableObject instanceof FigureInfo) {
+					Class<? extends Figure> figureClass = ((FigureInfo) clickableObject).getFigureClass();
+					GraphicObjectRenderCollection figureList = figureObjects.get(figureClass);
+					if (figureList == null) {
+						figureList = new GraphicObjectRenderCollection();
+						figureObjects.put(figureClass, figureList);
+					}
+					figureList.addObject(graphicObject);
 				}
-				figureList.addObject(graphicObject);
-			}
-			else {
-				backGroundObjects.addObject(graphicObject);
+				else {
+					backGroundObjects.addObject(graphicObject);
+				}
 			}
 		}
 	}
@@ -83,13 +83,15 @@ public class ViewRoom {
 	}
 
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(Class<? extends Figure> figureClass) {
-		if (!figureObjects.containsKey(figureClass)) {
-			return Collections.emptyList();
+		synchronized (figureObjects) {
+			if (!figureObjects.containsKey(figureClass)) {
+				return Collections.emptyList();
+			}
+			if (figureObjects.get(figureClass).getGraphicObjects().isEmpty()) {
+				return Collections.emptyList();
+			}
+			return figureObjects.get(figureClass).getRenderInformation();
 		}
-		if (figureObjects.get(figureClass).getGraphicObjects().isEmpty()) {
-			return Collections.emptyList();
-		}
-		return figureObjects.get(figureClass).getRenderInformation();
 	}
 
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getBackgroundObjectsForRoom() {

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import dungeon.JDPoint;
+import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
@@ -50,9 +52,20 @@ public class WorldRenderer implements Disposable {
 		init();
 	}
 
+	public static Pair<Float, Float> getPlayerRoomWorldPosition(FigureInfo figure) {
+		JDPoint number = figure.getRoomInfo().getNumber();
+		return new Pair<>((float) number.getX() * roomSize + roomSize/2, (float)number.getY() * roomSize + roomSize/2);
+	}
+
 	private void init() {
 		batch = new SpriteBatch();
 		viewModel.initGraphicObjects(dungeonObjectRenderer);
+		JDPoint number = playerController.getFigure().getRoomInfo().getNumber();
+		Pair<Float, Float> playerPos = getPlayerRoomWorldPosition(playerController.getFigure());
+
+		//worldController.cameraHelper.setPosition(playerPos.getA(), playerPos.getB());
+		worldController.cameraHelper.setZoom(1f);
+
 		camera.update();
 	}
 

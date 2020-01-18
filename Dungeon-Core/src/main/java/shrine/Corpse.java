@@ -162,8 +162,8 @@ public class Corpse extends Shrine {
 			String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
 			f.tellPercept(new TextPercept(s));
 			Percept p = new UsePercept(f, this);
-			f.getRoom().distributePercept(p);
 			this.location.addItems(items, null);
+			f.getRoom().distributePercept(p);
 			items = null;
 		}
 		return true;
