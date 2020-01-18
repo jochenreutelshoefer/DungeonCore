@@ -3,10 +3,11 @@ package de.jdungeon.app.movieSequence;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 public class CameraFlightSequenceManager {
 
-	private final List<CameraFlightSequence> sequences = new LinkedList<>();
+	private final List<CameraFlightSequence> sequences = new Vector<>();
 
 	public void addSequence(CameraFlightSequence movie) {
 		this.sequences.add(movie);

@@ -131,8 +131,6 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
-		JDRectangle hightlightRect = null;
-		GraphicObject highlightedObject = focusManager.getGraphicObject();
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
 			GraphicObject graphicObject = pair.getA();

@@ -1539,12 +1539,18 @@ public abstract class Figure extends DungeonWorldObject
 		if (toScout == null) {
 			return ActionResult.INVALID;
 		}
+		int direction = action.getDirection();
+		Room scoutTarget = getRoom().getNeighbourRoom(direction);
+		if(getRoomVisibility().getStatusObject(scoutTarget.getNumber()).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
+			return ActionResult.INVALID;
+		}
 		if (doIt) {
 			lookDir = dir;
 			ScoutResult result = scout(action);
 			getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(this, this.getRoom(), dir);
 			getRoom().distributePercept(p);
+			this.payMoveActionPoint();
 			return ActionResult.DONE;
 		}
 		return ActionResult.POSSIBLE;

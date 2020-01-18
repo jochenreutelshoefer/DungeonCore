@@ -1057,11 +1057,11 @@ public class Room extends DungeonWorldObject implements
 			// dead figures may retain their vis status (for GUI's sake)
 			final DungeonVisibilityMap roomVisibility = m.getRoomVisibility();
 			if (roomVisibility != null) {
-				roomVisibility.resetVisibilityStatus(this.number);
 				final RoomObservationStatus statusObject = roomVisibility.getStatusObject(getNumber());
 				if (statusObject != null) {
 					statusObject.removeVisibilityModifier(m);
 				}
+				roomVisibility.resetVisibilityStatus(this.number);
 			}
 		}
 
@@ -1323,8 +1323,7 @@ public class Room extends DungeonWorldObject implements
 			if (disappears) {
 				// prevent concurrent modification
 
-				element.getRoomVisibility().getStatusObject(getNumber())
-						.removeVisibilityModifier(element);
+				element.getRoomVisibility().getStatusObject(getNumber()).removeVisibilityModifier(element);
 				element.getRoomVisibility().resetVisibilityStatus(this.number);
 
 				element.getPos().figureLeaves();

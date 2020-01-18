@@ -192,7 +192,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		 * init text messages panel
 		 */
 		this.guiElements.clear();
-		textPerceptView = new TextPerceptView(this);
+		textPerceptView = new TextPerceptView(this.getGame());
 		this.guiElements.add(textPerceptView);
 
 		/*

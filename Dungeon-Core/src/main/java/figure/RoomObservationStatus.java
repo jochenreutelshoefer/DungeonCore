@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.JDPoint;
-import dungeon.util.RouteInstruction;
 import log.Log;
 
 public class RoomObservationStatus {
@@ -42,12 +41,12 @@ public class RoomObservationStatus {
 
 	private final JDPoint point;
 	
-	private final DungeonVisibilityMap map;
+	private final Figure figure;
 	
 	private final List<VisibilityModifier> visibilityModifier = new LinkedList<VisibilityModifier>();
 
-	public RoomObservationStatus(DungeonVisibilityMap map, JDPoint p) {
-		this.map = map;
+	public RoomObservationStatus(Figure map, JDPoint p) {
+		this.figure = map;
 		this.point = p;
 	}
 
@@ -85,7 +84,6 @@ public class RoomObservationStatus {
 		 */
 		if(max < VISIBILITY_FIGURES) {
 			// TODO: shouldn't we compare to the previous vis level for level change notification?
-			final Figure figure = map.getFigure();
 			final ControlUnit control = figure.getControl();
 			if(control != null) {
 				control.notifyVisibilityStatusDecrease(point);
@@ -96,9 +94,9 @@ public class RoomObservationStatus {
 		 * set new visibility status
 		 */
 		visibilityStatus = max;
-		Room room = map.getDungeon().getRoom(point);
+		Room room = figure.getActualDungeon().getRoom(point);
 		if(room != null) {
-			room.setObserverStatus(map.getFigure(), visibilityStatus);
+			room.setObserverStatus(figure, visibilityStatus);
 		} else {
 			Log.warning("Could not find room for Point: "+ point);
 
@@ -126,8 +124,8 @@ public class RoomObservationStatus {
 	public  synchronized void setVisibilityStatus(int newVisbility) {
 		this.visibilityStatus = newVisbility;
 		discoveryStatus = Math.min(VISIBILITY_SHRINE, Math.max(discoveryStatus, newVisbility));
-		final Room room = map.getDungeon().getRoom(point);
-		room.setObserverStatus(map.getFigure(), newVisbility);
+		final Room room = figure.getActualDungeon().getRoom(point);
+		room.setObserverStatus(figure, newVisbility);
 		
 	}
 
@@ -139,8 +137,9 @@ public class RoomObservationStatus {
 	}
 
 	public synchronized boolean removeVisibilityModifier(Object o) {
-		map.getDungeon().getRoom(point).setObserverStatus(map.getFigure(), getVisibilityStatus());
-		return visibilityModifier.remove(o);
+		boolean remove = visibilityModifier.remove(o);
+		figure.getActualDungeon().getRoom(point).setObserverStatus(figure, getVisibilityStatus());
+		return remove;
 	}
 
 }

@@ -6,29 +6,24 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import dungeon.ChestInfo;
 import dungeon.JDPoint;
-import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
-import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
-import graphics.util.DrawingRectangle;
+import text.Statement;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIElement;
-import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
 import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
@@ -90,8 +85,8 @@ public class GameScreen extends AbstractGameScreen {
 		inputController = new GameScreenInputController(game, playerController, this);
 		Gdx.input.setInputProcessor(inputController);
 
-		perceptHandler = new GameScreenPerceptHandler(this);
 		figure = playerController.getFigure();
+		perceptHandler = new GameScreenPerceptHandler(this, figure);
 		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
 		playerController.setViewModel(viewModel);
 		movieSequenceManager = new LibgdxCameraFlightSequenceManager(cameraHelper); // todo: access should not be static
@@ -114,6 +109,10 @@ public class GameScreen extends AbstractGameScreen {
 				.getFocusManager());
 
 		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
+	}
+
+	public FocusManager getFocusManager() {
+		return guiRenderer.getFocusManager();
 	}
 
 	@Override
@@ -162,6 +161,9 @@ public class GameScreen extends AbstractGameScreen {
 
 		// TODO: fetch and show visibility increased rooms from PlayerController/JDGUI
 		List<Percept> percepts = playerController.getPercepts();
+		for (Percept percept : percepts) {
+			this.perceptHandler.tellPercept(percept);
+		}
 		// TODO: handle and display percepts
 	}
 
@@ -201,6 +203,13 @@ public class GameScreen extends AbstractGameScreen {
 						target, duration), duration, title);
 		this.movieSequenceManager.addSequence(sequence);
 	}
+
+	public void scrollTo(JDPoint target, float duration, String title) {
+		scrollFromToScale(toPair(cameraHelper.getPosition()), floatPairRoomToWorldCoordinates(target), duration, cameraHelper
+				.getZoom(), cameraHelper
+				.getZoom(), title);
+	}
+
 
 	public void scrollToScale(JDPoint target, float duration,
 							  float endScale, String title) {
@@ -357,5 +366,9 @@ public class GameScreen extends AbstractGameScreen {
 			// neighbour room not visible on screen, hence we need camera re-positioning
 			scollToPlayerPosition();
 		}
+	}
+
+	public GUIRenderer getGuiRenderer() {
+		return guiRenderer;
 	}
 }

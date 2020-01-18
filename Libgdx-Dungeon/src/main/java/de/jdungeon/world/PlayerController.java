@@ -38,6 +38,7 @@ public class PlayerController implements JDGUI {
 	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
 	private final Vector<Action> actionQueue = new Vector<>();
 	private final Vector<Percept> perceptQueue = new Vector<>();
+	private final Vector<Percept> perceptQueueTransport = new Vector<>();
 	private ViewModel viewModel;
 
 	private GameScreen gameScreen;
@@ -175,14 +176,19 @@ public class PlayerController implements JDGUI {
 		if(number!= null) {
 			updateRoomViewModel(number);
 		}
-		perceptQueue.add(p);
+		synchronized (perceptQueue) {
+			perceptQueue.add(p);
+		}
 		gameScreen.checkCameraPosition();
 	}
 
 	public List<Percept> getPercepts() {
-		List<Percept> result = Collections.unmodifiableList(perceptQueue);
-		perceptQueue.clear();
-		return result;
+		synchronized (perceptQueue) {
+			perceptQueueTransport.clear();
+			perceptQueueTransport.addAll(perceptQueue);
+			perceptQueue.clear();
+		}
+		return perceptQueueTransport;
 	}
 
 	public List<JDPoint> getVisibilityDecreasedRooms() {
@@ -192,9 +198,11 @@ public class PlayerController implements JDGUI {
 	}
 
 	public synchronized Set<JDPoint> getVisibilityIncreasedRooms() {
-		visibilityIncreasedRoomsTransport.clear();
-		visibilityIncreasedRoomsTransport.addAll(visibilityIncreasedRooms);
-		this.visibilityIncreasedRooms.clear();
+		synchronized (visibilityIncreasedRooms) {
+			visibilityIncreasedRoomsTransport.clear();
+			visibilityIncreasedRoomsTransport.addAll(visibilityIncreasedRooms);
+			this.visibilityIncreasedRooms.clear();
+		}
 		return visibilityIncreasedRoomsTransport;
 	}
 

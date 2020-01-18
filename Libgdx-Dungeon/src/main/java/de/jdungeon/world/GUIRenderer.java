@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
+import text.Statement;
 import util.JDDimension;
 
 import de.jdungeon.Constants;
@@ -24,6 +25,7 @@ import de.jdungeon.app.gui.HealthBar;
 import de.jdungeon.app.gui.HourGlassTimer;
 import de.jdungeon.app.gui.ImageGUIElement;
 import de.jdungeon.app.gui.InfoPanel;
+import de.jdungeon.app.gui.TextPerceptView;
 import de.jdungeon.app.gui.smartcontrol.SmartControl;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.asset.Assets;
@@ -49,6 +51,7 @@ public class GUIRenderer implements Disposable {
 	private Graphics graphics;
 	private SmartControl smartControl;
 	private InfoPanel infoPanel;
+	private TextPerceptView textView;
 
 	private FocusManager focusManager;
 
@@ -70,6 +73,13 @@ public class GUIRenderer implements Disposable {
 		batch = new SpriteBatch();
 		cameraGUI.update();
 		graphics = new LibgdxGraphics(cameraGUI, Assets.instance.fonts.defaultSmallFlipped, batch);
+
+
+		/*
+		 * init text messages panel
+		 */
+		textView = new TextPerceptView(this.game);
+		this.guiElements.add(textView);
 
 		/*
 		 * init info panel
@@ -233,5 +243,9 @@ public class GUIRenderer implements Disposable {
 
 	public void update(float deltaTime) {
 		updateGUIElements(deltaTime);
+	}
+
+	public void newStatement(Statement s) {
+		this.textView.addTextPercept(s);
 	}
 }

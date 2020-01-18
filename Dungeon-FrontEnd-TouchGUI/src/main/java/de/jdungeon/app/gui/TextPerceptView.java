@@ -9,6 +9,7 @@ import util.JDDimension;
 
 import de.jdungeon.app.screen.GameScreen;
 import de.jdungeon.game.Colors;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScrollMotion;
@@ -20,12 +21,12 @@ public class TextPerceptView extends AbstractGUIElement {
 	private final List<Statement> cache = new ArrayList<Statement>();
 	private List<Statement> all = new ArrayList<>();
 	private Statement currentInsert = null;
-	private static final float animationTime = 10f;
+	private static final float animationTime = 2f;
 	private float timer = 0;
 	private static final int lineHeight = 20;
 
-	public TextPerceptView(GameScreen screen) {
-		super(new JDPoint(200, -340), new JDDimension(600, 400), screen.getGame());
+	public TextPerceptView(Game game) {
+		super(new JDPoint(200, -340), new JDDimension(600, 400), game);
 	}
 
 	public void addTextPercept(Statement p) {
@@ -41,7 +42,8 @@ public class TextPerceptView extends AbstractGUIElement {
 
 	@Override
 	public boolean needsRepaint() {
-		return !cache.isEmpty() || currentInsert != null;
+		return true;
+		//return !cache.isEmpty() || currentInsert != null;
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class TextPerceptView extends AbstractGUIElement {
 
 				}
 			} else {
-				timer += time;
+				timer += time * 3;
 			}
 		}
 

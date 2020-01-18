@@ -248,6 +248,7 @@ public class DungeonVisibilityMap {
 				for (VisibilityModifier scoutResultToRemove : toRemove) {
 					visStatus.removeVisibilityModifier(scoutResultToRemove);
 				}
+				visStatus.resetVisibilityStatus();
 			}
 			// finally also clear cache
 			scoutCache.remove(position);
