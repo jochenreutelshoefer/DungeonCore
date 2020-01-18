@@ -2,12 +2,18 @@ package de.jdungeon.world;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import dungeon.ChestInfo;
 import dungeon.JDPoint;
+import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
@@ -19,11 +25,12 @@ import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.util.DrawingRectangle;
+import graphics.util.JDRectangle;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.app.gui.FocusManager;
-import de.jdungeon.game.Color;
+import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.util.Pair;
 
 /**
@@ -65,6 +72,8 @@ public class WorldRenderer implements Disposable {
 
 		cameraHelper.setZoom(1f);
 
+		batch.setProjectionMatrix(camera.combined);
+
 		camera.update();
 	}
 
@@ -82,24 +91,10 @@ public class WorldRenderer implements Disposable {
 		batch.begin();
 		renderDungeonBackgroundObjectsForAllRooms();
 		renderFigureObjectsForAllRooms();
+		if (highlightedObject != null) {
+			batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightBox.getWidth(), highlightBox.getHeight());
+		}
 		batch.end();
-	}
-
-	private void highlight(DrawingRectangle rectangle, int roomOffsetX, int roomOffsetY) {
-		int x1 = rectangle.getX(roomOffsetX);
-		int y1 = rectangle.getY(roomOffsetY);
-		int x2 = x1 + rectangle.getWidth();
-		int y2 = y1 + rectangle.getHeight();
-		batch.setProjectionMatrix(camera.combined);
-		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.YELLOW);
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.rect(x1, y1, x2 - x1, y2 - y1);
-		shapeRenderer.end();
-	}
-
-	private void prepareDraw(Color color) {
-
 	}
 
 	private void renderDungeonBackgroundObjectsForAllRooms() {
@@ -136,6 +131,7 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
+		JDRectangle hightlightRect = null;
 		GraphicObject highlightedObject = focusManager.getGraphicObject();
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
@@ -147,11 +143,6 @@ public class WorldRenderer implements Disposable {
 					int posX = locatedImage.getX(x * WorldRenderer.ROOM_SIZE);
 					int posY = locatedImage.getY(y * WorldRenderer.ROOM_SIZE);
 					batch.draw(atlasRegion, posX, posY, locatedImage.getWidth(), locatedImage.getHeight());
-					// highlight focus object
-					if (highlightedObject != null) {
-						checkForHighlightedObject(highlightedObject, graphicObject, posX, posY, locatedImage.getWidth(), locatedImage
-								.getHeight());
-					}
 				}
 			}
 			else {
@@ -160,26 +151,9 @@ public class WorldRenderer implements Disposable {
 					int posX = destinationRectangle.getX(x * WorldRenderer.ROOM_SIZE);
 					int posY = destinationRectangle.getY(y * WorldRenderer.ROOM_SIZE);
 					batch.draw(atlasRegion, posX, posY, destinationRectangle.getWidth(), destinationRectangle.getHeight());
-					if (highlightedObject != null) {
-						checkForHighlightedObject(highlightedObject, graphicObject, posX, posY, destinationRectangle.getWidth(), destinationRectangle
-								.getHeight());
-					}
 				}
 			}
 		}
-	}
-
-	private void checkForHighlightedObject(GraphicObject highlightedObject, GraphicObject graphicObject, int posX, int posY, int width, int height) {
-		/*
-		if (graphicObject.equals(highlightedObject)) {
-			batch.setProjectionMatrix(camera.combined);
-			shapeRenderer.setProjectionMatrix(camera.combined);
-			shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.YELLOW);
-			shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-			shapeRenderer.rect(posX, posY, width, height);
-			shapeRenderer.end();
-		}
-		*/
 	}
 
 	public void resize(int width, int height) {
@@ -190,5 +164,74 @@ public class WorldRenderer implements Disposable {
 	@Override
 	public void dispose() {
 		batch.dispose();
+	}
+
+	public boolean checkWorldClick(int screenX, int screenY, int pointer, int button, PlayerController controller) {
+
+		// reset highlight object information
+		highlightedObject = null;
+		highlightBox = null;
+
+		Vector3 worldPosUnprojected = camera.unproject(new Vector3(screenX, screenY, 0));
+		int worldXunprojected = Math.round(worldPosUnprojected.x);
+		int worldYunprojected = Math.round(worldPosUnprojected.y);
+
+		int roomX = worldXunprojected / ROOM_SIZE;
+		int roomY = worldYunprojected / ROOM_SIZE;
+
+		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
+		if (room == null) return false;
+
+		GraphicObject clickedGraphicObject = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * ROOM_SIZE, roomY * ROOM_SIZE);
+		if (clickedGraphicObject != null) {
+			Object clickedObject = clickedGraphicObject.getClickableObject();
+
+			if (clickedObject != null) {
+
+				if (button == 1 // button 1 is right-click
+						|| clickedObject.equals(focusManager.getWorldFocusObject())) {
+					// object was already highlighted before
+					// hence we can trigger an action
+					//actionAssembler.objectClicked(clickedObject, true);
+
+					controller.getActionController().objectClicked(clickedObject, false);
+					focusManager.setWorldFocusObject((clickedGraphicObject));
+
+					// exception for chest handing, to be solved better one day
+					if (clickedObject instanceof ChestInfo) {
+						EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+					}
+				} else {
+					// remember some data for rendering of highlight box
+					focusManager.setWorldFocusObject((clickedGraphicObject));
+					DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
+					highlightBoxX = rectangle.getX(roomX * ROOM_SIZE);
+					highlightBoxY = rectangle.getY(roomY * ROOM_SIZE);
+					highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
+					highlightTexture = new Texture(highlightBox);
+					highlightedObject = clickedObject;
+				}
+
+
+
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private int highlightBoxX;
+	private int highlightBoxY;
+	private Pixmap highlightBox;
+	private Texture highlightTexture;
+	private Object highlightedObject;
+
+	private Pixmap createHighlightBoxPixMap(int width, int height) {
+		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+
+		pixmap.setColor(Color.YELLOW);
+		pixmap.drawRectangle(0, 0, width, height);
+		return pixmap;
 	}
 }

@@ -6,8 +6,10 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -17,9 +19,9 @@ import event.EventManager;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
-import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
+import graphics.util.DrawingRectangle;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
@@ -47,7 +49,6 @@ public class GameScreen extends AbstractGameScreen {
 	private final static String TAG = GameScreen.class.getName();
 	private static final boolean OPENGL_PROFILING_ON = false;
 
-
 	private final PlayerController playerController;
 
 	private GameScreenInputController inputController;
@@ -59,7 +60,8 @@ public class GameScreen extends AbstractGameScreen {
 	private boolean paused;
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
-	private final CameraHelper cameraHelper = new CameraHelper();;
+	private final CameraHelper cameraHelper = new CameraHelper();
+	;
 
 	private GameScreenPerceptHandler perceptHandler;
 	private FigureInfo figure;
@@ -67,6 +69,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private final int dungeonSizeY;
 	private GLProfiler glProfiler;
+
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
@@ -79,7 +82,7 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void show() {
 
-		if(OPENGL_PROFILING_ON) {
+		if (OPENGL_PROFILING_ON) {
 			glProfiler = new GLProfiler(Gdx.graphics);
 			glProfiler.enable();
 		}
@@ -100,7 +103,6 @@ public class GameScreen extends AbstractGameScreen {
 		camera.position.set(number.getX() * ROOM_SIZE, number.getY() * ROOM_SIZE, 0);
 		camera.update();
 
-
 		// init gui camera and gui renderer
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		cameraGUI.position.set(0, 0, 0);
@@ -108,7 +110,8 @@ public class GameScreen extends AbstractGameScreen {
 		cameraGUI.update();
 
 		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure);
-		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, guiRenderer.getFocusManager());
+		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, guiRenderer
+				.getFocusManager());
 
 		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 	}
@@ -127,7 +130,7 @@ public class GameScreen extends AbstractGameScreen {
 			guiRenderer.render();
 
 			// for profiling only
-			if(OPENGL_PROFILING_ON) {
+			if (OPENGL_PROFILING_ON) {
 				Gdx.app.error(TAG, "Open GL calls: " + glProfiler.getCalls());
 				Gdx.app.error(TAG, "Open GL draw calls: " + glProfiler.getDrawCalls());
 				Gdx.app.error(TAG, "Open GL texture bindings: " + glProfiler.getTextureBindings());
@@ -149,12 +152,10 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void update(float deltaTime) {
 
-
 		movieSequenceManager.update(deltaTime);
 		inputController.update(deltaTime);
 		guiRenderer.update(deltaTime);
 		worldRenderer.update(deltaTime);
-
 
 		Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
 		this.showVisibilityIncrease(visibilityIncreasedRooms);
@@ -164,21 +165,21 @@ public class GameScreen extends AbstractGameScreen {
 		// TODO: handle and display percepts
 	}
 
-	public static String CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER ="scroll-to-player";
+	public static String CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER = "scroll-to-player";
 
 	private void scollToPlayerPosition() {
 		scollToPlayerPosition(0.6F);
 	}
 
 	public void scollToPlayerPosition(float duration) {
-		if(!movieSequenceManager.containsFlight(CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER)) {
+		if (!movieSequenceManager.containsFlight(CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER)) {
 			// check that a scroll-to-player camera flight isn't already in the queue
-			scrollToScale(figure.getRoomNumber(), duration, cameraHelper.getUserSelectedZoomLevel() , CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
+			scrollToScale(figure.getRoomNumber(), duration, cameraHelper.getUserSelectedZoomLevel(), CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 		}
 	}
 
 	private void checkCamPosition(float deltaTime) {
-		if(movieSequenceManager.getCurrentSequence(deltaTime) == null) {
+		if (movieSequenceManager.getCurrentSequence(deltaTime) == null) {
 			// currently no movie running
 
 		}
@@ -192,7 +193,6 @@ public class GameScreen extends AbstractGameScreen {
 		return new Pair<>(position.x, position.y);
 	}
 
-
 	private void scrollFromTo(Pair<Float, Float> start, Pair<Float, Float> target, float duration,
 							  float zoom, String title) {
 		CameraFlightSequence sequence = new DefaultMovieSequence(
@@ -203,12 +203,14 @@ public class GameScreen extends AbstractGameScreen {
 	}
 
 	public void scrollToScale(JDPoint target, float duration,
-								   float endScale, String title) {
-		scrollFromToScale(toPair(cameraHelper.getPosition()), floatPairRoomToWorldCoordinates(target), duration, cameraHelper.getZoom(), endScale, title);
+							  float endScale, String title) {
+		scrollFromToScale(toPair(cameraHelper.getPosition()), floatPairRoomToWorldCoordinates(target), duration, cameraHelper
+				.getZoom(), endScale, title);
 	}
 
 	public void scrollToScale(float duration, float endScale) {
-		scrollFromToScale(toPair(cameraHelper.getPosition()), toPair(cameraHelper.getPosition()), duration, cameraHelper.getZoom(),  endScale, "zoom");
+		scrollFromToScale(toPair(cameraHelper.getPosition()), toPair(cameraHelper.getPosition()), duration, cameraHelper
+				.getZoom(), endScale, "zoom");
 	}
 
 	private void scrollFromToScale(Pair<Float, Float> start, Pair<Float, Float> target, float duration,
@@ -222,8 +224,8 @@ public class GameScreen extends AbstractGameScreen {
 
 	private Pair<Float, Float> floatPairRoomToWorldCoordinates(JDPoint point) {
 		return new Pair<>(
-				(float) point.getX() * ROOM_SIZE + ROOM_SIZE /2,
-				(float) point.getY() * ROOM_SIZE + ROOM_SIZE /2);
+				(float) point.getX() * ROOM_SIZE + ROOM_SIZE / 2,
+				(float) point.getY() * ROOM_SIZE + ROOM_SIZE / 2);
 	}
 
 	private Pair<Float, Float> floatPair(JDPoint point) {
@@ -241,9 +243,9 @@ public class GameScreen extends AbstractGameScreen {
 		points.remove(heroRoom);
 
 		final Iterator<JDPoint> pointIterator = points.iterator();
-		while(pointIterator.hasNext()) {
+		while (pointIterator.hasNext()) {
 			final JDPoint point = pointIterator.next();
-			if(heroRoom.isNeighbour(point)) {
+			if (heroRoom.isNeighbour(point)) {
 				pointIterator.remove();
 			}
 		}
@@ -264,7 +266,8 @@ public class GameScreen extends AbstractGameScreen {
 		}
 
 		// scroll back to hero
-		scrollFromToScale(last, floatPairRoomToWorldCoordinates(figure.getRoomNumber()), 0.5f, flightScale, cameraHelper.getUserSelectedZoomLevel(), "show visibility increase PART 3 zoom and scroll back to hero");
+		scrollFromToScale(last, floatPairRoomToWorldCoordinates(figure.getRoomNumber()), 0.5f, flightScale, cameraHelper
+				.getUserSelectedZoomLevel(), "show visibility increase PART 3 zoom and scroll back to hero");
 	}
 
 	@Override
@@ -326,38 +329,13 @@ public class GameScreen extends AbstractGameScreen {
 		/*
 		Check for dungeon click
 		 */
-		Vector3 worldPosUnprojected = camera.unproject(new Vector3(screenX, screenY, 0));
-		int worldXunprojected = Math.round(worldPosUnprojected.x);
-		int worldYunprojected = Math.round(worldPosUnprojected.y);
+		boolean handled = worldRenderer.checkWorldClick(screenX, screenY, pointer, button, playerController);
+		if(handled) return true;
 
-		int roomX = worldXunprojected / ROOM_SIZE;
-		int roomY = worldYunprojected / ROOM_SIZE;
 
-		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
-		if (room == null) return false;
-
-		GraphicObject clickedGraphicObject = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * ROOM_SIZE, roomY * ROOM_SIZE);
-		if (clickedGraphicObject != null) {
-			Object clickedObject = clickedGraphicObject.getClickableObject();
-			if (button == 1 // button 1 is right-click
-					|| clickedObject.equals(guiRenderer.getFocusManager().getWorldFocusObject())) {
-				// object was already highlighted before
-				// hence we can trigger an action
-				//actionAssembler.objectClicked(clickedObject, true);
-
-				playerController.getActionController().objectClicked(clickedObject, false);
-
-				// exception for chest handing, to be solved better one day
-				if(clickedObject instanceof ChestInfo) {
-					EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
-				}
-			}
-			else {
-				guiRenderer.getFocusManager().setWorldFocusObject((clickedGraphicObject));
-			}
-		}
 		return false;
 	}
+
 
 	/**
 	 * Checks whether the current camera position is good, i. e. are all neighbour rooms visible?
@@ -374,13 +352,10 @@ public class GameScreen extends AbstractGameScreen {
 		Vector2 currentCameraPosition = cameraHelper.getPosition();
 		Vector3 cameraPosScreenCoord = camera.project(new Vector3(currentCameraPosition, 0));
 		double lookAheadMargin = ROOM_SIZE * 2.5 * cameraHelper.getZoom();
-		if(			Math.abs(cameraPosScreenCoord.x - playerWorldScreenCoord.x) + lookAheadMargin >  screenWidth  / 2
-				||	Math.abs(cameraPosScreenCoord.y - playerWorldScreenCoord.y) + lookAheadMargin >  screenHeight / 2) {
+		if (Math.abs(cameraPosScreenCoord.x - playerWorldScreenCoord.x) + lookAheadMargin > screenWidth / 2
+				|| Math.abs(cameraPosScreenCoord.y - playerWorldScreenCoord.y) + lookAheadMargin > screenHeight / 2) {
 			// neighbour room not visible on screen, hence we need camera re-positioning
 			scollToPlayerPosition();
 		}
-
-
 	}
-
 }
