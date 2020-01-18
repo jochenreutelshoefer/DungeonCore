@@ -112,6 +112,10 @@ public class DungeonVisibilityMap {
 
 		// finally plug modifier
 		statusObject.addVisibilityModifier(mod);
+		ControlUnit control = f.getControl();
+		if (control != null) {
+			control.notifyVisibilityStatusIncrease(p);
+		}
 	}
 
 	public void setVisibilityStatus(int x, int y, int status) {
