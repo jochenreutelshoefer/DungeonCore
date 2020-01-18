@@ -27,6 +27,7 @@ import game.JDGUI;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
+import log.Log;
 import shrine.ShrineInfo;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;

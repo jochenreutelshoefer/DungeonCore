@@ -18,6 +18,7 @@ import figure.other.Lioness;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
+import log.Log;
 import text.StatementManager;
 
 import de.jdungeon.app.ActionController;

@@ -39,6 +39,7 @@ import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import game.RoomInfoEntity;
 import item.ItemInfo;
+import log.Log;
 import spell.SpellInfo;
 import spell.TargetScope;
 

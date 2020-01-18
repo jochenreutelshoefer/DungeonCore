@@ -44,7 +44,7 @@ public abstract class Action {
 
 	@Override
 	public String toString() {
-		return this.getClass().toString();
+		return this.getClass().toString() + " " + super.toString();
 	}
 
 	@Deprecated

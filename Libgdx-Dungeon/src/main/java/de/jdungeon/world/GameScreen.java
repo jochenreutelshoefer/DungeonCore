@@ -302,9 +302,19 @@ public class GameScreen extends AbstractGameScreen {
 		return null;
 	}
 
+
+	private long lastClickTime;
+
 	@Override
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
 
+		long now = System.currentTimeMillis();
+		if(now - lastClickTime < 10) {
+			// we do not allow clicks faster than 10ms one after another to filter duplicates
+			return false;
+		}
+
+		lastClickTime = now;
 
 		/*
 		If the player has died, after the next click we show the game over popup
