@@ -15,12 +15,12 @@ import de.jdungeon.world.GameScreenInputController;
  */
 public class ZoomButton extends ImageGUIElement {
 
-	private final GameScreenInputController screen;
+	private final GameScreenInputController inputController;
 	private final boolean plus;
 
-	public ZoomButton(JDPoint position, JDDimension dimension, GameScreenInputController screen, Image image, boolean plus) {
-		super(position, dimension, image, screen.getGame());
-		this.screen = screen;
+	public ZoomButton(JDPoint position, JDDimension dimension, GameScreenInputController inputController, Image image, boolean plus) {
+		super(position, dimension, image, inputController.getGame());
+		this.inputController = inputController;
 		this.plus = plus;
 	}
 
@@ -37,9 +37,9 @@ public class ZoomButton extends ImageGUIElement {
 
 	private void doZoom() {
 		if(plus) {
-			screen.zoomIn();
+			inputController.zoomIn();
 		} else {
-			screen.zoomOut();
+			inputController.zoomOut();
 		}
 	}
 

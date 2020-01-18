@@ -1,7 +1,9 @@
 package de.jdungeon.world;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,13 +15,15 @@ import dungeon.JDPoint;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
+import graphics.GraphicObjectRenderer;
 
 import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIElement;
-import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
+import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
 import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
@@ -27,7 +31,7 @@ import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.util.Pair;
 
-import static de.jdungeon.world.LibgdxCameraFlightSequenceManager.SCALE_COMPATIBILITY_FACTOR;
+import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -36,6 +40,9 @@ import static de.jdungeon.world.LibgdxCameraFlightSequenceManager.SCALE_COMPATIB
 public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
+	private static final boolean OPENGL_PROFILING_ON = false;
+
+
 	private final PlayerController playerController;
 
 	private GameScreenInputController inputController;
@@ -47,13 +54,14 @@ public class GameScreen extends AbstractGameScreen {
 	private boolean paused;
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
+	private final CameraHelper cameraHelper = new CameraHelper();;
+
 	private GameScreenPerceptHandler perceptHandler;
 	private FigureInfo figure;
-
 	private final int dungeonSizeX;
+
 	private final int dungeonSizeY;
 	private GLProfiler glProfiler;
-
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
@@ -65,22 +73,28 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void show() {
-		glProfiler = new GLProfiler(Gdx.graphics);
-		glProfiler.enable();
+
+		if(OPENGL_PROFILING_ON) {
+			glProfiler = new GLProfiler(Gdx.graphics);
+			glProfiler.enable();
+		}
+
 		inputController = new GameScreenInputController(game, playerController, this);
+		Gdx.input.setInputProcessor(inputController);
+
 		perceptHandler = new GameScreenPerceptHandler(this);
 		figure = playerController.getFigure();
 		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
 		playerController.setViewModel(viewModel);
-		movieSequenceManager = new LibgdxCameraFlightSequenceManager(GameScreenInputController.cameraHelper); // todo: access should not be static
+		movieSequenceManager = new LibgdxCameraFlightSequenceManager(cameraHelper); // todo: access should not be static
 
 		// init world camera and world renderer
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		JDPoint number = figure.getRoomInfo().getNumber();
-		camera.position.set(number.getX() * worldRenderer.roomSize, number.getY() * worldRenderer.roomSize, 0);
+		camera.position.set(number.getX() * ROOM_SIZE, number.getY() * ROOM_SIZE, 0);
 		camera.update();
-		worldRenderer = new WorldRenderer(inputController, playerController, viewModel, camera);
+		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper);
 
 		// init gui camera and gui renderer
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
@@ -89,7 +103,7 @@ public class GameScreen extends AbstractGameScreen {
 		cameraGUI.update();
 		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure);
 
-		scollToPlayerPosition(1.4f);
+		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 	}
 
 	@Override
@@ -106,13 +120,17 @@ public class GameScreen extends AbstractGameScreen {
 			guiRenderer.render();
 
 			// for profiling only
-			/*
-			Gdx.app.error(TAG, "Open GL calls: " + glProfiler.getCalls());
-			Gdx.app.error(TAG, "Open GL draw calls: " + glProfiler.getDrawCalls());
-			Gdx.app.error(TAG, "Open GL texture bindings: " + glProfiler.getTextureBindings());
-			glProfiler.reset();
-			*/
+			if(OPENGL_PROFILING_ON) {
+				Gdx.app.error(TAG, "Open GL calls: " + glProfiler.getCalls());
+				Gdx.app.error(TAG, "Open GL draw calls: " + glProfiler.getDrawCalls());
+				Gdx.app.error(TAG, "Open GL texture bindings: " + glProfiler.getTextureBindings());
+				glProfiler.reset();
+			}
 		}
+	}
+
+	public CameraHelper getCameraHelper() {
+		return cameraHelper;
 	}
 
 	@Override
@@ -129,6 +147,11 @@ public class GameScreen extends AbstractGameScreen {
 		inputController.update(deltaTime);
 		guiRenderer.update(deltaTime);
 		worldRenderer.update(deltaTime);
+
+
+		Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
+		this.showVisibilityIncrease(visibilityIncreasedRooms);
+
 		// TODO: fetch and show visibility increased rooms from PlayerController/JDGUI
 		List<Percept> percepts = playerController.getPercepts();
 		// TODO: handle and display percepts
@@ -140,10 +163,10 @@ public class GameScreen extends AbstractGameScreen {
 		scollToPlayerPosition(0.6F);
 	}
 
-	private void scollToPlayerPosition(float duration) {
+	public void scollToPlayerPosition(float duration) {
 		if(!movieSequenceManager.containsFlight(CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER)) {
 			// check that a scroll-to-player camera flight isn't already in the queue
-			scrollToScale(figure.getRoomNumber(), duration, 60,CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
+			scrollToScale(figure.getRoomNumber(), duration, cameraHelper.getUserSelectedZoomLevel() , CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 		}
 	}
 
@@ -157,58 +180,32 @@ public class GameScreen extends AbstractGameScreen {
 	/*
 	Creates a movie sequence that zooms in/out
  	*/
-	private void zoomToSize(int duration, float roomScale, String title) {
-		zoomToSize(duration, roomScale, figure.getRoomNumber(), title);
-	}
-
-	private void zoomToSize(int duration, float targetScale, JDPoint position, String title) {
-		zoomToSize(duration, worldRenderer.roomSize, targetScale, position, title);
-	}
-
-	private void zoomToSize(int duration, float startScale, float targetScale, JDPoint position, String title) {
-		CameraFlightSequence sequence = new DefaultMovieSequence(
-				new ZoomSequence(startScale, targetScale, duration),
-				new StraightLineScroller(WorldRenderer.getPlayerRoomWorldPosition(figure), floatPair(position), duration), duration, title);
-		this.movieSequenceManager.addSequence(sequence);
-	}
-
-	public void scrollTo(JDPoint number, float duration, String title) {
-		scrollTo(number, duration, (int) worldRenderer.roomSize, title);
-	}
-
-	public void scrollTo(JDPoint number, float duration, int roomScale, String title) {
-		scrollFromTo(toPair(GameScreenInputController.cameraHelper.getPosition()), floatPairRoomToWorldCoordinates(number), duration, roomScale, title);
-	}
 
 	private Pair<Float, Float> toPair(Vector2 position) {
 		return new Pair<>(position.x, position.y);
 	}
 
-	private void scrollFromTo(JDPoint start, JDPoint target, float duration, int roomScale, String title) {
-		scrollFromTo(floatPair(start), floatPair(target), duration, roomScale, title);
-	}
 
 	private void scrollFromTo(Pair<Float, Float> start, Pair<Float, Float> target, float duration,
-							  int roomScale, String title) {
+							  float zoom, String title) {
 		CameraFlightSequence sequence = new DefaultMovieSequence(
-				new TrivialScaleSequence(roomScale),
+				new TrivialScaleSequence(zoom),
 				new StraightLineScroller(start,
 						target, duration), duration, title);
 		this.movieSequenceManager.addSequence(sequence);
 	}
 
-	private void scrollToScale(JDPoint target, float duration,
-								   int endScale, String title) {
-		scrollFromToScale(toPair(GameScreenInputController.cameraHelper.getPosition()), floatPairRoomToWorldCoordinates(target), duration, (int) (GameScreenInputController.cameraHelper.getZoom()*SCALE_COMPATIBILITY_FACTOR), endScale, title);
+	public void scrollToScale(JDPoint target, float duration,
+								   float endScale, String title) {
+		scrollFromToScale(toPair(cameraHelper.getPosition()), floatPairRoomToWorldCoordinates(target), duration, cameraHelper.getZoom(), endScale, title);
 	}
 
-	private void scrollFromToScale(JDPoint start, JDPoint target, float duration, int startScale,
-								   int endScale, String title) {
-		scrollFromToScale(floatPair(start), floatPair(target), duration, startScale, endScale, title);
+	public void scrollToScale(float duration, float endScale) {
+		scrollFromToScale(toPair(cameraHelper.getPosition()), toPair(cameraHelper.getPosition()), duration, cameraHelper.getZoom(),  endScale, "zoom");
 	}
 
 	private void scrollFromToScale(Pair<Float, Float> start, Pair<Float, Float> target, float duration,
-								   int startScale, int endScale, String title) {
+								   float startScale, float endScale, String title) {
 		CameraFlightSequence sequence = new DefaultMovieSequence(
 				new ZoomSequence(startScale, endScale, duration),
 				new StraightLineScroller(start,
@@ -218,13 +215,57 @@ public class GameScreen extends AbstractGameScreen {
 
 	private Pair<Float, Float> floatPairRoomToWorldCoordinates(JDPoint point) {
 		return new Pair<>(
-				(float) point.getX() * WorldRenderer.roomSize + WorldRenderer.roomSize/2,
-				(float) point.getY() * WorldRenderer.roomSize + WorldRenderer.roomSize/2);
+				(float) point.getX() * ROOM_SIZE + ROOM_SIZE /2,
+				(float) point.getY() * ROOM_SIZE + ROOM_SIZE /2);
 	}
 
 	private Pair<Float, Float> floatPair(JDPoint point) {
 		return new Pair<>(
 				(float) point.getX(), (float) point.getY());
+	}
+
+	public void showVisibilityIncrease(Set<JDPoint> points) {
+		if (points.isEmpty()) {
+			return;
+		}
+
+		JDPoint heroRoom = figure.getRoomInfo().getPoint();
+		// entered current room, no need to do animation
+		points.remove(heroRoom);
+
+		final Iterator<JDPoint> pointIterator = points.iterator();
+		while(pointIterator.hasNext()) {
+			final JDPoint point = pointIterator.next();
+			if(heroRoom.isNeighbour(point)) {
+				pointIterator.remove();
+			}
+		}
+
+		if (points.isEmpty()) {
+			return;
+		}
+
+		// we dont animate discovered neighbour rooms any more
+		/*
+		if (points.size() == 1 && heroRoom.isNeighbour(points.get(0))) {
+			scrollTo(points.get(0), 50, "show Visibility increase 1 room hero neighbour");
+			return;
+		}
+		*/
+
+		// zoom out
+		float flightScale = cameraHelper.getCurrentZoom();
+		float stepDuration = 0.7f;
+		Pair<Float, Float> last = toPair(cameraHelper.getPosition());
+		for (JDPoint p : points) {
+			// center on each discovered room
+			Pair<Float, Float> next = floatPairRoomToWorldCoordinates(p);
+			scrollFromTo(last, next, stepDuration, flightScale, "show visibility increase PART 2 center to each room");
+			last = next;
+		}
+
+		// scroll back to hero
+		scrollFromToScale(last, floatPairRoomToWorldCoordinates(figure.getRoomNumber()), 0.5f, flightScale, cameraHelper.getUserSelectedZoomLevel(), "show visibility increase PART 3 zoom and scroll back to hero");
 	}
 
 	@Override
@@ -290,13 +331,13 @@ public class GameScreen extends AbstractGameScreen {
 		int worldXunprojected = Math.round(worldPosUnprojected.x);
 		int worldYunprojected = Math.round(worldPosUnprojected.y);
 
-		int roomX = worldXunprojected / WorldRenderer.roomSize;
-		int roomY = worldYunprojected / WorldRenderer.roomSize;
+		int roomX = worldXunprojected / ROOM_SIZE;
+		int roomY = worldYunprojected / ROOM_SIZE;
 
 		ViewRoom room = this.viewModel.getRoom(roomX, roomY);
 		if (room == null) return false;
 
-		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * WorldRenderer.roomSize, roomY * WorldRenderer.roomSize);
+		Object clickedObjectInRoom = room.findClickedObjectInRoom(new JDPoint(worldXunprojected, worldYunprojected), roomX * ROOM_SIZE, roomY * ROOM_SIZE);
 		if (clickedObjectInRoom != null) {
 			playerController.getActionController().objectClicked(clickedObjectInRoom, false);
 		}
@@ -310,19 +351,22 @@ public class GameScreen extends AbstractGameScreen {
 	public void checkCameraPosition() {
 		JDPoint number = figure.getRoomInfo().getNumber();
 		Pair<Float, Float> playerWorldPosition = floatPairRoomToWorldCoordinates(number);
+		Vector3 playerWorldScreenCoord = camera.project(new Vector3(playerWorldPosition.getA(), playerWorldPosition.getB(), 0));
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
 
-
-		Vector2 currentCameraPosition = GameScreenInputController.cameraHelper.getPosition();
-		double lookAheadMarginX = WorldRenderer.roomSize * 3.5;  // for some reason we need more as expected on X to make it work as desired, todo: is weird - clarify
-		double lookAheadMarginY = WorldRenderer.roomSize * 2.5;
-		if(			Math.abs(currentCameraPosition.x - playerWorldPosition.getA()) + lookAheadMarginX >  screenWidth  / 2
-				||	Math.abs(currentCameraPosition.y - playerWorldPosition.getB()) + lookAheadMarginY >  screenHeight / 2) {
+		// TODO: we need to work with camera project/unproject as roomSize is world coordinates and calculation is in screen coordinates
+		Vector2 currentCameraPosition = cameraHelper.getPosition();
+		Vector3 cameraPosScreenCoord = camera.project(new Vector3(currentCameraPosition, 0));
+		double lookAheadMarginX = ROOM_SIZE * 2.5 * cameraHelper.getZoom();  // for some reason we need more as expected on X to make it work as desired, todo: is weird - clarify
+		double lookAheadMarginY = ROOM_SIZE * 2.5 * cameraHelper.getZoom();
+		if(			Math.abs(cameraPosScreenCoord.x - playerWorldScreenCoord.x) + lookAheadMarginX >  screenWidth  / 2
+				||	Math.abs(cameraPosScreenCoord.y - playerWorldScreenCoord.y) + lookAheadMarginY >  screenHeight / 2) {
 			// neighbour room not visible on screen, hence we need camera re-positioning
 			scollToPlayerPosition();
 		}
 
 
 	}
+
 }

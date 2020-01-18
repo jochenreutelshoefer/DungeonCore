@@ -11,7 +11,9 @@ import de.jdungeon.util.Pair;
  */
 public class LibgdxCameraFlightSequenceManager extends CameraFlightSequenceManager {
 
-	public static int SCALE_COMPATIBILITY_FACTOR = 100;
+	/*
+	Todo: refactor CameraFlightSequenceManager in a way that only floats are  used to ged rid of this compatibility factor
+	 */
 
 	private final CameraHelper cameraHelper;
 
@@ -22,8 +24,7 @@ public class LibgdxCameraFlightSequenceManager extends CameraFlightSequenceManag
 	public void update(float deltaTime) {
 		CameraFlightSequence currentSequence = getCurrentSequence(deltaTime);
 		if(currentSequence != null) {
-			int scale = currentSequence.getScale(deltaTime);
-			cameraHelper.setZoom(((float)scale)/SCALE_COMPATIBILITY_FACTOR);
+			cameraHelper.setZoom(currentSequence.getScale(deltaTime));
 
 			Pair<Float, Float> viewportPosition = currentSequence.getViewportPosition(deltaTime);
 			cameraHelper.setPosition(viewportPosition.getA(), viewportPosition.getB());

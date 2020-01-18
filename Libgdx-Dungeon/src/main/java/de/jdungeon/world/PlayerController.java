@@ -2,7 +2,9 @@ package de.jdungeon.world;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import dungeon.JDPoint;
@@ -31,8 +33,9 @@ public class PlayerController implements JDGUI {
 
 	private final ActionController actionController;
 
-	private final List<JDPoint> visibilityIncreasedRooms = new ArrayList<>();
-	private final List<JDPoint> visibilityDecreasedRooms = new ArrayList<>();
+	private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
+	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
+	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
 	private final Vector<Action> actionQueue = new Vector<>();
 	private final Vector<Percept> perceptQueue = new Vector<>();
 	private ViewModel viewModel;
@@ -129,13 +132,13 @@ public class PlayerController implements JDGUI {
 	@Override
 	public void notifyVisibilityStatusDecrease(JDPoint p) {
 		updateRoomViewModel(p);
-		//visibilityDecreasedRooms.add(p);
+		visibilityDecreasedRooms.add(p);
 	}
 
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
 		updateRoomViewModel(p);
-		//visibilityIncreasedRooms.add(p);
+		visibilityIncreasedRooms.add(p);
 	}
 
 	private void updateRoomViewModel(JDPoint p) {
@@ -186,10 +189,11 @@ public class PlayerController implements JDGUI {
 		return result;
 	}
 
-	public List<JDPoint> getVisibilityIncreasedRooms() {
-		List<JDPoint> result = Collections.unmodifiableList(this.visibilityIncreasedRooms);
+	public synchronized Set<JDPoint> getVisibilityIncreasedRooms() {
+		visibilityIncreasedRoomsTransport.clear();
+		visibilityIncreasedRoomsTransport.addAll(visibilityIncreasedRooms);
 		this.visibilityIncreasedRooms.clear();
-		return result;
+		return visibilityIncreasedRoomsTransport;
 	}
 
 	public void setViewModel(ViewModel viewModel) {

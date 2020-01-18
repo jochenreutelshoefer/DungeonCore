@@ -20,7 +20,7 @@ public class DefaultMovieSequence implements CameraFlightSequence {
 	}
 
 	@Override
-	public int getScale(float timePassed) {
+	public float getScale(float timePassed) {
 		return scaler.getScale(timePassed);
 	}
 

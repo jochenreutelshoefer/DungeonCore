@@ -2,14 +2,14 @@ package de.jdungeon.app.movieSequence;
 
 public class TrivialScaleSequence implements ChangeScaleSequence {
 
-	private final int scale;
+	private final float scale;
 
-	public TrivialScaleSequence(int scale) {
+	public TrivialScaleSequence(float scale) {
 		this.scale = scale;
 	}
 
 	@Override
-	public int getScale(float timePassed) {
+	public float getScale(float timePassed) {
 		return scale;
 	}
 

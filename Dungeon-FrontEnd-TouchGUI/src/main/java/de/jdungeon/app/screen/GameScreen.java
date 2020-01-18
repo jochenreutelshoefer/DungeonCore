@@ -539,9 +539,9 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 					. 	getCurrentSequence(arg0);
 			if (currentSequence != null) {
 				// movie running
-				int movieRoomSize = currentSequence.getScale(arg0);
+				float movieRoomSize = currentSequence.getScale(arg0);
 				if (movieRoomSize != this.roomSize) {
-					this.changeRoomSize(movieRoomSize);
+					this.changeRoomSize((int) movieRoomSize);
 				}
 
 				Pair<Float, Float> centerViewRoomCoordinates = currentSequence

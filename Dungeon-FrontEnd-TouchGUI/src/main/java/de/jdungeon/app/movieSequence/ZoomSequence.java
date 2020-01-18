@@ -22,13 +22,12 @@ public class ZoomSequence implements ChangeScaleSequence {
 
 
 	@Override
-	public int getScale(float timePassed) {
+	public float getScale(float timePassed) {
 		timeCounter += timePassed;
 
 		if (timeCounter > duration)
-			return (int) targetScale;
+			return targetScale;
 
-		return (int) (startScale
-				+ CalculationUtils.getRatio(scaleDiff, timeCounter, duration));
+		return (startScale + CalculationUtils.getRatio(scaleDiff, timeCounter, duration));
 	}
 }

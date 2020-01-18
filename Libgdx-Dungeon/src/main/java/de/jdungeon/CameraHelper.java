@@ -17,20 +17,58 @@ public class CameraHelper {
 	private final float MAX_ZOOM_OUT = 8.0f;
 
 	private final Vector2 position;
-	private float zoom;
+
+	private float currentZoom;
+
+	private float userSelectedZoomLevel;
 
 	private Sprite target;
 
 
 	public CameraHelper() {
 		position = new Vector2();
-		zoom = 1.0f;
-	}
-	public CameraHelper(int posX, int posY) {
-		position = new Vector2(posX, posY);
-		zoom = 1.0f;
+		init();
+
 	}
 
+	public CameraHelper(int posX, int posY) {
+		position = new Vector2(posX, posY);
+		init();
+	}
+
+	private void init() {
+		currentZoom = 1.0f;
+		userSelectedZoomLevel = currentZoom;
+	}
+
+	public float getCurrentZoom() {
+		return currentZoom;
+	}
+	boolean userZoomLevelCalibrated = false;
+
+	public void calibrateUserZoomLevel() {
+		this.userSelectedZoomLevel = currentZoom;
+		userZoomLevelCalibrated = true;
+	}
+
+	public float getUserSelectedZoomLevel() {
+		if(!userZoomLevelCalibrated) {
+			return currentZoom;
+		}
+		return userSelectedZoomLevel;
+	}
+
+	public void setUserSelectedZoomLevel(float userSelectedZoomLevel) {
+		this.userSelectedZoomLevel = userSelectedZoomLevel;
+	}
+
+	public void addUserSelectedZoomLevel(float zoomStep) {
+		setUserSelectedZoomLevel(getUserSelectedZoomLevel() + zoomStep);
+	}
+
+	public void applyUserSelectedZoomLevel() {
+		currentZoom = userSelectedZoomLevel;
+	}
 
 	public void update(float deltaTime) {
 		if(!hasTarget()) return;
@@ -44,15 +82,15 @@ public class CameraHelper {
 	}
 
 	public void addZoom(float amount) {
-		setZoom(zoom + amount);
+		setZoom(currentZoom + amount);
 	}
 
 	public void setZoom(float value) {
-		this.zoom = MathUtils.clamp(value, MAX_ZOOM_IN, MAX_ZOOM_OUT);
+		this.currentZoom = MathUtils.clamp(value, MAX_ZOOM_IN, MAX_ZOOM_OUT);
 	}
 
 	public float getZoom() {
-		return zoom;
+		return currentZoom;
 	}
 
 	public Sprite getTarget() {
@@ -72,7 +110,7 @@ public class CameraHelper {
 	public void applyTo(OrthographicCamera camera) {
 		camera.position.x = position.x;
 		camera.position.y = position.y;
-		camera.zoom = zoom;
+		camera.zoom = currentZoom;
 		camera.update();
 	}
 

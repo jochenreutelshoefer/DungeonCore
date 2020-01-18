@@ -24,19 +24,22 @@ public class GameScreenInputController extends GestureDetector {
 
 	private static final String TAG = GameScreenInputController.class.getName();
 
-	public static CameraHelper cameraHelper = new CameraHelper();;
+
 
 	private final LibgdxDungeonMain game;
 
 	private final PlayerController playerController;
+	private CameraHelper cameraHelper = null;
 
 	private final GameScreen gameScreen;
+
 	public GameScreenInputController(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
-		super(new MyGestureListener(cameraHelper));
+		super(new MyGestureListener(gameScreen.getCameraHelper()));
+		cameraHelper = gameScreen.getCameraHelper();
 		this.game = game;
 		this.playerController = playerController;
 		this.gameScreen = gameScreen;
-		init();
+
 	}
 
 
@@ -48,10 +51,6 @@ public class GameScreenInputController extends GestureDetector {
 		return game;
 	}
 
-	private void init() {
-		Gdx.input.setInputProcessor(this);
-
-	}
 
 	private void backToMenu() {
 		game.setScreen(new StartScreen(game));
@@ -59,10 +58,7 @@ public class GameScreenInputController extends GestureDetector {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (keycode == Input.Keys.R) {
-			init();
-			Gdx.app.debug(TAG, "Game World resetted");
-		} else if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+		 if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
 			backToMenu();
 		}
 		return false;
@@ -81,6 +77,7 @@ public class GameScreenInputController extends GestureDetector {
 
 	private void handleControlEvents(float deltaTime) {
 		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
+
 
 		float sprMovedSpeed = 500 * deltaTime;
 		/*
@@ -118,7 +115,14 @@ public class GameScreenInputController extends GestureDetector {
 
 	}
 
+	private long last_key_pressed_event;
+
 	private void plugWalkDirectionActions(RouteInstruction.Direction direction) {
+		if(System.currentTimeMillis() - last_key_pressed_event < 100) {
+			// we do not process move input events faster than any 100 msec
+			return;
+		}
+		last_key_pressed_event = System.currentTimeMillis();
 		ActionController actionController = playerController.getActionController();
 		List<Action> actions = actionController
 				.getActionAssembler()
@@ -133,12 +137,26 @@ public class GameScreenInputController extends GestureDetector {
 	}
 
 	public void zoomIn() {
-		cameraHelper.addZoom(-0.1f);
+		cameraHelper.calibrateUserZoomLevel();
+		cameraHelper.addUserSelectedZoomLevel(-0.1f);
+		scrollToUserSelectedZoomLevel();
 	}
 
 	public void zoomOut() {
-		cameraHelper.addZoom(0.1f);
+		cameraHelper.calibrateUserZoomLevel();
+		cameraHelper.addUserSelectedZoomLevel(0.1f);
+		scrollToUserSelectedZoomLevel();
 	}
+
+	public void scrollToPlayer() {
+		gameScreen.scollToPlayerPosition(0.8f);
+	}
+
+	private void scrollToUserSelectedZoomLevel() {
+		gameScreen.scrollToScale(0.3f, cameraHelper.getUserSelectedZoomLevel());
+	}
+
+
 
 	static class MyGestureListener implements GestureDetector.GestureListener {
 

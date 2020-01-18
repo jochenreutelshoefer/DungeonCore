@@ -33,12 +33,14 @@ import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.libgdx.LibgdxGraphics;
 
 /**
+ * Renders the GUI (aka head up display) over the game world.
+ *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 31.12.19.
  */
 public class GUIRenderer implements Disposable {
 
-	private final GameScreenInputController worldController;
+	private final GameScreenInputController inputController;
 	private final OrthographicCamera cameraGUI;
 	private final LibgdxDungeonMain game;
 	private final HeroInfo figure;
@@ -53,8 +55,8 @@ public class GUIRenderer implements Disposable {
 
 	private GameOverView gameOverView;
 
-	public GUIRenderer(GameScreenInputController worldController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
-		this.worldController = worldController;
+	public GUIRenderer(GameScreenInputController inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
+		this.inputController = inputController;
 		this.cameraGUI = cameraGUI;
 		this.game = game;
 		this.figure = figure;
@@ -102,16 +104,17 @@ public class GUIRenderer implements Disposable {
 
 			@Override
 			public boolean handleTouchEvent(Input.TouchEvent touch) {
-				//scrollTo(figure.getRoomNumber(), 30, SCALE_ROOM_DEFAULT, "user reseted view port with magnifier button");
+				inputController.scrollToPlayer();
 				return true;
 			}
 		};
-		this.guiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), worldController, getGUIImage(GUIImageManager.PLUS), true));
-		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), worldController, getGUIImage(GUIImageManager.MINUS), false));
+		this.guiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), inputController, getGUIImage(GUIImageManager.PLUS), true));
+		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), inputController, getGUIImage(GUIImageManager.MINUS), false));
 		this.guiElements.add(magnifier);
 
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
-		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, worldController.getPlayerController().getActionController(), focusManager);
+		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, inputController
+				.getPlayerController().getActionController(), focusManager);
 		this.guiElements.add(smartControl);
 
 

@@ -7,6 +7,8 @@ import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 
 /**
+ * A ViewModel that allows the rendering loop quick access to information to be drawn - room by room.
+ *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 03.01.20.
  */
@@ -36,7 +38,7 @@ public class ViewModel {
 		for (int x = 0; x < roomViews.length; x++) {
 			for (int y = 0; y < roomViews[0].length; y++) {
 				ViewRoom currentViewRoom = roomViews[x][y];
-				List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
+				List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
 				currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 			}
 		}
@@ -44,7 +46,7 @@ public class ViewModel {
 
 	public void updateRoom(int x, int y) {
 		ViewRoom currentViewRoom = roomViews[x][y];
-		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.roomSize, y * WorldRenderer.roomSize);
+		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
 		currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 	}
 
