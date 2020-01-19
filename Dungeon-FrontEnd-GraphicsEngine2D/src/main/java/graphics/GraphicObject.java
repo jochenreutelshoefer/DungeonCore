@@ -28,7 +28,7 @@ public class GraphicObject {
 		if (clickedObject == null) {
 			return image.toString();
 		} else {
-			return clickedObject.toString();
+			return this.getClass().getName()+" " +clickedObject.toString();
 		}
 	}
 

@@ -18,6 +18,7 @@ public class SpecialAttackPercept extends OpticalPercept {
 	private final int type;
 	private final Figure attacker;
 	public SpecialAttackPercept(int type,Figure t,Figure a) {
+		super(t.getLocation());
 		this.type = type;
 		target = t;
 		attacker = a;

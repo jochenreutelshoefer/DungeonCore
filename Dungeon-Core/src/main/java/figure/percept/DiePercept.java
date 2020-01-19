@@ -21,11 +21,13 @@ public class DiePercept extends OpticalPercept {
 	private int damage = -1;
 
 	public DiePercept(Figure f, Room from) {
+		super(f.getLocation());
 		this.f = f;
 		this.from = from;
 	}
 	
 	public DiePercept(Figure f, Room from, int damage) {
+		super(f.getLocation());
 		this.f = f;
 		this.from = from;
 		this.damage = damage;

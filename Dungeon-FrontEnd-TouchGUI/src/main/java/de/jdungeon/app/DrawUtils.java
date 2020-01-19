@@ -1,5 +1,6 @@
 package de.jdungeon.app;
 
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import game.InfoEntity;
 import graphics.GraphicObject;
@@ -20,7 +21,6 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
-import dungeon.RoomInfo;
 import gui.Paragraphable;
 import util.JDDimension;
 
@@ -29,9 +29,9 @@ public class DrawUtils {
 	private static final boolean useTileDrawingCache = false;
 
 	public static Image drawObjects(Graphics g,
-			List<GraphicObject> graphicObjectsForRoom,
-			JDPoint viewportPosition, RoomInfo roomInfo,
-			int roomOffsetX, int roomOffsetY, GameScreen screen, GraphicObjectRenderer renderer, int roomSize) {
+									List<GraphicObject> graphicObjectsForRoom,
+									JDPoint viewportPosition,
+									int roomOffsetX, int roomOffsetY, GameScreen screen, GraphicObjectRenderer renderer, int roomSize, RoomInfo roomInfo) {
 
 		// we init a tmp offscreen image for this room for caching and later re-use
 		if(useTileDrawingCache) {
@@ -60,7 +60,7 @@ public class DrawUtils {
 							JDImageProxy<?> animationImage = frame.getImage();
 							JDDimension figureInfoSize = renderer.getFigureInfoSize(figureInfo);
 							// we override the image variable here
-							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight(), renderer);
+							JDImageLocated locatedImage = frame.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize.getWidth(), figureInfoSize.getHeight());
 							if(locatedImage != null) {
 								// might be null if that room is not visible
 								jdImage = locatedImage;
@@ -113,8 +113,7 @@ public class DrawUtils {
 						AnimationFrame animationFrame = AnimationManager
 								.getInstance().getAnimationImage(
 										(FigureInfo) clickedObject, roomInfo);
-						JDImageProxy<?> animationImage = animationFrame
-								.getImage();
+						JDImageProxy<?> animationImage = animationFrame.getImage();
 						if (animationImage != null) {
 							image = (Image) animationImage.getImage();
 						}

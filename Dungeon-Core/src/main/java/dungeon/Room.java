@@ -97,11 +97,9 @@ public class Room extends DungeonWorldObject implements
 			}
 			ControlUnit c = element.getControl();
 			if (c != null
-					&& (c.isHostileTo(FigureInfo.makeFigureInfo(movedIn,
-					element.getRoomVisibility())) || movedIn
-					.getControl().isHostileTo(
-							FigureInfo.makeFigureInfo(element, movedIn
-									.getRoomVisibility())))) {
+					&&
+					(c.isHostileTo(FigureInfo.makeFigureInfo(movedIn, element.getRoomVisibility()))
+					|| movedIn.getControl().isHostileTo(FigureInfo.makeFigureInfo(element, movedIn.getRoomVisibility())))) {
 				fight = true;
 			}
 		}

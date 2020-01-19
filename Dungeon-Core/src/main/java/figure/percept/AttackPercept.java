@@ -22,6 +22,7 @@ public class AttackPercept extends OpticalPercept {
 	private Slap slap;
 	
 	public AttackPercept(Figure a, Figure b, Slap s) {
+		super(b.getLocation());
 		attacker = a;
 		victim = b;
 		slap = s;

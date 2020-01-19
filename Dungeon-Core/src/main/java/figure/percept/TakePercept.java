@@ -20,6 +20,7 @@ public class TakePercept extends OpticalPercept {
 	private final Figure f;
 	
 	public TakePercept(Figure f, Item it) {
+		super(f.getLocation());
 		this.f = f;
 		this.it = it;
 	}

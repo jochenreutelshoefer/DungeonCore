@@ -38,18 +38,44 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public static final Assets instance = new Assets();
 	private AssetManager assetManager;
+
 	private TextureAtlas dungeonAtlas;
+
 	private TextureAtlas warriorAtlas;
+
 	private TextureAtlas orcAtlas;
+
 	private TextureAtlas wolfAtlas;
+
 	private TextureAtlas skelAtlas;
+
 	private TextureAtlas lionessAtlas;
 
+	private TextureAtlas guiAtlas;
+
+	public TextureAtlas getWarriorAtlas() {
+		return warriorAtlas;
+	}
+	public TextureAtlas getOrcAtlas() {
+		return orcAtlas;
+	}
+	public TextureAtlas getDungeonAtlas() {
+		return dungeonAtlas;
+	}
+	public TextureAtlas getLionessAtlas() {
+		return lionessAtlas;
+	}
 	public TextureAtlas getGuiAtlas() {
 		return guiAtlas;
 	}
 
-	private TextureAtlas guiAtlas;
+	public TextureAtlas getSkelAtlas() {
+		return skelAtlas;
+	}
+
+	public TextureAtlas getWolfAtlas() {
+		return wolfAtlas;
+	}
 
 	public AssetBucket bucket;
 	public AssetDrop drop;
@@ -175,6 +201,9 @@ public class Assets implements Disposable, AssetErrorListener {
 	}
 
 	public TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, TextureAtlas atlas) {
+		if(atlas == null) return null;
+		if(image == null) return null;
+
 		Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
 		String filename = image.getFilename();
 		if (filename.toLowerCase().endsWith(".gif") || filename.toLowerCase().endsWith(".png")) {

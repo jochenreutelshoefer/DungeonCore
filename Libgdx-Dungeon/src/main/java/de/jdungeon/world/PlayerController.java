@@ -15,6 +15,7 @@ import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.other.Fir;
 import figure.other.Lioness;
+import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
@@ -165,6 +166,10 @@ public class PlayerController implements JDGUI {
 	@Override
 	public void tellPercept(Percept p) {
 		JDPoint number = null;
+		if(p instanceof OpticalPercept) {
+			number = ((OpticalPercept)p).getLocation();
+		}
+		/*
 		List<FigureInfo> involvedFigures = p.getInvolvedFigures();
 		for (FigureInfo involvedFigure : involvedFigures) {
 			JDPoint pos = involvedFigure.getRoomInfo().getNumber();
@@ -174,6 +179,7 @@ public class PlayerController implements JDGUI {
 			}
 
 		}
+		*/
 		if(number!= null) {
 			updateRoomViewModel(number);
 		}

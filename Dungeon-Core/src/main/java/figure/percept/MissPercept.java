@@ -19,6 +19,7 @@ public class MissPercept extends OpticalPercept {
 	private final Figure victim;
 	
 	public MissPercept(Figure a, Figure b) {
+		super(b.getLocation());
 		attacker = a;
 		victim = b;
 	}

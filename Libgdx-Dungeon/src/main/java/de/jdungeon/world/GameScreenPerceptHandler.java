@@ -2,9 +2,12 @@ package de.jdungeon.world;
 
 import java.util.List;
 
+import animation.AnimationManager;
 import animation.AnimationUtils;
 import animation.DefaultAnimationSet;
+import animation.DefaultAnimationTask;
 import audio.AudioEffectsManager;
+import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.percept.AttackPercept;
@@ -20,6 +23,7 @@ import figure.percept.InfoPercept;
 import figure.percept.ItemDroppedPercept;
 import figure.percept.MissPercept;
 import figure.percept.MovePercept;
+import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.ShieldBlockPercept;
@@ -32,6 +36,8 @@ import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 import game.PerceptHandler;
 import game.RoomInfoEntity;
+import graphics.JDImageProxy;
+import log.Log;
 import text.Statement;
 import text.StatementManager;
 
@@ -46,11 +52,12 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 	private final GameScreen screen;
 	private final FigureInfo figure;
+	private final AnimationManager animationManager;
 
-
-	public GameScreenPerceptHandler(GameScreen screen, FigureInfo figure) {
+	public GameScreenPerceptHandler(GameScreen screen, FigureInfo figure, AnimationManager animationManager) {
 		this.screen = screen;
 		this.figure = figure;
+		this.animationManager = animationManager;
 	}
 
 
@@ -180,13 +187,13 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	private void handleFleePercept(FleePercept p) {
 		newStatement(StatementManager.getStatement(p, this.figure));
 
-		// todo:
-		/*
 		FigureInfo fleeingFigure = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_running(fleeingFigure);
 		if (set != null) {
-			screen.startAnimation(set, fleeingFigure);
+			startAnimation(set, fleeingFigure, p);
 		}
+		// todo:
+		/*
 		if (fleeingFigure.equals(this.figure) && p.isSuccess()) {
 			screen.exitFightMode();
 		}
@@ -196,28 +203,26 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	private void handleUsePercept(UsePercept p) {
 		FigureInfo user = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
-		// todo:
-		/*
 		if (set != null) {
-			screen.startAnimation(set, user);
+			startAnimation(set, user, p);
 		}
-		*/
 
 	}
 
 	private void handleTakePercept(TakePercept p) {
 		FigureInfo taker = p.getFigure();
 
-		//todo:
+		// todo:
 		/*
 		if(taker.equals(this.figure)) {
 			screen.focusTakenItem(p.getItem());
 		}
+		*/
+
 		DefaultAnimationSet set = AnimationUtils.getFigure_using(taker);
 		if (set != null) {
-			screen.startAnimation(set, taker);
+			startAnimation(set, taker, p);
 		}
-		*/
 
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
 		newStatement(StatementManager.getStatement(p, this.figure));
@@ -227,24 +232,20 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	private void handleStepPercept(StepPercept p) {
 		FigureInfo fig = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
-		// todo
-		/*
+
 		if (set != null) {
-			screen.startAnimationUrgent(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()));
+			startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()),"", false, true, false, p , null);
 		}
-		*/
+
 	}
 
 	private void handleSpellPercept(SpellPercept p) {
 		FigureInfo user = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
 
-		// todo
-		/*
 		if (set != null) {
-			screen.startAnimation(set, user);
+			startAnimation(set, user, p);
 		}
-		*/
 
 	}
 
@@ -252,12 +253,9 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		FigureInfo user = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
 
-		// todo:
-		/*
 		if (set != null) {
-			screen.startAnimation(set, user);
+			startAnimation(set, user,  p);
 		}
-		*/
 
 	}
 
@@ -271,22 +269,40 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			screen.getFocusManager().setWorldFocusObject((RoomInfoEntity)null);
 		}
 
-		// todo
-		/*
 		if (set != null) {
 			// clear old queued animations if there are some
-			screen.clearFigureAnimation(fig);
+			animationManager.clearFigure(fig);
 
 			// start "walk in" animation
-			screen.startAnimation(set, fig);
+			startAnimation(set, fig,  p);
 		}
-		*/
 
 		if (!fig.equals(this.figure)
 				&& // check whether a fight has just started
 				!figure.getRoomInfo().fightRunning()) {
 			screen.scrollTo(info.getNumber(), 0.4f, "move percept");
 		}
+	}
+
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, OpticalPercept percept) {
+		Position.Pos pos = Position.Pos.fromValue(figure.getPositionInRoomIndex());
+		startAnimation(ani, figure, pos, pos, "", false, false, false, percept, null);
+	}
+
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, String text, OpticalPercept percept) {
+		Position.Pos pos = Position.Pos.fromValue(figure.getPositionInRoomIndex());
+		startAnimation(ani, figure, pos, pos, text, false, false, false, percept, null);
+	}
+
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, String text, boolean delayed, boolean urgent, boolean postDelay, OpticalPercept percept, JDImageProxy delayImage) {
+		Position.Pos pos = Position.Pos.fromValue(figure.getPositionInRoomIndex());
+		startAnimation(ani, figure, pos, pos,  text, delayed, urgent, postDelay, percept, delayImage);
+	}
+
+	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, String text, boolean delayed, boolean urgent, boolean postDelay, OpticalPercept percept, JDImageProxy delayImage) {
+		DefaultAnimationTask task = new DefaultAnimationTask(ani, text, figure, from, to, percept);
+		task.setUrgent(urgent);
+		animationManager.startAnimation(task, figure,  delayed, postDelay, delayImage);
 	}
 
 	private void handleDiePercept(DiePercept p) {
@@ -303,17 +319,15 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		newStatement(StatementManager.getStatement(p, figure));
 
 		DefaultAnimationSet set = AnimationUtils.getFigure_tipping_over(deadFigure);
-		// todo
-		/*
 		if (set != null) {
 			int damage = p.getDamage();
 			String text = null;
 			if (damage != -1) {
 				text = "-" + damage;
 			}
-			screen.startAnimationUrgent(set, deadFigure, text);
+			startAnimation(set, deadFigure, text, false, true, false, ((OpticalPercept)p), null);
 		}
-		*/
+
 	}
 
 	private void handleTumblingPercept(TumblingPercept p) {
@@ -329,11 +343,9 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		FigureInfo user = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
 
-		/*
 		if (set != null) {
-			screen.startAnimation(set, user);
+			startAnimation(set, user, p);
 		}
-		*/
 
 	}
 
@@ -352,26 +364,24 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		AudioEffectsManager.playSound(AudioEffectsManager.DOOR_SMASH);
 		newStatement(StatementManager.getStatement(p, figure));
 
-		// todo
-		/*
 		if (p.getValue() > 0) {
 			int damage = p.getValue();
 			DefaultAnimationSet set = AnimationUtils.getFigure_been_hit(victim);
 			if (set != null) {
-				screen.startAnimation(set, victim, "-" + damage);
+				startAnimation(set, victim, "-" + damage, p);
 			}
 		}
-		*/
 	}
 
 	private void handleWaitPercept(WaitPercept p) {
-		FigureInfo user = p.getFigure();
-		DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
+		FigureInfo fig = p.getFigure();
+		DefaultAnimationSet set = AnimationUtils.getFigure_using(fig);
 
-		// todo
+		// wait percept is not that exciting I guess..
 		/*
 		if (set != null) {
-			screen.startAnimation(set, user);
+			startAnimation(set, fig,"",  (OpticalPercept)p );
+
 		}
 		*/
 	}
@@ -380,28 +390,22 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		FigureInfo victim = p.getVictim();
 		newStatements(StatementManager.getStatements(p, figure));
 
-		// todo
-		/*
 		if (p.getDamage() > 0) {
 			int damage = p.getDamage();
 			DefaultAnimationSet set = AnimationUtils.getFigure_been_hit(victim);
 			if (set != null) {
-				screen.startAnimationDelayedUrgent(set, victim, "-" + damage);
+				startAnimation(set, victim, "-" + damage, true, true, false, p, null);
 			}
 		}
-		*/
 	}
 
 	private void handleAttackPercept(AttackPercept p) {
 		FigureInfo fig = p.getAttacker();
 		DefaultAnimationSet set = AnimationUtils.getFigure_slays(fig);
 
-		// todo
-		/*
 		if (set != null) {
-			screen.startAnimation(set, fig);
+			startAnimation(set, fig, null, Position.Pos.fromValue(fig.getPositionInRoomIndex()),  null, false, false, false, p, null);
 		}
-		*/
 	}
 
 

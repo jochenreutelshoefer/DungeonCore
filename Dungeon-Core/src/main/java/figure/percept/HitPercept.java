@@ -22,12 +22,14 @@ public class HitPercept extends OpticalPercept {
 	private boolean indirect = false;
 	
 	public HitPercept(Figure a, Figure b, SlapResult res) {
+		super(b.getLocation());
 		attacker = a;
 		victim = b;
 		this.res = res;
 	}
 	
 	public HitPercept(Figure a, Figure b, SlapResult res, boolean indirect) {
+		super(b.getLocation());
 		attacker = a;
 		victim = b;
 		this.res = res;

@@ -12,8 +12,7 @@ import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
 import graphics.JDImageProxy;
-
-import de.jdungeon.game.Image;
+import log.Log;
 
 public class AnimationManager {
 
@@ -49,10 +48,11 @@ public class AnimationManager {
 	 * be drawn.
 	 *
 	 * @param info the figure to be drawn
-	 * @param roomInfo the room where the animation happens to be
+	 * @param roomInfo the room that is currently drawn
 	 * @return AnimationFrame showing correct sprite of current move
 	 */
-	public synchronized AnimationFrame getAnimationImage(FigureInfo info, RoomInfo roomInfo) {
+	public AnimationFrame getAnimationImage(FigureInfo info, RoomInfo roomInfo) {
+		//Log.warning("asking ani for: "+info);
 		Queue<AnimationTask> queue = animations.get(info);
 		AnimationTask currentTask = currentTasks.get(info);
 		if (currentTask == null) {
@@ -89,16 +89,22 @@ public class AnimationManager {
 			set.add(currentTask);
 		}
 		if (currentTask != null) {
-			//if(currentTask.getRoom().equals(roomInfo)) {
+			if(currentTask instanceof DefaultAnimationTask) {
+				if(((DefaultAnimationTask)currentTask).getRoom().equals(roomInfo.getNumber())) {
+					return currentTask
+							.getCurrentAnimationFrame();
+				}
+			}else {
 				return currentTask
 						.getCurrentAnimationFrame();
-			//}
+			}
+
 		}
 		// there is no animation in queue for this figure
 		return null;
 	}
 
-	public synchronized boolean isEmpty() {
+	public boolean isEmpty() {
 		for (FigureInfo figureInfo : animations.keySet()) {
 			Queue<AnimationTask> queue = animations.get(figureInfo);
 			if(queue != null && !queue.isEmpty()) {
@@ -108,36 +114,36 @@ public class AnimationManager {
 		return true;
 	}
 
-	public synchronized void startAnimation(AnimationTask task, FigureInfo figure, boolean delayed, boolean postDelayed, JDImageProxy delayImage) {
-		Queue<AnimationTask> queue = animations.get(figure);
-		if(queue == null) {
-			queue = new LinkedList<>();
-			animations.put(figure, queue);
+	public void startAnimation(AnimationTask task, FigureInfo figure, boolean delayed, boolean postDelayed, JDImageProxy delayImage) {
+		Queue<AnimationTask> figureQueue = animations.get(figure);
+		if(figureQueue == null) {
+			figureQueue = new LinkedList<>();
+			animations.put(figure, figureQueue);
 		}
 
 		if(otherAnimationRunning(figure) && !delayed) {
 			// when much is going on, we delay a little,
 			// as otherwise everything happens synchronously
 			// and the time order is not visible to the user any more
-			delay(figure, delayImage, queue, 400);
+			delay(figure, delayImage, figureQueue, 400);
 		}
 		if(delayed) {
 			// explicit (long) delay
-			queue.add(new DelayAnimationTask(500));
+			figureQueue.add(new DelayAnimationTask(500));
 		}
 		if(task.isUrgent()) {
-			// we clear the queue to jump to this animation instantly after the current has been finished
-			queue.clear();
+			// we clear the figureQueue to jump to this animation instantly after the current has been finished
+			figureQueue.clear();
 			if(delayed) {
 				// explicit (long) delay
-				delay(figure, delayImage, queue, 500);
+				delay(figure, delayImage, figureQueue, 500);
 			}
 		}
 
-		queue.add(task);
+		figureQueue.add(task);
 
 		if(postDelayed) {
-			queue.add(new DelayAnimationTask(700));
+			figureQueue.add(new DelayAnimationTask(700));
 		}
 	}
 
@@ -160,15 +166,15 @@ public class AnimationManager {
 		return false;
 	}
 
-	public synchronized void clearAll() {
+	public  void clearAll() {
 		this.animations.clear();
 	}
 
-	public synchronized void clearFigure(FigureInfo figure) {
+	public  void clearFigure(FigureInfo figure) {
 		this.animations.remove(figure);
 	}
 
-	public synchronized Collection<FigureInfo> getDeadFigures() {
+	public  Collection<FigureInfo> getDeadFigures() {
 		Collection<FigureInfo> result = new HashSet<>();
 		for (FigureInfo figureInfo : animations.keySet()) {
 			Boolean dead = figureInfo.isDead();

@@ -121,16 +121,10 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	public Paragraph[] getParagraphs() {
 
 		String room = new String();
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FOUND
-				|| JDEnv.visCheat) {
+		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FOUND) {
 
 			room = JDEnv.getResourceBundle().getString("room") + ": "
 					+ getNumber().toString();
-			if (JDEnv.visCheat) {
-				if (r.getHall() != null) {
-					room += "\n Halle: " + r.getHall().getName();
-				}
-			}
 		}
 		Paragraph[] p = new Paragraph[4];
 		p[0] = new Paragraph(room);
@@ -355,8 +349,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public ChestInfo getChest() {
 
-		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_SHRINE
-				&& !JDEnv.visCheat) {
+		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_SHRINE) {
 			return null;
 		}
 		if (r.getChest() == null) {
@@ -369,8 +362,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public DoorInfo[] getDoors() {
 
-		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND
-				&& !JDEnv.visCheat) {
+		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND) {
 			return null;
 		}
 		Door[] doors = r.getDoors();

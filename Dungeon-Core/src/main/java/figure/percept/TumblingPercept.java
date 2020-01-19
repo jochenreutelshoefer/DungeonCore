@@ -17,6 +17,7 @@ public class TumblingPercept extends OpticalPercept {
 	private final Figure f;
 
 	public TumblingPercept(Figure f) {
+		super(f.getLocation());
 		this.f = f;
 	}
 	

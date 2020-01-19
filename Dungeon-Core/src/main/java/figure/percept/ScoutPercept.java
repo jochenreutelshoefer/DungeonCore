@@ -16,11 +16,12 @@ import figure.FigureInfo;
 
 public class ScoutPercept extends OpticalPercept {
 	
-	private Figure f;
-	private Room from;
-	private int dir;
+	private final Figure f;
+	private final Room from;
+	private final int dir;
 	
 	public ScoutPercept(Figure f, Room from, int dir) {
+		super(from.getNumber());
 		this.f = f;
 		this.from = from;
 		this.dir = dir;

@@ -53,6 +53,10 @@ public class GraphicObjectRenderCollection {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return graphicObjects.toString();
+	}
 
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getRenderInformation() {
 		synchronized (graphicObjects) {

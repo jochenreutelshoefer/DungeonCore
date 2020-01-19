@@ -79,12 +79,12 @@ public class GraphicObjectRenderer {
 	private int ROOMSIZE_BY_12;
 	private int ROOMSIZE_BY_10;
 	private int ROOMSIZE_BY_16;
-	private int ROOMSIZE_BY_8;
+	private static int ROOMSIZE_BY_8;
 	private int ROOMSIZE_BY_6;
 	private int ROOMSIZE_BY_5;
 	private int ROOMSIZE_BY_3;
 	private int ROOMSIZE_BY_2;
-	private final JDPoint[] positionCoord = new JDPoint[8];
+	private static final JDPoint[] positionCoord = new JDPoint[8];
 	private final JDPoint[] positionCoordModified = new JDPoint[8];
 	private final RelativeRectangle[] positionRectangles = new RelativeRectangle[8];
 
@@ -301,11 +301,11 @@ public class GraphicObjectRenderer {
 		shrineRect = new RelativeRectangle(new JDPoint(xpos, ypos), xsize, ysize);
 	}
 
-	public int getPosSize() {
+	public static int getPosSize() {
 		return ROOMSIZE_BY_8;
 	}
 
-	public JDPoint getPositionCoordinates(Position.Pos pos) {
+	public static JDPoint getPositionCoordinates(Position.Pos pos) {
 		return positionCoord[pos.getValue()];
 	}
 

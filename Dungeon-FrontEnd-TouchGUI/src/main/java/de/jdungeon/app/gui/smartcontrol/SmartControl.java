@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -228,7 +229,8 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 		}
 		else if (event instanceof ToggleChestViewEvent) {
 			if (!chestItemWheelShowing) {
-				if (!(figureInfo.getPos().getIndex() == Position.Pos.NW.getValue())) {
+				PositionInRoomInfo pos = figureInfo.getPos();
+				if (!(pos.getIndex() == Position.Pos.NW.getValue())) {
 					guiControl.getActionAssembler().wannaStepToPosition(Position.Pos.NW);
 				}
 				setChestItemWheelVisible();

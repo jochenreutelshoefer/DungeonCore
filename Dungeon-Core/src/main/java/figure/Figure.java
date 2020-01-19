@@ -355,6 +355,11 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getName()+" "+getName()+" "+this.pos.toString();
+	}
+
 	public void tellPercept(Percept p) {
 		p.perceivedBy(this);
 		if (control != null) {
@@ -1456,9 +1461,8 @@ public abstract class Figure extends DungeonWorldObject
 		this.lookDir = Position.getDirFromTo(pos.getIndex(), targetFieldindex);
 		pos.figureLeaves();
 		newPos.setFigure(this);
-		Percept p = new StepPercept(this, oldPosIndex, targetFieldindex);
-		getRoom().distributePercept(p);
 		pos = newPos;
+		getRoom().distributePercept(new StepPercept(this, oldPosIndex, targetFieldindex));
 	}
 
 	private ActionResult handleStepAction(StepAction a, boolean doIt) {

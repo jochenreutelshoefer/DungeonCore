@@ -1,7 +1,11 @@
 package de.jdungeon.world;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import animation.AnimationFrame;
+import animation.AnimationManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,6 +17,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
+import dungeon.RoomInfo;
 import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
@@ -25,12 +30,13 @@ import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.util.DrawingRectangle;
-import graphics.util.JDRectangle;
+import util.JDDimension;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
+import de.jdungeon.asset.Assets;
 import de.jdungeon.util.Pair;
 
 /**
@@ -46,18 +52,22 @@ public class WorldRenderer implements Disposable {
 	private final ViewModel viewModel;
 	private final OrthographicCamera camera;
 	private final FocusManager focusManager;
+	private final AnimationManager animationManager;
 	private final GraphicObjectRenderer dungeonObjectRenderer;
 	private final CameraHelper cameraHelper;
 	private SpriteBatch batch;
 	public static final int ROOM_SIZE = 80;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private Class<? extends Figure>[] figureClasses;
+	private Map<Class<? extends Figure>, TextureAtlas> atlasMap;
 
-	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, FocusManager focusManager) {
+	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, FocusManager focusManager, AnimationManager animationManager) {
 		this.dungeonObjectRenderer = graphicObjectRenderer;
 		this.cameraHelper = cameraHelper;
 		this.viewModel = viewModel;
 		this.camera = camera;
 		this.focusManager = focusManager;
+		this.animationManager = animationManager;
 		init();
 	}
 
@@ -75,6 +85,13 @@ public class WorldRenderer implements Disposable {
 		batch.setProjectionMatrix(camera.combined);
 
 		camera.update();
+
+		figureClasses = new Class[] { Hero.class, Orc.class, Wolf.class, Skeleton.class };
+		atlasMap = new HashMap<>();
+		atlasMap.put(Hero.class, Assets.instance.getWarriorAtlas());
+		atlasMap.put(Orc.class, Assets.instance.getOrcAtlas());
+		atlasMap.put(Wolf.class, Assets.instance.getWolfAtlas());
+		atlasMap.put(Skeleton.class, Assets.instance.getSkelAtlas());
 	}
 
 	public void render() {
@@ -116,7 +133,6 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void renderFigureObjectsForAllRooms() {
-		Class<? extends Figure>[] figureClasses = new Class[] { Hero.class, Orc.class, Wolf.class, Skeleton.class };
 
 		// iterate first for figure classes to have less atlas switches as each figure has a distinct atlas
 		for (Class<? extends Figure> figureClass : figureClasses) {
@@ -131,24 +147,54 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
+		int roomOffsetX = x * WorldRenderer.ROOM_SIZE;
+		int roomOffsetY = y * WorldRenderer.ROOM_SIZE;
+		RoomInfo roomInfo = this.viewModel.getRoom(x, y).getRoomInfo();
+
+		/*
+		boolean roomHasAnimations = false;
+		if (animationManager.hasAnimations(roomInfo)) {
+			roomHasAnimations = true;
+		}
+		*/
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
 			GraphicObject graphicObject = pair.getA();
+
+			// check for animation for this figure
+			if (graphicObject.getClickableObject() instanceof FigureInfo) {
+				FigureInfo figure = (FigureInfo) graphicObject.getClickableObject();
+				AnimationFrame animationImage = animationManager.getAnimationImage(figure, roomInfo);
+				if (animationImage != null) {
+					JDDimension figureInfoSize = dungeonObjectRenderer.getFigureInfoSize(figure);
+					JDImageLocated locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize
+							.getWidth(), figureInfoSize.getHeight());
+					TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(locatedImage.getImage(), atlasMap
+							.get(figure.getFigureClass()));
+					if (atlasRegionAnimationStep != null) {
+						batch.draw(atlasRegionAnimationStep, locatedImage.getX(roomOffsetX), locatedImage.getY(roomOffsetY), locatedImage
+								.getWidth(), locatedImage.getHeight());
+					}
+
+					// we had an animation so we finish of this object
+					continue;
+				}
+			}
+
+			// no animation present for this object
 			if (graphicObject instanceof JDGraphicObject) {
 				if (atlasRegion != null) {
 					JDGraphicObject object = ((JDGraphicObject) graphicObject);
 					JDImageLocated locatedImage = object.getLocatedImage();
-					int posX = locatedImage.getX(x * WorldRenderer.ROOM_SIZE);
-					int posY = locatedImage.getY(y * WorldRenderer.ROOM_SIZE);
-					batch.draw(atlasRegion, posX, posY, locatedImage.getWidth(), locatedImage.getHeight());
+					batch.draw(atlasRegion, locatedImage.getX(roomOffsetX), locatedImage.getY(roomOffsetY), locatedImage
+							.getWidth(), locatedImage.getHeight());
 				}
 			}
 			else {
 				if (atlasRegion != null) {
 					DrawingRectangle destinationRectangle = graphicObject.getRectangle();
-					int posX = destinationRectangle.getX(x * WorldRenderer.ROOM_SIZE);
-					int posY = destinationRectangle.getY(y * WorldRenderer.ROOM_SIZE);
-					batch.draw(atlasRegion, posX, posY, destinationRectangle.getWidth(), destinationRectangle.getHeight());
+					batch.draw(atlasRegion, destinationRectangle.getX(roomOffsetX), destinationRectangle.getY(roomOffsetY), destinationRectangle
+							.getWidth(), destinationRectangle.getHeight());
 				}
 			}
 		}
@@ -164,6 +210,19 @@ public class WorldRenderer implements Disposable {
 		batch.dispose();
 	}
 
+	/**
+	 * Handles a mouse click on the world, doing
+	 * either a delegate to the ActionAssembler or
+	 * setting the focus on the clicked world object
+	 * using the FocusManager
+	 *
+	 * @param screenX    world coordinate x
+	 * @param screenY    world coordinate y
+	 * @param pointer    todo: what is it?
+	 * @param button     button (mouse: button 0 = left click; button 1 = right click)
+	 * @param controller connection to player to delegate further action to
+	 * @return whether the click event has been processed
+	 */
 	public boolean checkWorldClick(int screenX, int screenY, int pointer, int button, PlayerController controller) {
 
 		// reset highlight object information
@@ -199,7 +258,8 @@ public class WorldRenderer implements Disposable {
 					if (clickedObject instanceof ChestInfo) {
 						EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
 					}
-				} else {
+				}
+				else {
 					// remember some data for rendering of highlight box
 					focusManager.setWorldFocusObject((clickedGraphicObject));
 					DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
@@ -209,9 +269,6 @@ public class WorldRenderer implements Disposable {
 					highlightTexture = new Texture(highlightBox);
 					highlightedObject = clickedObject;
 				}
-
-
-
 
 				return true;
 			}

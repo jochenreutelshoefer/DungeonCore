@@ -22,6 +22,7 @@ public class FleePercept extends OpticalPercept {
 	private boolean success;
 	
 	public FleePercept(Figure f, Room from, int dir,boolean suc) {
+		super(f.getLocation());
 		this.f = f;
 		this.from = from;
 		this.dir = dir;

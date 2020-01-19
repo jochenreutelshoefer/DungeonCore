@@ -13,6 +13,7 @@ import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import graphics.GraphicObject;
+import log.Log;
 
 import de.jdungeon.app.screen.GraphicObjectComparator;
 import de.jdungeon.util.Pair;

@@ -226,7 +226,6 @@ public class GameScreenPerceptHandler {
 		if (set != null) {
 			screen.startAnimation(set, user);
 		}
-
 	}
 
 	private void handleMovePercept(MovePercept p) {

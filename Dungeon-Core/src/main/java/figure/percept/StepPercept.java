@@ -19,6 +19,7 @@ public class StepPercept extends OpticalPercept {
 	private int to;
 	
 	public StepPercept(Figure f, int from, int to) {
+		super(f.getLocation());
 		this.f = f;
 		this.from = from;
 		this.to = to;

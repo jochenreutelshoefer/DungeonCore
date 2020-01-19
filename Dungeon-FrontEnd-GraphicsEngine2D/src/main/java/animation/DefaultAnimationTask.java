@@ -11,6 +11,7 @@ import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import graphics.JDImageProxy;
 
@@ -24,17 +25,13 @@ public class DefaultAnimationTask implements AnimationTask {
 	private final String text;
 	boolean wasStarted = false;
 	private final Position.Pos from;
-	private final RoomInfo room;
 
-	public Percept getPercept() {
+	public OpticalPercept getPercept() {
 		return percept;
 	}
 
-	public void setPercept(Percept percept) {
-		this.percept = percept;
-	}
 
-	private Percept percept;
+	private final OpticalPercept percept;
 
 	public void setUrgent(boolean urgent) {
 		this.urgent = urgent;
@@ -43,8 +40,13 @@ public class DefaultAnimationTask implements AnimationTask {
 	// urgent animations are rendered instantly (not queued up)
 	private boolean urgent;
 
-	public RoomInfo getRoom() {
-		return room;
+	public JDPoint getRoom() {
+		return percept.getLocation();
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " "+ percept.toString()+" " +  getRoom()+ " " + text;
 	}
 
 	private Position.Pos to = null;
@@ -54,11 +56,11 @@ public class DefaultAnimationTask implements AnimationTask {
 		return info;
 	}
 
-	public DefaultAnimationTask(DefaultAnimationSet ani, String text, FigureInfo info, Position.Pos from, Position.Pos to, RoomInfo room) {
+	public DefaultAnimationTask(DefaultAnimationSet ani, String text, FigureInfo info, Position.Pos from, Position.Pos to, OpticalPercept percept) {
 		this.ani = ani;
 		this.text = text;
 		this.from = from;
-		this.room = room;
+		this.percept = percept;
 		if(to == null) {
 			PositionInRoomInfo pos = info.getPos();
 			// might be null for instance for door-smash percepts in other (not visible) room

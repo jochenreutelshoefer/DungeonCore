@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 import dungeon.JDPoint;
 import log.Log;
@@ -43,7 +44,7 @@ public class RoomObservationStatus {
 	
 	private final Figure figure;
 	
-	private final List<VisibilityModifier> visibilityModifier = new LinkedList<VisibilityModifier>();
+	private final List<VisibilityModifier> visibilityModifier = new Vector<VisibilityModifier>();
 
 	public RoomObservationStatus(Figure map, JDPoint p) {
 		this.figure = map;
@@ -103,21 +104,27 @@ public class RoomObservationStatus {
 		}
 	}
 
-	private synchronized int getMaxVisModifierValue(int max) {
-		for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
-				.hasNext();) {
-			VisibilityModifier element = iter.next();
-			if(element.getVisibilityStatus() > max) {
-				max = element.getVisibilityStatus();
+	private int getMaxVisModifierValue(int max) {
+		synchronized (visibilityModifier) {
+
+			for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
+					.hasNext();) {
+				VisibilityModifier element = iter.next();
+				if(element.getVisibilityStatus() > max) {
+					max = element.getVisibilityStatus();
+				}
 			}
+			return max;
 		}
-		return max;
 	}
 
-	public synchronized int getVisibilityStatus() {
-		if(JDEnv.visCheat) {
-			return VISIBILITY_SECRET;
-		}
+
+
+
+
+
+
+	public int getVisibilityStatus() {
 		return Math.max(discoveryStatus, getMaxVisModifierValue(VISIBILITY_UNDISCOVERED));
 	}
 

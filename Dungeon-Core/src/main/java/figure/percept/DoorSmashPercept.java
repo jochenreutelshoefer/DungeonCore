@@ -10,7 +10,9 @@ public class DoorSmashPercept extends OpticalPercept {
 	
 	private final Figure victim;
 	private final int value;
+
 	public DoorSmashPercept(Figure f, int value) {
+		super(f.getLocation());
 		this.value = value;
 		this.victim = f;
 	}

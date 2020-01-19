@@ -35,6 +35,7 @@ import de.jdungeon.app.event.ClickType;
 import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.event.InventoryItemClickedEvent;
 import de.jdungeon.app.gui.activity.Activity;
+import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 
 /**
  * The Action controller takes User Interface interactions, such as clicked objects,
@@ -258,6 +259,7 @@ public class ActionController implements EventListener {
 		Collection<Class<? extends Event>> events = new ArrayList<>();
 		events.add(InventoryItemClickedEvent.class);
 		events.add(EndRoundEvent.class);
+		events.add(ShrineButtonClickedEvent.class);
 		return events;
 	}
 
@@ -272,6 +274,10 @@ public class ActionController implements EventListener {
 				inventoryItemLongClicked(e.getType(), e.getItem());
 			}
 
+		}
+		if (event instanceof ShrineButtonClickedEvent) {
+			List<Action> actions = this.getActionAssembler().wannaUseShrine(this.figure.getRoomInfo(), false);
+			plugActions(actions);
 		}
 
 		if (event instanceof EndRoundEvent) {

@@ -16,9 +16,9 @@ import figure.FigureInfo;
 
 public class MovePercept extends OpticalPercept {
 	
-	private Room from;
-	private Room to;
-	private Figure figure;
+	private final Room from;
+	private final Room to;
+	private final Figure figure;
 	
 	public RoomInfo getFrom() {
 		return new RoomInfo(from,viewer.getRoomVisibility());
@@ -31,6 +31,7 @@ public class MovePercept extends OpticalPercept {
 
 
 	public MovePercept(Figure f, Room r1, Room r2) {
+		super(r1.getNumber(), r2.getNumber());
 		figure = f;
 		from = r1;
 		to = r2;

@@ -11,6 +11,7 @@ public class BreakSpellPercept extends OpticalPercept {
 	private Figure f;
 
 	public BreakSpellPercept(Figure f) {
+		super(f.getLocation());
 		this.f = f;
 		
 	}

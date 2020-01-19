@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import animation.AnimationManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -85,8 +86,10 @@ public class GameScreen extends AbstractGameScreen {
 		inputController = new GameScreenInputController(game, playerController, this);
 		Gdx.input.setInputProcessor(inputController);
 
+		AnimationManager animationManager = new AnimationManager();
+
 		figure = playerController.getFigure();
-		perceptHandler = new GameScreenPerceptHandler(this, figure);
+		perceptHandler = new GameScreenPerceptHandler(this, figure, animationManager);
 		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
 		playerController.setViewModel(viewModel);
 		movieSequenceManager = new LibgdxCameraFlightSequenceManager(cameraHelper); // todo: access should not be static
@@ -106,7 +109,7 @@ public class GameScreen extends AbstractGameScreen {
 
 		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure);
 		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, guiRenderer
-				.getFocusManager());
+				.getFocusManager(), animationManager);
 
 		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 	}

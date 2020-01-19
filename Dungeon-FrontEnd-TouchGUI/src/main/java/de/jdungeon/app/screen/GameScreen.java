@@ -27,6 +27,7 @@ import figure.action.ShrineAction;
 import figure.action.StepAction;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import game.InfoEntity;
 import game.PerceptHandler;
@@ -471,12 +472,12 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 						Image roomOffscreenImage = DrawUtils.drawObjects(gr,
 								graphicObjectsForRoom,
 								getViewportPosition(),
-								roomInfo,
 								roomOffsetX,
 								roomOffsetY,
 								this,
 								dungeonRenderer,
-								(int)roomSize);
+								(int)roomSize,
+								roomInfo);
 
 						if (roomOffscreenImage != null) {
 							this.drawnRooms.put(roomInfo.getPoint(), roomOffscreenImage);
@@ -1010,9 +1011,8 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, RoomInfo room, String text, boolean delayed, boolean urgent, boolean postDelay, Percept percept, JDImageProxy delayImage) {
 		DefaultAnimationTask task = new DefaultAnimationTask(ani,
-				text, figure, from, to, room);
+				text, figure, from, to, (OpticalPercept)percept);
 		task.setUrgent(urgent);
-		task.setPercept(percept);
 		AnimationManager.getInstance().startAnimation(task, figure,  delayed, postDelay, delayImage);
 	}
 

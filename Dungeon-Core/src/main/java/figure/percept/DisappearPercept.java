@@ -14,6 +14,7 @@ public class DisappearPercept extends OpticalPercept {
 	private Room from;
 	
 	public DisappearPercept(Figure f, Room from) {
+		super(from.getNumber());
 		this.f = f;
 		this.from = from;
 	}

@@ -60,8 +60,6 @@ public class JDEnv {
 		return res;
 	}
 
-	public static boolean visCheat = false;
-
 	public static void setRes(ResourceBundle res) {
 		JDEnv.res = res;
 	}

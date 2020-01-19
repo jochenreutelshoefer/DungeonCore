@@ -620,7 +620,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public String toString() {
-		return (this.getClass().getSimpleName() + " " + this.getName());
+		return (this.getClass().getSimpleName() + " " + this.getName() + " "+pos);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public class ItemDroppedPercept extends OpticalPercept {
 	private Figure f;
 	
 	public ItemDroppedPercept(List<Item> items, Figure f) {
+		super(f.getLocation());
 		this.items = items;
 		this.f = f;
 	}

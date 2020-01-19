@@ -13,6 +13,7 @@ import java.util.Set;
 
 import de.jdungeon.game.AbstractAudioSet;
 import graphics.JDImageProxy;
+import log.Log;
 
 public class DefaultAnimationSet implements AnimationSet {
 
@@ -83,6 +84,9 @@ public class DefaultAnimationSet implements AnimationSet {
 		}
 
 		totalDuration = sumArray(times);
+		if(ims.length <= 1) {
+			Log.warning("AnimationSet <= 1; dauer: "+totalDuration);
+		}
 
 	}
 
