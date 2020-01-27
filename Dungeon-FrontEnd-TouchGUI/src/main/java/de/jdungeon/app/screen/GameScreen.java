@@ -42,7 +42,7 @@ import user.DefaultDungeonSession;
 import util.JDColor;
 import util.JDDimension;
 
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.DrawUtils;
 import de.jdungeon.app.GameScreenPerceptHandler;
 import de.jdungeon.app.audio.MusicManager;
@@ -105,7 +105,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	private float preFightRoomSize;
 	private final int maxRoomSize = 400;
 	private final int minRoomSize = 100;
-	private ActionController actionAssembler;
+	private ActionAssembler actionAssembler;
 
 	private long lastDoubleTapEventTime = -1;
 	private final RenderTimeLog renderTimeLog = new RenderTimeLog();
@@ -160,7 +160,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 		hero.setControl(gui);
 
 
-		actionAssembler = new ActionController(figureInfo, gui);
+		actionAssembler = new ActionAssembler(figureInfo, gui);
 
 
 		initGUIElements();
@@ -285,7 +285,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 	}
 
 
-	public ActionController getActionAssembler() {
+	public ActionAssembler getActionAssembler() {
 		return actionAssembler;
 	}
 
@@ -848,7 +848,7 @@ public class GameScreen extends StandardScreen implements EventListener, Percept
 
 	private Object findClickedObjectsInRoom(JDPoint inGameLocation,
 											List<GraphicObject> roomObjects, int roomOffsetX, int roomOffsetY) {
-		Collections.sort(roomObjects, new GraphicObjectComparator());
+		Collections.sort(roomObjects, new GraphicObjectClickComparator());
 		Object clickedObject = null;
 		for (GraphicObject graphicObject : roomObjects) {
 			if (graphicObject.hasPoint(inGameLocation, roomOffsetX, roomOffsetY)) {

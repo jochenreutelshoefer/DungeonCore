@@ -43,11 +43,11 @@ import log.Log;
 import spell.SpellInfo;
 import spell.TargetScope;
 
-public class ActionAssembler {
+public class ActionAssemblerHelper {
 
 	private final FigureInfo figure;
 
-	public ActionAssembler(FigureInfo figure) {
+	public ActionAssemblerHelper(FigureInfo figure) {
 		this.figure = figure;
 	}
 

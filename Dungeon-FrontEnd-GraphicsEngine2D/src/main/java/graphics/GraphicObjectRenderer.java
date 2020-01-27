@@ -1124,6 +1124,15 @@ public class GraphicObjectRenderer {
 			}
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
+
+			// draw dead figures first, as they lay down on the floor
+			final List<FigureInfo> deadFigures = r.getDeadFigureInfos();
+			if (deadFigures != null && !deadFigures.isEmpty()) {
+				GraphicObject[] deadFigureObs = drawDeadFigures(deadFigures);
+				graphObs.addAll(Arrays.asList(deadFigureObs));
+			}
+
+			// draw alive figures second to be displayed in foreground
 			final List<MonsterInfo> monsterInfos = r.getMonsterInfos();
 			if (monsterInfos != null && !monsterInfos.isEmpty()) {
 				GraphicObject[] monsterObs = drawMonster(monsterInfos);
@@ -1134,11 +1143,7 @@ public class GraphicObjectRenderer {
 				}
 			}
 
-			final List<FigureInfo> deadFigures = r.getDeadFigureInfos();
-			if (deadFigures != null && !deadFigures.isEmpty()) {
-				GraphicObject[] deadFigureObs = drawDeadFigures(deadFigures);
-				graphObs.addAll(Arrays.asList(deadFigureObs));
-			}
+
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
 

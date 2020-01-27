@@ -17,7 +17,6 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
 import graphics.GraphicObjectRenderer;
-import text.Statement;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
@@ -47,7 +46,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private final PlayerController playerController;
 
-	private GameScreenInputController inputController;
+	private GameScreenInputProcessor inputController;
 	private ViewModel viewModel;
 	private WorldRenderer worldRenderer;
 	private GUIRenderer guiRenderer;
@@ -83,7 +82,7 @@ public class GameScreen extends AbstractGameScreen {
 			glProfiler.enable();
 		}
 
-		inputController = new GameScreenInputController(game, playerController, this);
+		inputController = new GameScreenInputProcessor(game, playerController, this);
 		Gdx.input.setInputProcessor(inputController);
 
 		AnimationManager animationManager = new AnimationManager();

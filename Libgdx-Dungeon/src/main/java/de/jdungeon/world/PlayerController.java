@@ -1,6 +1,5 @@
 package de.jdungeon.world;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -19,13 +18,21 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
-import log.Log;
 import text.StatementManager;
 
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 
 /**
+ * This class basically controls the interaction from the world (world loop)
+ * and the user interface (gui actions).
+ *
+ * It is a thread dashboard, where objects are put by one thread and collected by another.
+ * - game thread puts percepts, that the player perceives about the world and that need to be visualized in some way on the UI
+ * - game thread puts visibility increase/decrease notifications, saying that the player can see parts of the world that he could not before or vice versa
+ * - the black board for player action handling is done within the action controller, which is part of the player controller
+ *
+ *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 03.01.20.
  */
@@ -33,7 +40,7 @@ public class PlayerController implements JDGUI {
 
 	private final HeroInfo heroInfo;
 
-	private final ActionController actionController;
+	private final ActionAssembler actionAssembler;
 
 	private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
 	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
@@ -47,19 +54,37 @@ public class PlayerController implements JDGUI {
 
 	public PlayerController(HeroInfo heroInfo) {
 		this.heroInfo = heroInfo;
-		this.actionController = new ActionController(heroInfo, this);
+		this.actionAssembler = new ActionAssembler(heroInfo, this);
 	}
 
 	public void setGameScreen(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
 	}
 
+	/**
+	 * Thread-blackboard put method (called by UI-Thread)
+	 *
+	 * The gui thread plugs an action to be performed by the UI-controlled figure.
+	 *
+	 * Adds a particular Action to the action sequence to be executed
+	 *
+	 * @param action action to be executed
+	 */
 	@Override
-	public void plugAction(Action a) {
+	public void plugAction(Action action) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		actionQueue.add(a);
+		actionQueue.add(action);
 	}
 
+	/**
+	 * Thread-blackboard put method (called by UI-Thread)
+	 *
+	 * The gui thread plugs a sequence of actions to be performed by the UI-controlled figure.
+	 *
+	 * Adds a sequences of Actions to the characters' action sequence to be executed
+	 *
+	 * @param actions actions to be executed
+	 */
 	@Override
 	public void plugActions(List<Action> actions) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
@@ -71,8 +96,8 @@ public class PlayerController implements JDGUI {
 
 	}
 
-	public ActionController getActionController() {
-		return actionController;
+	public ActionAssembler getActionAssembler() {
+		return actionAssembler;
 	}
 
 	@Override
@@ -157,7 +182,7 @@ public class PlayerController implements JDGUI {
 				return actionQueue.remove(0);
 			}
 			else {
-				actionController.triggerPlannedActions();
+				actionAssembler.triggerPlannedActions();
 			}
 		}
 		return null;

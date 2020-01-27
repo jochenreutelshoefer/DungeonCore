@@ -5,14 +5,13 @@ import java.util.List;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
 
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.welcome.StartScreen;
 
@@ -20,9 +19,9 @@ import de.jdungeon.welcome.StartScreen;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 24.12.19.
  */
-public class GameScreenInputController extends GestureDetector {
+public class GameScreenInputProcessor extends GestureDetector {
 
-	private static final String TAG = GameScreenInputController.class.getName();
+	private static final String TAG = GameScreenInputProcessor.class.getName();
 
 
 
@@ -33,7 +32,7 @@ public class GameScreenInputController extends GestureDetector {
 
 	private final GameScreen gameScreen;
 
-	public GameScreenInputController(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
+	public GameScreenInputProcessor(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
 		super(new MyGestureListener(gameScreen.getCameraHelper()));
 		cameraHelper = gameScreen.getCameraHelper();
 		this.game = game;
@@ -123,11 +122,11 @@ public class GameScreenInputController extends GestureDetector {
 			return;
 		}
 		last_key_pressed_event = System.currentTimeMillis();
-		ActionController actionController = playerController.getActionController();
+		ActionAssembler actionController = playerController.getActionAssembler();
 		List<Action> actions = actionController
 				.getActionAssembler()
 				.wannaWalk(direction.getValue());
-		actionController.plugActions(actions);
+		playerController.plugActions(actions);
 	}
 
 	private void moveCamera(float x, float y) {

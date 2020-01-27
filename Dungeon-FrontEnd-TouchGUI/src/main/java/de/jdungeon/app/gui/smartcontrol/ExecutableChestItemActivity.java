@@ -4,7 +4,7 @@ import audio.AudioEffectsManager;
 import figure.action.TakeItemFromChestAction;
 import item.ItemInfo;
 
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -12,7 +12,7 @@ import de.jdungeon.app.ActionController;
  */
 public class ExecutableChestItemActivity extends ExecutableTakeItemActivity {
 
-	public ExecutableChestItemActivity(ActionController control, ItemInfo item) {
+	public ExecutableChestItemActivity(ActionAssembler control, ItemInfo item) {
 		super(control, item);
 	}
 

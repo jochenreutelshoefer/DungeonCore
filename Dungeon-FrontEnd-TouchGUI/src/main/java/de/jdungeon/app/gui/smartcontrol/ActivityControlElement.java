@@ -5,7 +5,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import util.JDDimension;
 
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.activity.ExecutableActivity;
 import de.jdungeon.game.Graphics;
@@ -21,11 +21,11 @@ public class ActivityControlElement extends AnimatedSmartControlElement {
 	private final GUIElement parent;
 	private final RouteInstruction.Direction direction;
 	private final FigureInfo figure;
-	private final ActionController guiControl;
+	private final ActionAssembler guiControl;
 	private final ExecutableActivity activity;
 	private final Image skillImage;
 
-	public ActivityControlElement(JDPoint position, final JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, ActionController guiControl, ExecutableActivity activity, final Image skillImage) {
+	public ActivityControlElement(JDPoint position, final JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, ActionAssembler guiControl, ExecutableActivity activity, final Image skillImage) {
 		super(position, dimension, parent);
 		this.parent = parent;
 		this.direction = direction;

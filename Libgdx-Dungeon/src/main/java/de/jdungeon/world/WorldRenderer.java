@@ -251,7 +251,7 @@ public class WorldRenderer implements Disposable {
 					// hence we can trigger an action
 					//actionAssembler.objectClicked(clickedObject, true);
 
-					controller.getActionController().objectClicked(clickedObject, false);
+					controller.getActionAssembler().objectClicked(clickedObject, false);
 					focusManager.setWorldFocusObject((clickedGraphicObject));
 
 					// exception for chest handing, to be solved better one day

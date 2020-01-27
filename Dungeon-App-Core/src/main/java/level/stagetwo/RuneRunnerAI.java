@@ -1,16 +1,14 @@
 package level.stagetwo;
 
 import ai.AbstractAI;
-import ai.ActionAssembler;
+import ai.ActionAssemblerHelper;
 import ai.AttitudeMonsterDefault;
 import ai.ChaserAI;
-import ai.DefaultMonsterIntelligence;
 import ai.SurvivorBehaviour;
 import dungeon.JDPoint;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.percept.Percept;
-import item.Item;
 import item.ItemInfo;
 
 /**
@@ -23,7 +21,7 @@ public class RuneRunnerAI extends AbstractAI {
 	private final FigureInfo figure;
 	private final ItemInfo item;
 	private final ChaserAI chaser;
-	private final ActionAssembler actionAssembler;
+	private final ActionAssemblerHelper actionAssembler;
 
 	public RuneRunnerAI(FigureInfo figure, ItemInfo item) {
 		super(new AttitudeMonsterDefault());
@@ -32,7 +30,7 @@ public class RuneRunnerAI extends AbstractAI {
 		survivor = new SurvivorBehaviour(figure);
 		chaser = new ChaserAI();
 		chaser.setFigure(figure);
-		actionAssembler = new ActionAssembler(figure);
+		actionAssembler = new ActionAssemblerHelper(figure);
 	}
 
 	@Override

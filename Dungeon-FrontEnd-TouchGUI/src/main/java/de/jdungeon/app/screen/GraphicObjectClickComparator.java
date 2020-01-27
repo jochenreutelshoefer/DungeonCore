@@ -16,16 +16,17 @@ import shrine.ShrineInfo;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 18.01.18.
  */
-public class GraphicObjectComparator implements Comparator<GraphicObject> {
+public class GraphicObjectClickComparator implements Comparator<GraphicObject> {
 
 	private static final int FLOOR = 0;
 	private static final int SHRINE = 1;
 	private static final int CHEST = 2;
 	private static final int ITEM = 3;
 	private static final int POSITION = 4;
-	private static final int FIGURE = 5;
-	private static final int DOOR = 6;
-	private static final int SPOT = 7;
+	private static final int FIGURE_DEAD = 5;
+	private static final int FIGURE = 6;
+	private static final int DOOR = 7;
+	//private static final int SPOT = 8;
 
 	@Override
 	public int compare(GraphicObject arg0, GraphicObject arg1) {
@@ -55,6 +56,9 @@ public class GraphicObjectComparator implements Comparator<GraphicObject> {
 			return FLOOR;
 		}
 		if (o instanceof FigureInfo) {
+			if(((FigureInfo)o).isDead()) {
+				return FIGURE_DEAD;
+			}
 			return FIGURE;
 		}
 		if (o instanceof DoorInfo) {
@@ -68,9 +72,6 @@ public class GraphicObjectComparator implements Comparator<GraphicObject> {
 		}
 		if (o instanceof ChestInfo) {
 			return CHEST;
-		}
-		if (o instanceof SpotInfo) {
-			return SPOT;
 		}
 		if (o instanceof ItemInfo) {
 			return ITEM;

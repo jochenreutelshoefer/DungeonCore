@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import audio.AudioEffectsManager;
-import ai.ActionAssembler;
-import control.JDGUIEngine2D;
+import ai.ActionAssemblerHelper;
 import dungeon.ChestInfo;
 import dungeon.Dir;
 import dungeon.DoorInfo;
@@ -27,7 +26,6 @@ import game.JDGUI;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
-import log.Log;
 import shrine.ShrineInfo;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -43,19 +41,19 @@ import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
  *
  */
 
-public class ActionController implements EventListener {
+public class ActionAssembler implements EventListener {
 
 	private final FigureInfo figure;
 	private final JDGUI gui;
 	private Action lastAction;
 	private int repeatActionCounter;
 
-	private final ActionAssembler actionAssembler;
+	private final ActionAssemblerHelper actionAssembler;
 
-	public ActionController(FigureInfo figure, JDGUI gui) {
+	public ActionAssembler(FigureInfo figure, JDGUI gui) {
 		this.figure = figure;
 		this.gui = gui;
-		actionAssembler = new ActionAssembler(figure);
+		actionAssembler = new ActionAssemblerHelper(figure);
 		EventManager.getInstance().registerListener(this);
 	}
 
@@ -74,6 +72,10 @@ public class ActionController implements EventListener {
 	}
 
 	/**
+	 * Thread-blackboard put method (called by UI-Thread)
+	 *
+	 * The gui thread plugs an action to be performed by the UI-controlled figure.
+	 *
 	 * Adds a particular Action to the action sequence to be executed
 	 *
 	 * @param action action to be executed
@@ -83,6 +85,10 @@ public class ActionController implements EventListener {
 	}
 
 	/**
+	 * Thread-blackboard put method (called by UI-Thread)
+	 *
+	 * The gui thread plugs a sequence of actions to be performed by the UI-controlled figure.
+	 *
 	 * Adds a sequences of Actions to the characters' action sequence to be executed
 	 *
 	 * @param l actions to be executed
@@ -101,6 +107,7 @@ public class ActionController implements EventListener {
 				repeatActionCounter = 0;
 			}
 			lastAction = a;
+			// plugging action into the actual thread blackboard data
 			gui.plugAction(a);
 		}
 
@@ -138,7 +145,7 @@ public class ActionController implements EventListener {
 
 	}
 
-	public ActionAssembler getActionAssembler() {
+	public ActionAssemblerHelper getActionAssembler() {
 		return actionAssembler;
 	}
 

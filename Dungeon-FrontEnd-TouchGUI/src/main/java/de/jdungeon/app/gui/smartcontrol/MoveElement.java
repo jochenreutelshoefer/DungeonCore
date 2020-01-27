@@ -5,7 +5,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import util.JDDimension;
 
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Graphics;
@@ -20,7 +20,7 @@ public class MoveElement extends AnimatedSmartControlElement {
 	private final GUIElement parent;
 	private final RouteInstruction.Direction direction;
 	private final FigureInfo figure;
-	private final ActionController guiControl;
+	private final ActionAssembler guiControl;
 	private JDPoint[] triangle;
 	private final int parentX;
 	private final int parentY;
@@ -31,7 +31,7 @@ public class MoveElement extends AnimatedSmartControlElement {
 	private final int x2;
 	private final int y2;
 
-	public MoveElement(JDPoint position, JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, ActionController guiControl) {
+	public MoveElement(JDPoint position, JDDimension dimension, GUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, ActionAssembler guiControl) {
 		super(position, dimension, parent);
 		this.parent = parent;
 		this.direction = direction;

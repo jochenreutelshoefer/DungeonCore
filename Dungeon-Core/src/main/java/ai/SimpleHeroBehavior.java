@@ -25,7 +25,7 @@ import dungeon.JDPoint;
 public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 
 	private HeroInfo h;
-	private ActionAssembler actionAssembler;
+	private ActionAssemblerHelper actionAssembler;
 	private List<Action> moveActionQueue = new ArrayList<>();
 	private List<Action> fightActionQueue = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 		if (f instanceof HeroInfo) {
 			h = (HeroInfo) f;
 		}
-		actionAssembler = new ActionAssembler(h);
+		actionAssembler = new ActionAssemblerHelper(h);
 	}
 
 

@@ -43,7 +43,7 @@ import de.jdungeon.libgdx.LibgdxGraphics;
  */
 public class GUIRenderer implements Disposable {
 
-	private final GameScreenInputController inputController;
+	private final GameScreenInputProcessor inputController;
 	private final OrthographicCamera cameraGUI;
 	private final LibgdxDungeonMain game;
 	private final HeroInfo figure;
@@ -60,7 +60,7 @@ public class GUIRenderer implements Disposable {
 	private GUIImageManager guiImageManager;
 	private GameOverView gameOverView;
 
-	public GUIRenderer(GameScreenInputController inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
+	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
 		this.inputController = inputController;
 		this.cameraGUI = cameraGUI;
 		this.game = game;
@@ -126,7 +126,7 @@ public class GUIRenderer implements Disposable {
 
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, inputController
-				.getPlayerController().getActionController(), focusManager);
+				.getPlayerController().getActionAssembler(), focusManager);
 		this.guiElements.add(smartControl);
 
 

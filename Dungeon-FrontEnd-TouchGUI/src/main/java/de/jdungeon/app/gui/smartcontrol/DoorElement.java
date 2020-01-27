@@ -7,7 +7,7 @@ import figure.action.Action;
 import util.JDDimension;
 
 import de.jdungeon.app.DrawUtils;
-import de.jdungeon.app.ActionController;
+import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.game.Color;
@@ -25,9 +25,9 @@ public class DoorElement extends AnimatedSmartControlElement {
 	private final boolean hasKey;
 	private final Action action;
 	private final DoorInfo clickableObject;
-	private final ActionController guiControl;
+	private final ActionAssembler guiControl;
 
-	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, DoorInfo clickableObject, ActionController guiControl) {
+	public DoorElement(JDPoint position, final JDDimension dimension, final GUIElement parent, final boolean locked, final boolean hasKey, Action action, DoorInfo clickableObject, ActionAssembler guiControl) {
 		super(position, dimension, parent);
 		this.locked = locked;
 		this.hasKey = hasKey;

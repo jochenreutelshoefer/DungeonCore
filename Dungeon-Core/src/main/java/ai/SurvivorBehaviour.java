@@ -5,12 +5,10 @@ import java.util.List;
 
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.HealthLevel;
 import figure.action.Action;
-import figure.action.MoveAction;
 import figure.percept.Percept;
 
 /**
@@ -22,7 +20,7 @@ public class SurvivorBehaviour extends AbstractAI {
 	private final FigureInfo figure;
 	private final HeroPositionLog heroLog = new HeroPositionLog();
 	private final AbstractAI defaultAI;
-	private final ActionAssembler actionAssembler;
+	private final ActionAssemblerHelper actionAssembler;
 	List<Action> plannedActions = new ArrayList<>();
 
 	public SurvivorBehaviour(FigureInfo figure) {
@@ -30,7 +28,7 @@ public class SurvivorBehaviour extends AbstractAI {
 		this.figure = figure;
 		defaultAI = new DefaultMonsterIntelligence();
 		defaultAI.setFigure(figure);
-		actionAssembler = new ActionAssembler(figure);
+		actionAssembler = new ActionAssemblerHelper(figure);
 	}
 
 	@Override

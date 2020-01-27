@@ -6,16 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 import graphics.GraphicObject;
-import log.Log;
 
-import de.jdungeon.app.screen.GraphicObjectComparator;
+import de.jdungeon.app.screen.GraphicObjectClickComparator;
 import de.jdungeon.util.Pair;
 
 /**
@@ -34,7 +32,6 @@ public class ViewRoom {
 	private final GraphicObjectRenderCollection backGroundObjects = new GraphicObjectRenderCollection();
 
 	public final Map<Class<? extends Figure>, GraphicObjectRenderCollection> figureObjects = new HashMap<>();
-	public final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> figureObjectsTransport = new ArrayList<>();
 
 	public void setRoomInfo(RoomInfo roomInfo) {
 		this.roomInfo = roomInfo;
@@ -51,7 +48,7 @@ public class ViewRoom {
 			figureObjects.clear();
 			for (GraphicObject graphicObject : graphicObjectsForRoom) {
 				Object clickableObject = graphicObject.getClickableObject();
-				if (clickableObject instanceof FigureInfo) {
+				if (clickableObject instanceof FigureInfo && !((FigureInfo)clickableObject).isDead()) {
 					Class<? extends Figure> figureClass = ((FigureInfo) clickableObject).getFigureClass();
 					GraphicObjectRenderCollection figureList = figureObjects.get(figureClass);
 					if (figureList == null) {
@@ -72,7 +69,7 @@ public class ViewRoom {
 		for (GraphicObjectRenderCollection figures : figureObjects.values()) {
 			allRoomObjects.addAll(figures.getGraphicObjects());
 		}
-		Collections.sort(allRoomObjects, new GraphicObjectComparator());
+		Collections.sort(allRoomObjects, new GraphicObjectClickComparator());
 		GraphicObject clickedObject = null;
 		for (GraphicObject object : allRoomObjects) {
 			if (object.hasPoint(inGameLocation, roomOffsetX, roomOffsetY)) {
