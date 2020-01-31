@@ -18,12 +18,16 @@ import graphics.GraphicObjectRenderer;
 public class ViewModel {
 
 	private final FigureInfo figure;
-	private final ViewRoom [][] roomViews;
+	public final ViewRoom [][] roomViews;
+	public final int [][] roomOffSetsX;
+	public final int [][] roomOffSetsY;
 	private GraphicObjectRenderer renderer;
 
 	public ViewModel(FigureInfo figure, int sizeX, int sizeY) {
 		this.figure = figure;
 		roomViews = new ViewRoom[sizeX][sizeY];
+		roomOffSetsX = new int[sizeX][sizeY] ;
+		roomOffSetsY = new int[sizeX][sizeY] ;
 		init();
 	}
 
@@ -32,6 +36,9 @@ public class ViewModel {
 			for(int y = 0; y < roomViews[0].length; y++) {
 				roomViews[x][y] = new ViewRoom();
 				roomViews[x][y].setRoomInfo(figure.getRoomInfo(x, y));
+
+				roomOffSetsX[x][y] = x * WorldRenderer.ROOM_SIZE;;
+				roomOffSetsY[x][y] = y * WorldRenderer.ROOM_SIZE;;
 			}
 		}
 	}

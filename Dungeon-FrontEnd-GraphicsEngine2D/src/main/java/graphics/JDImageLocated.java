@@ -40,26 +40,33 @@ public class JDImageLocated implements DrawingRectangle {
 		return false;
 	}
 
+	/**
+	 * RENDER THREAD
+	 */
 	@Override
 	public int getWidth() {
-		Image image = (Image) this.image.getImage();
-		if(image.getHeight() == 128 && image.getWidth() == 128) {
+		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
 			// some of the figure animation images have size 128 instead of 96
 			return (sizeX * 128) / 96;
 		}
 		return sizeX;
 	}
 
+	/**
+	 * RENDER THREAD
+	 */
 	@Override
 	public int getHeight() {
-		Image image = (Image) this.image.getImage();
-		if(image.getHeight() == 128 && image.getWidth() == 128) {
+		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
 			// some of the figure animation images have size 128 instead of 96
 			return (sizeY * 128) / 96;
 		}
 		return sizeY;
 	}
 
+	/**
+	 * RENDER THREAD
+	 */
 	@Override
 	public int getX(int roomOffsetX) {
 
@@ -69,8 +76,7 @@ public class JDImageLocated implements DrawingRectangle {
 		} else {
 			xValue = posX;
 		}
-		Image resourceImage = (Image) this.image.getImage();
-		if(resourceImage.getHeight() == 128 && resourceImage.getWidth() == 128) {
+		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
 			// some of the figure animation images have size 128 instead of 96
 			int width = getWidth();
 			return (int) (xValue - (((((float)(width * 128 - width * 96))/96)/2)));
@@ -79,6 +85,9 @@ public class JDImageLocated implements DrawingRectangle {
 		}
 	}
 
+	/**
+	 * RENDER THREAD
+	 */
 	@Override
 	public int getY(int roomOffsetY) {
 
@@ -89,8 +98,7 @@ public class JDImageLocated implements DrawingRectangle {
 			yValue = posY;
 		}
 
-		Image resourceImage = (Image) this.image.getImage();
-		if(resourceImage.getHeight() == 128 && resourceImage.getWidth() == 128) {
+		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
 			// some of the figure animation images have size 128 instead of 96
 			int height = getHeight();
 			return (int) (yValue - (((((float)(height * 128 - height * 96))/96)/2)));

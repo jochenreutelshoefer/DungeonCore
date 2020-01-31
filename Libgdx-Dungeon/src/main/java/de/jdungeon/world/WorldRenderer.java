@@ -29,6 +29,7 @@ import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
+import graphics.JDImageProxy;
 import graphics.util.DrawingRectangle;
 import util.JDDimension;
 
@@ -127,9 +128,10 @@ public class WorldRenderer implements Disposable {
 	 *	RENDER THREAD
 	 */
 	private void renderDungeonBackgroundObjectsForAllRooms() {
-		for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
-			for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
-				ViewRoom room = viewModel.getRoom(x, y);
+		for (int x = 0; x < viewModel.roomViews.length; x++) {
+			for (int y = 0; y < viewModel.roomViews[0].length; y++) {
+				//ViewRoom room = viewModel.getRoom(x, y);
+				ViewRoom room = viewModel.roomViews[x][y];
 
 				// fetch prepared render information
 				List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = room.getBackgroundObjectsForRoom();
@@ -139,6 +141,8 @@ public class WorldRenderer implements Disposable {
 					room.setGraphicObjects(graphicObjectsForRoom);
 					renderInformation = room.getBackgroundObjectsForRoom();
 				}
+
+				// actual drawing call
 				drawGraphicObjectsToSpritebatch(renderInformation, x, y);
 			}
 		}
@@ -165,24 +169,17 @@ public class WorldRenderer implements Disposable {
 	 *	RENDER THREAD
 	 */
 	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
-		int roomOffsetX = x * WorldRenderer.ROOM_SIZE;
-		int roomOffsetY = y * WorldRenderer.ROOM_SIZE;
-		RoomInfo roomInfo = this.viewModel.getRoom(x, y).getRoomInfo();
+		int roomOffsetX = viewModel.roomOffSetsX[x][y];
+		int roomOffsetY = viewModel.roomOffSetsY[x][y];
 
-		/*
-		boolean roomHasAnimations = false;
-		if (animationManager.hasAnimations(roomInfo)) {
-			roomHasAnimations = true;
-		}
-		*/
+
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
-			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
 			GraphicObject graphicObject = pair.getA();
 
 			// check for animation for this figure
 			if (graphicObject.getClickableObject() instanceof FigureInfo) {
 				FigureInfo figure = (FigureInfo) graphicObject.getClickableObject();
-				AnimationFrame animationImage = animationManager.getAnimationImage(figure, roomInfo);
+				AnimationFrame animationImage = animationManager.getAnimationImage(figure, this.viewModel.roomViews[x][y].getRoomInfo());
 				if (animationImage != null) {
 					JDDimension figureInfoSize = dungeonObjectRenderer.getFigureInfoSize(figure);
 					JDImageLocated locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize
@@ -199,11 +196,11 @@ public class WorldRenderer implements Disposable {
 				}
 			}
 
+			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
 			// no animation present for this object
 			if (graphicObject instanceof JDGraphicObject) {
 				if (atlasRegion != null) {
-					JDGraphicObject object = ((JDGraphicObject) graphicObject);
-					JDImageLocated locatedImage = object.getLocatedImage();
+					JDImageLocated locatedImage = ((JDGraphicObject) graphicObject).getLocatedImage();
 					batch.draw(atlasRegion, locatedImage.getX(roomOffsetX), locatedImage.getY(roomOffsetY), locatedImage
 							.getWidth(), locatedImage.getHeight());
 				}
