@@ -2094,7 +2094,7 @@ public abstract class Figure extends DungeonWorldObject
 			// TODO: we need a security mechanism here:
 			while (a == null) {
 				try {
-					Thread.currentThread().sleep(80);
+					Thread.currentThread().sleep(150);
 				}
 				catch (InterruptedException e) {
 					// TODO Auto-generated catch block

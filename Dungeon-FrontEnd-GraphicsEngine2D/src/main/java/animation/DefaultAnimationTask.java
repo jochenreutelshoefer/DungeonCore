@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import de.jdungeon.game.AbstractAudioSet;
+
+import com.badlogic.gdx.utils.Pool;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
@@ -25,6 +27,9 @@ public class DefaultAnimationTask implements AnimationTask {
 	private final String text;
 	boolean wasStarted = false;
 	private final Position.Pos from;
+
+
+
 
 	public OpticalPercept getPercept() {
 		return percept;
@@ -73,16 +78,25 @@ public class DefaultAnimationTask implements AnimationTask {
 		this.info = info;
 	}
 
+	/*
+	 * RENDER THREAD
+	 */
 	@Override
 	public boolean isFinished() {
 		return getCurrentAnimationFrame() == null;
 	}
 
+	/*
+	 * RENDER THREAD
+	 */
 	@Override
 	public boolean isUrgent() {
 		return this.urgent;
 	}
 
+	/*
+	 * RENDER THREAD
+	 */
 	@Override
 	public AnimationFrame getCurrentAnimationFrame() {
 		if (!wasStarted) {
@@ -90,10 +104,6 @@ public class DefaultAnimationTask implements AnimationTask {
 			startTime = System.currentTimeMillis();
 		}
 		long timePassed = System.currentTimeMillis() - startTime;
-		// if (timePassed < 0) {
-		// // has not started yet
-		// return null;
-		// }
 		int imageNr = ani.getImageNrAtTime(timePassed);
 		int totalDuration = ani.getTotalDuration();
 		double currentProgress = ((double)timePassed)/totalDuration;
@@ -106,20 +116,30 @@ public class DefaultAnimationTask implements AnimationTask {
 		}
 
 		if (text == null) {
-
-			/*
-			 * TODO: optimize use of AnimationFrame Objects here
-			 */
-			return new AnimationFrame(currentImage, currentProgress, from, to);
+			AnimationFrame frame = AnimationManager.getInstance().framePool.obtain();
+			frame.setImage(currentImage);
+			frame.setCurrentProgress(currentProgress);
+			frame.setFrom(from);
+			frame.setTo(to);
+			return frame;
 		}
 		else {
 			Image image = (Image) currentImage.getImage();
-			return new AnimationFrame(currentImage, text, new JDPoint(
-					image.getWidth() * 3 / 8,
-					(image.getHeight() / 5) - imageNr), currentProgress, from, to);
+			AnimationFrame frame = AnimationManager.getInstance().framePool.obtain();
+			frame.setImage(currentImage);
+			frame.setText(text);
+			frame.setCurrentProgress(currentProgress);
+			frame.setTextCoordinatesOffsetX(image.getWidth() * 3 / 8);
+			frame.setTextCoordinatesOffsetY((image.getHeight() / 5) - imageNr);
+			frame.setFrom(from);
+			frame.setTo(to);
+			return frame;
 		}
 	}
 
+	/*
+	 * RENDER THREAD
+	 */
 	private JDImageProxy<?> getCurrentImage(int imageNr, long timePassed) {
 
 		// check sound associated to this animation

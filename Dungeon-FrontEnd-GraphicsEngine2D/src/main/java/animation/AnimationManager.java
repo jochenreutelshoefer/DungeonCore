@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import com.badlogic.gdx.utils.Pool;
 import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
@@ -27,6 +28,21 @@ public class AnimationManager {
 		return instance;
 	}
 
+	public AnimationObjectPool framePool = new AnimationObjectPool();
+
+	public static class AnimationObjectPool extends Pool<AnimationFrame> {
+
+		@Override
+		protected AnimationFrame newObject() {
+			return new AnimationFrame();
+		}
+
+		public void free(AnimationFrame frame) {
+			super.free(frame);
+		}
+	}
+
+
 	private final Map<FigureInfo, Queue<AnimationTask>> animations = new HashMap<>();
 	//private final Map<RoomInfo, Queue<AnimationTask>> singleQueue = new HashMap<RoomInfo, Queue<AnimationTask>>();
 	private final Map<FigureInfo, AnimationTask> currentTasks = new HashMap<>();;
@@ -44,6 +60,8 @@ public class AnimationManager {
 	}
 
 	/**
+	 * RENDER THREAD
+	 *
 	 * Returns the AnimationFrame for a Figure that should currently
 	 * be drawn.
 	 *
@@ -80,23 +98,20 @@ public class AnimationManager {
 				currentTask = null;
 			}
 			currentTasks.put(info, currentTask);
-			RoomInfo room = info.getRoomInfo();
-			Set<AnimationTask> set = roomTasks.get(room);
+			Set<AnimationTask> set = roomTasks.get(info.getRoomInfo());
 			if(set == null) {
 				set = new HashSet<>();
-				roomTasks.put(room, set);
+				roomTasks.put(info.getRoomInfo(), set);
 			}
 			set.add(currentTask);
 		}
 		if (currentTask != null) {
 			if(currentTask instanceof DefaultAnimationTask) {
 				if(((DefaultAnimationTask)currentTask).getRoom().equals(roomInfo.getNumber())) {
-					return currentTask
-							.getCurrentAnimationFrame();
+					return currentTask.getCurrentAnimationFrame();
 				}
 			}else {
-				return currentTask
-						.getCurrentAnimationFrame();
+				return currentTask.getCurrentAnimationFrame();
 			}
 
 		}

@@ -12,7 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Libgdx-Dungeon" />
+    <orderEntry type="library" name="Maven: Libgdx-Test:Libgdx-Dungeon:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.10" level="project" />
     <orderEntry type="module" module-name="Dungeon-FrontEnd-TouchGUI" />
     <orderEntry type="module" module-name="Dungeon-FrontEnd-GraphicsEngine2D" />

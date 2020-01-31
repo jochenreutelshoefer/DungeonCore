@@ -20,6 +20,12 @@
 			<version>0.1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx</artifactId>
+			<version>1.9.10</version>
+		</dependency>
+
 		<!--
 		<dependency>
 			<artifactId>denkbares-Commons</artifactId>
@@ -28,6 +34,8 @@
 		</dependency>
 	-->
 	</dependencies>
+
+
 
 	<build>
 		<plugins>

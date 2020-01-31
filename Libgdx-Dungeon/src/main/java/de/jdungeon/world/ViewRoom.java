@@ -99,7 +99,8 @@ public class ViewRoom {
 			if (figureObjects.get(figureClass).getGraphicObjects().isEmpty()) {
 				return null;
 			}
-			return figureObjects.get(figureClass).getRenderInformation();
+		GraphicObjectRenderCollection graphicObjectRenderCollection = figureObjects.get(figureClass);
+		return graphicObjectRenderCollection.getRenderInformation();
 	}
 
 	/*

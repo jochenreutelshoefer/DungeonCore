@@ -132,15 +132,15 @@ public class WorldRenderer implements Disposable {
 		for (int x = 0; x < viewModel.roomViews.length; x++) {
 			for (int y = 0; y < viewModel.roomViews[0].length; y++) {
 				//ViewRoom room = viewModel.getRoom(x, y);
-				ViewRoom room = viewModel.roomViews[x][y];
 
 				// fetch prepared render information
-				Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = room.getBackgroundObjectsForRoom();
+				Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = viewModel.roomViews[x][y].getBackgroundObjectsForRoom();
 				if (renderInformation == null || renderInformation.isEmpty()) {
 					// no render information yet, we need to fetch object information about the room and update the ViewRoom with it
-					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(room.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
-					room.setGraphicObjects(graphicObjectsForRoom);
-					renderInformation = room.getBackgroundObjectsForRoom();
+					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(viewModel.roomViews[x][y]
+							.getRoomInfo(), viewModel.roomOffSetsX[x][y], viewModel.roomOffSetsY[x][y]);
+					viewModel.roomViews[x][y].setGraphicObjects(graphicObjectsForRoom);
+					renderInformation = viewModel.roomViews[x][y].getBackgroundObjectsForRoom();
 				}
 
 				// actual drawing call
@@ -158,8 +158,7 @@ public class WorldRenderer implements Disposable {
 		for (Class<? extends Figure> figureClass : figureClasses) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
-					ViewRoom room = viewModel.getRoom(x, y);
-					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = room.getFigureObjects(figureClass);
+					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y].getFigureObjects(figureClass);
 					if(graphicObjectsForRoom != null) {
 						drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
 					}
@@ -177,42 +176,46 @@ public class WorldRenderer implements Disposable {
 
 
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
-			GraphicObject graphicObject = pair.getA();
 
 			// check for animation for this figure
-			if (graphicObject.getClickableObject() instanceof FigureInfo) {
-				FigureInfo figure = (FigureInfo) graphicObject.getClickableObject();
+			if (pair.getA().getClickableObject() instanceof FigureInfo) {
+				FigureInfo figure = (FigureInfo) pair.getA().getClickableObject();
 				AnimationFrame animationImage = animationManager.getAnimationImage(figure, this.viewModel.roomViews[x][y].getRoomInfo());
 				if (animationImage != null) {
-					JDDimension figureInfoSize = dungeonObjectRenderer.getFigureInfoSize(figure);
-					JDImageLocated locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, figureInfoSize
-							.getWidth(), figureInfoSize.getHeight());
-					TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(locatedImage.getImage(), atlasMap
+					TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
+							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getImage(), atlasMap
 							.get(figure.getFigureClass()));
 					if (atlasRegionAnimationStep != null) {
-						batch.draw(atlasRegionAnimationStep, locatedImage.getX(roomOffsetX), locatedImage.getY(roomOffsetY), locatedImage
-								.getWidth(), locatedImage.getHeight());
+						batch.draw(atlasRegionAnimationStep, animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
+								.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getX(roomOffsetX), animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
+										.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getY(roomOffsetY), animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
+												.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight())
+								.getWidth(), animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
+										.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getHeight());
 					}
 
-					// we had an animation so we finish of this object
+					// we had an animation so we finish off this object
 					continue;
 				}
 			}
 
-			TextureAtlas.AtlasRegion atlasRegion = pair.getB();
 			// no animation present for this object
-			if (graphicObject instanceof JDGraphicObject) {
-				if (atlasRegion != null) {
-					JDImageLocated locatedImage = ((JDGraphicObject) graphicObject).getLocatedImage();
-					batch.draw(atlasRegion, locatedImage.getX(roomOffsetX), locatedImage.getY(roomOffsetY), locatedImage
-							.getWidth(), locatedImage.getHeight());
+			if (pair.getA() instanceof JDGraphicObject) {
+				if (pair.getB() != null) {
+					batch.draw(pair.getB(),
+							((JDGraphicObject) pair.getA()).getLocatedImage().getX(roomOffsetX),
+							((JDGraphicObject) pair.getA()).getLocatedImage().getY(roomOffsetY),
+							((JDGraphicObject) pair.getA()).getLocatedImage().getWidth(),
+							((JDGraphicObject) pair.getA()).getLocatedImage().getHeight());
 				}
 			}
 			else {
-				if (atlasRegion != null) {
-					DrawingRectangle destinationRectangle = graphicObject.getRectangle();
-					batch.draw(atlasRegion, destinationRectangle.getX(roomOffsetX), destinationRectangle.getY(roomOffsetY), destinationRectangle
-							.getWidth(), destinationRectangle.getHeight());
+				if (pair.getB() != null) {
+					batch.draw(pair.getB(),
+							pair.getA().getRectangle().getX(roomOffsetX),
+							pair.getA().getRectangle().getY(roomOffsetY),
+							pair.getA().getRectangle().getWidth(),
+							pair.getA().getRectangle().getHeight());
 				}
 			}
 		}

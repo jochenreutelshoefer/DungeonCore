@@ -1,5 +1,6 @@
 package animation;
 
+import com.badlogic.gdx.utils.Pool;
 import dungeon.JDPoint;
 import dungeon.Position;
 import graphics.GraphicObjectRenderer;
@@ -10,14 +11,15 @@ import org.apache.log4j.Logger;
 
 import de.jdungeon.game.Image;
 
-public class AnimationFrame {
+public class AnimationFrame implements Pool.Poolable {
+
 
 	private JDImageProxy<?> image;
-	private final double currentProgress;
+	private double currentProgress;
 	private Position.Pos from;
-	private final Position.Pos to;
+	private Position.Pos to;
 	private String text;
-	private JDPoint textCoordinatesOffset;
+	private JDPoint textCoordinatesOffset = new JDPoint(0, 0);
 
 	public JDImageProxy<?> getImage() {
 		return image;
@@ -39,9 +41,38 @@ public class AnimationFrame {
 		return textCoordinatesOffset;
 	}
 
+	/**
+	 * Constructor for pooling
+	 */
+	public AnimationFrame() {
+		super();
+	}
+
+	public void setCurrentProgress(double currentProgress) {
+		this.currentProgress = currentProgress;
+	}
+
+	public void setFrom(Position.Pos from) {
+		this.from = from;
+	}
+
+	public void setTo(Position.Pos to) {
+		this.to = to;
+	}
+
 	public void setTextCoordinatesOffset(JDPoint textCoordinatesOffset) {
 		this.textCoordinatesOffset = textCoordinatesOffset;
 	}
+
+	public void setTextCoordinatesOffsetX(int textCoordinatesOffsetX) {
+		this.textCoordinatesOffset.setX(textCoordinatesOffsetX);
+	}
+
+
+	public void setTextCoordinatesOffsetY(int textCoordinatesOffsetY) {
+		this.textCoordinatesOffset.setY(textCoordinatesOffsetY);
+	}
+
 
 	public AnimationFrame(JDImageProxy<?> image, double currentProgress, Position.Pos from, Position.Pos to) {
 		super();
@@ -55,11 +86,12 @@ public class AnimationFrame {
 	}
 
 	public AnimationFrame(JDImageProxy<?> image, String text,
-			JDPoint textCoordinatesOffset, double currentProgress, Position.Pos from, Position.Pos to) {
+			int textCoordinatesOffsetX, int textCoordinatesOffsetY, double currentProgress, Position.Pos from, Position.Pos to) {
 		super();
 		this.image = image;
 		this.text = text;
-		this.textCoordinatesOffset = textCoordinatesOffset;
+		this.textCoordinatesOffset.setX(textCoordinatesOffsetX);
+		this.textCoordinatesOffset.setY(textCoordinatesOffsetY);
 		this.currentProgress = currentProgress;
 		this.from = from;
 		this.to = to;
@@ -86,5 +118,15 @@ public class AnimationFrame {
 			coordinateY = roomOffsetY+positionFromOffset.getY()+diffY ;
 		}
 		return new JDImageLocated(getImage(), coordinateX + posSize/2 - figureSizeX/2 , coordinateY - figureSizeY/2 , figureSizeX, figureSizeY);
+	}
+
+	@Override
+	public void reset() {
+		image = null;
+		currentProgress = 0;
+		from = null;
+		to = null;
+		text = null;
+		textCoordinatesOffset = null;
 	}
 }

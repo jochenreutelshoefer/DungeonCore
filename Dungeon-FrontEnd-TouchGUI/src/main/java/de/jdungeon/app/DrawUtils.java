@@ -70,8 +70,11 @@ public class DrawUtils {
 								showText = frame.getText();
 								textOffset = frame.getTextCoordinatesOffset();
 							}
+							AnimationManager.getInstance().framePool.free(frame);
 						}
 					}
+
+
 
 					boolean drawHighlightBoxOnTopOfItem = clickedObject instanceof DoorInfo;
 					if (!drawHighlightBoxOnTopOfItem) {
