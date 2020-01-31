@@ -94,16 +94,25 @@ public class WorldRenderer implements Disposable {
 		atlasMap.put(Skeleton.class, Assets.instance.getSkelAtlas());
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public void render() {
 		cameraHelper.applyTo(camera);
 		batch.setProjectionMatrix(camera.combined);
 		renderDungeon();
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public void update(float deltaTime) {
 		// nothing yet
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	private void renderDungeon() {
 		batch.begin();
 		renderDungeonBackgroundObjectsForAllRooms();
@@ -114,6 +123,9 @@ public class WorldRenderer implements Disposable {
 		batch.end();
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	private void renderDungeonBackgroundObjectsForAllRooms() {
 		for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 			for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
@@ -132,6 +144,9 @@ public class WorldRenderer implements Disposable {
 		}
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	private void renderFigureObjectsForAllRooms() {
 
 		// iterate first for figure classes to have less atlas switches as each figure has a distinct atlas
@@ -146,6 +161,9 @@ public class WorldRenderer implements Disposable {
 		}
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
 		int roomOffsetX = x * WorldRenderer.ROOM_SIZE;
 		int roomOffsetY = y * WorldRenderer.ROOM_SIZE;

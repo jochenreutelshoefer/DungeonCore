@@ -3,6 +3,7 @@ package de.jdungeon.world;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import figure.Figure;
@@ -30,27 +31,22 @@ public class GraphicObjectRenderCollection {
 
 	private boolean initialized = false;
 
-	private final List<GraphicObject> graphicObjects = new LinkedList<>();
+	private final List<GraphicObject> graphicObjects = new CopyOnWriteArrayList<>();
 
-	// use transport list to overcome concurrent modification problem efficiently (is fetched by other thread)
-	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new LinkedList<>();
-	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedObjectsTransport = new LinkedList<>();
+	// use CopyOnWriteArrayList list to overcome concurrent modification problem efficiently (is fetched by render thread)
+	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new CopyOnWriteArrayList<>();
 
 	public List<GraphicObject> getGraphicObjects() {
 		return graphicObjects;
 	}
 
 	public void clear() {
-		synchronized (graphicObjects) {
-			graphicObjects.clear();
-		}
+		graphicObjects.clear();
 		initialized = false;
 	}
 
 	public void addObject(GraphicObject object) {
-		synchronized (graphicObjects) {
 			graphicObjects.add(object);
-		}
 	}
 
 	@Override
@@ -58,8 +54,10 @@ public class GraphicObjectRenderCollection {
 		return graphicObjects.toString();
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getRenderInformation() {
-		synchronized (graphicObjects) {
 			if(! initialized) {
 				// initialize textures lazy BY THE RENDERING THREAD because of OPEN GL Context issues
 				for (GraphicObject object : graphicObjects) {
@@ -67,13 +65,13 @@ public class GraphicObjectRenderCollection {
 				}
 				initialized = true;
 			}
-		}
-		preparedObjectsTransport.clear();
-		preparedObjectsTransport.addAll(preparedOjects);
-		return preparedObjectsTransport;
+		return preparedOjects;
 	}
 
 
+	/*
+	 *	RENDER THREAD
+	 */
 	private Pair<GraphicObject, TextureAtlas.AtlasRegion> createAtlasRegionPair(GraphicObject graphicObject) {
 		TextureAtlas.AtlasRegion atlasRegion = null;
 		if (graphicObject instanceof JDGraphicObject) {
@@ -89,6 +87,9 @@ public class GraphicObjectRenderCollection {
 		return new Pair(graphicObject, atlasRegion);
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	private TextureAtlas.AtlasRegion findAtlasRegion(JDImageProxy<?> image, GraphicObject graphicObject) {
 
 		Object clickableObject = graphicObject.getClickableObject();

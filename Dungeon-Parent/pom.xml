@@ -10,11 +10,11 @@
 	<modules>
 		<module>../Dungeon-Core</module>
 		<module>../Game-Core</module>
-		<module>../Game-Android</module>
+		<!--module>../Game-Android</module-->
 		<module>../Dungeon-App-Core</module>
 		<module>../Dungeon-FrontEnd-GraphicsEngine2D</module>
-		<module>../Dungeon-FrontEnd-TouchGUI-AndroidApp</module>
 		<module>../Dungeon-FrontEnd-TouchGUI</module>
+		<!--module>../Dungeon-FrontEnd-TouchGUI-AndroidApp</module-->
 		<module>../Game-Libgdx</module>
 		<module>../Libgdx-Dungeon</module>
 		<module>../Libgdx-Dungeon-Android</module>

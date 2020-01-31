@@ -196,28 +196,28 @@ public class Assets implements Disposable, AssetErrorListener {
 		return getAtlasRegion(image, skelAtlas);
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public TextureAtlas.AtlasRegion getDungeonTexture(JDImageProxy<?> image) {
 		return getAtlasRegion(image, dungeonAtlas);
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, TextureAtlas atlas) {
 		if(atlas == null) return null;
 		if(image == null) return null;
 
-		Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
-		String filename = image.getFilename();
-		if (filename.toLowerCase().endsWith(".gif") || filename.toLowerCase().endsWith(".png")) {
-			filename = filename.substring(0, filename.length() - 4);
-		}
-		String pathSeparator = "/"; // todo: does this work on all platforms???
-		if (filename.contains(pathSeparator)) {
-			filename = filename.substring(filename.lastIndexOf(pathSeparator) + 1);
-		}
-		if (textureCache.containsKey(filename)) {
+
+		if (cacheMap.get(atlas).containsKey(image.getFilenameBlank())) {
 			// if texture already loaded, retrieve from cache
-			return textureCache.get(filename);
+			return cacheMap.get(atlas).get(image.getFilenameBlank());
 		}
 		else {
+			Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
+			String filename = image.getFilenameBlank();
 			// called first time, hence load texture from atlas
 			TextureAtlas.AtlasRegion region = atlas.findRegion(filename);
 			if (region != null) {
@@ -234,6 +234,9 @@ public class Assets implements Disposable, AssetErrorListener {
 		return null;
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public TextureAtlas.AtlasRegion getFigureTexture(Class<? extends Figure> figureClass, JDImageProxy<?> image) {
 		if(Wolf.class.equals(figureClass)) {
 			return getWolfTexture(image);

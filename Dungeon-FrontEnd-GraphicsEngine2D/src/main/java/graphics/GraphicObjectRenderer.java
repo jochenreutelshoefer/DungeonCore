@@ -1035,6 +1035,7 @@ public class GraphicObjectRenderer {
 	}
 
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, int roomOffsetX, int roomOffsetY) {
+
 		List<GraphicObject> graphObs = new ArrayList<>();
 		if (r == null) {
 			return graphObs;

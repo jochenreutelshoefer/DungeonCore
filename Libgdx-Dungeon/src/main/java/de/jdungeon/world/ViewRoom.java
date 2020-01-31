@@ -2,7 +2,6 @@ package de.jdungeon.world;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import figure.FigureInfo;
 import graphics.GraphicObject;
 
 import de.jdungeon.app.screen.GraphicObjectClickComparator;
+import de.jdungeon.util.CopyOnWriteMap;
 import de.jdungeon.util.Pair;
 
 /**
@@ -31,7 +31,7 @@ public class ViewRoom {
 
 	private final GraphicObjectRenderCollection backGroundObjects = new GraphicObjectRenderCollection();
 
-	public final Map<Class<? extends Figure>, GraphicObjectRenderCollection> figureObjects = new HashMap<>();
+	public final Map<Class<? extends Figure>, GraphicObjectRenderCollection> figureObjects = new CopyOnWriteMap<>();
 
 	public void setRoomInfo(RoomInfo roomInfo) {
 		this.roomInfo = roomInfo;
@@ -43,8 +43,6 @@ public class ViewRoom {
 
 	public void setGraphicObjects(List<GraphicObject> graphicObjectsForRoom) {
 		backGroundObjects.clear();
-
-		synchronized (figureObjects) {
 			figureObjects.clear();
 			for (GraphicObject graphicObject : graphicObjectsForRoom) {
 				Object clickableObject = graphicObject.getClickableObject();
@@ -61,7 +59,6 @@ public class ViewRoom {
 					backGroundObjects.addObject(graphicObject);
 				}
 			}
-		}
 	}
 
 	public GraphicObject findClickedObjectInRoom(JDPoint inGameLocation, int roomOffsetX, int roomOffsetY) {
@@ -80,8 +77,13 @@ public class ViewRoom {
 		return clickedObject;
 	}
 
+	/**
+	 * RENDER THREAD
+	 *
+	 * @param figureClass particular figure class that render information is demanded
+	 * @return all render information for all figures of this class
+	 */
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(Class<? extends Figure> figureClass) {
-		synchronized (figureObjects) {
 			if (!figureObjects.containsKey(figureClass)) {
 				return Collections.emptyList();
 			}
@@ -89,9 +91,11 @@ public class ViewRoom {
 				return Collections.emptyList();
 			}
 			return figureObjects.get(figureClass).getRenderInformation();
-		}
 	}
 
+	/*
+	 *	RENDER THREAD
+	 */
 	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getBackgroundObjectsForRoom() {
 		return backGroundObjects.getRenderInformation();
 	}

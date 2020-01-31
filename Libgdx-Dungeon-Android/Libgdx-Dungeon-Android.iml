@@ -74,7 +74,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: xerces:xmlParserAPIs:2.6.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: xpp3:xpp3:1.1.4c" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.json:json:20080701" level="project" />
-    <orderEntry type="module" module-name="Game-Android" />
+    <orderEntry type="library" name="Maven: de.reutelshoefer.dungeon:Game-Android:0.1.0" level="project" />
     <orderEntry type="module" module-name="Game-Core" />
     <orderEntry type="library" name="Maven: com.google.android:support-v4:r6" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
