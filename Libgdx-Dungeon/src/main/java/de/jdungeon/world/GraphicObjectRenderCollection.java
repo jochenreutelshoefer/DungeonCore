@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
@@ -31,12 +32,14 @@ public class GraphicObjectRenderCollection {
 
 	private boolean initialized = false;
 
-	private final List<GraphicObject> graphicObjects = new CopyOnWriteArrayList<>();
+	//private final List<GraphicObject> graphicObjects = new CopyOnWriteArrayList<>();
+	private final Array<GraphicObject> graphicObjects = new Array<GraphicObject>();
 
 	// use CopyOnWriteArrayList list to overcome concurrent modification problem efficiently (is fetched by render thread)
-	private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new CopyOnWriteArrayList<>();
+	//private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new CopyOnWriteArrayList<>();
+	private final Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new Array<>();
 
-	public List<GraphicObject> getGraphicObjects() {
+	public Array<GraphicObject> getGraphicObjects() {
 		return graphicObjects;
 	}
 
@@ -57,7 +60,7 @@ public class GraphicObjectRenderCollection {
 	/*
 	 *	RENDER THREAD
 	 */
-	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getRenderInformation() {
+	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getRenderInformation() {
 			if(! initialized) {
 				// initialize textures lazy BY THE RENDERING THREAD because of OPEN GL Context issues
 				for (GraphicObject object : graphicObjects) {

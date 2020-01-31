@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import figure.Figure;
@@ -62,9 +63,17 @@ public class ViewRoom {
 	}
 
 	public GraphicObject findClickedObjectInRoom(JDPoint inGameLocation, int roomOffsetX, int roomOffsetY) {
-		List<GraphicObject> allRoomObjects = new ArrayList<>(backGroundObjects.getGraphicObjects());
+		List<GraphicObject> allRoomObjects = new ArrayList<>();
+		Array<GraphicObject> graphicObjectsBg = backGroundObjects.getGraphicObjects();
+		for (GraphicObject graphicObjectBg : graphicObjectsBg) {
+			allRoomObjects.add(graphicObjectBg);
+		}
 		for (GraphicObjectRenderCollection figures : figureObjects.values()) {
-			allRoomObjects.addAll(figures.getGraphicObjects());
+			Array<GraphicObject> graphicObjects = figures.getGraphicObjects();
+			for (GraphicObject graphicObject : graphicObjects) {
+				allRoomObjects.add(graphicObject);
+
+			}
 		}
 		Collections.sort(allRoomObjects, new GraphicObjectClickComparator());
 		GraphicObject clickedObject = null;
@@ -83,12 +92,12 @@ public class ViewRoom {
 	 * @param figureClass particular figure class that render information is demanded
 	 * @return all render information for all figures of this class
 	 */
-	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(Class<? extends Figure> figureClass) {
+	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(Class<? extends Figure> figureClass) {
 			if (!figureObjects.containsKey(figureClass)) {
-				return Collections.emptyList();
+				return null;
 			}
 			if (figureObjects.get(figureClass).getGraphicObjects().isEmpty()) {
-				return Collections.emptyList();
+				return null;
 			}
 			return figureObjects.get(figureClass).getRenderInformation();
 	}
@@ -96,7 +105,7 @@ public class ViewRoom {
 	/*
 	 *	RENDER THREAD
 	 */
-	public List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getBackgroundObjectsForRoom() {
+	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getBackgroundObjectsForRoom() {
 		return backGroundObjects.getRenderInformation();
 	}
 

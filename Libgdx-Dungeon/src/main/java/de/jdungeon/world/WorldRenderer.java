@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
@@ -134,7 +135,7 @@ public class WorldRenderer implements Disposable {
 				ViewRoom room = viewModel.roomViews[x][y];
 
 				// fetch prepared render information
-				List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = room.getBackgroundObjectsForRoom();
+				Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = room.getBackgroundObjectsForRoom();
 				if (renderInformation == null || renderInformation.isEmpty()) {
 					// no render information yet, we need to fetch object information about the room and update the ViewRoom with it
 					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(room.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
@@ -158,8 +159,10 @@ public class WorldRenderer implements Disposable {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
 					ViewRoom room = viewModel.getRoom(x, y);
-					List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = room.getFigureObjects(figureClass);
-					drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
+					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = room.getFigureObjects(figureClass);
+					if(graphicObjectsForRoom != null) {
+						drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
+					}
 				}
 			}
 		}
@@ -168,7 +171,7 @@ public class WorldRenderer implements Disposable {
 	/*
 	 *	RENDER THREAD
 	 */
-	private void drawGraphicObjectsToSpritebatch(List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
+	private void drawGraphicObjectsToSpritebatch(Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
 		int roomOffsetX = viewModel.roomOffSetsX[x][y];
 		int roomOffsetY = viewModel.roomOffSetsY[x][y];
 
