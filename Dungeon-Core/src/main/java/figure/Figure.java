@@ -1018,15 +1018,16 @@ public abstract class Figure extends DungeonWorldObject
 						&& getRoom().getDoor(dir).isPassable(this)) {
 					if (doIt) {
 						this.lookDir = dir.getValue();
+						Position oldPos = this.getPos();
 						flees = flee(dir);
 						this.payFightActionPoint();
 						if (flees) {
-							Percept p = new FleePercept(this, oldRoom, dir.getValue(), true);
+							Percept p = new FleePercept(this, oldPos, dir.getValue(), true);
 							oldRoom.distributePercept(p);
 							getRoom().distributePercept(p);
 						}
 						else {
-							Percept p = new FleePercept(this, oldRoom, dir.getValue(),
+							Percept p = new FleePercept(this, oldPos, dir.getValue(),
 									false);
 							oldRoom.distributePercept(p);
 						}

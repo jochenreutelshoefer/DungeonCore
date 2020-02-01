@@ -28,7 +28,7 @@ public class AudioSet implements AbstractAudioSet {
 		int randomSoundIndex = (int) (Math.random() * sounds.size());
 		Sound sound = sounds.get(randomSoundIndex);
 		sound.play(new Float(1.0).floatValue());
-		sound.dispose();
+		//sound.dispose();
 
 	}
 

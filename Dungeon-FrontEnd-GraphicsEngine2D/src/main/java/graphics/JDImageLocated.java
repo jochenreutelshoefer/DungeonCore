@@ -1,20 +1,19 @@
 package graphics;
+
 import dungeon.JDPoint;
 import graphics.util.DrawingRectangle;
-import graphics.util.JDRectangle;
 import graphics.util.RelativeRectangle;
 
 import de.jdungeon.game.Image;
 
 public class JDImageLocated implements DrawingRectangle {
 
-
 	private final JDImageProxy<?> image;
-	private  RelativeRectangle relativeRectangle;
+	private RelativeRectangle relativeRectangle;
 	private final int sizeX;
 	private final int sizeY;
-	private  int posY;
-	private  int posX;
+	private int posY;
+	private int posX;
 
 	public JDImageLocated(JDImageProxy<?> i, int posX, int posY, int sizeX, int sizeY) {
 		image = i;
@@ -22,7 +21,6 @@ public class JDImageLocated implements DrawingRectangle {
 		this.posY = posY;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-
 	}
 
 	public JDImageLocated(JDImageProxy<?> i, RelativeRectangle relativeRectangle) {
@@ -32,7 +30,6 @@ public class JDImageLocated implements DrawingRectangle {
 		this.sizeX = relativeRectangle.getWidth();
 		this.sizeY = relativeRectangle.getHeight();
 	}
-
 
 	@Override
 	public boolean containsPoint(JDPoint p, int roomOffsetX, int roomOffsetY) {
@@ -45,10 +42,6 @@ public class JDImageLocated implements DrawingRectangle {
 	 */
 	@Override
 	public int getWidth() {
-		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
-			// some of the figure animation images have size 128 instead of 96
-			return (sizeX * 128) / 96;
-		}
 		return sizeX;
 	}
 
@@ -57,10 +50,6 @@ public class JDImageLocated implements DrawingRectangle {
 	 */
 	@Override
 	public int getHeight() {
-		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
-			// some of the figure animation images have size 128 instead of 96
-			return (sizeY * 128) / 96;
-		}
 		return sizeY;
 	}
 
@@ -71,18 +60,13 @@ public class JDImageLocated implements DrawingRectangle {
 	public int getX(int roomOffsetX) {
 
 		int xValue;
-		if(relativeRectangle != null) {
+		if (relativeRectangle != null) {
 			xValue = relativeRectangle.getX(roomOffsetX);
-		} else {
+		}
+		else {
 			xValue = posX;
 		}
-		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
-			// some of the figure animation images have size 128 instead of 96
-			int width = getWidth();
-			return (int) (xValue - (((((float)(width * 128 - width * 96))/96)/2)));
-		} else {
-			return xValue;
-		}
+		return xValue;
 	}
 
 	/**
@@ -92,23 +76,16 @@ public class JDImageLocated implements DrawingRectangle {
 	public int getY(int roomOffsetY) {
 
 		int yValue;
-		if(relativeRectangle != null) {
+		if (relativeRectangle != null) {
 			yValue = relativeRectangle.getY(roomOffsetY);
-		} else {
+		}
+		else {
 			yValue = posY;
 		}
-
-		if(((Image) this.image.getImage()).getHeight() == 128 && ((Image) this.image.getImage()).getWidth() == 128) {
-			// some of the figure animation images have size 128 instead of 96
-			int height = getHeight();
-			return (int) (yValue - (((((float)(height * 128 - height * 96))/96)/2)));
-		} else {
-			return yValue;
-		}
+		return yValue;
 	}
 
 	public JDImageProxy<?> getImage() {
 		return image;
 	}
-
 }

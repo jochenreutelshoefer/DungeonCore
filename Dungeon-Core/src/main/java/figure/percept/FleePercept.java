@@ -9,6 +9,7 @@ package figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
+import dungeon.Position;
 import dungeon.Room;
 import dungeon.RoomInfo;
 import figure.Figure;
@@ -17,11 +18,11 @@ import figure.FigureInfo;
 public class FleePercept extends OpticalPercept {
 	
 	private Figure f;
-	private Room from;
+	private Position from;
 	private int dir;
 	private boolean success;
 	
-	public FleePercept(Figure f, Room from, int dir,boolean suc) {
+	public FleePercept(Figure f, Position from, int dir, boolean suc) {
 		super(f.getLocation());
 		this.f = f;
 		this.from = from;
@@ -34,7 +35,7 @@ public class FleePercept extends OpticalPercept {
 	}
 	
 	public RoomInfo getRoom() {
-		return RoomInfo.makeRoomInfo(from, viewer.getRoomVisibility());
+		return RoomInfo.makeRoomInfo(from.getRoom(), viewer.getRoomVisibility());
 	}
 
 	public boolean isSuccess() {

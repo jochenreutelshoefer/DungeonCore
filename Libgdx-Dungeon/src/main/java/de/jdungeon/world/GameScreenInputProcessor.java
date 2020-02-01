@@ -31,6 +31,7 @@ public class GameScreenInputProcessor extends GestureDetector {
 	private CameraHelper cameraHelper = null;
 
 	private final GameScreen gameScreen;
+	private long lastClickTime;
 
 	public GameScreenInputProcessor(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
 		super(new MyGestureListener(gameScreen.getCameraHelper()));
@@ -76,6 +77,17 @@ public class GameScreenInputProcessor extends GestureDetector {
 
 	private void handleControlEvents(float deltaTime) {
 		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
+
+		/*
+
+
+		long now = System.currentTimeMillis();
+		if(now - lastClickTime < 100) {
+			// we do not allow clicks faster than 10ms one after another to filter duplicates
+			return;
+		}
+		lastClickTime = now;
+		*/
 
 
 		float sprMovedSpeed = 500 * deltaTime;

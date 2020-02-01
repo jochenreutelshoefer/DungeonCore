@@ -9,6 +9,8 @@ package figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
+import dungeon.Position;
+import dungeon.PositionInRoomInfo;
 import fight.Slap;
 import fight.SlapResult;
 import figure.DungeonVisibilityMap;
@@ -28,7 +30,10 @@ public class AttackPercept extends OpticalPercept {
 		slap = s;
 		
 	}	
-	
+
+	public Position.Pos getFromPos() {
+		return Position.Pos.fromValue(attacker.getPos().getIndex());
+	}
 
 	public FigureInfo getAttacker() {
 		return FigureInfo.makeFigureInfo(attacker,viewer.getRoomVisibility());

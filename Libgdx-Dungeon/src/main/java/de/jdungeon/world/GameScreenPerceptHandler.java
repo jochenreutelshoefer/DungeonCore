@@ -405,7 +405,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		DefaultAnimationSet set = AnimationUtils.getFigure_slays(fig);
 
 		if (set != null) {
-			startAnimation(set, fig, null, Position.Pos.fromValue(fig.getPositionInRoomIndex()),  null, false, false, false, p, null);
+			startAnimation(set, fig, p.getFromPos(), Position.Pos.fromValue(fig.getPositionInRoomIndex()),  null, false, false, false, p, null);
 		}
 	}
 

@@ -185,13 +185,15 @@ public class WorldRenderer implements Disposable {
 							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight());
 					TextureAtlas atlas = Assets.instance.atlasMap.get(figure.getFigureClass());
 					JDImageProxy<?> image = locatedImage.getImage();
-					TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
-					if (atlasRegionAnimationStep != null) {
-						batch.draw(atlasRegionAnimationStep, locatedImage.getX(roomOffsetX), locatedImage
-								.getY(roomOffsetY), locatedImage
-								.getWidth(), locatedImage.getHeight());
-					}
+					if(image != null) {
+						TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
+						if (atlasRegionAnimationStep != null) {
+							batch.draw(atlasRegionAnimationStep, locatedImage.getX(roomOffsetX), locatedImage
+									.getY(roomOffsetY), locatedImage
+									.getWidth(), locatedImage.getHeight());
+						}
 
+					}
 					// we had an animation so we finish off this object
 					continue;
 				}

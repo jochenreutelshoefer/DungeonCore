@@ -3,6 +3,7 @@ package de.jdungeon.asset;
 import java.util.HashMap;
 import java.util.Map;
 
+import audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -23,6 +24,10 @@ import graphics.JDImageProxy;
 
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.audio.DefaultAudioLoader;
+import de.jdungeon.game.Audio;
+import de.jdungeon.game.AudioLoader;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -179,9 +184,21 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		fonts = new AssetFonts();
 
+
+		// init audio effects (need to be initialized before ImageManager loads
+		// because the sounds will then be needed to setup the animations
+		Audio audio = game.getAudio();
+
+		AudioLoader androidLoader = new DefaultAudioLoader(audio, game);
+		AudioEffectsManager.init(androidLoader);
+		AudioManagerTouchGUI.init(androidLoader);
+
+
 		// Initialize all game images
-		// TODO: do we need to initialize them _all_ here?
 		ImageManager.getInstance(game.getFileIO().getImageLoader()).loadImages();
+
+
+
 	}
 
 	@Override

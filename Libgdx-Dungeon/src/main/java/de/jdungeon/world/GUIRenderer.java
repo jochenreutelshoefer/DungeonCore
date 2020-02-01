@@ -78,18 +78,22 @@ public class GUIRenderer implements Disposable {
 		/*
 		 * init text messages panel
 		 */
+		/*
 		textView = new TextPerceptView(this.game);
 		this.guiElements.add(textView);
+		*/
 
 		/*
 		 * init info panel
 		 */
+
 		int infoPanelWidth = (int) (game.getScreenWidth() * 0.2);
 		int infoPanelHeight = (int) (game.getScreenHeight() * 0.4);
 		infoPanel = new InfoPanel(new JDPoint(game.getScreenWidth()  - infoPanelWidth, 0),
 				new JDDimension(infoPanelWidth, infoPanelHeight), new ScreenAdapter(game), game);
 		this.guiElements.add(infoPanel);
 		focusManager = new FocusManager(infoPanel, figure);
+
 
 		/*
 		 * init health bars
@@ -246,6 +250,8 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void newStatement(Statement s) {
-		this.textView.addTextPercept(s);
+		if(textView != null) {
+			this.textView.addTextPercept(s);
+		}
 	}
 }

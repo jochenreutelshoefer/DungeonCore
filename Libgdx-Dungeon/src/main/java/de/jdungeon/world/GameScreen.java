@@ -22,6 +22,7 @@ import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
@@ -42,7 +43,7 @@ import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
 public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
-	private static final boolean OPENGL_PROFILING_ON = false;
+	private static final boolean OPENGL_PROFILING_ON = true;
 
 	private final PlayerController playerController;
 
@@ -56,7 +57,6 @@ public class GameScreen extends AbstractGameScreen {
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
 	private final CameraHelper cameraHelper = new CameraHelper();
-	;
 
 	private GameScreenPerceptHandler perceptHandler;
 	private FigureInfo figure;
@@ -313,7 +313,7 @@ public class GameScreen extends AbstractGameScreen {
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
 
 		long now = System.currentTimeMillis();
-		if(now - lastClickTime < 10) {
+		if(now - lastClickTime < 300) {
 			// we do not allow clicks faster than 10ms one after another to filter duplicates
 			return false;
 		}
@@ -345,6 +345,7 @@ public class GameScreen extends AbstractGameScreen {
 				touchEvent.x = screenX;
 				touchEvent.y = screenY;
 				guiElement.handleTouchEvent(touchEvent);
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				return true;
 			}
 		}

@@ -662,10 +662,11 @@ public abstract class Monster extends Figure implements Paragraphable,
 	protected boolean flee(RouteInstruction.Direction dir) {
 		Room from = getRoom();
 		if (Math.random() < calcFleeChance()) {
+			Position oldPos = this.getPos();
 			boolean done = walk(dir);
 			if (done) {
 				// [TODO] SUCCESSFULL?
-				FleePercept p = new FleePercept(this, from, dir.getValue(), false);
+				FleePercept p = new FleePercept(this, oldPos, dir.getValue(), false);
 				from.distributePercept(p);
 			}
 			return done;

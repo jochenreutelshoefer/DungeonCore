@@ -81,7 +81,7 @@ public class PlayerController implements JDGUI {
 	 */
 	@Override
 	public void plugAction(Action action) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+
 		actionQueue.add(action);
 	}
 
@@ -96,7 +96,7 @@ public class PlayerController implements JDGUI {
 	 */
 	@Override
 	public void plugActions(List<Action> actions) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+
 		actionQueue.addAll(actions);
 	}
 

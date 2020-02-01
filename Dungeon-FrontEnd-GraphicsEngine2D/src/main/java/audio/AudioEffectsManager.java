@@ -90,7 +90,7 @@ public class AudioEffectsManager {
 					"bark2.wav" );
 
 			MAGIC_SOUND = create(a,  "woow-anything.wav" );
-			MAGIC_FIREBALL = create(a,  "fire-ball2.wav", "magic-fireball.wav");
+			MAGIC_FIREBALL = create(a,   "magic-fireball.wav"); // "fire-ball2.wav" wav files need to have 16 bits
 			MAGIC_BLING = create(a, "magic-bling1.wav" );
 
 

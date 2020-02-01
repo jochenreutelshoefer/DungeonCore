@@ -16,6 +16,7 @@ import figure.FigureInfo;
 import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import graphics.JDImageProxy;
+import log.Log;
 
 import de.jdungeon.game.Image;
 
@@ -71,6 +72,8 @@ public class DefaultAnimationTask implements AnimationTask {
 			// might be null for instance for door-smash percepts in other (not visible) room
 			if(pos != null) {
 				this.to = Position.Pos.fromValue(pos.getIndex());
+			} else {
+				Log.severe("Animation task without destination: "+ani);
 			}
 		} else {
 			this.to = to;
@@ -115,7 +118,7 @@ public class DefaultAnimationTask implements AnimationTask {
 			return null;
 		}
 
-		if (text == null) {
+		if (text == null || text.length() == 0) {
 			AnimationFrame frame = AnimationManager.getInstance().framePool.obtain();
 			frame.setImage(currentImage);
 			frame.setCurrentProgress(currentProgress);
@@ -124,13 +127,16 @@ public class DefaultAnimationTask implements AnimationTask {
 			return frame;
 		}
 		else {
-			Image image = (Image) currentImage.getImage();
+
 			AnimationFrame frame = AnimationManager.getInstance().framePool.obtain();
 			frame.setImage(currentImage);
 			frame.setText(text);
 			frame.setCurrentProgress(currentProgress);
-			frame.setTextCoordinatesOffsetX(image.getWidth() * 3 / 8);
-			frame.setTextCoordinatesOffsetY((image.getHeight() / 5) - imageNr);
+
+			// TODO: find better way to determine size of image (might differ in some cases..)
+			int imageSize = 96;
+			frame.setTextCoordinatesOffsetX(imageSize * 3 / 8);
+			frame.setTextCoordinatesOffsetY((imageSize / 5) - imageNr);
 			frame.setFrom(from);
 			frame.setTo(to);
 			return frame;
