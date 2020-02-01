@@ -1456,14 +1456,7 @@ public abstract class Figure extends DungeonWorldObject
 		return ActionResult.NOAP;
 	}
 
-	private void doStepTo(int targetFieldindex, int oldPosIndex) {
-		Position newPos = getRoom().getPositions()[targetFieldindex];
-		this.lookDir = Position.getDirFromTo(pos.getIndex(), targetFieldindex);
-		pos.figureLeaves();
-		newPos.setFigure(this);
-		pos = newPos;
-		getRoom().distributePercept(new StepPercept(this, oldPosIndex, targetFieldindex));
-	}
+
 
 	private ActionResult handleStepAction(StepAction a, boolean doIt) {
 		int targetIndex = a.getTargetIndex();
@@ -1489,6 +1482,7 @@ public abstract class Figure extends DungeonWorldObject
 						if (doIt) {
 
 							doStepTo(targetIndex, oldPosIndex);
+
 							this.payFightActionPoint();
 							return ActionResult.DONE;
 						}
@@ -1515,20 +1509,24 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			if (doIt) {
 
-				this.lookDir = Position.getDirFromTo(pos.getIndex(),
-						newPos.getIndex());
-				pos.figureLeaves();
-				newPos.setFigure(this);
+				doStepTo(targetIndex, pos.getIndex());
 
-				Percept p = new StepPercept(this, pos.getIndex(),
-						newPos.getIndex());
-				pos = newPos;
-				getRoom().distributePercept(p);
 				this.payMoveActionPoint();
 				return ActionResult.DONE;
 			}
 			return ActionResult.POSSIBLE;
 		}
+	}
+
+	private void doStepTo(int targetFieldindex, int oldPosIndex) {
+		Position newPos = getRoom().getPositions()[targetFieldindex];
+
+		this.lookDir = Position.getDirFromTo(pos.getIndex(), targetFieldindex);
+		pos.figureLeaves();
+		newPos.setFigure(this);
+		StepPercept p = new StepPercept(this, oldPosIndex, targetFieldindex);
+		pos = newPos;
+		getRoom().distributePercept(p);
 	}
 
 	private ActionResult handleScoutAction(ScoutAction action, boolean doIt) {

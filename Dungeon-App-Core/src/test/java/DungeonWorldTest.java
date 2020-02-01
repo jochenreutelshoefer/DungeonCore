@@ -10,6 +10,7 @@ import ai.SimpleHeroBehavior;
 import dungeon.Dungeon;
 import dungeon.Position;
 import dungeon.Room;
+import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -40,13 +41,23 @@ public class DungeonWorldTest extends TestCase {
 				Dungeon dungeon = dungeonFactory.createDungeon();
 				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert", Zodiac.Aquarius,
 						Profession.Lumberjack);
-				HeroInfo heroInfo = DefaultDungeonSession.enterDungeon(hero, dungeon,
-						dungeonFactory.getHeroEntryPoint());
-				SimpleHeroBehavior control = new SimpleHeroBehavior();
-				control.setFigure(heroInfo);
-				hero.setControl(control);
 
 				DungeonGame dungeonGame = DungeonGame.getInstance();
+
+				Figure.addFigure(hero);
+
+				dungeonGame.setDungeon(dungeon);
+
+				hero.setActualDungeon(dungeon);
+
+				SimpleHeroBehavior control = new SimpleHeroBehavior();
+				hero.setControl(control);
+
+				DungeonVisibilityMap heroVisMap = hero.getRoomVisibility();
+				HeroInfo heroInfo = new HeroInfo(hero, heroVisMap);
+				dungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(hero, 0);
+				control.setFigure(heroInfo);
+
 				dungeonGame.init(dungeon);
 
 				for (int round = 0; round < 500; round++) {

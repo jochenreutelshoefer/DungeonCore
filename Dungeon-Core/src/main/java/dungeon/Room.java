@@ -39,6 +39,7 @@ import item.DustItem;
 import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
+import log.Log;
 import shrine.Shrine;
 import shrine.Statue;
 import util.JDColor;
@@ -89,18 +90,24 @@ public class Room extends DungeonWorldObject implements
 
 	public void checkFight(Figure movedIn) {
 		boolean fight = false;
+		ControlUnit movedInControl = movedIn.getControl();
+		if(movedInControl == null) {
+			Log.warning("figure without control moves into room: "+movedIn.getName());
+		}
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
 			if (element.equals(movedIn)) {
 				// should not start fight with himself
 				continue;
 			}
-			ControlUnit c = element.getControl();
-			if (c != null
-					&&
-					(c.isHostileTo(FigureInfo.makeFigureInfo(movedIn, element.getRoomVisibility()))
-					|| movedIn.getControl().isHostileTo(FigureInfo.makeFigureInfo(element, movedIn.getRoomVisibility())))) {
-				fight = true;
+			ControlUnit currentControl = element.getControl();
+			if (currentControl != null) {
+				boolean currentIsHostileToMovedIn = currentControl.isHostileTo(FigureInfo.makeFigureInfo(movedIn, element.getRoomVisibility()));
+				boolean movedInIsHostileToCurrent = movedInControl.isHostileTo(FigureInfo.makeFigureInfo(element, movedIn.getRoomVisibility()));
+				if ((currentIsHostileToMovedIn || movedInIsHostileToCurrent)) {
+					// if one of them wants to start a fight, we start a fight
+					fight = true;
+				}
 			}
 		}
 		if (fight) {
@@ -924,6 +931,15 @@ public class Room extends DungeonWorldObject implements
 		figureEntersAtPosition(figure, fromDir, inRoomIndex);
 	}
 
+	/**
+	 * This method is only used if figures come from nowhere that is
+	 * - during level generation process
+	 * - conjured figures being added during the game
+	 *
+	 * @param figure
+	 * @param fromDir
+	 * @param inRoomIndex
+	 */
 	public void figureEntersAtPosition(Figure figure, int fromDir, int inRoomIndex) {
 		Position position = positions[inRoomIndex];
 		if (!this.getDungeon().equals(figure.getActualDungeon())) {
@@ -1065,7 +1081,7 @@ public class Room extends DungeonWorldObject implements
 
 		final Position pos = m.getPos();
 		// might already be a new position in other room after fleeing
-		if(pos != null && pos.getRoom().equals(this)) {
+		if (pos != null && pos.getRoom().equals(this)) {
 			pos.figureLeaves();
 		}
 		if (fight != null) {
@@ -1173,7 +1189,7 @@ public class Room extends DungeonWorldObject implements
 	/**
 	 * A room marked as wall is no room actually,
 	 * its just an empty placehodler within the grid
-	 *
+	 * <p>
 	 * A room cannot change its change-state during the game
 	 *
 	 * @return true if this room is marked as wall, false otherwise
@@ -1333,6 +1349,4 @@ public class Room extends DungeonWorldObject implements
 		}
 		roomFigures.removeAll(removeTMP);
 	}
-
-
 }

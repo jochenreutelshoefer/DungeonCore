@@ -11,8 +11,6 @@ import dungeon.Room;
 import dungeon.RoomInfo;
 import dungeon.Way;
 import figure.DungeonVisibilityMap;
-import figure.hero.Hero;
-import figure.hero.HeroInfo;
 import game.DungeonGame;
 import log.Log;
 import test.TestTracker;
@@ -119,7 +117,7 @@ public class DungeonUtils {
 			Explorer ex = t.exp;
 			int dir = ex.getOpenDir(to);
 			ex.setExplored(dir);
-			RoomInfo next = t.r.getDoor(dir + 1).getOtherRoom(t.r);
+			RoomInfo next = t.room.getDoor(dir + 1).getOtherRoom(t.room);
 
 			Explorer newExp = new Explorer(next, false);
 			configExp(newExp, list);
@@ -146,11 +144,11 @@ public class DungeonUtils {
 		boolean more = walkBackToLastUnexploredPoint(list);
 		if (more) {
 
-			Tupel t = (list.get(list.size() - 1));
-			Explorer ex = t.exp;
-			int dir = ex.getOpenDir(to);
-			ex.setExplored(dir);
-			RoomInfo next = t.r.getDoor(dir + 1).getOtherRoom(t.r);
+			Tupel fringeNode = (list.get(list.size() - 1));
+			Explorer ex = fringeNode.exp;
+			int directionToBeExploredNext = ex.getOpenDir(to);
+			ex.setExplored(directionToBeExploredNext);
+			RoomInfo next = fringeNode.room.getDoor(directionToBeExploredNext + 1).getOtherRoom(fringeNode.room);
 
 			Explorer newExp = new Explorer(next, blocked);
 			configExp(newExp, list);
@@ -182,12 +180,19 @@ public class DungeonUtils {
 
 	}
 
+	/**
+	 * We set up the explorer marking which of the accessible neighbour room had already
+	 * been accessed by fringe.
+	 *
+	 * @param exp the new explorer to be set up
+	 * @param list fringe list of explored rooms until new
+	 */
 	private static void configExp(Explorer exp, List<Tupel> list) {
-		for (int i = 0; i < list.size(); i++) {
-			RoomInfo r1 = list.get(i).r;
-			if (exp.r.hasConnectionTo(r1)) {
-				int dir = exp.r.getConnectionDirectionTo(r1);
-
+		for (int iterationIndex = 0; iterationIndex < list.size(); iterationIndex++) {  // iterate entire fringe list
+			RoomInfo iterationRoom = list.get(iterationIndex).room; 		// room of iteration position in fringe list
+			if (exp.r.hasConnectionTo(iterationRoom)) {					// check whether explorer has connection to iter room
+				int dir = exp.r.getConnectionDirectionTo(iterationRoom);
+				// if so, we mark this direction as explored as we had been there already because its in the fringe list
 				exp.setExplored2(dir - 1);
 			}
 		}
@@ -292,19 +297,19 @@ public class DungeonUtils {
 	}
 
 	private static boolean walkBackToLastUnexploredPoint(List<Tupel> list) {
-		Explorer ex = list.get(list.size() - 1).exp;
-		configExp(ex, list);
-		if (ex.stillOpen()) {
+		Explorer backtrackExplorer = list.get(list.size() - 1).exp;  // start at the end of the list
+		configExp(backtrackExplorer, list);
+		if (backtrackExplorer.stillOpen()) {
 			return true;
 		}
 		else {
 			int k = list.size() - 2;
-			while (!ex.stillOpen()) {
+			while (!backtrackExplorer.stillOpen()) {
 				if (k < 0) {
 					return false;
 				}
 				Tupel t = (list.get(k));
-				ex = t.exp;
+				backtrackExplorer = t.exp;
 				list.add(t);
 				k--;
 			}
@@ -333,7 +338,7 @@ public class DungeonUtils {
 		LinkedList<RoomInfo> erg = new LinkedList<RoomInfo>();
 
 		for (int i = 0; i < list.size(); i++) {
-			erg.add(list.get(i).r);
+			erg.add(list.get(i).room);
 		}
 		return new Way(erg, false);
 	}
@@ -412,7 +417,7 @@ public class DungeonUtils {
 		explore(list, to);
 		List<Room> erg = new LinkedList<Room>();
 		for (int i = 0; i < list.size(); i++) {
-			erg.add(list.get(i).r.getRoom());
+			erg.add(list.get(i).room.getRoom());
 		}
 
 		return erg;
@@ -422,19 +427,19 @@ public class DungeonUtils {
 
 class Tupel {
 
-	public RoomInfo r;
+	public RoomInfo room;
 
 	public Explorer exp;
 
 	public Tupel(RoomInfo r, Explorer e) {
-		this.r = r;
+		this.room = r;
 		exp = e;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Tupel) {
-			if (r.equals(((Tupel) o).r)) {
+			if (room.equals(((Tupel) o).room)) {
 				return true;
 			}
 		}
@@ -443,13 +448,29 @@ class Tupel {
 
 	@Override
 	public int hashCode() {
-		int result = r.hashCode();
+		int result = room.hashCode();
 		result = 31 * result + exp.hashCode();
 		return result;
 	}
 }
 
 class Explorer {
+
+	/*
+	 * direction index
+	 * 0 = north
+	 * 1 = east
+	 * 2 = south
+	 * 3 = west
+	 *
+	 * int code in Explorer:
+	 * 0 = no door
+	 * 1 = door has been explored
+	 * 2 = door existing that is passable
+	 *
+	 *
+	 */
+
 	int[] directions;
 
 	RoomInfo r;
@@ -498,9 +519,9 @@ class Explorer {
 		}
 	}
 
-	public void setExplored2(int k) {
-		if (directions[k] == 2) {
-			directions[k] = 1;
+	public void setExplored2(int directionIndex) {
+		if (directions[directionIndex] == 2) {
+			directions[directionIndex] = 1;
 		}
 	}
 
@@ -514,16 +535,31 @@ class Explorer {
 		return cnt;
 	}
 
+	/**
+	 * Checks for open directions that should be explored.
+	 *
+	 * @return number of open directions
+	 */
 	public int getFreeDirections() {
 		int cnt = 0;
 		for (int i = 0; i < 4; i++) {
 			if (directions[i] == 2) {
+				// we found a door that should be explored
 				cnt++;
 			}
 		}
 		return cnt;
 	}
 
+	/**
+	 * Returns some open direction to be explored next.
+	 * If there are multiple open directions,
+	 * it tries to go into the direction of the target destination
+	 * as a heuristic
+	 *
+	 * @param target where we want to go in the end
+	 * @return open direction to be explored next
+	 */
 	public int getOpenDir(RoomInfo target) {
 		// Room target= this.
 

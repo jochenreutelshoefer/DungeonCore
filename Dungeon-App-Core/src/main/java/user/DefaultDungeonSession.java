@@ -183,31 +183,23 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		this.currentHero.clearVisibilityMaps();
 		//makeHeroBackup();
 
-
-		return enterDungeon(currentHero, derDungeon,
-				dungeonFactory.getHeroEntryPoint());
-
-	}
-
-	/**
-	 * The hero enters the dungeon at the specified point. Creates a FigureInfo
-	 * object with a corresponding VisibilityMap.
-	 *
-	 * @param h
-	 * @param derDungeon
-	 * @return
-	 */
-	public static HeroInfo enterDungeon(Hero h, Dungeon derDungeon, JDPoint p) {
 		DungeonGame dungeonGame = DungeonGame.getInstance();
 
-		Figure.addFigure(h);
-		dungeonGame.setDungeon(derDungeon);
-		h.setActualDungeon(derDungeon);
-		derDungeon.getRoomNr(p.getX(), p.getY()).figureEnters(h, 0);
-		DungeonVisibilityMap heroVisMap = h.getRoomVisibility();
+		Figure.addFigure(currentHero);
 
-		return new HeroInfo(h, heroVisMap);
+		dungeonGame.setDungeon(derDungeon);
+
+		currentHero.setActualDungeon(derDungeon);
+
+		DungeonVisibilityMap heroVisMap = currentHero.getRoomVisibility();
+
+		HeroInfo heroInfo = new HeroInfo(currentHero, heroVisMap);
+		derDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(currentHero, 0);
+		return heroInfo;
+
 	}
+
+
 
 	@Override
 	public void revertHero() {
