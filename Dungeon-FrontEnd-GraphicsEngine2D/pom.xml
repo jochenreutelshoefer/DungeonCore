@@ -10,12 +10,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>de.reutelshoefer.dungeon</groupId>
-			<artifactId>Dungeon-Core</artifactId>
-			<version>0.1.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.reutelshoefer.dungeon</groupId>
 			<artifactId>Game-Core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
@@ -24,6 +18,12 @@
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx</artifactId>
 			<version>1.9.10</version>
+		</dependency>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Dungeon-Core</artifactId>
+			<version>0.1.0</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!--
