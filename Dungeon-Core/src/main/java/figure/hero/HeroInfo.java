@@ -60,10 +60,7 @@ public class HeroInfo extends FigureInfo {
 
 
 	public int getHeroCode() {
-		if (map.getVisibilityStatus(h.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return h.getHeroCode();
-		}
-		return -1;
+		return h.getHeroCode();
 	}
 
 	public Hero.HeroCategory getHeroCategory() {

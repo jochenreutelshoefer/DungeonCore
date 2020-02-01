@@ -27,6 +27,7 @@ public class DisappearPercept extends OpticalPercept {
 		return RoomInfo.makeRoomInfo(from, viewer.getRoomVisibility());
 	}
 	
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<FigureInfo>();
 		l.add(getFigure());

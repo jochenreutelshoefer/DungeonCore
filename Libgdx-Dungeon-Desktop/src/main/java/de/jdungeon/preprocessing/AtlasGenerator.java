@@ -16,14 +16,14 @@ import de.jdungeon.asset.Assets;
 
 public class AtlasGenerator {
 
-	static final String TARGET_DIR = "Libgdx-Dungeon-Desktop/assets/packs/";
+	static final String TARGET_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/packs/";
 
 
 
 	public static void main (String[] args) throws Exception {
-		String atlasName = Assets.GUI_ATLAS;
+		String atlasName = Assets.SPIDER_ATLAS;
 		//String atlasName = "all";
-		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/assets/pics/"+atlasName; //
+		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/animation/"+atlasName; //
 
 		//Delete old pack
 		File oldPackFile = new File(TARGET_DIR + "/" + atlasName + Assets.ATLAS_FILE_EXTENSION);

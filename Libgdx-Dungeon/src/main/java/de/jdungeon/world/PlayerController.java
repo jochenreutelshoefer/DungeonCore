@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import dungeon.JDPoint;
 import figure.FigureInfo;
@@ -18,6 +19,7 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
+import log.Log;
 import text.StatementManager;
 
 import de.jdungeon.app.ActionAssembler;
@@ -26,28 +28,31 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
 /**
  * This class basically controls the interaction from the world (world loop)
  * and the user interface (gui actions).
- *
+ * <p>
  * It is a thread dashboard, where objects are put by one thread and collected by another.
- * - game thread puts percepts, that the player perceives about the world and that need to be visualized in some way on the UI
- * - game thread puts visibility increase/decrease notifications, saying that the player can see parts of the world that he could not before or vice versa
- * - the black board for player action handling is done within the action controller, which is part of the player controller
- *
+ * - game thread puts percepts, that the player perceives about the world and that need to be visualized in some way on
+ * the UI
+ * - game thread puts visibility increase/decrease notifications, saying that the player can see parts of the world that
+ * he could not before or vice versa
+ * - the black board for player action handling is done within the action controller, which is part of the player
+ * controller
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 03.01.20.
  */
 public class PlayerController implements JDGUI {
 
-	private final HeroInfo heroInfo;
+	private HeroInfo heroInfo;
 
-	private final ActionAssembler actionAssembler;
+	private ActionAssembler actionAssembler;
 
 	private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
 	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
 	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
 	private final Vector<Action> actionQueue = new Vector<>();
-	private final Vector<Percept> perceptQueue = new Vector<>();
-	private final Vector<Percept> perceptQueueTransport = new Vector<>();
+	private final List<Percept> perceptQueue = new CopyOnWriteArrayList<>();
+	private final List<Percept> perceptQueueTransport = new CopyOnWriteArrayList<>();
+
 	private ViewModel viewModel;
 
 	private GameScreen gameScreen;
@@ -57,15 +62,19 @@ public class PlayerController implements JDGUI {
 		this.actionAssembler = new ActionAssembler(heroInfo, this);
 	}
 
+	public PlayerController() {
+
+	}
+
 	public void setGameScreen(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
 	}
 
 	/**
 	 * Thread-blackboard put method (called by UI-Thread)
-	 *
+	 * <p>
 	 * The gui thread plugs an action to be performed by the UI-controlled figure.
-	 *
+	 * <p>
 	 * Adds a particular Action to the action sequence to be executed
 	 *
 	 * @param action action to be executed
@@ -78,9 +87,9 @@ public class PlayerController implements JDGUI {
 
 	/**
 	 * Thread-blackboard put method (called by UI-Thread)
-	 *
+	 * <p>
 	 * The gui thread plugs a sequence of actions to be performed by the UI-controlled figure.
-	 *
+	 * <p>
 	 * Adds a sequences of Actions to the characters' action sequence to be executed
 	 *
 	 * @param actions actions to be executed
@@ -126,7 +135,15 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void setFigure(FigureInfo f) {
-
+		if (f instanceof HeroInfo) {
+			this.heroInfo = (HeroInfo) f;
+		}
+		else {
+			String message = "Figure type not matching in player controller initilaization: " + f;
+			Log.severe(message);
+			throw new IllegalStateException(message);
+		}
+		this.actionAssembler = new ActionAssembler(heroInfo, this);
 	}
 
 	@Override
@@ -172,7 +189,10 @@ public class PlayerController implements JDGUI {
 	}
 
 	private void updateRoomViewModel(JDPoint p) {
-		this.viewModel.updateRoom(p.getX(), p.getY());
+		// might be null during GUI initialization
+		if (viewModel != null) {
+			this.viewModel.updateRoom(p.getX(), p.getY());
+		}
 	}
 
 	@Override
@@ -191,8 +211,8 @@ public class PlayerController implements JDGUI {
 	@Override
 	public void tellPercept(Percept p) {
 		JDPoint number = null;
-		if(p instanceof OpticalPercept) {
-			number = ((OpticalPercept)p).getLocation();
+		if (p instanceof OpticalPercept) {
+			number = ((OpticalPercept) p).getLocation();
 		}
 		/*
 		List<FigureInfo> involvedFigures = p.getInvolvedFigures();
@@ -205,7 +225,7 @@ public class PlayerController implements JDGUI {
 
 		}
 		*/
-		if(number!= null) {
+		if (number != null) {
 			updateRoomViewModel(number);
 		}
 		synchronized (perceptQueue) {
@@ -215,11 +235,9 @@ public class PlayerController implements JDGUI {
 	}
 
 	public List<Percept> getPercepts() {
-		synchronized (perceptQueue) {
-			perceptQueueTransport.clear();
-			perceptQueueTransport.addAll(perceptQueue);
-			perceptQueue.clear();
-		}
+		perceptQueueTransport.clear();
+		perceptQueueTransport.addAll(perceptQueue);
+		perceptQueue.clear();
 		return perceptQueueTransport;
 	}
 

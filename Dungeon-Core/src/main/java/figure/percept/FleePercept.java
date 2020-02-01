@@ -45,6 +45,7 @@ public class FleePercept extends OpticalPercept {
 		return dir;
 	}
 	
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<>();
 		l.add(FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility()));

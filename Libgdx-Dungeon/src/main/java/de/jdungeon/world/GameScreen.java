@@ -42,7 +42,7 @@ import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
 public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
-	private static final boolean OPENGL_PROFILING_ON = true;
+	private static final boolean OPENGL_PROFILING_ON = false;
 
 	private final PlayerController playerController;
 
@@ -153,20 +153,22 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void update(float deltaTime) {
 
-		movieSequenceManager.update(deltaTime);
-		inputController.update(deltaTime);
-		guiRenderer.update(deltaTime);
-		worldRenderer.update(deltaTime);
+		if (!paused) {
 
-		Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
-		this.showVisibilityIncrease(visibilityIncreasedRooms);
+			movieSequenceManager.update(deltaTime);
+			inputController.update(deltaTime);
+			guiRenderer.update(deltaTime);
+			worldRenderer.update(deltaTime);
 
-		// TODO: fetch and show visibility increased rooms from PlayerController/JDGUI
-		List<Percept> percepts = playerController.getPercepts();
-		for (Percept percept : percepts) {
-			this.perceptHandler.tellPercept(percept);
+			Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
+			this.showVisibilityIncrease(visibilityIncreasedRooms);
+
+			List<Percept> percepts = playerController.getPercepts();
+			for (Percept percept : percepts) {
+				this.perceptHandler.tellPercept(percept);
+			}
+
 		}
-		// TODO: handle and display percepts
 	}
 
 	public static String CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER = "scroll-to-player";
@@ -372,7 +374,7 @@ public class GameScreen extends AbstractGameScreen {
 		// TODO: we need to work with camera project/unproject as roomSize is world coordinates and calculation is in screen coordinates
 		Vector2 currentCameraPosition = cameraHelper.getPosition();
 		Vector3 cameraPosScreenCoord = camera.project(new Vector3(currentCameraPosition, 0));
-		double lookAheadMargin = ROOM_SIZE * 2.5 * cameraHelper.getZoom();
+		double lookAheadMargin = ROOM_SIZE * 3.5 * cameraHelper.getZoom();
 		if (Math.abs(cameraPosScreenCoord.x - playerWorldScreenCoord.x) + lookAheadMargin > screenWidth / 2
 				|| Math.abs(cameraPosScreenCoord.y - playerWorldScreenCoord.y) + lookAheadMargin > screenHeight / 2) {
 			// neighbour room not visible on screen, hence we need camera re-positioning

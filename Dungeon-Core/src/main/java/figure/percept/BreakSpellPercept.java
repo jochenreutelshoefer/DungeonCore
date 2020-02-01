@@ -22,6 +22,7 @@ public class BreakSpellPercept extends OpticalPercept {
 		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
 	}
 	
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<>();
 		l.add(getFigure());

@@ -26,6 +26,7 @@ public class TextPercept extends Percept {
 		return text;
 	}
 	
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		return Collections.emptyList();
 	}

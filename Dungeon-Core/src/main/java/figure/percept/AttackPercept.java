@@ -37,6 +37,7 @@ public class AttackPercept extends OpticalPercept {
 		return FigureInfo.makeFigureInfo(victim, viewer.getRoomVisibility());
 	}
 	
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<>();
 		l.add(getVictim());

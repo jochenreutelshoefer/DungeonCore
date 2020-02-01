@@ -32,14 +32,14 @@ public class GraphicObjectRenderCollection {
 
 	private boolean initialized = false;
 
-	//private final List<GraphicObject> graphicObjects = new CopyOnWriteArrayList<>();
-	private final Array<GraphicObject> graphicObjects = new Array<GraphicObject>();
+	private final List<GraphicObject> graphicObjects = new CopyOnWriteArrayList<>();
+	//private final Array<GraphicObject> graphicObjects = new Array<GraphicObject>();
 
 	// use CopyOnWriteArrayList list to overcome concurrent modification problem efficiently (is fetched by render thread)
 	//private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new CopyOnWriteArrayList<>();
 	private final Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new Array<>();
 
-	public Array<GraphicObject> getGraphicObjects() {
+	public List<GraphicObject> getGraphicObjects() {
 		return graphicObjects;
 	}
 
@@ -49,7 +49,9 @@ public class GraphicObjectRenderCollection {
 	}
 
 	public void addObject(GraphicObject object) {
+		if(object != null) {
 			graphicObjects.add(object);
+		}
 	}
 
 	@Override
@@ -76,6 +78,8 @@ public class GraphicObjectRenderCollection {
 	 *	RENDER THREAD
 	 */
 	private Pair<GraphicObject, TextureAtlas.AtlasRegion> createAtlasRegionPair(GraphicObject graphicObject) {
+		if(graphicObject == null) return null;
+
 		TextureAtlas.AtlasRegion atlasRegion = null;
 		if (graphicObject instanceof JDGraphicObject) {
 			JDGraphicObject object = ((JDGraphicObject) graphicObject);

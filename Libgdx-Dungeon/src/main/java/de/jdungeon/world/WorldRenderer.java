@@ -23,6 +23,7 @@ import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
+import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Wolf;
@@ -61,7 +62,7 @@ public class WorldRenderer implements Disposable {
 	public static final int ROOM_SIZE = 80;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private Class<? extends Figure>[] figureClasses;
-	private Map<Class<? extends Figure>, TextureAtlas> atlasMap;
+
 
 	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, FocusManager focusManager, AnimationManager animationManager) {
 		this.dungeonObjectRenderer = graphicObjectRenderer;
@@ -88,12 +89,9 @@ public class WorldRenderer implements Disposable {
 
 		camera.update();
 
-		figureClasses = new Class[] { Hero.class, Orc.class, Wolf.class, Skeleton.class };
-		atlasMap = new HashMap<>();
-		atlasMap.put(Hero.class, Assets.instance.getWarriorAtlas());
-		atlasMap.put(Orc.class, Assets.instance.getOrcAtlas());
-		atlasMap.put(Wolf.class, Assets.instance.getWolfAtlas());
-		atlasMap.put(Skeleton.class, Assets.instance.getSkelAtlas());
+		Assets.instance.initAtlasMap();
+
+
 	}
 
 	/*
@@ -155,7 +153,7 @@ public class WorldRenderer implements Disposable {
 	private void renderFigureObjectsForAllRooms() {
 
 		// iterate first for figure classes to have less atlas switches as each figure has a distinct atlas
-		for (Class<? extends Figure> figureClass : figureClasses) {
+		for (Class<? extends Figure> figureClass : Assets.figureClasses) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
 					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y].getFigureObjects(figureClass);
@@ -182,16 +180,16 @@ public class WorldRenderer implements Disposable {
 				FigureInfo figure = (FigureInfo) pair.getA().getClickableObject();
 				AnimationFrame animationImage = animationManager.getAnimationImage(figure, this.viewModel.roomViews[x][y].getRoomInfo());
 				if (animationImage != null) {
-					TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
-							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getImage(), atlasMap
-							.get(figure.getFigureClass()));
+					JDImageLocated locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer
+							.getFigureInfoSize(figure)
+							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight());
+					TextureAtlas atlas = Assets.instance.atlasMap.get(figure.getFigureClass());
+					JDImageProxy<?> image = locatedImage.getImage();
+					TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
 					if (atlasRegionAnimationStep != null) {
-						batch.draw(atlasRegionAnimationStep, animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
-								.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getX(roomOffsetX), animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
-										.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getY(roomOffsetY), animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
-												.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight())
-								.getWidth(), animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer.getFigureInfoSize(figure)
-										.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight()).getHeight());
+						batch.draw(atlasRegionAnimationStep, locatedImage.getX(roomOffsetX), locatedImage
+								.getY(roomOffsetY), locatedImage
+								.getWidth(), locatedImage.getHeight());
 					}
 
 					// we had an animation so we finish off this object

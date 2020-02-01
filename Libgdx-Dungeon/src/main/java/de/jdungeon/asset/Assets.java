@@ -11,8 +11,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import figure.Figure;
+import figure.hero.Hero;
+import figure.monster.Ghul;
+import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
+import figure.monster.Spider;
 import figure.monster.Wolf;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
@@ -34,7 +38,28 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static String WOLF_ATLAS = "wolf";
 	public static String ORC_ATLAS = "orc";
 	public static String SKEL_ATLAS = "skel";
+	public static String OGRE_ATLAS = "ogre";
+	public static String GHUL_ATLAS = "ghul";
+	public static String SPIDER_ATLAS = "spider";
 	public static String GUI_ATLAS = "gui";
+
+	/*
+	Figure classes that we can draw with the assets provided
+	 */
+	public static Class[] figureClasses = new Class[] { Hero.class, Orc.class, Wolf.class, Skeleton.class, Ogre.class, Ghul.class, Spider.class };
+
+
+
+	/*
+	 * Why are all figure classes treated here distinctly instead of in a generic way?
+	 * The reason lies in the optimization of the open gl rendering process.
+	 * For performance optimization purposes it is necessary to have a low number of texture sheet (atlas)
+	 * changes during the rendering of a frame. Therefore, it is clever to render all figures of same class
+	 * to have only one texture sheet change for each class (not multiple when for example 3 wolves are animated).
+	 * To support the rendering of all figures of one class together we need to organized the asset information here
+	 * distinctly to be able to change the texture sheet (atlas) for each class.
+	 */
+
 
 	public static final Assets instance = new Assets();
 	private AssetManager assetManager;
@@ -45,6 +70,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	private TextureAtlas orcAtlas;
 
+	private TextureAtlas ogreAtlas;
+	private TextureAtlas ghulAtlas;
+	private TextureAtlas spiderAtlas;
+
 	private TextureAtlas wolfAtlas;
 
 	private TextureAtlas skelAtlas;
@@ -53,32 +82,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	private TextureAtlas guiAtlas;
 
-	public TextureAtlas getWarriorAtlas() {
-		return warriorAtlas;
-	}
-	public TextureAtlas getOrcAtlas() {
-		return orcAtlas;
-	}
-	public TextureAtlas getDungeonAtlas() {
-		return dungeonAtlas;
-	}
-	public TextureAtlas getLionessAtlas() {
-		return lionessAtlas;
-	}
 	public TextureAtlas getGuiAtlas() {
 		return guiAtlas;
 	}
 
-	public TextureAtlas getSkelAtlas() {
-		return skelAtlas;
-	}
-
-	public TextureAtlas getWolfAtlas() {
-		return wolfAtlas;
-	}
-
-	public AssetBucket bucket;
-	public AssetDrop drop;
 	public AssetFonts fonts;
 	public static final String PACKS = "packs/";
 
@@ -109,6 +116,18 @@ public class Assets implements Disposable, AssetErrorListener {
 		String orcAtlasPath = PACKS + ORC_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(orcAtlasPath, TextureAtlas.class);
 
+		// ogre
+		String ogreAtlasPath = PACKS + OGRE_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(ogreAtlasPath, TextureAtlas.class);
+
+		// ghul
+		String ghulAtlasPath = PACKS + GHUL_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(ghulAtlasPath, TextureAtlas.class);
+
+		// spider
+		String spiderAtlasPath = PACKS + SPIDER_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(spiderAtlasPath, TextureAtlas.class);
+
 		// wolf
 		String wolfAtlasPath = PACKS + WOLF_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(wolfAtlasPath, TextureAtlas.class);
@@ -127,6 +146,16 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		orcAtlas = assetManager.get(orcAtlasPath);
 		cacheMap.put(orcAtlas, textureCacheOrc);
+
+		ogreAtlas = assetManager.get(ogreAtlasPath);
+		cacheMap.put(ogreAtlas, textureCacheOgre);
+
+
+		ghulAtlas = assetManager.get(ghulAtlasPath);
+		cacheMap.put(ghulAtlas, textureCacheGhul);
+
+		spiderAtlas = assetManager.get(spiderAtlasPath);
+		cacheMap.put(spiderAtlas, textureCacheSpider);
 
 		wolfAtlas = assetManager.get(wolfAtlasPath);
 		cacheMap.put(wolfAtlas, textureCacheWolf);
@@ -168,6 +197,9 @@ public class Assets implements Disposable, AssetErrorListener {
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDungeon = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWarrior = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOrc = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOgre = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSpider = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGhul = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWolf = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSkeleton = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGUI = new HashMap<>();
@@ -176,24 +208,9 @@ public class Assets implements Disposable, AssetErrorListener {
 	private final Map<TextureAtlas, Map<String, TextureAtlas.AtlasRegion>> cacheMap = new HashMap<>();
 
 
-	public TextureAtlas.AtlasRegion getGUITexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, guiAtlas);
-	}
 
 	public TextureAtlas.AtlasRegion getWarriorTexture(JDImageProxy<?> image) {
 		return getAtlasRegion(image, warriorAtlas);
-	}
-
-	public TextureAtlas.AtlasRegion getWolfTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, wolfAtlas);
-	}
-
-	public TextureAtlas.AtlasRegion getOrcTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, orcAtlas);
-	}
-
-	public TextureAtlas.AtlasRegion getSkeletonTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, skelAtlas);
 	}
 
 	/*
@@ -239,15 +256,37 @@ public class Assets implements Disposable, AssetErrorListener {
 	 */
 	public TextureAtlas.AtlasRegion getFigureTexture(Class<? extends Figure> figureClass, JDImageProxy<?> image) {
 		if(Wolf.class.equals(figureClass)) {
-			return getWolfTexture(image);
+			return getAtlasRegion(image, wolfAtlas);
 		}
 		if(Skeleton.class.equals(figureClass)) {
-			return getSkeletonTexture(image);
+			return getAtlasRegion(image, skelAtlas);
 		}
 		if(Orc.class.equals(figureClass)) {
-			return getOrcTexture(image);
+			return getAtlasRegion(image, orcAtlas);
+		}
+		if(Ogre.class.equals(figureClass)) {
+			return getAtlasRegion(image, ogreAtlas);
+		}
+		if(Ghul.class.equals(figureClass)) {
+			return getAtlasRegion(image, ghulAtlas);
+		}
+		if(Spider.class.equals(figureClass)) {
+			return getAtlasRegion(image, spiderAtlas);
 		}
 		return null;
+	}
+
+	public Map<Class<? extends Figure>, TextureAtlas> atlasMap;
+
+	public void initAtlasMap() {
+		atlasMap = new HashMap<>();
+		atlasMap.put(Hero.class, Assets.instance.warriorAtlas);
+		atlasMap.put(Orc.class, Assets.instance.orcAtlas);
+		atlasMap.put(Ogre.class, Assets.instance.ogreAtlas);
+		atlasMap.put(Ghul.class, Assets.instance.ghulAtlas);
+		atlasMap.put(Spider.class, Assets.instance.spiderAtlas);
+		atlasMap.put(Wolf.class, Assets.instance.wolfAtlas);
+		atlasMap.put(Skeleton.class, Assets.instance.skelAtlas);
 	}
 
 	public static class AssetBucket {

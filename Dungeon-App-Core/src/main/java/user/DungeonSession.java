@@ -3,6 +3,7 @@ package user;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import game.ControlUnit;
 import game.JDGUI;
 import level.DungeonFactory;
 import level.DungeonManager;
@@ -25,7 +26,7 @@ public interface DungeonSession {
 
 	void notifyExit(LevelExit exit, Figure figure);
 
-	HeroInfo initDungeon(DungeonFactory dungeon);
+	HeroInfo initDungeon(DungeonFactory dungeon, ControlUnit controlUnit);
 
 	void revertHero();
 

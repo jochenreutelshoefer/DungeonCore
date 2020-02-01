@@ -17,6 +17,7 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import game.DungeonGame;
 import game.JDEnv;
+import level.DungeonFactory;
 import level.DungeonStartEvent;
 import spell.Spell;
 import user.DefaultDungeonSession;
@@ -182,11 +183,13 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		if(event instanceof DungeonStartEvent) {
 			Gdx.app.log(TAG, "App: processing DungeonStartEvent");
 			// initialize new dungeon
-			HeroInfo heroInfo = this.dungeonSession.initDungeon(((DungeonStartEvent)event).getEvent().getDungeon());
+			DungeonFactory dungeonFactory = ((DungeonStartEvent) event).getEvent().getDungeon();
 
 			// create new controller
-			PlayerController controller = new PlayerController(heroInfo);
-			((DefaultDungeonSession)this.dungeonSession).getCurrentHero().setControl(controller);
+			PlayerController controller = new PlayerController();
+
+
+			HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
 
 			getCurrentScreen().pause();
 

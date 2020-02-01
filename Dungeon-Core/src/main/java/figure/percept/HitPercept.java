@@ -71,6 +71,7 @@ public class HitPercept extends OpticalPercept {
 		return indirect;
 	}
 
+	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<>();
 		l.add(getAttacker());

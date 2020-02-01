@@ -10,11 +10,12 @@ import java.util.List;
 
 import figure.FigureInfo;
 
-public class FightEndedPercept extends Percept {
+public class FightEndedPercept extends OpticalPercept {
 
 	private final List<FigureInfo> figures;
 
 	public FightEndedPercept(List<FigureInfo> figures) {
+		super(figures.iterator().next().getRoomNumber());
 		this.figures = figures;
 	}
 

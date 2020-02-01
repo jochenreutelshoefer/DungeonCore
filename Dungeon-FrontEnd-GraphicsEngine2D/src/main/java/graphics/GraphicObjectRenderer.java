@@ -334,7 +334,7 @@ public class GraphicObjectRenderer {
 		}
 		if (pos == Position.Pos.S) {
 			return new JDPoint(roomSize / 2 - ROOMSIZE_BY_16,
-					roomSize * 33 / 40 - ROOMSIZE_BY_36);
+					roomSize * 32 / 40 - ROOMSIZE_BY_36);
 		}
 		if (pos == Position.Pos.SW) {
 			return new JDPoint(roomSize / 4 - ROOMSIZE_BY_16,

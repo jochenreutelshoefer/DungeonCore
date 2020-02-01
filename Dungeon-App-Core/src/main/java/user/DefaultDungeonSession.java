@@ -14,6 +14,7 @@ import figure.hero.HeroInfo;
 import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
+import game.ControlUnit;
 import game.DungeonGame;
 import game.JDGUI;
 import level.DefaultDungeonManager;
@@ -169,7 +170,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	}
 
 	@Override
-	public HeroInfo initDungeon(DungeonFactory dungeonFactory) {
+	public HeroInfo initDungeon(DungeonFactory dungeonFactory, ControlUnit control) {
 		lastSelectedDungeonFactory = dungeonFactory;
 		dungeonGame = DungeonGame.getInstance();
 
@@ -190,10 +191,14 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		dungeonGame.setDungeon(derDungeon);
 
 		currentHero.setActualDungeon(derDungeon);
+		currentHero.setControl(control);
 
 		DungeonVisibilityMap heroVisMap = currentHero.getRoomVisibility();
 
 		HeroInfo heroInfo = new HeroInfo(currentHero, heroVisMap);
+
+		control.setFigure(heroInfo);
+
 		derDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(currentHero, 0);
 		return heroInfo;
 

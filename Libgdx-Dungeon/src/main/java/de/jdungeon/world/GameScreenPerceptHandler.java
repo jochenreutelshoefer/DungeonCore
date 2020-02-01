@@ -325,6 +325,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			if (damage != -1) {
 				text = "-" + damage;
 			}
+			// should better be delay = true to show the figure falling AFTER the hit, but the figure is rendered as dead by the default render process...not so nice though
 			startAnimation(set, deadFigure, text, false, true, false, ((OpticalPercept)p), null);
 		}
 
