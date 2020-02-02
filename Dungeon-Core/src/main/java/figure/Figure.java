@@ -902,6 +902,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	private Item getItemForInfo(ItemInfo item) {
 		List<Item> allItems = this.getAllItems();
+		//allItems.forEach(i -> System.out.println(i.isMagic()));
 		for (Item it : allItems) {
 			ItemInfo itemInfo = ItemInfo.makeItemInfo(it, getRoomVisibility());
 			if (itemInfo.equals(item)) {

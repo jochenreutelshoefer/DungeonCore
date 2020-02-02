@@ -19,14 +19,28 @@ import util.JDColor;
  */
 public class ScoutShrine extends Shrine {
 
-	private final List<Room> roomsList;
+	private List<Room> roomsList;
+
+	private static final int DEFAULT_RANGE = 2;
+
+	public ScoutShrine(Room room, int range) {
+		super(room);
+		if(range < 1) {
+			throw new IllegalArgumentException("range must be larger zero");
+		}
+		init(room, 0 - range, range);
+	}
 
 	public ScoutShrine(Room room) {
 		super(room);
+		init(room, 0 - DEFAULT_RANGE, DEFAULT_RANGE);
+	}
+
+	private void init(Room room, int offsetStartIndex, int offsetEndIndex) {
 		this.roomsList = new ArrayList<>();
 		final JDPoint point = room.getPoint();
-		for(int x = -1; x < 2; x++) {
-			for(int y = -1; y < 2; y++) {
+		for(int x = offsetStartIndex; x <= offsetEndIndex; x++) {
+			for(int y = offsetStartIndex; y <= offsetEndIndex; y++) {
 				JDPoint other = new JDPoint(point.getX()+x, point.getY()+y);
 				final Room otherRoom = room.getDungeon().getRoom(other);
 				if(otherRoom != null && !otherRoom.isWall()) {
