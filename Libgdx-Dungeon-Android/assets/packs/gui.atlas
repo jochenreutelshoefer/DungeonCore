@@ -97,7 +97,7 @@ border_double_right_lower_corner
   index: -1
 border_double_right_upper_corner
   rotate: false
-  xy: 512, 153
+  xy: 1610, 1065
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
@@ -149,6 +149,13 @@ bunch2
   xy: 1204, 851
   size: 154, 170
   orig: 154, 170
+  offset: 0, 0
+  index: -1
+cloth_chest1
+  rotate: false
+  xy: 512, 175
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 eye130x130
@@ -223,7 +230,7 @@ hour-glass-third
   index: -1
 icon_hammer2
   rotate: false
-  xy: 512, 175
+  xy: 1610, 1087
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -251,7 +258,7 @@ mana-potion
   index: -1
 minus
   rotate: false
-  xy: 1610, 1087
+  xy: 1998, 1819
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -279,7 +286,7 @@ paper_background
   index: -1
 plus
   rotate: false
-  xy: 1998, 1819
+  xy: 512, 141
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
