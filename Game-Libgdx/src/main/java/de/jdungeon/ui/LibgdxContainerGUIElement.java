@@ -31,6 +31,22 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 	}
 
 	@Override
+	public boolean handleClickEvent(int screenX, int screenY) {
+		JDPoint coordinates = new JDPoint(screenX, screenY);
+		boolean handles = false;
+		for (LibgdxGUIElement guiElement : getAllSubElements()) {
+			if (guiElement.hasPoint(coordinates) && guiElement.isVisible()) {
+				boolean taken = guiElement.handleClickEvent(screenX, screenY);
+				if(taken) {
+					handles = true;
+					break;
+				}
+			}
+		}
+		return handles;
+	}
+
+	@Override
 	public void update(float time) {
 		for (LibgdxGUIElement guiElement : getAllSubElements()) {
 			guiElement.update(time);

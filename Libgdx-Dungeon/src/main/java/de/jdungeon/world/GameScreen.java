@@ -33,6 +33,7 @@ import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.ui.LibgdxGUIElement;
 import de.jdungeon.util.Pair;
 
 import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
@@ -386,15 +387,12 @@ public class GameScreen extends AbstractGameScreen {
 		int guiXunprojected = Math.round(guiPosUnprojected.x);
 		int guiYunprojected = Math.round(guiPosUnprojected.y);
 
-		List<GUIElement> guiElements = guiRenderer.guiElements;
-		ListIterator<GUIElement> listIterator = guiElements.listIterator(guiElements.size());
+		List<LibgdxGUIElement> guiElements = guiRenderer.libgdxGuiElements;
+		ListIterator<LibgdxGUIElement> listIterator = guiElements.listIterator(guiElements.size());
 		while (listIterator.hasPrevious()) {
-			GUIElement guiElement = listIterator.previous();
+			LibgdxGUIElement guiElement = listIterator.previous();
 			if (guiElement.hasPoint(new JDPoint(guiXunprojected, guiYunprojected)) && guiElement.isVisible()) {
-				Input.TouchEvent touchEvent = new Input.TouchEvent();
-				touchEvent.x = screenX;
-				touchEvent.y = screenY;
-				guiElement.handleTouchEvent(touchEvent);
+				guiElement.handleClickEvent(screenX, screenY);
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				return true;
 			}

@@ -17,7 +17,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 	protected final JDDimension dimension;
 	// TODO: remove
 	private LibgdxGUIElement parent;
-	protected Screen screen = null;
 	protected Game game;
 
 
@@ -33,7 +32,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		this.position = position;
 		this.dimension = dimension;
 		this.game = game;
-		this.screen = screen;
 	}
 
 	// TODO: remove this constructor
@@ -48,11 +46,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 	@Override
 	public boolean needsRepaint() {
 		return true;
-	}
-
-	@Override
-	public Screen getScreen() {
-		return screen;
 	}
 
 	@Override

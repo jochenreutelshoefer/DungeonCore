@@ -1,14 +1,10 @@
 package de.jdungeon.ui;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.game.Game;
-import de.jdungeon.game.Input;
-import de.jdungeon.game.MotionEvent;
-import de.jdungeon.game.ScrollMotion;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -30,7 +26,7 @@ public interface LibgdxGUIElement {
 
 	void update(float time);
 
-	Screen getScreen();
-
 	Game getGame();
+
+	boolean handleClickEvent(int screenX, int screenY);
 }

@@ -34,6 +34,7 @@ import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
 import de.jdungeon.gui.LibgdxHealthBar;
+import de.jdungeon.gui.LibgdxHourGlassTimer;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.ui.LibgdxGUIElement;
@@ -125,8 +126,13 @@ public class GUIRenderer implements Disposable {
 		/*
 		 * init hour glass
 		 */
+		/*
 		HourGlassTimer hourglass = new HourGlassTimer(new JDPoint(30, 50), new JDDimension(36, 60), new ScreenAdapter(game),figure,  this.game);
 		this.guiElements.add(hourglass);
+		*/
+
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(30, 50), new JDDimension(36, 60),figure,  this.game, this.guiImageManager);
+		this.libgdxGuiElements.add(hourglass);
 
 
 		/*

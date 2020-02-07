@@ -82,5 +82,10 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 				dimension.getHeight()
 		);
 	}
+
+	@Override
+	public boolean handleClickEvent(int screenX, int screenY) {
+		return false;
+	}
 }
 
