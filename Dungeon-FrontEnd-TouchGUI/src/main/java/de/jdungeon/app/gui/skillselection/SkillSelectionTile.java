@@ -71,7 +71,7 @@ public class SkillSelectionTile extends AbstractGUIElement {
 		int iconPosY = position.getY() + dimension.getHeight()/4;
 		Image skillBackgroundImage = (Image) ImageManager.inventory_box_normal.getImage();
 		g.drawScaledImage(skillBackgroundImage, iconPosX, iconPosY, iconSize, iconSize, 0, 0, skillBackgroundImage.getWidth(), skillBackgroundImage.getHeight());
-		Image skillImage = imageManager.getImage(new SpellInfo(skill, null));
+		Image skillImage = imageManager.getIm(new SpellInfo(skill, null));
 		int iconSizeInternal = (int)(iconSize * 0.8);
 		g.drawScaledImage(skillImage, iconPosX + ((iconSize-iconSizeInternal)/2), iconPosY + ((iconSize-iconSizeInternal)/2), iconSizeInternal, iconSizeInternal, 0, 0, skillImage.getWidth(), skillImage.getHeight());
 		g.drawString(skill.getName(), iconPosX + iconSize/2, position.getY() + 50, headerPaint);

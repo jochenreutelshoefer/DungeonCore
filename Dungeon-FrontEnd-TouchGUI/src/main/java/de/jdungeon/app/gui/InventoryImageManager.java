@@ -76,4 +76,17 @@ public class InventoryImageManager {
 		return guiImageManager.getImage(GUIImageManager.NO_IMAGE);
 	}
 
+	public JDImageProxy getJDImage(ItemInfo item) {
+		if(item == null) return null;
+		// TODO: make image detection aware of class hierarchy
+		// => detect most specific match in class hierarchy
+		Set<Class<? extends Item>> classes = itemClassImageMap.keySet();
+		for (Class<? extends Item> aClass : classes) {
+			if (aClass.isAssignableFrom(item.getItemClass())) {
+				return itemClassImageMap.get(aClass);
+			}
+		}
+		return guiImageManager.getJDImage(GUIImageManager.NO_IMAGE);
+	}
+
 }

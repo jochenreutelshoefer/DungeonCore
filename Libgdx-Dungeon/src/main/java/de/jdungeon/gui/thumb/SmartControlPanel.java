@@ -1,4 +1,4 @@
-package de.jdungeon.app.gui.smartcontrol;
+package de.jdungeon.gui.thumb;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import audio.AudioEffectsManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
@@ -29,41 +32,36 @@ import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
 
-import de.jdungeon.app.DrawUtils;
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.gui.ContainerGUIElement;
-import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.SubGUIElement;
-import de.jdungeon.app.gui.SubGUIElementAnimated;
 import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.app.gui.activity.SkillActivityProvider;
 import de.jdungeon.app.gui.activity.TakeItemActivityProvider;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
-import de.jdungeon.app.screen.InfoMessagePopupEvent;
-import de.jdungeon.app.screen.StandardScreen;
-import de.jdungeon.game.Color;
-import de.jdungeon.game.Colors;
+import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
+import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.Input;
+import de.jdungeon.gui.LibgdxDrawUtils;
+import de.jdungeon.ui.LibgdxContainerGUIElement;
+import de.jdungeon.ui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
- * @created 28.12.16.
+ * @created 07.02.20.
  */
-public class SmartControlRoomPanel extends ContainerGUIElement implements EventListener {
+public class SmartControlPanel extends LibgdxContainerGUIElement implements EventListener {
 
-	private final List<GUIElement> allGuiElements = new ArrayList<>();
-	private final Collection<GUIElement> positionElements = new ArrayList<>();
-	private final Collection<GUIElement> doorElements = new ArrayList<>();
-	private final Collection<GUIElement> moveElements = new ArrayList<>();
-	private final Collection<GUIElement> scoutElements = new ArrayList<>();
-	private final Collection<GUIElement> takeItemElements = new ArrayList<>();
-	private final Collection<GUIElement> chestElements = new ArrayList<>();
-	private final Collection<GUIElement> shrineElements = new ArrayList<>();
-	private final GUIElement outerFrame;
+	public static final int SMART_CONTROL_SIZE = 290;
+
+	private final List<LibgdxGUIElement> allGuiElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> positionElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> doorElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> moveElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> scoutElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> takeItemElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> chestElements = new ArrayList<>();
+	private final Collection<LibgdxGUIElement> shrineElements = new ArrayList<>();
+	private final LibgdxGUIElement outerFrame;
 	private final FigureInfo figure;
 	private final ActionAssembler guiControl;
 	public static final int DOOR_WIDTH = 36;
@@ -74,41 +72,38 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	private final int x02;
 	private final int y13;
 	private final JDPoint[] doorCoordinates;
-	private final ActivityControlElement scoutNorth;
-	private final ActivityControlElement scoutSouth;
-	private final ActivityControlElement scoutWest;
-	private final ActivityControlElement scoutEast;
+	private final LibgdxActivityControlElement scoutNorth;
+	private final LibgdxActivityControlElement scoutSouth;
+	private final LibgdxActivityControlElement scoutWest;
+	private final LibgdxActivityControlElement scoutEast;
 	private final SkillImageManager skillImageManager;
 	private boolean worldHasChanged = true;
 	private boolean visible = true;
 
-	private final MoveElement moveWest;
-	private final MoveElement moveEast;
-	private final MoveElement moveNorth;
-	private final MoveElement moveSouth;
+	private final LibgdxMoveElement moveWest;
+	private final LibgdxMoveElement moveEast;
+	private final LibgdxMoveElement moveNorth;
+	private final LibgdxMoveElement moveSouth;
 	public static final int MOVE_ELEMENT_SIZE = 40;
 	private final JDDimension moveElementDimension;
 	private final int positionAreaSize;
 	private final int positionAreaOffset;
-	private final SmartControl smartControl;
 	private final GraphicObjectRenderer renderer;
-	private final SubGUIElementAnimated chestGUIELement;
-	//private final SubGUIElementAnimated takeGUIElement;
-	private final PositionElement[] freeStepPositionElements = new PositionElement[8];
-	private final PositionElement[] dotPositionElements = new PositionElement[8];
+	private final LibgdxSubGUIElementAnimated chestGUIELement;
+	private final LibgdxPositionElement[] freeStepPositionElements = new LibgdxPositionElement[8];
+	private final LibgdxPositionElement[] dotPositionElements = new LibgdxPositionElement[8];
 	private final JDPoint[] positionElementPositions = new JDPoint[8];
 	private final JDDimension positionDimension;
-	private final SubGUIElementAnimated shrineElement;
-	private final GUIElement innerFrame;
-	private final FloorItemPresenter floorItemPresenter;
+	private final LibgdxSubGUIElementAnimated shrineElement;
+	private final LibgdxGUIElement innerFrame;
+	private final LibgdxFloorItemPresenter floorItemPresenter;
 
-	public SmartControlRoomPanel(JDPoint position, JDDimension dimension, StandardScreen screen, Game game, FigureInfo figure, ActionAssembler actionAssembler, SmartControl smartControl) {
+	public SmartControlPanel(JDPoint position, JDDimension dimension, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
-					positionAreaSize = (int) (dimension.getWidth() / 2.2);
+		positionAreaSize = (int) (dimension.getWidth() / 2.2);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
-		this.smartControl = smartControl;
 		renderer = new GraphicObjectRenderer(positionAreaSize);
 
 		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
@@ -151,13 +146,13 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			JDPoint positionCoord = renderer.getPositionCoordModified(i);
 			positionElementPositions[i] = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionElementSize / 2, correctionY + positionCoord
 					.getY() + positionAreaOffset - positionElementSize / 2);
-			freeStepPositionElements[i] = new PositionElement(
+			freeStepPositionElements[i] = new LibgdxPositionElement(
 					positionElementPositions[i],
 					positionDimension,
-					this, null, Colors.WHITE, null, actionAssembler, i);
-			dotPositionElements[i] = new PositionElement(
+					this, null, Color.WHITE, null, actionAssembler, i);
+			dotPositionElements[i] = new LibgdxPositionElement(
 					new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord.getY() + positionAreaOffset - 1),
-					new JDDimension(3, 3), this, null, Colors.GRAY, null, actionAssembler);
+					new JDDimension(3, 3), this, null, Color.GRAY, null, actionAssembler);
 		}
 
 		moveElementDimension = new JDDimension(MOVE_ELEMENT_SIZE, MOVE_ELEMENT_SIZE);
@@ -180,12 +175,10 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		final JDDimension shrineDimension = new JDDimension(shrineElementSize, shrineElementSize);
 		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 19 / 28, getDimension()
 				.getHeight() * 9 / 48);
-		Image shrineImage = (Image) GUIImageManager.getImageProxy("guiItems/temple.png", game.getFileIO()
-				.getImageLoader()).getImage();
-		shrineElement = new SubGUIElementAnimated(posRelativeShrine, shrineDimension, this, shrineImage) {
+		shrineElement = new LibgdxSubGUIElementAnimated(posRelativeShrine, shrineDimension, this, "guiItems/temple.png") {
 			@Override
-			public boolean handleTouchEvent(Input.TouchEvent touch) {
-				super.handleTouchEvent(touch);
+			public boolean handleClickEvent(int x, int y) {
+				super.handleClickEvent(x, y);
 				EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
 				return true;
 			}
@@ -196,14 +189,12 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		int takeElementSizeY = 18;
 		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
 		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
-		Image chestImage = (Image) GUIImageManager.getImageProxy("guiItems/Treasure-valuable-wealth-asset_3-512.png", game
-				.getFileIO()
-				.getImageLoader()).getImage();
-		chestGUIELement = new SubGUIElementAnimated(posRelative, chestDimension, this, chestImage) {
+		String chestImage = "guiItems/Treasure-valuable-wealth-asset_3-512.png";
+		chestGUIELement = new LibgdxSubGUIElementAnimated(posRelative, chestDimension, this, chestImage) {
 
 			@Override
-			public boolean handleTouchEvent(Input.TouchEvent touch) {
-				super.handleTouchEvent(touch);
+			public boolean handleClickEvent(int x, int y) {
+				super.handleClickEvent(x, y);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
 				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
 				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
@@ -211,53 +202,45 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			}
 		};
 
-
-		floorItemPresenter = new FloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, screen, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
-
+		floorItemPresenter = new LibgdxFloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
 	}
 
-	private ActivityControlElement createScoutElementNorth() {
-		RouteInstruction.Direction north = RouteInstruction.Direction.North;
-		ScoutActivity scoutActivity = new ScoutActivity(north);
-		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
+	private LibgdxActivityControlElement createScoutElementNorth() {
+		ScoutActivity scoutActivity = new ScoutActivity(RouteInstruction.Direction.North);
+		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
 		int x = moveNorth.getPositionOnScreen().getX();
 		int y = moveNorth.getPositionOnScreen().getY() + moveNorth.getDimension().getHeight() + doorThickness;
-		return new ActivityControlElement(new JDPoint(x, y), moveNorth.getDimension(), moveNorth.getParent(), north, figure, guiControl, scoutActivity, skillImage);
+		return new LibgdxActivityControlElement(new JDPoint(x, y), moveNorth.getDimension(), moveNorth.getParent(), scoutActivity, skillImage);
 	}
 
-	private ActivityControlElement createScoutElementSouth() {
-		RouteInstruction.Direction south = RouteInstruction.Direction.South;
-		ScoutActivity scoutActivity = new ScoutActivity(south);
-		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
+	private LibgdxActivityControlElement createScoutElementSouth() {
+		ScoutActivity scoutActivity = new ScoutActivity(RouteInstruction.Direction.South);
+		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
 		int x = moveSouth.getPositionOnScreen().getX();
 		int y = moveSouth.getPositionOnScreen().getY() - moveSouth.getDimension().getHeight() - doorThickness;
-		return new ActivityControlElement(new JDPoint(x, y), moveSouth.getDimension(), moveSouth.getParent(), south, figure, guiControl, scoutActivity, skillImage);
+		return new LibgdxActivityControlElement(new JDPoint(x, y), moveSouth.getDimension(), moveSouth.getParent(), scoutActivity, skillImage);
 	}
 
-
-	private ActivityControlElement createScoutElementWest() {
-		RouteInstruction.Direction west = RouteInstruction.Direction.West;
-		ScoutActivity scoutActivity = new ScoutActivity(west);
-		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
-		int x = moveWest.getPositionOnScreen().getX() + moveWest.getDimension().getWidth() +  doorThickness;
+	private LibgdxActivityControlElement createScoutElementWest() {
+		ScoutActivity scoutActivity = new ScoutActivity(RouteInstruction.Direction.West);
+		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
+		int x = moveWest.getPositionOnScreen().getX() + moveWest.getDimension().getWidth() + doorThickness;
 		int y = moveWest.getPositionOnScreen().getY();
-		return new ActivityControlElement(new JDPoint(x, y), moveWest.getDimension(), moveWest.getParent(), west, figure, guiControl, scoutActivity, skillImage);
+		return new LibgdxActivityControlElement(new JDPoint(x, y), moveWest.getDimension(), moveWest.getParent(), scoutActivity, skillImage);
 	}
 
-	private ActivityControlElement createScoutElementEast() {
-		RouteInstruction.Direction east = RouteInstruction.Direction.East;
-		ScoutActivity scoutActivity = new ScoutActivity(east);
-		Image skillImage = skillImageManager.getSkillImage(scoutActivity);
-		int x = moveEast.getPositionOnScreen().getX() - moveEast.getDimension().getWidth() -  doorThickness;
+	private LibgdxActivityControlElement createScoutElementEast() {
+		ScoutActivity scoutActivity = new ScoutActivity(RouteInstruction.Direction.East);
+		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
+		int x = moveEast.getPositionOnScreen().getX() - moveEast.getDimension().getWidth() - doorThickness;
 		int y = moveEast.getPositionOnScreen().getY();
-		return new ActivityControlElement(new JDPoint(x, y), moveEast.getDimension(), moveEast.getParent(), east, figure, guiControl, scoutActivity, skillImage);
+		return new LibgdxActivityControlElement(new JDPoint(x, y), moveEast.getDimension(), moveEast.getParent(), scoutActivity, skillImage);
 	}
 
-
-	public class ScoutActivity extends AbstractExecutableActivity {
+	class ScoutActivity extends AbstractExecutableActivity {
 
 		private final RouteInstruction.Direction direction;
 
@@ -284,36 +267,42 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		@Override
 		public boolean isCurrentlyPossible() {
 			final RoomInfo roomInfo = figure.getRoomInfo();
-			if(roomInfo == null) {
+			if (roomInfo == null) {
 				return false;
 			}
 			Boolean fightRunning = roomInfo.fightRunning();
 			DoorInfo door = roomInfo
 					.getDoor(direction);
-			if(door == null) return false;
+			if (door == null) return false;
 			PositionInRoomInfo scoutPosition = door
 					.getPositionAtDoor(roomInfo, false);
 			return fightRunning != null && !fightRunning && (!scoutPosition.isOccupied() || figure.equals(scoutPosition.getFigure()));
 		}
 	}
 
-	private SubGUIElement createRectGUIElement(JDPoint position, JDDimension dimension) {
-		return new SubGUIElement(
-				position,
-				dimension
-				, this) {
+	private LibgdxSubGUIElement createRectGUIElement(JDPoint position, JDDimension dimension) {
+		return new LibgdxSubGUIElement(position, dimension, this) {
 			@Override
 			public boolean isVisible() {
 				return true;
 			}
 
 			@Override
-			public void paint(Graphics g, JDPoint viewportPosition) {
+			public void paint(ShapeRenderer renderer) {
 				JDPoint absolutePosition = new JDPoint(parent.getPositionOnScreen().getX() + this.getPositionOnScreen()
 						.getX(),
 						parent.getPositionOnScreen().getY() + this.getPositionOnScreen().getY());
-				Color borderColor = Colors.WHITE;
-				DrawUtils.drawRectangle(g, borderColor, absolutePosition, this.getDimension());
+				LibgdxDrawUtils.drawRectangle(renderer, com.badlogic.gdx.graphics.Color.WHITE, absolutePosition, this.getDimension());
+			}
+
+			@Override
+			public void paint(SpriteBatch batch) {
+
+			}
+
+			@Override
+			public boolean handleClickEvent(int screenX, int screenY) {
+				return false;
 			}
 		};
 	}
@@ -328,7 +317,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			worldHasChanged = false;
 		}
 	}
-
 
 	private void updateMoveElements() {
 		moveElements.clear();
@@ -381,21 +369,21 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		return figure.checkAction(new FleeAction(false)).getValue() == ActionResult.VALUE_POSSIBLE;
 	}
 
-	private MoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {
-		return new MoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West, figure, guiControl);
+	private LibgdxMoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {
+		return new LibgdxMoveElement(new JDPoint(0, getDimension().getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.West, figure, guiControl);
 	}
 
-	private MoveElement createMoveNorth(int moveElementSize, JDDimension moveElementDimension) {
-		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North, figure, guiControl);
+	private LibgdxMoveElement createMoveNorth(int moveElementSize, JDDimension moveElementDimension) {
+		return new LibgdxMoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, 0), moveElementDimension, this, RouteInstruction.Direction.North, figure, guiControl);
 	}
 
-	private MoveElement createMoveEast(int moveElementSize, JDDimension moveElementDimension) {
-		return new MoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension()
+	private LibgdxMoveElement createMoveEast(int moveElementSize, JDDimension moveElementDimension) {
+		return new LibgdxMoveElement(new JDPoint(getDimension().getWidth() - moveElementSize, getDimension()
 				.getHeight() / 2 - moveElementSize / 2), moveElementDimension, this, RouteInstruction.Direction.East, figure, guiControl);
 	}
 
-	private MoveElement createMoveSouth(int moveElementSize, JDDimension moveElementDimension) {
-		return new MoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
+	private LibgdxMoveElement createMoveSouth(int moveElementSize, JDDimension moveElementDimension) {
+		return new LibgdxMoveElement(new JDPoint(getDimension().getWidth() / 2 - moveElementSize / 2, getDimension()
 				.getWidth() - moveElementSize), moveElementDimension, this, RouteInstruction.Direction.South, figure, guiControl);
 	}
 
@@ -407,7 +395,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			DoorInfo door = doors[i];
 			if (door != null && door.hasLock()) {
 				Action action = new LockAction(door);
-				DoorElement doorElement = new DoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
+				LibgdxDoorElement doorElement = new LibgdxDoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
 						.isLocked(), this.figure.hasKey(door), action, door, guiControl);
 				doorElements.add(doorElement);
 			}
@@ -452,19 +440,19 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				// show other figures
 				if (otherFigure.isHostile(this.figure)) {
 					positionElements.add(
-							new PositionElement(
+							new LibgdxPositionElement(
 									positionElementPositions[i],
 									positionDimension,
 									this,
-									otherFigure, Colors.RED, otherFigure, guiControl));
+									otherFigure, Color.RED, otherFigure, guiControl));
 				}
 				else {
-					de.jdungeon.game.Color color = Colors.GREEN;
+					Color color = Color.GREEN;
 					if (otherFigure.equals(figure)) {
-						color = Colors.YELLOW;
+						color = Color.YELLOW;
 					}
 					positionElements.add(
-							new PositionElement(
+							new LibgdxPositionElement(
 									positionElementPositions[i],
 									positionDimension,
 									this,
@@ -479,7 +467,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 	}
 
 	@Override
-	protected List<GUIElement> getAllSubElements() {
+	protected List<LibgdxGUIElement> getAllSubElements() {
 		return allGuiElements;
 	}
 
@@ -499,24 +487,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		allGuiElements.addAll(shrineElements);
 		allGuiElements.add(floorItemPresenter);
 		floorItemPresenter.update(time);
-
-
-		if(smartControl.getMessage() != null) {
-			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(smartControl.getMessage().getMessage()));
-			// TODO: test
-			// should animate red enemy blobs if there are multiple and no enemy is selected
-			for (GUIElement positionElement : positionElements) {
-				if(positionElement instanceof PositionElement) {
-					final RoomInfoEntity clickableObject = ((PositionElement) positionElement).getClickableObject();
-					if(clickableObject instanceof FigureInfo) {
-						if(((FigureInfo)clickableObject).isHostile(this.figure)) {
-							((PositionElement) positionElement).startAnimation();
-						}
-					}
-				}
-			};
-		}
-
 	}
 
 	@Override
@@ -541,5 +511,4 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 			this.worldHasChanged = true;
 		}
 	}
-
 }

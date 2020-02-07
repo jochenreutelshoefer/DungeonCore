@@ -49,13 +49,10 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
-		// do nothing here
-	}
-
-	@Override
-	public void update(float time) {
 		for (LibgdxGUIElement guiElement : getAllSubElements()) {
-			guiElement.update(time);
+			if (guiElement.isVisible()) {
+				guiElement.paint(shapeRenderer);
+			}
 		}
 	}
 
@@ -67,6 +64,15 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 			}
 		}
 	}
+
+
+	@Override
+	public void update(float time) {
+		for (LibgdxGUIElement guiElement : getAllSubElements()) {
+			guiElement.update(time);
+		}
+	}
+
 
 
 }

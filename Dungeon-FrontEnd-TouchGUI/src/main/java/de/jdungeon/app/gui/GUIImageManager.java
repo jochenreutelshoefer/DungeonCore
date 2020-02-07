@@ -60,6 +60,10 @@ public class GUIImageManager {
 		return (Image) new JDImageProxy(loader, file).getImage();
 	}
 
+	public JDImageProxy getJDImage(String file) {
+		return new JDImageProxy(loader, file);
+	}
+
 	public JDImageProxy getJDImageProxy(String file) {
 		return new JDImageProxy(loader, file);
 	}

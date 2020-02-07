@@ -51,10 +51,6 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 		int actionPoints = hero.getActionPoints();
 		if (actionPoints == 0) {
 			image = GUIImageManager.HOUR_GLASS_EMPTY;
-			// } else if (actionPoints == 1) {
-			// image =
-			// GUIImageManager.getImage(GUIImageManager.HOUR_GLASS_THIRD,
-			// screen.getGame());
 		}
 		else if (actionPoints == 1) {
 			image = GUIImageManager.HOUR_GLASS_HALF;

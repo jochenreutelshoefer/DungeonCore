@@ -17,43 +17,42 @@ public class SkillImageManager {
 	}
 
 	public Image getSkillImage(Activity activity) {
-		return getImage(activity.getObject());
+		return guiImageManager.getImage(getImage(activity.getObject()));
 	}
 
-	public Image getImage(Object o) {
+	public Image getIm(Object o) {
+		return guiImageManager.getImage(getImage(o));
+	}
 
-		Image im = null;
+	public String getImage(Object o) {
+
+		String im = null;
 		if (o.equals(SkillActivityProvider.ATTACK)) {
-			im = guiImageManager.getImage(GUIImageManager.SWORD_ICON);
+			im = GUIImageManager.SWORD_ICON;
 		}
 		else if (o.equals(SkillActivityProvider.SCOUT)) {
-			//im = guiImageManager.getImage("guiItems/spy-icon.gif");
-			//im = guiImageManager.getImage("guiItems/44741-eye-shape-variant-interface-view-symbol.png");
-			im = guiImageManager.getImage("guiItems/eye130x130.png");
-			// } else if (o.equals(WALK)) {
-			// im = GUIImageManager.getImage(GUIImageManager.FOOT_ICON,
-			// screen.getGame());
+			im = "guiItems/eye130x130.png";
 		}
 		else if (o.equals(SkillActivityProvider.FLEE)) {
-			im = guiImageManager.getImage(GUIImageManager.FOOT_ICON);
+			im = GUIImageManager.FOOT_ICON;
 		}
 		else if (o.equals(SkillActivityProvider.LOOK)) {
-			im = guiImageManager.getImage(GUIImageManager.LUPE);
+			im = GUIImageManager.LUPE;
 		}
 		else if (o instanceof SpellInfo) {
 			SpellInfo spell = ((SpellInfo) o);
 			int spellType = spell.getType();
 			if (spellType == AbstractSpell.SPELL_GOLDENHIT || spellType == AbstractSpell.SPELL_RAID) {
-				im = guiImageManager.getImage(GUIImageManager.TARGET_ICON);
+				im = GUIImageManager.TARGET_ICON;
 			}
 			else if (spellType == AbstractSpell.SPELL_HEAL) {
-				im = guiImageManager.getImage(GUIImageManager.HEART_ICON);
+				im = GUIImageManager.HEART_ICON;
 			}
 			else if (spellType == AbstractSpell.SPELL_REPAIR) {
-				im = guiImageManager.getImage(GUIImageManager.HAMMER);
+				im = GUIImageManager.HAMMER;
 			}
 			else {
-				im = guiImageManager.getImage(GUIImageManager.NO_IMAGE);
+				im = GUIImageManager.NO_IMAGE;
 			}
 		}
 		return im;
