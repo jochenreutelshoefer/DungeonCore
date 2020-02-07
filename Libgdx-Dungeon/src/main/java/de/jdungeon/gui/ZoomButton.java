@@ -13,12 +13,12 @@ import de.jdungeon.world.GameScreenInputProcessor;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 11.01.20.
  */
-public class ZoomButton extends ImageGUIElement {
+public class ZoomButton extends ImageLibgdxGUIElement {
 
 	private final GameScreenInputProcessor inputController;
 	private final boolean plus;
 
-	public ZoomButton(JDPoint position, JDDimension dimension, GameScreenInputProcessor inputController, Image image, boolean plus) {
+	public ZoomButton(JDPoint position, JDDimension dimension, GameScreenInputProcessor inputController, String image, boolean plus) {
 		super(position, dimension, image, inputController.getGame());
 		this.inputController = inputController;
 		this.plus = plus;
@@ -30,22 +30,17 @@ public class ZoomButton extends ImageGUIElement {
 	}
 
 	@Override
-	public boolean handleTouchEvent(Input.TouchEvent touch) {
+	public boolean handleClickEvent(int x, int y) {
 		doZoom();
 		return true;
 	}
 
 	private void doZoom() {
-		if(plus) {
+		if (plus) {
 			inputController.zoomIn();
-		} else {
+		}
+		else {
 			inputController.zoomOut();
 		}
 	}
-
-	@Override
-	public void handleLongPressEvent(MotionEvent touch) {
-		doZoom();
-	}
 }
-

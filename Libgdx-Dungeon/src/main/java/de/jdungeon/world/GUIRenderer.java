@@ -33,6 +33,7 @@ import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
+import de.jdungeon.gui.ImageLibgdxGUIElement;
 import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
 import de.jdungeon.gui.ZoomButton;
@@ -138,17 +139,17 @@ public class GUIRenderer implements Disposable {
 		/*
 		add +/- magnifier
 		 */
-		ImageGUIElement magnifier = new ImageGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), getGUIImage(GUIImageManager.LUPE2), game) {
+		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), GUIImageManager.LUPE2, game) {
 
 			@Override
-			public boolean handleTouchEvent(Input.TouchEvent touch) {
+			public boolean handleClickEvent(int x, int y) {
 				inputController.scrollToPlayer();
 				return true;
 			}
 		};
-		this.guiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), inputController, getGUIImage(GUIImageManager.PLUS), true));
-		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), inputController, getGUIImage(GUIImageManager.MINUS), false));
-		this.guiElements.add(magnifier);
+		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(30, 120), new JDDimension(36, 36), inputController, GUIImageManager.PLUS, true));
+		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), inputController, GUIImageManager.MINUS, false));
+		this.libgdxGuiElements.add(magnifier);
 
 
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());

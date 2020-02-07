@@ -8,6 +8,7 @@ package de.jdungeon.gui;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
@@ -41,6 +42,8 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 	public boolean isVisible() {
 		return true;
 	}
+
+
 
 	@Override
 	public void paint(SpriteBatch batch) {

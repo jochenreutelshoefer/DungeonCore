@@ -1,6 +1,7 @@
 package de.jdungeon.ui;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
@@ -41,6 +42,11 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		this.position = position;
 		this.dimension = dimension;
 		this.parent = parent;
+	}
+
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package de.jdungeon.ui;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
@@ -44,6 +45,11 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 			}
 		}
 		return handles;
+	}
+
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing here
 	}
 
 	@Override

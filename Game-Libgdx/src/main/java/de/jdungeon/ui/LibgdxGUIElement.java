@@ -1,6 +1,7 @@
 package de.jdungeon.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
@@ -21,6 +22,8 @@ public interface LibgdxGUIElement {
 	JDDimension getDimension();
 
 	boolean hasPoint(JDPoint p);
+
+	void paint(ShapeRenderer shapeRenderer);
 
 	void paint(SpriteBatch batch);
 
