@@ -1,5 +1,6 @@
 package de.jdungeon.world;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,8 +33,10 @@ import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
+import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.libgdx.LibgdxGraphics;
+import de.jdungeon.ui.LibgdxGUIElement;
 
 /**
  * Renders the GUI (aka head up display) over the game world.
@@ -55,7 +58,8 @@ public class GUIRenderer implements Disposable {
 
 	private FocusManager focusManager;
 
-	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
+	protected final List<GUIElement> guiElements = new ArrayList<>();
+	protected final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
 
 	private GUIImageManager guiImageManager;
 	private GameOverView gameOverView;
@@ -98,6 +102,7 @@ public class GUIRenderer implements Disposable {
 		/*
 		 * init health bars
 		 */
+		/*
 		int posX = 22;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
 		HealthBar healthView = new HealthBar(healthBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.health, this.game);
@@ -105,6 +110,17 @@ public class GUIRenderer implements Disposable {
 		JDPoint dustBarPosition = new JDPoint(posX, 25);
 		HealthBar dustView = new HealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust, this.game);
 		this.guiElements.add(dustView);
+*/
+
+
+		int posX = 22;
+		JDPoint healthBarPosition = new JDPoint(posX, 5);
+		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.health, this.game);
+		this.libgdxGuiElements.add(healthView);
+		JDPoint dustBarPosition = new JDPoint(posX, 25);
+		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust, this.game);
+		this.libgdxGuiElements.add(dustView);
+
 
 		/*
 		 * init hour glass
@@ -128,12 +144,12 @@ public class GUIRenderer implements Disposable {
 		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), inputController, getGUIImage(GUIImageManager.MINUS), false));
 		this.guiElements.add(magnifier);
 
-		/*
+
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, inputController
 				.getPlayerController().getActionAssembler(), focusManager);
 		this.guiElements.add(smartControl);
-		*/
+
 
 		/*
 		 * init game over view
@@ -162,12 +178,12 @@ public class GUIRenderer implements Disposable {
 
 
 		batch.setProjectionMatrix(cameraGUI.combined);
-		//batch.begin();
+		batch.begin();
 		renderGUIElements();
 		//renderGuiScore();
 		renderFPSCounter();
 		//renderGrid();
-		//batch.end();
+		batch.end();
 
 	}
 
@@ -185,6 +201,7 @@ public class GUIRenderer implements Disposable {
 
 	private void renderGUIElements() {
 
+		/*
 		for (GUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
 				if (guiElement.needsRepaint()) {
@@ -192,9 +209,19 @@ public class GUIRenderer implements Disposable {
 				}
 			}
 		}
+		*/
+
+		for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
+			if (guiElement.isVisible()) {
+				if (guiElement.needsRepaint()) {
+					guiElement.paint(batch);
+				}
+			}
+		}
 
 	}
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+
 	private void renderGrid() {
 		batch.setProjectionMatrix(cameraGUI.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -228,10 +255,10 @@ public class GUIRenderer implements Disposable {
 		} else  {
 			fpsFont.setColor(1,0,0,1);
 		}
-		batch.begin();
+		//batch.begin();
 		fpsFont.draw(batch, "FPS: "+fps, x, y);
 		fpsFont.setColor(1,1,1,1); //white
-		batch.end();
+		//batch.end();
 	}
 
 	public void resize(int width, int height) {

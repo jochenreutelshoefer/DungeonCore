@@ -6,7 +6,9 @@ import java.util.Map;
 
 import animation.AnimationFrame;
 import animation.AnimationManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,6 +36,7 @@ import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 import graphics.util.DrawingRectangle;
+import log.Log;
 import util.JDDimension;
 
 import de.jdungeon.CameraHelper;
@@ -75,11 +78,6 @@ public class WorldRenderer implements Disposable {
 		init();
 	}
 
-	public static Pair<Float, Float> getPlayerRoomWorldPosition(FigureInfo figure) {
-		JDPoint number = figure.getRoomInfo().getNumber();
-		return new Pair<>((float) number.getX() * ROOM_SIZE + ROOM_SIZE / 2, (float) number.getY() * ROOM_SIZE + ROOM_SIZE / 2);
-	}
-
 	private void init() {
 		batch = new SpriteBatch();
 		viewModel.initGraphicObjects(dungeonObjectRenderer);
@@ -92,6 +90,9 @@ public class WorldRenderer implements Disposable {
 
 		Assets.instance.initAtlasMap();
 
+		GL20 gl = Gdx.gl20;
+		int programObject = gl.glCreateProgram();
+		System.out.println("position location: " + gl.glGetAttribLocation(programObject,"position"));
 
 	}
 
@@ -111,17 +112,28 @@ public class WorldRenderer implements Disposable {
 		// nothing yet
 	}
 
+	long lastCall;
+
 	/*
 	 *	RENDER THREAD
 	 */
 	private void renderDungeon() {
 		batch.begin();
+
+		long now = System.currentTimeMillis();
+		//Log.info("render call gap: "+ (now - lastCall));
+		this.lastCall = now;
 		renderDungeonBackgroundObjectsForAllRooms();
 		renderFigureObjectsForAllRooms();
 		if (highlightedObject != null) {
 			batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightBox.getWidth(), highlightBox.getHeight());
 		}
+
+		long renderCodeDuration = System.currentTimeMillis() - this.lastCall;
+		//Log.info("renderCode duration: "+renderCodeDuration);
 		batch.end();
+
+
 	}
 
 	/*
@@ -186,13 +198,19 @@ public class WorldRenderer implements Disposable {
 							.getFigureInfoSize(figure)
 							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight());
 					TextureAtlas atlas = Assets.instance.atlasMap.get(figure.getFigureClass());
+					if(locatedImage == null) {
+						Log.warning("Located Image is null: "+figure + " - "+animationImage);
+						continue;
+					}
 					JDImageProxy<?> image = locatedImage.getImage();
 					if(image != null) {
 						TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
 						if (atlasRegionAnimationStep != null) {
-							batch.draw(atlasRegionAnimationStep, locatedImage.getX(roomOffsetX), locatedImage
-									.getY(roomOffsetY), locatedImage
-									.getWidth(), locatedImage.getHeight());
+							batch.draw(atlasRegionAnimationStep,
+									locatedImage.getX(roomOffsetX),
+									locatedImage.getY(roomOffsetY),
+									locatedImage.getWidth(),
+									locatedImage.getHeight());
 						}
 
 					}

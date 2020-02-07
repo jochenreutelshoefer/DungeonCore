@@ -244,25 +244,41 @@ public class Assets implements Disposable, AssetErrorListener {
 		if(atlas == null) return null;
 		if(image == null) return null;
 
+		return getAtlasRegion(image.getFilenameBlank(), atlas);
+	}
 
-		if (cacheMap.get(atlas).containsKey(image.getFilenameBlank())) {
+	String pathSeparator = "/"; // todo: does this work on all platforms???
+	public TextureAtlas.AtlasRegion getAtlasRegion(String filename, TextureAtlas atlas) {
+
+		if(atlas == null) return null;
+		if(filename == null) return null;
+
+		String blankFilename = filename;
+		if (filename.toLowerCase().endsWith(".gif") || filename.toLowerCase().endsWith(".png")) {
+			blankFilename = filename.substring(0, filename.length() - 4);
+		}
+
+		if (blankFilename.contains(pathSeparator)) {
+			blankFilename = blankFilename.substring(filename.lastIndexOf(pathSeparator) + 1);
+		}
+
+		if (cacheMap.get(atlas).containsKey(blankFilename)) {
 			// if texture already loaded, retrieve from cache
-			return cacheMap.get(atlas).get(image.getFilenameBlank());
+			return cacheMap.get(atlas).get(blankFilename);
 		}
 		else {
 			Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
-			String filename = image.getFilenameBlank();
 			// called first time, hence load texture from atlas
-			TextureAtlas.AtlasRegion region = atlas.findRegion(filename);
+			TextureAtlas.AtlasRegion region = atlas.findRegion(blankFilename);
 			if (region != null) {
 				region.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 				region.flip(false, true);
-				textureCache.put(filename, region);
+				textureCache.put(blankFilename, region);
 				return region;
 			}
 			else {
-				textureCache.put(filename, null);
-				Gdx.app.error(TAG, "Couldn't find texture: " + filename);
+				textureCache.put(blankFilename, null);
+				Gdx.app.error(TAG, "Couldn't find texture: " + blankFilename);
 			}
 		}
 		return null;

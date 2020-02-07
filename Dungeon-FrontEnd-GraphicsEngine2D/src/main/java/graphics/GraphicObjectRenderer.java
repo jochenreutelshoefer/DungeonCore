@@ -1017,7 +1017,6 @@ public class GraphicObjectRenderer {
 			im = ImageManager.floorImage_mediumArray[floorType];
 		}
 		else if (status > RoomObservationStatus.VISIBILITY_SHRINE) {
-			Log.info("Drawing lighted floor");
 			im = ImageManager.floorImageArray[floorType];
 		}
 
@@ -1176,8 +1175,6 @@ public class GraphicObjectRenderer {
 					graphObs.add(heroObject);
 				}
 			}
-		} else {
-			Log.info("No hero infos found for Room "+r.getNumber());
 		}
 		return graphObs;
 	}

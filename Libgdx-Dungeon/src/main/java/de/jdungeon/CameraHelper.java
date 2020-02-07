@@ -97,12 +97,6 @@ public class CameraHelper {
 		return target;
 	}
 
-	public void setTarget(Sprite target) {
-		this.target = target;
-	}
-	public boolean hasTarget(Sprite spr) {
-		return hasTarget() && getTarget().equals(spr);
-	}
 	public boolean hasTarget() {
 		return this.target != null;
 	}

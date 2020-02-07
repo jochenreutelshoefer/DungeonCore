@@ -17,6 +17,7 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
 import graphics.GraphicObjectRenderer;
+import log.Log;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
@@ -43,7 +44,7 @@ import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
 public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
-	private static final boolean OPENGL_PROFILING_ON = false;
+	private static final boolean OPENGL_PROFILING_ON = true;
 
 	private final PlayerController playerController;
 
@@ -64,7 +65,6 @@ public class GameScreen extends AbstractGameScreen {
 
 	private final int dungeonSizeY;
 	private GLProfiler glProfiler;
-
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
@@ -117,8 +117,14 @@ public class GameScreen extends AbstractGameScreen {
 		return guiRenderer.getFocusManager();
 	}
 
+	private long lastCall;
+
 	@Override
 	public void render(float deltaTime) {
+
+		long now = System.currentTimeMillis();
+		Log.info("render call gap: "+ (now - lastCall));
+		this.lastCall = now;
 
 		if (!paused) {
 			// update gui and everything
@@ -138,6 +144,9 @@ public class GameScreen extends AbstractGameScreen {
 				glProfiler.reset();
 			}
 		}
+
+		long renderCodeDuration = System.currentTimeMillis() - this.lastCall;
+		Log.info("renderCode duration: "+renderCodeDuration);
 	}
 
 	public CameraHelper getCameraHelper() {
@@ -267,6 +276,8 @@ public class GameScreen extends AbstractGameScreen {
 			return;
 		}
 
+		filterEdgeRoomsToShow(points);
+
 		// zoom out
 		float flightScale = cameraHelper.getCurrentZoom();
 		float stepDuration = 0.7f;
@@ -281,6 +292,45 @@ public class GameScreen extends AbstractGameScreen {
 		// scroll back to hero
 		scrollFromToScale(last, floatPairRoomToWorldCoordinates(figure.getRoomNumber()), 0.5f, flightScale, cameraHelper
 				.getUserSelectedZoomLevel(), "show visibility increase PART 3 zoom and scroll back to hero");
+	}
+
+	/**
+	 * Filters the given set of points down to a set containing
+	 * the most south, the most west, the most north and the most east room.
+	 *
+	 * For example, if a single point is given, it actually takes all for roles...
+	 *
+	 * @param points given points
+	 */
+	private void filterEdgeRoomsToShow(Set<JDPoint> points) {
+		Iterator<JDPoint> iterator = points.iterator();
+		JDPoint first = iterator.next();
+		JDPoint mostEast = first;
+		JDPoint mostWest = first;
+		JDPoint mostSouth = first;
+		JDPoint mostNorth = first;
+
+		for (JDPoint point : points) {
+			if(mostEast.getX() < point.getX()) {
+				mostEast = point;
+			}
+			if(mostWest.getX() > point.getX()) {
+				mostWest = point;
+			}
+			if(mostNorth.getY() > point.getY()) {
+				mostNorth = point;
+			}
+			if(mostNorth.getY() < point.getY()) {
+				mostSouth = point;
+			}
+		}
+
+		points.clear();
+		points.add(mostEast);
+		points.add(mostWest);
+		points.add(mostNorth);
+		points.add(mostSouth);
+
 	}
 
 	@Override

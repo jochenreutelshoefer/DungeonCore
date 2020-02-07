@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import log.Log;
 
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.ScreenContext;
@@ -17,7 +18,6 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 
 	protected LibgdxDungeonMain game;
 	protected boolean paused = false;
-
 	public AbstractGameScreen(LibgdxDungeonMain game) {
 		super(game);
 		this.game = game;
@@ -56,6 +56,7 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 	public void backButton() {
 
 	}
+
 
 
 	@Override

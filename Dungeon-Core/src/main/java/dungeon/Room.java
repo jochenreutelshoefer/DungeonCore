@@ -903,7 +903,7 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
-	public void figureEnters(Figure figure, int fromDir) {
+	public int figureEnters(Figure figure, int fromDir) {
 
 		int inRoomIndex = -1;
 
@@ -929,6 +929,7 @@ public class Room extends DungeonWorldObject implements
 		}
 
 		figureEntersAtPosition(figure, fromDir, inRoomIndex);
+		return inRoomIndex;
 	}
 
 	/**
@@ -941,7 +942,6 @@ public class Room extends DungeonWorldObject implements
 	 * @param inRoomIndex
 	 */
 	public void figureEntersAtPosition(Figure figure, int fromDir, int inRoomIndex) {
-		Log.info(figure.getName()+ " enters at pos "+inRoomIndex);
 		Position position = positions[inRoomIndex];
 		if (!this.getDungeon().equals(figure.getActualDungeon())) {
 			figure.setActualDungeon(this.getDungeon());
@@ -959,7 +959,6 @@ public class Room extends DungeonWorldObject implements
 		figure.getRoomVisibility().setVisibilityStatus(getNumber(),
 				RoomObservationStatus.VISIBILITY_ITEMS);
 		figure.getRoomVisibility().addVisibilityModifier(getNumber(), figure);
-		Log.info(figure.getName()+ " got vis for "+getNumber());
 
 		// we 'discover' also all neighbour rooms of the entered room
 		final List<Room> neighboursWithDoor = getNeighboursWithDoor();
@@ -972,7 +971,6 @@ public class Room extends DungeonWorldObject implements
 		figure.setLocation(this);
 		roomFigures.add(figure);
 
-		Log.info(figure.getName()+ " entered "+inRoomIndex);
 
 		if (this.fightRunning()) {
 			getFight().figureJoins(figure);

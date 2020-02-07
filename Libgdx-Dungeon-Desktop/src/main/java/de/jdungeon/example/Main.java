@@ -29,9 +29,7 @@ public class Main {
 		}
 
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.title = "Java Dungeon Libgdx";
-		//cfg.vSyncEnabled = false; // not getting more than 60 fps
-		//cfg.forceExit = true;
+		cfg.title = "Libgdx Game";
 		cfg.useGL30 = false;
 		cfg.width = 800;
 		cfg.height = 480;

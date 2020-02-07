@@ -4,8 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.reutelshoefer.dungeon</groupId>
 	<artifactId>Dungeon-Core</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>0.1.0</version>
+	<modules>
+		<module>../Game-Util</module>
+	</modules>
 
 	<dependencies>
 

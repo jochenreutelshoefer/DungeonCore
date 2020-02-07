@@ -695,7 +695,6 @@ public abstract class Figure extends DungeonWorldObject
 					sanction(healthBefore - healthAfter);
 				}
 				if (dies) {
-					Log.info(this+ " dies!");
 					getKilled(allDmg);
 					gameOver();
 				}
@@ -1521,7 +1520,6 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	private void doStepTo(int targetFieldindex, int oldPosIndex) {
-		Log.info("stepping from pos "+ oldPosIndex + " to pos " + targetFieldindex+ "(Room: "+this.getRoom().getNumber()+")" );
 		Position newPos = getRoom().getPositions()[targetFieldindex];
 
 		this.lookDir = Position.getDirFromTo(pos.getIndex(), targetFieldindex);
@@ -2135,11 +2133,11 @@ public abstract class Figure extends DungeonWorldObject
 
 	public void move(Room target) {
 		Room toLeave = getRoom();
-		Percept p = new MovePercept(this, toLeave, target);
+		Percept leavePercept = new MovePercept(this, toLeave);
 
 		if (toLeave != null && toLeave != target) {
 			toLeave.figureLeaves(this);
-			toLeave.distributePercept(p);
+			toLeave.distributePercept(leavePercept);
 		}
 
 		int dir;
@@ -2151,10 +2149,10 @@ public abstract class Figure extends DungeonWorldObject
 					.getValue();
 		}
 
-		Log.info("moving into room "+target);
-		target.figureEnters(this, dir);
+		int toPosIndex = target.figureEnters(this, dir);
 		lookInRoom();
-		target.distributePercept(p);
+		Percept enterPercept = new MovePercept(this, target);
+		target.distributePercept(enterPercept);
 
 	}
 

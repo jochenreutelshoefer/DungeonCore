@@ -30,6 +30,12 @@
 			<version>1.9.10</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Dungeon-Core</artifactId>
+			<version>0.1.0</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
