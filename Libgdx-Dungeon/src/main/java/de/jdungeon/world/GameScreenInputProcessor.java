@@ -9,6 +9,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
+import log.Log;
 
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.ActionAssembler;
@@ -128,9 +129,10 @@ public class GameScreenInputProcessor extends GestureDetector {
 
 	private long last_key_pressed_event;
 
-	private void plugWalkDirectionActions(RouteInstruction.Direction direction) {
-		if(System.currentTimeMillis() - last_key_pressed_event < 100) {
-			// we do not process move input events faster than any 100 msec
+	private synchronized void plugWalkDirectionActions(RouteInstruction.Direction direction) {
+		if(System.currentTimeMillis() - last_key_pressed_event < 200) {
+			// we do not process move input events faster than any 200 msec
+			// as there are coming many events with every key press
 			return;
 		}
 		last_key_pressed_event = System.currentTimeMillis();

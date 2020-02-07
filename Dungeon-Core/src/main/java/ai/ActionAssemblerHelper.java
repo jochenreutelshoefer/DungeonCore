@@ -227,10 +227,12 @@ public class ActionAssemblerHelper {
 		if (f.getPositionInRoomIndex() != index) {
 			actions.addAll(doStepTo(index));
 		}
+		/*
 		if (f.getActionPoints() < 1) {
 			EndRoundAction endRound = new EndRoundAction();
 			actions.add(endRound);
 		}
+		*/
 		MoveAction moveAction = new MoveAction(dir);
 		actions.add(moveAction);
 		return actions;
@@ -253,6 +255,8 @@ public class ActionAssemblerHelper {
 			StepAction stepAction = new StepAction(i);
 			actions.add(ndRoundAction);
 			actions.add(stepAction);
+			EndRoundAction endRoundAction = new EndRoundAction();
+			actions.add(endRoundAction);
 		}
 		return actions;
 	}

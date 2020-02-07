@@ -43,7 +43,7 @@ import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
 public class GameScreen extends AbstractGameScreen {
 
 	private final static String TAG = GameScreen.class.getName();
-	private static final boolean OPENGL_PROFILING_ON = true;
+	private static final boolean OPENGL_PROFILING_ON = false;
 
 	private final PlayerController playerController;
 

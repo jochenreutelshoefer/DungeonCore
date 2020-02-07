@@ -22,6 +22,7 @@ import dungeon.RoomInfo;
 import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
+import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.monster.Ogre;
 import figure.monster.Orc;
@@ -129,6 +130,7 @@ public class WorldRenderer implements Disposable {
 	private void renderDungeonBackgroundObjectsForAllRooms() {
 		for (int x = 0; x < viewModel.roomViews.length; x++) {
 			for (int y = 0; y < viewModel.roomViews[0].length; y++) {
+				if(viewModel.geVisStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND ) continue;
 				//ViewRoom room = viewModel.getRoom(x, y);
 
 				// fetch prepared render information

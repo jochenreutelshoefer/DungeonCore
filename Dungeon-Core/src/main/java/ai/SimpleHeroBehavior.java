@@ -26,8 +26,8 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 
 	private HeroInfo h;
 	private ActionAssemblerHelper actionAssembler;
-	private List<Action> moveActionQueue = new ArrayList<>();
-	private List<Action> fightActionQueue = new ArrayList<>();
+	private final List<Action> moveActionQueue = new ArrayList<>();
+	private final List<Action> fightActionQueue = new ArrayList<>();
 
 	public SimpleHeroBehavior() {
 		super(new AttitudeDefaultHero());
@@ -40,7 +40,6 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 		}
 		actionAssembler = new ActionAssemblerHelper(h);
 	}
-
 
 
 	@Override

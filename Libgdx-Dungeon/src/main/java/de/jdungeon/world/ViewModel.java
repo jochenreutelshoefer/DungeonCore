@@ -2,6 +2,7 @@ package de.jdungeon.world;
 
 import java.util.List;
 
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
@@ -41,6 +42,12 @@ public class ViewModel {
 				roomOffSetsY[x][y] = y * WorldRenderer.ROOM_SIZE;;
 			}
 		}
+	}
+
+	public int geVisStatus(int x, int y) {
+		RoomInfo roomInfo = figure.getRoomInfo(x, y);
+		if(roomInfo == null) return 0;
+		return roomInfo.getVisibilityStatus();
 	}
 
 	public void initGraphicObjects(GraphicObjectRenderer renderer) {

@@ -31,7 +31,7 @@ public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	 * @param f
 	 */
 	void setFigure(FigureInfo f);
-	
+
 
 	/**
 	 * Provides feedback about an executed action. In particular, if an invalid

@@ -111,6 +111,8 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void onTurn() {
+		JDPoint roomNumber = this.heroInfo.getRoomNumber();
+		viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
 		// if player does not have an action point left,
 		// preemptively cause an EndRoundAction
 		if (this.getFigure().getActionPoints() == 0) {

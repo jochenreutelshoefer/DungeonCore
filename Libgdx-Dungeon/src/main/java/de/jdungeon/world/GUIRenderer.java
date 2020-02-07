@@ -128,11 +128,12 @@ public class GUIRenderer implements Disposable {
 		this.guiElements.add(new ZoomButton(new JDPoint(30, 224), new JDDimension(36, 36), inputController, getGUIImage(GUIImageManager.MINUS), false));
 		this.guiElements.add(magnifier);
 
+		/*
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 		smartControl = new SmartControl(new JDPoint(0, 0), screenSize, new ScreenAdapter(game), game, figure, inputController
 				.getPlayerController().getActionAssembler(), focusManager);
 		this.guiElements.add(smartControl);
-
+		*/
 
 		/*
 		 * init game over view

@@ -15,7 +15,7 @@ import dungeon.util.RouteInstruction;
  */
 public class MoveAction extends Action {
 	
-	private int directionIndex;
+	private final int directionIndex;
 	private RouteInstruction.Direction direction = null;
 
 	private RouteInstruction.Direction dir;

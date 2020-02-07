@@ -1,6 +1,5 @@
 package shrine;
 
-import java.beans.Visibility;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
-import figure.action.ScoutAction;
 import figure.action.ScoutResult;
 import util.JDColor;
 
