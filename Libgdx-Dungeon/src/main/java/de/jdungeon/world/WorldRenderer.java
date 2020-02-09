@@ -120,17 +120,13 @@ public class WorldRenderer implements Disposable {
 	private void renderDungeon() {
 		batch.begin();
 
-		long now = System.currentTimeMillis();
-		//Log.info("render call gap: "+ (now - lastCall));
-		this.lastCall = now;
 		renderDungeonBackgroundObjectsForAllRooms();
 		renderFigureObjectsForAllRooms();
+
 		if (highlightedObject != null) {
 			batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightBox.getWidth(), highlightBox.getHeight());
 		}
 
-		long renderCodeDuration = System.currentTimeMillis() - this.lastCall;
-		//Log.info("renderCode duration: "+renderCodeDuration);
 		batch.end();
 
 
@@ -302,6 +298,7 @@ public class WorldRenderer implements Disposable {
 				}
 				else {
 					// remember some data for rendering of highlight box
+					/*
 					focusManager.setWorldFocusObject((clickedGraphicObject));
 					DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
 					highlightBoxX = rectangle.getX(roomX * ROOM_SIZE);
@@ -309,6 +306,7 @@ public class WorldRenderer implements Disposable {
 					highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
 					highlightTexture = new Texture(highlightBox);
 					highlightedObject = clickedObject;
+					*/
 				}
 
 				return true;

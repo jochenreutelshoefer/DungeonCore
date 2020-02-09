@@ -4,8 +4,11 @@ import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.memory.ChestMemory;
+import figure.percept.ItemDroppedPercept;
 import figure.percept.Percept;
 import figure.percept.TakePercept;
+import figure.percept.TextPercept;
+import figure.percept.UsePercept;
 import game.InfoEntity;
 import game.InfoProvider;
 import game.JDEnv;
@@ -39,8 +42,6 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 
 	private Lock lock;
 	private boolean locked = false;
-
-	private int itemPointer = 0;
 
 	private JDPoint location;
 	private Room r;
@@ -153,24 +154,11 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 	 */
 
 	public void clicked(Figure f, boolean right) {
-		if (lock == null) {
-			if (right) {
-				if (!items.isEmpty()) {
-
-					Item it = (items.get(itemPointer));
-					// items.remove(it);
-					itemPointer = 0;
-					boolean taken = f.takeItem(it);
-					if (taken) {
-						Percept p = new TakePercept(f, it);
-						f.getRoom().distributePercept(p);
-					}
-				}
-			} else {
-				if (!items.isEmpty()) {
-					itemPointer = (itemPointer + 1) % items.size();
-				}
-			}
+		if (items != null) {
+			List<Item> droppedItems = new ArrayList<>(this.items);
+			this.items.clear();
+			f.getActualDungeon().getRoom(location).addItems(droppedItems, null);
+			f.getRoom().distributePercept(new ItemDroppedPercept(droppedItems, f));
 		}
 	}
 
@@ -218,6 +206,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 
 		String s = "";
 		if (items.size() > 0) {
+			int itemPointer = 0;
 			s = JDEnv.getString("take") + ": "
 					+ items.get(itemPointer).toString();
 		}

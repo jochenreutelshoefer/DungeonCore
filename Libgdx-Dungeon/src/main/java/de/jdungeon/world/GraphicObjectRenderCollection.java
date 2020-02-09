@@ -13,6 +13,7 @@ import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import graphics.GraphicObject;
 import graphics.JDGraphicObject;
+import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 
 import de.jdungeon.asset.Assets;
@@ -83,7 +84,8 @@ public class GraphicObjectRenderCollection {
 		TextureAtlas.AtlasRegion atlasRegion = null;
 		if (graphicObject instanceof JDGraphicObject) {
 			JDGraphicObject object = ((JDGraphicObject) graphicObject);
-			atlasRegion = findAtlasRegion(object.getLocatedImage().getImage(), graphicObject);
+			JDImageLocated locatedImage = object.getLocatedImage();
+			atlasRegion = findAtlasRegion(locatedImage.getImage(), graphicObject);
 
 		}
 		else {

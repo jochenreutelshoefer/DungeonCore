@@ -18,7 +18,9 @@ import figure.hero.HeroInfo;
 import game.DungeonGame;
 import game.JDEnv;
 import level.DungeonFactory;
+import level.DungeonSelectedEvent;
 import level.DungeonStartEvent;
+import level.stageone.StartLevel;
 import spell.Spell;
 import user.DefaultDungeonSession;
 import user.DungeonSession;
@@ -153,8 +155,14 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		if(event instanceof StartNewGameEvent) {
 			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
 			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Warrior.getCode());
+
+			/*
+			EventManager.getInstance().fireEvent(new DungeonStartEvent(new DungeonSelectedEvent(new StartLevel())));
+			*/
+
 			StageSelectionScreen screen = new StageSelectionScreen(this);
 			this.setCurrentScreen(screen);
+
 		}
 		if(event instanceof QuitGameEvent) {
 			this.dispose();

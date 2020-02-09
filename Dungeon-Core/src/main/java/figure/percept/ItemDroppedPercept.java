@@ -15,20 +15,24 @@ import java.util.List;
 
 import figure.Figure;
 import figure.FigureInfo;
+import item.interfaces.ItemOwner;
 
 public class ItemDroppedPercept extends OpticalPercept {
 	
-	private List<Item> items;
-	private Figure f;
+	private final List<Item> items;
+	private final ItemOwner f;
 	
-	public ItemDroppedPercept(List<Item> items, Figure f) {
+	public ItemDroppedPercept(List<Item> items, ItemOwner f) {
 		super(f.getLocation());
 		this.items = items;
 		this.f = f;
 	}
 	
 	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
+		if(f instanceof Figure) {
+			return FigureInfo.makeFigureInfo((Figure)f,viewer.getRoomVisibility());
+		}
+		return null;
 	}
 	
 	public List<ItemInfo> getItems() {
@@ -44,8 +48,11 @@ public class ItemDroppedPercept extends OpticalPercept {
 	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<>();
-		l.add(FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility()));
+		if(f instanceof Figure) {
+			l.add(FigureInfo.makeFigureInfo((Figure)f, viewer.getRoomVisibility()));
+		}
 		return l;
+
 	}
 	
 
