@@ -25,6 +25,10 @@ public abstract class AbstractGameScreen extends de.jdungeon.game.Screen impleme
 
 	public abstract boolean clicked(int screenX, int screenY, int pointer, int button);
 
+	public abstract boolean pan(float x, float y, float dx, float dy);
+
+	public abstract boolean zoom(float v1, float v2);
+
 	@Override
 	public void resume() {
 		//Assets.instance.init(new AssetManager(), game);

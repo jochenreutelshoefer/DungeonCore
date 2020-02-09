@@ -26,22 +26,19 @@ public class DungeonVisibilityMap {
 
 	private Figure f;
 
-	private boolean hasVisCheat = false;
-
-	private final Map<Position, Set<JDPoint>> scoutCache = new HashMap();
+	private final Map<Position, Set<JDPoint>> scoutCache = new HashMap<>();
 
 	private Dungeon dungeon;
 
 	private static DungeonVisibilityMap allVis;
 
-	private Set<RoomObservationStatus> cache = new HashSet<>();
+	private final Set<RoomObservationStatus> cache = new HashSet<>();
 
 	public static DungeonVisibilityMap getAllVisMap(Dungeon d) {
 		if (allVis == null) {
 			allVis = new DungeonVisibilityMap(d);
 			RoomObservationStatus[][] stats = d.getNewRoomVisibilityMap(allVis);
 			allVis.setMap(stats);
-			allVis.setVisCheat();
 		}
 		return allVis;
 	}
@@ -62,9 +59,6 @@ public class DungeonVisibilityMap {
 
 	}
 
-	public void setVisCheat() {
-		hasVisCheat = true;
-	}
 
 	public void setMap(RoomObservationStatus[][] r) {
 		this.rooms = r;
@@ -144,9 +138,6 @@ public class DungeonVisibilityMap {
 	}
 
 	public int getVisibilityStatus(int x, int y) {
-		if (hasVisCheat) {
-			return RoomObservationStatus.VISIBILITY_SECRET;
-		}
 		if (rooms[x][y] != null) {
 			return rooms[x][y].getVisibilityStatus();
 		}
@@ -158,9 +149,6 @@ public class DungeonVisibilityMap {
 	public int getDiscoveryStatus(int x, int y) {
 		if (x >= rooms.length || y >= rooms[0].length) {
 			return RoomObservationStatus.VISIBILITY_UNDISCOVERED;
-		}
-		if (hasVisCheat) {
-			return RoomObservationStatus.VISIBILITY_SECRET;
 		}
 		if (rooms[x][y] != null) {
 			return rooms[x][y].getDiscoveryStatus();
@@ -176,16 +164,10 @@ public class DungeonVisibilityMap {
 
 	public int getVisibilityStatus(JDPoint p) {
 		if (p == null) return -1;
-		if (hasVisCheat) {
-			return RoomObservationStatus.VISIBILITY_SECRET;
-		}
 		return getVisibilityStatus(p.getX(), p.getY());
 	}
 
 	public int getDiscoveryStatus(JDPoint p) {
-		if (hasVisCheat) {
-			return RoomObservationStatus.VISIBILITY_SECRET;
-		}
 		return getDiscoveryStatus(p.getX(), p.getY());
 	}
 

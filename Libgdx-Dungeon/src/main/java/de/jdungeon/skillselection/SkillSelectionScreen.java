@@ -81,6 +81,16 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 		return false;
 	}
 
+	@Override
+	public boolean pan(float x, float y, float dx, float dy) {
+		return false;
+	}
+
+	@Override
+	public boolean zoom(float v1, float v2) {
+		return false;
+	}
+
 	private SkillSelectionTile addTile(Spell option, boolean rightHandSide) {
 		int posY = this.game.getScreenHeight() / 4;
 		int posX = rightHandSide?this.game.getScreenWidth() / 2 + this.game.getScreenWidth() / 12:this.game.getScreenWidth() / 12;

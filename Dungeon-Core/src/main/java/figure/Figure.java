@@ -243,6 +243,12 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	@Override
+	public boolean stillValid() {
+		// a figure itself is always a valid visibility modifier for itself
+		return true;
+	}
+
+	@Override
 	public int getVisibilityStatus() {
 		return 4;
 	}
@@ -1495,8 +1501,7 @@ public abstract class Figure extends DungeonWorldObject
 				}
 				return ActionResult.POSITION;
 			}
-			else {
-				return ActionResult.NOAP;
+			else {return ActionResult.NOAP;
 			}
 		}
 		else {

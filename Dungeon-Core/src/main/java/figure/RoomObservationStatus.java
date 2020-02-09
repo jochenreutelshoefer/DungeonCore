@@ -44,7 +44,7 @@ public class RoomObservationStatus {
 	
 	private final Figure figure;
 	
-	private final List<VisibilityModifier> visibilityModifier = new Vector<VisibilityModifier>();
+	private final List<VisibilityModifier> visibilityModifier = new Vector<>();
 
 	public RoomObservationStatus(Figure map, JDPoint p) {
 		this.figure = map;
@@ -107,9 +107,12 @@ public class RoomObservationStatus {
 	private int getMaxVisModifierValue(int max) {
 		synchronized (visibilityModifier) {
 
-			for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter
-					.hasNext();) {
+			for (Iterator<VisibilityModifier> iter = visibilityModifier.iterator(); iter.hasNext();) {
 				VisibilityModifier element = iter.next();
+				if(!element.stillValid()) {
+					iter.remove();
+					continue;
+				}
 				if(element.getVisibilityStatus() > max) {
 					max = element.getVisibilityStatus();
 				}
@@ -117,11 +120,6 @@ public class RoomObservationStatus {
 			return max;
 		}
 	}
-
-
-
-
-
 
 
 	public int getVisibilityStatus() {

@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import animation.AnimationManager;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,13 +26,11 @@ import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.FocusManager;
-import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
 import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
 import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
-import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.ui.LibgdxGUIElement;
 import de.jdungeon.util.Pair;
@@ -78,10 +77,10 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void show() {
 
-		if (OPENGL_PROFILING_ON) {
+		//if (OPENGL_PROFILING_ON) {
 			glProfiler = new GLProfiler(Gdx.graphics);
 			glProfiler.enable();
-		}
+		//}
 
 		inputController = new GameScreenInputProcessor(game, playerController, this);
 		Gdx.input.setInputProcessor(inputController);
@@ -108,6 +107,7 @@ public class GameScreen extends AbstractGameScreen {
 		cameraGUI.update();
 
 		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure);
+		guiRenderer.setGLProfiler(glProfiler);
 		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, guiRenderer
 				.getFocusManager(), animationManager);
 
@@ -124,7 +124,7 @@ public class GameScreen extends AbstractGameScreen {
 	public void render(float deltaTime) {
 
 		long now = System.currentTimeMillis();
-		Log.info("render call gap: "+ (now - lastCall));
+		//Log.info("render call gap: "+ (now - lastCall));
 		this.lastCall = now;
 
 		if (!paused) {
@@ -142,12 +142,14 @@ public class GameScreen extends AbstractGameScreen {
 				Gdx.app.error(TAG, "Open GL calls: " + glProfiler.getCalls());
 				Gdx.app.error(TAG, "Open GL draw calls: " + glProfiler.getDrawCalls());
 				Gdx.app.error(TAG, "Open GL texture bindings: " + glProfiler.getTextureBindings());
-				glProfiler.reset();
+				Gdx.app.error(TAG, "Open GL shader switches: " + glProfiler.getShaderSwitches());
+				Gdx.app.error(TAG, "Open GL vertex count average: " + glProfiler.getVertexCount().average);
 			}
+			glProfiler.reset();
 		}
 
 		long renderCodeDuration = System.currentTimeMillis() - this.lastCall;
-		Log.info("renderCode duration: "+renderCodeDuration);
+		//Log.info("renderCode duration: "+renderCodeDuration);
 	}
 
 	public CameraHelper getCameraHelper() {
@@ -408,6 +410,46 @@ public class GameScreen extends AbstractGameScreen {
 		return false;
 	}
 
+	@Override
+	public boolean pan(float x, float y, float dx, float dy) {
+		boolean processed = false;
+		List<LibgdxGUIElement> guiElements = guiRenderer.libgdxGuiElements;
+		ListIterator<LibgdxGUIElement> listIterator = guiElements.listIterator(guiElements.size());
+		while (listIterator.hasPrevious()) {
+			LibgdxGUIElement guiElement = listIterator.previous();
+			if (guiElement.hasPoint(new JDPoint(x, y)) && guiElement.isVisible()) {
+				guiElement.handlePanEvent(x, y, dx, dy);
+				processed = true;
+			}
+		}
+
+		// if the pan is not for a UI element, then we do a camera move on the dungeon world
+		if(!processed) {
+			doCameraMove(dx, dy);
+		}
+		return true;
+	}
+
+	private void doCameraMove(float dx, float dy) {
+		float moveFactor = 0.4f;
+		if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+			// on desktop we need a faster move factor than on android
+			moveFactor = 0.7f;
+		}
+		if(Gdx.app.getType() == Application.ApplicationType.Android) {
+			// on desktop we need a faster move factor than on android
+			moveFactor = 0.4f;
+		}
+
+		cameraHelper.getPosition().x = cameraHelper.getPosition().x - (dx * moveFactor);
+		cameraHelper.getPosition().y = cameraHelper.getPosition().y - (dy * moveFactor);
+	}
+
+	@Override
+	public boolean zoom(float v1, float v2) {
+		cameraHelper.addZoom(v1+v2);
+		return true;
+	}
 
 	/**
 	 * Checks whether the current camera position is good, i. e. are all neighbour rooms visible?

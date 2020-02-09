@@ -12,6 +12,8 @@ public class GUIImageManager {
 	public static final String HOUR_GLASS_FULL = "guiItems/hour-glass-full.gif";
 	public static final String HOUR_GLASS_HALF = "guiItems/hour-glass-half.gif";
 
+	public static final String CIRCLE_HIGHLIGHT = "cancel_tp_outline.png";
+
 	public static final String SCROLL = "guiItems/Scroll.gif";
 	public static final String BOOK = "guiItems/Book.gif";
 	public static final String PARCHMENT = "guiItems/Parchment.gif";

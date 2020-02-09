@@ -274,6 +274,7 @@ public class Assets implements Disposable, AssetErrorListener {
 				region.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 				region.flip(false, true);
 				textureCache.put(blankFilename, region);
+				Gdx.app.log(TAG, "added new AtlasRegion to cache: " + blankFilename);
 				return region;
 			}
 			else {
@@ -322,19 +323,4 @@ public class Assets implements Disposable, AssetErrorListener {
 		atlasMap.put(Skeleton.class, Assets.instance.skelAtlas);
 	}
 
-	public static class AssetBucket {
-		public final TextureAtlas.AtlasRegion bucket;
-
-		public AssetBucket(TextureAtlas atlas) {
-			this.bucket = atlas.findRegion("bucket");
-		}
-	}
-
-	public static class AssetDrop {
-		public final TextureAtlas.AtlasRegion drop;
-
-		public AssetDrop(TextureAtlas atlas) {
-			this.drop = atlas.findRegion("droplet");
-		}
-	}
 }

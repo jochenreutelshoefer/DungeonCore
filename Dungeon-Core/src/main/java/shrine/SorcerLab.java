@@ -90,7 +90,11 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		} else {
 			return RoomObservationStatus.VISIBILITY_SHRINE;
 		}
+	}
 
+	@Override
+	public boolean stillValid() {
+		return activated;
 	}
 
 	/*

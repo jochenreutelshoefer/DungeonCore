@@ -56,6 +56,16 @@ public class StageSelectionScreen extends AbstractGameScreen {
 	}
 
 	@Override
+	public boolean pan(float x, float y, float dx, float dy) {
+		return false;
+	}
+
+	@Override
+	public boolean zoom(float v1, float v2) {
+		return false;
+	}
+
+	@Override
 	public void update(float deltaTime) {
 		cameraHelper.update(deltaTime);
 		selectionScreen.update(deltaTime);

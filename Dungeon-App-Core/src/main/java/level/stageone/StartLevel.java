@@ -101,6 +101,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			exitRoom.setShrine(new LevelExit());
 			exitRoom.removeAllDoors();
 			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+			entryRoom.addItem(new VisibilityCheatBall());
 
 			RouteInstruction.Direction exitNeighbour = filler.getUnallocatedRandomNeighbour(exitRoom);
 			if(exitNeighbour == null) continue;

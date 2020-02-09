@@ -1,0 +1,59 @@
+package de.jdungeon.gui;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dungeon.ItemInfoOwner;
+import item.ItemInfo;
+
+import de.jdungeon.app.ActionAssembler;
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.gui.FocusManager;
+import de.jdungeon.app.gui.activity.Activity;
+import de.jdungeon.app.gui.smartcontrol.ExecutableUseItemActivity;
+import de.jdungeon.game.Game;
+
+/**
+ * @author Jochen Reutelshoefer (denkbares GmbH)
+ * @created 09.02.20.
+ */
+public class LibgdxUseItemActivityProvider extends LibgdxItemActivityItemProvider {
+	private final ItemInfoOwner info;
+	private final ActionAssembler actionAssembler;
+	private final FocusManager focusManager;
+
+	public LibgdxUseItemActivityProvider(ItemInfoOwner info, Game game, ActionAssembler actionAssembler, FocusManager focusManager) {
+		super(info, game, actionAssembler);
+		this.info = info;
+		this.actionAssembler = actionAssembler;
+		this.focusManager = focusManager;
+	}
+
+	@Override
+	public List<Activity> getActivities() {
+		List<Activity> result = new ArrayList<>();
+		List<ItemInfo> figureItemList = info.getItems();
+		if(figureItemList == null) {
+			return result;
+		}
+		for (ItemInfo itemInfo : figureItemList) {
+			if(itemInfo != null) {
+				result.add(new ExecutableUseItemActivity(actionAssembler, itemInfo));
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void activityPressed(Activity infoEntity) {
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		actionAssembler.itemWheelActivityClicked(infoEntity,
+				focusManager.getWorldFocusObject());
+	}
+
+	@Override
+	public boolean isCurrentlyPossible(Activity infoEntity) {
+		return true;
+	}
+
+}

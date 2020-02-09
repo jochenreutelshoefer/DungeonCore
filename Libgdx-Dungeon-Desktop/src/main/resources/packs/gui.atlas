@@ -151,9 +151,16 @@ bunch2
   orig: 154, 170
   offset: 0, 0
   index: -1
-cloth_chest1
+cancel_tp_outline
   rotate: false
   xy: 512, 175
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+cloth_chest1
+  rotate: false
+  xy: 1610, 1087
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -230,7 +237,7 @@ hour-glass-third
   index: -1
 icon_hammer2
   rotate: false
-  xy: 1610, 1087
+  xy: 1998, 1819
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -258,7 +265,7 @@ mana-potion
   index: -1
 minus
   rotate: false
-  xy: 1998, 1819
+  xy: 512, 141
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -286,7 +293,7 @@ paper_background
   index: -1
 plus
   rotate: false
-  xy: 512, 141
+  xy: 1644, 1087
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

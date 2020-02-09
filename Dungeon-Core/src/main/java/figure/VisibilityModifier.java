@@ -10,4 +10,6 @@ public interface VisibilityModifier {
 
 	int getVisibilityStatus();
 
+	boolean stillValid();
+
 }

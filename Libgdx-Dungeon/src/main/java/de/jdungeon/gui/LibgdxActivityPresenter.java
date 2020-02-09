@@ -1,26 +1,24 @@
-package de.jdungeon.gui.thumb;
+package de.jdungeon.gui;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import dungeon.JDPoint;
 import util.JDDimension;
 
-import de.jdungeon.app.gui.ContainerGUIElement;
+import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.ActivityProvider;
 import de.jdungeon.app.screen.StandardScreen;
-import de.jdungeon.game.Colors;
+import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
 import de.jdungeon.ui.LibgdxContainerGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
- * @created 25.01.18.
+ * @created 09.02.20.
  */
 public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement {
 
-	protected final ActivityProvider provider;
+	protected final LibgdxActivityProvider provider;
 	protected boolean visible = true;
 	protected boolean highlightOn = false;
 	protected Activity markedActivity;
@@ -43,12 +41,12 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 	// TODO : rework this thing
 	protected boolean positionCorrection = false;
 
-	protected final Image itemBackgroundImage;
+	protected final String itemBackgroundImage;
 
 	protected final int screenWidth = getGame().getScreenWidth();
 	protected final int screenHeight = getGame().getScreenHeight();
 
-	public LibgdxActivityPresenter(JDPoint position, JDDimension dimension, Game game, ActivityProvider provider, Image itemBg, int defaultTileSize) {
+	public LibgdxActivityPresenter(JDPoint position, JDDimension dimension, Game game, LibgdxActivityProvider provider, String itemBg, int defaultTileSize) {
 		super(position, dimension, game);
 		this.provider = provider;
 		this.itemBackgroundImage = itemBg;
@@ -66,7 +64,6 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 
 		positionCorrectionLarge = defaultImageHeight;
 		positionCorrectionSmall = defaultImageHeightHalf;
-
 	}
 
 	@Override
@@ -98,14 +95,16 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 		}
 	}
 
-	protected void drawHighlighting(Graphics g, int yMinusDefaultHeight, int xMinusDefaultWidth) {
+	protected void drawHighlighting(SpriteBatch batch, int yMinusDefaultHeight, int xMinusDefaultWidth) {
 		if (highlightOn) {
-			g.drawOval(xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight, Colors.YELLOW);
+			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(GUIImageManager.CIRCLE_HIGHLIGHT, Assets.instance
+					.getGuiAtlas());
+			batch.draw(atlasRegion, xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight);
 		}
 	}
 
-	protected void drawActivityLarge(Graphics g, int x, int y, Activity activity) {
-		Image im = provider.getActivityImage(activity);
+	protected void drawActivityLarge(SpriteBatch batch, int x, int y, Activity activity) {
+		String im = provider.getActivityImage(activity);
 		int posX = x;
 		int posY = y;
 		if (positionCorrection) {
@@ -115,24 +114,24 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 					/*
 					draw highlighting circle
 					 */
-		drawHighlighting(g, posY, posX);
+		drawHighlighting(batch, posY, posX);
 
-					/*
-					 * draw background if existing
-					 */
-		drawActivityBackgroundLarge(g, posY, posX);
+		/*
+		 * draw background if existing
+		 */
+		drawActivityBackgroundLarge(batch, posY, posX);
 
-					/*
-					 * draw actual item
-					 */
-		g.drawScaledImage(im, posX + doubleImageWidth / 8,
+		/*
+		 * draw actual item
+		 */
+		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(im, Assets.instance.getGuiAtlas());
+		batch.draw(atlasRegion, posX + doubleImageWidth / 8,
 				posY + doubleImageWidth / 8, doubleImageWidth * 3 / 4,
-				doubleImageHeight * 3 / 4, 0, 0, im.getWidth(),
-				im.getHeight());
+				doubleImageHeight * 3 / 4);
 	}
 
-	public void drawActivity(Graphics g, int x, int y, Activity activity) {
-		Image im = provider.getActivityImage(activity);
+	public void drawActivity(SpriteBatch batch, int x, int y, Activity activity) {
+		String im = provider.getActivityImage(activity);
 
 		int posX = x;
 		int posY = y;
@@ -142,46 +141,41 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 		}
 
 
-					/*
-					 * draw background if existing
-					 */
-		drawActivityBackground(g, posX, posY);
+		/*
+		 * draw background if existing
+		 */
+		drawActivityBackground(batch, posX, posY);
 
-					/*
-					 * draw actual item
-					 */
-		g.drawScaledImage(im, posX + defaultImageWidth / 8,
-				posY + defaultImageWidth / 8, defaultImageWidth * 3 / 4,
-				defaultImageHeight * 3 / 4, 0, 0, im.getWidth(),
-				im.getHeight());
+		/*
+		 * draw actual item
+		 */
+		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(im, Assets.instance.getGuiAtlas());
+		batch.draw(atlasRegion,
+				posX + defaultImageWidth / 8,
+				posY + defaultImageWidth / 8,
+				defaultImageWidth * 3 / 4,
+				defaultImageHeight * 3 / 4);
 	}
 
-	protected void drawActivityBackground(Graphics g, int xMinusDefaultWidthHalf, int yMinusDefaultHeightHalf) {
+	protected void drawActivityBackground(SpriteBatch batch, int xMinusDefaultWidthHalf, int yMinusDefaultHeightHalf) {
 		if (itemBackgroundImage != null) {
-			g.drawScaledImage(
-					itemBackgroundImage,
+			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(itemBackgroundImage, Assets.instance.getGuiAtlas());
+			batch.draw(atlasRegion,
 					xMinusDefaultWidthHalf - backgroundPanelOffset,
 					yMinusDefaultHeightHalf - backgroundPanelOffset,
 					defaultImageWidth + doubleBackgroundPanelOffset,
-					defaultImageHeight + doubleBackgroundPanelOffset,
-					0, 0,
-					itemBackgroundImage.getWidth(),
-					itemBackgroundImage.getHeight());
+					defaultImageHeight + doubleBackgroundPanelOffset);
 		}
 	}
 
-	protected void drawActivityBackgroundLarge(Graphics g, int yMinusDefaultHeight, int xMinusDefaultWidth) {
+	protected void drawActivityBackgroundLarge(SpriteBatch batch, int yMinusDefaultHeight, int xMinusDefaultWidth) {
 		if (itemBackgroundImage != null) {
-			g.drawScaledImage(
-					itemBackgroundImage,
+			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(itemBackgroundImage, Assets.instance.getGuiAtlas());
+			batch.draw(atlasRegion,
 					xMinusDefaultWidth - backgroundPanelOffset,
 					yMinusDefaultHeight - backgroundPanelOffset,
 					doubleWidthPlusOffset,
-					doubleHeightPlusOffset,
-					0, 0,
-					itemBackgroundImage.getWidth(),
-					itemBackgroundImage.getHeight());
+					doubleHeightPlusOffset);
 		}
 	}
-
 }

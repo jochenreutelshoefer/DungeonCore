@@ -42,6 +42,7 @@ import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.game.Game;
 import de.jdungeon.gui.LibgdxDrawUtils;
+import de.jdungeon.gui.LibgdxTakeItemActivityProvider;
 import de.jdungeon.ui.LibgdxContainerGUIElement;
 import de.jdungeon.ui.LibgdxGUIElement;
 
@@ -202,7 +203,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 			}
 		};
 
-		floorItemPresenter = new LibgdxFloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, game, new TakeItemActivityProvider(figure, game, guiControl), null, 50);
+		floorItemPresenter = new LibgdxFloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, game, new LibgdxTakeItemActivityProvider(figure, game, guiControl), null, 50);
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();

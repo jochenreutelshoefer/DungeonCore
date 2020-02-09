@@ -25,6 +25,12 @@ public class ScoutResult implements VisibilityModifier {
 		return visLevel;
 	}
 
+	@Override
+	public boolean stillValid() {
+		// is handled explicitly during figure moves
+		return true;
+	}
+
 	public Figure getScoutingFigure() {
 		return actor;
 	}

@@ -23,9 +23,6 @@ import de.jdungeon.welcome.StartScreen;
 public class GameScreenInputProcessor extends GestureDetector {
 
 	private static final String TAG = GameScreenInputProcessor.class.getName();
-
-
-
 	private final LibgdxDungeonMain game;
 
 	private final PlayerController playerController;
@@ -35,7 +32,7 @@ public class GameScreenInputProcessor extends GestureDetector {
 	private long lastClickTime;
 
 	public GameScreenInputProcessor(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
-		super(new MyGestureListener(gameScreen.getCameraHelper()));
+		super(new MyGestureListener(gameScreen));
 		cameraHelper = gameScreen.getCameraHelper();
 		this.game = game;
 		this.playerController = playerController;
@@ -80,8 +77,6 @@ public class GameScreenInputProcessor extends GestureDetector {
 		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
 
 		/*
-
-
 		long now = System.currentTimeMillis();
 		if(now - lastClickTime < 100) {
 			// we do not allow clicks faster than 10ms one after another to filter duplicates
@@ -173,10 +168,10 @@ public class GameScreenInputProcessor extends GestureDetector {
 
 	static class MyGestureListener implements GestureDetector.GestureListener {
 
-		public CameraHelper cameraHelper;
+		public GameScreen gameScreen;
 
-		public MyGestureListener(CameraHelper cameraHelper) {
-			this.cameraHelper = cameraHelper;
+		public MyGestureListener(GameScreen gameScreen) {
+			this.gameScreen = gameScreen;
 		}
 
 		@Override
@@ -203,21 +198,7 @@ public class GameScreenInputProcessor extends GestureDetector {
 		public boolean pan(float x, float y, float dx, float dy) {
 			int threshold = 100;
 			if(Math.abs(dx) > threshold || Math.abs(dy) > threshold) return false;
-
-			float moveFactor = 0.4f;
-			if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
-				// on desktop we need a faster move factor than on android
-				moveFactor = 0.7f;
-			}
-			if(Gdx.app.getType() == Application.ApplicationType.Android) {
-				// on desktop we need a faster move factor than on android
-				moveFactor = 0.4f;
-			}
-
-
-			cameraHelper.getPosition().x = cameraHelper.getPosition().x - (dx * moveFactor);
-			cameraHelper.getPosition().y = cameraHelper.getPosition().y - (dy * moveFactor);
-			return true;
+			return gameScreen.pan(x, y, dx, dy);
 		}
 
 		@Override
@@ -227,7 +208,7 @@ public class GameScreenInputProcessor extends GestureDetector {
 
 		@Override
 		public boolean zoom(float v, float v1) {
-			cameraHelper.addZoom(v+v1);
+			gameScreen.zoom(v, v1);
 			return true;
 		}
 

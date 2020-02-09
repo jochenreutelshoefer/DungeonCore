@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.JDPoint;
 import figure.hero.HeroInfo;
+import graphics.ImageManager;
 import text.Statement;
 import util.JDDimension;
 
@@ -24,18 +26,21 @@ import de.jdungeon.app.gui.GameOverView;
 import de.jdungeon.app.gui.HealthBar;
 import de.jdungeon.app.gui.InfoPanel;
 import de.jdungeon.app.gui.TextPerceptView;
+import de.jdungeon.app.gui.activity.UseItemActivityProvider;
+import de.jdungeon.app.gui.itemWheel.ItemWheel;
 import de.jdungeon.asset.AssetFonts;
-import de.jdungeon.asset.Assets;
-import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
 import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
+import de.jdungeon.gui.LibgdxUseItemActivityProvider;
+import de.jdungeon.gui.LibgdxUseItemPresenter;
 import de.jdungeon.gui.ZoomButton;
+import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
-import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.ui.LibgdxGUIElement;
 
+import static com.sun.glass.ui.gtk.GtkApplication.screen;
 import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
 
 /**
@@ -63,6 +68,8 @@ public class GUIRenderer implements Disposable {
 
 	private GUIImageManager guiImageManager;
 	private GameOverView gameOverView;
+	private GLProfiler glProfiler;
+	private LibgdxItemWheel itemWheelHeroItems;
 
 	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
 		this.inputController = inputController;
@@ -162,6 +169,45 @@ public class GUIRenderer implements Disposable {
 				.getPlayerController().getActionAssembler());
 		this.libgdxGuiElements.add(smartControl);
 
+		/*
+		 * init inventory item panel
+		 */
+		/*
+		 * init hero item wheel
+		 */
+		int screenWidth = Gdx.app.getGraphics().getWidth();
+		int screenHeight = Gdx.app.getGraphics().getHeight();
+		int selectedIndexItem = 17;
+		int screenWidthBy2 = screenWidth / 2;
+		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
+		double wheelCenterY = screenHeight * 1.7;
+		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, game, inputController.getPlayerController().getActionAssembler(), focusManager);
+		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(0, wheelCenterY),
+				itemWheelSize,
+				figure,
+				game,
+				useItemActivityProvider,
+				selectedIndexItem,
+				ImageManager.inventory_box_normal.getFilenameBlank(),
+				0.1f
+		);
+		this.libgdxGuiElements.add(itemWheelHeroItems);
+
+		/*
+		int screenWidth = Gdx.app.getGraphics().getWidth();
+		int screenHeight = Gdx.app.getGraphics().getHeight();
+		int screenWidthBy2 = screenWidth / 2;
+		int itemPresenterHeight = 100;
+		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, game, inputController.getPlayerController().getActionAssembler(), focusManager);
+		LibgdxUseItemPresenter itemWheelHeroItems = new LibgdxUseItemPresenter(
+				new JDPoint(0, screenHeight - itemPresenterHeight),
+				new JDDimension(screenWidthBy2, itemPresenterHeight),
+				game,
+				useItemActivityProvider,
+				ImageManager.inventory_box_normal.getFilenameBlank()
+		);
+		this.libgdxGuiElements.add(itemWheelHeroItems);
+		*/
 
 		/*
 		 * init game over view
@@ -287,10 +333,14 @@ public class GUIRenderer implements Disposable {
 		else {
 			fpsFont.setColor(1, 0, 0, 1);
 		}
-		//batch.begin();
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1); //white
-		//batch.end();
+
+
+
+		if(glProfiler != null) {
+			fpsFont.draw(batch, "GL draw calls:" +glProfiler.getDrawCalls(), cameraGUI.viewportWidth - 200, y);
+		}
 	}
 
 	public void resize(int width, int height) {
@@ -313,5 +363,9 @@ public class GUIRenderer implements Disposable {
 		if (textView != null) {
 			this.textView.addTextPercept(s);
 		}
+	}
+
+	public void setGLProfiler(GLProfiler glProfiler) {
+		this.glProfiler = glProfiler;
 	}
 }

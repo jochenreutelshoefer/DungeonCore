@@ -14,6 +14,7 @@ import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
 import de.jdungeon.game.Input;
+import de.jdungeon.gui.LibgdxActivityPresenter;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
