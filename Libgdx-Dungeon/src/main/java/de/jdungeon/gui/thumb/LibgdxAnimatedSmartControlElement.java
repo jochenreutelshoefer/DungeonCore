@@ -32,11 +32,9 @@ public abstract class LibgdxAnimatedSmartControlElement extends LibgdxSubGUIElem
 
 	@Override
 	public void paint(ShapeRenderer renderer) {
-		super.paint(renderer);
 		long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
 		if(elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
 			int stage = (int)(elapsedTime / buttonAnimationStepTime);
-			// TODO: for some reason paint here is always only called for stage 0, why?
 			LibgdxDrawable animationShape = animationShapes[stage];
 			if(animationShape != null) {
 				animationShape.paint(renderer);
@@ -49,7 +47,6 @@ public abstract class LibgdxAnimatedSmartControlElement extends LibgdxSubGUIElem
 		long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
 		if(elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
 			int stage = (int)(elapsedTime / buttonAnimationStepTime);
-			// TODO: for some reason paint here is always only called for stage 0, why?
 			LibgdxDrawable animationShape = animationShapes[stage];
 			if(animationShape != null) {
 				animationShape.paint(batch);

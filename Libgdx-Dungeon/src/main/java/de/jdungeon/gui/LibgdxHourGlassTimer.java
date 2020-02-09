@@ -43,6 +43,12 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 		return true;
 	}
 
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing
+	}
+
+
 
 
 	@Override

@@ -27,23 +27,26 @@ public class LibgdxSubGUIElementAnimated extends LibgdxAnimatedSmartControlEleme
 			animationShapes[i] = new LibgdxDrawable() {
 				@Override
 				public void paint(ShapeRenderer shapeRenderer) {
-					//if (image == null) {
+					if (image == null) {
 						JDPoint parentPosition = parent.getPositionOnScreen();
-						JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition
-								.getY() + posRelative
-								.getY());
+						JDPoint absolutePosition = new JDPoint(
+								parentPosition.getX() + posRelative.getX(),
+								parentPosition.getY() + posRelative.getY());
 						int scaledWidth = (int) (dimension.getWidth() * buttonAnimationSizes[finalI]);
 						int scaledHeight = (int) (dimension.getHeight() * buttonAnimationSizes[finalI]);
 						shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 						shapeRenderer.setColor(Color.WHITE);
-						shapeRenderer.rect(absolutePosition.getX() - ((scaledWidth - dimension.getWidth()) / 2), absolutePosition
-								.getY() - ((scaledHeight - dimension.getHeight()) / 2), scaledWidth, scaledHeight);
-					//}
+						shapeRenderer.rect(
+								absolutePosition.getX() - ((scaledWidth - dimension.getWidth()) / 2),
+								absolutePosition.getY() - ((scaledHeight - dimension.getHeight()) / 2),
+								scaledWidth,
+								scaledHeight);
+					}
 				}
 
 				@Override
 				public void paint(SpriteBatch batch) {
-					/*
+
 					if (image != null) {
 
 						JDPoint parentPosition = parent.getPositionOnScreen();
@@ -54,9 +57,13 @@ public class LibgdxSubGUIElementAnimated extends LibgdxAnimatedSmartControlEleme
 						int scaledHeight = (int) (dimension.getHeight() * buttonAnimationSizes[finalI]);
 
 						TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(image, Assets.instance.getGuiAtlas());
-						batch.draw(atlasRegion, absolutePosition.getX(), absolutePosition.getY(), scaledWidth, scaledHeight);
+						batch.draw(atlasRegion,
+								absolutePosition.getX() - ((scaledWidth - dimension.getWidth()) / 2),
+								absolutePosition.getY() - ((scaledHeight - dimension.getHeight()) / 2),
+								scaledWidth,
+								scaledHeight);
 					}
-					*/
+
 				}
 			};
 		}
@@ -74,6 +81,7 @@ public class LibgdxSubGUIElementAnimated extends LibgdxAnimatedSmartControlEleme
 
 	@Override
 	public void paint(SpriteBatch batch) {
+		super.paint(batch);
 		if (image != null) {
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(image, Assets.instance.getGuiAtlas());
 			batch.draw(atlasRegion, getX(), getY(), dimension.getWidth(), dimension.getHeight());

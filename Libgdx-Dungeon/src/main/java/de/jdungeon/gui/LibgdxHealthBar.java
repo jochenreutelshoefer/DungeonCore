@@ -7,6 +7,7 @@ package de.jdungeon.gui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import figure.attribute.Attribute;
 import figure.hero.HeroInfo;
@@ -38,6 +39,11 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 	@Override
 	public boolean isVisible() {
 		return true;
+	}
+
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing
 	}
 
 	@Override

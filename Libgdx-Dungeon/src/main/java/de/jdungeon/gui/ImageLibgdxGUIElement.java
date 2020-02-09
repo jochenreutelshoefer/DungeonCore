@@ -2,6 +2,7 @@ package de.jdungeon.gui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
@@ -43,6 +44,11 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String jdImage, LibgdxGUIElement parent) {
 		this(position, dimension, jdImage, parent.getGame());
 		this.filename = jdImage;
+	}
+
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing
 	}
 
 	@Override

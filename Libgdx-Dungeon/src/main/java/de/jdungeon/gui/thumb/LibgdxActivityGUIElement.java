@@ -2,6 +2,7 @@ package de.jdungeon.gui.thumb;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
@@ -41,6 +42,12 @@ public class LibgdxActivityGUIElement extends LibgdxSubGUIElement {
 		batch.draw(atlasRegion, getX(), getY(), this.getDimension().getWidth(), this.getDimension().getHeight());
 
 	}
+
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing
+	}
+
 
 	@Override
 	public boolean isVisible() {

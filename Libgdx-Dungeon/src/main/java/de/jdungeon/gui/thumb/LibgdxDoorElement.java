@@ -1,6 +1,5 @@
 package de.jdungeon.gui.thumb;
 
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,10 +10,7 @@ import figure.action.Action;
 import util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.DrawUtils;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Input;
 import de.jdungeon.gui.LibgdxDrawUtils;
 import de.jdungeon.ui.LibgdxGUIElement;
 

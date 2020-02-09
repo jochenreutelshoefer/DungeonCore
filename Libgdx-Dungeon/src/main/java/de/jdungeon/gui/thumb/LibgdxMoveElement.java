@@ -18,7 +18,6 @@ import de.jdungeon.ui.LibgdxGUIElement;
  */
 public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
 
-	private final LibgdxGUIElement parent;
 	private final RouteInstruction.Direction direction;
 	private final FigureInfo figure;
 	private final ActionAssembler guiControl;
@@ -34,7 +33,6 @@ public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
 
 	public LibgdxMoveElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, ActionAssembler guiControl) {
 		super(position, dimension, parent);
-		this.parent = parent;
 		this.direction = direction;
 		this.figure = figure;
 		this.guiControl = guiControl;

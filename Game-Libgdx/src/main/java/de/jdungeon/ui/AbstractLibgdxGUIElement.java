@@ -44,10 +44,12 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		this.parent = parent;
 	}
 
+	/*
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
 		// do nothing
 	}
+	*/
 
 	@Override
 	public boolean needsRepaint() {

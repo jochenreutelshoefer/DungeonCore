@@ -30,13 +30,15 @@ public class LibgdxActivityControlElement  extends LibgdxAnimatedSmartControlEle
 			animationShapes[i] = new LibgdxDrawable() {
 				@Override
 				public void paint(ShapeRenderer shapeRenderer) {
-					int sizeX = (int) (dimension.getWidth() * buttonAnimationSizes[finalI]);
-					int sizeY = (int) (dimension.getHeight() * buttonAnimationSizes[finalI]);
-					int diffSizeX = sizeX - getDimension().getWidth();
-					int diffSizeY = sizeY - getDimension().getHeight();
-					shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-					shapeRenderer.setColor(Color.WHITE);
-					shapeRenderer.rect(getX() - diffSizeX / 2, getY() - diffSizeY / 2, sizeX, sizeY);
+					if(skillImage == null) {
+						int sizeX = (int) (dimension.getWidth() * buttonAnimationSizes[finalI]);
+						int sizeY = (int) (dimension.getHeight() * buttonAnimationSizes[finalI]);
+						int diffSizeX = sizeX - getDimension().getWidth();
+						int diffSizeY = sizeY - getDimension().getHeight();
+						shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+						shapeRenderer.setColor(Color.WHITE);
+						shapeRenderer.rect(getX() - diffSizeX / 2, getY() - diffSizeY / 2, sizeX, sizeY);
+					}
 				}
 
 				@Override
@@ -72,6 +74,7 @@ public class LibgdxActivityControlElement  extends LibgdxAnimatedSmartControlEle
 	// TODO: something wrong here - should not overwrite animation render paint call
 	@Override
 	public void paint(SpriteBatch batch) {
+		super.paint(batch);
 		int width = (int) (dimension.getWidth() * 0.8);
 		int height = (int)(dimension.getHeight() * 0.8);
 		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());
