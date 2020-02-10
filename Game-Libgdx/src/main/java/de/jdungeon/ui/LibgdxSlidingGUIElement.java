@@ -17,8 +17,8 @@ public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
 	protected final JDPoint targetPos;
 
 	public LibgdxSlidingGUIElement(JDPoint position, JDDimension dimension,
-							 JDPoint targetPos, Game game) {
-		super(position, dimension, game);
+							 JDPoint targetPos) {
+		super(position, dimension);
 		this.targetPos = targetPos;
 
 		this.slideOut();

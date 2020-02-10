@@ -29,8 +29,8 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 	private final GUIImageManager imageManager;
 	private final PaintBuilder paint;
 
-	public LibgdxHourGlassTimer(JDPoint position, JDDimension dimension, HeroInfo hero, Game game, GUIImageManager imageManager) {
-		super(position, dimension, game);
+	public LibgdxHourGlassTimer(JDPoint position, JDDimension dimension, HeroInfo hero, GUIImageManager imageManager) {
+		super(position, dimension);
 		this.hero = hero;
 		this.imageManager = imageManager;
 		paint = new PaintBuilder();

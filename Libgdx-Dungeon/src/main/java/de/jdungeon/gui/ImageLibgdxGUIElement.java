@@ -19,31 +19,14 @@ import de.jdungeon.ui.LibgdxGUIElement;
  */
 public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 
-	private String filename;
-	private String backGround = null;
+	private final String filename;
+	private final String backGround = null;
 	private int relativeOffsetX = 0;
 	private int relativeOffsetY = 0;
 
-	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im, Game game) {
-		super(position, dimension, game);
+	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im) {
+		super(position, dimension);
 		this.filename = im;
-	}
-
-	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im, String backGround, Game game) {
-		super(position, dimension, game);
-		this.filename = im;
-		this.backGround = backGround;
-	}
-
-	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im, String backGround, LibgdxGUIElement parent) {
-		super(position, dimension, parent.getGame());
-		this.filename = im;
-		this.backGround = backGround;
-	}
-
-	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String jdImage, LibgdxGUIElement parent) {
-		this(position, dimension, jdImage, parent.getGame());
-		this.filename = jdImage;
 	}
 
 	@Override

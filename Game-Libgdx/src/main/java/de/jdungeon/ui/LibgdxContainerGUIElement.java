@@ -15,8 +15,8 @@ import de.jdungeon.game.Game;
  */
 public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement {
 
-	public LibgdxContainerGUIElement(JDPoint position, JDDimension dimension, Game game) {
-		super(position, dimension, game);
+	public LibgdxContainerGUIElement(JDPoint position, JDDimension dimension) {
+		super(position, dimension);
 	}
 
 	protected abstract List<? extends LibgdxGUIElement> getAllSubElements();

@@ -29,8 +29,6 @@ public interface LibgdxGUIElement {
 
 	void update(float time);
 
-	Game getGame();
-
 	boolean handleClickEvent(int screenX, int screenY);
 
 	boolean handlePanEvent(float x, float y, float dx, float dy);

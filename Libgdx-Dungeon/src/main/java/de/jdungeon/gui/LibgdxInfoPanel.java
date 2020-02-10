@@ -38,9 +38,9 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 	private final SkillImageManager skillImageManager;
 	private final GUIImageManager guiImageManager;
 
-	public LibgdxInfoPanel(JDPoint position, JDDimension dimension, GUIImageManager guiImageManager, Game game) {
+	public LibgdxInfoPanel(JDPoint position, JDDimension dimension, GUIImageManager guiImageManager) {
 		super(position, dimension, new JDPoint(position.getX()
-				+ dimension.getWidth() - 10, position.getY()), game);
+				+ dimension.getWidth() - 10, position.getY()));
 		inventoryImageManager = new InventoryImageManager(guiImageManager);
 		skillImageManager = new SkillImageManager(guiImageManager);
 		this.guiImageManager = guiImageManager;

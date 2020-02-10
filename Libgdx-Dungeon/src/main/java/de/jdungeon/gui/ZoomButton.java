@@ -19,7 +19,7 @@ public class ZoomButton extends ImageLibgdxGUIElement {
 	private final boolean plus;
 
 	public ZoomButton(JDPoint position, JDDimension dimension, GameScreenInputProcessor inputController, String image, boolean plus) {
-		super(position, dimension, image, inputController.getGame());
+		super(position, dimension, image);
 		this.inputController = inputController;
 		this.plus = plus;
 	}

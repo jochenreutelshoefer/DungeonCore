@@ -39,8 +39,8 @@ public class LibgdxFloorItemPresenter extends LibgdxActivityPresenter implements
 	private final InventoryImageManager inventoryImageManager;
 	private final JDDimension tileDimension;
 
-	public LibgdxFloorItemPresenter(JDPoint position, JDDimension dimension, LibgdxGUIElement parent, Game game, LibgdxActivityProvider provider, String itemBg, int tileSize) {
-		super(position, dimension, game, provider, itemBg, tileSize);
+	public LibgdxFloorItemPresenter(JDPoint position, JDDimension dimension, LibgdxGUIElement parent, GUIImageManager guiImageManager, LibgdxActivityProvider provider, String itemBg, int tileSize) {
+		super(position, dimension, provider, itemBg, tileSize);
 
 		tileDimension = new JDDimension(tileSize, tileSize);
 
@@ -50,7 +50,7 @@ public class LibgdxFloorItemPresenter extends LibgdxActivityPresenter implements
 		itemTilePositions[0] = new JDPoint(parentDim.getWidth() * 1 / 5, posY);
 		itemTilePositions[1] = new JDPoint(parentDim.getWidth() * 2 / 3, posY);
 
-		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+		inventoryImageManager = new InventoryImageManager(guiImageManager);
 	}
 
 	@Override

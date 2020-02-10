@@ -22,6 +22,7 @@ import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.GameOverView;
 import de.jdungeon.app.gui.HealthBar;
+import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.TextPerceptView;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.game.Image;
@@ -48,8 +49,9 @@ public class GUIRenderer implements Disposable {
 
 	private final GameScreenInputProcessor inputController;
 	private final OrthographicCamera cameraGUI;
-	private final LibgdxDungeonMain game;
+	//private final LibgdxDungeonMain game;
 	private final HeroInfo figure;
+	private final LibgdxDungeonMain game;
 	private SpriteBatch batch;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private SmartControlPanel smartControl;
@@ -104,7 +106,7 @@ public class GUIRenderer implements Disposable {
 		int infoPanelWidth = (int) (game.getScreenWidth() * 0.2);
 		int infoPanelHeight = (int) (game.getScreenHeight() * 0.4);
 		infoPanel = new LibgdxInfoPanel(new JDPoint(game.getScreenWidth() - infoPanelWidth, 0),
-				new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager, game);
+				new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager);
 		this.libgdxGuiElements.add(infoPanel);
 		focusManager.setInfoPanel(infoPanel);
 
@@ -124,12 +126,11 @@ public class GUIRenderer implements Disposable {
 
 		int posX = 22;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
-		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.health, this.game);
+		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.health);
 		this.libgdxGuiElements.add(healthView);
 		JDPoint dustBarPosition = new JDPoint(posX, 25);
-		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust, this.game);
+		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust);
 		this.libgdxGuiElements.add(dustView);
-
 
 		/*
 		 * init hour glass
@@ -139,14 +140,14 @@ public class GUIRenderer implements Disposable {
 		this.guiElements.add(hourglass);
 		*/
 
-		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(30, 50), new JDDimension(36, 60), figure, this.game, this.guiImageManager);
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(30, 50), new JDDimension(36, 60), figure, this.guiImageManager);
 		this.libgdxGuiElements.add(hourglass);
 
 
 		/*
 		add +/- magnifier
 		 */
-		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), GUIImageManager.LUPE2, game) {
+		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(26, 156), new JDDimension(44, 70), GUIImageManager.LUPE2) {
 
 			@Override
 			public boolean handleClickEvent(int x, int y) {
@@ -187,7 +188,6 @@ public class GUIRenderer implements Disposable {
 		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(50, wheelCenterY),
 				itemWheelSize,
 				figure,
-				game,
 				useItemActivityProvider,
 				selectedIndexItem,
 				ImageManager.inventory_box_normal.getFilenameBlank(),
@@ -214,18 +214,17 @@ public class GUIRenderer implements Disposable {
 		/*
 		 * init game over view
 		 */
-		int width = game.getScreenWidth();
-		int height = game.getScreenHeight();
+		int width = Gdx.graphics.getWidth();
+		int height = Gdx.graphics.getHeight();
 		int widthFifth = (width / 5);
 		int heightFifth = (height / 4);
+		/*
 		gameOverView = new GameOverView(new JDPoint((width / 2) - widthFifth,
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
 				2 * heightFifth), new ScreenAdapter(game), game);
 		this.guiElements.add(gameOverView);
-	}
 
-	private Image getGUIImage(String filename) {
-		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
+		*/
 	}
 
 

@@ -1,6 +1,5 @@
 package de.jdungeon.app.gui.smartcontrol;
 
-import figure.action.TakeItemAction;
 import figure.action.UseItemAction;
 import game.RoomInfoEntity;
 import item.ItemInfo;
@@ -42,5 +41,18 @@ public class ExecutableUseItemActivity extends AbstractExecutableActivity {
 	@Override
 	public RoomInfoEntity getTarget() {
 		return null;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ExecutableUseItemActivity that = (ExecutableUseItemActivity) o;
+		return item.equals(that.item);
+	}
+
+	@Override
+	public int hashCode() {
+		return item.hashCode();
 	}
 }

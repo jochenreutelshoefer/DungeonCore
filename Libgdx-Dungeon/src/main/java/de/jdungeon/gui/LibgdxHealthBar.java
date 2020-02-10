@@ -30,8 +30,8 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 	}
 
 	public LibgdxHealthBar(JDPoint position, JDDimension dimension, HeroInfo info,
-						   de.jdungeon.app.gui.HealthBar.Kind kind, Game game) {
-		super(position, dimension, game);
+						   de.jdungeon.app.gui.HealthBar.Kind kind) {
+		super(position, dimension);
 		this.figure = info;
 		this.kind = kind;
 	}

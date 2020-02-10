@@ -18,15 +18,13 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 
 	protected JDPoint position;
 	protected final JDDimension dimension;
-	protected Game game;
 	Texture bgTexture;
 
 
-	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension, Game game) {
+	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension) {
 		super();
 		this.position = position;
 		this.dimension = dimension;
-		this.game = game;
 		init();
 	}
 
@@ -80,16 +78,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 	public void update(float time) {
 		// TODO Auto-generated method stub
 	}
-
-	@Override
-	public Game getGame() {
-		return this.game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
 
 	protected void drawBackground(SpriteBatch batch) {
 		drawBackground(batch, position.getX(), position.getY());

@@ -55,19 +55,20 @@ import de.jdungeon.ui.LibgdxGUIElement;
 public class SmartControlPanel extends LibgdxContainerGUIElement implements EventListener {
 
 	public static final int SMART_CONTROL_SIZE = 290;
+	public static final int MOVE_ELEMENT_SIZE = 40;
+	public static final int DOOR_WIDTH = 36;
 
 	private final List<LibgdxGUIElement> allGuiElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> positionElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> doorElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> moveElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> scoutElements = new ArrayList<>();
-	private final Collection<LibgdxGUIElement> takeItemElements = new ArrayList<>();
+	//private final Collection<LibgdxGUIElement> takeItemElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> chestElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> shrineElements = new ArrayList<>();
 	private final LibgdxGUIElement outerFrame;
 	private final FigureInfo figure;
 	private final ActionAssembler guiControl;
-	public static final int DOOR_WIDTH = 36;
 	private final int doorOuterBorderWidth;
 	private final int doorThickness;
 	private final JDDimension eastWest;
@@ -87,7 +88,6 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private final LibgdxMoveElement moveEast;
 	private final LibgdxMoveElement moveNorth;
 	private final LibgdxMoveElement moveSouth;
-	public static final int MOVE_ELEMENT_SIZE = 40;
 	private final JDDimension moveElementDimension;
 	private final int positionAreaSize;
 	private final int positionAreaOffset;
@@ -104,13 +104,14 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private final JDPoint[] positionCoordModified = new JDPoint[8];
 
 	public SmartControlPanel(JDPoint position, JDDimension dimension, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
-		super(position, dimension, game);
+		super(position, dimension);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
 		positionAreaSize = (int) (dimension.getWidth() / 2.2);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
 
-		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+		GUIImageManager guiImageManager = new GUIImageManager(game.getFileIO().getImageLoader());
+		skillImageManager = new SkillImageManager(guiImageManager);
 
 
 		/*
@@ -211,7 +212,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 			}
 		};
 
-		floorItemPresenter = new LibgdxFloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, game, new LibgdxTakeItemActivityProvider(figure, game, guiControl), null, 50);
+		floorItemPresenter = new LibgdxFloorItemPresenter(this.getPositionOnScreen(), this.getDimension(), this, guiImageManager, new LibgdxTakeItemActivityProvider(figure, game, guiControl), null, 50);
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
@@ -490,7 +491,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		allGuiElements.addAll(positionElements);
 		allGuiElements.addAll(moveElements);
 		allGuiElements.addAll(scoutElements);
-		allGuiElements.addAll(takeItemElements);
+		//allGuiElements.addAll(takeItemElements);
 		allGuiElements.addAll(chestElements);
 		allGuiElements.addAll(shrineElements);
 		allGuiElements.add(floorItemPresenter);

@@ -20,9 +20,8 @@ public abstract class LibgdxSubGUIElement extends AbstractLibgdxGUIElement {
 	private final int x;
 
 	private final int y;
-	public LibgdxSubGUIElement(JDPoint position, JDDimension dimension,
-							   LibgdxGUIElement parent) {
-		super(position, dimension, parent.getGame());
+	public LibgdxSubGUIElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent) {
+		super(position, dimension);
 		this.parent = parent;
 
 		y  = parent.getPositionOnScreen().getY() + position.getY();

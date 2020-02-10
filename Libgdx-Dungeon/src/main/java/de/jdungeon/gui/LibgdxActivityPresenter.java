@@ -43,11 +43,8 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 
 	protected final String itemBackgroundImage;
 
-	protected final int screenWidth = getGame().getScreenWidth();
-	protected final int screenHeight = getGame().getScreenHeight();
-
-	public LibgdxActivityPresenter(JDPoint position, JDDimension dimension, Game game, LibgdxActivityProvider provider, String itemBg, int defaultTileSize) {
-		super(position, dimension, game);
+	public LibgdxActivityPresenter(JDPoint position, JDDimension dimension, LibgdxActivityProvider provider, String itemBg, int defaultTileSize) {
+		super(position, dimension);
 		this.provider = provider;
 		this.itemBackgroundImage = itemBg;
 		defaultImageWidth = defaultTileSize;

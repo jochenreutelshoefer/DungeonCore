@@ -3,6 +3,7 @@ package de.jdungeon.gui.itemwheel;
 import java.util.Collections;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dungeon.JDPoint;
 import event.EventManager;
@@ -14,7 +15,6 @@ import util.JDDimension;
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.itemWheel.ItemWheelBindingSetSimple;
-import de.jdungeon.game.Game;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 import de.jdungeon.gui.LibgdxActivityProvider;
 import de.jdungeon.ui.LibgdxGUIElement;
@@ -25,8 +25,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		topLeft, center;
 	}
 
-	private static  double PI_EIGHTEENTH;
-	private static  double PI_THIRTHYSIXTH;
+	private static double PI_EIGHTEENTH;
+	private static double PI_THIRTHYSIXTH;
 	private final JDPoint[] points;
 	private static final double TWO_PI = Math.PI * 2;
 	private final int hightlightItemPosition;
@@ -40,11 +40,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	private static final int defaultImageWidth = 50;
 
-
-	private final int screenPlusDefaultImageWidth = screenWidth
-			+ defaultImageWidth;
-	private final int screenPlusDefaultImageHeight = screenHeight
-			+ defaultImageHeight;
+	private int screenPlusDefaultImageWidth;
+	private int screenPlusDefaultImageHeight;
 	private float timer = 0;
 
 	private float velocity = 0;
@@ -59,7 +56,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	public LibgdxItemWheel(JDPoint wheelCenterPosition,
 						   JDDimension dim,
 						   HeroInfo info,
-						   Game game,
 						   LibgdxActivityProvider provider,
 						   int selectedIndex,
 						   String itemBackground,
@@ -67,68 +63,46 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		this(wheelCenterPosition,
 				dim,
 				info,
-				game,
 				provider,
 				selectedIndex,
 				itemBackground,
-				new JDPoint(wheelCenterPosition.getX()-dim.getWidth(), wheelCenterPosition.getY()-dim.getHeight() ),
-				new JDDimension(dim.getWidth()  * 2 , dim.getHeight() * 2),
+				new JDPoint(wheelCenterPosition.getX() - dim.getWidth(), wheelCenterPosition.getY() - dim.getHeight()),
+				new JDDimension(dim.getWidth() * 2, dim.getHeight() * 2),
 				CenterPositionMode.topLeft,
 				dim.getWidth(),
 				36,
 				ItemWheelBindingSetSimple.DEFAULT_REOCURRENCE_CYCLE_SIZE);
-		currentRotationState = (float)TWO_PI - rotationOffset;
+		currentRotationState = (float) TWO_PI - rotationOffset;
 	}
+
 
 	public LibgdxItemWheel(JDPoint wheelCenterPosition,
 						   JDDimension dim,
 						   HeroInfo info,
-						   Game game,
 						   LibgdxActivityProvider provider,
 						   int selectedIndex,
-						   String itemBackground
-						   ) {
-			this(wheelCenterPosition,
-					dim,
-					info,
-					game,
-					provider,
-					selectedIndex,
-					itemBackground,
-					new JDPoint(wheelCenterPosition.getX()-dim.getWidth(), wheelCenterPosition.getY()-dim.getHeight() ),
-					new JDDimension(dim.getWidth()  * 2 , dim.getHeight() * 2),
-					CenterPositionMode.topLeft,
-					dim.getWidth(),
-					36,
-					ItemWheelBindingSetSimple.DEFAULT_REOCURRENCE_CYCLE_SIZE);
-	}
+						   String itemBackground,
+						   JDPoint drawBoundPositon,
+						   JDDimension drawBoundsDimension,
+						   CenterPositionMode centerMode,
+						   int radius,
+						   int itemPositions,
+						   int reoccurrenceCycleSize) {
+		super(wheelCenterPosition, dim, provider, itemBackground, defaultImageWidth);
 
-		public LibgdxItemWheel(JDPoint wheelCenterPosition,
-							   JDDimension dim,
-							   HeroInfo info,
-							   Game game,
-							   LibgdxActivityProvider provider,
-							   int selectedIndex,
-							   String itemBackground,
-							   JDPoint drawBoundPositon,
-							   JDDimension drawBoundsDimension,
-							   CenterPositionMode centerMode,
-							   int radius,
-							   int itemPositions,
-							   int reoccurrenceCycleSize) {
-		super(wheelCenterPosition, dim, game, provider, itemBackground, defaultImageWidth);
+		PI_EIGHTEENTH = Math.PI / 18;
+		PI_THIRTHYSIXTH = Math.PI / 36;
+		points = new JDPoint[36];
 
-
-			PI_EIGHTEENTH = Math.PI / 18;
-			PI_THIRTHYSIXTH = Math.PI / 36;
-			points = new JDPoint[36];
+		screenPlusDefaultImageWidth = Gdx.graphics.getWidth() + defaultImageWidth;
+		screenPlusDefaultImageHeight = Gdx.graphics.getHeight() + defaultImageHeight;
 
 		this.hightlightItemPosition = selectedIndex;
-			this.drawBoundPositon = drawBoundPositon;
-			this.drawBoundsDimension = drawBoundsDimension;
-			this.centerMode = centerMode;
-			this.radius = radius;
-			info.getSpellBuffer();
+		this.drawBoundPositon = drawBoundPositon;
+		this.drawBoundsDimension = drawBoundsDimension;
+		this.centerMode = centerMode;
+		this.radius = radius;
+		info.getSpellBuffer();
 		this.binding = new LibgdxItemWheelBindingSetSimple(selectedIndex, itemPositions, provider, reoccurrenceCycleSize);
 		//markedPointIndex = selectedIndex;
 
@@ -150,7 +124,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	@Override
 	public boolean handlePanEvent(float x, float y, float dx, float dy) {
 
-		float movementX = dx * -1 ;
+		float movementX = dx * -1;
 		float rotation = movementX / 400;
 
 		// instant rotation
@@ -168,8 +142,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		return true;
 	}
 
-
-
 	@Override
 	protected List<? extends LibgdxGUIElement> getAllSubElements() {
 		// TODO (currently ItemWheel does not use GUIElements for acitivity tiles)
@@ -182,7 +154,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 			double distance = Math.hypot(x - points[i].getX(), y - points[i].getY());
 			if (distance < 25) {
 				Activity activity = getActivityForIndex(i);
-				if(activity != null) {
+				if (activity != null) {
 					iconTouched(activity);
 				}
 				break;
@@ -197,7 +169,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		// we need to update the binding set to have the new item included
 		binding.update(0);
 		Activity objectActivity = getObjectActivity(object);
-		if(objectActivity != null) {
+		if (objectActivity != null) {
 			centerOnIndex(objectActivity);
 		}
 	}
@@ -228,7 +200,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	private int getActivityIndex(Activity activity) {
 		Object object = activity.getObject();
-		if(object != null) {
+		if (object != null) {
 			return getObjectIndex(object);
 		}
 		return -1;
@@ -241,7 +213,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	@Override
 	protected void iconTouched(Activity activity) {
 		int i = getActivityIndex(activity);
-		if(i == -1) return;
+		if (i == -1) return;
 		if (i == markedPointIndex) {
 			Activity infoEntity = binding.getActivity(i);
 			if (infoEntity != null) {
@@ -277,17 +249,15 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		int diff = hightlightItemPosition - activityIndex;
 		this.currentRotationState = (float) PI_EIGHTEENTH * diff;
 		updatePointCoordinates();
-
 	}
 
 	private synchronized void changeRotationState(float rotationChange, boolean pan) {
 		this.currentRotationState = (float) ((this.currentRotationState + rotationChange + TWO_PI) % TWO_PI);
 		updatePointCoordinates();
 
-
 		// we jump with highlighting to the next element during rotation
 		// but not during pan
-		if(!pan) {
+		if (!pan) {
 			int diff = ((hightlightItemPosition - markedPointIndex) + 36) % 36;
 			float highlightPosition = (float) PI_EIGHTEENTH * diff;
 			double rotationFromHighlightPoint = (this.currentRotationState - highlightPosition);
@@ -298,7 +268,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 				setMarkedIndex((markedPointIndex + 1) % 36);
 			}
 		}
-
 	}
 
 	private void unmark() {
@@ -315,8 +284,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		Activity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
 			Paragraphable paragraphable = activity;
-			if(activity.getObject() instanceof ItemInfo) {
-				paragraphable = (ItemInfo)activity.getObject();
+			if (activity.getObject() instanceof ItemInfo) {
+				paragraphable = (ItemInfo) activity.getObject();
 			}
 			EventManager.getInstance().fireEvent(new FocusEvent(paragraphable, this));
 		}
@@ -378,8 +347,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		int y = this.position.getY();
 
 		int result = (int) (y + (Math.cos(degreeRad) * radius));
-		if(centerMode == CenterPositionMode.center) {
-			result = result + (int)(this.getDimension().getWidth()/2);
+		if (centerMode == CenterPositionMode.center) {
+			result = result + (int) (this.getDimension().getWidth() / 2);
 		}
 		return result;
 	}
@@ -387,9 +356,9 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	private int calcXCoordinate(double degreeRad) {
 		int x = this.position.getX();
 
-		int result =  (int) (x + (Math.sin(degreeRad) * radius));
-		if(centerMode == CenterPositionMode.center) {
-			result = result + (int)(this.getDimension().getWidth()/2);
+		int result = (int) (x + (Math.sin(degreeRad) * radius));
+		if (centerMode == CenterPositionMode.center) {
+			result = result + (int) (this.getDimension().getWidth() / 2);
 		}
 		return result;
 	}
@@ -398,6 +367,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		return x >= drawBoundPositon.getX() && x <= drawBoundPositon.getX() + drawBoundsDimension.getWidth() &&
 				y >= drawBoundPositon.getY() && y <= drawBoundPositon.getY() + drawBoundsDimension.getHeight();
 	}
+
 	@Override
 	public void paint(SpriteBatch batch) {
 
@@ -408,7 +378,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 			if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
 					|| y > screenPlusDefaultImageHeight
-					|| y < 0 - doubleImageHeight || !isInDrawBounds(x,y)) {
+					|| y < 0 - doubleImageHeight || !isInDrawBounds(x, y)) {
 				continue;
 			}
 			Activity activity = this.binding.getActivity(toDraw);
@@ -420,11 +390,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 					drawActivity(batch, x, y, activity);
 				}
 			}
-
 		}
-
 	}
-
-
-
 }

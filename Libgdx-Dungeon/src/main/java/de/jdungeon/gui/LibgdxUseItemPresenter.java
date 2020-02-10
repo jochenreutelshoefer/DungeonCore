@@ -35,8 +35,8 @@ public class LibgdxUseItemPresenter extends LibgdxActivityPresenter implements E
 	private final JDDimension tileDimension;
 
 
-	public LibgdxUseItemPresenter(JDPoint point, JDDimension dimension, LibgdxDungeonMain game, LibgdxUseItemActivityProvider useItemActivityProvider, String imageBg) {
-		super(point, dimension,  game, useItemActivityProvider, imageBg, defaultImageWidth);
+	public LibgdxUseItemPresenter(JDPoint point, JDDimension dimension,  LibgdxUseItemActivityProvider useItemActivityProvider, String imageBg, InventoryImageManager inventoryImageManager) {
+		super(point, dimension,  useItemActivityProvider, imageBg, defaultImageWidth);
 
 		tileDimension = new JDDimension(defaultImageWidth, defaultImageWidth);
 
@@ -49,7 +49,7 @@ public class LibgdxUseItemPresenter extends LibgdxActivityPresenter implements E
 		itemTilePositions[3] = new JDPoint(parentDim.getWidth() * 3/5, posY);
 		itemTilePositions[4] = new JDPoint(parentDim.getWidth() * 4/5, posY);
 
-		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+		this.inventoryImageManager = inventoryImageManager;
 
 	}
 
