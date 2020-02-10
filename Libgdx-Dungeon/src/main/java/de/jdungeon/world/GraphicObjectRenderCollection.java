@@ -11,6 +11,7 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
+import figure.hero.Warrior;
 import graphics.GraphicObject;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
@@ -105,13 +106,6 @@ public class GraphicObjectRenderCollection {
 		Class<? extends Figure> figureClass = null;
 		if (clickableObject instanceof FigureInfo) {
 			figureClass = ((FigureInfo) clickableObject).getFigureClass();
-		}
-		if (Hero.class.equals(figureClass)) {
-			int heroCode = ((HeroInfo) clickableObject).getHeroCode();
-			Hero.HeroCategory heroCategory = Hero.HeroCategory.fromValue(heroCode);
-			if (heroCategory == Hero.HeroCategory.Warrior) {
-				return Assets.instance.getWarriorTexture(image);
-			}
 		}
 		if(figureClass != null) {
 			return Assets.instance.getFigureTexture(figureClass, image);

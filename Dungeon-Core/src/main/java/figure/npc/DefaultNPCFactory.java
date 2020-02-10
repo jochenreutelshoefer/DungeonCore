@@ -1,21 +1,21 @@
 package figure.npc;
 
+import android.util.Log;
 import figure.hero.Character;
 import figure.hero.Hero;
 import figure.hero.HeroUtil;
+import figure.hero.Profession;
 import figure.hero.Zodiac;
+
+import static figure.hero.Hero.*;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 13.08.16.
  */
-public class DefaultNPC extends Hero {
+public class DefaultNPCFactory {
 
-	public DefaultNPC(int heroCode, Zodiac sign, figure.hero.Character character) {
-		super(heroCode, sign, character);
-	}
-
-	public static DefaultNPC createDefaultNPC(String name, int heroCode) {
+	public static Hero createDefaultNPC(String name, int heroCode) {
 		double [] values = null;
 		if(heroCode == HEROCODE_DRUID) {
 			values = HeroUtil.druidBasic;
@@ -29,8 +29,12 @@ public class DefaultNPC extends Hero {
 		if(heroCode == HEROCODE_MAGE) {
 			values = HeroUtil.mageBasic;
 		}
-		// TODO: refactor creation of hero objects
-		DefaultNPC npc = new DefaultNPC(heroCode, Zodiac.Twin, null);
+		if(values == null) {
+			String message = "hero category not found";
+			Log.w(DefaultNPCFactory.class.getSimpleName(), message);
+			throw new IllegalArgumentException(message);
+		}
+		Hero npc = HeroUtil.getBasicHero(heroCode, name, Zodiac.Twin, Profession.Hunter);
 		Character character = new Character(name, values, npc);
 		npc.setCharacter(character);
 		return npc;

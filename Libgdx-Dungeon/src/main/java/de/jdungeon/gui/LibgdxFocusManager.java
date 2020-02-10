@@ -26,11 +26,10 @@ public class LibgdxFocusManager implements EventListener {
 	private GraphicObject graphicObject;
 
 	private RoomInfoEntity worldFocusObject;
-	private final LibgdxInfoPanel infoPanel;
+	private LibgdxInfoPanel infoPanel;
 
 	private final FigureInfo figure;
-	public LibgdxFocusManager(LibgdxInfoPanel infoPanel, FigureInfo figure) {
-		this.infoPanel = infoPanel;
+	public LibgdxFocusManager(FigureInfo figure) {
 		this.figure = figure;
 		EventManager.getInstance().registerListener(this);
 	}
@@ -95,5 +94,9 @@ public class LibgdxFocusManager implements EventListener {
 		if (event instanceof InfoObjectClickedEvent) {
 			this.setWorldFocusObject(((InfoObjectClickedEvent) event).getClickedEntity());
 		}
+	}
+
+	public void setInfoPanel(LibgdxInfoPanel infoPanel) {
+		this.infoPanel = infoPanel;
 	}
 }

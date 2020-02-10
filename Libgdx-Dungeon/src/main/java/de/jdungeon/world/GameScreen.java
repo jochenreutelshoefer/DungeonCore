@@ -63,6 +63,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private final int dungeonSizeY;
 	private GLProfiler glProfiler;
+	private LibgdxFocusManager focusManager;
 
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
@@ -105,16 +106,17 @@ public class GameScreen extends AbstractGameScreen {
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
 
-		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure);
+		focusManager = new LibgdxFocusManager(figure);
+
+		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure, focusManager);
 		guiRenderer.setGLProfiler(glProfiler);
-		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, guiRenderer
-				.getFocusManager(), animationManager);
+		worldRenderer = new WorldRenderer(new GraphicObjectRenderer(ROOM_SIZE, playerController), viewModel, camera, cameraHelper, focusManager, animationManager);
 
 		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 	}
 
 	public LibgdxFocusManager getFocusManager() {
-		return guiRenderer.getFocusManager();
+		return focusManager;
 	}
 
 	private long lastCall;

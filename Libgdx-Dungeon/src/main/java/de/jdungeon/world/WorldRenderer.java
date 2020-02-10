@@ -65,8 +65,6 @@ public class WorldRenderer implements Disposable {
 	private final CameraHelper cameraHelper;
 	private SpriteBatch batch;
 	public static final int ROOM_SIZE = 80;
-	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private Class<? extends Figure>[] figureClasses;
 
 
 	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, LibgdxFocusManager focusManager, AnimationManager animationManager) {

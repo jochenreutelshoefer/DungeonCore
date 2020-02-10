@@ -8,7 +8,7 @@ import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFiller;
 import figure.hero.Hero;
-import figure.npc.DefaultNPC;
+import figure.npc.DefaultNPCFactory;
 import figure.npc.RescuedNPCAI;
 import item.Key;
 import item.VisibilityCheatBall;
@@ -45,7 +45,7 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 
 
 		Room hostageRoom = filler.getUnallocatedRandomRoom();
-		DefaultNPC npc = DefaultNPC.createDefaultNPC("Willi", Hero.HEROCODE_DRUID);
+		Hero npc = DefaultNPCFactory.createDefaultNPC("Willi", Hero.HEROCODE_DRUID);
 		npc.takeItem(new Wolfknife(25, false));
 		// TODO: use setControl!
 		npc.setAI(new RescuedNPCAI());

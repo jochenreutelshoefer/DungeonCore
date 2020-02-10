@@ -233,7 +233,9 @@ public class PlayerController implements JDGUI {
 		synchronized (perceptQueue) {
 			perceptQueue.add(p);
 		}
-		gameScreen.checkCameraPosition();
+		if(gameScreen != null) { // initialization issue at level start
+			gameScreen.checkCameraPosition();
+		}
 	}
 
 	public List<Percept> getPercepts() {

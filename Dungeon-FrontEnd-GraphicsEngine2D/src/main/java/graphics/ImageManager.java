@@ -1229,16 +1229,6 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Slaying, ImageManager.warrior_slays);
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Sorcering, ImageManager.warrior_sorcering);
 
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.BeingHit, ImageManager.warrior_been_hit);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Pause, ImageManager.warrior_pause);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.TippingOver, ImageManager.warrior_tipping_over);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Walking, ImageManager.warrior_walking);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Running, ImageManager.warrior_running);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Using, ImageManager.warrior_using);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Slaying, ImageManager.warrior_slays);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Sorcering, ImageManager.warrior_sorcering);
-
-		/*
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.BeingHit, ImageManager.thief_been_hit);
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Pause, ImageManager.thief_pause);
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.TippingOver, ImageManager.thief_tipping_over);
@@ -1247,7 +1237,6 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Using, ImageManager.thief_using);
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Slaying, ImageManager.thief_slays);
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Sorcering, ImageManager.thief_sorcering);
-		*/
 
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.BeingHit, ImageManager.druid_been_hit);
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Pause, ImageManager.druid_pause);

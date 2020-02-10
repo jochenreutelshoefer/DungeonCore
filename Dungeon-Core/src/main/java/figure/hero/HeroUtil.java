@@ -19,6 +19,8 @@ import spell.Raid;
 import spell.Search;
 import spell.AbstractSpell;
 
+import static figure.hero.Hero.HeroCategory.Mage;
+
 public class HeroUtil {
 
 
@@ -55,8 +57,10 @@ public class HeroUtil {
 		boolean thief = false;
 		Spellbook spells = new Spellbook();
 
+		Hero held = null;
+
 		switch (heroCode) {
-		case 1:
+		case Hero.HEROCODE_WARRIOR:
 
 			waffe = new Sword(25, false);
 			healthVal = (int) warriorBasic[0];
@@ -74,10 +78,12 @@ public class HeroUtil {
 			scout = (int) warriorBasic[12];
 			dust = (int) warriorBasic[13];
 			dustReg = warriorBasic[14];
-
+			held = new Warrior(heroName, heroCode, sign, healthVal,
+					strengthVal, dexterityVal, psychoVal, axe, lance, sword, club,
+					wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
 			break;
 
-		case 2:
+		case Hero.HEROCODE_HUNTER:
 			waffe = new Club(25, false);
 			thief = true;
 			healthVal = (int) hunterBasic[0];
@@ -95,8 +101,11 @@ public class HeroUtil {
 			scout = (int) hunterBasic[12];
 			dust = (int) hunterBasic[13];
 			dustReg = hunterBasic[14];
+			held = new Thief(heroName, heroCode, sign, healthVal,
+					strengthVal, dexterityVal, psychoVal, axe, lance, sword, club,
+					wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
 			break;
-		case 3:
+		case Hero.HEROCODE_DRUID:
 			waffe = new Wolfknife(25, false);
 			healthVal = (int) druidBasic[0];
 			strengthVal = (int) druidBasic[1];
@@ -113,8 +122,11 @@ public class HeroUtil {
 			scout = (int) druidBasic[12];
 			dust = (int) druidBasic[13];
 			dustReg = druidBasic[14];
+			held = new Druid(heroName, heroCode, sign, healthVal,
+					strengthVal, dexterityVal, psychoVal, axe, lance, sword, club,
+					wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
 			break;
-		case 4:
+		case Hero.HEROCODE_MAGE:
 			waffe = new Lance(25, false);
 			healthVal = (int) mageBasic[0];
 			strengthVal = (int) mageBasic[1];
@@ -131,14 +143,15 @@ public class HeroUtil {
 			scout = (int) mageBasic[12];
 			dust = (int) mageBasic[13];
 			dustReg = mageBasic[14];
+			held = new Mage(heroName, heroCode, sign, healthVal,
+				strengthVal, dexterityVal, psychoVal, axe, lance, sword, club,
+				wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
 			break;
 		default:
 			// System.out.println("heroCode Error!");
 		}
 
-		Hero held = new Hero(heroName, heroCode, sign, healthVal,
-				strengthVal, dexterityVal, psychoVal, axe, lance, sword, club,
-				wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
+
 
 		handleProfession(held, prof);
 

@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 amboss
   rotate: false
-  xy: 1242, 1101
+  xy: 958, 13
   size: 54, 41
   orig: 54, 41
   offset: 0, 0
   index: -1
 amulett
   rotate: false
-  xy: 1246, 116
+  xy: 1274, 336
   size: 30, 28
   orig: 30, 28
   offset: 0, 0
@@ -48,7 +48,7 @@ boden3
   index: -1
 boden3_alt
   rotate: false
-  xy: 1050, 81
+  xy: 1179, 81
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
@@ -76,7 +76,7 @@ boden4
   index: -1
 boden4_alt
   rotate: false
-  xy: 1148, 81
+  xy: 1938, 1748
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
@@ -146,14 +146,14 @@ boden7
   index: -1
 boden7_dark
   rotate: false
-  xy: 1090, 547
+  xy: 1810, 1547
   size: 182, 182
   orig: 182, 182
   offset: 0, 0
   index: -1
 boden7_dark1
   rotate: false
-  xy: 1090, 363
+  xy: 1810, 1363
   size: 182, 182
   orig: 182, 182
   offset: 0, 0
@@ -167,14 +167,14 @@ boden8
   index: -1
 boden8_dark
   rotate: false
-  xy: 1090, 179
+  xy: 1090, 547
   size: 182, 182
   orig: 182, 182
   offset: 0, 0
   index: -1
 boden8_dark1
   rotate: false
-  xy: 1810, 1572
+  xy: 1090, 363
   size: 182, 182
   orig: 182, 182
   offset: 0, 0
@@ -188,56 +188,56 @@ boden9
   index: -1
 boden9_dark
   rotate: false
-  xy: 1810, 1388
+  xy: 1090, 179
   size: 182, 182
   orig: 182, 182
   offset: 0, 0
   index: -1
 boden9_dark1
   rotate: false
-  xy: 1810, 1204
+  xy: 1810, 1179
   size: 182, 182
   orig: 182, 182
   offset: 0, 0
   index: -1
 book_blue
   rotate: false
-  xy: 1266, 778
+  xy: 1117, 57
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
   index: -1
 book_green
   rotate: false
-  xy: 159, 8
+  xy: 126, 8
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
   index: -1
 book_pink
   rotate: false
-  xy: 1266, 746
+  xy: 1274, 398
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
   index: -1
 book_red
   rotate: false
-  xy: 193, 8
+  xy: 160, 8
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
   index: -1
 book_yellow
   rotate: false
-  xy: 227, 8
+  xy: 1274, 366
   size: 32, 30
   orig: 32, 30
   offset: 0, 0
   index: -1
 bucket
   rotate: false
-  xy: 1298, 1078
+  xy: 1487, 1070
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -251,21 +251,28 @@ cave
   index: -1
 chest_cut_trans
   rotate: false
-  xy: 1707, 1093
+  xy: 1274, 580
   size: 46, 41
   orig: 46, 41
   offset: 0, 0
   index: -1
 chest_schloss
   rotate: false
-  xy: 1266, 917
+  xy: 1274, 537
   size: 46, 41
   orig: 46, 41
   offset: 0, 0
   index: -1
+cycle
+  rotate: false
+  xy: 1808, 1731
+  size: 128, 113
+  orig: 128, 113
+  offset: 0, 0
+  index: -1
 dead_black_mage
   rotate: false
-  xy: 782, 6
+  xy: 1681, 1086
   size: 63, 48
   orig: 63, 48
   offset: 0, 0
@@ -279,14 +286,14 @@ dead_blue_pirate
   index: -1
 dead_dwarf
   rotate: false
-  xy: 560, 4
+  xy: 560, 2
   size: 80, 52
   orig: 80, 52
   offset: 0, 0
   index: -1
 dead_stan
   rotate: false
-  xy: 1536, 1084
+  xy: 843, 4
   size: 55, 50
   orig: 55, 50
   offset: 0, 0
@@ -300,21 +307,21 @@ dead_white_mage
   index: -1
 dust
   rotate: false
-  xy: 1298, 1057
+  xy: 265, 19
   size: 30, 19
   orig: 30, 19
   offset: 0, 0
   index: -1
 engel
   rotate: false
-  xy: 1409, 1069
+  xy: 1421, 1069
   size: 64, 65
   orig: 64, 65
   offset: 0, 0
   index: -1
 engel2
   rotate: false
-  xy: 1050, 2
+  xy: 1347, 1065
   size: 72, 77
   orig: 72, 77
   offset: 0, 0
@@ -328,42 +335,42 @@ falltuer
   index: -1
 feder
   rotate: false
-  xy: 1362, 1049
+  xy: 1274, 279
   size: 29, 26
   orig: 29, 26
   offset: 0, 0
   index: -1
 field
   rotate: false
-  xy: 847, 3
+  xy: 1266, 737
   size: 62, 51
   orig: 62, 51
   offset: 0, 0
   index: -1
 field2
   rotate: false
-  xy: 911, 3
+  xy: 1553, 1083
   size: 62, 51
   orig: 62, 51
   offset: 0, 0
   index: -1
 field3
   rotate: false
-  xy: 975, 3
+  xy: 1617, 1083
   size: 62, 51
   orig: 62, 51
   offset: 0, 0
   index: -1
 fountain
   rotate: false
-  xy: 1651, 1093
+  xy: 1347, 869
   size: 54, 41
   orig: 54, 41
   offset: 0, 0
   index: -1
 fragezeichen
   rotate: false
-  xy: 1937, 1764
+  xy: 1347, 983
   size: 50, 80
   orig: 50, 80
   offset: 0, 0
@@ -384,7 +391,7 @@ growing n0007b
   index: -1
 haendler
   rotate: false
-  xy: 1808, 1756
+  xy: 1050, 89
   size: 127, 88
   orig: 127, 88
   offset: 0, 0
@@ -398,98 +405,98 @@ helm
   index: -1
 info_shrine
   rotate: false
-  xy: 1475, 1087
+  xy: 782, 7
   size: 59, 47
   orig: 59, 47
   offset: 0, 0
   index: -1
 kerzen
   rotate: false
-  xy: 1246, 146
+  xy: 1083, 22
   size: 29, 31
   orig: 29, 31
   offset: 0, 0
   index: -1
 key
   rotate: false
-  xy: 58, 5
+  xy: 1050, 54
   size: 31, 33
   orig: 31, 33
   offset: 0, 0
   index: -1
 knueppel
   rotate: false
-  xy: 1266, 878
+  xy: 1274, 498
   size: 41, 37
   orig: 41, 37
   offset: 0, 0
   index: -1
 kristall_blau
   rotate: false
-  xy: 1755, 1102
+  xy: 58, 6
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 kristall_gelb
   rotate: false
-  xy: 1266, 844
+  xy: 1274, 464
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 kristall_gruen
   rotate: false
-  xy: 91, 6
+  xy: 1083, 55
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 kristall_rot
   rotate: false
-  xy: 1266, 810
+  xy: 92, 6
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 kugel
   rotate: false
-  xy: 125, 6
+  xy: 1274, 430
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 kugel_grau
   rotate: false
-  xy: 1266, 1007
+  xy: 1746, 1089
   size: 44, 45
   orig: 44, 45
   offset: 0, 0
   index: -1
 kugel_rot
   rotate: false
-  xy: 1266, 960
+  xy: 1274, 623
   size: 44, 45
   orig: 44, 45
   offset: 0, 0
   index: -1
 lanze
   rotate: false
-  xy: 1124, 9
+  xy: 1266, 790
   size: 80, 70
   orig: 80, 70
   offset: 0, 0
   index: -1
 pentagramm
   rotate: false
-  xy: 1246, 86
+  xy: 194, 10
   size: 32, 28
   orig: 32, 28
   offset: 0, 0
   index: -1
 potion_rot
   rotate: false
-  xy: 1989, 1820
+  xy: 1242, 1118
   size: 17, 24
   orig: 17, 24
   offset: 0, 0
@@ -531,70 +538,70 @@ rune_yellow
   index: -1
 sauele
   rotate: false
-  xy: 1364, 1077
+  xy: 1274, 670
   size: 43, 65
   orig: 43, 65
   offset: 0, 0
   index: -1
 schwert
   rotate: false
-  xy: 1593, 1089
+  xy: 900, 9
   size: 56, 45
   orig: 56, 45
   offset: 0, 0
   index: -1
 scroll_white
   rotate: false
-  xy: 261, 7
+  xy: 1050, 21
   size: 31, 31
   orig: 31, 31
   offset: 0, 0
   index: -1
 shield
   rotate: false
-  xy: 2010, 1840
+  xy: 228, 13
   size: 35, 25
   orig: 35, 25
   offset: 0, 0
   index: -1
 shield2
   rotate: false
-  xy: 2010, 1867
+  xy: 1014, 19
   size: 34, 35
   orig: 34, 35
   offset: 0, 0
   index: -1
 shrine_black
   rotate: false
-  xy: 1794, 1110
+  xy: 1266, 1050
   size: 79, 92
   orig: 79, 92
   offset: 0, 0
   index: -1
 shrine_red
   rotate: false
-  xy: 1875, 1110
+  xy: 1266, 956
   size: 79, 92
   orig: 79, 92
   offset: 0, 0
   index: -1
 shrine_yellow
   rotate: false
-  xy: 1956, 1110
+  xy: 1266, 862
   size: 79, 92
   orig: 79, 92
   offset: 0, 0
   index: -1
 statue
   rotate: false
-  xy: 1206, 10
+  xy: 1347, 912
   size: 49, 69
   orig: 49, 69
   offset: 0, 0
   index: -1
 stone
   rotate: false
-  xy: 1330, 1049
+  xy: 1274, 307
   size: 30, 27
   orig: 30, 27
   offset: 0, 0
@@ -713,7 +720,7 @@ wand_seiten
   index: -1
 wolfsmesser
   rotate: false
-  xy: 1266, 1054
+  xy: 2010, 1857
   size: 30, 45
   orig: 30, 45
   offset: 0, 0

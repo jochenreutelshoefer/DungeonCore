@@ -66,11 +66,12 @@ public class GUIRenderer implements Disposable {
 	private GLProfiler glProfiler;
 	private LibgdxItemWheel itemWheelHeroItems;
 
-	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure) {
+	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure, LibgdxFocusManager focusManager) {
 		this.inputController = inputController;
 		this.cameraGUI = cameraGUI;
 		this.game = game;
 		this.figure = figure;
+		this.focusManager = focusManager;
 		init();
 	}
 
@@ -105,7 +106,7 @@ public class GUIRenderer implements Disposable {
 		infoPanel = new LibgdxInfoPanel(new JDPoint(game.getScreenWidth() - infoPanelWidth, 0),
 				new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager, game);
 		this.libgdxGuiElements.add(infoPanel);
-		focusManager = new LibgdxFocusManager(infoPanel, figure);
+		focusManager.setInfoPanel(infoPanel);
 
 
 		/*
@@ -227,9 +228,6 @@ public class GUIRenderer implements Disposable {
 		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
 	}
 
-	public LibgdxFocusManager getFocusManager() {
-		return focusManager;
-	}
 
 	public void render() {
 		renderGUIElements();

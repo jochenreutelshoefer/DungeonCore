@@ -13,7 +13,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import figure.Figure;
+import figure.hero.Druid;
 import figure.hero.Hero;
+import figure.hero.Mage;
+import figure.hero.Thief;
+import figure.hero.Warrior;
 import figure.monster.Ghul;
 import figure.monster.Ogre;
 import figure.monster.Orc;
@@ -43,6 +47,10 @@ public class Assets implements Disposable, AssetErrorListener {
 	public static String LIONESS_ATLAS = "lioness";
 	public static String WOLF_ATLAS = "wolf";
 	public static String ORC_ATLAS = "orc";
+	public static String DRUID_ATLAS = "druid";
+	public static String MAGE_ATLAS = "mage";
+	public static String THIEF_ATLAS = "thief";
+	public static String DARKDWARF_ATLAS = "darkdwarf";
 	public static String SKEL_ATLAS = "skel";
 	public static String OGRE_ATLAS = "ogre";
 	public static String GHUL_ATLAS = "ghul";
@@ -52,7 +60,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	/*
 	Figure classes that we can draw with the assets provided
 	 */
-	public static Class[] figureClasses = new Class[] { Hero.class, Orc.class, Wolf.class, Skeleton.class, Ogre.class, Ghul.class, Spider.class };
+	public static Class[] figureClasses = new Class[] { Warrior.class, Orc.class, Wolf.class, Skeleton.class, Ogre.class, Ghul.class, Spider.class, Druid.class, Mage.class, Thief.class /*TODO: DarkDwarf.class*/ };
 
 
 
@@ -79,6 +87,10 @@ public class Assets implements Disposable, AssetErrorListener {
 	private TextureAtlas ogreAtlas;
 	private TextureAtlas ghulAtlas;
 	private TextureAtlas spiderAtlas;
+	private TextureAtlas druidAtlas;
+	private TextureAtlas mageAtlas;
+	private TextureAtlas thiefAtlas;
+	private TextureAtlas darkdwarfAtlas;
 
 	private TextureAtlas wolfAtlas;
 
@@ -90,6 +102,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public TextureAtlas getGuiAtlas() {
 		return guiAtlas;
+	}
+
+	public TextureAtlas getDungeonAtlas() {
+		return dungeonAtlas;
 	}
 
 	public AssetFonts fonts;
@@ -134,6 +150,23 @@ public class Assets implements Disposable, AssetErrorListener {
 		String spiderAtlasPath = PACKS + SPIDER_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(spiderAtlasPath, TextureAtlas.class);
 
+
+		// druid
+		String druidAtlasPath = PACKS + DRUID_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(druidAtlasPath, TextureAtlas.class);
+
+		// mage
+		String mageAtlasPath = PACKS + MAGE_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(mageAtlasPath, TextureAtlas.class);
+
+		// thief
+		String thiefAtlasPath = PACKS + THIEF_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(thiefAtlasPath, TextureAtlas.class);
+
+		// darkdwarf
+		String darkdwarfAtlasPath = PACKS + DARKDWARF_ATLAS + ATLAS_FILE_EXTENSION;
+		assetManager.load(darkdwarfAtlasPath, TextureAtlas.class);
+
 		// wolf
 		String wolfAtlasPath = PACKS + WOLF_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(wolfAtlasPath, TextureAtlas.class);
@@ -162,6 +195,20 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		spiderAtlas = assetManager.get(spiderAtlasPath);
 		cacheMap.put(spiderAtlas, textureCacheSpider);
+
+		druidAtlas = assetManager.get(druidAtlasPath);
+		cacheMap.put(druidAtlas, textureCacheDruid);
+
+		mageAtlas = assetManager.get(mageAtlasPath);
+		cacheMap.put(mageAtlas, textureCacheMage);
+
+		thiefAtlas = assetManager.get(thiefAtlasPath);
+		cacheMap.put(thiefAtlas, textureCacheThief);
+
+		/*
+		darkdwarfAtlas = assetManager.get(darkdwarfAtlasPath);
+		cacheMap.put(darkdwarfAtlas, textureCacheDarkdwarf);
+		*/
 
 		wolfAtlas = assetManager.get(wolfAtlasPath);
 		cacheMap.put(wolfAtlas, textureCacheWolf);
@@ -198,8 +245,6 @@ public class Assets implements Disposable, AssetErrorListener {
 		// Initialize all game images
 		ImageManager.getInstance(game.getFileIO().getImageLoader()).loadImages();
 
-
-
 	}
 
 	@Override
@@ -217,6 +262,10 @@ public class Assets implements Disposable, AssetErrorListener {
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOrc = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOgre = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSpider = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDruid = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheMage = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheThief = new HashMap<>();
+	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDarkdwarf = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGhul = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWolf = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSkeleton = new HashMap<>();
@@ -340,6 +389,23 @@ public class Assets implements Disposable, AssetErrorListener {
 		if(Spider.class.equals(figureClass)) {
 			return getAtlasRegion(image, spiderAtlas);
 		}
+		if(Druid.class.equals(figureClass)) {
+			return getAtlasRegion(image, druidAtlas);
+		}
+		if(Mage.class.equals(figureClass)) {
+			return getAtlasRegion(image, mageAtlas);
+		}
+		if(Thief.class.equals(figureClass)) {
+			return getAtlasRegion(image, thiefAtlas);
+		}
+		/* TODO
+		if(DarkDwarf.class.equals(figureClass)) {
+			return getAtlasRegion(image, darkdwarfAtlas);
+		}
+		*/
+		if(Warrior.class.equals(figureClass)) {
+			return getAtlasRegion(image, warriorAtlas);
+		}
 		return null;
 	}
 
@@ -347,13 +413,17 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public void initAtlasMap() {
 		atlasMap = new HashMap<>();
-		atlasMap.put(Hero.class, Assets.instance.warriorAtlas);
+		atlasMap.put(Warrior.class, Assets.instance.warriorAtlas);
 		atlasMap.put(Orc.class, Assets.instance.orcAtlas);
 		atlasMap.put(Ogre.class, Assets.instance.ogreAtlas);
 		atlasMap.put(Ghul.class, Assets.instance.ghulAtlas);
 		atlasMap.put(Spider.class, Assets.instance.spiderAtlas);
 		atlasMap.put(Wolf.class, Assets.instance.wolfAtlas);
 		atlasMap.put(Skeleton.class, Assets.instance.skelAtlas);
+		atlasMap.put(Druid.class, Assets.instance.druidAtlas);
+		atlasMap.put(Mage.class, Assets.instance.mageAtlas);
+		atlasMap.put(Thief.class, Assets.instance.thiefAtlas);
+		// atlasMap.put(DarkDwarf.class, Assets.instance.druidAtlas); TODO
 	}
 
 }
