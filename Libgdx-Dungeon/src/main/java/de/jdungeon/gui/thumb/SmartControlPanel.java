@@ -438,8 +438,13 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private void updatePositionElements() {
 		positionElements.clear();
 
+		RoomInfo roomInfo = this.figure.getRoomInfo();
+		if(roomInfo == null) {
+			// we have a concurrency problem here when finished the level via exit
+			return;
+		}
 		for (int i = 0; i < 8; i++) {
-			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
+			FigureInfo otherFigure = roomInfo.getPositionInRoom(i).getFigure();
 			Action action = new StepAction(i);
 			// TODO: cache this
 			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
