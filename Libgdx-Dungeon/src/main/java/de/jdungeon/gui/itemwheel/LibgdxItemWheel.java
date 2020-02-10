@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
+import gui.Paragraphable;
+import item.ItemInfo;
 import util.JDDimension;
 
 import de.jdungeon.app.event.FocusEvent;
@@ -312,7 +314,11 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		// show info about element
 		Activity activity = binding.getActivity(markedPointIndex);
 		if (activity != null) {
-			EventManager.getInstance().fireEvent(new FocusEvent(activity, this));
+			Paragraphable paragraphable = activity;
+			if(activity.getObject() instanceof ItemInfo) {
+				paragraphable = (ItemInfo)activity.getObject();
+			}
+			EventManager.getInstance().fireEvent(new FocusEvent(paragraphable, this));
 		}
 	}
 

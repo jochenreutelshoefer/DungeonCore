@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
+import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
@@ -28,6 +29,7 @@ import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
+import graphics.util.RelativeRectangle;
 import item.ItemInfo;
 import shrine.ShrineInfo;
 import util.JDDimension;
@@ -89,7 +91,6 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private final JDDimension moveElementDimension;
 	private final int positionAreaSize;
 	private final int positionAreaOffset;
-	private final GraphicObjectRenderer renderer;
 	private final LibgdxSubGUIElementAnimated chestGUIELement;
 	private final LibgdxPositionElement[] freeStepPositionElements = new LibgdxPositionElement[8];
 	private final LibgdxPositionElement[] dotPositionElements = new LibgdxPositionElement[8];
@@ -99,13 +100,15 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private final LibgdxGUIElement innerFrame;
 	private final LibgdxFloorItemPresenter floorItemPresenter;
 
+	private static final JDPoint[] positionCoord = new JDPoint[8];
+	private final JDPoint[] positionCoordModified = new JDPoint[8];
+
 	public SmartControlPanel(JDPoint position, JDDimension dimension, Game game, FigureInfo figure, ActionAssembler actionAssembler) {
 		super(position, dimension, game);
 		this.figure = figure;
 		this.guiControl = actionAssembler;
 		positionAreaSize = (int) (dimension.getWidth() / 2.2);
 		positionAreaOffset = (dimension.getWidth() - positionAreaSize) / 2;
-		renderer = new GraphicObjectRenderer(positionAreaSize);
 
 		skillImageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
 
@@ -126,6 +129,11 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				new JDPoint(doorOuterBorderWidth, y13)
 		};
 
+		for (int i = 0; i < positionCoord.length; i++) {
+			positionCoord[i] = GraphicObjectRenderer.getPositionCoordinates(Position.Pos.fromValue(i), positionAreaSize);
+			positionCoordModified[i] = new JDPoint(positionCoord[i].getX() + positionAreaSize / 20, positionCoord[i].getY());
+		}
+
 		// draw border outerFrame
 		JDPoint positionOuterFrame = new JDPoint(0, this.getDimension().getHeight() * 0.03);
 		JDDimension dimensionOuterFrame = new JDDimension(this.getDimension().getWidth(), (int) (this.getDimension()
@@ -144,7 +152,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		int correctionY = -3;
 		positionDimension = new JDDimension(positionElementSize, positionElementSize);
 		for (int i = 0; i < freeStepPositionElements.length; i++) {
-			JDPoint positionCoord = renderer.getPositionCoordModified(i);
+			JDPoint positionCoord = positionCoordModified[i];
 			positionElementPositions[i] = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionElementSize / 2, correctionY + positionCoord
 					.getY() + positionAreaOffset - positionElementSize / 2);
 			freeStepPositionElements[i] = new LibgdxPositionElement(
@@ -431,7 +439,6 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 
 		for (int i = 0; i < 8; i++) {
 			FigureInfo otherFigure = this.figure.getRoomInfo().getPositionInRoom(i).getFigure();
-			JDPoint positionCoord = renderer.getPositionCoordModified(i);
 			Action action = new StepAction(i);
 			// TODO: cache this
 			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {

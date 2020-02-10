@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,28 +18,24 @@ import util.JDDimension;
 
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.GameOverView;
 import de.jdungeon.app.gui.HealthBar;
-import de.jdungeon.app.gui.InfoPanel;
 import de.jdungeon.app.gui.TextPerceptView;
-import de.jdungeon.app.gui.activity.UseItemActivityProvider;
-import de.jdungeon.app.gui.itemWheel.ItemWheel;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.game.Image;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
+import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
+import de.jdungeon.gui.LibgdxInfoPanel;
 import de.jdungeon.gui.LibgdxUseItemActivityProvider;
-import de.jdungeon.gui.LibgdxUseItemPresenter;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
 import de.jdungeon.ui.LibgdxGUIElement;
 
-import static com.sun.glass.ui.gtk.GtkApplication.screen;
 import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
 
 /**
@@ -58,10 +53,10 @@ public class GUIRenderer implements Disposable {
 	private SpriteBatch batch;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private SmartControlPanel smartControl;
-	private InfoPanel infoPanel;
+	private LibgdxInfoPanel infoPanel;
 	private TextPerceptView textView;
 
-	private FocusManager focusManager;
+	private LibgdxFocusManager focusManager;
 
 	protected final List<GUIElement> guiElements = new ArrayList<>();
 	protected final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
@@ -76,6 +71,12 @@ public class GUIRenderer implements Disposable {
 		this.cameraGUI = cameraGUI;
 		this.game = game;
 		this.figure = figure;
+		init();
+	}
+
+	private void reinit() {
+		guiElements.clear();
+		libgdxGuiElements.clear();
 		init();
 	}
 
@@ -101,10 +102,10 @@ public class GUIRenderer implements Disposable {
 
 		int infoPanelWidth = (int) (game.getScreenWidth() * 0.2);
 		int infoPanelHeight = (int) (game.getScreenHeight() * 0.4);
-		infoPanel = new InfoPanel(new JDPoint(game.getScreenWidth() - infoPanelWidth, 0),
-				new JDDimension(infoPanelWidth, infoPanelHeight), new ScreenAdapter(game), game);
-		this.guiElements.add(infoPanel);
-		focusManager = new FocusManager(infoPanel, figure);
+		infoPanel = new LibgdxInfoPanel(new JDPoint(game.getScreenWidth() - infoPanelWidth, 0),
+				new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager, game);
+		this.libgdxGuiElements.add(infoPanel);
+		focusManager = new LibgdxFocusManager(infoPanel, figure);
 
 
 		/*
@@ -178,11 +179,11 @@ public class GUIRenderer implements Disposable {
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
 		int selectedIndexItem = 17;
-		int screenWidthBy2 = screenWidth / 2;
-		JDDimension itemWheelSize = new JDDimension(screenWidthBy2, screenWidthBy2);
-		double wheelCenterY = screenHeight * 1.7;
+		int wheelSize = 350;
+		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
+		double wheelCenterY = screenHeight + wheelSize / 2 + 120;
 		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, game, inputController.getPlayerController().getActionAssembler(), focusManager);
-		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(0, wheelCenterY),
+		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(50, wheelCenterY),
 				itemWheelSize,
 				figure,
 				game,
@@ -226,14 +227,11 @@ public class GUIRenderer implements Disposable {
 		return (Image) GUIImageManager.getImageProxy(filename, game.getFileIO().getImageLoader()).getImage();
 	}
 
-	public FocusManager getFocusManager() {
+	public LibgdxFocusManager getFocusManager() {
 		return focusManager;
 	}
 
 	public void render() {
-
-
-
 		renderGUIElements();
 	}
 
@@ -299,26 +297,6 @@ public class GUIRenderer implements Disposable {
 	}
 
 
-
-	private void renderGrid() {
-		batch.setProjectionMatrix(cameraGUI.combined);
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setProjectionMatrix(cameraGUI.combined);
-		shapeRenderer.setColor(Color.GREEN);
-		for (int i = 0; i < 10; i++) {
-			shapeRenderer.ellipse((i * 100) - 2, (i * 100) - 2, 4, 4);
-		}
-		shapeRenderer.end();
-	}
-
-	private void renderGuiScore() {
-		float x = -15;
-		float y = -15;
-		batch.begin();
-		AssetFonts.instance.defaultBigFlipped.draw(batch, "0", x + 75, y + 37);
-		batch.end();
-	}
-
 	private void renderFPSCounter() {
 		float x = cameraGUI.viewportWidth - 55;
 		float y = cameraGUI.viewportHeight - 15;
@@ -344,6 +322,7 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void resize(int width, int height) {
+		reinit();
 		cameraGUI.viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
 		cameraGUI.viewportWidth = (Constants.VIEWPORT_GUI_HEIGHT / height) * width;
 		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);

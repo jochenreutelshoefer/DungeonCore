@@ -582,6 +582,11 @@ public class ImageManager {
 
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern) {
+		return load4Animations(a, path, pattern, 45);
+	}
+
+	private static AnimationSetDirections load4Animations(
+			AbstractImageLoader<?> a, String path, String pattern, int stepDuration) {
 		DefaultAnimationSet[] set = new DefaultAnimationSet[4];
 		for (int i = 0; i < 4; i++) {
 			JDImageProxy<?>[] loadedImages = loadArray(a, path, pattern, i + 1);
@@ -629,10 +634,10 @@ public class ImageManager {
 			mage_been_hit.addAudioClipHalfTime(AudioEffectsManager.HERO_HURT);
 			mage_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			warrior_tipping_over = load4Animations(a, "animation/warrior/", "warrior_swordstan_kippt_um_");
+			warrior_tipping_over = load4Animations(a, "animation/warrior/", "warrior_swordstan_kippt_um_", 60);
 			thief_tipping_over = load4Animations(a, "animation/thief/", "thief_kippt_um_");
 			druid_tipping_over = load4Animations(a, "animation/druid/", "druid_tipping_over_");
-			mage_tipping_over = load4Animations(a, "animation/mage/", "mage_magier_45_kippt_um_");
+			mage_tipping_over = load4Animations(a, "animation/mage/", "mage_magier_45_kippt_um_", 60);
 
 			warrior_walking = load4Animations(a, "animation/warrior/", "warrior_swordstan_laeuft_");
 			thief_walking = load4Animations(a, "animation/thief/", "thief_laeuft_");
@@ -666,7 +671,7 @@ public class ImageManager {
 			wolf1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			wolf1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			wolf1_tipping_over = load4Animations(a, "animation/" + "wolf/", "wolf_tipping_over_");
+			wolf1_tipping_over = load4Animations(a, "animation/" + "wolf/", "wolf_tipping_over_", 60);
 			wolf1_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES, 1);
 
 			wolf1_slays = load4Animations(a, "animation/" + "wolf/", "wolf_wolf_attack_");
@@ -681,7 +686,7 @@ public class ImageManager {
 			skel1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			skel1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			skel1_tipping_over = load4Animations(a, "animation/" + "skel/", "skel_zerfaellt_");
+			skel1_tipping_over = load4Animations(a, "animation/" + "skel/", "skel_zerfaellt_", 60);
 			skel1_slays = load4Animations(a, "animation/" + "skel/", "skel_swordskel_attack_");
 			skel1_walking = load4Animations(a, "animation/" + "skel/", "skel_swordskel_laeuft_");
 			skel1_running = load4Animations(a, "animation/" + "skel/", "skel_swordskel_rennt_");
@@ -692,7 +697,7 @@ public class ImageManager {
 			ghul1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			ghul1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			ghul1_tipping_over = load4Animations(a, "animation/" + "ghul/", "ghul_mumie_zerfaellt_");
+			ghul1_tipping_over = load4Animations(a, "animation/" + "ghul/", "ghul_mumie_zerfaellt_", 60);
 			ghul1_slays = load4Animations(a, "animation/" + "ghul/", "ghul_mummy_45_attack_");
 
 			ghul1_running = load4Animations(a, "animation/" + "ghul/", "ghul_mummy_rennt_");
@@ -703,7 +708,7 @@ public class ImageManager {
 			ogre1_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			ogre1_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			ogre1_tipping_over = load4Animations(a, "animation/" + "ogre/", "ogre_tipping_over_");
+			ogre1_tipping_over = load4Animations(a, "animation/" + "ogre/", "ogre_tipping_over_", 60);
 			ogre1_slays = load4Animations(a, "animation/" + "ogre/", "ogre_attack_");
 			ogre1_running = load4Animations(a, "animation/" + "ogre/", "ogre_running_");
 			ogre1_walking = load4Animations(a, "animation/" + "ogre/", "ogre_walking_");
@@ -737,7 +742,7 @@ public class ImageManager {
 			lioness_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			lioness_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
 
-			lioness_tipping_over = load4Animations(a, "animation/" + "lioness/", "tipping over");
+			lioness_tipping_over = load4Animations(a, "animation/" + "lioness/", "tipping over", 60);
 			lioness_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES, 0);
 
 			lioness_slays = load4Animations(a, "animation/" + "lioness/", "attack");

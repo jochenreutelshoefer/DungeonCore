@@ -3,6 +3,7 @@ package de.jdungeon.asset;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.util.Log;
 import audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -224,7 +225,38 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	private final Map<TextureAtlas, Map<String, TextureAtlas.AtlasRegion>> cacheMap = new HashMap<>();
 
+	/*
+	 * We also maintain an overall cache map from filename to AtlasRegion.
+	 * However it should only be used if absolutely necessary as arbitrary use
+	 * will lead to a lots of Atlas changes on the openGL rendering process
+	 * slowing down the rendering
+	 */
+	private final Map<String, TextureAtlas.AtlasRegion> overallRegionCacheMap = new HashMap<>();
 
+	/**
+	 * Should only be used if absolutely necessary, that is if the caller code
+	 * has no chance to know in which atlas the texture is in.
+	 *
+	 * @param filename filename of image assets (AtlasRegion)
+	 * @return the AtlasRegion for this filename
+	 */
+	public TextureAtlas.AtlasRegion findTexture(String filename) {
+		if(overallRegionCacheMap.containsKey(filename)) {
+			return overallRegionCacheMap.get(filename);
+		}
+		for (TextureAtlas textureAtlas : cacheMap.keySet()) {
+			TextureAtlas.AtlasRegion region = textureAtlas.findRegion(filename);
+			if(region != null) {
+				cacheMap.get(textureAtlas).put(filename, region);
+				overallRegionCacheMap.put(filename, region);
+				return region;
+			}
+		}
+
+		// not found after extensive search in any atlas
+		Gdx.app.error(TAG, "Couldn't find texture in any atlas: " + filename);
+		return null;
+	}
 
 	public TextureAtlas.AtlasRegion getWarriorTexture(JDImageProxy<?> image) {
 		return getAtlasRegion(image, warriorAtlas);
@@ -274,6 +306,7 @@ public class Assets implements Disposable, AssetErrorListener {
 				region.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 				region.flip(false, true);
 				textureCache.put(blankFilename, region);
+				overallRegionCacheMap.put(blankFilename, region);
 				Gdx.app.log(TAG, "added new AtlasRegion to cache: " + blankFilename);
 				return region;
 			}

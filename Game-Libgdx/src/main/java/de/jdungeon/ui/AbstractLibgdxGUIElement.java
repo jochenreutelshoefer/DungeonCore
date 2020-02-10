@@ -1,7 +1,9 @@
 package de.jdungeon.ui;
 
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import android.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dungeon.JDPoint;
 import util.JDDimension;
 
@@ -16,9 +18,8 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 
 	protected JDPoint position;
 	protected final JDDimension dimension;
-	// TODO: remove
-	private LibgdxGUIElement parent;
 	protected Game game;
+	Texture bgTexture;
 
 
 	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension, Game game) {
@@ -26,22 +27,22 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		this.position = position;
 		this.dimension = dimension;
 		this.game = game;
+		init();
 	}
 
-	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension, Screen screen, Game game) {
-		super();
-		this.position = position;
-		this.dimension = dimension;
-		this.game = game;
+	public void init() {
+		createBackgroundTexture();
 	}
 
-	// TODO: remove this constructor
-	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension,
-									LibgdxGUIElement parent) {
-		super();
-		this.position = position;
-		this.dimension = dimension;
-		this.parent = parent;
+	private void createBackgroundTexture() {
+		int width = getDimension().getWidth();
+		int height = getDimension().getHeight();
+		Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
+		bgPixmap.setColor(Color.WHITE);
+		bgPixmap.fill();
+		bgPixmap.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+		bgPixmap.drawRectangle(0, 0, width, height);
+		this.bgTexture = new Texture(bgPixmap);
 	}
 
 	@Override
@@ -89,35 +90,17 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		this.game = game;
 	}
 
-	/*
-	protected void drawBackground(Graphics g) {
-		drawBackground(g, position.getX(), position.getY());
+
+	protected void drawBackground(SpriteBatch batch) {
+		drawBackground(batch, position.getX(), position.getY());
 	}
 
-	protected void drawBackground(Graphics g, int currentX, int currentY) {
-		final Configuration.GUIStyle guiStyle = game.getConfiguration().getGUIStyle();
-		if(guiStyle == Configuration.GUIStyle.retro) {
-			GUIUtils.drawBackgroundRetro(g, currentX, currentY, dimension);
-		} else {
-			GUIUtils.drawBackgroundSimple(g, currentX, currentY, dimension);
-		}
+	protected void drawBackground(SpriteBatch batch, int currentX, int currentY) {
+		batch.draw(bgTexture, currentX, currentY);
 	}
 
 
-	protected void drawBorder(Graphics g, int currentX, int currentY) {
-		final Configuration.GUIStyle guiStyle = game.getConfiguration().getGUIStyle();
-		if(guiStyle == Configuration.GUIStyle.retro) {
-			GUIUtils.drawDoubleBorderRetro(g, currentX, currentY, dimension, 20);
-		} else {
-			GUIUtils.drawBorderSimple(g, currentX, currentY, this.dimension);
-		}
-	}
 
-
-	protected void drawBorder(Graphics g) {
-		drawBorder(g, position.getX(), position.getY());
-	}
-	*/
 
 
 }

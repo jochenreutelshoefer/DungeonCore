@@ -44,6 +44,7 @@ import de.jdungeon.Constants;
 import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.asset.Assets;
+import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.util.Pair;
 
 /**
@@ -58,7 +59,7 @@ public class WorldRenderer implements Disposable {
 
 	private final ViewModel viewModel;
 	private final OrthographicCamera camera;
-	private final FocusManager focusManager;
+	private final LibgdxFocusManager focusManager;
 	private final AnimationManager animationManager;
 	private final GraphicObjectRenderer dungeonObjectRenderer;
 	private final CameraHelper cameraHelper;
@@ -68,7 +69,7 @@ public class WorldRenderer implements Disposable {
 	private Class<? extends Figure>[] figureClasses;
 
 
-	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, FocusManager focusManager, AnimationManager animationManager) {
+	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, LibgdxFocusManager focusManager, AnimationManager animationManager) {
 		this.dungeonObjectRenderer = graphicObjectRenderer;
 		this.cameraHelper = cameraHelper;
 		this.viewModel = viewModel;
@@ -298,7 +299,7 @@ public class WorldRenderer implements Disposable {
 				}
 				else {
 					// remember some data for rendering of highlight box
-					/*
+
 					focusManager.setWorldFocusObject((clickedGraphicObject));
 					DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
 					highlightBoxX = rectangle.getX(roomX * ROOM_SIZE);
@@ -306,7 +307,7 @@ public class WorldRenderer implements Disposable {
 					highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
 					highlightTexture = new Texture(highlightBox);
 					highlightedObject = clickedObject;
-					*/
+
 				}
 
 				return true;

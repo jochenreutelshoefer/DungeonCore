@@ -20,9 +20,9 @@ import de.jdungeon.game.Game;
 public class LibgdxUseItemActivityProvider extends LibgdxItemActivityItemProvider {
 	private final ItemInfoOwner info;
 	private final ActionAssembler actionAssembler;
-	private final FocusManager focusManager;
+	private final LibgdxFocusManager focusManager;
 
-	public LibgdxUseItemActivityProvider(ItemInfoOwner info, Game game, ActionAssembler actionAssembler, FocusManager focusManager) {
+	public LibgdxUseItemActivityProvider(ItemInfoOwner info, Game game, ActionAssembler actionAssembler, LibgdxFocusManager focusManager) {
 		super(info, game, actionAssembler);
 		this.info = info;
 		this.actionAssembler = actionAssembler;

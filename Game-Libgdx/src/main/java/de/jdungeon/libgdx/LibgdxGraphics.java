@@ -42,7 +42,7 @@ public class LibgdxGraphics implements Graphics {
 
 	BitmapFont fpsFont;
 
-	private final Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
+	public static final Map<Color, com.badlogic.gdx.graphics.Color> colorMap = new HashMap<>();
 
 
 	public LibgdxGraphics(OrthographicCamera camera, BitmapFont font) {
@@ -69,7 +69,7 @@ public class LibgdxGraphics implements Graphics {
 		batch.end();
 	}
 
-	private void initColors() {
+	static {
 		colorMap.put(Colors.BLACK, com.badlogic.gdx.graphics.Color.BLACK);
 		colorMap.put(Colors.BLUE, com.badlogic.gdx.graphics.Color.BLUE);
 		colorMap.put(Colors.GRAY, com.badlogic.gdx.graphics.Color.GRAY);
@@ -77,6 +77,9 @@ public class LibgdxGraphics implements Graphics {
 		colorMap.put(Colors.RED, com.badlogic.gdx.graphics.Color.RED);
 		colorMap.put(Colors.WHITE, com.badlogic.gdx.graphics.Color.WHITE);
 		colorMap.put(Colors.YELLOW, com.badlogic.gdx.graphics.Color.YELLOW);
+	}
+
+	private void initColors() {
 
 		fontWhite.setColor(com.badlogic.gdx.graphics.Color.WHITE);
 		fontGray.setColor(com.badlogic.gdx.graphics.Color.GRAY);

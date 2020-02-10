@@ -18,20 +18,19 @@ import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
 import graphics.GraphicObjectRenderer;
-import log.Log;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
 import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
 import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.ui.LibgdxGUIElement;
 import de.jdungeon.util.Pair;
 
@@ -54,7 +53,6 @@ public class GameScreen extends AbstractGameScreen {
 	private GUIRenderer guiRenderer;
 	private LibgdxCameraFlightSequenceManager movieSequenceManager;
 
-	private boolean paused;
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
 	private final CameraHelper cameraHelper = new CameraHelper();
@@ -65,6 +63,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private final int dungeonSizeY;
 	private GLProfiler glProfiler;
+
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
@@ -78,8 +77,8 @@ public class GameScreen extends AbstractGameScreen {
 	public void show() {
 
 		//if (OPENGL_PROFILING_ON) {
-			glProfiler = new GLProfiler(Gdx.graphics);
-			glProfiler.enable();
+		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler.enable();
 		//}
 
 		inputController = new GameScreenInputProcessor(game, playerController, this);
@@ -114,7 +113,7 @@ public class GameScreen extends AbstractGameScreen {
 		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 	}
 
-	public FocusManager getFocusManager() {
+	public LibgdxFocusManager getFocusManager() {
 		return guiRenderer.getFocusManager();
 	}
 
@@ -179,7 +178,6 @@ public class GameScreen extends AbstractGameScreen {
 			for (Percept percept : percepts) {
 				this.perceptHandler.tellPercept(percept);
 			}
-
 		}
 	}
 
@@ -225,7 +223,6 @@ public class GameScreen extends AbstractGameScreen {
 				.getZoom(), cameraHelper
 				.getZoom(), title);
 	}
-
 
 	public void scrollToScale(JDPoint target, float duration,
 							  float endScale, String title) {
@@ -300,7 +297,7 @@ public class GameScreen extends AbstractGameScreen {
 	/**
 	 * Filters the given set of points down to a set containing
 	 * the most south, the most west, the most north and the most east room.
-	 *
+	 * <p>
 	 * For example, if a single point is given, it actually takes all for roles...
 	 *
 	 * @param points given points
@@ -314,16 +311,16 @@ public class GameScreen extends AbstractGameScreen {
 		JDPoint mostNorth = first;
 
 		for (JDPoint point : points) {
-			if(mostEast.getX() < point.getX()) {
+			if (mostEast.getX() < point.getX()) {
 				mostEast = point;
 			}
-			if(mostWest.getX() > point.getX()) {
+			if (mostWest.getX() > point.getX()) {
 				mostWest = point;
 			}
-			if(mostNorth.getY() > point.getY()) {
+			if (mostNorth.getY() > point.getY()) {
 				mostNorth = point;
 			}
-			if(mostNorth.getY() < point.getY()) {
+			if (mostNorth.getY() < point.getY()) {
 				mostSouth = point;
 			}
 		}
@@ -333,7 +330,6 @@ public class GameScreen extends AbstractGameScreen {
 		points.add(mostWest);
 		points.add(mostNorth);
 		points.add(mostSouth);
-
 	}
 
 	@Override
@@ -359,14 +355,13 @@ public class GameScreen extends AbstractGameScreen {
 		return null;
 	}
 
-
 	private long lastClickTime;
 
 	@Override
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
 
 		long now = System.currentTimeMillis();
-		if(now - lastClickTime < 300) {
+		if (now - lastClickTime < 300) {
 			// we do not allow clicks faster than 10ms one after another to filter duplicates
 			return false;
 		}
@@ -404,8 +399,7 @@ public class GameScreen extends AbstractGameScreen {
 		Check for dungeon click
 		 */
 		boolean handled = worldRenderer.checkWorldClick(screenX, screenY, pointer, button, playerController);
-		if(handled) return true;
-
+		if (handled) return true;
 
 		return false;
 	}
@@ -424,7 +418,7 @@ public class GameScreen extends AbstractGameScreen {
 		}
 
 		// if the pan is not for a UI element, then we do a camera move on the dungeon world
-		if(!processed) {
+		if (!processed) {
 			doCameraMove(dx, dy);
 		}
 		return true;
@@ -432,11 +426,11 @@ public class GameScreen extends AbstractGameScreen {
 
 	private void doCameraMove(float dx, float dy) {
 		float moveFactor = 0.4f;
-		if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+		if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
 			// on desktop we need a faster move factor than on android
 			moveFactor = 0.7f;
 		}
-		if(Gdx.app.getType() == Application.ApplicationType.Android) {
+		if (Gdx.app.getType() == Application.ApplicationType.Android) {
 			// on desktop we need a faster move factor than on android
 			moveFactor = 0.4f;
 		}
@@ -447,7 +441,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public boolean zoom(float v1, float v2) {
-		cameraHelper.addZoom(v1+v2);
+		cameraHelper.addZoom(v1 + v2);
 		return true;
 	}
 

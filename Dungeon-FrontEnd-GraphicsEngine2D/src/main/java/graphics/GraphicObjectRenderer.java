@@ -88,20 +88,11 @@ public class GraphicObjectRenderer {
 	private final JDPoint[] positionCoordModified = new JDPoint[8];
 	private final RelativeRectangle[] positionRectangles = new RelativeRectangle[8];
 
-	public static final double HERO_POINT_QUOTIENT_X = 2.2;
-
-	public static final double HERO_POINT_QUOTIENT_Y = 2.2;
-
-	public static final int HERO_POINT_OFFSET_Y = 0;
-
-	public static final int HERO_POINT_OFFSET_X = 15;
-
 	public static final double HERO_SIZE_QUOTIENT_X = 2;
 
 	public static final double HERO_SIZE_QUOTIENT_Y = 2;
 
 	private JDGUI gui;
-	private int posSize;
 	private JDPoint[] itemPointsRelative;
 	private int ROOMSIZE_BY_100;
 	private JDDimension spotDimension;
@@ -133,7 +124,6 @@ public class GraphicObjectRenderer {
 	private JDPoint spotPosition;
 
 	private final Map<RoomInfoEntity, GraphicObject> graphicObjectCache = new HashMap<>();
-	private GraphicObject roomUndiscovered;
 	private RelativeRectangle roomRect;
 	private RelativeRectangle wallRect;
 
@@ -168,7 +158,6 @@ public class GraphicObjectRenderer {
 		ROOMSIZE_BY_3 = RoomSize.by(3, roomSize);
 		ROOMSIZE_BY_2 = RoomSize.by(2, roomSize);
 
-		posSize = getPosSize();
 		itemPointsRelative = getItemPointsRelative();
 
 		spotDimension = new JDDimension(roomSize / 7, roomSize / 7);
@@ -276,7 +265,7 @@ public class GraphicObjectRenderer {
 				getDoorDimension(true, roomSize).getWidth(),
 				getDoorDimension(true, roomSize).getWidth()),
 				roomBlackBackgroundDimension);
-		roomUndiscovered = new GraphicObject(null, roomBlackBackGroundRect, JDColor.DARK_GRAY, false, null);
+
 		JDDimension roomBackgroundDimension = new JDDimension(roomSize, (roomSize - (this.getDoorDimension(true, roomSize).getWidth()))
 				+ 1  // for some reason we need an additional pixel here to prevent a black gap (probably due to rounding issues somewhere)
 		);
@@ -309,7 +298,7 @@ public class GraphicObjectRenderer {
 		return positionCoord[pos.getValue()];
 	}
 
-	private JDPoint getPositionCoordinates(Position.Pos pos, int roomSize) {
+	public static JDPoint getPositionCoordinates(Position.Pos pos, int roomSize) {
 		int ROOMSIZE_BY_16 = roomSize / 16;
 		int ROOMSIZE_BY_36 = roomSize / 36;
 		if (pos == Position.Pos.NW) {

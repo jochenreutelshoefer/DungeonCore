@@ -14,7 +14,7 @@ import de.jdungeon.app.gui.activity.ActivityProvider;
 
 public class ItemWheelBindingSetSimple implements ItemWheelBindingSet {
 
-	public static final int DEFAULT_REOCURRENCE_CYCLE_SIZE = 3;
+	public static final int DEFAULT_REOCURRENCE_CYCLE_SIZE = 4;
 
 	private final int itemWheelSize;
 	private final int initValue;
