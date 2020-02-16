@@ -1,8 +1,6 @@
 package de.jdungeon.world;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import animation.AnimationFrame;
 import animation.AnimationManager;
@@ -12,24 +10,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
-import dungeon.RoomInfo;
 import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
-import figure.hero.Hero;
-import figure.monster.Ogre;
-import figure.monster.Orc;
-import figure.monster.Skeleton;
-import figure.monster.Wolf;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
@@ -37,12 +29,11 @@ import graphics.JDImageLocated;
 import graphics.JDImageProxy;
 import graphics.util.DrawingRectangle;
 import log.Log;
-import util.JDDimension;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
-import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
+import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.util.Pair;
@@ -65,7 +56,6 @@ public class WorldRenderer implements Disposable {
 	private final CameraHelper cameraHelper;
 	private SpriteBatch batch;
 	public static final int ROOM_SIZE = 80;
-
 
 	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, LibgdxFocusManager focusManager, AnimationManager animationManager) {
 		this.dungeonObjectRenderer = graphicObjectRenderer;
@@ -91,8 +81,7 @@ public class WorldRenderer implements Disposable {
 
 		GL20 gl = Gdx.gl20;
 		int programObject = gl.glCreateProgram();
-		System.out.println("position location: " + gl.glGetAttribLocation(programObject,"position"));
-
+		System.out.println("position location: " + gl.glGetAttribLocation(programObject, "position"));
 	}
 
 	/*
@@ -127,8 +116,6 @@ public class WorldRenderer implements Disposable {
 		}
 
 		batch.end();
-
-
 	}
 
 	/*
@@ -137,7 +124,7 @@ public class WorldRenderer implements Disposable {
 	private void renderDungeonBackgroundObjectsForAllRooms() {
 		for (int x = 0; x < viewModel.roomViews.length; x++) {
 			for (int y = 0; y < viewModel.roomViews[0].length; y++) {
-				if(viewModel.geVisStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND ) continue;
+				if (viewModel.geVisStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND) continue;
 				//ViewRoom room = viewModel.getRoom(x, y);
 
 				// fetch prepared render information
@@ -165,8 +152,9 @@ public class WorldRenderer implements Disposable {
 		for (Class<? extends Figure> figureClass : Assets.figureClasses) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
-					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y].getFigureObjects(figureClass);
-					if(graphicObjectsForRoom != null) {
+					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y]
+							.getFigureObjects(figureClass);
+					if (graphicObjectsForRoom != null) {
 						drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
 					}
 				}
@@ -181,34 +169,44 @@ public class WorldRenderer implements Disposable {
 		int roomOffsetX = viewModel.roomOffSetsX[x][y];
 		int roomOffsetY = viewModel.roomOffSetsY[x][y];
 
-
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 
 			// check for animation for this figure
 			if (pair.getA().getClickableObject() instanceof FigureInfo) {
 				FigureInfo figure = (FigureInfo) pair.getA().getClickableObject();
-				AnimationFrame animationImage = animationManager.getAnimationImage(figure, this.viewModel.roomViews[x][y].getRoomInfo());
+				AnimationFrame animationImage = animationManager.getAnimationImage(figure, this.viewModel.roomViews[x][y]
+						.getRoomInfo());
 				if (animationImage != null) {
 					JDImageLocated locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer
 							.getFigureInfoSize(figure)
 							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight());
 					TextureAtlas atlas = Assets.instance.atlasMap.get(figure.getFigureClass());
-					if(locatedImage == null) {
-						Log.warning("Located Image is null: "+figure + " - "+animationImage);
+					if (locatedImage == null) {
+						Log.warning("Located Image is null: " + figure + " - " + animationImage);
 						continue;
 					}
 					JDImageProxy<?> image = locatedImage.getImage();
-					if(image != null) {
+					if (image != null) {
 						TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
 						if (atlasRegionAnimationStep != null) {
+							int imageX = locatedImage.getX(roomOffsetX);
+							int imageY = locatedImage.getY(roomOffsetY);
 							batch.draw(atlasRegionAnimationStep,
-									locatedImage.getX(roomOffsetX),
-									locatedImage.getY(roomOffsetY),
+									imageX,
+									imageY,
 									locatedImage.getWidth(),
 									locatedImage.getHeight());
+							String text = null;
+							JDPoint textOffset = null;
+							if (animationImage.getText() != null) {
+								text = animationImage.getText();
+								textOffset = animationImage.getTextCoordinatesOffset();
+								BitmapFont font = AssetFonts.instance.hit;
+								font.draw(batch, text, imageX + textOffset.getX(), imageY + textOffset.getY());
+							}
 						}
-
 					}
+
 					// we had an animation so we finish off this object
 					continue;
 				}
@@ -305,7 +303,6 @@ public class WorldRenderer implements Disposable {
 					highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
 					highlightTexture = new Texture(highlightBox);
 					highlightedObject = clickedObject;
-
 				}
 
 				return true;

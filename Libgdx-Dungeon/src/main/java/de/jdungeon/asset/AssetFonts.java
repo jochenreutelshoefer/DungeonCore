@@ -1,6 +1,7 @@
 package de.jdungeon.asset;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -14,7 +15,9 @@ public class AssetFonts {
 	public static final String FONT_FILE = "font/arial-15.fnt";
 	public static final float FONT_SIZE_NORMAL = 1f;
 	public static final float FONT_SIZE_SMALL = 0.75f;
+	public static final float FONT_SIZE_SMALLER = 0.5f;
 	public final BitmapFont defaultSmallFlipped;
+	public final BitmapFont hit;
 	public final BitmapFont defaultNormalFlipped;
 	public final BitmapFont defaultBigFlipped;
 
@@ -45,6 +48,12 @@ public class AssetFonts {
 		defaultSmallFlipped = new BitmapFont(Gdx.files.internal(FONT_FILE), true);
 		defaultSmallFlipped.getData().setScale(FONT_SIZE_SMALL);
 		setFilter(defaultSmallFlipped);
+
+
+		hit = new BitmapFont(Gdx.files.internal(FONT_FILE), true);
+		hit.getData().setScale(FONT_SIZE_SMALLER);
+		setFilter(hit);
+		hit.setColor(Color.RED);
 
 		defaultSmall = new BitmapFont(Gdx.files.internal(FONT_FILE), false);
 		defaultSmall.getData().setScale(FONT_SIZE_SMALL);

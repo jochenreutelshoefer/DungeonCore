@@ -135,8 +135,8 @@ public class DefaultAnimationTask implements AnimationTask {
 
 			// TODO: find better way to determine size of image (might differ in some cases..)
 			int imageSize = 96;
-			frame.setTextCoordinatesOffsetX(imageSize * 3 / 8);
-			frame.setTextCoordinatesOffsetY((imageSize / 5) - imageNr);
+			frame.setTextCoordinatesOffsetX(imageSize * 1 / 8);
+			frame.setTextCoordinatesOffsetY(imageSize * 1 / 12 - imageNr);
 			frame.setFrom(from);
 			frame.setTo(to);
 			return frame;

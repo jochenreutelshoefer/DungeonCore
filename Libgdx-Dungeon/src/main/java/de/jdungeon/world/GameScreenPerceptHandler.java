@@ -37,7 +37,6 @@ import figure.percept.WaitPercept;
 import game.PerceptHandler;
 import game.RoomInfoEntity;
 import graphics.JDImageProxy;
-import log.Log;
 import text.Statement;
 import text.StatementManager;
 
@@ -59,7 +58,6 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		this.figure = figure;
 		this.animationManager = animationManager;
 	}
-
 
 	@Override
 	public void tellPercept(Percept p) {
@@ -152,7 +150,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			handleFightEndedPercept((FightEndedPercept) p);
 		}
 		if (p instanceof FightBeginsPercept) {
-			handleFightBeginsPercept((FightBeginsPercept)p);
+			handleFightBeginsPercept((FightBeginsPercept) p);
 		}
 	}
 
@@ -206,7 +204,6 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (set != null) {
 			startAnimation(set, user, p);
 		}
-
 	}
 
 	private void handleTakePercept(TakePercept p) {
@@ -226,7 +223,6 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
 		newStatement(StatementManager.getStatement(p, this.figure));
-
 	}
 
 	private void handleStepPercept(StepPercept p) {
@@ -234,9 +230,8 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
 
 		if (set != null) {
-			startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()),"", false, true, false, p , null);
+			startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()), "", false, true, false, p, null);
 		}
-
 	}
 
 	private void handleSpellPercept(SpellPercept p) {
@@ -246,7 +241,6 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (set != null) {
 			startAnimation(set, user, p);
 		}
-
 	}
 
 	private void handleScoutPercept(ScoutPercept p) {
@@ -254,9 +248,8 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
 
 		if (set != null) {
-			startAnimation(set, user,  p);
+			startAnimation(set, user, p);
 		}
-
 	}
 
 	private void handleMovePercept(MovePercept p) {
@@ -264,9 +257,9 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		RoomInfo info = fig.getRoomInfo();
 		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
 
-		if(fig.equals(this.figure)) {
+		if (fig.equals(this.figure)) {
 			// we reset the selected room, as hero has moved on
-			screen.getFocusManager().setWorldFocusObject((RoomInfoEntity)null);
+			screen.getFocusManager().setWorldFocusObject((RoomInfoEntity) null);
 		}
 
 		if (set != null) {
@@ -274,7 +267,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			animationManager.clearFigure(fig);
 
 			// start "walk in" animation
-			startAnimation(set, fig,  p);
+			startAnimation(set, fig, p);
 		}
 
 		if (!fig.equals(this.figure)
@@ -296,24 +289,24 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, String text, boolean delayed, boolean urgent, boolean postDelay, OpticalPercept percept, JDImageProxy delayImage) {
 		Position.Pos pos = Position.Pos.fromValue(figure.getPositionInRoomIndex());
-		startAnimation(ani, figure, pos, pos,  text, delayed, urgent, postDelay, percept, delayImage);
+		startAnimation(ani, figure, pos, pos, text, delayed, urgent, postDelay, percept, delayImage);
 	}
 
 	public void startAnimation(DefaultAnimationSet ani, FigureInfo figure, Position.Pos from, Position.Pos to, String text, boolean delayed, boolean urgent, boolean postDelay, OpticalPercept percept, JDImageProxy delayImage) {
 		DefaultAnimationTask task = new DefaultAnimationTask(ani, text, figure, from, to, percept);
 		task.setUrgent(urgent);
-		animationManager.startAnimation(task, figure,  delayed, postDelay, delayImage);
+		animationManager.startAnimation(task, figure, delayed, postDelay, delayImage);
 	}
 
 	private void handleDiePercept(DiePercept p) {
 		FigureInfo deadFigure = p.getFigure();
-		if(deadFigure.equals(this.figure)) {
+		if (deadFigure.equals(this.figure)) {
 			Music music = screen.getGame().getAudio().createMusic("music/" + "Dark_Times.mp3");
 			MusicManager.getInstance().playMusic(music);
 		}
 		// we reset highlighted entity if a selected figure was killed
-		if(deadFigure.equals(this.screen.getFocusManager().getWorldFocusObject())) {
-			this.screen.getFocusManager().setWorldFocusObject((RoomInfoEntity)null);
+		if (deadFigure.equals(this.screen.getFocusManager().getWorldFocusObject())) {
+			this.screen.getFocusManager().setWorldFocusObject((RoomInfoEntity) null);
 		}
 
 		newStatement(StatementManager.getStatement(p, figure));
@@ -326,9 +319,8 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 				text = "-" + damage;
 			}
 			// should better be delay = true to show the figure falling AFTER the hit, but the figure is rendered as dead by the default render process...not so nice though
-			startAnimation(set, deadFigure, text, false, true, false, ((OpticalPercept)p), null);
+			startAnimation(set, deadFigure, text, false, true, false, ((OpticalPercept) p), null);
 		}
-
 	}
 
 	private void handleTumblingPercept(TumblingPercept p) {
@@ -337,7 +329,6 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 	private void handleMissPercept(MissPercept p) {
 		newStatement(StatementManager.getStatement(p, figure));
-
 	}
 
 	private void handleItemDroppedPercept(ItemDroppedPercept p) {
@@ -347,12 +338,10 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (set != null) {
 			startAnimation(set, user, p);
 		}
-
 	}
 
 	private void handleShieldBlockPercept(ShieldBlockPercept p) {
 		newStatement(StatementManager.getStatement(p, figure));
-
 	}
 
 	private void handleBreakSpellPercept(BreakSpellPercept p) {
@@ -405,11 +394,9 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		DefaultAnimationSet set = AnimationUtils.getFigure_slays(fig);
 
 		if (set != null) {
-			startAnimation(set, fig, p.getFromPos(), Position.Pos.fromValue(fig.getPositionInRoomIndex()),  null, false, false, false, p, null);
+			startAnimation(set, fig, p.getFromPos(), Position.Pos.fromValue(fig.getPositionInRoomIndex()), null, false, false, false, p, null);
 		}
 	}
-
-
 
 	public void newStatement(Statement s) {
 		screen.getGuiRenderer().newStatement(s);
