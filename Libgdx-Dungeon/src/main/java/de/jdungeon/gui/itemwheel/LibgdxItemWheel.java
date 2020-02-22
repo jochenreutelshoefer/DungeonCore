@@ -387,7 +387,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 					drawActivityLarge(batch, x, y, activity);
 				}
 				else {
-					drawActivity(batch, x, y, activity);
+					drawActivityAbsolute(batch, x, y, activity);
 				}
 			}
 		}

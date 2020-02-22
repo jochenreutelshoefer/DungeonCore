@@ -44,10 +44,10 @@ import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 public class ActionAssembler implements EventListener {
 
 	private final FigureInfo figure;
+
 	private final JDGUI gui;
 	private Action lastAction;
 	private int repeatActionCounter;
-
 	private final ActionAssemblerHelper actionAssembler;
 
 	public ActionAssembler(FigureInfo figure, JDGUI gui) {
@@ -69,6 +69,10 @@ public class ActionAssembler implements EventListener {
 				}
 			}
 		}
+	}
+
+	public FigureInfo getFigure() {
+		return figure;
 	}
 
 	/**

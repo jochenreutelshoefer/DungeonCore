@@ -1,19 +1,11 @@
 package de.jdungeon.gui.thumb;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
-import de.jdungeon.app.gui.SubGUIElement;
-import de.jdungeon.app.gui.activity.ActivityPresenter;
 import de.jdungeon.app.gui.activity.ExecutableActivity;
-import de.jdungeon.asset.Assets;
-import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.Input;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 
 /**
@@ -35,20 +27,23 @@ public class LibgdxActivityGUIElement extends LibgdxSubGUIElement {
 
 	@Override
 	public void paint(SpriteBatch batch) {
+
+		/*
+
 		if(itemBg != null) {
+			parent.
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(itemBg, Assets.instance.getGuiAtlas());
 			batch.draw(atlasRegion, getX(), getY(), this.getDimension().getWidth(), this.getDimension().getHeight());
 		}
 		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(activityImage, Assets.instance.getGuiAtlas());
 		batch.draw(atlasRegion, getX(), getY(), this.getDimension().getWidth(), this.getDimension().getHeight());
-
+		*/
 	}
 
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
 		// do nothing
 	}
-
 
 	@Override
 	public boolean isVisible() {
@@ -60,5 +55,4 @@ public class LibgdxActivityGUIElement extends LibgdxSubGUIElement {
 		activity.execute();
 		return true;
 	}
-
 }

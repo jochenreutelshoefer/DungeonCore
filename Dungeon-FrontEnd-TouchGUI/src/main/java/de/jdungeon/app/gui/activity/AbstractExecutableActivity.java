@@ -1,5 +1,6 @@
 package de.jdungeon.app.gui.activity;
 
+import figure.action.result.ActionResult;
 import gui.Paragraph;
 import gui.Paragraphable;
 
@@ -19,5 +20,11 @@ public abstract class AbstractExecutableActivity implements ExecutableActivity {
 			p[1] = new Paragraph("Kosten: 0");
 			return p;
 		}
+	}
+
+	@Override
+	public ActionResult possible() {
+		if(this.isCurrentlyPossible()) return ActionResult.POSSIBLE;
+		return ActionResult.INVALID;
 	}
 }

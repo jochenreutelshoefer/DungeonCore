@@ -27,10 +27,10 @@ public abstract class LibgdxItemActivityItemProvider implements LibgdxActivityPr
 	private final Map<Class, String> imageCache = new HashMap<>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public LibgdxItemActivityItemProvider(ItemInfoOwner info, Game game, ActionAssembler guiControl) {
+	public LibgdxItemActivityItemProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, ActionAssembler guiControl) {
 		this.info = info;
 		this.guiControl = guiControl;
-		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+		this.inventoryImageManager = inventoryImageManager;
 	}
 
 	@Override

@@ -38,8 +38,4 @@ public class ExecutableTakeItemActivity extends AbstractExecutableActivity {
 		return item;
 	}
 
-	@Override
-	public RoomInfoEntity getTarget() {
-		return null;
-	}
 }

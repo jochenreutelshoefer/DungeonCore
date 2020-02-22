@@ -24,15 +24,16 @@ import de.jdungeon.game.Image;
  * @created 09.02.20.
  */
 public abstract class LigbgdxItemActivityProvider implements LibgdxActivityProvider {
+
 	private final ItemInfoOwner info;
 	private final ActionAssembler guiControl;
 	private final Map<Class, String> imageCache = new HashMap<>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public LigbgdxItemActivityProvider(ItemInfoOwner info, Game game, ActionAssembler guiControl) {
+	public LigbgdxItemActivityProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, ActionAssembler guiControl) {
 		this.info = info;
 		this.guiControl = guiControl;
-		inventoryImageManager = new InventoryImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+		this.inventoryImageManager = inventoryImageManager;
 	}
 
 	@Override

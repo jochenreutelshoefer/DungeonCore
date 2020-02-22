@@ -7,9 +7,7 @@ import util.JDDimension;
 
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.screen.StandardScreen;
 import de.jdungeon.asset.Assets;
-import de.jdungeon.game.Game;
 import de.jdungeon.ui.LibgdxContainerGUIElement;
 
 /**
@@ -127,7 +125,12 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 				doubleImageHeight * 3 / 4);
 	}
 
-	public void drawActivity(SpriteBatch batch, int x, int y, Activity activity) {
+	public void drawActivityRelative(SpriteBatch batch, int x, int y, Activity activity) {
+		drawActivityAbsolute(batch, x + this.getPositionOnScreen().getX(), y + this.getPositionOnScreen()
+				.getY(), activity);
+	}
+
+	public void drawActivityAbsolute(SpriteBatch batch, int x, int y, Activity activity) {
 		String im = provider.getActivityImage(activity);
 
 		int posX = x;
@@ -154,7 +157,7 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 				defaultImageHeight * 3 / 4);
 	}
 
-	protected void drawActivityBackground(SpriteBatch batch, int xMinusDefaultWidthHalf, int yMinusDefaultHeightHalf) {
+	public void drawActivityBackground(SpriteBatch batch, int xMinusDefaultWidthHalf, int yMinusDefaultHeightHalf) {
 		if (itemBackgroundImage != null) {
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(itemBackgroundImage, Assets.instance.getGuiAtlas());
 			batch.draw(atlasRegion,
@@ -165,7 +168,7 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 		}
 	}
 
-	protected void drawActivityBackgroundLarge(SpriteBatch batch, int yMinusDefaultHeight, int xMinusDefaultWidth) {
+	public void drawActivityBackgroundLarge(SpriteBatch batch, int yMinusDefaultHeight, int xMinusDefaultWidth) {
 		if (itemBackgroundImage != null) {
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(itemBackgroundImage, Assets.instance.getGuiAtlas());
 			batch.draw(atlasRegion,

@@ -4,6 +4,7 @@ import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
 
+@Deprecated
 public class DefaultActivity implements Activity {
 
 	private final Object object;
@@ -26,7 +27,6 @@ public class DefaultActivity implements Activity {
 		return object;
 	}
 
-	@Override
 	public RoomInfoEntity getTarget() {
 		return target;
 	}

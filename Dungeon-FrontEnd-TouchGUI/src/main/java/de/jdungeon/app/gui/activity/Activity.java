@@ -11,6 +11,4 @@ public interface Activity extends Paragraphable {
 
 	Object getObject();
 
-	RoomInfoEntity getTarget();
-
 }

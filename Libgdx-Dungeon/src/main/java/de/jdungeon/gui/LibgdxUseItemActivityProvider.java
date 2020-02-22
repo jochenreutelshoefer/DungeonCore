@@ -9,6 +9,7 @@ import item.ItemInfo;
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.FocusManager;
+import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.smartcontrol.ExecutableUseItemActivity;
 import de.jdungeon.game.Game;
@@ -22,8 +23,8 @@ public class LibgdxUseItemActivityProvider extends LibgdxItemActivityItemProvide
 	private final ActionAssembler actionAssembler;
 	private final LibgdxFocusManager focusManager;
 
-	public LibgdxUseItemActivityProvider(ItemInfoOwner info, Game game, ActionAssembler actionAssembler, LibgdxFocusManager focusManager) {
-		super(info, game, actionAssembler);
+	public LibgdxUseItemActivityProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, ActionAssembler actionAssembler, LibgdxFocusManager focusManager) {
+		super(info, inventoryImageManager, actionAssembler);
 		this.info = info;
 		this.actionAssembler = actionAssembler;
 		this.focusManager = focusManager;

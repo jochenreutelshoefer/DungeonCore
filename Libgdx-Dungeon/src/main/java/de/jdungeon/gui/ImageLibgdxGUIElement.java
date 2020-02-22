@@ -7,11 +7,7 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.asset.Assets;
-import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
 import de.jdungeon.ui.AbstractLibgdxGUIElement;
-import de.jdungeon.ui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

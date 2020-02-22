@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Disposable;
 import dungeon.JDPoint;
+import event.EventManager;
 import figure.hero.HeroInfo;
 import graphics.ImageManager;
 import text.Statement;
@@ -24,14 +25,17 @@ import de.jdungeon.app.gui.GameOverView;
 import de.jdungeon.app.gui.HealthBar;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.TextPerceptView;
+import de.jdungeon.app.gui.smartcontrol.UIFeedback;
+import de.jdungeon.app.screen.InfoMessagePopupEvent;
 import de.jdungeon.asset.AssetFonts;
-import de.jdungeon.game.Image;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
 import de.jdungeon.gui.LibgdxInfoPanel;
+import de.jdungeon.gui.LibgdxSkillActivityProvider;
 import de.jdungeon.gui.LibgdxUseItemActivityProvider;
+import de.jdungeon.gui.LibgdxUseSkillPresenter;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
@@ -58,15 +62,18 @@ public class GUIRenderer implements Disposable {
 	private LibgdxInfoPanel infoPanel;
 	private TextPerceptView textView;
 
-	private LibgdxFocusManager focusManager;
+	private final LibgdxFocusManager focusManager;
 
 	protected final List<GUIElement> guiElements = new ArrayList<>();
 	protected final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
 
-	private GUIImageManager guiImageManager;
 	private GameOverView gameOverView;
 	private GLProfiler glProfiler;
 	private LibgdxItemWheel itemWheelHeroItems;
+	private UIFeedback message;
+
+	private GUIImageManager guiImageManager;
+	private InventoryImageManager inventoryImageManager;
 
 	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure, LibgdxFocusManager focusManager) {
 		this.inputController = inputController;
@@ -85,6 +92,8 @@ public class GUIRenderer implements Disposable {
 
 	private void init() {
 		guiImageManager = new GUIImageManager(game.getFileIO().getImageLoader());
+		inventoryImageManager = new InventoryImageManager(guiImageManager);
+
 		batch = new SpriteBatch();
 		shapeRenderer.setAutoShapeType(true); // TODO: research and refactor w.r.t. ShapeTypes
 
@@ -122,7 +131,7 @@ public class GUIRenderer implements Disposable {
 		JDPoint dustBarPosition = new JDPoint(posX, 25);
 		HealthBar dustView = new HealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust, this.game);
 		this.guiElements.add(dustView);
-*/
+		*/
 
 		int posX = 22;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
@@ -164,11 +173,11 @@ public class GUIRenderer implements Disposable {
 		 * init smart thumb control
 		 */
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
-		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - SMART_CONTROL_SIZE, screenSize.getHeight() / 2 + 70 - SMART_CONTROL_SIZE / 2);
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - SMART_CONTROL_SIZE, screenSize.getHeight() / 2 + 50 - SMART_CONTROL_SIZE / 2);
 		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
 		smartControl = new SmartControlPanel(
 				smartControlRoomPanelPosition,
-				smartControlRoomPanelSize, game, figure, inputController
+				smartControlRoomPanelSize, guiImageManager, figure, inputController
 				.getPlayerController().getActionAssembler());
 		this.libgdxGuiElements.add(smartControl);
 
@@ -184,7 +193,9 @@ public class GUIRenderer implements Disposable {
 		int wheelSize = 350;
 		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
 		double wheelCenterY = screenHeight + wheelSize / 2 + 120;
-		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, game, inputController.getPlayerController().getActionAssembler(), focusManager);
+		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController
+				.getPlayerController()
+				.getActionAssembler(), focusManager);
 		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(50, wheelCenterY),
 				itemWheelSize,
 				figure,
@@ -195,21 +206,26 @@ public class GUIRenderer implements Disposable {
 		);
 		this.libgdxGuiElements.add(itemWheelHeroItems);
 
+
+
 		/*
-		int screenWidth = Gdx.app.getGraphics().getWidth();
-		int screenHeight = Gdx.app.getGraphics().getHeight();
+		 * Init use skill panel below smart control
+		 */
+
+		//int screenWidth = Gdx.app.getGraphics().getWidth();
+		//int screenHeight = Gdx.app.getGraphics().getHeight();
 		int screenWidthBy2 = screenWidth / 2;
 		int itemPresenterHeight = 100;
-		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, game, inputController.getPlayerController().getActionAssembler(), focusManager);
-		LibgdxUseItemPresenter itemWheelHeroItems = new LibgdxUseItemPresenter(
-				new JDPoint(0, screenHeight - itemPresenterHeight),
+		LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(figure, inputController.getPlayerController()
+				.getActionAssembler(), focusManager, this);
+		LibgdxUseSkillPresenter skillPresenter = new LibgdxUseSkillPresenter(
+				new JDPoint(screenWidth / 2, screenHeight - itemPresenterHeight - 15),
 				new JDDimension(screenWidthBy2, itemPresenterHeight),
-				game,
-				useItemActivityProvider,
+				skillActivityProvider,
 				ImageManager.inventory_box_normal.getFilenameBlank()
 		);
-		this.libgdxGuiElements.add(itemWheelHeroItems);
-		*/
+		this.libgdxGuiElements.add(skillPresenter);
+
 
 		/*
 		 * init game over view
@@ -226,7 +242,6 @@ public class GUIRenderer implements Disposable {
 
 		*/
 	}
-
 
 	public void render() {
 		renderGUIElements();
@@ -293,7 +308,6 @@ public class GUIRenderer implements Disposable {
 		batch.end();
 	}
 
-
 	private void renderFPSCounter() {
 		float x = cameraGUI.viewportWidth - 55;
 		float y = cameraGUI.viewportHeight - 15;
@@ -311,10 +325,8 @@ public class GUIRenderer implements Disposable {
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1); //white
 
-
-
-		if(glProfiler != null) {
-			fpsFont.draw(batch, "GL draw calls:" +glProfiler.getDrawCalls(), cameraGUI.viewportWidth - 200, y);
+		if (glProfiler != null) {
+			fpsFont.draw(batch, "GL draw calls:" + glProfiler.getDrawCalls(), cameraGUI.viewportWidth - 200, y);
 		}
 	}
 
@@ -333,6 +345,25 @@ public class GUIRenderer implements Disposable {
 
 	public void update(float deltaTime) {
 		updateGUIElements(deltaTime);
+
+		if (getMessage() != null) {
+			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(getMessage().getMessage()));
+			// TODO: test
+			// should animate red enemy blobs if there are multiple and no enemy is selected
+			smartControl.animateEnemyBlobs();
+		}
+	}
+
+	public UIFeedback getMessage() {
+		return message;
+	}
+
+	private void clearMessage() {
+		message = null;
+	}
+
+	public void setMessage(UIFeedback message) {
+		this.message = message;
 	}
 
 	public void newStatement(Statement s) {
@@ -343,5 +374,9 @@ public class GUIRenderer implements Disposable {
 
 	public void setGLProfiler(GLProfiler glProfiler) {
 		this.glProfiler = glProfiler;
+	}
+
+	public GUIImageManager getGUIImageManager() {
+		return guiImageManager;
 	}
 }

@@ -6,13 +6,17 @@
  */
 package spell;
 
+import dungeon.util.InfoUnitUnwrapper;
 import figure.DungeonVisibilityMap;
+import figure.Figure;
 import figure.FigureInfo;
+import figure.action.result.ActionResult;
 import figure.memory.MemoryObject;
 import game.InfoEntity;
 import gui.Paragraph;
+import item.ItemInfo;
 
-public class SpellInfo extends InfoEntity{
+public class SpellInfo extends InfoEntity {
 	
 	private final Spell spell;
 	public SpellInfo(Spell s, DungeonVisibilityMap map) {
@@ -49,6 +53,11 @@ public class SpellInfo extends InfoEntity{
 
 		return !(spell != null ? !spell.equals(spellInfo.spell) : spellInfo.spell != null);
 
+	}
+
+	public ActionResult isCurrentlyPossible(FigureInfo actor, InfoEntity target) {
+		InfoUnitUnwrapper unwrapper = new InfoUnitUnwrapper(map.getDungeon());
+		return spell.fire((Figure)unwrapper.unwrappObject(actor), unwrapper.unwrappObject(target), false);
 	}
 
 	@Override

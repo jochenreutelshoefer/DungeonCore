@@ -271,12 +271,6 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 		}
 
 		@Override
-		public RoomInfoEntity getTarget() {
-			// TODO
-			return null;
-		}
-
-		@Override
 		public void execute() {
 			guiControl.scoutingActivity(figure.getRoomInfo().getDoor(direction));
 		}

@@ -87,7 +87,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			activityCache.add(new AbstractExecutableActivity() {
 				@Override
 				public void execute() {
-					guiControl.scoutingActivity(getTarget());
+					guiControl.scoutingActivity(focusManager.getWorldFocusObject());
 				}
 
 				@Override
@@ -98,11 +98,6 @@ public class SkillActivityProvider implements ActivityProvider {
 				@Override
 				public Object getObject() {
 					return SCOUT;
-				}
-
-				@Override
-				public RoomInfoEntity getTarget() {
-					return focusManager.getWorldFocusObject();
 				}
 
 			});
