@@ -12,6 +12,7 @@ import figure.hero.HeroInfo;
 import game.InfoEntity;
 import game.RoomInfoEntity;
 import spell.AbstractSpell;
+import spell.Raid;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -56,7 +57,7 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		this.info = info;
 		this.actionAssembler = actionAssembler;
 		this.focusManager = focusManager;
-		updateActivityList(false);
+		updateActivityList();
 
 		attack = new AttackActivity(focusManager, actionAssembler, guiRenderer);
 		flee = new FleeActivity(actionAssembler);
@@ -64,26 +65,17 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
 	@Override
 	public List<Activity> getActivities() {
-		Boolean currentFightstate = info.getRoomInfo().fightRunning();
-		if (currentFightstate != null && currentFightstate == fightState) {
-			return activityCache;
-		}
-		if (currentFightstate == null) {
-			fightState = false;
-		}
-		else {
-			fightState = currentFightstate;
-		}
-		updateActivityList(fightState);
+
+		updateActivityList();
+		// TODO: (when) do we need to update the list?
+
 		return activityCache;
 	}
 
-	private void updateActivityList(final Boolean currentFightState) {
+	private void updateActivityList() {
 		activityCache.clear();
-		if (currentFightState != null && currentFightState) {
-			activityCache.add(attack);
-			activityCache.add(flee);
-		}
+		activityCache.add(attack);
+		activityCache.add(flee);
 
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
@@ -93,6 +85,7 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
 	@Override
 	public String getActivityImage(Activity a) {
+		if(a  == null) return null;
 		if (skillImageMap.containsKey(a.getClass())) {
 			return skillImageMap.get(a.getClass());
 		}
@@ -121,12 +114,6 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 			return;
 		}
 
-	}
-
-	@Override
-	public boolean isCurrentlyPossible(Activity infoEntity) {
-		// TODO : implement
-		return true;
 	}
 
 }

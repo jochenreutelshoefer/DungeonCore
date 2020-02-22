@@ -52,9 +52,5 @@ public class LibgdxUseItemActivityProvider extends LibgdxItemActivityItemProvide
 				focusManager.getWorldFocusObject());
 	}
 
-	@Override
-	public boolean isCurrentlyPossible(Activity infoEntity) {
-		return true;
-	}
 
 }

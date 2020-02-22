@@ -269,7 +269,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 
 
-	private static StepAction getStepActionToDoor(FigureInfo monster) {
+	public static StepAction getStepActionToDoor(FigureInfo monster) {
 		DoorStep[] stepsA = getDoorSteps(monster);
 		if (stepsA.length > 0) {
 

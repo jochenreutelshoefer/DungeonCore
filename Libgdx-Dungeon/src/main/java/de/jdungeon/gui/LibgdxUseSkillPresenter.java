@@ -2,13 +2,9 @@ package de.jdungeon.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dungeon.JDPoint;
 import event.Event;
 import event.EventListener;
@@ -18,7 +14,6 @@ import util.JDDimension;
 import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.activity.ExecutableActivity;
 import de.jdungeon.gui.thumb.LibgdxActivityGUIElement;
-import de.jdungeon.ui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -26,30 +21,29 @@ import de.jdungeon.ui.LibgdxGUIElement;
  */
 public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements EventListener {
 
-	private static final int defaultImageWidth = 50;
+	private static final int defaultImageWidth = 60;
 	private final List<LibgdxActivityGUIElement> activities = new ArrayList<>();
-	private final Map<Activity, LibgdxActivityGUIElement> activityMap = new HashMap<>();
-	private final JDPoint[] itemTilePositions = new JDPoint[5];
+	private static final int NUMBER_OF_SLOTS = 6;
+	private final JDPoint[] relativeItemTilePositions = new JDPoint[NUMBER_OF_SLOTS];
 	private final JDDimension tileDimension;
 	private final String imageBg;
+	private final String imageInactiveBg;
 
-	public LibgdxUseSkillPresenter(JDPoint point, JDDimension dimension, LibgdxActivityProvider useItemActivityProvider, String imageBg) {
-		super(point, dimension, useItemActivityProvider, imageBg, defaultImageWidth);
+	public LibgdxUseSkillPresenter(JDPoint presenterPos, JDDimension dimension, LibgdxActivityProvider useItemActivityProvider, String imageBg, String imageInactiveBg) {
+		super(presenterPos, dimension, useItemActivityProvider, imageBg, defaultImageWidth);
 		this.imageBg = imageBg;
+		this.imageInactiveBg = imageInactiveBg;
 
 		tileDimension = new JDDimension(defaultImageWidth, defaultImageWidth);
 
-		int screenWidth = Gdx.app.getGraphics().getWidth();
 
 		JDDimension parentDim = getDimension();
 		int posY = parentDim.getHeight() * 2 / 3;
 		// parent X and parent Y are not required here, as we have relative coordinates (this is calculated in the SubGUIElement)
-		int widht = parentDim.getWidth();
-		itemTilePositions[0] = new JDPoint(widht - widht * 1 / 5, posY);
-		itemTilePositions[1] = new JDPoint(widht - widht * 2 / 5, posY);
-		itemTilePositions[2] = new JDPoint(widht - widht * 3 / 5, posY);
-		itemTilePositions[3] = new JDPoint(widht - widht * 4 / 5, posY);
-		itemTilePositions[4] = new JDPoint(widht - widht * 5 / 5, posY);
+		int width = parentDim.getWidth();
+		for(int i = 0; i < NUMBER_OF_SLOTS; i++) {
+			relativeItemTilePositions[i] = new JDPoint(presenterPos.getX() + width - width * (i+1) / NUMBER_OF_SLOTS, presenterPos.getY() + posY);
+		}
 
 	}
 
@@ -65,14 +59,7 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 
 	@Override
 	public void highlightEntity(Object object) {
-		Activity objectActivity = getObjectActivity(object);
-		if (objectActivity != null) {
-			centerOnIndex(objectActivity);
-		}
-	}
-
-	private Activity getObjectActivity(Object object) {
-		return null;
+		// do nothing
 	}
 
 	@Override
@@ -85,6 +72,7 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 
 	}
 
+	/*
 	@Override
 	public void paint(SpriteBatch batch) {
 		for(Map.Entry<Activity, LibgdxActivityGUIElement> entry : activityMap.entrySet()) {
@@ -92,6 +80,7 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 			drawActivityRelative(batch, positionOnScreen.getX(), positionOnScreen.getY(), entry.getKey());
 		}
 	}
+	*/
 
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {
@@ -113,11 +102,10 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 		List<Activity> newActivities = provider.getActivities();
 		int tileIndex = 0;
 		for (Activity activity : newActivities) {
-			if (tileIndex < this.itemTilePositions.length) {
+			if (tileIndex < this.relativeItemTilePositions.length) {
 				String activityImage = this.provider.getActivityImage(activity);
-				LibgdxActivityGUIElement libgdxActivityGUIElement = new LibgdxActivityGUIElement(itemTilePositions[tileIndex], tileDimension, this, (ExecutableActivity) activity, activityImage, imageBg);
+				LibgdxActivityGUIElement libgdxActivityGUIElement = new LibgdxActivityGUIElement(relativeItemTilePositions[tileIndex], tileDimension,  (ExecutableActivity) activity, activityImage, imageBg, imageInactiveBg);
 				activities.add(libgdxActivityGUIElement);
-				activityMap.put(activity, libgdxActivityGUIElement);
 			}
 			tileIndex++;
 		}

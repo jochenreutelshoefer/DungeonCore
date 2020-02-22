@@ -19,7 +19,7 @@ public class AtlasGenerator {
 	static final String TARGET_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/packs/";
 
 	public static void main (String[] args) throws Exception {
-		String atlasName = Assets.DUNGEON_ATLAS;
+		String atlasName = Assets.GUI_ATLAS;
 		//String atlasName = "all";
 		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/"+atlasName; //animation/
 

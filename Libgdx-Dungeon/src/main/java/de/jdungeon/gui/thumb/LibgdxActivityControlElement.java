@@ -9,7 +9,7 @@ import util.JDDimension;
 
 import de.jdungeon.app.gui.activity.ExecutableActivity;
 import de.jdungeon.asset.Assets;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

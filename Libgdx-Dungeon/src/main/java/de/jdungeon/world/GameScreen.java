@@ -31,7 +31,7 @@ import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.gui.LibgdxFocusManager;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.util.Pair;
 
 import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;

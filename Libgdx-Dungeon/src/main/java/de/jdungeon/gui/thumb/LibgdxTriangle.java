@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 
-import de.jdungeon.app.gui.GUIElement;
-import de.jdungeon.app.gui.smartcontrol.Drawable;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

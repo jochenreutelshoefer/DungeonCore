@@ -6,324 +6,387 @@ filter: Nearest,Nearest
 repeat: none
 Book
   rotate: false
-  xy: 1976, 1982
+  xy: 1462, 960
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ManaBattery
   rotate: false
-  xy: 2, 846
+  xy: 2, 845
   size: 1200, 1200
   orig: 1200, 1200
   offset: 0, 0
   index: -1
 Parchment
   rotate: false
-  xy: 1456, 1056
+  xy: 1462, 894
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Potion
   rotate: false
-  xy: 512, 64
+  xy: 1675, 1055
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Scroll
   rotate: false
-  xy: 2, 3
+  xy: 2, 2
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 Treasure-valuable-wealth-asset_3-512
   rotate: false
-  xy: 566, 563
+  xy: 566, 562
   size: 472, 281
   orig: 472, 281
   offset: 0, 0
   index: -1
 Zauberstaub
   rotate: false
-  xy: 1204, 1276
+  xy: 1204, 1275
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 border_double_bottom
   rotate: false
-  xy: 1219, 568
+  xy: 1219, 546
   size: 72, 20
   orig: 72, 20
   offset: 0, 0
   index: -1
 border_double_left
   rotate: false
-  xy: 708, 189
+  xy: 2020, 1867
   size: 20, 54
   orig: 20, 54
   offset: 0, 0
   index: -1
 border_double_left_lower_corner
   rotate: false
-  xy: 1670, 1260
+  xy: 1670, 1259
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_left_upper_corner
   rotate: false
-  xy: 1456, 1034
+  xy: 1462, 872
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_right
   rotate: false
-  xy: 578, 73
+  xy: 1591, 935
   size: 20, 55
   orig: 20, 55
   offset: 0, 0
   index: -1
 border_double_right_lower_corner
   rotate: false
-  xy: 1293, 568
+  xy: 1528, 1004
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_right_upper_corner
   rotate: false
-  xy: 1596, 1100
+  xy: 2020, 1845
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_top
   rotate: false
-  xy: 1522, 1100
+  xy: 1293, 546
   size: 72, 20
   orig: 72, 20
   offset: 0, 0
   index: -1
 boxHover
   rotate: false
-  xy: 1219, 590
+  xy: 1219, 589
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 boxNormal
   rotate: false
-  xy: 1456, 1122
+  xy: 1456, 1121
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+boxNormalBW
+  rotate: false
+  xy: 1586, 1121
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 boxSelect
   rotate: false
-  xy: 1586, 1122
+  xy: 512, 114
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 brown-trunk-open
   rotate: false
-  xy: 2, 261
+  xy: 2, 260
   size: 562, 583
   orig: 562, 583
   offset: 0, 0
   index: -1
 buckler
   rotate: false
-  xy: 512, 2
+  xy: 1668, 993
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: -1
 bunch2
   rotate: false
-  xy: 1204, 852
+  xy: 1204, 851
   size: 154, 170
   orig: 154, 170
   offset: 0, 0
   index: -1
 cancel_tp_outline
   rotate: false
-  xy: 642, 145
+  xy: 512, 17
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 cloth_chest1
   rotate: false
-  xy: 1976, 1897
+  xy: 1528, 895
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 cycle
   rotate: false
-  xy: 512, 130
+  xy: 642, 129
   size: 128, 113
   orig: 128, 113
   offset: 0, 0
   index: -1
 eye130x130
   rotate: false
-  xy: 1219, 720
+  xy: 1219, 719
   size: 130, 130
   orig: 130, 130
   offset: 0, 0
   index: -1
 foot_icon
   rotate: false
-  xy: 260, 9
+  xy: 260, 8
   size: 250, 250
   orig: 250, 250
   offset: 0, 0
   index: -1
 health_bar_empty
   rotate: false
-  xy: 566, 275
+  xy: 566, 274
   size: 206, 28
   orig: 206, 28
   offset: 0, 0
   index: -1
 health_bar_red
   rotate: false
-  xy: 566, 245
+  xy: 566, 244
   size: 206, 28
   orig: 206, 28
   offset: 0, 0
   index: -1
 health_bar_yellow
   rotate: false
-  xy: 1462, 1252
+  xy: 1462, 1251
   size: 206, 28
   orig: 206, 28
   offset: 0, 0
   index: -1
 heart_icon
   rotate: false
-  xy: 1204, 1024
+  xy: 1204, 1023
   size: 250, 250
   orig: 250, 250
   offset: 0, 0
   index: -1
 hour-glass-empty
   rotate: false
-  xy: 1040, 547
+  xy: 1040, 546
   size: 177, 297
   orig: 177, 297
   offset: 0, 0
   index: -1
 hour-glass-full
   rotate: false
-  xy: 824, 264
+  xy: 824, 263
   size: 177, 297
   orig: 177, 297
   offset: 0, 0
   index: -1
 hour-glass-half
   rotate: false
-  xy: 1003, 248
+  xy: 1003, 247
   size: 177, 297
   orig: 177, 297
   offset: 0, 0
   index: -1
 hour-glass-third
   rotate: false
-  xy: 1182, 248
+  xy: 1182, 247
   size: 177, 297
   orig: 177, 297
   offset: 0, 0
   index: -1
 icon_hammer2
   rotate: false
-  xy: 1522, 1066
+  xy: 546, 17
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 key
   rotate: false
-  xy: 774, 263
+  xy: 774, 262
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 lupe
   rotate: false
-  xy: 642, 179
+  xy: 1551, 992
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 mana-potion
   rotate: false
-  xy: 1718, 1790
+  xy: 1718, 1789
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 minus
   rotate: false
-  xy: 600, 96
+  xy: 580, 17
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 mondrune
   rotate: false
-  xy: 1360, 873
+  xy: 1360, 872
   size: 100, 149
   orig: 100, 149
   offset: 0, 0
   index: -1
 no_image
   rotate: false
-  xy: 1976, 1931
+  xy: 1617, 1007
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 paper_background
   rotate: false
-  xy: 1204, 1534
+  xy: 1204, 1533
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 plus
   rotate: false
-  xy: 730, 211
+  xy: 1562, 895
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sword_icon
   rotate: false
-  xy: 1462, 1282
+  xy: 1462, 1281
   size: 250, 250
   orig: 250, 250
   offset: 0, 0
   index: -1
 target_icon
   rotate: false
-  xy: 1718, 1538
+  xy: 1718, 1537
   size: 250, 250
   orig: 250, 250
   offset: 0, 0
   index: -1
 temple
   rotate: false
-  xy: 566, 305
+  xy: 566, 304
   size: 256, 256
   orig: 256, 256
+  offset: 0, 0
+  index: -1
+win-bg-innen
+  rotate: false
+  xy: 512, 51
+  size: 122, 61
+  orig: 122, 61
+  offset: 0, 0
+  index: -1
+win-bg-l
+  rotate: false
+  xy: 1976, 1923
+  size: 61, 122
+  orig: 61, 122
+  offset: 0, 0
+  index: -1
+win-bg-lu
+  rotate: false
+  xy: 1528, 929
+  size: 61, 61
+  orig: 61, 61
+  offset: 0, 0
+  index: -1
+win-bg-u
+  rotate: false
+  xy: 1551, 1058
+  size: 122, 61
+  orig: 122, 61
+  offset: 0, 0
+  index: -1
+win-border1
+  rotate: false
+  xy: 1976, 1794
+  size: 21, 127
+  orig: 21, 127
+  offset: 0, 0
+  index: -1
+win-border2-l
+  rotate: false
+  xy: 1999, 1836
+  size: 19, 85
+  orig: 19, 85
+  offset: 0, 0
+  index: -1
+win-border2-t
+  rotate: false
+  xy: 1219, 568
+  size: 85, 19
+  orig: 85, 19
+  offset: 0, 0
+  index: -1
+win-ecke
+  rotate: false
+  xy: 1456, 1026
+  size: 93, 93
+  orig: 93, 93
   offset: 0, 0
   index: -1
 

@@ -49,8 +49,4 @@ public class LibgdxTakeItemActivityProvider extends LibgdxItemActivityItemProvid
 		guiControl.plugAction(new TakeItemAction((ItemInfo) infoEntity.getObject()));
 	}
 
-	@Override
-	public boolean isCurrentlyPossible(Activity infoEntity) {
-		return true;
-	}
 }

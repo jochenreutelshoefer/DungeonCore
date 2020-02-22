@@ -563,6 +563,7 @@ public class ImageManager {
 	public static JDImageProxy<?> inventory_box_select;
 	public static JDImageProxy<?> inventory_box_hover;
 	public static JDImageProxy<?> inventory_box_normal;
+	public static JDImageProxy<?> inventory_box_normalInactive;
 
 	public static JDImageProxy<?> inventory_empty_helmet;
 	public static JDImageProxy<?> inventory_empty_armor;
@@ -934,6 +935,7 @@ public class ImageManager {
 			inventory_box_select = new JDImageProxy<>(a, "boxSelect.gif");
 			inventory_box_hover = new JDImageProxy<>(a, "boxHover.gif");
 			inventory_box_normal = new JDImageProxy<>(a, "boxNormal.gif");
+			inventory_box_normalInactive = new JDImageProxy<>(a, "boxNormalBW.gif");
 
 			inventory_empty_helmet = new JDImageProxy<>(a, "guiItems/helmet.gif");
 			inventory_empty_armor = new JDImageProxy<>(a, "guiItems/armor.gif");

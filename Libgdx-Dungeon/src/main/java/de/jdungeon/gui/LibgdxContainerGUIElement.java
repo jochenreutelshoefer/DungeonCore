@@ -1,4 +1,4 @@
-package de.jdungeon.ui;
+package de.jdungeon.gui;
 
 import java.util.List;
 
@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
-
-import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

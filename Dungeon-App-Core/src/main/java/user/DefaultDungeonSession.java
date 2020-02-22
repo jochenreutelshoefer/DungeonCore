@@ -21,6 +21,7 @@ import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
+import spell.Raid;
 import spell.Spell;
 import util.DeepCopyUtil;
 
@@ -183,6 +184,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		// we make a copy of this hero for potential restart after death
 		this.currentHero.clearVisibilityMaps();
 		//makeHeroBackup();
+
+		// todo: remove - for debug only
+		currentHero.getSpellbook().addSpell(new Raid());
 
 		DungeonGame dungeonGame = DungeonGame.getInstance();
 

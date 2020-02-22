@@ -42,8 +42,8 @@ import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.gui.LibgdxDrawUtils;
 import de.jdungeon.gui.LibgdxTakeItemActivityProvider;
 import de.jdungeon.gui.activity.ScoutActivity;
-import de.jdungeon.ui.LibgdxContainerGUIElement;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxContainerGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

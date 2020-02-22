@@ -16,9 +16,7 @@ import graphics.JDImageProxy;
 import util.JDDimension;
 
 import de.jdungeon.asset.Assets;
-import de.jdungeon.game.Game;
 import de.jdungeon.game.Image;
-import de.jdungeon.ui.AbstractLibgdxGUIElement;
 
 public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 

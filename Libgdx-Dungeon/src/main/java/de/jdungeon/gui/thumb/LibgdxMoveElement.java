@@ -9,8 +9,7 @@ import figure.FigureInfo;
 import util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.game.Input;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

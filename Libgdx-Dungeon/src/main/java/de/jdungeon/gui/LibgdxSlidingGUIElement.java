@@ -1,9 +1,7 @@
-package de.jdungeon.ui;
+package de.jdungeon.gui;
 
 import dungeon.JDPoint;
 import util.JDDimension;
-
-import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -57,7 +55,7 @@ public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
 		int x = position.getX();
 		int diffX = targetPos.getX() - position.getX();
 		if (slideStep >= 0) {
-			x = x + ((SLIDE_OUT_STEPS - slideStep) * diffX / SLIDE_OUT_STEPS);
+			x = x - ((SLIDE_OUT_STEPS - slideStep) * diffX / SLIDE_OUT_STEPS);
 		}
 		return x;
 	}

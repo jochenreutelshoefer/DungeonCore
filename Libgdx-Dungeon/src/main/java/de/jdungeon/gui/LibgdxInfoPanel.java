@@ -9,9 +9,11 @@ import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import graphics.ImageManager;
+import graphics.JDImageProxy;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
+import log.Log;
 import shrine.ShrineInfo;
 import util.JDColor;
 import util.JDDimension;
@@ -23,9 +25,7 @@ import de.jdungeon.app.gui.activity.DefaultActivity;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Color;
-import de.jdungeon.game.Game;
 import de.jdungeon.libgdx.LibgdxGraphics;
-import de.jdungeon.ui.LibgdxSlidingGUIElement;
 import de.jdungeon.util.PaintBuilder;
 
 /**
@@ -172,7 +172,12 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 			catch (NullPointerException e) {
 				return null;
 			}
-			return ImageManager.getImage((FigureInfo) content, RouteInstruction.Direction.South).getFilenameBlank();
+			JDImageProxy<?> image = ImageManager.getImage((FigureInfo) content, RouteInstruction.Direction.South);
+			if(image == null) {
+				Log.severe("Image was null for figure: "+ content + " dir: "+ RouteInstruction.Direction.South.name());
+				return null;
+			}
+			return image.getFilenameBlank();
 		}
 		if (content instanceof ItemInfo) {
 			String image = inventoryImageManager.getJDImage((ItemInfo) content).getFilenameBlank();

@@ -3,11 +3,8 @@ package de.jdungeon.gui.thumb;
 import dungeon.JDPoint;
 import util.JDDimension;
 
-import de.jdungeon.app.gui.AbstractGUIElement;
-import de.jdungeon.app.gui.GUIElement;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.ui.AbstractLibgdxGUIElement;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.AbstractLibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

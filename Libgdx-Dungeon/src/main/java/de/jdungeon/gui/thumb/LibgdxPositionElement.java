@@ -12,7 +12,7 @@ import util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

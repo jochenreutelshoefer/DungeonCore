@@ -5,7 +5,6 @@ package de.jdungeon.gui;
  * @created 07.02.20.
  */
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,8 +18,6 @@ import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Colors;
-import de.jdungeon.game.Game;
-import de.jdungeon.ui.AbstractLibgdxGUIElement;
 import de.jdungeon.util.PaintBuilder;
 
 public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {

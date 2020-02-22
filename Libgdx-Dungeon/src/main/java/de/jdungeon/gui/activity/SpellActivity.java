@@ -35,6 +35,13 @@ public class SpellActivity extends AbstractExecutableActivity {
 	@Override
 	public void execute() {
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
+		RoomInfoEntity target = findTarget(highlightedEntity, true);
+
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+		actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaSpell(spell, target));
+	}
+
+	private RoomInfoEntity findTarget(RoomInfoEntity highlightedEntity, boolean doIt) {
 		RoomInfoEntity target = null;
 		if (spell.needsTarget()) {
 			TargetScope targetScope = spell.getTargetScope();
@@ -44,7 +51,9 @@ public class SpellActivity extends AbstractExecutableActivity {
 				// something completely wrong for this spell is selected by the user in the gui
 				// we discard the selection and see whether auto target detection will work
 				// or otherwise the user will be informed
-				focusManager.setWorldFocusObject((RoomInfoEntity) null);
+				if(doIt) {
+					focusManager.setWorldFocusObject((RoomInfoEntity) null);
+				}
 			}
 			if (highlightedEntity != null) {
 				// some target selected
@@ -66,7 +75,9 @@ public class SpellActivity extends AbstractExecutableActivity {
 				// no target selected
 				if (targetEntitiesInScope.size() == 1) {
 					RoomInfoEntity targetEntity = targetEntitiesInScope.get(0);
-					focusManager.setWorldFocusObject(targetEntity);
+					if(doIt) {
+						focusManager.setWorldFocusObject(targetEntity);
+					}
 					target = targetEntity;
 				}
 			}
@@ -75,9 +86,7 @@ public class SpellActivity extends AbstractExecutableActivity {
 			// no target required
 			target = null;
 		}
-
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaSpell(spell, target));
+		return target;
 	}
 
 	private Set<Class<? extends InfoEntity>> getEntityClasses(List<? extends InfoEntity> targetEntitiesInScope) {
@@ -95,15 +104,10 @@ public class SpellActivity extends AbstractExecutableActivity {
 
 	@Override
 	public boolean isCurrentlyPossible() {
-		actionAssembler.getActionAssembler().wannaSpell(spell, focusManager.getWorldFocusObject());
+		RoomInfoEntity target = findTarget(focusManager.getWorldFocusObject(), false);
+		ActionResult currentlyPossible = spell.isCurrentlyPossible(actionAssembler.getFigure(), target);
 
-		ActionResult currentlyPossible = spell.isCurrentlyPossible(actionAssembler.getFigure(), focusManager.getWorldFocusObject());
-
-		Boolean fightRunning = actionAssembler.getFigure().getRoomInfo().fightRunning();
-		if(fightRunning != null && fightRunning) {
-			return spell.isFight();
-		}
-		return spell.isNormal();
+		return currentlyPossible == ActionResult.POSSIBLE;
 	}
 
 	@Override

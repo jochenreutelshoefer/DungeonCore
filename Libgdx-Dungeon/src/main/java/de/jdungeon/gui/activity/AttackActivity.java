@@ -1,8 +1,10 @@
 package de.jdungeon.gui.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import dungeon.RoomInfo;
 import figure.FigureInfo;
 import game.RoomInfoEntity;
 
@@ -52,7 +54,9 @@ public class AttackActivity extends AbstractExecutableActivity {
 	}
 
 	private List<FigureInfo> getHostileFiguresList() {
-		List<FigureInfo> figureInfos = guiControl.getFigure().getRoomInfo().getFigureInfos();
+		RoomInfo roomInfo = guiControl.getFigure().getRoomInfo();
+		if(roomInfo == null) return Collections.emptyList();
+		List<FigureInfo> figureInfos = roomInfo.getFigureInfos();
 		List<FigureInfo> hostileFigures = new ArrayList<>();
 		for (FigureInfo figureInfo : figureInfos) {
 			if (figureInfo.isHostile(guiControl.getFigure())) {
@@ -64,6 +68,7 @@ public class AttackActivity extends AbstractExecutableActivity {
 
 	@Override
 	public boolean isCurrentlyPossible() {
+		if(guiControl.getFigure() == null) return false;
 		if(getHostileFiguresList().isEmpty()) {
 			return false;
 		}

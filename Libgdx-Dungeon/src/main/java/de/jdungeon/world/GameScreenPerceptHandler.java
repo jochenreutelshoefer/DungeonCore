@@ -7,6 +7,7 @@ import animation.AnimationUtils;
 import animation.DefaultAnimationSet;
 import animation.DefaultAnimationTask;
 import audio.AudioEffectsManager;
+import com.badlogic.gdx.Gdx;
 import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
@@ -37,6 +38,7 @@ import figure.percept.WaitPercept;
 import game.PerceptHandler;
 import game.RoomInfoEntity;
 import graphics.JDImageProxy;
+import log.Log;
 import text.Statement;
 import text.StatementManager;
 
@@ -227,10 +229,14 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 	private void handleStepPercept(StepPercept p) {
 		FigureInfo fig = p.getFigure();
-		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
+		if(fig != null) {
+			DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
 
-		if (set != null) {
-			startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()), "", false, true, false, p, null);
+			if (set != null) {
+				startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()), "", false, true, false, p, null);
+			}
+		} else {
+			Log.severe("figure for StepPercept was null!");
 		}
 	}
 

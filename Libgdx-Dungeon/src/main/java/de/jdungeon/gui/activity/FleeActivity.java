@@ -1,7 +1,10 @@
 package de.jdungeon.gui.activity;
 
+import ai.DefaultMonsterIntelligence;
 import dungeon.PositionInRoomInfo;
+import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
+import figure.action.StepAction;
 import game.RoomInfoEntity;
 
 import de.jdungeon.app.ActionAssembler;
@@ -26,12 +29,25 @@ public class FleeActivity extends AbstractExecutableActivity {
 		if (possibleFleeDirection != null) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 			actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaFlee());
+		} else {
+			StepAction stepActionToDoor = DefaultMonsterIntelligence.getStepActionToDoor(actionAssembler.getFigure());
+			if(stepActionToDoor != null) {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+				actionAssembler.plugAction(stepActionToDoor);
+			} else {
+				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+			}
 		}
 	}
 
 	@Override
 	public boolean isCurrentlyPossible() {
-		return actionAssembler.getFigure().getPos().getPossibleFleeDirection() != null;
+		RoomInfo roomInfo = actionAssembler.getFigure().getRoomInfo();
+		if(roomInfo == null) return false;
+		PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
+		if(pos == null) return false;
+		Boolean fightRunning = roomInfo.fightRunning();
+		return fightRunning != null &&  fightRunning && (pos.getPossibleFleeDirection() != null || DefaultMonsterIntelligence.getStepActionToDoor(actionAssembler.getFigure()) != null);
 	}
 
 	@Override

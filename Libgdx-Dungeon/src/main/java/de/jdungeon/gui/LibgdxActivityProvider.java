@@ -16,6 +16,5 @@ public interface LibgdxActivityProvider {
 
 	void activityPressed(Activity infoEntity);
 
-	boolean isCurrentlyPossible(Activity infoEntity);
 
 }

@@ -7,7 +7,6 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.asset.Assets;
-import de.jdungeon.ui.AbstractLibgdxGUIElement;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -16,14 +15,20 @@ import de.jdungeon.ui.AbstractLibgdxGUIElement;
 public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 
 	private final String filename;
-	private final String backGround = null;
+	protected final String backGround;
 	private int relativeOffsetX = 0;
 	private int relativeOffsetY = 0;
 
 	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im) {
+		this(position, dimension, im, null);
+	}
+
+	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im, String bg) {
 		super(position, dimension);
 		this.filename = im;
+		this.backGround = bg;
 	}
+
 
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
@@ -42,17 +47,7 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 		int width = this.dimension.getWidth();
 		int height = this.dimension.getHeight();
 
-
-		// draw background
-		TextureAtlas.AtlasRegion backGroundRegion = null;
-		if(backGround != null) {
-			backGroundRegion = Assets.instance.getAtlasRegion(backGround, Assets.instance.getGuiAtlas());
-		}
-
-
-		if(backGroundRegion != null) {
-			batch.draw(backGroundRegion, x, y, width, height);
-		}
+		drawBackground(batch, x, y, width, height);
 
 		// actual image is drawn smaller within the background image
 		x = x + width / 8;
@@ -65,6 +60,22 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 		batch.draw(imageRegion,  x, y, width, height);
 
 
+	}
+
+	protected void drawBackground(SpriteBatch batch, int x, int y, int width, int height) {
+		// draw background
+		TextureAtlas.AtlasRegion backGroundRegion = null;
+		if(backGround != null) {
+			backGroundRegion = Assets.instance.getAtlasRegion(getBackgroundImage(), Assets.instance.getGuiAtlas());
+		}
+
+		if(backGroundRegion != null) {
+			batch.draw(backGroundRegion, x, y, width, height);
+		}
+	}
+
+	protected String getBackgroundImage() {
+		return backGround;
 	}
 
 	public void setRelativeOffsetY(int relativeOffsetY) {

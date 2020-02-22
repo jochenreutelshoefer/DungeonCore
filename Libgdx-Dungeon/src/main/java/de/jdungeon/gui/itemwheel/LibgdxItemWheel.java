@@ -17,7 +17,7 @@ import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 import de.jdungeon.gui.LibgdxActivityProvider;
-import de.jdungeon.ui.LibgdxGUIElement;
+import de.jdungeon.gui.LibgdxGUIElement;
 
 public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
