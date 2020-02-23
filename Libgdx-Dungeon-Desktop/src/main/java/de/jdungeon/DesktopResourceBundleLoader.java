@@ -18,6 +18,7 @@ public class DesktopResourceBundleLoader implements ResourceBundleLoader {
 
 	@Override
 	public ResourceBundle getBundle(String baseName, Locale locale, ClassLoader loader) {
-		return ResourceBundle.getBundle(baseName, locale, loader);
+		return ResourceBundle.getBundle(baseName, locale, loader, new UTF8Control());
+		//return ResourceBundle.getBundle(baseName, locale, loader);
 	}
 }

@@ -57,7 +57,9 @@ public class SpellInfo extends InfoEntity {
 
 	public ActionResult isCurrentlyPossible(FigureInfo actor, InfoEntity target) {
 		InfoUnitUnwrapper unwrapper = new InfoUnitUnwrapper(map.getDungeon());
-		return spell.fire((Figure)unwrapper.unwrappObject(actor), unwrapper.unwrappObject(target), false);
+		Figure figure = (Figure) unwrapper.unwrappObject(actor);
+		if(figure == null) return ActionResult.INVALID;
+		return spell.fire(figure, unwrapper.unwrappObject(target), false);
 	}
 
 	@Override

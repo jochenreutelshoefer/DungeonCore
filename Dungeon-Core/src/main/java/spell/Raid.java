@@ -83,7 +83,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 				RoomInfo neighbourRoom = actor.getRoomInfo().getNeighbourRoom(possibleRaidDirection);
 				RoomInfo actorRoom = actor.getRoomInfo();
 				DoorInfo door = actorRoom.getDoor(possibleRaidDirection);
-				if (neighbourRoom == null || !door.isPassable()) {
+				if (neighbourRoom == null || (door != null && !door.isPassable())) {
 					return Collections.emptyList();
 				}
 				return neighbourRoom.getFigureInfos();

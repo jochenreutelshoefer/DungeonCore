@@ -1,10 +1,13 @@
 package de.jdungeon.skillselection;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 import dungeon.JDPoint;
 import event.EventManager;
 import graphics.ImageManager;
@@ -39,6 +42,8 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 	private final PaintBuilder textPaint;
 	private final SkillImageManager imageManager;
 
+	GlyphLayout layout;
+
 	public LibgdxSkillSelectionTile(JDPoint position, JDDimension dimension, Game game, Spell skill) {
 		super(position, dimension);
 		this.skill = skill;
@@ -52,6 +57,8 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 		textPaint.setAlignment(Paint.Alignment.LEFT);
 
 		imageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+
+		layout = new GlyphLayout();
 
 	}
 
@@ -81,7 +88,7 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 
 		int iconSize = dimension.getWidth()/2;
 		int iconPosX = position.getX()+ dimension.getWidth()/2 - iconSize/2 ;
-		int iconPosY = position.getY() + dimension.getHeight()/4;
+		int iconPosY = position.getY() + (dimension.getHeight()/2) - iconSize / 2;
 		JDImageProxy skillBackgroundImage = ImageManager.inventory_box_normal;
 		TextureAtlas.AtlasRegion boxAtlasRegion = Assets.instance.getAtlasRegion(skillBackgroundImage, Assets.instance.getGuiAtlas());
 
@@ -91,13 +98,21 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 		TextureAtlas.AtlasRegion skillAtlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());
 
 		int iconSizeInternal = (int)(iconSize * 0.8);
-		batch.draw(skillAtlasRegion, iconPosX + ((iconSize-iconSizeInternal)/2), iconPosY + ((iconSize-iconSizeInternal)/2), 0 , 0 ,iconSizeInternal, iconSizeInternal, 1f , 1f, 0);
+		batch.draw(skillAtlasRegion, iconPosX + ((iconSize - iconSizeInternal)/2), iconPosY + ((iconSize - iconSizeInternal)/2), 0 , 0 ,iconSizeInternal, iconSizeInternal, 1f , 1f, 0);
 
-		BitmapFont headerFont = Assets.instance.fonts.defaultBig;
-		headerFont.draw(batch, skill.getName(), iconPosX + iconSize/2, position.getY() + 50);
+		BitmapFont headerFont = Assets.instance.fonts.defaultBigFlipped;
+		int headerWidth = 130;
+		layout.setText(headerFont, skill.getName(), Color.WHITE, headerWidth, Align.center, true);
+		int headerStartX = position.getX() + dimension.getWidth() / 2 - headerWidth / 2;
+		headerFont.draw(batch, layout, headerStartX, position.getY() + 50);
 
-		BitmapFont descriptionFont = Assets.instance.fonts.defaultSmall;
-		int textStartX = position.getX() + dimension.getWidth()/6;
-		descriptionFont.draw(batch, skill.getText(), textStartX + 5, iconPosY+iconSize + 15); // width : dimension.getWidth()*2/3
+		BitmapFont descriptionFont = Assets.instance.fonts.defaultSmallFlipped;
+
+		int targetWidth = 130;
+		layout.setText(descriptionFont, skill.getText(), Color.WHITE, targetWidth, Align.center, true);
+		int textStartX = position.getX() + dimension.getWidth() / 2 - targetWidth / 2;
+		int textStartY = iconPosY+iconSize + 15;
+		descriptionFont.draw(batch, layout, textStartX, textStartY);
+		//descriptionFont.draw(batch, skill.getText(), textStartX + 5, iconPosY+iconSize + 15); // width : dimension.getWidth()*2/3
 	}
 }
