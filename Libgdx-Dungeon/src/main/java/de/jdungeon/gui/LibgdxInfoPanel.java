@@ -40,7 +40,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 
 	public LibgdxInfoPanel(JDPoint position, JDDimension dimension, GUIImageManager guiImageManager) {
 		super(position, dimension, new JDPoint(position.getX()
-				+ dimension.getWidth() - 10, position.getY()));
+				- dimension.getWidth() + 10, position.getY()));
 		inventoryImageManager = new InventoryImageManager(guiImageManager);
 		skillImageManager = new SkillImageManager(guiImageManager);
 		this.guiImageManager = guiImageManager;
@@ -48,19 +48,13 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 
 	private Paragraphable content;
 
-	private boolean visible = true;
-	private float timer = 0;
-	private final static float DISPLAY_TIME = 1000f;
-	private final static int SLIDE_OUT_STEPS = 20;
 
 	public void setContent(Paragraphable entity) {
 		this.content = entity;
-		visible = true;
-		if (entity == null) {
-			timer = 100f;
-		}
-		else {
-			timer = DISPLAY_TIME;
+		if(content == null) {
+			slideOut();
+		} else {
+			slideIn();
 		}
 	}
 
@@ -70,7 +64,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 
 	@Override
 	public boolean isVisible() {
-		return visible;
+		return true;
 	}
 
 	@Override
@@ -78,6 +72,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		// noting to do here
 	}
 
+	/*
 	@Override
 	public boolean handlePanEvent(float x, float y, float dx, float dy) {
 		if (dx < 0) {
@@ -86,12 +81,14 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		}
 		return false;
 	}
+	/*
 
+	/*
 	@Override
 	public boolean handleClickEvent(int x, int y) {
 		return false;
 	}
-
+*/
 	@Override
 	public void paint(SpriteBatch batch) {
 
@@ -204,20 +201,24 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		return null;
 	}
 
+	/*
 	@Override
 	public void update(float time) {
 		timer -= time;
 		if (timer < 0 && visible) {
-			if (this.slideStep == -1) {
-				this.slideStep = SLIDE_OUT_STEPS;
+
+			if (this.slideStepCounter == -1) {
+				this.slideStepCounter = SLIDING_STEPS;
 			}
-			if (slideStep > 0) {
-				slideStep -= 1;
+
+			if (slideStepCounter > 0) {
+				slideStepCounter -= 1;
 			}
 			else {
-				this.visible = false;
-				this.slideStep = -1;
+				//this.visible = false;
+				this.slideStepCounter = -1;
 			}
 		}
 	}
+	*/
 }

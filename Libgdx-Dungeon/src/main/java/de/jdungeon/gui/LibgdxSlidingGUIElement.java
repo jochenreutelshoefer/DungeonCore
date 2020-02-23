@@ -9,27 +9,43 @@ import util.JDDimension;
  */
 public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
 
-	// TODO: refactor to slide continuously with rendering frames, not with steps
-	protected final static int SLIDE_OUT_STEPS = 20;
-	protected int slideStep = -1;
-	protected final JDPoint targetPos;
+	private int totalSlidingRange;
 
-	public LibgdxSlidingGUIElement(JDPoint position, JDDimension dimension,
-							 JDPoint targetPos) {
-		super(position, dimension);
-		this.targetPos = targetPos;
-
-		this.slideOut();
+	enum SlideState {
+		IN_POSITION,
+		OUT_POSITION,
+		SLIDING_IN,
+		SLIDING_OUT
 	}
 
-	protected void slideOut() {
-		this.slideStep = SLIDE_OUT_STEPS;
+	private static final float SLIDE_IN_DURATION = 0.1f;
+	private static final float SLIDE_OUT_DURATION = 0.5f;
+	private float timer = 0;
+
+	protected final JDPoint targetOutPos;
+	protected final JDPoint targetInPos;
+
+	private SlideState currentState;
+
+	public LibgdxSlidingGUIElement(JDPoint position, JDDimension dimension,
+								   JDPoint targetPos) {
+		super(position, dimension);
+		this.targetOutPos = targetPos;
+		this.targetInPos = position;
+		totalSlidingRange = targetInPos.getX() - targetOutPos.getX();
+
+		currentState = SlideState.IN_POSITION;
+		this.slideOut();
 	}
 
 	@Override
 	public boolean handlePanEvent(float x, float y, float dx, float dy) {
-		if (dx > 0) {
+		if (dx < 0 && currentState == SlideState.IN_POSITION) {
 			slideOut();
+			return true;
+		}
+		if (dx > 0 && currentState == SlideState.OUT_POSITION) {
+			slideIn();
 			return true;
 		}
 		return false;
@@ -41,23 +57,36 @@ public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
 		/*
 		 * if it is out of screen a touch on the visible border will open it
 		 */
-		if (getCurrentX() == targetPos.getX()) {
-			this.slideStep = -1;
-		}
+		slideIn();
+
 		return true;
 	}
 
 	protected void slideIn() {
-		this.slideStep = -1;
+		if (currentState != SlideState.SLIDING_IN && currentState != SlideState.IN_POSITION) {
+			currentState = SlideState.SLIDING_IN;
+			timer = 0;
+		}
+	}
+
+	public void slideOut() {
+		if (currentState != SlideState.SLIDING_OUT && currentState != SlideState.OUT_POSITION) {
+			currentState = SlideState.SLIDING_OUT;
+			timer = 0;
+		}
 	}
 
 	protected int getCurrentX() {
-		int x = position.getX();
-		int diffX = targetPos.getX() - position.getX();
-		if (slideStep >= 0) {
-			x = x - ((SLIDE_OUT_STEPS - slideStep) * diffX / SLIDE_OUT_STEPS);
+
+		if (currentState == SlideState.SLIDING_OUT) {
+			float percentageDone = timer / SLIDE_OUT_DURATION;
+			return targetInPos.getX() - (int) (percentageDone * totalSlidingRange);
 		}
-		return x;
+		if (currentState == SlideState.SLIDING_IN) {
+			float percentageDone = timer / SLIDE_IN_DURATION;
+			return targetOutPos.getX() + (int) (percentageDone * totalSlidingRange);
+		}
+		return position.getX();
 	}
 
 	@Override
@@ -71,8 +100,22 @@ public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
 
 	@Override
 	public void update(float time) {
-		if (slideStep > 0) {
-			slideStep -= 1;
+		timer += time;
+
+		// we're done sliding
+		if (currentState == SlideState.SLIDING_OUT) {
+			if (timer > SLIDE_OUT_DURATION) {
+				timer = 0;
+				currentState = SlideState.OUT_POSITION;
+				this.position = targetOutPos;
+			}
+		}
+		if (currentState == SlideState.SLIDING_IN) {
+			if (timer > SLIDE_IN_DURATION) {
+				timer = 0;
+				currentState = SlideState.IN_POSITION;
+				this.position = targetInPos;
+			}
 		}
 	}
 }

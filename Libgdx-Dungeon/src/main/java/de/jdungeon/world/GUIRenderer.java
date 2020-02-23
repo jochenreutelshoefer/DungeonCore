@@ -140,8 +140,8 @@ public class GUIRenderer implements Disposable {
 		 * init hour glass
 		 */
 
-		int offsetFromRightBorder = screenWidth - 45;
-		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(offsetFromRightBorder, 50), new JDDimension(36, 60), figure, this.guiImageManager);
+		int offsetFromRightBorder = screenWidth - 40;
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(offsetFromRightBorder, 50), new JDDimension(34, 60), figure, this.guiImageManager);
 		this.libgdxGuiElements.add(hourglass);
 
 
