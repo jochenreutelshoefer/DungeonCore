@@ -34,9 +34,12 @@ import de.jdungeon.util.PaintBuilder;
  */
 public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 
+	private static final String WINDOW_BUBBLE = "win-bubble";
+
 	private final InventoryImageManager inventoryImageManager;
 	private final SkillImageManager skillImageManager;
 	private final GUIImageManager guiImageManager;
+	private final TextureAtlas.AtlasRegion bubble;
 
 	public LibgdxInfoPanel(JDPoint position, JDDimension dimension, GUIImageManager guiImageManager) {
 		super(position, dimension, new JDPoint(position.getX()
@@ -44,6 +47,9 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		inventoryImageManager = new InventoryImageManager(guiImageManager);
 		skillImageManager = new SkillImageManager(guiImageManager);
 		this.guiImageManager = guiImageManager;
+
+		// init border
+		bubble = Assets.instance.getAtlasRegion(WINDOW_BUBBLE, Assets.instance.getGuiAtlas());
 	}
 
 	private Paragraphable content;
@@ -100,9 +106,18 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 
 		String im = getImage();
 		if (im != null) {
+			int bubbleSizeX = (int) (this.getDimension().getWidth() / 1.5);
+			int bubbleSizeY = (int) (this.getDimension().getHeight() / 2);
+			int bubblePosX = this.getCurrentX() + this.getDimension().getWidth() / 2 - bubbleSizeX / 2;
+			int bubblePosY = this.position.getY() - bubbleSizeY / 4;
+			batch.draw(bubble,  bubblePosX, bubblePosY, 0 , 0 , bubbleSizeX, bubbleSizeY, 1f , 1f, 0);
+
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.findTexture(im);
 			if(atlasRegion != null) {
-				batch.draw(atlasRegion, getCurrentX() + 2, position.getY() + 20, 60, 60);
+				int imageSize = (int) (bubbleSizeX / 2.5);
+				int imagePosX = this.getCurrentX()  + this.getDimension().getWidth() / 2 - imageSize / 2;
+				int imagePosY = this.position.getY() - imageSize / 2 + bubbleSizeY / 10;
+				batch.draw(atlasRegion, imagePosX, imagePosY, imageSize, imageSize);
 			}
 		}
 
