@@ -111,6 +111,7 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		insideFlipped = new TextureRegion(inside);
 		insideFlipped.flip(false, true);
 
+		/*
 		int width = getDimension().getWidth();
 		int height = getDimension().getHeight();
 		Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
@@ -119,6 +120,7 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		bgPixmap.setColor(com.badlogic.gdx.graphics.Color.WHITE);
 		bgPixmap.drawRectangle(0, 0, width, height);
 		this.bgTexture = new Texture(bgPixmap);
+		*/
 	}
 
 	@Override
@@ -160,7 +162,7 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 
 	protected void drawBackground(SpriteBatch batch, int currentX, int currentY) {
 
-		batch.draw(bgTexture, currentX, currentY);
+		//batch.draw(bgTexture, currentX, currentY);
 
 		int borderWidth = borderLeft.originalWidth;
 

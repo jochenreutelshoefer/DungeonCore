@@ -1,5 +1,6 @@
 package de.jdungeon.skillselection;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -7,6 +8,7 @@ import java.util.ListIterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dungeon.JDPoint;
 import spell.Spell;
 import user.DefaultDungeonSession;
@@ -21,6 +23,7 @@ import de.jdungeon.app.gui.skillselection.SkillSelectionManager;
 import de.jdungeon.app.gui.skillselection.SkillSelectionTile;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
+import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.libgdx.LibgdxScreenContext;
 import de.jdungeon.util.Pair;
 import de.jdungeon.world.PlayerController;
@@ -35,10 +38,14 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 
 	private final OrthographicCamera camera;
 	private final OrthographicCamera cameraGUI;
-	protected final List<GUIElement> guiElements = new LinkedList<GUIElement>();
+	protected final List<LibgdxGUIElement> guiElements = new ArrayList<>();
+	private SpriteBatch batch;
 
 	public SkillSelectionScreen(LibgdxDungeonMain game) {
 		super(game);
+
+		// TODO : refactor towards a generic abstract Screen that will do this kind of stuff in a generic way
+
 
 		camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
@@ -48,6 +55,8 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
+
+
 
 		Pair<Spell, Spell> options = SkillSelectionManager.getInstance().getOptions(((DefaultDungeonSession)game.getSession()).getCurrentStage());
 
@@ -62,18 +71,19 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 
 	@Override
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
+		// TODO : refactor towards a generic abstract Screen that will do this kind of stuff
 		/*
 		Check for gui element click
 		 */
-		ListIterator<GUIElement> listIterator = guiElements.listIterator(guiElements.size());
+		ListIterator<LibgdxGUIElement> listIterator = guiElements.listIterator(guiElements.size());
 		while (listIterator.hasPrevious()) {
-			GUIElement guiElement = listIterator.previous();
+			LibgdxGUIElement guiElement = listIterator.previous();
 			if (guiElement.hasPoint(new JDPoint(screenX, screenY)) && guiElement.isVisible()) {
 				//Log.i("touch event fired", this.getClass().getSimpleName()+": touch event fired");
 				Input.TouchEvent touchEvent = new Input.TouchEvent();
 				touchEvent.x = screenX;
 				touchEvent.y = screenY;
-				guiElement.handleTouchEvent(touchEvent);
+				guiElement.handleClickEvent(screenX, screenY);
 				return true;
 			}
 		}
@@ -91,12 +101,12 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 		return false;
 	}
 
-	private SkillSelectionTile addTile(Spell option, boolean rightHandSide) {
+	private LibgdxSkillSelectionTile addTile(Spell option, boolean rightHandSide) {
 		int posY = this.game.getScreenHeight() / 4;
 		int posX = rightHandSide?this.game.getScreenWidth() / 2 + this.game.getScreenWidth() / 12:this.game.getScreenWidth() / 12;
 		int width = this.game.getScreenWidth() /3;
 		int height = this.game.getScreenHeight() * 2 / 3;
-		return new SkillSelectionTile(new JDPoint(posX, posY), new JDDimension(width,  height),  this.game, option);
+		return new LibgdxSkillSelectionTile(new JDPoint(posX, posY), new JDDimension(width,  height),  this.game, option);
 	}
 
 
@@ -112,21 +122,31 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 
 	@Override
 	public void show() {
+
 		camera.update();
 		cameraGUI.update();
 	}
 
 	@Override
 	public void render(float v) {
+		// TODO : refactor towards a generic abstract Screen that will do this kind of stuff in a generic way
+		if(batch == null) {
+			batch = new SpriteBatch();
+		}
+
+		batch.setProjectionMatrix(cameraGUI.combined);
+		batch.begin();
 		Gdx.gl.glClearColor(0, 0, 0, 0xff/255.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		for (GUIElement guiElement : this.guiElements) {
+		for (LibgdxGUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
 				if (guiElement.needsRepaint()) {
-					guiElement.paint(game.getGraphics(ScreenContext.Context.GUI), new JDPoint(0,0));
+					guiElement.paint(batch);
 				}
 			}
 		}
+
+		batch.end();
 	}
 
 	@Override

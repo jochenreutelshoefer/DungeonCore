@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import dungeon.Door;
+import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.RoomEntity;
@@ -80,7 +81,9 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 					return Collections.emptyList();
 				}
 				RoomInfo neighbourRoom = actor.getRoomInfo().getNeighbourRoom(possibleRaidDirection);
-				if (neighbourRoom == null || !actor.getRoomInfo().getDoor(possibleRaidDirection).isPassable()) {
+				RoomInfo actorRoom = actor.getRoomInfo();
+				DoorInfo door = actorRoom.getDoor(possibleRaidDirection);
+				if (neighbourRoom == null || !door.isPassable()) {
 					return Collections.emptyList();
 				}
 				return neighbourRoom.getFigureInfos();

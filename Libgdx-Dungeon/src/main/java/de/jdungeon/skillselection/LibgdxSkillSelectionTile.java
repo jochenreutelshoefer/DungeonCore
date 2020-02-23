@@ -1,0 +1,103 @@
+package de.jdungeon.skillselection;
+
+
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import dungeon.JDPoint;
+import event.EventManager;
+import graphics.ImageManager;
+import graphics.JDImageProxy;
+import spell.Spell;
+import spell.SpellInfo;
+import util.JDColor;
+import util.JDDimension;
+
+import de.jdungeon.app.gui.AbstractGUIElement;
+import de.jdungeon.app.gui.ColorConverter;
+import de.jdungeon.app.gui.GUIImageManager;
+import de.jdungeon.app.gui.skillselection.SkillImageManager;
+import de.jdungeon.app.gui.skillselection.SkillSelectedEvent;
+import de.jdungeon.asset.Assets;
+import de.jdungeon.game.Game;
+import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Image;
+import de.jdungeon.game.Input;
+import de.jdungeon.game.Paint;
+import de.jdungeon.gui.AbstractLibgdxGUIElement;
+import de.jdungeon.util.PaintBuilder;
+
+/**
+ * @author Jochen Reutelshoefer (denkbares GmbH)
+ * @created 17.01.18.
+ */
+public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
+
+	private final Spell skill;
+	private final PaintBuilder headerPaint;
+	private final PaintBuilder textPaint;
+	private final SkillImageManager imageManager;
+
+	public LibgdxSkillSelectionTile(JDPoint position, JDDimension dimension, Game game, Spell skill) {
+		super(position, dimension);
+		this.skill = skill;
+		headerPaint = new PaintBuilder();
+		headerPaint.setColor(ColorConverter.getColor(JDColor.black));
+		headerPaint.setFontSize(24);
+
+		textPaint = new PaintBuilder();
+		textPaint.setColor(ColorConverter.getColor(JDColor.black));
+		textPaint.setFontSize(18);
+		textPaint.setAlignment(Paint.Alignment.LEFT);
+
+		imageManager = new SkillImageManager(new GUIImageManager(game.getFileIO().getImageLoader()));
+
+	}
+
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
+
+	@Override
+	public void paint(ShapeRenderer shapeRenderer) {
+		// do nothing
+	}
+
+
+	@Override
+	public boolean handleClickEvent(int screenX, int screenY) {
+		EventManager.getInstance().fireEvent(new SkillSelectedEvent(skill));
+		return true;
+	}
+
+
+	@Override
+	public void paint(SpriteBatch batch) {
+
+		this.drawBackground(batch, position.getX(), position.getY());
+
+
+		int iconSize = dimension.getWidth()/2;
+		int iconPosX = position.getX()+ dimension.getWidth()/2 - iconSize/2 ;
+		int iconPosY = position.getY() + dimension.getHeight()/4;
+		JDImageProxy skillBackgroundImage = ImageManager.inventory_box_normal;
+		TextureAtlas.AtlasRegion boxAtlasRegion = Assets.instance.getAtlasRegion(skillBackgroundImage, Assets.instance.getGuiAtlas());
+
+		batch.draw(boxAtlasRegion, iconPosX, iconPosY, 0 , 0 , iconSize, iconSize, 1f , 1f, 0);
+
+		String skillImage = imageManager.getImage(new SpellInfo(skill, null));
+		TextureAtlas.AtlasRegion skillAtlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());
+
+		int iconSizeInternal = (int)(iconSize * 0.8);
+		batch.draw(skillAtlasRegion, iconPosX + ((iconSize-iconSizeInternal)/2), iconPosY + ((iconSize-iconSizeInternal)/2), 0 , 0 ,iconSizeInternal, iconSizeInternal, 1f , 1f, 0);
+
+		BitmapFont headerFont = Assets.instance.fonts.defaultBig;
+		headerFont.draw(batch, skill.getName(), iconPosX + iconSize/2, position.getY() + 50);
+
+		BitmapFont descriptionFont = Assets.instance.fonts.defaultSmall;
+		int textStartX = position.getX() + dimension.getWidth()/6;
+		descriptionFont.draw(batch, skill.getText(), textStartX + 5, iconPosY+iconSize + 15); // width : dimension.getWidth()*2/3
+	}
+}
