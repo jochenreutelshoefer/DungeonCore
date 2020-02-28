@@ -30,6 +30,7 @@ import de.jdungeon.app.screen.InfoMessagePopupEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
 import de.jdungeon.gui.LibgdxFocusManager;
+import de.jdungeon.gui.LibgdxGameOverView;
 import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
 import de.jdungeon.gui.LibgdxInfoPanel;
@@ -64,10 +65,10 @@ public class GUIRenderer implements Disposable {
 
 	private final LibgdxFocusManager focusManager;
 
-	protected final List<GUIElement> guiElements = new ArrayList<>();
+	//protected final List<GUIElement> guiElements = new ArrayList<>();
 	protected final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
 
-	private GameOverView gameOverView;
+	private LibgdxGameOverView gameOverView;
 	private GLProfiler glProfiler;
 	private LibgdxItemWheel itemWheelHeroItems;
 	private UIFeedback message;
@@ -85,7 +86,7 @@ public class GUIRenderer implements Disposable {
 	}
 
 	private void reinit() {
-		guiElements.clear();
+		//guiElements.clear();
 		libgdxGuiElements.clear();
 		init();
 	}
@@ -224,13 +225,13 @@ public class GUIRenderer implements Disposable {
 		int height = Gdx.graphics.getHeight();
 		int widthFifth = (width / 5);
 		int heightFifth = (height / 4);
-		/*
-		gameOverView = new GameOverView(new JDPoint((width / 2) - widthFifth,
-				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
-				2 * heightFifth), new ScreenAdapter(game), game);
-		this.guiElements.add(gameOverView);
 
-		*/
+		gameOverView = new LibgdxGameOverView(new JDPoint((width / 2) - widthFifth,
+				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
+				2 * heightFifth));
+		this.libgdxGuiElements.add(gameOverView);
+
+
 	}
 
 	public void render() {
@@ -238,11 +239,13 @@ public class GUIRenderer implements Disposable {
 	}
 
 	private void updateGUIElements(float deltaTime) {
+		/*
 		for (GUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
 				guiElement.update(deltaTime);
 			}
 		}
+		*/
 
 		for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
 			if (guiElement.isVisible()) {
@@ -251,7 +254,7 @@ public class GUIRenderer implements Disposable {
 		}
 	}
 
-	public GameOverView getGameOverView() {
+	public LibgdxGameOverView getGameOverView() {
 		return gameOverView;
 	}
 

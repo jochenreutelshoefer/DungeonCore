@@ -370,13 +370,6 @@ public class GameScreen extends AbstractGameScreen {
 
 		lastClickTime = now;
 
-		/*
-		If the player has died, after the next click we show the game over popup
-		 */
-		Boolean dead = figure.isDead();
-		if (dead != null && dead) {
-			guiRenderer.getGameOverView().setShow(true);
-		}
 
 
 		/*
@@ -395,6 +388,14 @@ public class GameScreen extends AbstractGameScreen {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				return true;
 			}
+		}
+
+		/*
+		If the player has died, after the next click we show the game over popup
+		 */
+		Boolean dead = figure.isDead();
+		if (dead != null && dead) {
+			guiRenderer.getGameOverView().setShow(true);
 		}
 
 		/*
