@@ -93,8 +93,7 @@ public class Dungeon implements Turnable, EventListener {
 		return null;
 	}
 
-	public RoomObservationStatus[][] getNewRoomVisibilityMap(
-			DungeonVisibilityMap map) {
+	public RoomObservationStatus[][] getNewRoomVisibilityMap(DungeonVisibilityMap map) {
 		RoomObservationStatus[][] stats = new RoomObservationStatus[theDungeon.length][theDungeon[0].length];
 		for (int i = 0; i < stats.length; i++) {
 			for (int j = 0; j < stats[0].length; j++) {

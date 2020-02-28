@@ -152,8 +152,7 @@ public class WorldRenderer implements Disposable {
 		for (Class<? extends Figure> figureClass : Assets.figureClasses) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
-					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y]
-							.getFigureObjects(figureClass);
+					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y].getFigureObjects(figureClass);
 					if (graphicObjectsForRoom != null) {
 						drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
 					}

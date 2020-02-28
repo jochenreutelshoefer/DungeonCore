@@ -22,7 +22,7 @@ import figure.percept.HitPercept;
 import figure.percept.InfoPercept;
 import figure.percept.ItemDroppedPercept;
 import figure.percept.MissPercept;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.SpellPercept;
 import figure.percept.TakePercept;
@@ -189,7 +189,7 @@ public class StatementManager {
 		return s;
 	}
 
-	public static Statement getStatement(MovePercept p, FigureInfo to) {
+	public static Statement getStatement(EntersPercept p, FigureInfo to) {
 		Statement s = null;
 		if (p.getFigure().equals(to)) {
 			s = new Statement("entering room", 2);

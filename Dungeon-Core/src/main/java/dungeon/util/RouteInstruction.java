@@ -1,6 +1,7 @@
 package dungeon.util;
 
 import dungeon.Dir;
+import figure.DungeonVisibilityMap;
 import game.DungeonGame;
 //import dungeon.*;
 import dungeon.JDPoint;
@@ -98,10 +99,9 @@ public class RouteInstruction {
 	}
 
 
-	public int getWay(Room start) {
+	public int getWay(Room start, DungeonVisibilityMap visMap) {
 		if(destination != null) {
-			return DungeonUtils.getFirstStepFromTo2(start.getDungeon(), start,
-					destination);
+			return DungeonUtils.getFirstStepFromTo2(start.getDungeon(), start, destination, visMap);
 		}
 		else {
 			return direction;
@@ -109,84 +109,14 @@ public class RouteInstruction {
 		
 	}
 	
-	public int getWay(JDPoint start) {
-		return getWay(destination.getDungeon().getRoom(start));
+	public int getWay(JDPoint start, DungeonVisibilityMap visMap) {
+		return getWay(destination.getDungeon().getRoom(start), visMap);
 	}
-	
-	public int getWay(RoomInfo start) {
-		return getWay(start.getLocation());
-	}
-	
-//	public int getWay(room start) {
-//		
-//		if (destination != null) {
-//			
-//			if(destination == start) {
-//				return 0;
-//			}
-//
-//			int divX =
-//				Math.abs(
-//					(destination.getNumber().getX())
-//						- (start.getNumber().getX()));
-//			int divY =
-//				Math.abs(
-//					(destination.getNumber().getY())
-//						- (start.getNumber().getY()));
-//
-//			int wishDir = 0;
-//			boolean likeWalkX = true;
-//			if (divX > divY) {
-//
-//				if (start.getNumber().getX()
-//					< destination.getNumber().getY()) {
-//					wishDir = EAST;
-//				} else {
-//					wishDir = WEST;
-//				}
-//			} else {
-//				likeWalkX = false;
-//				if (start.getNumber().getY()
-//					< destination.getNumber().getY()) {
-//					wishDir = SOUTH;
-//				} else if (
-//					start.getNumber().getY()
-//						> destination.getNumber().getY()) {
-//					wishDir = NORTH;
-//				}
-//
-//			}
-//
-//			boolean possible = start.leaveable(wishDir);
-//			if (possible) {
-//				return wishDir;
-//			} else {
-//				if (likeWalkX) {
-//					if (start.getNumber().getY()
-//						< destination.getNumber().getY()) {
-//						wishDir = SOUTH;
-//					} else if (
-//						start.getNumber().getY()
-//							> destination.getNumber().getY()) {
-//						wishDir = NORTH;
-//					}
-//				} else {
-//					if (start.getNumber().getX()
-//						< destination.getNumber().getY()) {
-//						wishDir = EAST;
-//					} else {
-//						wishDir = WEST;
-//					}
-//				}
-//			}
-//			possible = start.leaveable(wishDir);
-//			if (possible) {
-//				return wishDir;
-//			} 
-//		}
-//		return 0;
-//	}
 
+	public int getWay(RoomInfo start, DungeonVisibilityMap visMap) {
+		return getWay(start.getNumber(), visMap);
+	}
+	
 	public static int turnRight(int dir) {
 		int x = dir - 1;
 		x = (x + 1) % 4;

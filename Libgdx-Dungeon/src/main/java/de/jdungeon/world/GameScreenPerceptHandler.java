@@ -7,7 +7,6 @@ import animation.AnimationUtils;
 import animation.DefaultAnimationSet;
 import animation.DefaultAnimationTask;
 import audio.AudioEffectsManager;
-import com.badlogic.gdx.Gdx;
 import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
@@ -22,8 +21,9 @@ import figure.percept.FleePercept;
 import figure.percept.HitPercept;
 import figure.percept.InfoPercept;
 import figure.percept.ItemDroppedPercept;
+import figure.percept.LeavesPercept;
 import figure.percept.MissPercept;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
@@ -101,8 +101,11 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (p instanceof DiePercept) {
 			handleDiePercept((DiePercept) p);
 		}
-		if (p instanceof MovePercept) {
-			handleMovePercept((MovePercept) p);
+		if (p instanceof EntersPercept) {
+			handleEntersPercept((EntersPercept) p);
+		}
+		if (p instanceof LeavesPercept) {
+			handleLeavePercept((LeavesPercept) p);
 		}
 		if (p instanceof ScoutPercept) {
 			handleScoutPercept((ScoutPercept) p);
@@ -258,7 +261,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		}
 	}
 
-	private void handleMovePercept(MovePercept p) {
+	private void handleEntersPercept(EntersPercept p) {
 		FigureInfo fig = p.getFigure();
 		RoomInfo info = fig.getRoomInfo();
 		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
@@ -279,7 +282,32 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (!fig.equals(this.figure)
 				&& // check whether a fight has just started
 				!figure.getRoomInfo().fightRunning()) {
-			screen.scrollTo(info.getNumber(), 0.4f, "move percept");
+			screen.scrollTo(info.getNumber(), 0.4f, "enters percept");
+		}
+	}
+
+	private void handleLeavePercept(LeavesPercept p) {
+		FigureInfo fig = p.getFigure();
+		RoomInfo info = fig.getRoomInfo();
+		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);
+
+		if (fig.equals(this.figure)) {
+			// we reset the selected room, as hero has moved on
+			screen.getFocusManager().setWorldFocusObject((RoomInfoEntity) null);
+		}
+
+		if (set != null) {
+			// clear old queued animations if there are some
+			animationManager.clearFigure(fig);
+
+			// start "walk in" animation
+			startAnimation(set, fig, p);
+		}
+
+		if (!fig.equals(this.figure)
+				&& // check whether a fight has just started
+				!figure.getRoomInfo().fightRunning()) {
+			screen.scrollTo(info.getNumber(), 0.4f, "leaves percept");
 		}
 	}
 

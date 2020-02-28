@@ -38,6 +38,11 @@ public class DungeonVisibilityMap {
 		if (allVis == null) {
 			allVis = new DungeonVisibilityMap(d);
 			RoomObservationStatus[][] stats = d.getNewRoomVisibilityMap(allVis);
+			for (RoomObservationStatus[] stat : stats) {
+				for (RoomObservationStatus roomObservationStatus : stat) {
+					roomObservationStatus.setVisibilityStatus(RoomObservationStatus.VISIBILITY_FOUND);
+				}
+			}
 			allVis.setMap(stats);
 		}
 		return allVis;
@@ -138,6 +143,10 @@ public class DungeonVisibilityMap {
 	}
 
 	public int getVisibilityStatus(int x, int y) {
+		if(x >= rooms.length || y >= rooms[0].length) {
+			Log.warning("invalid room coordinates for getVisibilityStatus: x: " + x+ " y: "+y);
+			return -1;
+		}
 		if (rooms[x][y] != null) {
 			return rooms[x][y].getVisibilityStatus();
 		}

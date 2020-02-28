@@ -111,7 +111,7 @@ public class DarkMaster extends Monster {
 					}
 				} else {
 
-					i = ri.getWay(actualDungeon.getRoom(location));
+					i = ri.getWay(actualDungeon.getRoom(location), this.visibilities);
 					System.out.println("Getting way:" + i);
 				}
 			} else {

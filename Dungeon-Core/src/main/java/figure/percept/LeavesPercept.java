@@ -1,24 +1,26 @@
-/*
- * Created on 08.01.2006
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
 package figure.percept;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.Room;
 import dungeon.RoomInfo;
+import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 
-public class MovePercept extends OpticalPercept {
-	
+/**
+ * @author Jochen Reutelshoefer (denkbares GmbH)
+ * @created 28.02.20.
+ */
+public class LeavesPercept extends OpticalPercept {
+
 	private final Room from;
+
+	private final RouteInstruction.Direction direction;
+
 	private final Figure figure;
-	
 	public RoomInfo getFrom() {
 		return new RoomInfo(from,viewer.getRoomVisibility());
 	}
@@ -29,24 +31,25 @@ public class MovePercept extends OpticalPercept {
 	}
 
 
-	public MovePercept(Figure f, Room r1) {
+	public LeavesPercept(Figure f, Room r1 , RouteInstruction.Direction direction) {
 		super(r1.getNumber());
 		figure = f;
 		from = r1;
+		this.direction = direction;
 	}
-	
-	
+
+
+	public RouteInstruction.Direction getDirection() {
+		return direction;
+	}
+
 	public FigureInfo getFigure() {
 		return FigureInfo.makeFigureInfo(figure,viewer.getRoomVisibility());
 	}
 
 	@Override
 	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(getFigure());
-		return l;
+		return Collections.singletonList(getFigure());
 	}
-	
-	
 
 }

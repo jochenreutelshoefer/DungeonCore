@@ -23,7 +23,7 @@ import figure.percept.HitPercept;
 import figure.percept.InfoPercept;
 import figure.percept.ItemDroppedPercept;
 import figure.percept.MissPercept;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.ShieldBlockPercept;
@@ -89,8 +89,8 @@ public class GameScreenPerceptHandler {
 		if (p instanceof DiePercept) {
 			handleDiePercept((DiePercept) p);
 		}
-		if (p instanceof MovePercept) {
-			handleMovePercept((MovePercept) p);
+		if (p instanceof EntersPercept) {
+			handleMovePercept((EntersPercept) p);
 		}
 		if (p instanceof ScoutPercept) {
 			handleScoutPercept((ScoutPercept) p);
@@ -228,7 +228,7 @@ public class GameScreenPerceptHandler {
 		}
 	}
 
-	private void handleMovePercept(MovePercept p) {
+	private void handleMovePercept(EntersPercept p) {
 		FigureInfo fig = p.getFigure();
 		RoomInfo info = fig.getRoomInfo();
 		DefaultAnimationSet set = AnimationUtils.getFigure_walking(fig);

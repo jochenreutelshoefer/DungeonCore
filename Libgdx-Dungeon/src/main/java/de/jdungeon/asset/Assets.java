@@ -24,6 +24,7 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
+import figure.other.Lioness;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
 
@@ -60,7 +61,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	/*
 	Figure classes that we can draw with the assets provided
 	 */
-	public static Class[] figureClasses = new Class[] { Warrior.class, Orc.class, Wolf.class, Skeleton.class, Ogre.class, Ghul.class, Spider.class, Druid.class, Mage.class, Thief.class /*TODO: DarkDwarf.class*/ };
+	public static Class[] figureClasses = new Class[] { Warrior.class, Orc.class, Wolf.class, Skeleton.class, Lioness.class, Ogre.class, Ghul.class, Spider.class, Druid.class, Mage.class, Thief.class /*TODO: DarkDwarf.class*/ };
 
 
 
@@ -398,6 +399,9 @@ public class Assets implements Disposable, AssetErrorListener {
 		if(Thief.class.equals(figureClass)) {
 			return getAtlasRegion(image, thiefAtlas);
 		}
+		if(Lioness.class.equals(figureClass)) {
+			return getAtlasRegion(image, lionessAtlas);
+		}
 		/* TODO
 		if(DarkDwarf.class.equals(figureClass)) {
 			return getAtlasRegion(image, darkdwarfAtlas);
@@ -423,6 +427,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		atlasMap.put(Druid.class, Assets.instance.druidAtlas);
 		atlasMap.put(Mage.class, Assets.instance.mageAtlas);
 		atlasMap.put(Thief.class, Assets.instance.thiefAtlas);
+		atlasMap.put(Lioness.class, Assets.instance.lionessAtlas);
 		// atlasMap.put(DarkDwarf.class, Assets.instance.druidAtlas); TODO
 	}
 

@@ -87,7 +87,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 			}
 		} else {
 			// we make our way towards the guarding position
-			return new MoveAction(new RouteInstruction(pos.getRoom()).getWay(info.getRoomNumber()));
+			return new MoveAction(new RouteInstruction(pos.getRoom()).getWay(info.getRoomNumber(), this.info.getMap()));
 		}
 	}
 }

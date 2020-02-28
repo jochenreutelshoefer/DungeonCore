@@ -7,7 +7,7 @@ import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.util.DungeonUtils;
+import dungeon.Way;
 import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
@@ -19,8 +19,9 @@ import figure.action.MoveAction;
 import figure.action.StepAction;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
+import figure.percept.EntersPercept;
 import figure.percept.FleePercept;
-import figure.percept.MovePercept;
+import figure.percept.LeavesPercept;
 import figure.percept.Percept;
 
 /**
@@ -42,45 +43,55 @@ public class RescuedNPCAI implements AI {
 
 	@Override
 	public void tellPercept(Percept p) {
-		if(currentState == State.prisoner) {
+		if (currentState == State.prisoner) {
 			// waiting for a hero to come and rescue
 			List<FigureInfo> involvedFigures = p.getInvolvedFigures();
 			for (FigureInfo involvedFigure : involvedFigures) {
-				if(involvedFigure instanceof HeroInfo && involvedFigure.getFighterID() != this.info.getFighterID()) {
-					if(involvedFigure.getRoomInfo().getLocation().equals(this.info.getRoomNumber())) {
+				if (involvedFigure instanceof HeroInfo && involvedFigure.getFighterID() != this.info.getFighterID()) {
+					if (involvedFigure.getRoomInfo().getLocation().equals(this.info.getRoomNumber())) {
 						currentState = State.following;
-						leader = (HeroInfo)involvedFigure;
+						leader = (HeroInfo) involvedFigure;
 						lastKnownLeaderPosition = info.getRoomNumber();
 					}
 				}
 			}
 		}
 
-		if(currentState == State.following) {
+		if (currentState == State.following) {
 
-			if(p.getInvolvedFigures() != null && p.getInvolvedFigures().contains(leader)) {
+			if (p.getInvolvedFigures() != null && p.getInvolvedFigures().contains(leader)) {
 				// we assume that we have visibility of the leader's room as we have perceived the percept...
 				// note: might fail for audio perceptions for instance
-				JDPoint roomNumber = leader.getRoomNumber();
-				// TODO: fix HeroInfo methods to filter available information properly by VisMap
-				if(roomNumber != null) {
-					lastKnownLeaderPosition = roomNumber;
+
+				if (p instanceof LeavesPercept) {
+					// LeavesPercept needs special treatment as it knows a more specific positon than the place where it occurs..
+					RouteInstruction.Direction direction = ((LeavesPercept) p).getDirection();
+					RoomInfo from = ((LeavesPercept) p).getFrom();
+					RoomInfo neighbourRoom = from.getNeighbourRoom(direction);
+					this.lastKnownLeaderPosition = neighbourRoom.getNumber();
+				}
+				else {
+					JDPoint roomNumber = leader.getRoomNumber();
+					// TODO: fix HeroInfo methods to filter available information properly by VisMap
+					if (roomNumber != null) {
+						lastKnownLeaderPosition = roomNumber;
+					}
 				}
 			}
 
 			// the following percepts overwrite the information observed above
 
 			// if the leader moves out of the room recognize target room
-			if(p instanceof MovePercept) {
-				if(((MovePercept) p).getFigure().equals(leader)) {
-					RoomInfo movedTo = ((MovePercept) p).getTo();
+			if (p instanceof EntersPercept) {
+				if (((EntersPercept) p).getFigure().equals(leader)) {
+					RoomInfo movedTo = ((EntersPercept) p).getTo();
 					lastKnownLeaderPosition = movedTo.getNumber();
 				}
 			}
-			if(p instanceof FleePercept) {
+			if (p instanceof FleePercept) {
 				FleePercept fleePercept = (FleePercept) p;
-				if(fleePercept.getFigure().equals(leader) &&
-						fleePercept.isSuccess()	) {
+				if (fleePercept.getFigure().equals(leader) &&
+						fleePercept.isSuccess()) {
 					RoomInfo fledTo = fleePercept.getRoom().getNeighbourRoom(fleePercept.getDir());
 					lastKnownLeaderPosition = fledTo.getNumber();
 				}
@@ -90,10 +101,10 @@ public class RescuedNPCAI implements AI {
 
 	@Override
 	public boolean isHostileTo(FigureInfo f) {
-		if(f instanceof MonsterInfo) {
+		if (f instanceof MonsterInfo) {
 			return true;
 		}
-		if(f.equals(leader)) {
+		if (f.equals(leader)) {
 			return false;
 		}
 		return false;
@@ -120,28 +131,28 @@ public class RescuedNPCAI implements AI {
 		List<FigureInfo> figureInfos = info.getRoomInfo().getFigureInfos();
 		FigureInfo target = null;
 		for (FigureInfo figureInfo : figureInfos) {
-			if(figureInfo.equals(info)) {
+			if (figureInfo.equals(info)) {
 				// do not attack yourself
 				continue;
 			}
-			if(info.isHostile(figureInfo)) {
+			if (info.isHostile(figureInfo)) {
 				int distance = Position.getMinDistanceFromTo(this.info.getPositionInRoomIndex(), figureInfo.getPositionInRoomIndex());
-				if(distance < minDistanceToEnemy) {
+				if (distance < minDistanceToEnemy) {
 					minDistanceToEnemy = distance;
 					target = figureInfo;
 				}
 			}
 		}
-		if(target != null) {
+		if (target != null) {
 			return AttackAction.makeActionAttack(target.getFighterID());
 		}
 		return null;
 	}
 
 	private boolean leaderInRoom() {
-		if(leader != null) {
+		if (leader != null) {
 			List<FigureInfo> roomFigures = info.getRoomInfo().getFigureInfos();
-			if(roomFigures.contains(leader)) {
+			if (roomFigures.contains(leader)) {
 				return true;
 			}
 		}
@@ -150,56 +161,58 @@ public class RescuedNPCAI implements AI {
 
 	@Override
 	public Action chooseMovementAction() {
-		if(info.getActionPoints() == 0) {
+		if (info.getActionPoints() == 0) {
 			return new EndRoundAction();
 		}
 
-
-		if(currentState == State.prisoner) {
+		if (currentState == State.prisoner) {
 			return new DoNothingAction();
 		}
 
-		if(currentState == State.following) {
-			if(leaderInRoom()) {
+		if (currentState == State.following) {
+			if (leaderInRoom()) {
 				int leaderPosIndex = leader.getPositionInRoomIndex();
 				int positionRightOfLeader = Position.getNextIndex(leaderPosIndex, true);
 				PositionInRoomInfo positionNextOnTheRight = info.getRoomInfo().getPositionInRoom(positionRightOfLeader);
-				if(! positionNextOnTheRight.isOccupied() && ! (info.getPositionInRoomIndex() == positionNextOnTheRight.getIndex())) {
+				if (!positionNextOnTheRight.isOccupied() && !(info.getPositionInRoomIndex() == positionNextOnTheRight.getIndex())) {
 					return new StepAction(positionRightOfLeader);
 				}
 				int positionLeftOfLeader = Position.getNextIndex(leaderPosIndex, false);
 				PositionInRoomInfo leftPosition = info.getRoomInfo().getPositionInRoom(positionLeftOfLeader);
-				if(! leftPosition.isOccupied()
-						&& ! (info.getPositionInRoomIndex() == leftPosition.getIndex())) {
+				if (!leftPosition.isOccupied()
+						&& !(info.getPositionInRoomIndex() == leftPosition.getIndex())) {
 					return new StepAction(positionLeftOfLeader);
 				}
 				// otherwise we just wait
 				return new DoNothingAction();
-			} else {
+			}
+			else {
 				return followLeader();
 			}
 		}
 
-		if(currentState == State.lost) {
+		if (currentState == State.lost) {
 			return followLeader();
 		}
 		return new DoNothingAction();
 	}
 
 	private Action followLeader() {
-		if(!this.info.getRoomInfo().getLocation().equals(lastKnownLeaderPosition)) {
-			List<JDPoint> shortestWayFromTo = info.getShortestWayFromTo(info.getRoomInfo()
-					.getNumber(), lastKnownLeaderPosition);
-			JDPoint firstMove = shortestWayFromTo.get(1);
+		if (!this.info.getRoomInfo().getLocation().equals(lastKnownLeaderPosition)) {
+			Way shortestWayFromTo = info.getShortestWayFromTo(info.getRoomInfo().getNumber(), lastKnownLeaderPosition);
+			RoomInfo nextRoomToGo = shortestWayFromTo.get(1);
+			JDPoint firstMove = nextRoomToGo.getNumber();
 			RouteInstruction.Direction directionToMove = info.getRoomNumber().relativeTo(firstMove);
 			// TODO: make it easier for AI to step towards the door for a move
 			int positionInRoomAtDoor = Figure.getDirPos(directionToMove.getValue());
-			if(info.getPositionInRoomIndex() == positionInRoomAtDoor) {
+			if (info.getPositionInRoomIndex() == positionInRoomAtDoor) {
 				return new MoveAction(directionToMove);
-			} else {
+			}
+			else {
 				return new StepAction(positionInRoomAtDoor);
 			}
-		} else {
+		}
+		else {
 			// we wait here for the hero to hopefully return
 			return new DoNothingAction();
 		}

@@ -39,11 +39,7 @@ public abstract class ConjuredMagicFigure extends Monster {
 		Percept p = new DisappearPercept(this, this.getRoom());
 		this.getRoom().distributePercept(p);
 		pos.figureLeaves();
-//		try {
-//			Thread.sleep(600);
-//		} catch (Exception e) {
-//		}
-		if (items.size() > 0) {
+		if (!items.isEmpty()) {
 			getRoom().distributePercept(new ItemDroppedPercept(items, this));
 			getRoom().addItems(items, null);
 		}

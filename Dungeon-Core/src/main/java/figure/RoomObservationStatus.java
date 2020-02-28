@@ -46,8 +46,8 @@ public class RoomObservationStatus {
 	
 	private final List<VisibilityModifier> visibilityModifier = new Vector<>();
 
-	public RoomObservationStatus(Figure map, JDPoint p) {
-		this.figure = map;
+	public RoomObservationStatus(Figure figure, JDPoint p) {
+		this.figure = figure;
 		this.point = p;
 	}
 
@@ -129,9 +129,12 @@ public class RoomObservationStatus {
 	public  synchronized void setVisibilityStatus(int newVisbility) {
 		this.visibilityStatus = newVisbility;
 		discoveryStatus = Math.min(VISIBILITY_SHRINE, Math.max(discoveryStatus, newVisbility));
-		final Room room = figure.getActualDungeon().getRoom(point);
-		room.setObserverStatus(figure, newVisbility);
-		
+		if(figure != null) {
+			// if game is not yet running figure is null
+			final Room room = figure.getActualDungeon().getRoom(point);
+			room.setObserverStatus(figure, newVisbility);
+		}
+
 	}
 
 	synchronized void addVisibilityModifier(VisibilityModifier mod) {

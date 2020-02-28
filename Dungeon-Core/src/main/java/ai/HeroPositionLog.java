@@ -3,10 +3,8 @@ package ai;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
@@ -14,7 +12,7 @@ import figure.hero.HeroInfo;
 import figure.percept.FleePercept;
 import figure.percept.HitPercept;
 import figure.percept.MissPercept;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.StepPercept;
@@ -49,9 +47,9 @@ public class HeroPositionLog {
 			perceptList.clear();
 		}
 		for (Percept element : sortedList) {
-			if (element instanceof MovePercept) {
-				if (((MovePercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					this.lastHeroLocation = ((MovePercept) element).getTo().getPoint();
+			if (element instanceof EntersPercept) {
+				if (((EntersPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					this.lastHeroLocation = ((EntersPercept) element).getTo().getPoint();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}

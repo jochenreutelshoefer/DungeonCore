@@ -27,6 +27,7 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
+import figure.other.Lioness;
 import game.JDGUI;
 import game.RoomInfoEntity;
 import graphics.util.DrawingRectangle;
@@ -633,8 +634,7 @@ public class GraphicObjectRenderer {
 		JDDimension figureInfoSize = getFigureInfoSize(m);
 		int sizeX = figureInfoSize.getWidth();
 		int sizeY = figureInfoSize.getHeight();
-		RelativeRectangle monsterDrawRect = new RelativeRectangle(relativeCoordinates.getX() - (sizeX / 2),
-				relativeCoordinates.getY() - (sizeY / 2), sizeX, sizeY);
+		RelativeRectangle monsterDrawRect = new RelativeRectangle(relativeCoordinates.getX() - (sizeX / 2), relativeCoordinates.getY() - (sizeY / 2), sizeX, sizeY);
 		JDImageProxy<?> image = ImageManager.getImage(m, m.getLookDirection());
 		if(m.isDead()) {
 			final DefaultAnimationSet dyingAnimationSet = ImageManager.getAnimationSet(m, Motion.TippingOver, m.getLookDirection());
@@ -673,6 +673,9 @@ public class GraphicObjectRenderer {
 		}
 		if (mClass == Spider.class) {
 			return monsterSizeSpider;
+		}
+		if (mClass == Lioness.class) {
+			return monsterSizeL;
 		}
 		return monsterSizeS;
 	}

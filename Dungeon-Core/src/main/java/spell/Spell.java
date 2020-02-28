@@ -1,8 +1,10 @@
 package spell;
 
 import dungeon.RoomEntity;
+import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.action.result.ActionResult;
+import game.InfoEntity;
 import game.RoomInfoEntity;
 import gui.Paragraph;
 
@@ -39,4 +41,6 @@ public interface Spell {
 	Paragraph[] getParagraphs();
 
 	void resetSpell();
+
+	InfoEntity getInfoObject(DungeonVisibilityMap map);
 }

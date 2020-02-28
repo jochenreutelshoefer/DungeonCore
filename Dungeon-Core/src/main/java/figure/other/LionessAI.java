@@ -13,7 +13,7 @@ import figure.action.Action;
 import figure.action.AttackAction;
 import figure.action.DoNothingAction;
 import figure.action.MoveAction;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.Percept;
 
 public class LionessAI extends AbstractAI {
@@ -46,7 +46,7 @@ public class LionessAI extends AbstractAI {
 		if(master.getRoomNumber().equals(info.getRoomNumber())) return new DoNothingAction();
 		
 		if(currentWalkTarget != null) {
-			int dir = new RouteInstruction(currentWalkTarget).getWay(info.getRoomInfo());
+			int dir = new RouteInstruction(currentWalkTarget).getWay(info.getRoomInfo(), this.master.getMap());
 			return new MoveAction(dir);
 		}
 		return null;
@@ -72,8 +72,8 @@ public class LionessAI extends AbstractAI {
 	@Override
 	protected void processPercept(Percept p) {
 		if(master.getRoomNumber().equals(info.getRoomNumber())) return;
-		if(p instanceof MovePercept) {
-			MovePercept movement = ((MovePercept)p);
+		if(p instanceof EntersPercept) {
+			EntersPercept movement = ((EntersPercept)p);
 			FigureInfo figure = movement.getFigure();
 			if(figure.equals(master)) {
 				RoomInfo target = movement.getTo();

@@ -75,8 +75,9 @@ import figure.percept.FightEndedPercept;
 import figure.percept.FleePercept;
 import figure.percept.HitPercept;
 import figure.percept.InfoPercept;
+import figure.percept.LeavesPercept;
 import figure.percept.MissPercept;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.ShieldBlockPercept;
@@ -98,7 +99,6 @@ import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
-import log.Log;
 import org.apache.log4j.Logger;
 import shrine.Shrine;
 import spell.AbstractSpell;
@@ -150,7 +150,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	private Spell lastSpell = null;
 
-	protected int figureID = -1;
+	private int figureID = -1;
 
 	protected Spellbook spellbook;
 
@@ -170,15 +170,15 @@ public abstract class Figure extends DungeonWorldObject
 
 	public boolean half_bonus = false;
 
-	public boolean raiding = false;
+	private boolean raiding = false;
 
-	boolean thief = false;
+	private boolean thief = false;
 
 	private List<Poisoning> poisonings = new LinkedList<Poisoning>();
 
 	protected String status = (" sieht noch recht stark aus.");
 
-	protected String shortStatus = ("stark");
+	private String shortStatus = ("stark");
 
 	protected boolean dead = false;
 
@@ -2138,12 +2138,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	public void move(Room target) {
 		Room toLeave = getRoom();
-		Percept leavePercept = new MovePercept(this, toLeave);
-
-		if (toLeave != null && toLeave != target) {
-			toLeave.figureLeaves(this);
-			toLeave.distributePercept(leavePercept);
-		}
 
 		int dir;
 		if (toLeave == null) {
@@ -2153,10 +2147,17 @@ public abstract class Figure extends DungeonWorldObject
 			dir = DungeonUtils.getNeighbourDirectionFromTo(toLeave, target)
 					.getValue();
 		}
+		Percept leavePercept = new LeavesPercept(this, toLeave, RouteInstruction.Direction.fromInteger(dir));
 
-		int toPosIndex = target.figureEnters(this, dir);
+		if (toLeave != null && toLeave != target) {
+			toLeave.figureLeaves(this);
+			toLeave.distributePercept(leavePercept);
+		}
+
+
+		target.figureEnters(this, dir);
 		lookInRoom();
-		Percept enterPercept = new MovePercept(this, target);
+		Percept enterPercept = new EntersPercept(this, target);
 		target.distributePercept(enterPercept);
 
 	}

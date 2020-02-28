@@ -318,14 +318,13 @@ public class DungeonUtils {
 	}
 
 	private static Way searchWayBackTrack2(Dungeon d, Room fromR, Room toR,
-										   boolean blocked) {
+										   DungeonVisibilityMap visMap, boolean blocked) {
 
-		DungeonVisibilityMap map = DungeonVisibilityMap.getAllVisMap(d);
-		RoomInfo from = RoomInfo.makeRoomInfo(fromR, map);
-		RoomInfo to = RoomInfo.makeRoomInfo(toR, map);
+		RoomInfo from = RoomInfo.makeRoomInfo(fromR, visMap);
+		RoomInfo to = RoomInfo.makeRoomInfo(toR, visMap);
 
 		if (from == to) {
-			LinkedList<RoomInfo> l = new LinkedList<RoomInfo>();
+			List<RoomInfo> l = new LinkedList<RoomInfo>();
 			l.add(from);
 			return new Way(l, false);
 		}
@@ -335,7 +334,7 @@ public class DungeonUtils {
 		if (list == null) {
 			return null;
 		}
-		LinkedList<RoomInfo> erg = new LinkedList<RoomInfo>();
+		List<RoomInfo> erg = new LinkedList<RoomInfo>();
 
 		for (int i = 0; i < list.size(); i++) {
 			erg.add(list.get(i).room);
@@ -343,32 +342,31 @@ public class DungeonUtils {
 		return new Way(erg, false);
 	}
 
-	public static Way findShortestWayFromTo2(Dungeon d, JDPoint r1, JDPoint r2,
-											 boolean crossBlockedDoors) {
-		return findShortestWayFromTo2(d, d.getRoom(r1), d.getRoom(r2), crossBlockedDoors);
+	public static Way findShortestWayFromTo2(Dungeon d, JDPoint r1, JDPoint r2,DungeonVisibilityMap visMap, boolean crossBlockedDoors) {
+		return findShortestWayFromTo2(d, d.getRoom(r1), d.getRoom(r2), visMap, crossBlockedDoors);
 	}
 
-	public static Way findShortestWayFromTo2(Dungeon d, Room r1, Room r2,
-											 boolean crossBlockedDoors) {
+	public static Way findShortestWayFromTo2(Dungeon d, Room r1, Room r2, DungeonVisibilityMap visMap, boolean crossBlockedDoors) {
 		//TODO: fix expansion: room list contains duplicates
 		if (r1.getLocation().equals(r2.getLocation())) {
 			// we are already there..
-			return new Way(Collections.singletonList(RoomInfo.makeRoomInfo(r1, DungeonVisibilityMap.getAllVisMap(d))), false);
+			return new Way(Collections.singletonList(RoomInfo.makeRoomInfo(r1, visMap)), false);
 		}
 		DungeonGame.getInstance().setTestTracker(new TestTracker());
-		Way way = searchWayBackTrack2(d, r1, r2, crossBlockedDoors);
+		Way way = searchWayBackTrack2(d, r1, r2, visMap, crossBlockedDoors);
 		removeCycles2(way);
 		builtShortCuts2(way);
 		return way;
 	}
 
-	public static int getFirstStepFromTo2(Dungeon d, Room r1, Room r2) {
+	public static int getFirstStepFromTo2(Dungeon d, Room r1, Room r2, DungeonVisibilityMap visMap) {
 		if (r1 == r2) {
 			return 0;
 		}
-		Way way = findShortestWayFromTo2(d, r1, r2, false);
+		Way way = findShortestWayFromTo2(d, r1, r2, visMap, false);
 		if (way == null) {
-			way = findShortestWayFromTo2(d, r1, r2, true);
+			// if there is no way without blocked doors then we also take a blocked way // TODO: caller should determine whether blocked ways are interesting or not
+			way = findShortestWayFromTo2(d, r1, r2, visMap, true);
 		}
 		Room next = null;
 		if (way.size() == 1) {
@@ -379,31 +377,6 @@ public class DungeonUtils {
 		int dir = 0;
 		if (next != null && next.hasConnectionTo(r1)) {
 			dir = r1.getConnectionDirectionTo(next);
-		}
-		return dir;
-	}
-
-	public static int getFirstStepFromTo(Room r1, Room r2,
-										 DungeonVisibilityMap map) {
-		if (r1 == r2) {
-			return 0;
-		}
-		List<Room> way = findShortestWayFromTo(r1, r2, map);
-		if (way == null) {
-			return 0;
-		}
-		Room next = null;
-		if (way.size() == 1) {
-		}
-		else {
-			next = (way.get(1));
-		}
-		int dir = 0;
-		if (next != null && next.hasConnectionTo(r1)) {
-			dir = r1.getConnectionDirectionTo(next);
-		}
-		else {
-
 		}
 		return dir;
 	}
@@ -486,7 +459,8 @@ class Explorer {
 		if (blocked) {
 			for (int i = 0; i < 4; i++) {
 
-				if (r.getDoors()[i] != null) {
+				DoorInfo[] doors = r.getDoors();
+				if (doors[i] != null) {
 					directions[i] = 2;
 				}
 				else {

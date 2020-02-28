@@ -93,7 +93,6 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 		TextureAtlas.AtlasRegion boxAtlasRegion = Assets.instance.getAtlasRegion(skillBackgroundImage, Assets.instance.getGuiAtlas());
 
 		batch.draw(boxAtlasRegion, iconPosX, iconPosY, 0 , 0 , iconSize, iconSize, 1f , 1f, 0);
-
 		String skillImage = imageManager.getImage(new SpellInfo(skill, null));
 		TextureAtlas.AtlasRegion skillAtlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());
 

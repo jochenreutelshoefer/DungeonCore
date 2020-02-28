@@ -6,7 +6,7 @@
  */
 package figure.monster;
 
-//import game.Game;
+import dungeon.Way;
 import figure.other.Lioness;
 import item.ItemInfo;
 
@@ -22,24 +22,12 @@ import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.other.Fir;
 
-/**
- * 
- * Diese Klasse stellt der Agentensteuerung alle Informationen 
- * zu Verf�gung, �ber die ein Monster verf�gt.
- * Alles was das Monster "sieht" kann hier abgefragt werden.
- * 
- */
+
 public class MonsterInfo extends FigureInfo {
 	
 	
 	private final Monster monster;
 	
-	
-	/**
-	 * Erzeugt ein MonsterInfo Objekt f�r ein Monster
-	 * 
-	 * @param monster Monster
-	 */
 	public MonsterInfo(Monster monster, DungeonVisibilityMap stats) {
 		super(monster,stats);
 		this.monster = monster;
@@ -53,19 +41,8 @@ public class MonsterInfo extends FigureInfo {
 	}
 	
 	@Override
-	public List<JDPoint> getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		if(!map.getFigure().equals(monster)) {
-			return null;
-		}
-		List<Room> l = DungeonUtils.findShortestWayFromTo(
-				monster.getRoom().getDungeon(), p1, p2,
-				DungeonVisibilityMap.getAllVisMap(monster.getRoom().getDungeon()));
-		List<JDPoint> l2 = new LinkedList<JDPoint>();
-		for (Iterator<Room> iter = l.iterator(); iter.hasNext();) {
-			Room element = iter.next();
-			l2.add(element.getNumber());
-		}
-		return l2;
+	public Way getShortestWayFromTo(JDPoint p1, JDPoint p2) {
+		return DungeonUtils.findShortestWayFromTo2(this.monster.getActualDungeon(), p1, p2, this.map, false);
 	}
 	
 	public int getLastMove() {

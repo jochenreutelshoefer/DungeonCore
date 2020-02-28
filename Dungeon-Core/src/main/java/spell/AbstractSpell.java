@@ -281,10 +281,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		fixCost = k;
 	}
 
-//	public boolean isFight() {
-//		return fightModus();
-//	}
-
 	/**
 	 * Returns the level.
 	 * 
@@ -301,13 +297,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	public boolean isAbleToCast(Figure mage) {
-		/*
-		double psy = mage.getPsycho().getValue();
-		if (psy < getDifficultyMin()) {
-			return false;
-
-		}
-		*/
 		if(mage.getRoom().fightRunning()) {
 			if(!this.isPossibleFight()) {
 				return false;
@@ -350,26 +339,15 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	@Override
 	public ActionResult fire(Figure mage, RoomEntity target, boolean doIt) {
 
-		double psy = mage.getPsycho().getValue();
-		/*
-		if (psy < getDifficultyMin()) {
-			String str = JDEnv.getResourceBundle().getString("spell_no_wisdom");
-			mage.tellPercept(new TextPercept(str));
-			// mage.getGame().getMain().log("Psyche kleiner
-			// Minimalanforderung!", 20);
-
-			return ActionResult.KNOWLEDGE;
-		}
-		*/
-
 		if(this instanceof TargetSpell) {
 			if(!((TargetSpell)this).distanceOkay(mage, target)) {
 				return ActionResult.DISTANCE;
 			}
 			if (!((TargetSpell)this).isApplicable(mage, target)) {
-				String str = JDEnv.getResourceBundle().getString(
-						"spell_wrong_target");
-				mage.tellPercept(new TextPercept(str));
+				if(doIt) {
+					String str = JDEnv.getResourceBundle().getString("spell_wrong_target");
+					mage.tellPercept(new TextPercept(str));
+				}
 				if(target == null) {
 					return ActionResult.NO_TARGET;
 				} else {

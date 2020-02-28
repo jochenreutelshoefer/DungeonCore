@@ -5,7 +5,7 @@ import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.percept.DiePercept;
 import figure.percept.FleePercept;
-import figure.percept.MovePercept;
+import figure.percept.EntersPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 
@@ -33,9 +33,9 @@ public class FigureTracker extends Tracker {
 			}
 		
 		}
-			if(element instanceof MovePercept) {
-				if(((MovePercept)element).getFigure().equals(target)) {
-					JDPoint lastLocation = ((MovePercept)element).getTo().getPoint();
+			if(element instanceof EntersPercept) {
+				if(((EntersPercept)element).getFigure().equals(target)) {
+					JDPoint lastLocation = ((EntersPercept)element).getTo().getPoint();
 					
 					this.sureInfo = new TrackingInfo(target,round,lastLocation);
 					

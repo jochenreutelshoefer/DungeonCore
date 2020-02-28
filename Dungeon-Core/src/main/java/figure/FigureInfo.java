@@ -20,6 +20,7 @@ import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.RoomInfo;
+import dungeon.Way;
 import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
@@ -79,15 +80,8 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.getClass();
 	}
 
-	public List<JDPoint> getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-
-		List<Room> wayFromTo = DungeonUtils.findShortestWayFromTo(
-				this.getRoomInfo(p1), this.getRoomInfo(p2));
-		List<JDPoint> result = new ArrayList<JDPoint>();
-		for (Room room : wayFromTo) {
-			result.add(room.getPoint());
-		}
-		return result;
+	public Way getShortestWayFromTo(JDPoint p1, JDPoint p2) {
+		return DungeonUtils.findShortestWayFromTo2(this.f.getActualDungeon(), p1, p2, this.map, false);
 	}
 
 	public abstract List<ItemInfo> getAllItems();
@@ -136,11 +130,9 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		int vis = map.getVisibilityStatus(f.getLocation());
 
 		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			final int positionInRoom = f.getPositionInRoom();
-			return positionInRoom;
+			return f.getPositionInRoom();
 		}
 		else {
-			//System.out.println("verschweige PosIndex!");
 			return -1;
 		}
 	}
