@@ -3,7 +3,6 @@ package de.jdungeon.asset;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
 import audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import figure.Figure;
 import figure.hero.Druid;
-import figure.hero.Hero;
 import figure.hero.Mage;
 import figure.hero.Thief;
 import figure.hero.Warrior;

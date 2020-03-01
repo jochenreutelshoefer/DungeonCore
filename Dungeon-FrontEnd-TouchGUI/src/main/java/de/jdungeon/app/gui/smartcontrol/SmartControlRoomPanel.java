@@ -206,7 +206,7 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				super.handleTouchEvent(touch);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
 				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
-				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().chestClicked(null, false));
 				return true;
 			}
 		};
@@ -282,11 +282,9 @@ public class SmartControlRoomPanel extends ContainerGUIElement implements EventL
 				return false;
 			}
 			Boolean fightRunning = roomInfo.fightRunning();
-			DoorInfo door = roomInfo
-					.getDoor(direction);
+			DoorInfo door = roomInfo.getDoor(direction);
 			if(door == null) return false;
-			PositionInRoomInfo scoutPosition = door
-					.getPositionAtDoor(roomInfo, false);
+			PositionInRoomInfo scoutPosition = door.getPositionAtDoor(roomInfo, false);
 			return fightRunning != null && !fightRunning && (!scoutPosition.isOccupied() || figure.equals(scoutPosition.getFigure()));
 		}
 	}

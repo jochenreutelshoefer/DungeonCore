@@ -57,7 +57,7 @@ public class DoorElement extends AnimatedSmartControlElement {
 	@Override
 	public boolean handleTouchEvent(Input.TouchEvent touch) {
 		super.handleTouchEvent(touch);
-		guiControl.plugActions(guiControl.getActionAssembler().wannaLockDoor(clickableObject));
+		guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaLockDoor(clickableObject));
 		if(clickableObject != null) {
 			EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
 		}

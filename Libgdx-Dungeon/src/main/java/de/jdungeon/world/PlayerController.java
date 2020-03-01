@@ -19,11 +19,17 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
+import game.RoomInfoEntity;
 import log.Log;
 import text.StatementManager;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.gui.activity.Activity;
+import de.jdungeon.app.gui.smartcontrol.UIFeedback;
+import de.jdungeon.gui.LibgdxFocusManager;
+import de.jdungeon.gui.activity.AttackActivity;
+import de.jdungeon.gui.activity.FleeActivity;
 
 /**
  * This class basically controls the interaction from the world (world loop)
@@ -42,32 +48,66 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
  */
 public class PlayerController implements JDGUI {
 
+
+
+
 	private HeroInfo heroInfo;
 
 	private ActionAssembler actionAssembler;
 
 	private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
+
 	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
 	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
 	private final Vector<Action> actionQueue = new Vector<>();
 	private final List<Percept> perceptQueue = new CopyOnWriteArrayList<>();
 	private final List<Percept> perceptQueueTransport = new CopyOnWriteArrayList<>();
-
 	private ViewModel viewModel;
+
+	private final AttackActivity attackActivity;
+	private final FleeActivity fleeActivity;
+
 
 	private GameScreen gameScreen;
 
-	public PlayerController(HeroInfo heroInfo) {
-		this.heroInfo = heroInfo;
-		this.actionAssembler = new ActionAssembler(heroInfo, this);
-	}
 
 	public PlayerController() {
+		attackActivity = new AttackActivity(this);
+		fleeActivity = new FleeActivity(this);
+	}
 
+	public FleeActivity getFleeActivity() {
+		return fleeActivity;
+	}
+
+	public AttackActivity getAttackActivity() {
+		return attackActivity;
+	}
+
+	@Override
+	public void setFigure(FigureInfo f) {
+		if (f instanceof HeroInfo) {
+			this.heroInfo = (HeroInfo) f;
+		}
+		else {
+			String message = "Figure type not matching in player controller initilaization: " + f;
+			Log.severe(message);
+			throw new IllegalStateException(message);
+		}
+		this.actionAssembler = new ActionAssembler(heroInfo, this);
 	}
 
 	public void setGameScreen(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
+	}
+
+	public HeroInfo getHeroInfo() {
+		return heroInfo;
+	}
+
+
+	public GameScreen getGameScreen() {
+		return gameScreen;
 	}
 
 	/**
@@ -120,6 +160,7 @@ public class PlayerController implements JDGUI {
 		}
 	}
 
+
 	@Override
 	public FigureInfo getFigure() {
 		return heroInfo;
@@ -135,18 +176,7 @@ public class PlayerController implements JDGUI {
 		this.visibilityIncreasedRooms.clear();
 	}
 
-	@Override
-	public void setFigure(FigureInfo f) {
-		if (f instanceof HeroInfo) {
-			this.heroInfo = (HeroInfo) f;
-		}
-		else {
-			String message = "Figure type not matching in player controller initilaization: " + f;
-			Log.severe(message);
-			throw new IllegalStateException(message);
-		}
-		this.actionAssembler = new ActionAssembler(heroInfo, this);
-	}
+
 
 	@Override
 	public void actionProcessed(Action a, ActionResult res) {

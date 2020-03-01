@@ -2,7 +2,6 @@ package level;
 
 import dungeon.Dungeon;
 import dungeon.JDPoint;
-import dungeon.generate.DungeonFiller;
 import dungeon.generate.DungeonGenerationFailedException;
 import dungeon.generate.SectorDungeonFiller1;
 import game.DungeonGame;

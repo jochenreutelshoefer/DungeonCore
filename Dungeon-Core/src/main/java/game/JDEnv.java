@@ -25,31 +25,7 @@ public class JDEnv {
 	 * bundles
 	 */
 	public static void init(ResourceBundle bundle) {
-		// try {
-		//UTF8Control utf8Control = new UTF8Control();
 		res = bundle;
-		/*
-			if (english) {
-				res = ResourceBundle.getBundle(baseName, Locale.ENGLISH);
-				// res = utf8Control.newBundle(baseName, loc_en, null, JDEnv.class.getClassLoader(), false);
-			} else {
-				// res = utf8Control.newBundle(baseName, loc_de, null, JDEnv.class.getClassLoader(), false);
-				res = sharedLoader.getBundle(baseName);
-				res = ResourceBundle.getBundle(baseName, Locale.GERMAN);
-			}
-			*/
-			/*
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
 		if (res == null) {
 			Logger.getLogger(JDEnv.class).error("Texts ResourceBundle ist null");
 		}

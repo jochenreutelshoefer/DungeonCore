@@ -30,6 +30,7 @@ public class GameScreenInputProcessor extends GestureDetector {
 
 	private final GameScreen gameScreen;
 	private long lastClickTime;
+	private final KeyboardControl keyboardControl;
 
 	public GameScreenInputProcessor(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
 		super(new MyGestureListener(gameScreen));
@@ -37,6 +38,7 @@ public class GameScreenInputProcessor extends GestureDetector {
 		this.game = game;
 		this.playerController = playerController;
 		this.gameScreen = gameScreen;
+		keyboardControl = new KeyboardControl(playerController, cameraHelper);
 
 	}
 
@@ -76,72 +78,8 @@ public class GameScreenInputProcessor extends GestureDetector {
 	private void handleControlEvents(float deltaTime) {
 		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
 
-		/*
-		long now = System.currentTimeMillis();
-		if(now - lastClickTime < 100) {
-			// we do not allow clicks faster than 10ms one after another to filter duplicates
-			return;
-		}
-		lastClickTime = now;
-		*/
+		keyboardControl.handleKeyEvents(deltaTime);
 
-
-		float sprMovedSpeed = 500 * deltaTime;
-		/*
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) moveSelectedSprite(-sprMovedSpeed, 0);
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) moveSelectedSprite(sprMovedSpeed, 0);
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) moveSelectedSprite(0, sprMovedSpeed);
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) moveSelectedSprite(0, -sprMovedSpeed);
-		*/
-
-
-		if (Gdx.input.isKeyPressed((Input.Keys.RIGHT))) plugWalkDirectionActions(RouteInstruction.Direction.East);
-		if (Gdx.input.isKeyPressed((Input.Keys.DOWN))) plugWalkDirectionActions(RouteInstruction.Direction.South);
-		if (Gdx.input.isKeyPressed((Input.Keys.LEFT))) plugWalkDirectionActions(RouteInstruction.Direction.West);
-		if (Gdx.input.isKeyPressed((Input.Keys.UP))) plugWalkDirectionActions(RouteInstruction.Direction.North);
-
-		// camera controls move
-		float camMoveSpeed = 500 * deltaTime;
-		float cameraMoveSpeedAcceleratorFactor = 5;
-		if (Gdx.input.isKeyPressed((Input.Keys.SHIFT_LEFT))) camMoveSpeed *= cameraMoveSpeedAcceleratorFactor;
-
-		if (Gdx.input.isKeyPressed((Input.Keys.D))) moveCamera(camMoveSpeed, 0);
-		if (Gdx.input.isKeyPressed((Input.Keys.S))) moveCamera(0, camMoveSpeed);
-		if (Gdx.input.isKeyPressed((Input.Keys.A))) moveCamera(-camMoveSpeed, 0);
-		if (Gdx.input.isKeyPressed((Input.Keys.W))) moveCamera(0, -camMoveSpeed);
-
-		if (Gdx.input.isKeyPressed((Input.Keys.BACKSPACE))) cameraHelper.setPosition(0, 0);
-
-		// camera controls zoom
-		float camZoomSpeed = 1 * deltaTime;
-		float camZoomSpeedAccel = 5;
-		if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) camZoomSpeed *= camZoomSpeedAccel;
-		if (Gdx.input.isKeyPressed(Input.Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
-		if (Gdx.input.isKeyPressed(Input.Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
-		if (Gdx.input.isKeyPressed(Input.Keys.SLASH)) cameraHelper.setZoom(1);
-
-	}
-
-	private long last_key_pressed_event;
-
-	private synchronized void plugWalkDirectionActions(RouteInstruction.Direction direction) {
-		if(System.currentTimeMillis() - last_key_pressed_event < 200) {
-			// we do not process move input events faster than any 200 msec
-			// as there are coming many events with every key press
-			return;
-		}
-		last_key_pressed_event = System.currentTimeMillis();
-		ActionAssembler actionController = playerController.getActionAssembler();
-		List<Action> actions = actionController
-				.getActionAssembler()
-				.wannaWalk(direction.getValue());
-		playerController.plugActions(actions);
-	}
-
-	private void moveCamera(float x, float y) {
-		x += cameraHelper.getPosition().x;
-		y += cameraHelper.getPosition().y;
-		cameraHelper.setPosition(x, y);
 	}
 
 	public void zoomIn() {

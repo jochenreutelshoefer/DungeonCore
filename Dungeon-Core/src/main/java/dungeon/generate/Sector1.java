@@ -374,9 +374,6 @@ public class Sector1 extends Sector {
 		Room r1 = mainHall.getRandomRoomForShrineNonRQ();
 		Room r2 = normalRaum.getRandomRoom();
 		
-		List<Room> way = DungeonUtils.findShortestWayFromTo(r1, r2,
-				DungeonVisibilityMap.getAllVisMap(this.d));
-		
 
 	}
 

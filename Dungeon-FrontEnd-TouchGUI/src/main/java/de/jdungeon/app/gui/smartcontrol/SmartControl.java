@@ -231,7 +231,7 @@ public class SmartControl extends ContainerGUIElement implements EventListener {
 			if (!chestItemWheelShowing) {
 				PositionInRoomInfo pos = figureInfo.getPos();
 				if (!(pos.getIndex() == Position.Pos.NW.getValue())) {
-					guiControl.getActionAssembler().wannaStepToPosition(Position.Pos.NW);
+					guiControl.getActionAssemblerHelper().wannaStepToPosition(Position.Pos.NW);
 				}
 				setChestItemWheelVisible();
 				smartControl.setVisible(false);

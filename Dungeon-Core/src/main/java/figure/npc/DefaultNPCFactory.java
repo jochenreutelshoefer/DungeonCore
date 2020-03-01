@@ -1,11 +1,11 @@
 package figure.npc;
 
-import android.util.Log;
 import figure.hero.Character;
 import figure.hero.Hero;
 import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
+import org.apache.log4j.Logger;
 
 import static figure.hero.Hero.*;
 
@@ -31,7 +31,7 @@ public class DefaultNPCFactory {
 		}
 		if(values == null) {
 			String message = "hero category not found";
-			Log.w(DefaultNPCFactory.class.getSimpleName(), message);
+			Logger.getLogger(DefaultNPCFactory.class.getSimpleName()).warn(message);
 			throw new IllegalArgumentException(message);
 		}
 		Hero npc = HeroUtil.getBasicHero(heroCode, name, Zodiac.Twin, Profession.Hunter);

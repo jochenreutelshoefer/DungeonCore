@@ -100,12 +100,12 @@ public class LibgdxPositionElement extends LibgdxAnimatedSmartControlElement {
 		if (action != null) {
 			if (action instanceof FigureInfo) {
 				EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(action));
-				actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaAttack((FigureInfo) action));
+				actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaAttack((FigureInfo) action));
 			}
 		}
 		else {
 			if (this.positionIndex > -1) {
-				actionAssembler.plugActions(actionAssembler.getActionAssembler()
+				actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper()
 						.wannaStepToPosition(Position.Pos.fromValue(positionIndex)));
 				if (clickableObject != null) {
 					EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));

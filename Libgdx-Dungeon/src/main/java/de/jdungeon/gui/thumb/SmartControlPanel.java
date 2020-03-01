@@ -205,7 +205,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				super.handleClickEvent(x, y);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
 				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
-				guiControl.plugActions(guiControl.getActionAssembler().chestClicked(null, false));
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().chestClicked(null, false));
 				return true;
 			}
 		};

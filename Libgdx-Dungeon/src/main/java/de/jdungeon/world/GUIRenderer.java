@@ -19,17 +19,15 @@ import util.JDDimension;
 
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.GameOverView;
 import de.jdungeon.app.gui.HealthBar;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.TextPerceptView;
-import de.jdungeon.app.gui.smartcontrol.UIFeedback;
 import de.jdungeon.app.screen.InfoMessagePopupEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
 import de.jdungeon.gui.LibgdxFocusManager;
+import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.gui.LibgdxGameOverView;
 import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
@@ -40,7 +38,6 @@ import de.jdungeon.gui.LibgdxUseSkillPresenter;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
-import de.jdungeon.gui.LibgdxGUIElement;
 
 import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
 
@@ -63,6 +60,8 @@ public class GUIRenderer implements Disposable {
 	private LibgdxInfoPanel infoPanel;
 	private TextPerceptView textView;
 
+
+
 	private final LibgdxFocusManager focusManager;
 
 	//protected final List<GUIElement> guiElements = new ArrayList<>();
@@ -71,7 +70,7 @@ public class GUIRenderer implements Disposable {
 	private LibgdxGameOverView gameOverView;
 	private GLProfiler glProfiler;
 	private LibgdxItemWheel itemWheelHeroItems;
-	private UIFeedback message;
+	private String message;
 
 	private GUIImageManager guiImageManager;
 	private InventoryImageManager inventoryImageManager;
@@ -206,8 +205,7 @@ public class GUIRenderer implements Disposable {
 
 		int screenWidthBy2 = (int) (screenWidth / 2.07);
 		int itemPresenterHeight = 100;
-		LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(figure, inputController.getPlayerController()
-				.getActionAssembler(), focusManager, this);
+		LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(inputController.getPlayerController());
 		LibgdxUseSkillPresenter skillPresenter = new LibgdxUseSkillPresenter(
 				new JDPoint(screenWidth / 2, screenHeight - itemPresenterHeight - 25),
 				new JDDimension(screenWidthBy2, itemPresenterHeight),
@@ -252,6 +250,10 @@ public class GUIRenderer implements Disposable {
 				guiElement.update(deltaTime);
 			}
 		}
+	}
+
+	public LibgdxFocusManager getFocusManager() {
+		return focusManager;
 	}
 
 	public LibgdxGameOverView getGameOverView() {
@@ -340,14 +342,14 @@ public class GUIRenderer implements Disposable {
 		updateGUIElements(deltaTime);
 
 		if (getMessage() != null) {
-			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(getMessage().getMessage()));
+			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(getMessage()));
 			// TODO: test
 			// should animate red enemy blobs if there are multiple and no enemy is selected
 			smartControl.animateEnemyBlobs();
 		}
 	}
 
-	public UIFeedback getMessage() {
+	public String getMessage() {
 		return message;
 	}
 
@@ -355,7 +357,7 @@ public class GUIRenderer implements Disposable {
 		message = null;
 	}
 
-	public void setMessage(UIFeedback message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 

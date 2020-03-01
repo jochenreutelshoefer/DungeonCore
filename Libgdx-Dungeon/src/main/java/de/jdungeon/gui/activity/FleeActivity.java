@@ -5,30 +5,31 @@ import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.action.StepAction;
-import game.RoomInfoEntity;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 22.02.20.
  */
 public class FleeActivity extends AbstractExecutableActivity {
-	private final ActionAssembler actionAssembler;
+	private final PlayerController controller;
 
-	public FleeActivity(ActionAssembler actionAssembler) {
-		this.actionAssembler = actionAssembler;
+	public FleeActivity(PlayerController controller) {
+		this.controller = controller;
 	}
 
 	@Override
 	public void execute() {
+		ActionAssembler actionAssembler = controller.getActionAssembler();
 		PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
 		RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 		if (possibleFleeDirection != null) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaFlee());
+			actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaFlee());
 		} else {
 			StepAction stepActionToDoor = DefaultMonsterIntelligence.getStepActionToDoor(actionAssembler.getFigure());
 			if(stepActionToDoor != null) {
@@ -42,12 +43,12 @@ public class FleeActivity extends AbstractExecutableActivity {
 
 	@Override
 	public boolean isCurrentlyPossible() {
-		RoomInfo roomInfo = actionAssembler.getFigure().getRoomInfo();
+		RoomInfo roomInfo = controller.getActionAssembler().getFigure().getRoomInfo();
 		if(roomInfo == null) return false;
-		PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
+		PositionInRoomInfo pos = controller.getActionAssembler().getFigure().getPos();
 		if(pos == null) return false;
 		Boolean fightRunning = roomInfo.fightRunning();
-		return fightRunning != null &&  fightRunning && (pos.getPossibleFleeDirection() != null || DefaultMonsterIntelligence.getStepActionToDoor(actionAssembler.getFigure()) != null);
+		return fightRunning != null &&  fightRunning && (pos.getPossibleFleeDirection() != null || DefaultMonsterIntelligence.getStepActionToDoor(controller.getActionAssembler().getFigure()) != null);
 	}
 
 	@Override

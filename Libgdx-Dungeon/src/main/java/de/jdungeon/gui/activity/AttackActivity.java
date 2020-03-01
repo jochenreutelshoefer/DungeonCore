@@ -13,7 +13,7 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.app.gui.smartcontrol.UIFeedback;
 import de.jdungeon.gui.LibgdxFocusManager;
-import de.jdungeon.world.GUIRenderer;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -21,45 +21,44 @@ import de.jdungeon.world.GUIRenderer;
  */
 public class AttackActivity extends AbstractExecutableActivity {
 
-	private final LibgdxFocusManager focusManager;
-	private final ActionAssembler guiControl;
-	private final GUIRenderer guiRenderer;
+	private final PlayerController controller;
 
-	public AttackActivity(LibgdxFocusManager focusManager, ActionAssembler actionAssembler, GUIRenderer guiRenderer) {
-		this.focusManager = focusManager;
-		this.guiControl = actionAssembler;
-		this.guiRenderer = guiRenderer;
+	public AttackActivity(PlayerController controller) {
+		this.controller = controller;
 	}
 
 	@Override
 	public void execute() {
+
+		ActionAssembler actionAssembler = controller.getActionAssembler();
+		LibgdxFocusManager focusManager = controller.getGameScreen().getFocusManager();
 		Object highlightedEntity = focusManager.getWorldFocusObject();
-		if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(guiControl.getFigure().getRoomInfo().getLocation())) {
+		if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(actionAssembler
+				.getFigure().getRoomInfo().getLocation())) {
 			// moved out of room since last figure focus hence reset focus
 			focusManager.setWorldFocusObject((RoomInfoEntity)null);
 			highlightedEntity = null;
 		}
-
 		List<FigureInfo> hostileFigures = getHostileFiguresList();
 		if (highlightedEntity instanceof FigureInfo) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			guiControl.plugActions(guiControl.getActionAssembler().wannaAttack((FigureInfo) highlightedEntity));
+			actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaAttack((FigureInfo) highlightedEntity));
 		} else if (hostileFigures.size() == 1) {
 			FigureInfo target = hostileFigures.get(0);
-			guiControl.plugActions(guiControl.getActionAssembler().wannaAttack(target));
+			actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaAttack(target));
 			focusManager.setWorldFocusObject(target);
 		} else {
-			guiRenderer.setMessage(UIFeedback.SelectEnemy);
+			controller.getGameScreen().getGuiRenderer().setMessage(UIFeedback.SelectEnemy.getMessage());
 		}
 	}
 
 	private List<FigureInfo> getHostileFiguresList() {
-		RoomInfo roomInfo = guiControl.getFigure().getRoomInfo();
+		RoomInfo roomInfo = controller.getActionAssembler().getFigure().getRoomInfo();
 		if(roomInfo == null) return Collections.emptyList();
 		List<FigureInfo> figureInfos = roomInfo.getFigureInfos();
 		List<FigureInfo> hostileFigures = new ArrayList<>();
 		for (FigureInfo figureInfo : figureInfos) {
-			if (figureInfo.isHostile(guiControl.getFigure())) {
+			if (figureInfo.isHostile(controller.getActionAssembler().getFigure())) {
 				hostileFigures.add(figureInfo);
 			}
 		}
@@ -68,11 +67,11 @@ public class AttackActivity extends AbstractExecutableActivity {
 
 	@Override
 	public boolean isCurrentlyPossible() {
-		if(guiControl.getFigure() == null) return false;
+		if(controller.getActionAssembler().getFigure() == null) return false;
 		if(getHostileFiguresList().isEmpty()) {
 			return false;
 		}
-		return guiControl.getFigure().getRoomInfo().fightRunning();
+		return controller.getActionAssembler().getFigure().getRoomInfo().fightRunning();
 	}
 
 	@Override

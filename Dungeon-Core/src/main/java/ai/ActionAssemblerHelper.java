@@ -173,6 +173,8 @@ public class ActionAssemblerHelper {
 		return target;
 	}
 
+
+
 	public List<Action> wannaUseShrine(RoomInfoEntity target, boolean right) {
 		List<Action> actions = new ArrayList<>();
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
@@ -339,6 +341,106 @@ public class ActionAssemblerHelper {
 
 	public List<Action> wannaStepToPosition(Position.Pos pos) {
 		return wannaStepToPosition(figure.getRoomInfo().getPositionInRoom(pos.getValue()));
+	}
+
+	public List<Action> wannaStepNorth() {
+		PositionInRoomInfo pos = figure.getPos();
+		int currentPosIndex = pos.getIndex();
+		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
+		if(currentPos == Position.Pos.NW || currentPos == Position.Pos.N || currentPos == Position.Pos.NE ) {
+			return Collections.emptyList();
+		}
+		if(currentPos == Position.Pos.E) {
+			return wannaStepToPosition(Position.Pos.NE);
+		}
+		if(currentPos == Position.Pos.SE) {
+			return wannaStepToPosition(Position.Pos.E);
+		}
+		if(currentPos == Position.Pos.S) {
+			return wannaStepToPosition(Position.Pos.N);
+		}
+		if(currentPos == Position.Pos.SW) {
+			return wannaStepToPosition(Position.Pos.W);
+		}
+		if(currentPos == Position.Pos.W) {
+			return wannaStepToPosition(Position.Pos.NW);
+		}
+		return Collections.emptyList();
+	}
+
+	public List<Action> wannaStepSouth() {
+		PositionInRoomInfo pos = figure.getPos();
+		int currentPosIndex = pos.getIndex();
+		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
+		if(currentPos == Position.Pos.SW || currentPos == Position.Pos.S || currentPos == Position.Pos.SE ) {
+			return Collections.emptyList();
+		}
+		if(currentPos == Position.Pos.E) {
+			return wannaStepToPosition(Position.Pos.SE);
+		}
+		if(currentPos == Position.Pos.NE) {
+			return wannaStepToPosition(Position.Pos.E);
+		}
+		if(currentPos == Position.Pos.N) {
+			return wannaStepToPosition(Position.Pos.S);
+		}
+		if(currentPos == Position.Pos.NW) {
+			return wannaStepToPosition(Position.Pos.W);
+		}
+		if(currentPos == Position.Pos.W) {
+			return wannaStepToPosition(Position.Pos.SW);
+		}
+		return Collections.emptyList();
+	}
+
+	public List<Action> wannaStepWest() {
+		PositionInRoomInfo pos = figure.getPos();
+		int currentPosIndex = pos.getIndex();
+		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
+		if(currentPos == Position.Pos.SW || currentPos == Position.Pos.W || currentPos == Position.Pos.NW ) {
+			return Collections.emptyList();
+		}
+		if(currentPos == Position.Pos.E) {
+			return wannaStepToPosition(Position.Pos.W);
+		}
+		if(currentPos == Position.Pos.NE) {
+			return wannaStepToPosition(Position.Pos.N);
+		}
+		if(currentPos == Position.Pos.N) {
+			return wannaStepToPosition(Position.Pos.NW);
+		}
+		if(currentPos == Position.Pos.SE) {
+			return wannaStepToPosition(Position.Pos.S);
+		}
+		if(currentPos == Position.Pos.S) {
+			return wannaStepToPosition(Position.Pos.SW);
+		}
+		return Collections.emptyList();
+	}
+
+	public List<Action> wannaStepEast() {
+		PositionInRoomInfo pos = figure.getPos();
+		int currentPosIndex = pos.getIndex();
+		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
+		if(currentPos == Position.Pos.SE || currentPos == Position.Pos.E || currentPos == Position.Pos.NE ) {
+			return Collections.emptyList();
+		}
+		if(currentPos == Position.Pos.W) {
+			return wannaStepToPosition(Position.Pos.E);
+		}
+		if(currentPos == Position.Pos.NW) {
+			return wannaStepToPosition(Position.Pos.N);
+		}
+		if(currentPos == Position.Pos.N) {
+			return wannaStepToPosition(Position.Pos.NE);
+		}
+		if(currentPos == Position.Pos.SW) {
+			return wannaStepToPosition(Position.Pos.S);
+		}
+		if(currentPos == Position.Pos.S) {
+			return wannaStepToPosition(Position.Pos.SE);
+		}
+		return Collections.emptyList();
 	}
 
 	public List<Action> wannaStepToPosition(PositionInRoomInfo pos) {

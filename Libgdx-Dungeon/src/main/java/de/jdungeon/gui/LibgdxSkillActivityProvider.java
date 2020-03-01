@@ -2,32 +2,20 @@ package de.jdungeon.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import figure.FigureInfo;
 import figure.hero.HeroInfo;
-import game.InfoEntity;
-import game.RoomInfoEntity;
 import spell.AbstractSpell;
-import spell.Raid;
 import spell.SpellInfo;
-import spell.TargetScope;
 
-import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.DefaultActivity;
 import de.jdungeon.app.gui.activity.ExecutableActivity;
-import de.jdungeon.app.gui.skillselection.SkillImageManager;
-import de.jdungeon.app.gui.smartcontrol.UIFeedback;
 import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
 import de.jdungeon.gui.activity.SpellActivity;
-import de.jdungeon.world.GUIRenderer;
+import de.jdungeon.world.PlayerController;
 
 public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
@@ -41,26 +29,16 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
 
 	private final HeroInfo info;
-	private final ActionAssembler actionAssembler;
-	private final LibgdxFocusManager focusManager;
-	private boolean fightState = false;
-
+	private final PlayerController controller;
 	private final List<Activity> activityCache = new ArrayList<>();
 
 
-	private final Activity attack;
-	private final Activity flee;
 
-
-	public LibgdxSkillActivityProvider(HeroInfo info, ActionAssembler actionAssembler, LibgdxFocusManager focusManager, GUIRenderer guiRenderer) {
+	public LibgdxSkillActivityProvider(PlayerController controller) {
 		super();
-		this.info = info;
-		this.actionAssembler = actionAssembler;
-		this.focusManager = focusManager;
+		this.info = controller.getHeroInfo();
+		this.controller = controller;
 		updateActivityList();
-
-		attack = new AttackActivity(focusManager, actionAssembler, guiRenderer);
-		flee = new FleeActivity(actionAssembler);
 	}
 
 	@Override
@@ -74,12 +52,13 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
 	private void updateActivityList() {
 		activityCache.clear();
-		activityCache.add(attack);
-		activityCache.add(flee);
+		activityCache.add(controller.getAttackActivity());
+		activityCache.add(controller.getFleeActivity());
 
+		// todo: shouldn't these spell activities somehow also obtained from the controller?
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
-				activityCache.add(new SpellActivity(spell, actionAssembler, focusManager));
+				activityCache.add(new SpellActivity(spell, controller));
 		}
 	}
 

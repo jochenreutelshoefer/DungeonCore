@@ -63,7 +63,7 @@ public class LibgdxDoorElement extends LibgdxAnimatedSmartControlElement {
 	@Override
 	public boolean handleClickEvent(int x, int y) {
 		super.handleClickEvent(x, y);
-		guiControl.plugActions(guiControl.getActionAssembler().wannaLockDoor(clickableObject));
+		guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaLockDoor(clickableObject));
 		if(clickableObject != null) {
 			EventManager.getInstance().fireEvent(new InfoObjectClickedEvent(clickableObject));
 		}

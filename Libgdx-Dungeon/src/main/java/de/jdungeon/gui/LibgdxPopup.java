@@ -82,7 +82,7 @@ public class LibgdxPopup extends AbstractLibgdxGUIElement {
 
 		BitmapFont headerFont = Assets.instance.fonts.defaultBigFlipped;
 		headerFont.setColor(Color.RED);
-		int headerWidth = 100;
+		int headerWidth = 140;
 		layout.setText(headerFont, text, Color.WHITE, headerWidth, Align.center, true);
 		int headerStartX = position.getX() + dimension.getWidth() / 2 - headerWidth / 2;
 		headerFont.draw(batch, layout, headerStartX, position.getY() + 50);

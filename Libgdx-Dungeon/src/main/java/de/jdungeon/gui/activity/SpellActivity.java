@@ -9,12 +9,12 @@ import game.InfoEntity;
 import game.RoomInfoEntity;
 import spell.SpellInfo;
 import spell.TargetScope;
-import spell.TargetSpell;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.gui.LibgdxFocusManager;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -26,10 +26,10 @@ public class SpellActivity extends AbstractExecutableActivity {
 	private final ActionAssembler actionAssembler;
 	private final LibgdxFocusManager focusManager;
 
-	public SpellActivity(SpellInfo spell, ActionAssembler actionAssembler, LibgdxFocusManager focusManager) {
+	public SpellActivity(SpellInfo spell, PlayerController controller) {
 		this.spell = spell;
-		this.actionAssembler = actionAssembler;
-		this.focusManager = focusManager;
+		this.actionAssembler = controller.getActionAssembler();
+		this.focusManager = controller.getGameScreen().getFocusManager();
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class SpellActivity extends AbstractExecutableActivity {
 		RoomInfoEntity target = findTarget(highlightedEntity, true);
 
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		actionAssembler.plugActions(actionAssembler.getActionAssembler().wannaSpell(spell, target));
+		actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaSpell(spell, target));
 	}
 
 	private RoomInfoEntity findTarget(RoomInfoEntity highlightedEntity, boolean doIt) {

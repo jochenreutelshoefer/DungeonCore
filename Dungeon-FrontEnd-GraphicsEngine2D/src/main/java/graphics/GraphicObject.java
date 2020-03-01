@@ -36,7 +36,6 @@ public class GraphicObject {
 	protected DrawingRectangle clickRect;
 	protected JDColor c;
 
-	protected boolean flipped = false;
 	protected Object clickedObject;
 
 	protected boolean rim = false;

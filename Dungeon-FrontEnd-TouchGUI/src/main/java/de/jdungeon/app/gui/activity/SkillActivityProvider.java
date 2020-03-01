@@ -154,10 +154,10 @@ public class SkillActivityProvider implements ActivityProvider {
 			}
 			if (highlightedEntity instanceof FigureInfo) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack((FigureInfo) highlightedEntity));
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaAttack((FigureInfo) highlightedEntity));
 			} else if (hostileFigures.size() == 1) {
 				FigureInfo target = hostileFigures.get(0);
-				guiControl.plugActions(guiControl.getActionAssembler().wannaAttack(target));
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaAttack(target));
 				focusManager.setWorldFocusObject(target);
 			} else {
 				smartControl.setMessage(UIFeedback.SelectEnemy);
@@ -171,7 +171,7 @@ public class SkillActivityProvider implements ActivityProvider {
 		else if (o.equals(WALK)) {
 			if (highlightedEntity instanceof PositionInRoomInfo) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				guiControl.plugActions(guiControl.getActionAssembler().wannaStepToPosition(
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaStepToPosition(
 								((PositionInRoomInfo) highlightedEntity)));
 			}
 			if (highlightedEntity instanceof RoomInfo) {
@@ -179,7 +179,7 @@ public class SkillActivityProvider implements ActivityProvider {
 						info.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				guiControl.plugActions(guiControl.getActionAssembler().wannaWalk(directionToWalk));
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaWalk(directionToWalk));
 			}
 		}
 		else if (o.equals(FLEE)) {
@@ -187,7 +187,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 			if (possibleFleeDirection != null) {
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				guiControl.plugActions(guiControl.getActionAssembler().wannaFlee());
+				guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaFlee());
 			}
 		}
 		else if (o instanceof SpellInfo) {
@@ -207,7 +207,7 @@ public class SkillActivityProvider implements ActivityProvider {
 					if (spell.getTargetClass().isAssignableFrom(highlightedEntity.getClass())) {
 						// target has matching object class
 						AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-						guiControl.plugActions(guiControl.getActionAssembler().wannaSpell(spell, highlightedEntity));
+						guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaSpell(spell, highlightedEntity));
 					}
 					else {
 
@@ -224,12 +224,12 @@ public class SkillActivityProvider implements ActivityProvider {
 					if (targetEntitiesInScope.size() == 1) {
 						RoomInfoEntity targetEntity = targetEntitiesInScope.get(0);
 						focusManager.setWorldFocusObject(targetEntity);
-						guiControl.plugActions(guiControl.getActionAssembler().wannaSpell(spell, targetEntity));
+						guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaSpell(spell, targetEntity));
 					}
 					else {
 						// we leave the message handling up to the core action handling triggering
 						// an action with target null
-						guiControl.plugActions(guiControl.getActionAssembler().wannaSpell(spell, null));
+						guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaSpell(spell, null));
 
 					}
 				}
@@ -237,7 +237,7 @@ public class SkillActivityProvider implements ActivityProvider {
 			} else {
 				// no target required
 				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				guiControl.plugActions(guiControl.getActionAssembler()
+				guiControl.plugActions(guiControl.getActionAssemblerHelper()
 						.wannaSpell(spell, null));
 			}
 

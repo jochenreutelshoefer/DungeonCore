@@ -21,7 +21,9 @@ public class JDPoint implements Serializable{
     	this.x = x;
     	this.y = y;
     }
-    
+
+
+
     public JDPoint(double x, double y){
     	this.x = (int)x;
     	this.y = (int)y;

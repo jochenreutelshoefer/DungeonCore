@@ -71,6 +71,8 @@ public class ActionAssembler implements EventListener {
 		}
 	}
 
+
+
 	public FigureInfo getFigure() {
 		return figure;
 	}
@@ -149,7 +151,7 @@ public class ActionAssembler implements EventListener {
 
 	}
 
-	public ActionAssemblerHelper getActionAssembler() {
+	public ActionAssemblerHelper getActionAssemblerHelper() {
 		return actionAssembler;
 	}
 
@@ -287,7 +289,7 @@ public class ActionAssembler implements EventListener {
 
 		}
 		if (event instanceof ShrineButtonClickedEvent) {
-			List<Action> actions = this.getActionAssembler().wannaUseShrine(this.figure.getRoomInfo(), false);
+			List<Action> actions = this.getActionAssemblerHelper().wannaUseShrine(this.figure.getRoomInfo(), false);
 			plugActions(actions);
 		}
 
@@ -295,4 +297,18 @@ public class ActionAssembler implements EventListener {
 			endRound();
 		}
 	}
+
+	public void wannaFlee() {
+		plugActions(getActionAssemblerHelper().wannaFlee());
+	}
+
+	public void wannaWalk(int directionValue) {
+		plugActions(getActionAssemblerHelper().wannaWalk(directionValue));
+	}
+
+	public void wannaScout(int directionValue) {
+		plugActions(getActionAssemblerHelper().wannaScout(directionValue));
+	}
+
+
 }

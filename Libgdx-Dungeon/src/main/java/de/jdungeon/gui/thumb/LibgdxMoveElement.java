@@ -137,10 +137,10 @@ public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
 		super.handleClickEvent(x, y);
 		final Boolean fightRunning = figure.getRoomInfo().fightRunning();
 		if (fightRunning != null && fightRunning) {
-			guiControl.plugActions(guiControl.getActionAssembler().wannaFlee());
+			guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaFlee());
 		}
 		else {
-			guiControl.plugActions(guiControl.getActionAssembler().wannaWalk(direction.getValue()));
+			guiControl.plugActions(guiControl.getActionAssemblerHelper().wannaWalk(direction.getValue()));
 		}
 		return true;
 	}
