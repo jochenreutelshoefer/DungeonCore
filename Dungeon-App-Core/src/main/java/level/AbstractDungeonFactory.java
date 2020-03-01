@@ -8,6 +8,7 @@ import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
 import dungeon.generate.ReachabilityChecker;
 import dungeon.generate.RectArea;
@@ -41,20 +42,7 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 	}
 
 	protected void createAllDoors(Dungeon dungeon) {
-		for(int x = 0; x < dungeon.getSize().getX(); x++) {
-			for(int y = 0; y < dungeon.getSize().getY(); y++) {
-				Room room = dungeon.getRoom(new JDPoint(x, y));
-				RouteInstruction.Direction[] directions = RouteInstruction.Direction.values();
-				for (RouteInstruction.Direction direction : directions) {
-					Room neighbourRoom = dungeon.getRoomAt(room, direction);
-					if(neighbourRoom != null && room.getDoor(direction) == null) {
-						Door door = new Door(room, neighbourRoom);
-						room.setDoor(door, direction, true);
-					}
-				}
-			}
-
-		}
+		DungeonFillUtils.createAllDoors(dungeon);
 	}
 
 	/**

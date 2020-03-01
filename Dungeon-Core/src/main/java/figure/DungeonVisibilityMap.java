@@ -40,7 +40,7 @@ public class DungeonVisibilityMap {
 			RoomObservationStatus[][] stats = d.getNewRoomVisibilityMap(allVis);
 			for (RoomObservationStatus[] stat : stats) {
 				for (RoomObservationStatus roomObservationStatus : stat) {
-					roomObservationStatus.setVisibilityStatus(RoomObservationStatus.VISIBILITY_FOUND);
+					roomObservationStatus.setVisibilityStatus(RoomObservationStatus.VISIBILITY_SHRINE);
 				}
 			}
 			allVis.setMap(stats);

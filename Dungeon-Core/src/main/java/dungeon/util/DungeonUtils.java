@@ -187,6 +187,8 @@ public class DungeonUtils {
 		return true;
 	}
 
+
+
 	private static Way searchWayBackTrack2(Dungeon d, Room fromR, Room toR,
 										   DungeonVisibilityMap visMap, boolean blocked) {
 

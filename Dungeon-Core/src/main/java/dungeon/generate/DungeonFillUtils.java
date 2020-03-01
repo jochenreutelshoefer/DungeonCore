@@ -8,7 +8,9 @@ import java.util.List;
 
 import dungeon.Door;
 import dungeon.Dungeon;
+import dungeon.JDPoint;
 import dungeon.Room;
+import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.monster.Monster;
 
@@ -71,5 +73,22 @@ public class DungeonFillUtils {
 			return false;
 		}
 
+	}
+
+	public static void createAllDoors(Dungeon dungeon) {
+		for(int x = 0; x < dungeon.getSize().getX(); x++) {
+			for(int y = 0; y < dungeon.getSize().getY(); y++) {
+				Room room = dungeon.getRoom(new JDPoint(x, y));
+				RouteInstruction.Direction[] directions = RouteInstruction.Direction.values();
+				for (RouteInstruction.Direction direction : directions) {
+					Room neighbourRoom = dungeon.getRoomAt(room, direction);
+					if(neighbourRoom != null && room.getDoor(direction) == null) {
+						Door door = new Door(room, neighbourRoom);
+						room.setDoor(door, direction, true);
+					}
+				}
+			}
+
+		}
 	}
 }
