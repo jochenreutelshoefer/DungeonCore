@@ -1,8 +1,12 @@
 package dungeon.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
@@ -19,77 +23,7 @@ public class DungeonUtils {
 
 
 
-	private static void builtShortCuts2(Way way) {
-		if (way == null) {
-			return;
-		}
-		int i = 0;
-		while (i < way.getRooms().size()) {
-			Room r1 = (way.getRooms().get(i));
-			for (int j = way.getRooms().size() - 1; j > 0; j--) {
-				Room r2 = (way.getRooms().get(j));
-				if (r2.hasConnectionTo(r1)) {
-					for (int k = i + 1; k < j - i; k++) {
-						way.getRooms().remove(i + 1);
-					}
-					break;
-				}
-			}
-			i++;
 
-		}
-	}
-
-
-	private static List<Tupel> explore2(List<Tupel> exploredWay, RoomInfo to,
-										boolean blocked,
-										int cnt) {
-		cnt++;
-		if (cnt > 2000) {
-			Log.severe("Endlosschleife in dungeon.explore2()");
-			System.exit(0);
-		}
-
-		boolean more = walkBackToLastUnexploredPoint(exploredWay);
-		if (more) {
-			// find where to go next
-			Tupel fringeNode = (exploredWay.get(exploredWay.size() - 1));
-			Explorer ex = fringeNode.exp;
-			int directionToBeExploredNext = ex.getOpenDir(to);
-			ex.setExplored(directionToBeExploredNext);
-			RoomInfo next = fringeNode.room.getDoor(directionToBeExploredNext + 1).getOtherRoom(fringeNode.room);
-
-			Explorer newExp = new Explorer(next, blocked);
-			configExp(newExp, exploredWay);
-			exploredWay.add(new Tupel(next, newExp));
-			if (next.equals(to)) {
-				return exploredWay;
-			}
-			return explore2(exploredWay, to, blocked, cnt);
-		}
-		else {
-			return null;
-		}
-	}
-
-
-	/**
-	 * We set up the explorer marking which of the accessible neighbour room had already
-	 * been accessed by fringe.
-	 *
-	 * @param exp the new explorer to be set up
-	 * @param list fringe list of explored rooms until new
-	 */
-	private static void configExp(Explorer exp, List<Tupel> list) {
-		for (int iterationIndex = 0; iterationIndex < list.size(); iterationIndex++) {  // iterate entire fringe list
-			RoomInfo iterationRoom = list.get(iterationIndex).room; 		// room of iteration position in fringe list
-			if (exp.r.hasConnectionTo(iterationRoom)) {					// check whether explorer has connection to iter room
-				int dir = exp.r.getConnectionDirectionTo(iterationRoom);
-				// if so, we mark this direction as explored as we had been there already because its in the fringe list
-				exp.setExplored(dir - 1);
-			}
-		}
-	}
 
 	public static RouteInstruction.Direction getNeighbourDirectionFromTo(
 			Room from, Room to) {
@@ -139,153 +73,85 @@ public class DungeonUtils {
 		}
 	}
 
+	public static Way findShortestPath(Dungeon dungeon, Room start, Room goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
+		return findShortestPath(dungeon, start.getPoint(), goal.getPoint(), visibilityMap, crossBlockedDoors);
 
-
-	private static void removeCycles2(Way l) {
-		if (l == null) {
-		}
-		else {
-			int index = 0;
-			while (index < l.size() - 1) {
-				Room r = l.getRooms().get(index);
-				int lastAppearence = -1;
-				for (int i = index + 1; i < l.getRooms().size(); i++) {
-
-					Room next = l.getRooms().get(i);
-					if (next == r) {
-						lastAppearence = i;
-					}
-				}
-				if (lastAppearence > -1) {
-					for (int i = index; i < lastAppearence; i++) {
-						l.getRooms().remove(index);
-					}
-				}
-				index++;
-			}
-		}
 	}
 
-	private static boolean walkBackToLastUnexploredPoint(List<Tupel> list) {
-		Explorer backtrackExplorer = list.get(list.size() - 1).exp;  // start at the end of the list
-		configExp(backtrackExplorer, list);
-		if (backtrackExplorer.stillOpen()) {
-			return true;
-		}
-		else {
-			int k = list.size() - 2; // we walk back the list to find one that still has an open direction
-			while (!backtrackExplorer.stillOpen()) {
-				if (k < 0) {
-					return false;
-				}
-				Tupel t = (list.get(k));
-				backtrackExplorer = t.exp;
-				list.add(t);
-				k--;
+	public static Way findShortestPath(Dungeon dungeon, JDPoint start, JDPoint goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
+		RoomInfo startRoom = RoomInfo.makeRoomInfo(dungeon.getRoom(start), visibilityMap);
+		List<SearchNode> fringe = new ArrayList<>();
+		Set<JDPoint> closed = new HashSet<>();
+		fringe.add(new SearchNode(startRoom, null, 0));
+
+		while(!fringe.isEmpty()) {
+			SearchNode node = fringe.remove(0);// get first from fringe
+			if(node.room.getPoint().equals(goal)) {
+				// we found our goal
+				return createPathTo(node);
 			}
+			fringe.addAll(expandNode(node, closed, crossBlockedDoors));
 		}
-		return true;
+		// we have not found a path, so we return null;
+		return null;
 	}
 
-
-
-	private static Way searchWayBackTrack2(Dungeon d, Room fromR, Room toR,
-										   DungeonVisibilityMap visMap, boolean blocked) {
-
-		RoomInfo from = RoomInfo.makeRoomInfo(fromR, visMap);
-		RoomInfo to = RoomInfo.makeRoomInfo(toR, visMap);
-
-		if (from == to) {
-			List<RoomInfo> l = new LinkedList<RoomInfo>();
-			l.add(from);
-			return new Way(l, false);
+	private static Way createPathTo(SearchNode node) {
+		List<RoomInfo> roomSequence = new ArrayList<>();
+		SearchNode current = node;
+		while(current != null) {
+			roomSequence.add(current.room);
+			current = current.predecessor;
 		}
-		List<Tupel> list = new LinkedList<Tupel>();
-		list.add(new Tupel(from, new Explorer(from, blocked)));
-		list = explore2(list, to, blocked, 0);
-		if (list == null) {
+		Collections.reverse(roomSequence);
+		return new Way(roomSequence);
+	}
+
+	private static Collection<SearchNode> expandNode(SearchNode node, Set<JDPoint> closed, boolean crossBlockedDoors) {
+		Collection<SearchNode> expansionNodes = new ArrayList<>();
+		RoomInfo room = node.room;
+		DoorInfo[] doors = room.getDoors();
+		for (DoorInfo door : doors) {
+			if(door != null) {
+				RoomInfo otherRoom = door.getOtherRoom(room);
+				if(closed.contains(otherRoom.getPoint())) continue; // already visited
+
+				if(crossBlockedDoors) {
+					expansionNodes.add(new SearchNode(otherRoom, node, node.distanceWalked+1));
+				} else {
+					if(door.isPassable()) {
+						expansionNodes.add(new SearchNode(otherRoom, node,node.distanceWalked+1));
+					}
+				}
+			}
+		}
+		closed.add(node.room.getPoint());
+		return expansionNodes;
+	}
+
+	public static RouteInstruction.Direction getFirstStepFromTo(Dungeon dungeon, Room start, Room destination, DungeonVisibilityMap visMap) {
+		Way shortestPath = findShortestPath(dungeon, start, destination, visMap, false);
+		if(shortestPath == null) {
 			return null;
+		} else {
+			return RouteInstruction.Direction.fromInteger(start.getConnectionDirectionTo(shortestPath.get(1)));
 		}
-
-		// copy to RoomInfo list
-		List<RoomInfo> erg = new LinkedList<RoomInfo>();
-		for (int i = 0; i < list.size(); i++) {
-			erg.add(list.get(i).room);
-		}
-		return new Way(erg, false);
 	}
 
-	public static Way findShortestWayFromTo2(Dungeon d, JDPoint r1, JDPoint r2,DungeonVisibilityMap visMap, boolean crossBlockedDoors) {
-		return findShortestWayFromTo2(d, d.getRoom(r1), d.getRoom(r2), visMap, crossBlockedDoors);
-	}
+	private static class SearchNode {
+		private final RoomInfo room;
+		private final SearchNode predecessor;
+		private final int distanceWalked;
 
-	public static Way findShortestWayFromTo2(Dungeon d, Room r1, Room r2, DungeonVisibilityMap visMap, boolean crossBlockedDoors) {
-		//TODO: fix expansion: room list contains duplicates
-		if (r1.getLocation().equals(r2.getLocation())) {
-			// we are already there..
-			return new Way(Collections.singletonList(RoomInfo.makeRoomInfo(r1, visMap)), false);
+		public SearchNode(RoomInfo room, SearchNode predecessor, int distanceWalked) {
+
+			this.room = room;
+			this.predecessor = predecessor;
+			this.distanceWalked = distanceWalked;
 		}
-		DungeonGame.getInstance().setTestTracker(new TestTracker());
-		Way way = searchWayBackTrack2(d, r1, r2, visMap, crossBlockedDoors);
-		removeCycles2(way);
-		builtShortCuts2(way);
-		return way;
-	}
-
-	public static int getFirstStepFromTo2(Dungeon d, Room r1, Room r2, DungeonVisibilityMap visMap) {
-		if (r1 == r2) {
-			return 0;
-		}
-		Way way = findShortestWayFromTo2(d, r1, r2, visMap, false);
-		if (way == null) {
-			// if there is no way without blocked doors then we also take a blocked way // TODO: caller should determine whether blocked ways are interesting or not
-			way = findShortestWayFromTo2(d, r1, r2, visMap, true);
-		}
-		Room next = null;
-		if (way.size() == 1) {
-		}
-		else {
-			next = way.get(1).getRoom();
-		}
-		int dir = 0;
-		if (next != null && next.hasConnectionTo(r1)) {
-			dir = r1.getConnectionDirectionTo(next);
-		}
-		return dir;
-	}
-
-
-
-}
-
- class Tupel {
-
-	public RoomInfo room;
-
-	public Explorer exp;
-
-	public Tupel(RoomInfo r, Explorer e) {
-		this.room = r;
-		exp = e;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Tupel) {
-			if (room.equals(((Tupel) o).room)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = room.hashCode();
-		result = 31 * result + exp.hashCode();
-		return result;
 	}
 }
+
 
 class Explorer {
 

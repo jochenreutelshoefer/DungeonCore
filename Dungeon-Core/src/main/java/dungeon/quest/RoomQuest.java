@@ -293,7 +293,7 @@ public abstract class RoomQuest {
 		Map<Way, Room> ways = new HashMap<>();
 		for (int i = 0; i < roomList.size(); i++) {
 			Room to = roomList.get(i);
-			Way way = DungeonUtils.findShortestWayFromTo2(df.getDungeon(), df.getDungeon().getRoom(this.entranceRoom), to, DungeonVisibilityMap.getAllVisMap(df.getDungeon()), true);
+			Way way = DungeonUtils.findShortestPath(df.getDungeon(), df.getDungeon().getRoom(this.entranceRoom), to, DungeonVisibilityMap.getAllVisMap(df.getDungeon()), true);
 
 			if (way != null) {
 				ways.put(way, roomList.get(i));

@@ -58,8 +58,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	public DefaultDungeonSession(User user) {
 		this.user = user;
 		manager = new DefaultDungeonManager();
-
-
 	}
 
 	@Override
@@ -75,6 +73,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getCurrentStage() {
 
+		/*
 		if(completedDungeons.isEmpty()) {
 			DungeonFactory level0 = getDungeonManager().getDungeonOptions(0).get(0);
 			DungeonFactory level1 = getDungeonManager().getDungeonOptions(1).get(0);
@@ -84,6 +83,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			this.completedDungeons.put(level1, 2);
 			return 2;
 		}
+		*/
 
 
 		return completedDungeons.size();

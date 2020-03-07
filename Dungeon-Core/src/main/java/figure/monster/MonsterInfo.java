@@ -7,21 +7,14 @@
 package figure.monster;
 
 import dungeon.Way;
-import figure.other.Lioness;
 import item.ItemInfo;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.JDPoint;
-import dungeon.Room;
 import dungeon.util.DungeonUtils;
 import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
-import figure.RoomObservationStatus;
-import figure.other.Fir;
-
 
 public class MonsterInfo extends FigureInfo {
 	
@@ -42,7 +35,7 @@ public class MonsterInfo extends FigureInfo {
 	
 	@Override
 	public Way getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		return DungeonUtils.findShortestWayFromTo2(this.monster.getActualDungeon(), p1, p2, this.map, false);
+		return DungeonUtils.findShortestPath(this.monster.getActualDungeon(), p1, p2, this.map, false);
 	}
 	
 	public int getLastMove() {

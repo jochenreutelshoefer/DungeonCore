@@ -105,7 +105,7 @@ public class AncientMapFragmentUtils {
 		//int counter = 0;
 		//int limit = 20;
 		for (Room room : roomList) {
-			Way shortestWay = DungeonUtils.findShortestWayFromTo2(dungeon, heroEntryPoint, room.getNumber(), DungeonVisibilityMap.getAllVisMap(dungeon), true);
+			Way shortestWay = DungeonUtils.findShortestPath(dungeon, heroEntryPoint, room.getNumber(), DungeonVisibilityMap.getAllVisMap(dungeon), true);
 			distances.add(shortestWay);
 			//if(counter > limit) {
 			//	break;

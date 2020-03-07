@@ -18,7 +18,6 @@ import dungeon.ItemInfoOwner;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
-import dungeon.Room;
 import dungeon.RoomInfo;
 import dungeon.Way;
 import dungeon.util.DungeonUtils;
@@ -81,7 +80,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public Way getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		return DungeonUtils.findShortestWayFromTo2(this.f.getActualDungeon(), p1, p2, this.map, false);
+		return DungeonUtils.findShortestPath(this.f.getActualDungeon(), p1, p2, this.map, false);
 	}
 
 	public abstract List<ItemInfo> getAllItems();

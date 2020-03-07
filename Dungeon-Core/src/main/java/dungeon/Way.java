@@ -11,11 +11,9 @@ public class Way {
 
 	private final List<RoomInfo> roomInfos;
 
-	private final boolean blocked;
 
-	public Way(List<RoomInfo> r, boolean blocked) {
+	public Way(List<RoomInfo> r) {
 		roomInfos = r;
-		this.blocked = blocked;
 	}
 
 	public RoomInfo getStartRoomInfo() {
@@ -34,14 +32,7 @@ public class Way {
 		return (roomInfos.get(roomInfos.size() - 1));
 	}
 
-	public boolean isBlocked() {
-		return blocked;
-	}
 
-	public List<RoomInfo> getRoomInfos() {
-		return roomInfos;
-	}
-	
 	public List<Room> getRooms() {
 		List<Room> result = new LinkedList<Room>();
 		for (RoomInfo room : roomInfos) {

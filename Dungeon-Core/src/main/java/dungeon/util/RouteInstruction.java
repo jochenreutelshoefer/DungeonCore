@@ -101,7 +101,7 @@ public class RouteInstruction {
 
 	public int getWay(Room start, DungeonVisibilityMap visMap) {
 		if(destination != null) {
-			return DungeonUtils.getFirstStepFromTo2(start.getDungeon(), start, destination, visMap);
+			return DungeonUtils.getFirstStepFromTo(start.getDungeon(), start, destination, visMap).getValue();
 		}
 		else {
 			return direction;
