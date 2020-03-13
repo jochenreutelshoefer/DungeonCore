@@ -15,7 +15,7 @@ import java.util.Set;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.Way;
+import dungeon.Path;
 import dungeon.generate.DefaultHall;
 import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
@@ -290,21 +290,21 @@ public abstract class RoomQuest {
 	public void plugShrine(Shrine s) {
 
 		List<Room> roomList = getAllRoomsList();
-		Map<Way, Room> ways = new HashMap<>();
+		Map<Path, Room> ways = new HashMap<>();
 		for (int i = 0; i < roomList.size(); i++) {
 			Room to = roomList.get(i);
-			Way way = DungeonUtils.findShortestPath(df.getDungeon(), df.getDungeon().getRoom(this.entranceRoom), to, DungeonVisibilityMap.getAllVisMap(df.getDungeon()), true);
+			Path way = DungeonUtils.findShortestPath(df.getDungeon(), df.getDungeon().getRoom(this.entranceRoom), to, DungeonVisibilityMap.getAllVisMap(df.getDungeon()), true);
 
 			if (way != null) {
 				ways.put(way, roomList.get(i));
 			}
 		}
-		Set<Way> set = ways.keySet();
-		Iterator<Way> it = set.iterator();
+		Set<Path> set = ways.keySet();
+		Iterator<Path> it = set.iterator();
 		int maxWay = -1;
-		Way longest = null;
+		Path longest = null;
 		while (it.hasNext()) {
-			Way way = it.next();
+			Path way = it.next();
 			if (way.size() > maxWay) {
 				longest = way;
 				maxWay = way.size();

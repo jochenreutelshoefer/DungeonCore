@@ -3,16 +3,12 @@ package dungeon;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Eine Liste von Raeumen die einen Weg darstellt
- * 
- */
-public class Way {
+public class Path {
 
 	private final List<RoomInfo> roomInfos;
 
 
-	public Way(List<RoomInfo> r) {
+	public Path(List<RoomInfo> r) {
 		roomInfos = r;
 	}
 

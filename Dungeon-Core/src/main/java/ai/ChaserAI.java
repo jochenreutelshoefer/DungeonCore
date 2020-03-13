@@ -2,7 +2,7 @@ package ai;
 
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
-import dungeon.Way;
+import dungeon.Path;
 import dungeon.util.DungeonUtils;
 import figure.action.Action;
 import figure.action.EndRoundAction;
@@ -51,7 +51,7 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 		if (lastHeroLocation.equals(monster.getRoomNumber())) {
 			return new EndRoundAction();
 		}
-		Way l = monster.getShortestWayFromTo(monster.getRoomNumber(), lastHeroLocation);
+		Path l = monster.getShortestWayFromTo(monster.getRoomNumber(), lastHeroLocation);
 		if (l != null) {
 			RoomInfo nextRoomToGo = l.get(1);
 			int dir = DungeonUtils.getNeighbourDirectionFromTo(monster.getRoomNumber(), nextRoomToGo.getNumber()).getValue();

@@ -9,7 +9,7 @@ import java.util.List;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.Way;
+import dungeon.Path;
 import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
@@ -101,11 +101,11 @@ public class AncientMapFragmentUtils {
 		Collection<Room> allRooms = dungeon.getAllRooms();
 		List<Room> roomList  = new ArrayList<>(allRooms);
 		Collections.shuffle(roomList);
-		List<Way> distances = new ArrayList<>();
+		List<Path> distances = new ArrayList<>();
 		//int counter = 0;
 		//int limit = 20;
 		for (Room room : roomList) {
-			Way shortestWay = DungeonUtils.findShortestPath(dungeon, heroEntryPoint, room.getNumber(), DungeonVisibilityMap.getAllVisMap(dungeon), true);
+			Path shortestWay = DungeonUtils.findShortestPath(dungeon, heroEntryPoint, room.getNumber(), DungeonVisibilityMap.getAllVisMap(dungeon), true);
 			distances.add(shortestWay);
 			//if(counter > limit) {
 			//	break;
@@ -113,16 +113,16 @@ public class AncientMapFragmentUtils {
 		}
 
 		// sort descending by lengths of the paths
-		Collections.sort(distances, new Comparator<Way>() {
+		Collections.sort(distances, new Comparator<Path>() {
 			@Override
-			public int compare(Way o1, Way o2) {
+			public int compare(Path o1, Path o2) {
 				return Integer.compare(o1.size(), o2.size());
 			}
 		});
 
 		// collect destination rooms
 		List<Room> result = new ArrayList<>();
-		for (Way way : distances) {
+		for (Path way : distances) {
 			// this is the destination room
 			result.add(dungeon.getRoom(way.getDestinationRoomInfo().getLocation()));
 		}

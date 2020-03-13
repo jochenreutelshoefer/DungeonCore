@@ -19,7 +19,7 @@ import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.Way;
+import dungeon.Path;
 import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
@@ -79,7 +79,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.getClass();
 	}
 
-	public Way getShortestWayFromTo(JDPoint p1, JDPoint p2) {
+	public Path getShortestWayFromTo(JDPoint p1, JDPoint p2) {
 		return DungeonUtils.findShortestPath(this.f.getActualDungeon(), p1, p2, this.map, false);
 	}
 

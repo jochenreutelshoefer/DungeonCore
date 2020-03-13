@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,11 +12,8 @@ import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RoomInfo;
-import dungeon.Way;
+import dungeon.Path;
 import figure.DungeonVisibilityMap;
-import game.DungeonGame;
-import log.Log;
-import test.TestTracker;
 
 public class DungeonUtils {
 
@@ -73,12 +69,12 @@ public class DungeonUtils {
 		}
 	}
 
-	public static Way findShortestPath(Dungeon dungeon, Room start, Room goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
+	public static Path findShortestPath(Dungeon dungeon, Room start, Room goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
 		return findShortestPath(dungeon, start.getPoint(), goal.getPoint(), visibilityMap, crossBlockedDoors);
 
 	}
 
-	public static Way findShortestPath(Dungeon dungeon, JDPoint start, JDPoint goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
+	public static Path findShortestPath(Dungeon dungeon, JDPoint start, JDPoint goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
 		RoomInfo startRoom = RoomInfo.makeRoomInfo(dungeon.getRoom(start), visibilityMap);
 		List<SearchNode> fringe = new ArrayList<>();
 		Set<JDPoint> closed = new HashSet<>();
@@ -96,7 +92,7 @@ public class DungeonUtils {
 		return null;
 	}
 
-	private static Way createPathTo(SearchNode node) {
+	private static Path createPathTo(SearchNode node) {
 		List<RoomInfo> roomSequence = new ArrayList<>();
 		SearchNode current = node;
 		while(current != null) {
@@ -104,7 +100,7 @@ public class DungeonUtils {
 			current = current.predecessor;
 		}
 		Collections.reverse(roomSequence);
-		return new Way(roomSequence);
+		return new Path(roomSequence);
 	}
 
 	private static Collection<SearchNode> expandNode(SearchNode node, Set<JDPoint> closed, boolean crossBlockedDoors) {
@@ -130,7 +126,7 @@ public class DungeonUtils {
 	}
 
 	public static RouteInstruction.Direction getFirstStepFromTo(Dungeon dungeon, Room start, Room destination, DungeonVisibilityMap visMap) {
-		Way shortestPath = findShortestPath(dungeon, start, destination, visMap, false);
+		Path shortestPath = findShortestPath(dungeon, start, destination, visMap, false);
 		if(shortestPath == null) {
 			return null;
 		} else {

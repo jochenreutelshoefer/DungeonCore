@@ -7,7 +7,7 @@ import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.Way;
+import dungeon.Path;
 import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
@@ -199,7 +199,7 @@ public class RescuedNPCAI implements AI {
 
 	private Action followLeader() {
 		if (!this.info.getRoomInfo().getLocation().equals(lastKnownLeaderPosition)) {
-			Way shortestWayFromTo = info.getShortestWayFromTo(info.getRoomInfo().getNumber(), lastKnownLeaderPosition);
+			Path shortestWayFromTo = info.getShortestWayFromTo(info.getRoomInfo().getNumber(), lastKnownLeaderPosition);
 			RoomInfo nextRoomToGo = shortestWayFromTo.get(1);
 			JDPoint firstMove = nextRoomToGo.getNumber();
 			RouteInstruction.Direction directionToMove = info.getRoomNumber().relativeTo(firstMove);

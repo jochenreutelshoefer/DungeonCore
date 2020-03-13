@@ -6,7 +6,7 @@
  */
 package figure.monster;
 
-import dungeon.Way;
+import dungeon.Path;
 import item.ItemInfo;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class MonsterInfo extends FigureInfo {
 	}
 	
 	@Override
-	public Way getShortestWayFromTo(JDPoint p1, JDPoint p2) {
+	public Path getShortestWayFromTo(JDPoint p1, JDPoint p2) {
 		return DungeonUtils.findShortestPath(this.monster.getActualDungeon(), p1, p2, this.map, false);
 	}
 	
