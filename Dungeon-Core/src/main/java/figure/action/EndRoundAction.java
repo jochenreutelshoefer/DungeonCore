@@ -12,8 +12,4 @@ package figure.action;
  */
 public class EndRoundAction extends Action {
 	
-	public EndRoundAction(/*int id*/) {
-		super(/*id*/);
-	}
-
 }

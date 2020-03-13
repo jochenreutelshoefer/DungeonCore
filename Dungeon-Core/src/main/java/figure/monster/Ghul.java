@@ -53,10 +53,9 @@ public class Ghul extends UndeadMonster {
 	
 	@Override
 	protected boolean makeSpecialAttack(Figure op) {
-			//Fighter op = getTarget();
 			Poisoning p = new Poisoning(this,4,8);
 			
-			getRoom().distributePercept(new SpecialAttackPercept(Monster.GHUL,op,this));
+			getRoom().distributePercept(new SpecialAttackPercept(op,this));
 			op.poison(p);
 			this.specialAttackCounter = 50;
 			return false;
@@ -66,37 +65,7 @@ public class Ghul extends UndeadMonster {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 
-//	public Action turnElse(int c) {
-//		recover();
-//		if (c == 0) {
-//			if(spitted) {
-//						return null;
-//					}
-//		} else {
-//			////System.out.println("Ghul geht vom Rudel weg");
-//			boolean b = false;
-//			while (!b) {
-//				int a = (int) (Math.random() * 80) + 20;
-//				if (a <= 20) {
-//				} else if (a <= 40) {
-//					return new ActionMove(RouteInstruction.SOUTH);
-//					//goSouth(); //////System.out.println(name+" geht suedlich");
-//				} else if (a <= 60) {
-//					return new ActionMove(RouteInstruction.EAST);
-//					//goEast();//////System.out.println(name+" get oestlich");
-//				} else if (a <= 80) {
-//					return new ActionMove(RouteInstruction.NORTH);
-//					//goNorth();//////System.out.println(name+" get noerdlich");
-//				} else {
-//					return new ActionMove(RouteInstruction.WEST);
-//					//goWest();//////System.out.println(name+" get westlich");
-//				}
-//			}
-//		}
-//		return null;
-//	}
-	
-	
+
 	@Override
 	public int hunting() {
 		return Monster.GHUL_HUNTING;	

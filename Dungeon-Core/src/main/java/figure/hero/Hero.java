@@ -860,7 +860,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				} else {
 					setActionPoints(0);
 				}
-				setFightAP(0);
 
 				lookInRoom();
 				getRoom().checkFight(this);

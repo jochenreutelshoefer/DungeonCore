@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeon.Position;
+import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
@@ -211,7 +212,9 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	public boolean rightModus(Figure mage) {
-		if (!mage.getRoom().fightRunning()) {
+		Room room = mage.getRoom();
+		if(room == null) return false;
+		if (!room.fightRunning()) {
 			if (isPossibleNormal()) {
 				return true;
 			}

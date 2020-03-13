@@ -68,7 +68,7 @@ public class KeyboardControl {
 		}
 
 		/*
-		handle location
+		handle use location event
 		 */
 		if(input.isKeyPressed(Keys.L)) {
 			playerController.getActionAssembler().wannaUseLocation();
@@ -76,10 +76,18 @@ public class KeyboardControl {
 		}
 
 		/*
-		handle take item
+		handle take item event
 		 */
 		if(input.isKeyPressed(Keys.I)) {
 			playerController.getActionAssembler().wannaTakeItem();
+			return eventProcessed();
+		}
+
+		/*
+		handle door lock/unlock event
+		 */
+		if(input.isKeyPressed(Keys.D)) {
+			playerController.getActionAssembler().wannaLockUnlockDoor();
 			return eventProcessed();
 		}
 

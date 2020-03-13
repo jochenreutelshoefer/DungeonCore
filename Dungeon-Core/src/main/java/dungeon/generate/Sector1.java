@@ -733,7 +733,7 @@ public class Sector1 extends Sector {
 		Door hallDoor;
 		if (hallKey != null) {
 			hallDoor = new Door(r1, toMake, hallKey);
-			Monster m = Monster.createMonster(monsterType, monsterValue, game);
+			Monster m = Monster.createMonster(Wolf.class, monsterValue, game);
 			df.equipMonster(m, 2);
 			m.takeItem(hallKey);
 			mainHall.addMonsterToList(m);
@@ -755,7 +755,7 @@ public class Sector1 extends Sector {
 		if (monsterType != 0) {
 			LinkedList<Figure> monsters = new LinkedList<Figure>();
 			for (int i = 0; i < monsterCnt; i++) {
-				Monster m = Monster.createMonster(monsterType, monsterValue,
+				Monster m = Monster.createMonster(Wolf.class, monsterValue,
 						game);
 				df.equipMonster(m, 2);
 				monsters.add(m);

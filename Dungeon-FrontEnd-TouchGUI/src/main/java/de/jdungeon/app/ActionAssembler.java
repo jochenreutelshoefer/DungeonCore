@@ -250,13 +250,11 @@ public class ActionAssembler implements EventListener {
 				break;
 			}
 		}
-		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);// Todo: sound should be played on percept processing!
 		List<Action> actions = actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
 		plugActions(actions);
 	}
 
 	public void inventoryItemLongClicked(int itemType, EquipmentItemInfo info) {
-		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);// Todo: sound should be played on percept processing!
 		List<Action> actions = actionAssembler.wannaLayDownItem(info);
 		plugActions(actions);
 	}
@@ -324,7 +322,16 @@ public class ActionAssembler implements EventListener {
 
 		} else {
 			plugActions(getActionAssemblerHelper().wannaTakeItem(items.get(0)));
-			AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM); // Todo: sound should be played on percept processing!
+		}
+	}
+
+	public void wannaLockUnlockDoor() {
+		List<Action> actions = getActionAssemblerHelper().wannaLockDoor();
+		if(actions != null && !actions.isEmpty()) {
+			plugActions(actions);
+		} else {
+			// TODO: generate hint for the user that in case of multiple doors he should step towards one to make the action unambigous
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 	}
 }

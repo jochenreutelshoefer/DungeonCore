@@ -6,6 +6,7 @@
 package dungeon.generate;
 
 import figure.monster.Monster;
+import figure.monster.Wolf;
 import game.DungeonGame;
 import item.HealPotion;
 import item.Item;
@@ -577,7 +578,7 @@ public class Sector2 extends Sector {
 		Door hallDoor;
 		if (hallKey != null) {
 			hallDoor = new Door(r1, toMake, hallKey);
-			Monster m = Monster.createMonster(1+(int)(Math.random()*6), monsterValue, game);
+			Monster m = Monster.createMonster(Wolf.class, monsterValue, game);
 			m.takeItem(hallKey);
 			mainHall.addMonsterToList(m);
 		} else {
@@ -600,7 +601,7 @@ public class Sector2 extends Sector {
 			LinkedList monsters = new LinkedList();
 			for (int i = 0; i < monsterCnt; i++) {
 				monsters.add(
-					Monster.createMonster(monsterType, monsterValue, game));
+					Monster.createMonster(Wolf.class, monsterValue, game));
 			}
 
 			halle1.setMonster(monsters);

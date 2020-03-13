@@ -52,8 +52,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		InfoProvider {
 
 
-	@Deprecated
-	public final static int BEAR = 1;
 
 	@Deprecated
 	public final static int GHUL = 2;
@@ -248,23 +246,23 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Deprecated
-	public static Monster createMonster(int type, int value, DungeonGame game) {
-		if (type == WOLF) {
+	public static Monster createMonster(Class<? extends Monster> type, int value, DungeonGame game) {
+		if (type == Wolf.class) {
 			return new Wolf(value);
 		}
-		if (type == ORC) {
+		if (type == Orc.class) {
 			return new Orc(value);
 		}
-		if (type == SKELETON) {
+		if (type == Skeleton.class) {
 			return new Skeleton(value);
 		}
-		if (type == OGRE) {
+		if (type == Ogre.class) {
 			return new Ogre(value);
 		}
-		if (type == GHUL) {
+		if (type == Ghul.class) {
 			return new Ghul(value);
 		}
-		if (type == BEAR) {
+		if (type == Spider.class) {
 			return new Spider(value);
 		} else
 			return null;
@@ -314,30 +312,15 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public double getAntiFleeValue() {
-		if (this.getFightAP() < 0) {
+		if (this.getActionPoints() <= 0) {
 			return 0;
 		} else {
 
 			int healthLevel = getHealthLevel();
 			double erg = 6 * healthLevel * getAntiFleeFactor();
 			int k = 1;
-			double mult = 1;
-			if (k < -2) {
-				mult = 3;
-			} else if (k == -2) {
-				mult = 2;
-			} else if (k == -1) {
-				mult = 1.5;
-			} else if (k == -0) {
-				mult = 1;
-			} else if (k == 1) {
-				mult = 0.6;
-			} else if (k == 2) {
-				mult = 0.2;
-			} else {
-				mult = 0;
-			}
-
+			double mult = 0.6;
+			// TODO: redesign and revive ant flee calculation
 			return erg * mult;
 		}
 	}

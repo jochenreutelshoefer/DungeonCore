@@ -15,11 +15,9 @@ import figure.FigureInfo;
 public class SpecialAttackPercept extends OpticalPercept {
 	
 	private final Figure target;
-	private final int type;
 	private final Figure attacker;
-	public SpecialAttackPercept(int type,Figure t,Figure a) {
+	public SpecialAttackPercept(Figure t,Figure a) {
 		super(t.getLocation());
-		this.type = type;
 		target = t;
 		attacker = a;
 	}
@@ -31,13 +29,6 @@ public class SpecialAttackPercept extends OpticalPercept {
 		return FigureInfo.makeFigureInfo(attacker,viewer.getRoomVisibility());
 	}
 	
-	/**
-	 * @return Returns the type.
-	 */
-	public int getType() {
-		return type;
-	}
-
 	@Override
 	public List<FigureInfo> getInvolvedFigures() {
 		List<FigureInfo> l = new LinkedList<>();

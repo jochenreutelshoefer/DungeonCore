@@ -49,8 +49,7 @@ public class Escape extends NoTargetSpell {
 	
 	@Override
 	public String getText() {
-		String s = JDEnv.getResourceBundle().getString("spell_escape_text");
-		return s;
+		return JDEnv.getResourceBundle().getString("spell_escape_text");
 	}
 	
 
@@ -80,7 +79,7 @@ public class Escape extends NoTargetSpell {
 	@Override
 	public void sorcer(Figure mage) {
 				mage.setEscape(level);
-				mage.incFightAP(1);
+				mage.incActionPoints(1);
 				mage.handleFleeAction(new FleeAction(false),true);
 	}
 

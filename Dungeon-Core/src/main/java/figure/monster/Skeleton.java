@@ -104,7 +104,7 @@ public class Skeleton extends UndeadMonster {
 			Weapon weap = ((Weapon) l.get(0));
 			weap.takeRelDamage(0.3);
 		}
-		getRoom().distributePercept(new SpecialAttackPercept(Monster.SKELETON,op,this));
+		getRoom().distributePercept(new SpecialAttackPercept(op,this));
 		this.specialAttackCounter = 50;
 		return false;
 
@@ -117,7 +117,7 @@ public class Skeleton extends UndeadMonster {
 
 	@Override
 	protected int getHEALTH_DAMAGE_BALANCE() {
-		return this.HEALTH_DAMAGE_BALANCE;
+		return HEALTH_DAMAGE_BALANCE;
 	}
 
 //	public Action turnElse(int c) {

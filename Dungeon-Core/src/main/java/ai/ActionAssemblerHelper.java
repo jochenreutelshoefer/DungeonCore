@@ -75,6 +75,42 @@ public class ActionAssemblerHelper {
 		return Collections.singletonList(a);
 	}
 
+	/**
+	 * Tries to identify the next best door in the current room of the figure to be locked/unlocked
+	 * and creates a action sequence respectively
+	 *
+	 * returns null if there is no door to lock/unlock or if there are multiple and it's not clear which to use
+	 *
+	 * @return actions to lock the next best door
+	 */
+	public List<Action> wannaLockDoor() {
+		DoorInfo[] doors = this.figure.getRoomInfo().getDoors();
+		DoorInfo doorWithLock = null;
+		for (DoorInfo door : doors) {
+			if(door != null) {
+				if(door.hasLock()) {
+					// found door with a lock
+					if(doorWithLock != null) {
+						// it is the second door in this room with a lock
+						int currentFigurePosition = figure.getPositionInRoomIndex();
+						if(figure.getPositionInRoomIndex() == door.getPositionAtDoor(figure.getRoomInfo(), false).getIndex()) {
+							// figure is already on correct position for this door
+							doorWithLock = door;
+						}
+					} else {
+						doorWithLock = door;
+					}
+
+				}
+			}
+		}
+		if(doorWithLock == null) {
+			// did not find an appropriate door the lock/unlock
+			return null;
+		}
+		return wannaLockDoor(doorWithLock);
+	}
+
 	public List<Action> wannaLockDoor(DoorInfo d) {
 		List<Action> actions = new ArrayList<>();
 		PositionInRoomInfo positionAtDoor = d.getPositionAtDoor(this.getFigure().getRoomInfo(), false);

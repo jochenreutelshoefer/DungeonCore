@@ -121,7 +121,6 @@ public class PlayerController implements JDGUI {
 	 */
 	@Override
 	public void plugAction(Action action) {
-
 		actionQueue.add(action);
 	}
 
@@ -136,7 +135,6 @@ public class PlayerController implements JDGUI {
 	 */
 	@Override
 	public void plugActions(List<Action> actions) {
-
 		actionQueue.addAll(actions);
 	}
 
@@ -231,6 +229,11 @@ public class PlayerController implements JDGUI {
 	public Action getAction() {
 		synchronized (actionQueue) {
 			if (!actionQueue.isEmpty()) {
+				int currentActionPoints = this.getFigure().getActionPoints();
+				if(currentActionPoints == 0) {
+					// we need end round before doing the next actual action
+					return new EndRoundAction();
+				}
 				return actionQueue.remove(0);
 			}
 			else {
