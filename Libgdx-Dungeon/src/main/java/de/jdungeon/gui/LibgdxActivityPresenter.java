@@ -177,4 +177,8 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 					doubleHeightPlusOffset);
 		}
 	}
+
+	public Activity getSelected() {
+		return markedActivity;
+	}
 }

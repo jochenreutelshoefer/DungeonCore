@@ -8,6 +8,7 @@ import java.util.List;
 
 import figure.FigureInfo;
 import figure.action.Action;
+import item.ItemInfo;
 
 public interface JDGUI extends ControlUnit{
 
@@ -32,6 +33,7 @@ public interface JDGUI extends ControlUnit{
 	 */
 	void onTurn();
 
+	ItemInfo getSelectedInventoryItem();
 
 	FigureInfo getFigure();
 	

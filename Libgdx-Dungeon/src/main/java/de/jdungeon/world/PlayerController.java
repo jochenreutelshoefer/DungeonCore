@@ -19,6 +19,7 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
+import item.ItemInfo;
 import log.Log;
 import text.StatementManager;
 
@@ -154,6 +155,10 @@ public class PlayerController implements JDGUI {
 		}
 	}
 
+	@Override
+	public ItemInfo getSelectedInventoryItem() {
+		return this.gameScreen.getGuiRenderer().getSelectedInventoryItem();
+	}
 
 	@Override
 	public FigureInfo getFigure() {

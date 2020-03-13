@@ -13,7 +13,6 @@ import gui.Paragraphable;
 
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
-import de.jdungeon.app.gui.InfoPanel;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import audio.AudioEffectsManager;
 import ai.ActionAssemblerHelper;
 import dungeon.ChestInfo;
 import dungeon.Dir;
@@ -32,7 +31,6 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.ClickType;
 import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.event.InventoryItemClickedEvent;
-import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 

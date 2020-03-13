@@ -8,11 +8,9 @@ import item.ItemInfo;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.smartcontrol.ExecutableUseItemActivity;
-import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

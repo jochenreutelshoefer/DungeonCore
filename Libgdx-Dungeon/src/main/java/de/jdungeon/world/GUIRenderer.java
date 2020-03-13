@@ -14,6 +14,8 @@ import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
 import graphics.ImageManager;
+import item.Item;
+import item.ItemInfo;
 import text.Statement;
 import util.JDDimension;
 
@@ -22,6 +24,7 @@ import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.TextPerceptView;
+import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.screen.InfoMessagePopupEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
@@ -350,7 +353,13 @@ public class GUIRenderer implements Disposable {
 		this.glProfiler = glProfiler;
 	}
 
-	public GUIImageManager getGUIImageManager() {
-		return guiImageManager;
+	public ItemInfo getSelectedInventoryItem() {
+		Activity selected = this.itemWheelHeroItems.getSelected();
+		if(selected != null) {
+			if(selected.getObject() instanceof ItemInfo) {
+				return (ItemInfo) selected.getObject();
+			}
+		}
+		return null;
 	}
 }
