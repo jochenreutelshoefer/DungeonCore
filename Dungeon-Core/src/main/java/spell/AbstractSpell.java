@@ -133,6 +133,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	}
 
+	@Override
 	public InfoEntity getInfoObject(DungeonVisibilityMap map) {
 		return new SpellInfo(this, map);
 	}
@@ -215,15 +216,10 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		Room room = mage.getRoom();
 		if(room == null) return false;
 		if (!room.fightRunning()) {
-			if (isPossibleNormal()) {
-				return true;
-			}
+			return isPossibleNormal();
 		} else {
-			if (isPossibleFight()) {
-				return true;
-			}
+			return isPossibleFight();
 		}
-		return false;
 	}
 
 	@Override
@@ -301,15 +297,10 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	public boolean isAbleToCast(Figure mage) {
 		if(mage.getRoom().fightRunning()) {
-			if(!this.isPossibleFight()) {
-				return false;
-			}
+			return this.isPossibleFight();
 		}else {
-			if(!this.isPossibleNormal()) {
-				return false;
-			}
+			return this.isPossibleNormal();
 		}
-		return true;
 	}
 	
 	private int calcCost() {
@@ -329,9 +320,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 				int magePos = mage.getPositionInRoom();
 				int victimPos = victim.getPositionInRoom();
 				int dist = Position.getMinDistanceFromTo(magePos,victimPos);
-				if(dist <= max) {
-					return true;
-				}
+				return dist <= max;
 			}
 		}
 		return false;

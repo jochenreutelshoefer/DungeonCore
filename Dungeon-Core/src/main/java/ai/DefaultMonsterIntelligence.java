@@ -246,7 +246,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	public static Action getFleeAction(FigureInfo monster) {
 		Action a = Action.makeActionFlee();
 		ActionResult res = monster.checkAction(Action.makeActionFlee());
-		if (res.getValue() == ActionResult.VALUE_POSSIBLE) {
+		if (res.getSituation() == ActionResult.Situation.possible) {
 			// System.out.println("flucht hier m�glich");
 			return a;
 		} else {
@@ -256,7 +256,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			if (step != null) {
 				// System.out.println("stepping to :" + step.getTargetIndex());
 				ActionResult stepRes = monster.checkAction(step);
-				if (stepRes.getValue() == ActionResult.VALUE_POSSIBLE) {
+				if (stepRes.getSituation() == ActionResult.Situation.possible) {
 					return step;
 				} else {
 					return null;
@@ -432,7 +432,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		if (hero != null) {
 			Action a = new SpellAction(s, hero);
 			ActionResult res = monster.checkAction(a);
-			if (res.getValue() == ActionResult.VALUE_POSSIBLE) {
+			if (res.getSituation() == ActionResult.Situation.possible) {
 				return a;
 			}
 

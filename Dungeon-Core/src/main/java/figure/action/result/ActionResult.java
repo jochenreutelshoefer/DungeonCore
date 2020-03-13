@@ -8,69 +8,65 @@ package figure.action.result;
 
 public class ActionResult {
 	
+
+	// TODO: find better name
+	public enum Situation {
+		possible,
+		impossible,
+		done,
+		failed
+	}
+
+	public enum Reason {
+		noActionPoints,
+		wrongTarget,
+		noTarget,
+		noKnowledge,
+		noItem,
+		noDust,
+		unknownAction,
+		wrongFightMode,
+		wrongPosition,
+		wrongDistance,
+		other
+	}
+
+
+	public static final ActionResult FAILED = new ActionResult(Situation.failed);
+	public static final ActionResult DONE = new ActionResult(Situation.done);
+
+	public static final ActionResult POSSIBLE = new ActionResult(Situation.possible);
+
+	public static final ActionResult NOAP = new ActionResult(Reason.noActionPoints);
+	public static final ActionResult OTHER = new ActionResult(Reason.other);
+	public static final ActionResult WRONG_TARGET = new ActionResult(Reason.wrongTarget);
+	public static final ActionResult NO_TARGET = new ActionResult(Reason.noTarget);
+	public static final ActionResult POSITION = new ActionResult(Reason.wrongPosition);
+	public static final ActionResult UNKNOWN = new ActionResult(Reason.unknownAction);
+	public static final ActionResult MODE = new ActionResult(Reason.wrongFightMode);
+	public static final ActionResult KNOWLEDGE = new ActionResult(Reason.noKnowledge);
+	public static final ActionResult DUST = new ActionResult(Reason.noDust);
+	public static final ActionResult ITEM = new ActionResult(Reason.noItem);
+	public static final ActionResult DISTANCE = new ActionResult(Reason.wrongDistance);
 	
-	public static final int VALUE_POSSIBLE = 1;
-	public static final int VALUE_IMPOSSIBLE = 2;
-	public static final int VALUE_DONE = 3;
-	public static final int VALUE_FAILED = 4;
+
+	private final Situation key1;
+	private Reason key2;
 	
-	public static final ActionResult FAILED = new ActionResult(ActionResult.VALUE_FAILED);
-	public static final ActionResult DONE = new ActionResult(ActionResult.VALUE_DONE);
-	public static final ActionResult POSSIBLE = new ActionResult(ActionResult.VALUE_POSSIBLE);
-	public static final ActionResult NOAP = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_NOAP);
-	public static final ActionResult OTHER = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_OTHER);
-	public static final ActionResult WRONG_TARGET = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
-	public static final ActionResult NO_TARGET = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_NOTARGET);
-	public static final ActionResult POSITION = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION);
-	public static final ActionResult INVALID = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_INVALIDACTION);
-	public static final ActionResult MODE = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_WRONGMODE);
-	public static final ActionResult KNOWLEDGE = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_NOKNOWLEDGE);
-	public static final ActionResult DUST = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_NODUST);
-	public static final ActionResult ITEM = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_NOITEM);
-	public static final ActionResult DISTANCE = new ActionResult(ActionResult.VALUE_IMPOSSIBLE, ActionResult.IMPOSSIBLE_REASON_DISTANCE);
-	
-	public static final int IMPOSSIBLE_REASON_OTHER = 9;
-	public static final int IMPOSSIBLE_REASON_NOAP = 10;
-	public static final int IMPOSSIBLE_REASON_WRONGTARGET = 11;
-	public static final int IMPOSSIBLE_REASON_NOTARGET = 999;
-	public static final int IMPOSSIBLE_REASON_NOKNOWLEDGE = 12;
-	public static final int IMPOSSIBLE_REASON_NOITEM = 13;
-	public static final int IMPOSSIBLE_REASON_ACTIONNULL = 14;
-	public static final int IMPOSSIBLE_REASON_INVALIDACTION = 15;
-	public static final int IMPOSSIBLE_REASON_WRONGMODE = 16;
-	public static final int IMPOSSIBLE_REASON_WRONGPOSITION = 17;
-	public static final int IMPOSSIBLE_REASON_NODUST = 18;
-	public static final int IMPOSSIBLE_REASON_DISTANCE = 19;
-	
-	private int key1;
-	private int key2;
-	
-	public ActionResult(int key) {
+	private ActionResult(Situation key) {
 		this.key1 = key;
 	}
-	public ActionResult(int key1,int key2) {
-		this.key1 = key1;
+	private ActionResult(Reason key2) {
+		this.key1 = Situation.impossible;
 		this.key2 = key2;
 	}
 
-	/**
-	 * @return Returns the key2.
-	 */
-	public int getReason() {
+	public Reason getReason() {
 		return key2;
 	}
 
-	/**
-	 * @param key2 The key2 to set.
-	 */
-	public void setReason(int key2) {
-		this.key2 = key2;
-	}
 
-	/**
-	 * @return Returns the key1.
-	 */
-	public int getValue() {
+	public Situation getSituation() {
 		return key1;
 	}
 	

@@ -19,15 +19,11 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
-import game.RoomInfoEntity;
 import log.Log;
 import text.StatementManager;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.smartcontrol.UIFeedback;
-import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
 
@@ -178,7 +174,7 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void actionProcessed(Action a, ActionResult res) {
-		if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
+		if (res.getSituation() == ActionResult.Situation.impossible) {
 			perceptQueue.add(new TextPercept(StatementManager.getStatement(res).getText()));
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}

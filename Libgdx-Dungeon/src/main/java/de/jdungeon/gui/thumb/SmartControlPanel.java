@@ -355,7 +355,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private boolean checkFleeAction() {
-		return figure.checkAction(new FleeAction(false)).getValue() == ActionResult.VALUE_POSSIBLE;
+		return figure.checkAction(new FleeAction(false)).getSituation() == ActionResult.Situation.possible;
 	}
 
 	private LibgdxMoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {
@@ -426,7 +426,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 			FigureInfo otherFigure = roomInfo.getPositionInRoom(i).getFigure();
 			Action action = new StepAction(i);
 			// TODO: cache this
-			if (figure.checkAction(action).getValue() == ActionResult.VALUE_POSSIBLE) {
+			if (figure.checkAction(action).getSituation() == ActionResult.Situation.possible) {
 				positionElements.add(freeStepPositionElements[i]);
 			}
 			else if (otherFigure != null) {

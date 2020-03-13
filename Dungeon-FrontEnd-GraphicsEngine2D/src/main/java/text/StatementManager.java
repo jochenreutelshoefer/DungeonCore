@@ -34,23 +34,23 @@ public class StatementManager {
 
 	public static Statement getStatement(ActionResult res) {
 		Statement s = new Statement("ActionResStatement", 0);
-		if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
-			int k = res.getReason();
-			if (k == ActionResult.IMPOSSIBLE_REASON_NOAP) {
+		if (res.getSituation() == ActionResult.Situation.impossible) {
+			ActionResult.Reason k = res.getReason();
+			if (k == ActionResult.Reason.noActionPoints) {
 				s = new Statement(Texts.noAP(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_NODUST) {
+			} else if (k == ActionResult.Reason.noDust) {
 				s = new Statement(Texts.noDust(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_NOITEM) {
+			} else if (k == ActionResult.Reason.noItem) {
 				s = new Statement(Texts.notWithThat(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_NOKNOWLEDGE) {
+			} else if (k == ActionResult.Reason.noKnowledge) {
 				s = new Statement(Texts.noKnowledge(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION) {
+			} else if (k == ActionResult.Reason.wrongPosition) {
 				s = new Statement(Texts.wrongPosition(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_WRONGTARGET) {
+			} else if (k == ActionResult.Reason.wrongTarget) {
 				s = new Statement(Texts.wrongTarget(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_NOTARGET) {
+			} else if (k == ActionResult.Reason.noTarget) {
 				s = new Statement(Texts.noTarget(), 0);
-			} else if (k == ActionResult.IMPOSSIBLE_REASON_DISTANCE) {
+			} else if (k == ActionResult.Reason.wrongDistance) {
 				s = new Statement(JDEnv.getString("wrong_distance"), 0);
 			} else if (res == ActionResult.WRONG_TARGET) {
 				s = new Statement("Kein Platz da!", 0);

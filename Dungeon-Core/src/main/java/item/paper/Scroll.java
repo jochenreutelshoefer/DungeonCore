@@ -14,7 +14,6 @@ import dungeon.RoomEntity;
 import figure.Figure;
 import figure.action.result.ActionResult;
 import game.JDEnv;
-import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
 import item.interfaces.UsableWithTarget;
@@ -52,7 +51,7 @@ public class Scroll extends Item implements UsableWithTarget {
 	public boolean use(Figure f, RoomEntity target, boolean meta) {
 		theSpell.setCostsAP(false);
 		ActionResult res = theSpell.fire(f, target,true);
-		if(res.getValue() == ActionResult.VALUE_DONE) {
+		if(res.getSituation() == ActionResult.Situation.done) {
 			return true;
 		}
 		

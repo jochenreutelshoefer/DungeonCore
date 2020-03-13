@@ -729,7 +729,7 @@ public abstract class Figure extends DungeonWorldObject
 
 			if (a instanceof EndRoundAction) {
 				// end round doesn't actually do anything but skip turn (for instance to wait for new action points in the next round).
-				control.actionProcessed(a, new ActionResult(ActionResult.VALUE_DONE));
+				control.actionProcessed(a, ActionResult.DONE);
 				int ap = this.getActionPoints();
 				for (int j = 0; j < ap; j++) {
 					room.distributePercept(new WaitPercept(this));
@@ -758,7 +758,7 @@ public abstract class Figure extends DungeonWorldObject
 			ActionResult res = null;
 			Action a = null;
 			int cnt = 0;
-			while (res == null || res.getValue() != ActionResult.VALUE_POSSIBLE) {
+			while (res == null || res.getSituation() != ActionResult.Situation.possible) {
 				cnt++;
 				if (cnt > 10) {
 
@@ -772,7 +772,7 @@ public abstract class Figure extends DungeonWorldObject
 				}
 				a = retrieveFightActionFromControl();
 				res = processAction(a, false);
-				if (res.getValue() == ActionResult.VALUE_IMPOSSIBLE) {
+				if (res.getSituation() == ActionResult.Situation.impossible) {
 					if (control != null) {
 						control.actionProcessed(a, res);
 					}
@@ -851,8 +851,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			return ActionResult.POSSIBLE;
 		}
-		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-				ActionResult.IMPOSSIBLE_REASON_OTHER);
+		return ActionResult.OTHER;
 	}
 
 	private Item getItemForInfo(ItemInfo item) {
@@ -925,8 +924,7 @@ public abstract class Figure extends DungeonWorldObject
 		int targetIndex = a.getTarget();
 		Figure target = InfoUnitUnwrapper.getFighter(targetIndex);
 		if (target == null) {
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
+			return ActionResult.WRONG_TARGET;
 		}
 		if (getRoom().fightRunning()) {
 			if (canPayActionPoints(1)) {
@@ -964,8 +962,7 @@ public abstract class Figure extends DungeonWorldObject
 			if (canPayActionPoints(1)) {
 
 				if (this.isPinnedToGround()) {
-					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-							ActionResult.IMPOSSIBLE_REASON_OTHER);
+					return ActionResult.OTHER;
 				}
 
 				boolean flees;
@@ -1095,8 +1092,7 @@ public abstract class Figure extends DungeonWorldObject
 				return ActionResult.POSSIBLE;
 			}
 		}
-		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-				ActionResult.IMPOSSIBLE_REASON_OTHER);
+		return ActionResult.OTHER;
 	}
 
 	public abstract boolean canTakeItem(Item i);
@@ -1124,12 +1120,10 @@ public abstract class Figure extends DungeonWorldObject
 						}
 					}
 				}
-				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-						ActionResult.IMPOSSIBLE_REASON_OTHER);
+				return ActionResult.OTHER;
 			}
 			else {
-				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-						ActionResult.IMPOSSIBLE_REASON_NOAP);
+				return ActionResult.NOAP;
 			}
 		}
 		else {
@@ -1148,8 +1142,7 @@ public abstract class Figure extends DungeonWorldObject
 					}
 				}
 			}
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_OTHER);
+			return ActionResult.OTHER;
 		}
 	}
 
@@ -1175,12 +1168,10 @@ public abstract class Figure extends DungeonWorldObject
 						}
 					}
 				}
-				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-						ActionResult.IMPOSSIBLE_REASON_OTHER);
+				return ActionResult.OTHER;
 			}
 			else {
-				return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-						ActionResult.IMPOSSIBLE_REASON_NOAP);
+				return ActionResult.NOAP;
 			}
 		}
 		else {
@@ -1200,8 +1191,7 @@ public abstract class Figure extends DungeonWorldObject
 					}
 				}
 			}
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_OTHER);
+			return ActionResult.OTHER;
 		}
 	}
 
@@ -1212,12 +1202,10 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		int dir = a.getDirectionIndex();
 		if (pos.getIndex() != getDirPos(dir)) {
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_WRONGPOSITION);
+			return ActionResult.POSITION;
 		}
 		if (this.isPinnedToGround()) {
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_OTHER);
+			return ActionResult.OTHER;
 		}
 		if (wayPassable(dir)) {
 			if (doIt) {
@@ -1230,8 +1218,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 		}
 		else {
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
+			return ActionResult.WRONG_TARGET;
 		}
 	}
 
@@ -1254,15 +1241,13 @@ public abstract class Figure extends DungeonWorldObject
 				}
 			}
 		}
-		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-				ActionResult.IMPOSSIBLE_REASON_OTHER);
+		return ActionResult.OTHER;
 	}
 
 	private ActionResult processAction(Action a, boolean doIt) {
 
 		if (a == null) {
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_ACTIONNULL);
+			return null;
 		}
 		if (a instanceof DoNothingAction) {
 			return ActionResult.POSSIBLE;
@@ -1334,8 +1319,7 @@ public abstract class Figure extends DungeonWorldObject
 			return handleSkillUpAction((SkillUpAction) a);
 		}
 
-		return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-				ActionResult.IMPOSSIBLE_REASON_INVALIDACTION);
+		return ActionResult.UNKNOWN;
 	}
 
 	private ActionResult handleSuicideAction(SuicideAction a, boolean doIt) {
@@ -1416,15 +1400,13 @@ public abstract class Figure extends DungeonWorldObject
 	private ActionResult handleStepAction(StepAction a, boolean doIt) {
 		int targetIndex = a.getTargetIndex();
 		if (targetIndex == -1) {
-			return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-					ActionResult.IMPOSSIBLE_REASON_WRONGTARGET);
+			return ActionResult.NO_TARGET;
 		}
 		if (getRoom().fightRunning()) {
 			if (canPayActionPoints(1)) {
 
 				if (this.isPinnedToGround()) {
-					return new ActionResult(ActionResult.VALUE_IMPOSSIBLE,
-							ActionResult.IMPOSSIBLE_REASON_OTHER);
+					return ActionResult.OTHER;
 				}
 
 				Position newPos = getRoom().getPositions()[targetIndex];
@@ -1493,12 +1475,12 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		Room toScout = getRoom().getNeighbourRoom(dir);
 		if (toScout == null) {
-			return ActionResult.INVALID;
+			return ActionResult.UNKNOWN;
 		}
 		int direction = action.getDirection();
 		Room scoutTarget = getRoom().getNeighbourRoom(direction);
 		if(getRoomVisibility().getStatusObject(scoutTarget.getNumber()).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return ActionResult.INVALID;
+			return ActionResult.UNKNOWN;
 		}
 		if (doIt) {
 			lookDir = dir;
@@ -2223,7 +2205,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			return ActionResult.NOAP;
 		}
-		return ActionResult.INVALID;
+		return ActionResult.UNKNOWN;
 	}
 
 	public AbstractReflexBehavior getReflexReactionUnit() {

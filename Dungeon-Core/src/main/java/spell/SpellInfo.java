@@ -14,7 +14,6 @@ import figure.action.result.ActionResult;
 import figure.memory.MemoryObject;
 import game.InfoEntity;
 import gui.Paragraph;
-import item.ItemInfo;
 
 public class SpellInfo extends InfoEntity {
 	
@@ -58,7 +57,7 @@ public class SpellInfo extends InfoEntity {
 	public ActionResult isCurrentlyPossible(FigureInfo actor, InfoEntity target) {
 		InfoUnitUnwrapper unwrapper = new InfoUnitUnwrapper(map.getDungeon());
 		Figure figure = (Figure) unwrapper.unwrappObject(actor);
-		if(figure == null) return ActionResult.INVALID;
+		if(figure == null) return ActionResult.UNKNOWN;
 		return spell.fire(figure, unwrapper.unwrappObject(target), false);
 	}
 

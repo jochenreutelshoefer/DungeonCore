@@ -25,6 +25,6 @@ public abstract class AbstractExecutableActivity implements ExecutableActivity {
 	@Override
 	public ActionResult possible() {
 		if(this.isCurrentlyPossible()) return ActionResult.POSSIBLE;
-		return ActionResult.INVALID;
+		return ActionResult.UNKNOWN;
 	}
 }
