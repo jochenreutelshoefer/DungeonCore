@@ -76,7 +76,7 @@ border_double_left_lower_corner
   index: -1
 border_double_left_upper_corner
   rotate: false
-  xy: 1462, 868
+  xy: 2020, 1844
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
@@ -90,7 +90,7 @@ border_double_right
   index: -1
 border_double_right_lower_corner
   rotate: false
-  xy: 2020, 1844
+  xy: 1496, 868
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
@@ -168,6 +168,13 @@ cancel_tp_outline
 cloth_chest1
   rotate: false
   xy: 1999, 1802
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+club1
+  rotate: false
+  xy: 1360, 838
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -251,7 +258,7 @@ hour-glass-third
   index: -1
 icon_hammer2
   rotate: false
-  xy: 1360, 838
+  xy: 1394, 838
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -279,7 +286,7 @@ mana-potion
   index: -1
 minus
   rotate: false
-  xy: 1394, 838
+  xy: 1428, 838
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -307,7 +314,7 @@ paper_background
   index: -1
 plus
   rotate: false
-  xy: 1428, 838
+  xy: 1462, 856
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

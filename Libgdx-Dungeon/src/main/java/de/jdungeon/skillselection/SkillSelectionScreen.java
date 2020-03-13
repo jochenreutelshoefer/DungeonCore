@@ -1,7 +1,6 @@
 package de.jdungeon.skillselection;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -18,16 +17,12 @@ import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.DefaultGuiInputController;
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.app.gui.GUIElement;
 import de.jdungeon.app.gui.skillselection.SkillSelectionManager;
-import de.jdungeon.app.gui.skillselection.SkillSelectionTile;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.libgdx.LibgdxScreenContext;
 import de.jdungeon.util.Pair;
-import de.jdungeon.world.PlayerController;
-import de.jdungeon.world.WorldRenderer;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
