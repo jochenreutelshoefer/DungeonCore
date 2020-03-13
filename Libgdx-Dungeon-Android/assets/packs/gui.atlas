@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 Book
   rotate: false
-  xy: 1976, 1981
+  xy: 1566, 929
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -20,14 +20,14 @@ ManaBattery
   index: -1
 Parchment
   rotate: false
-  xy: 1456, 1055
+  xy: 1632, 929
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 Potion
   rotate: false
-  xy: 1976, 1915
+  xy: 1698, 930
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -55,14 +55,14 @@ Zauberstaub
   index: -1
 border_double_bottom
   rotate: false
-  xy: 1219, 567
+  xy: 1219, 546
   size: 72, 20
   orig: 72, 20
   offset: 0, 0
   index: -1
 border_double_left
   rotate: false
-  xy: 1976, 1797
+  xy: 631, 58
   size: 20, 54
   orig: 20, 54
   offset: 0, 0
@@ -76,35 +76,35 @@ border_double_left_lower_corner
   index: -1
 border_double_left_upper_corner
   rotate: false
-  xy: 1293, 567
+  xy: 1462, 868
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_right
   rotate: false
-  xy: 1588, 1064
+  xy: 2020, 1866
   size: 20, 55
   orig: 20, 55
   offset: 0, 0
   index: -1
 border_double_right_lower_corner
   rotate: false
-  xy: 1530, 1033
+  xy: 2020, 1844
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_right_upper_corner
   rotate: false
-  xy: 1610, 1065
+  xy: 1692, 1259
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 border_double_top
   rotate: false
-  xy: 1456, 1033
+  xy: 1293, 546
   size: 72, 20
   orig: 72, 20
   offset: 0, 0
@@ -123,9 +123,16 @@ boxNormal
   orig: 128, 128
   offset: 0, 0
   index: -1
-boxSelect
+boxNormalBW
   rotate: false
   xy: 1586, 1121
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+boxSelect
+  rotate: false
+  xy: 512, 114
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -139,7 +146,7 @@ brown-trunk-open
   index: -1
 buckler
   rotate: false
-  xy: 1976, 1853
+  xy: 1690, 996
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
@@ -151,11 +158,25 @@ bunch2
   orig: 154, 170
   offset: 0, 0
   index: -1
-cloth_chest1
+cancel_tp_outline
   rotate: false
-  xy: 512, 175
+  xy: 631, 24
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+cloth_chest1
+  rotate: false
+  xy: 1999, 1802
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+cycle
+  rotate: false
+  xy: 642, 129
+  size: 128, 113
+  orig: 128, 113
   offset: 0, 0
   index: -1
 eye130x130
@@ -230,7 +251,7 @@ hour-glass-third
   index: -1
 icon_hammer2
   rotate: false
-  xy: 1610, 1087
+  xy: 1360, 838
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -244,7 +265,7 @@ key
   index: -1
 lupe
   rotate: false
-  xy: 1522, 1055
+  xy: 1566, 863
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -258,7 +279,7 @@ mana-potion
   index: -1
 minus
   rotate: false
-  xy: 1998, 1819
+  xy: 1394, 838
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -272,7 +293,7 @@ mondrune
   index: -1
 no_image
   rotate: false
-  xy: 512, 209
+  xy: 1632, 878
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
@@ -286,7 +307,7 @@ paper_background
   index: -1
 plus
   rotate: false
-  xy: 512, 141
+  xy: 1428, 838
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -310,6 +331,76 @@ temple
   xy: 566, 304
   size: 256, 256
   orig: 256, 256
+  offset: 0, 0
+  index: -1
+tot1
+  rotate: false
+  xy: 1462, 890
+  size: 102, 134
+  orig: 102, 134
+  offset: 0, 0
+  index: -1
+win-bg-innen
+  rotate: false
+  xy: 1551, 1058
+  size: 122, 61
+  orig: 122, 61
+  offset: 0, 0
+  index: -1
+win-bg-l
+  rotate: false
+  xy: 1976, 1923
+  size: 61, 122
+  orig: 61, 122
+  offset: 0, 0
+  index: -1
+win-bg-lu
+  rotate: false
+  xy: 1675, 1058
+  size: 61, 61
+  orig: 61, 61
+  offset: 0, 0
+  index: -1
+win-bg-u
+  rotate: false
+  xy: 1566, 995
+  size: 122, 61
+  orig: 122, 61
+  offset: 0, 0
+  index: -1
+win-border1
+  rotate: false
+  xy: 1976, 1794
+  size: 21, 127
+  orig: 21, 127
+  offset: 0, 0
+  index: -1
+win-border2-l
+  rotate: false
+  xy: 1999, 1836
+  size: 19, 85
+  orig: 19, 85
+  offset: 0, 0
+  index: -1
+win-border2-t
+  rotate: false
+  xy: 1219, 568
+  size: 85, 19
+  orig: 85, 19
+  offset: 0, 0
+  index: -1
+win-bubble
+  rotate: false
+  xy: 512, 3
+  size: 117, 109
+  orig: 117, 109
+  offset: 0, 0
+  index: -1
+win-ecke
+  rotate: false
+  xy: 1456, 1026
+  size: 93, 93
+  orig: 93, 93
   offset: 0, 0
   index: -1
 
