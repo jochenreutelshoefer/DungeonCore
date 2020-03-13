@@ -76,7 +76,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		currentRotationState = (float) TWO_PI - rotationOffset;
 	}
 
-
 	public LibgdxItemWheel(JDPoint wheelCenterPosition,
 						   JDDimension dim,
 						   HeroInfo info,
@@ -207,6 +206,21 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		return -1;
 	}
 
+
+	public void shiftInventoryItemSelection() {
+		int markedPointIndex = getMarkedPointIndex();
+		setMarkedIndex(markedPointIndex + 1);
+		changeRotationState(-1 * (float)PI_EIGHTEENTH, false);
+
+		// we want to skip empty slots
+		if(this.getActivityForIndex(getMarkedPointIndex()) == null) {
+			if(this.binding.getNumberOfObjects() >= 0) {
+				shiftInventoryItemSelection();
+			}
+		}
+
+	}
+
 	private Activity getActivityForIndex(int index) {
 		return binding.getActivity(index);
 	}
@@ -226,6 +240,16 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		}
 	}
 
+	public ItemInfo getSelectedInventoryItem() {
+		Activity selected = this.getActivityForIndex(getMarkedPointIndex());
+		if(selected != null) {
+			if(selected.getObject() instanceof ItemInfo) {
+				return (ItemInfo) selected.getObject();
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public Object highlightFirst() {
 		// we need to update the binding set to have the new item included
@@ -241,7 +265,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	}
 
 	@Override
-	protected void centerOnIndex(Activity activity) {
+	public void centerOnIndex(Activity activity) {
+		if(activity == null) return;
 
 		int activityIndex = getActivityIndex(activity);
 		setMarkedIndex(activityIndex);
@@ -276,9 +301,9 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		highlightOn = false;
 	}
 
-	private void setMarkedIndex(int i) {
+	public void setMarkedIndex(int i) {
 		// set touched element as highlighted element
-		markedPointIndex = i;
+		markedPointIndex = i % 36;
 		highlightOn = true;
 
 		// show info about element
@@ -290,6 +315,10 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 			}
 			EventManager.getInstance().fireEvent(new FocusEvent(paragraphable, this));
 		}
+	}
+
+	public int getMarkedPointIndex() {
+		return markedPointIndex;
 	}
 
 	@Override
@@ -373,22 +402,25 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	public void paint(SpriteBatch batch) {
 
 		for (int i = 0; i < points.length; i++) {
-			int toDraw = (markedPointIndex + i + 1) % points.length;
-			int x = points[toDraw].getX();
-			int y = points[toDraw].getY();
+			int toDraw = (markedPointIndex + i + 1)  % points.length;
+			if (toDraw >= 0) {
 
-			if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
-					|| y > screenPlusDefaultImageHeight
-					|| y < 0 - doubleImageHeight || !isInDrawBounds(x, y)) {
-				continue;
-			}
-			Activity activity = this.binding.getActivity(toDraw);
-			if (activity != null) {
-				if (toDraw == this.markedPointIndex) {
-					drawActivityLarge(batch, x, y, activity);
+				int x = points[toDraw].getX();
+				int y = points[toDraw].getY();
+
+				if (x > screenPlusDefaultImageWidth || x < 0 - doubleImageWidth
+						|| y > screenPlusDefaultImageHeight
+						|| y < 0 - doubleImageHeight || !isInDrawBounds(x, y)) {
+					continue;
 				}
-				else {
-					drawActivityAbsolute(batch, x, y, activity);
+				Activity activity = this.binding.getActivity(toDraw);
+				if (activity != null) {
+					if (toDraw == this.markedPointIndex) {
+						drawActivityLarge(batch, x, y, activity);
+					}
+					else {
+						drawActivityAbsolute(batch, x, y, activity);
+					}
 				}
 			}
 		}

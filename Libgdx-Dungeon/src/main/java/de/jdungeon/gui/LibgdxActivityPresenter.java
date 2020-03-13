@@ -124,11 +124,6 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 				doubleImageHeight * 3 / 4);
 	}
 
-	public void drawActivityRelative(SpriteBatch batch, int x, int y, Activity activity) {
-		drawActivityAbsolute(batch, x + this.getPositionOnScreen().getX(), y + this.getPositionOnScreen()
-				.getY(), activity);
-	}
-
 	public void drawActivityAbsolute(SpriteBatch batch, int x, int y, Activity activity) {
 		String im = provider.getActivityImage(activity);
 

@@ -157,7 +157,7 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public ItemInfo getSelectedInventoryItem() {
-		return this.gameScreen.getGuiRenderer().getSelectedInventoryItem();
+		return this.gameScreen.getGuiRenderer().getItemWheel().getSelectedInventoryItem();
 	}
 
 	@Override

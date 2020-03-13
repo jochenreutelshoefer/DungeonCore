@@ -313,9 +313,10 @@ public class ActionAssembler implements EventListener {
 		plugActions(getActionAssemblerHelper().wannaUseShrine(figure.getRoomInfo(), false));
 	}
 
-	public void wannaUseItem() {
-
-		//getActionAssemblerHelper().wannaUseItem()
+	public void wannaUseItem(ItemInfo item) {
+		if(item != null) {
+			plugActions(getActionAssemblerHelper().wannaUseItem(item, null, false));
+		}
 	}
 
 

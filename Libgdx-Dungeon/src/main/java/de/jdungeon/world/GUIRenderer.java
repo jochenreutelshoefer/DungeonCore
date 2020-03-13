@@ -353,13 +353,11 @@ public class GUIRenderer implements Disposable {
 		this.glProfiler = glProfiler;
 	}
 
-	public ItemInfo getSelectedInventoryItem() {
-		Activity selected = this.itemWheelHeroItems.getSelected();
-		if(selected != null) {
-			if(selected.getObject() instanceof ItemInfo) {
-				return (ItemInfo) selected.getObject();
-			}
-		}
-		return null;
+
+
+	public LibgdxItemWheel getItemWheel() {
+		return this.itemWheelHeroItems;
 	}
+
+
 }

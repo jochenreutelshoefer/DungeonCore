@@ -2,18 +2,16 @@ package de.jdungeon.world;
 
 import java.util.List;
 
-import com.badlogic.gdx.Input;
 import dungeon.PositionInRoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
-import log.Log;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 
-import static com.badlogic.gdx.Gdx.*;
-import static com.badlogic.gdx.Input.*;
+import static com.badlogic.gdx.Gdx.input;
+import static com.badlogic.gdx.Input.Keys;
 
 /**
  * Implements keyboard control for the game (relevant for desktop version only).
@@ -25,7 +23,6 @@ public class KeyboardControl {
 
 	private final PlayerController playerController;
 	private final CameraHelper cameraHelper;
-
 
 	public KeyboardControl(PlayerController playerController, CameraHelper cameraHelper) {
 		this.playerController = playerController;
@@ -46,13 +43,14 @@ public class KeyboardControl {
 		boolean isFight = fightRunning != null && fightRunning;
 		ActionAssembler actionAssembler = playerController.getActionAssembler();
 
-		if(isFight) {
-			if(input.isKeyPressed(Keys.SPACE)) {
-				if(playerController.getAttackActivity().isCurrentlyPossible()) {
+		if (isFight) {
+			if (input.isKeyPressed(Keys.SPACE)) {
+				if (playerController.getAttackActivity().isCurrentlyPossible()) {
 					//Log.info("Keyboard control triggers attack - deltaTime: "+deltaTime + "  lastEvent"+lastEvent);
 					playerController.getAttackActivity().execute();
 					return eventProcessed();
-				} else {
+				}
+				else {
 					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 				}
 			}
@@ -62,7 +60,7 @@ public class KeyboardControl {
 		/*
 		handle chest event
 		 */
-		if(input.isKeyPressed(Keys.C)) {
+		if (input.isKeyPressed(Keys.C)) {
 			playerController.getActionAssembler().wannaUseChest();
 			return eventProcessed();
 		}
@@ -70,7 +68,7 @@ public class KeyboardControl {
 		/*
 		handle use location event
 		 */
-		if(input.isKeyPressed(Keys.L)) {
+		if (input.isKeyPressed(Keys.L)) {
 			playerController.getActionAssembler().wannaUseLocation();
 			return eventProcessed();
 		}
@@ -78,7 +76,7 @@ public class KeyboardControl {
 		/*
 		handle take item event
 		 */
-		if(input.isKeyPressed(Keys.I)) {
+		if (input.isKeyPressed(Keys.I)) {
 			playerController.getActionAssembler().wannaTakeItem();
 			return eventProcessed();
 		}
@@ -86,7 +84,7 @@ public class KeyboardControl {
 		/*
 		handle door lock/unlock event
 		 */
-		if(input.isKeyPressed(Keys.D)) {
+		if (input.isKeyPressed(Keys.D)) {
 			playerController.getActionAssembler().wannaLockUnlockDoor();
 			return eventProcessed();
 		}
@@ -94,8 +92,16 @@ public class KeyboardControl {
 		/*
 		handle use item event
 		 */
-		if(input.isKeyPressed(Keys.ENTER)) {
-			playerController.getActionAssembler().wannaUseItem();
+		if (input.isKeyPressed(Keys.ENTER)) {
+			playerController.getActionAssembler().wannaUseItem(playerController.getGameScreen().getGuiRenderer().getItemWheel().getSelectedInventoryItem());
+			return eventProcessed();
+		}
+
+		/*
+		shift selected inventory item
+		 */
+		if (input.isKeyPressed((Keys.TAB))) {
+			playerController.getGameScreen().getGuiRenderer().getItemWheel().shiftInventoryItemSelection();
 			return eventProcessed();
 		}
 
@@ -121,64 +127,69 @@ public class KeyboardControl {
 		if (input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
 		if (input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
 
-
 		return false;
 	}
 
 	private Boolean handleCursorEvents(boolean isFight, ActionAssembler actionAssembler) {
 		if (altPressed()) {
-				// cursor keys with alt modifier do scouting
-				if (input.isKeyPressed((Keys.RIGHT))) {
-					if(isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-					actionAssembler.wannaScout(RouteInstruction.Direction.East.getValue());
-					return eventProcessed();
-				}
-				if (input.isKeyPressed((Keys.DOWN))) {
-					if(isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-					actionAssembler.wannaScout(RouteInstruction.Direction.South.getValue());
-					return eventProcessed();
-				}
-				if (input.isKeyPressed((Keys.LEFT))) {
-					if(isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-					actionAssembler.wannaScout(RouteInstruction.Direction.West.getValue());
-					return eventProcessed();
-				}
-				if (input.isKeyPressed((Keys.UP))) {
-					if(isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-					actionAssembler.wannaScout(RouteInstruction.Direction.North.getValue());
-					return eventProcessed();
-				}
+			// cursor keys with alt modifier do scouting
+			if (input.isKeyPressed((Keys.RIGHT))) {
+				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
+				actionAssembler.wannaScout(RouteInstruction.Direction.East.getValue());
+				return eventProcessed();
+			}
+			if (input.isKeyPressed((Keys.DOWN))) {
+				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
+				actionAssembler.wannaScout(RouteInstruction.Direction.South.getValue());
+				return eventProcessed();
+			}
+			if (input.isKeyPressed((Keys.LEFT))) {
+				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
+				actionAssembler.wannaScout(RouteInstruction.Direction.West.getValue());
+				return eventProcessed();
+			}
+			if (input.isKeyPressed((Keys.UP))) {
+				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
+				actionAssembler.wannaScout(RouteInstruction.Direction.North.getValue());
+				return eventProcessed();
+			}
 		}
-		else if(shiftPressed()) {
+		else if (shiftPressed()) {
 			// cursor keys with shift modifier trigger steps
 			return plugStepDirectionAction();
 		}
 		else {
 			// cursor keys without modifier
-			if(isFight) {
+			if (isFight) {
 				PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
 				RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 				if (possibleFleeDirection != null) {
-					if(possibleFleeDirection == RouteInstruction.Direction.East && input.isKeyPressed(Keys.RIGHT) ) {
+					if (possibleFleeDirection == RouteInstruction.Direction.East && input.isKeyPressed(Keys.RIGHT)) {
 						actionAssembler.wannaFlee();
 						return eventProcessed();
-					} else if(possibleFleeDirection == RouteInstruction.Direction.West && input.isKeyPressed(Keys.LEFT) ) {
+					}
+					else if (possibleFleeDirection == RouteInstruction.Direction.West && input.isKeyPressed(Keys.LEFT)) {
 						actionAssembler.wannaFlee();
 						return eventProcessed();
-					}  else if(possibleFleeDirection == RouteInstruction.Direction.North && input.isKeyPressed(Keys.UP) ) {
+					}
+					else if (possibleFleeDirection == RouteInstruction.Direction.North && input.isKeyPressed(Keys.UP)) {
 						actionAssembler.wannaFlee();
 						return eventProcessed();
-					}  else if(possibleFleeDirection == RouteInstruction.Direction.South && input.isKeyPressed(Keys.DOWN) ) {
+					}
+					else if (possibleFleeDirection == RouteInstruction.Direction.South && input.isKeyPressed(Keys.DOWN)) {
 						actionAssembler.wannaFlee();
 						return eventProcessed();
-					} else {
+					}
+					else {
 						// cannot flee from this pos -> step further
 						return plugStepDirectionAction();
 					}
-				} else {
+				}
+				else {
 					return plugStepDirectionAction();
 				}
-			} else {
+			}
+			else {
 				// cursor keys be default moving to next room
 				if (input.isKeyPressed(Keys.RIGHT)) {
 					actionAssembler.wannaWalk(RouteInstruction.Direction.East.getValue());
@@ -229,7 +240,7 @@ public class KeyboardControl {
 	}
 
 	private void plugNonEmpty(List<Action> actions) {
-		if(actions != null && !actions.isEmpty()) {
+		if (actions != null && !actions.isEmpty()) {
 			playerController.plugActions(actions);
 		}
 	}
@@ -240,6 +251,11 @@ public class KeyboardControl {
 
 	private boolean shiftPressed() {
 		return input.isKeyPressed(Keys.SHIFT_RIGHT) || input.isKeyPressed(Keys.SHIFT_LEFT);
+	}
+
+	@Deprecated // on mac os not possible in combination with cursors
+	private boolean controlPressed() {
+		return input.isKeyPressed(Keys.CONTROL_LEFT) || input.isKeyPressed(Keys.CONTROL_RIGHT);
 	}
 
 	private long last_key_pressed_event;
