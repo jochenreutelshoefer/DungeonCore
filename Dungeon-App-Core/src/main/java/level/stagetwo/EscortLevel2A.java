@@ -7,6 +7,7 @@ import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFiller;
+import dungeon.generate.RoomPositionConstraint;
 import figure.hero.Hero;
 import figure.npc.DefaultNPCFactory;
 import figure.npc.RescuedNPCAI;
@@ -31,7 +32,7 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 	public Dungeon createDungeon() {
 		Dungeon dungeon = null;
 
-		List<Key> remainingKeys = new ArrayList<Key>();
+		List<Key> remainingKeys = new ArrayList<>();
 
 		DungeonFiller filler = null;
 
@@ -52,7 +53,12 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		hostageRoom.figureEnters(npc, 0);
 
 
-		Room exitRoom = filler.getUnallocatedRandomRoom();
+		Room exitRoom = filler.getUnallocatedRandomRoom(new RoomPositionConstraint() {
+			@Override
+			public boolean isValid(Room candidateRoom) {
+				return candidateRoom != entryRoom;
+			}
+		});
 		exitRoom.setShrine(new LevelExit(npc));
 
 		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0);

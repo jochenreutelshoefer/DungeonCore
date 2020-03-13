@@ -37,7 +37,7 @@ public class StartScreen extends AbstractGameScreen {
 	private Stage stage;
 
 	private final float DEBUG_REBUILD_INTERVALL = 5;
-	private boolean debugEnabled = false;
+	private final boolean debugEnabled = false;
 	private float debugRebuildStage;
 
 	public StartScreen(LibgdxDungeonMain game) {

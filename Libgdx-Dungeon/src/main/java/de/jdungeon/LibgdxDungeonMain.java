@@ -21,6 +21,7 @@ import level.DungeonFactory;
 import level.DungeonSelectedEvent;
 import level.DungeonStartEvent;
 import level.stageone.StartLevel;
+import log.Log;
 import spell.Spell;
 import user.DefaultDungeonSession;
 import user.DungeonSession;
@@ -69,6 +70,8 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 
 	@Override
 	public void create() {
+
+		Gdx.app.log(TAG,"Creating application");
 
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 

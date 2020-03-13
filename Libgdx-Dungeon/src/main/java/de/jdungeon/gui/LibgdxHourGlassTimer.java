@@ -1,10 +1,5 @@
 package de.jdungeon.gui;
 
-/**
- * @author Jochen Reutelshoefer (denkbares GmbH)
- * @created 07.02.20.
- */
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -72,9 +67,9 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 					this.getDimension().getHeight());
 
 			//fpsFont.setColor(textpaint.getFont().getColor());
-			Assets.instance.fonts.defaultSmallFlipped.draw(batch, "" + DungeonGame.getInstance().getRound(),
-					this.position.getX() + this.getDimension().getWidth() / 2 - 5,
-					this.getPositionOnScreen().getY() + this.getDimension().getHeight() + 4);
+			int screenX = this.position.getX() + this.getDimension().getWidth() / 2 - 5;
+			int screenY = this.getPositionOnScreen().getY() + this.getDimension().getHeight() + 4;
+			Assets.instance.fonts.defaultSmallFlipped.draw(batch, "" + DungeonGame.getInstance().getRound(), screenX, screenY);
 		}
 	}
 

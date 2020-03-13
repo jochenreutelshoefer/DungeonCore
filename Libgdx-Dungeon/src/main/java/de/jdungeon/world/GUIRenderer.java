@@ -42,7 +42,7 @@ import de.jdungeon.gui.thumb.SmartControlPanel;
 import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
 
 /**
- * Renders the GUI (aka head up display) over the game world.
+ * Renders the GUI (aka head up display) above the game world.
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 31.12.19.
@@ -51,7 +51,6 @@ public class GUIRenderer implements Disposable {
 
 	private final GameScreenInputProcessor inputController;
 	private final OrthographicCamera cameraGUI;
-	//private final LibgdxDungeonMain game;
 	private final HeroInfo figure;
 	private final LibgdxDungeonMain game;
 	private SpriteBatch batch;
@@ -61,10 +60,8 @@ public class GUIRenderer implements Disposable {
 	private TextPerceptView textView;
 
 
-
 	private final LibgdxFocusManager focusManager;
 
-	//protected final List<GUIElement> guiElements = new ArrayList<>();
 	protected final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
 
 	private LibgdxGameOverView gameOverView;
@@ -85,7 +82,6 @@ public class GUIRenderer implements Disposable {
 	}
 
 	private void reinit() {
-		//guiElements.clear();
 		libgdxGuiElements.clear();
 		init();
 	}
@@ -237,13 +233,6 @@ public class GUIRenderer implements Disposable {
 	}
 
 	private void updateGUIElements(float deltaTime) {
-		/*
-		for (GUIElement guiElement : this.guiElements) {
-			if (guiElement.isVisible()) {
-				guiElement.update(deltaTime);
-			}
-		}
-		*/
 
 		for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
 			if (guiElement.isVisible()) {
@@ -262,18 +251,9 @@ public class GUIRenderer implements Disposable {
 
 	private void renderGUIElements() {
 
-		/*
-		for (GUIElement guiElement : this.guiElements) {
-			if (guiElement.isVisible()) {
-				if (guiElement.needsRepaint()) {
-					guiElement.paint(graphics, new JDPoint(0,0));
-				}
-			}
-		}
-		*/
 
 		/*
-		render shapes
+		render shapes  TODO: find solution without using ShapeRenderer (create necessary sprites?)
 		 */
 		shapeRenderer.setProjectionMatrix(cameraGUI.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

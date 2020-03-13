@@ -32,6 +32,7 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.ClickType;
 import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.event.InventoryItemClickedEvent;
+import de.jdungeon.app.gui.FocusManager;
 import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 
@@ -70,7 +71,6 @@ public class ActionAssembler implements EventListener {
 			}
 		}
 	}
-
 
 
 	public FigureInfo getFigure() {
@@ -155,8 +155,7 @@ public class ActionAssembler implements EventListener {
 		return actionAssembler;
 	}
 
-	public void itemWheelActivityClicked(Activity item,
-										 RoomInfoEntity target) {
+	public void itemWheelActivityClicked(Activity item, RoomInfoEntity target) {
 		if (item == null) {
 			return;
 		}
@@ -251,13 +250,13 @@ public class ActionAssembler implements EventListener {
 				break;
 			}
 		}
-		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
+		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);// Todo: sound should be played on percept processing!
 		List<Action> actions = actionAssembler.wannaSwitchEquipmentItem(itemType, weaponIndex);
 		plugActions(actions);
 	}
 
 	public void inventoryItemLongClicked(int itemType, EquipmentItemInfo info) {
-		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);
+		AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM);// Todo: sound should be played on percept processing!
 		List<Action> actions = actionAssembler.wannaLayDownItem(info);
 		plugActions(actions);
 	}
@@ -310,5 +309,22 @@ public class ActionAssembler implements EventListener {
 		plugActions(getActionAssemblerHelper().wannaScout(directionValue));
 	}
 
+	public void wannaUseChest() {
+		plugActions(getActionAssemblerHelper().wannaUseChest(false));
+	}
 
+	public void wannaUseLocation() {
+		plugActions(getActionAssemblerHelper().wannaUseShrine(figure.getRoomInfo(), false));
+	}
+
+	public void wannaTakeItem() {
+		List<ItemInfo> items = figure.getRoomInfo().getItems();
+		if(items == null || items.isEmpty()) {
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+
+		} else {
+			plugActions(getActionAssemblerHelper().wannaTakeItem(items.get(0)));
+			AudioEffectsManager.playSound(AudioEffectsManager.TAKE_ITEM); // Todo: sound should be played on percept processing!
+		}
+	}
 }

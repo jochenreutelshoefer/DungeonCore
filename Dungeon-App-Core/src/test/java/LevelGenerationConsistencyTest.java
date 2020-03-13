@@ -21,7 +21,7 @@ import level.DungeonManager;
  */
 public class LevelGenerationConsistencyTest extends TestCase {
 
-	public void testStartLevel() {
+	public void testLevels() {
 		JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
 		DungeonManager manager = new DefaultDungeonManager();
 

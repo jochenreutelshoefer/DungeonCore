@@ -2,6 +2,7 @@ package de.jdungeon.world;
 
 import java.util.List;
 
+import com.badlogic.gdx.Input;
 import dungeon.PositionInRoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
@@ -37,7 +38,7 @@ public class KeyboardControl {
 		if (lastEvent < 200) {
 			// we do not process move input events faster than any 200 msec
 			// as there are coming many events with every key press
-			Log.info("Ignoring key event because last was "+lastEvent +"ago");
+			//Log.info("Ignoring key event because last was "+lastEvent +"ago");
 			return false;
 		}
 
@@ -48,7 +49,7 @@ public class KeyboardControl {
 		if(isFight) {
 			if(input.isKeyPressed(Keys.SPACE)) {
 				if(playerController.getAttackActivity().isCurrentlyPossible()) {
-					Log.info("Keyboard control triggers attack - deltaTime: "+deltaTime + "  lastEvent"+lastEvent);
+					//Log.info("Keyboard control triggers attack - deltaTime: "+deltaTime + "  lastEvent"+lastEvent);
 					playerController.getAttackActivity().execute();
 					return eventProcessed();
 				} else {
@@ -57,6 +58,59 @@ public class KeyboardControl {
 			}
 		}
 
+
+		/*
+		handle chest event
+		 */
+		if(input.isKeyPressed(Keys.C)) {
+			playerController.getActionAssembler().wannaUseChest();
+			return eventProcessed();
+		}
+
+		/*
+		handle location
+		 */
+		if(input.isKeyPressed(Keys.L)) {
+			playerController.getActionAssembler().wannaUseLocation();
+			return eventProcessed();
+		}
+
+		/*
+		handle take item
+		 */
+		if(input.isKeyPressed(Keys.I)) {
+			playerController.getActionAssembler().wannaTakeItem();
+			return eventProcessed();
+		}
+
+
+		Boolean x = handleCursorEvents(isFight, actionAssembler);
+		if (x != null) return x;
+
+		// camera controls move
+		float camMoveSpeed = 500 * deltaTime;
+		//float cameraMoveSpeedAcceleratorFactor = 5;
+		//if (Gdx.input.isKeyPressed((Input.Keys.SHIFT_LEFT))) camMoveSpeed *= cameraMoveSpeedAcceleratorFactor;
+
+		if (input.isKeyPressed((Keys.D))) moveCamera(camMoveSpeed, 0);
+		if (input.isKeyPressed((Keys.S))) moveCamera(0, camMoveSpeed);
+		if (input.isKeyPressed((Keys.A))) moveCamera(-camMoveSpeed, 0);
+		if (input.isKeyPressed((Keys.W))) moveCamera(0, -camMoveSpeed);
+
+		if (input.isKeyPressed((Keys.BACKSPACE))) cameraHelper.setPosition(0, 0);
+		// camera controls zoom
+		float camZoomSpeed = 1 * deltaTime;
+		float camZoomSpeedAccel = 5;
+		if (input.isKeyPressed(Keys.SHIFT_LEFT)) camZoomSpeed *= camZoomSpeedAccel;
+		if (input.isKeyPressed(Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
+		if (input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
+		if (input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
+
+
+		return false;
+	}
+
+	private Boolean handleCursorEvents(boolean isFight, ActionAssembler actionAssembler) {
 		if (altPressed()) {
 				// cursor keys with alt modifier do scouting
 				if (input.isKeyPressed((Keys.RIGHT))) {
@@ -129,32 +183,11 @@ public class KeyboardControl {
 				}
 			}
 		}
-
-		// camera controls move
-		float camMoveSpeed = 500 * deltaTime;
-		//float cameraMoveSpeedAcceleratorFactor = 5;
-		//if (Gdx.input.isKeyPressed((Input.Keys.SHIFT_LEFT))) camMoveSpeed *= cameraMoveSpeedAcceleratorFactor;
-
-		if (input.isKeyPressed((Keys.D))) moveCamera(camMoveSpeed, 0);
-		if (input.isKeyPressed((Keys.S))) moveCamera(0, camMoveSpeed);
-		if (input.isKeyPressed((Keys.A))) moveCamera(-camMoveSpeed, 0);
-		if (input.isKeyPressed((Keys.W))) moveCamera(0, -camMoveSpeed);
-
-		if (input.isKeyPressed((Keys.BACKSPACE))) cameraHelper.setPosition(0, 0);
-		// camera controls zoom
-		float camZoomSpeed = 1 * deltaTime;
-		float camZoomSpeedAccel = 5;
-		if (input.isKeyPressed(Keys.SHIFT_LEFT)) camZoomSpeed *= camZoomSpeedAccel;
-		if (input.isKeyPressed(Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
-		if (input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
-		if (input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
-
-
-		return false;
+		return null;
 	}
 
 	private boolean eventProcessed() {
-		Log.info("Reseting last key event timer");
+		//Log.info("Reseting last key event timer");
 		// we log a time stamp to be able to filter duplicate processing
 		last_key_pressed_event = System.currentTimeMillis();
 		return true;
