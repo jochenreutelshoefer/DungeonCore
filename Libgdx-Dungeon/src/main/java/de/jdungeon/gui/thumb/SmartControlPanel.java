@@ -36,7 +36,6 @@ import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
-import de.jdungeon.app.gui.smartcontrol.PositionElement;
 import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.gui.LibgdxDrawUtils;
@@ -257,11 +256,11 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 
 	public void animateEnemyBlobs() {
 		for (LibgdxGUIElement positionElement : positionElements) {
-			if (positionElement instanceof PositionElement) {
-				final RoomInfoEntity clickableObject = ((PositionElement) positionElement).getClickableObject();
+			if (positionElement instanceof LibgdxPositionElement) {
+				final RoomInfoEntity clickableObject = ((LibgdxPositionElement) positionElement).getClickableObject();
 				if (clickableObject instanceof FigureInfo) {
 					if (((FigureInfo) clickableObject).isHostile(this.figure)) {
-						((PositionElement) positionElement).startAnimation();
+						((LibgdxPositionElement) positionElement).startAnimation();
 					}
 				}
 			}

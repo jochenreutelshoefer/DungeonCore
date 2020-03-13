@@ -26,8 +26,12 @@ public abstract class LibgdxAnimatedSmartControlElement extends LibgdxSubGUIElem
 
 	@Override
 	public boolean handleClickEvent(int x, int y) {
-		buttonAnimationStart = System.currentTimeMillis();
+		startAnimation();
 		return false;
+	}
+
+	public void startAnimation() {
+		buttonAnimationStart = System.currentTimeMillis();
 	}
 
 	@Override

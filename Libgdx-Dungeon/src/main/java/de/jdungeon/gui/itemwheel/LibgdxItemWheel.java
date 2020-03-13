@@ -14,7 +14,6 @@ import util.JDDimension;
 
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.itemWheel.ItemWheelBindingSetSimple;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 import de.jdungeon.gui.LibgdxActivityProvider;
 import de.jdungeon.gui.LibgdxGUIElement;
@@ -53,6 +52,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	private final LibgdxItemWheelBindingSet binding;
 
+	public static final int DEFAULT_REOCURRENCE_CYCLE_SIZE = 4;
+
 	public LibgdxItemWheel(JDPoint wheelCenterPosition,
 						   JDDimension dim,
 						   HeroInfo info,
@@ -71,7 +72,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 				CenterPositionMode.topLeft,
 				dim.getWidth(),
 				36,
-				ItemWheelBindingSetSimple.DEFAULT_REOCURRENCE_CYCLE_SIZE);
+				DEFAULT_REOCURRENCE_CYCLE_SIZE);
 		currentRotationState = (float) TWO_PI - rotationOffset;
 	}
 

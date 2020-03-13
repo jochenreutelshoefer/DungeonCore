@@ -20,15 +20,17 @@ import de.jdungeon.game.Image;
 
 public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 
+
+
 	private final HeroInfo figure;
-	private final de.jdungeon.app.gui.HealthBar.Kind kind;
+	private final LibgdxHealthBar.Kind kind;
 
 	public enum Kind {
 		health, dust
 	}
 
 	public LibgdxHealthBar(JDPoint position, JDDimension dimension, HeroInfo info,
-						   de.jdungeon.app.gui.HealthBar.Kind kind) {
+						   LibgdxHealthBar.Kind kind) {
 		super(position, dimension);
 		this.figure = info;
 		this.kind = kind;
@@ -50,12 +52,12 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 		double baseValue = 1;
 		double actualValue = 1;
 		JDImageProxy coloredBar = null;
-		if (kind == de.jdungeon.app.gui.HealthBar.Kind.health) {
+		if (kind == Kind.health) {
 			baseValue = figure.getAttributeBasic(Attribute.HEALTH);
 			actualValue = figure.getAttributeValue(Attribute.HEALTH);
 			coloredBar = ImageManager.health_bar_red;
 		}
-		else if (kind == de.jdungeon.app.gui.HealthBar.Kind.dust) {
+		else if (kind == Kind.dust) {
 			baseValue = figure.getAttributeBasic(Attribute.DUST);
 			actualValue = figure.getAttributeValue(Attribute.DUST);
 			coloredBar = ImageManager.health_bar_yellow;

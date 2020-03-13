@@ -20,7 +20,6 @@ import util.JDDimension;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.HealthBar;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.TextPerceptView;
 import de.jdungeon.app.screen.InfoMessagePopupEvent;
@@ -126,10 +125,10 @@ public class GUIRenderer implements Disposable {
 
 		int posX = screenWidth - 170;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
-		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.health);
+		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(160, 20), figure, LibgdxHealthBar.Kind.health);
 		this.libgdxGuiElements.add(healthView);
 		JDPoint dustBarPosition = new JDPoint(posX, 25);
-		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(160, 20), figure, HealthBar.Kind.dust);
+		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(160, 20), figure, LibgdxHealthBar.Kind.dust);
 		this.libgdxGuiElements.add(dustView);
 
 		/*
