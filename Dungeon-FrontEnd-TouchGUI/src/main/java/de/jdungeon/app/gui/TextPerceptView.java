@@ -7,7 +7,6 @@ import java.util.ListIterator;
 import text.Statement;
 import util.JDDimension;
 
-import de.jdungeon.app.screen.GameScreen;
 import de.jdungeon.game.Colors;
 import de.jdungeon.game.Game;
 import de.jdungeon.game.Graphics;

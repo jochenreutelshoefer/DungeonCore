@@ -23,6 +23,8 @@ public class Main {
 		cfg.useGL30 = false;
 		cfg.width = 800;
 		cfg.height = 480;
+		cfg.allowSoftwareMode = true;
+		cfg.foregroundFPS = 70;
 		new LwjglApplication(new LibgdxDungeonMain(new DesktopResourceBundleLoader()), cfg);
 	}
 }

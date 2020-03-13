@@ -91,6 +91,13 @@ public class KeyboardControl {
 			return eventProcessed();
 		}
 
+		/*
+		handle use item event
+		 */
+		if(input.isKeyPressed(Keys.ENTER)) {
+			playerController.getActionAssembler().wannaUseItem();
+			return eventProcessed();
+		}
 
 		Boolean x = handleCursorEvents(isFight, actionAssembler);
 		if (x != null) return x;

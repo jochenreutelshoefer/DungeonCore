@@ -315,6 +315,12 @@ public class ActionAssembler implements EventListener {
 		plugActions(getActionAssemblerHelper().wannaUseShrine(figure.getRoomInfo(), false));
 	}
 
+	public void wannaUseItem() {
+
+		//getActionAssemblerHelper().wannaUseItem()
+	}
+
+
 	public void wannaTakeItem() {
 		List<ItemInfo> items = figure.getRoomInfo().getItems();
 		if(items == null || items.isEmpty()) {
@@ -334,4 +340,6 @@ public class ActionAssembler implements EventListener {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 	}
+
+
 }
