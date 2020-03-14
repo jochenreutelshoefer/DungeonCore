@@ -100,9 +100,13 @@ public class GameScreen extends AbstractGameScreen {
 		camera.position.set(number.getX() * ROOM_SIZE, number.getY() * ROOM_SIZE, 0);
 		camera.update();
 
+
+		int screenWidth = Gdx.app.getGraphics().getWidth();
+		int screenHeight = Gdx.app.getGraphics().getHeight();
+
 		// init gui camera and gui renderer
-		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-		cameraGUI.position.set(0, 0, 0);
+		cameraGUI = new OrthographicCamera(screenWidth, screenHeight);
+		cameraGUI.position.set(screenWidth/2, screenHeight/2, 0);
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
 

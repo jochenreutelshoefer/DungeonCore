@@ -51,6 +51,8 @@ import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
  */
 public class GUIRenderer implements Disposable {
 
+	private final static String TAG = GUIRenderer.class.getName();
+
 	private final GameScreenInputProcessor inputController;
 	private final OrthographicCamera cameraGUI;
 	private final HeroInfo figure;
@@ -64,7 +66,7 @@ public class GUIRenderer implements Disposable {
 
 	private final LibgdxFocusManager focusManager;
 
-	protected final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
+	final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
 
 	private LibgdxGameOverView gameOverView;
 	private GLProfiler glProfiler;
@@ -77,6 +79,7 @@ public class GUIRenderer implements Disposable {
 	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure, LibgdxFocusManager focusManager) {
 		this.inputController = inputController;
 		this.cameraGUI = cameraGUI;
+		cameraGUI.update();
 		this.game = game;
 		this.figure = figure;
 		this.focusManager = focusManager;
@@ -95,10 +98,12 @@ public class GUIRenderer implements Disposable {
 		batch = new SpriteBatch();
 		shapeRenderer.setAutoShapeType(true); // TODO: research and refactor w.r.t. ShapeTypes
 
-		cameraGUI.update();
+
 
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
+
+		Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: "+screenWidth +" x "+screenHeight);
 
 		/*
 		 * init text messages panel
@@ -112,8 +117,8 @@ public class GUIRenderer implements Disposable {
 		 * init info panel
 		 */
 
-		int infoPanelWidth = (int) (screenWidth * 0.2);
 		int infoPanelHeight = (int) (screenHeight * 0.4);
+		int infoPanelWidth = (int) (infoPanelHeight * 0.8);
 		infoPanel = new LibgdxInfoPanel(new JDPoint(10, 40),
 				new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager);
 		this.libgdxGuiElements.add(infoPanel);
@@ -164,20 +169,16 @@ public class GUIRenderer implements Disposable {
 		 */
 		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - SMART_CONTROL_SIZE, screenSize.getHeight() / 2 + 50 - SMART_CONTROL_SIZE / 2);
+		Gdx.app.log(TAG, "Initializing Smart Control Panel at: "+smartControlRoomPanelPosition.getX() +" / "+smartControlRoomPanelPosition.getY());
 		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
-		smartControl = new SmartControlPanel(
-				smartControlRoomPanelPosition,
-				smartControlRoomPanelSize, guiImageManager, figure, inputController
-				.getPlayerController().getActionAssembler());
+		smartControl = new SmartControlPanel( smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController.getPlayerController().getActionAssembler());
 		this.libgdxGuiElements.add(smartControl);
 
-		/*
-		 * init inventory item panel
-		 */
+
+
 		/*
 		 * init hero item wheel
 		 */
-
 		int selectedIndexItem = 17;
 		int wheelSize = 350;
 		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
@@ -308,11 +309,13 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void resize(int width, int height) {
+		Gdx.app.log(TAG, "Resize width: "+width +" ; height: "+height);
 		reinit();
-		cameraGUI.viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
-		cameraGUI.viewportWidth = (Constants.VIEWPORT_GUI_HEIGHT / height) * width;
+		cameraGUI.viewportHeight = height;
+		cameraGUI.viewportWidth = width;
 		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
 		cameraGUI.update();
+		//Gdx.app.log(TAG, "camerGUI viewport width: "+width +" ; height: "+height);
 	}
 
 	@Override
