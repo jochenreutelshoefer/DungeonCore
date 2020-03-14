@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import audio.AudioEffectsManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -49,10 +50,6 @@ import de.jdungeon.gui.LibgdxGUIElement;
  * @created 07.02.20.
  */
 public class SmartControlPanel extends LibgdxContainerGUIElement implements EventListener {
-
-	public static final int SMART_CONTROL_SIZE = 290;
-	public static final int MOVE_ELEMENT_SIZE = 40;
-	public static final int DOOR_WIDTH = 36;
 
 	private final List<LibgdxGUIElement> allGuiElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> positionElements = new ArrayList<>();
@@ -111,6 +108,11 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		inventoryImageManager = new InventoryImageManager(guiImageManager);
 
 
+		int screenWidth = Gdx.app.getGraphics().getWidth();
+		int MOVE_ELEMENT_SIZE = screenWidth / 21;
+		int DOOR_WIDTH = (int) (MOVE_ELEMENT_SIZE * 0.9);
+
+
 		/*
 		some util variables for the door coordinates
 		 */
@@ -145,21 +147,18 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		innerFrame = createRectGUIElement(new JDPoint(innerFrameWestBoundX, innerFrameNorthBoundY), new JDDimension(innerFrameEastBoundX - innerFrameWestBoundX + doorThickness, innerFrameSouthBoundY - innerFrameNorthBoundY + doorThickness));
 
 		// prepare step position elements
-		int positionElementSize = 32;
-		int correctionX = 3;
-		int correctionY = -3;
+		int positionElementSize = (int) (MOVE_ELEMENT_SIZE * 0.8);
+		int correctionX = MOVE_ELEMENT_SIZE/22;		 // TODO: why in hell do we need this to fit correctly ???
+		int correctionY = -1 * MOVE_ELEMENT_SIZE/16; // TODO: why in hell do we need this to fit correctly ???
 		positionDimension = new JDDimension(positionElementSize, positionElementSize);
 		for (int i = 0; i < freeStepPositionElements.length; i++) {
 			JDPoint positionCoord = positionCoordModified[i];
-			positionElementPositions[i] = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionElementSize / 2, correctionY + positionCoord
-					.getY() + positionAreaOffset - positionElementSize / 2);
-			freeStepPositionElements[i] = new LibgdxPositionElement(
-					positionElementPositions[i],
-					positionDimension,
-					this, null, Color.WHITE, null, actionAssembler, i);
+			positionElementPositions[i] = new JDPoint(correctionX + positionCoord.getX() + positionAreaOffset - positionElementSize / 2, correctionY + positionCoord.getY() + positionAreaOffset - positionElementSize / 2);
+			freeStepPositionElements[i] = new LibgdxPositionElement(positionElementPositions[i], positionDimension, this, null, Color.WHITE, null, actionAssembler, i);
 			dotPositionElements[i] = new LibgdxPositionElement(
-					new JDPoint(positionCoord.getX() + positionAreaOffset - 1, positionCoord.getY() + positionAreaOffset - 1),
-					new JDDimension(3, 3), this, null, Color.GRAY, null, actionAssembler);
+					new JDPoint(positionCoord.getX() + positionAreaOffset, positionCoord.getY() + positionAreaOffset),
+					new JDDimension(correctionX, correctionX), this, null, Color.GRAY, null, actionAssembler
+			);
 		}
 
 		moveElementDimension = new JDDimension(MOVE_ELEMENT_SIZE, MOVE_ELEMENT_SIZE);
@@ -178,7 +177,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		scoutElements.add(scoutEast);
 
 		// shrine button
-		int shrineElementSize = 30;
+		int shrineElementSize = (int) (MOVE_ELEMENT_SIZE * 0.75);
 		final JDDimension shrineDimension = new JDDimension(shrineElementSize, shrineElementSize);
 		final JDPoint posRelativeShrine = new JDPoint(getDimension().getWidth() * 19 / 28, getDimension()
 				.getHeight() * 9 / 48);
@@ -192,8 +191,8 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		};
 
 		// chest button
-		int takeElementSizeX = 30;
-		int takeElementSizeY = 18;
+		int takeElementSizeX = (int) (MOVE_ELEMENT_SIZE * 0.75);
+		int takeElementSizeY = takeElementSizeX * 3 / 5;
 		final JDDimension chestDimension = new JDDimension(takeElementSizeX, takeElementSizeY);
 		final JDPoint posRelative = new JDPoint(getDimension().getWidth() / 5, getDimension().getHeight() / 5);
 		String chestImage = "guiItems/Treasure-valuable-wealth-asset_3-512.png";
@@ -216,7 +215,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				inventoryImageManager,
 				new LibgdxTakeItemActivityProvider(figure, inventoryImageManager, guiControl),
 				null,
-				50);
+				screenWidth / 17);
 
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
@@ -265,7 +264,6 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				}
 			}
 		}
-		;
 	}
 
 	private LibgdxSubGUIElement createRectGUIElement(JDPoint position, JDDimension dimension) {

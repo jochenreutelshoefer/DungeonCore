@@ -419,7 +419,7 @@ repeat: none
 lupe2
   rotate: false
   xy: 2, 2
-  size: 958, 1371
-  orig: 958, 1371
+  size: 892, 1305
+  orig: 892, 1305
   offset: 0, 0
   index: -1

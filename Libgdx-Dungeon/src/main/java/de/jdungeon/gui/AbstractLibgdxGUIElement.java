@@ -185,14 +185,14 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 
 		// inside top
 		//batch.draw(inside, bgSheetX + cornerLB.originalWidth, innerBottomY - 2 * inside.originalHeight,0 , 0 ,dimensionBGSheetX - 2 * cornerLB.originalWidth, inside.originalHeight, 1f , -1f, 0);
-		int insideTopHeight = dimensionBGSheetY - cornerLB.originalHeight - inside.originalHeight;
-		batch.draw(insideFlipped, bgSheetX + cornerLB.originalWidth, innerBottomY - (cornerLB.originalHeight + insideTopHeight),dimensionBGSheetX - 2 * cornerLB.originalWidth, insideTopHeight);
+		int insideTopHeight = dimensionBGSheetY - cornerLB.originalHeight - inside.originalHeight ; // + 1 for rounding issues
+		batch.draw(insideFlipped, bgSheetX + cornerLB.originalWidth, innerBottomY - (cornerLB.originalHeight + insideTopHeight),dimensionBGSheetX - 2 * cornerLB.originalWidth, insideTopHeight + 1 /*+1 for rounding issues*/);
 
 		// bottom
 		batch.draw(bottom, bgSheetX + cornerLB.originalWidth, innerBottomY, 0 , 0 ,dimensionBGSheetX - 2 * cornerLB.originalWidth, bottom.originalHeight, 1f , 1f, 0);
 
 		// top
-		batch.draw(top, bgSheetX + cornerLB.originalWidth, bgSheetY, 0 , 0 ,dimensionBGSheetX - 2 * cornerLB.originalWidth, bottom.originalHeight, 1f , 1f, 0);
+		batch.draw(top, bgSheetX + cornerLB.originalWidth, bgSheetY, 0 , 0 ,dimensionBGSheetX - 2 * cornerLB.originalWidth, bottom.originalHeight + 1, 1f , 1f, 0);
 		//batch.draw(bottom, bgSheetX + cornerLB.originalWidth, bgSheetY, 0 , 0 ,dimensionBGSheetX - 2 * cornerLB.originalWidth, bottom.originalHeight, 1f , -1f, 0);
 
 		// left side
@@ -231,8 +231,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		batch.draw(edgeLB, currentX - 3, currentY + this.dimension.getHeight() - edgeSize + 3, 0 , 0, edgeSize, edgeSize, 1f , 1f, 0 );
 		batch.draw(edgeRT, currentX + this.dimension.getWidth() - edgeSize + 3, currentY - 3, 0 , 0, edgeSize, edgeSize, 1f , 1f, 0 );
 		batch.draw(edgeRB, currentX + this.dimension.getWidth() - edgeSize + 3, currentY + this.dimension.getHeight() - edgeSize + 3, 0 , 0, edgeSize, edgeSize, 1f , 1f, 0 );
-
-		//batch.draw(corner, bgSheetX + dimensionBGSheetX - corner.originalWidth, bgSheetY + dimensionBGSheetY - corner.originalHeight);
 
 	}
 

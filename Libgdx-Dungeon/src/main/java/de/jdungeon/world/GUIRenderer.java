@@ -41,7 +41,6 @@ import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
 
-import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
 
 /**
  * Renders the GUI (aka head up display) above the game world.
@@ -50,6 +49,7 @@ import static de.jdungeon.gui.thumb.SmartControlPanel.SMART_CONTROL_SIZE;
  * @created 31.12.19.
  */
 public class GUIRenderer implements Disposable {
+
 
 	private final static String TAG = GUIRenderer.class.getName();
 
@@ -103,6 +103,16 @@ public class GUIRenderer implements Disposable {
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
 
+		int screenHeightBy2 = screenHeight / 2;
+		int screenHeightBy3 = screenHeight / 3;
+		int screenHeightBy4 = screenHeight / 4;
+		int screenHeightBy5 = screenHeight / 5;
+		int screenHeightBy6 = screenHeight / 6;
+		int screenHeightBy8 = screenHeight / 8;
+		int screenHeightBy10 = screenHeight / 10;
+		int screenHeightBy20 = screenHeight / 20;
+		int screenHeightBy25= screenHeight / 25;
+
 		Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: "+screenWidth +" x "+screenHeight);
 
 		/*
@@ -128,30 +138,40 @@ public class GUIRenderer implements Disposable {
 		/*
 		 * init health bars
 		 */
-		/*
-		*/
-
-		int posX = screenWidth - 170;
+		int barHeight = screenHeight / 30;
+		int barWidth = barHeight * 8;
+		int posX = screenWidth - barWidth - 10;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
-		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(160, 20), figure, LibgdxHealthBar.Kind.health);
+		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.health);
 		this.libgdxGuiElements.add(healthView);
-		JDPoint dustBarPosition = new JDPoint(posX, 25);
-		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(160, 20), figure, LibgdxHealthBar.Kind.dust);
+		JDPoint dustBarPosition = new JDPoint(posX, barHeight + 5);
+		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
 		this.libgdxGuiElements.add(dustView);
 
 		/*
 		 * init hour glass
 		 */
-
-		int offsetFromRightBorder = screenWidth - 40;
-		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(offsetFromRightBorder, 50), new JDDimension(34, 60), figure, this.guiImageManager);
+		int hourGlassWidth = screenWidth / 25;
+		int offsetFromRightBorder = screenWidth / 100;
+		int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromRightBorder;
+		int hourGlassHeight = (int) (hourGlassWidth * 1.6);
+		int hourglassYPos = dustBarPosition.getY() + screenHeightBy25;
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager);
 		this.libgdxGuiElements.add(hourglass);
 
 
 		/*
 		add +/- magnifier
 		 */
-		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(offsetFromRightBorder - 4, 156), new JDDimension(44, 70), GUIImageManager.LUPE2) {
+		int plusYPos = hourglassYPos + hourGlassHeight + screenHeightBy25;
+		int zoombuttonSize = screenWidth / 25;
+		int magnifierWidth = screenWidth / 20;
+		int zoomButtonPosX = screenWidth - magnifierWidth + ((magnifierWidth - zoombuttonSize) / 2) - offsetFromRightBorder;
+		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(zoomButtonPosX, plusYPos), new JDDimension(zoombuttonSize, zoombuttonSize), inputController, GUIImageManager.PLUS, true));
+		int magnifierHeight = screenWidth / 12;
+		int yPaddingZoomButtons = 0; //screenHeight / 50;
+		int magnifierY = plusYPos + zoombuttonSize + yPaddingZoomButtons;
+		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(screenWidth - magnifierWidth - offsetFromRightBorder, magnifierY), new JDDimension(magnifierHeight *  44/70, magnifierHeight), GUIImageManager.LUPE2) {
 
 			@Override
 			public boolean handleClickEvent(int x, int y) {
@@ -159,16 +179,16 @@ public class GUIRenderer implements Disposable {
 				return true;
 			}
 		};
-		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(offsetFromRightBorder, 120), new JDDimension(36, 36), inputController, GUIImageManager.PLUS, true));
-		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(offsetFromRightBorder, 224), new JDDimension(36, 36), inputController, GUIImageManager.MINUS, false));
+		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(zoomButtonPosX, magnifierY + magnifierHeight + yPaddingZoomButtons), new JDDimension(zoombuttonSize, zoombuttonSize), inputController, GUIImageManager.MINUS, false));
 		this.libgdxGuiElements.add(magnifier);
 
 
 		/*
 		 * init smart thumb control
 		 */
-		JDDimension screenSize = new JDDimension(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
-		JDPoint smartControlRoomPanelPosition = new JDPoint(screenSize.getWidth() - SMART_CONTROL_SIZE, screenSize.getHeight() / 2 + 50 - SMART_CONTROL_SIZE / 2);
+		int itemPresenterHeight = screenHeightBy5;
+		int SMART_CONTROL_SIZE = screenWidth / 3;
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenWidth - SMART_CONTROL_SIZE, screenHeight - SMART_CONTROL_SIZE - itemPresenterHeight / 2);
 		Gdx.app.log(TAG, "Initializing Smart Control Panel at: "+smartControlRoomPanelPosition.getX() +" / "+smartControlRoomPanelPosition.getY());
 		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
 		smartControl = new SmartControlPanel( smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController.getPlayerController().getActionAssembler());
@@ -203,11 +223,12 @@ public class GUIRenderer implements Disposable {
 		 */
 
 		int screenWidthBy2 = (int) (screenWidth / 2.07);
-		int itemPresenterHeight = 100;
+
 		LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(inputController.getPlayerController());
+		int skillPresenterWidth = itemPresenterHeight * 5;
 		LibgdxUseSkillPresenter skillPresenter = new LibgdxUseSkillPresenter(
-				new JDPoint(screenWidth / 2, screenHeight - itemPresenterHeight - 25),
-				new JDDimension(screenWidthBy2, itemPresenterHeight),
+				new JDPoint(screenWidth  - skillPresenterWidth, screenHeight - itemPresenterHeight - screenHeightBy20),
+				new JDDimension(skillPresenterWidth, itemPresenterHeight),
 				skillActivityProvider,
 				ImageManager.inventory_box_normal.getFilenameBlank(),
 				ImageManager.inventory_box_normalInactive.getFilenameBlank()
@@ -309,7 +330,6 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void resize(int width, int height) {
-		Gdx.app.log(TAG, "Resize width: "+width +" ; height: "+height);
 		reinit();
 		cameraGUI.viewportHeight = height;
 		cameraGUI.viewportWidth = width;

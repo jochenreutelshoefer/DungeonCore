@@ -21,7 +21,7 @@ import de.jdungeon.gui.thumb.LibgdxActivityGUIElement;
  */
 public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements EventListener {
 
-	private static final int defaultImageWidth = 60;
+	//private int defaultImageWidth;
 	private final List<LibgdxActivityGUIElement> activities = new ArrayList<>();
 	private static final int NUMBER_OF_SLOTS = 6;
 	private final JDPoint[] relativeItemTilePositions = new JDPoint[NUMBER_OF_SLOTS];
@@ -30,10 +30,10 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 	private final String imageInactiveBg;
 
 	public LibgdxUseSkillPresenter(JDPoint presenterPos, JDDimension dimension, LibgdxActivityProvider useItemActivityProvider, String imageBg, String imageInactiveBg) {
-		super(presenterPos, dimension, useItemActivityProvider, imageBg, defaultImageWidth);
+		super(presenterPos, dimension, useItemActivityProvider, imageBg, (int) (dimension.getHeight() * 0.6));
 		this.imageBg = imageBg;
 		this.imageInactiveBg = imageInactiveBg;
-
+		//defaultImageWidth = (int) (this.getDimension().getHeight() * 0.6);
 		tileDimension = new JDDimension(defaultImageWidth, defaultImageWidth);
 
 
