@@ -94,4 +94,5 @@ public interface DungeonFiller {
 
 	RouteInstruction.Direction getUnallocatedRandomNeighbour(Room exitRoom);
 
+	void setToWallUnreachableRoom(JDPoint heroEntryPoint);
 }

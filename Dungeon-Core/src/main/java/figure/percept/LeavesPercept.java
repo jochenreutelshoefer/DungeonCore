@@ -27,7 +27,7 @@ public class LeavesPercept extends OpticalPercept {
 
 
 	public RoomInfo getTo() {
-		return new RoomInfo(from,viewer.getRoomVisibility());
+		return new RoomInfo(from.getNeighbourRoom(direction),viewer.getRoomVisibility());
 	}
 
 

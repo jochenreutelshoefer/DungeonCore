@@ -316,7 +316,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 			return 0;
 		} else {
 
-			int healthLevel = getHealthLevel();
+			int healthLevel = getHealthLevel().getValue();
 			double erg = 6 * healthLevel * getAntiFleeFactor();
 			int k = 1;
 			double mult = 0.6;
@@ -451,7 +451,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		// Faktor 1,0 !!
 		int k = (int) (1.0 * (minDamage + ((int) (Math.random() * (maxDamage
 				- minDamage + 1)))));
-		int h = this.getHealthLevel();
+		int h = this.getHealthLevel().getValue();
 		if (h == 4) {
 
 			return k;
@@ -524,9 +524,9 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	public int getHealthLevel() {
+	public HealthLevel getHealthLevel() {
 		int i = health.perCent();
-		return HealthLevel.fromPercent(i).getValue();
+		return HealthLevel.fromPercent(i);
 	}
 
 	@Override
@@ -636,7 +636,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 
 	protected double calcFleeChance() {
-		int k = getHealthLevel();
+		int k = getHealthLevel().getValue();
 		int l = k + 2;
 		return ((double) l) / 10;
 	}

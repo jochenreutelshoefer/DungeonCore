@@ -247,14 +247,11 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		Action a = Action.makeActionFlee();
 		ActionResult res = monster.checkAction(Action.makeActionFlee());
 		if (res.getSituation() == ActionResult.Situation.possible) {
-			// System.out.println("flucht hier m�glich");
 			return a;
 		} else {
-			// System.out.println("Flucht hier NICHT m�glich!");
 
 			StepAction step = getStepActionToDoor(monster);
 			if (step != null) {
-				// System.out.println("stepping to :" + step.getTargetIndex());
 				ActionResult stepRes = monster.checkAction(step);
 				if (stepRes.getSituation() == ActionResult.Situation.possible) {
 					return step;
@@ -499,7 +496,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 	protected Action getActionForMonsterCount2() {
 		int heroIndex = getHeroIndex();
-		int healthLevel = monster.getHealthLevel();
+		int healthLevel = monster.getHealthLevel().getValue();
 		if (healthLevel <= Figure.STATUS_CRITICAL && Math.random() < 0.4) {
 			Action a = getFleeAction(monster);
 			if (a != null) {
@@ -524,7 +521,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 	protected Action getActionForMonsterCount1() {
 		int heroIndex = getHeroIndex();
-		int healthLevel = monster.getHealthLevel();
+		int healthLevel = monster.getHealthLevel().getValue();
 		if (healthLevel <= Figure.STATUS_HEALTHY && Math.random() < 0.05) {
 			Action a = getFleeAction(monster);
 			if (a != null) {

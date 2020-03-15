@@ -9,6 +9,7 @@ import java.util.List;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Path;
 import dungeon.Room;
 import dungeon.generate.DeadEndPath;
 import dungeon.generate.DungeonFillUtils;
@@ -16,7 +17,10 @@ import dungeon.generate.DungeonFiller;
 import dungeon.generate.ReachabilityChecker;
 import dungeon.generate.RectArea;
 import dungeon.generate.RoomPositionConstraint;
+import dungeon.util.DungeonUtils;
 import dungeon.util.RouteInstruction;
+import figure.DungeonVisibilityMap;
+import figure.RoomObservationStatus;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
@@ -75,6 +79,21 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		}
 
 		return candidates.get((int)(Math.random()* candidates.size()));
+	}
+
+
+	@Override
+	public void setToWallUnreachableRoom(JDPoint heroEntryPoint) {
+		for (int x = 0; x < dungeon.getSize().getX(); x++) {
+			for (int y = 0; y < dungeon.getSize().getY(); y++) {
+				Path path = DungeonUtils.findShortestPath(dungeon, heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap
+						.getAllVisMap(dungeon), true);
+				if(path == null) {
+					dungeon.getRoom(x, y).setIsWall(true);
+				}
+			}
+		}
+
 	}
 
 	@Override
@@ -392,4 +411,12 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return getDoorList(room, false);
 	}
 
+	public void setAllFound(DungeonVisibilityMap roomVisibility) {
+		RoomObservationStatus[][] rooms = roomVisibility.getRooms();
+		for (RoomObservationStatus[] room : rooms) {
+			for (RoomObservationStatus roomObservationStatus : room) {
+				roomObservationStatus.setVisibilityStatus(RoomObservationStatus.VISIBILITY_FOUND);
+			}
+		}
+	}
 }

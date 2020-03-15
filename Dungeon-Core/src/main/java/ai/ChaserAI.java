@@ -10,7 +10,11 @@ import figure.percept.Percept;
 
 public class ChaserAI extends DefaultMonsterIntelligence {
 
-	private HeroPositionLog heroLog = new HeroPositionLog();
+	private final HeroPositionLog heroLog;
+
+	public ChaserAI() {
+		heroLog = new HeroPositionLog(this.monster);
+	}
 
 	@Override
 	public Action chooseFightAction() {

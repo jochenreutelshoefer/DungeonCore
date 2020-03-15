@@ -25,13 +25,13 @@ public abstract class ConjuredMagicFigure extends Monster {
 	public abstract boolean disappearAtEndOfFight();
 	
 	@Override
-	public boolean fight() {
+	public boolean fight(int round) {
 		numberOfRoundsLived++;
 		if(numberOfRoundsLived == numberOfRoundsToLive) {
 			this.disappear();
 			return true;
 		}
-		super.fight();
+		super.fight(round);
 		return false;
 	}
 

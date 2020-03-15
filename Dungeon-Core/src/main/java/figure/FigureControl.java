@@ -121,9 +121,6 @@ public class FigureControl implements ControlUnit {
 		} else {
 			a = brain.chooseMovementAction();
 		}
-		if(a != null) {
-			Log.info(this.f.getName()+" "+a.getClass().getSimpleName());
-		}
 		return a;
 	}
 

@@ -69,7 +69,7 @@ public class Fight {
 		fighterList.add(f);
 	}
 	
-	public void doFight() {
+	public void doFight(int round) {
 		
 		boolean endFight = false;
 		for(int i = 0; i < 3; i++) {
@@ -80,7 +80,7 @@ public class Fight {
 			}
 			for (Figure element : tempList) {
 				if (!element.isDead()) {
-					boolean disappears = element.fight();
+					boolean disappears = element.fight(round);
 					if (disappears) {
 						this.fighterList.remove(element);
 						this.fightRoom.figureLeaves(element);

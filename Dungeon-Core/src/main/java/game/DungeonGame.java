@@ -13,6 +13,7 @@ import figure.Figure;
 import figure.hero.Hero;
 import item.Item;
 import item.ItemPool;
+import log.Log;
 import spell.AbstractSpell;
 import spell.TimedSpellInstance;
 import test.TestTracker;
@@ -141,6 +142,7 @@ public class DungeonGame implements Runnable {
 	}
 
 	public void worldTurn() {
+		Log.info("Starting world turn for round: "+round);
 		derDungeon.turn(round);
 		spellsTurn();
 		itemsTurn();

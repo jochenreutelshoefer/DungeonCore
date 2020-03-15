@@ -944,7 +944,7 @@ public class Character implements Serializable {
 	}
 
 	protected String getStatus() {
-		int i = owner.getHealthLevel();
+		int i = owner.getHealthLevel().getValue();
 		String status = "invalid status";
 		if (i == 4)
 			status = (" Du f�hlst Dich noch immer stark.");

@@ -11,5 +11,7 @@ package figure.action;
  *
  */
 public class EndRoundAction extends Action {
-	
+
+	public static final EndRoundAction instance = new EndRoundAction();
+
 }

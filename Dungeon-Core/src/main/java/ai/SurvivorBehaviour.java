@@ -18,7 +18,7 @@ import figure.percept.Percept;
 public class SurvivorBehaviour extends AbstractAI {
 
 	private final FigureInfo figure;
-	private final HeroPositionLog heroLog = new HeroPositionLog();
+	private final HeroPositionLog heroLog;
 	private final AbstractAI defaultAI;
 	private final ActionAssemblerHelper actionAssembler;
 	List<Action> plannedActions = new ArrayList<>();
@@ -29,6 +29,7 @@ public class SurvivorBehaviour extends AbstractAI {
 		defaultAI = new DefaultMonsterIntelligence();
 		defaultAI.setFigure(figure);
 		actionAssembler = new ActionAssemblerHelper(figure);
+		heroLog = new HeroPositionLog(figure);
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class SurvivorBehaviour extends AbstractAI {
 
 	@Override
 	public Action chooseFightAction() {
-		if (figure.getHealthLevel() < HealthLevel.Good.getValue()) {
+		if (figure.getHealthLevel().getValue() < HealthLevel.Good.getValue()) {
 			return DefaultMonsterIntelligence.getFleeAction(figure);
 		}
 		return defaultAI.chooseFightAction();
@@ -56,7 +57,7 @@ public class SurvivorBehaviour extends AbstractAI {
 		}
 		heroLog.processPercepts();
 
-		if (figure.getHealthLevel() < HealthLevel.Good.getValue()) {
+		if (figure.getHealthLevel().getValue() < HealthLevel.Good.getValue()) {
 			JDPoint location = this.figure.getRoomInfo().getLocation();
 			JDPoint lastHeroPosition = heroLog.getLastHeroPosition();
 			int diffX = location.getX() - lastHeroPosition.getX();

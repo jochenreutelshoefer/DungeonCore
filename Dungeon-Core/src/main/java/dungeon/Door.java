@@ -204,7 +204,7 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		}
 	}
 
-	private void setKey(Key k) {
+	public void setKey(Key k) {
 		this.lock = new Lock(k, this);
 		locked = true;
 	}

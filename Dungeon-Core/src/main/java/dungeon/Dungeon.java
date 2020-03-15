@@ -131,6 +131,9 @@ public class Dungeon implements Turnable, EventListener {
 		return size;
 	}
 
+	public Room getRoom(int x, int y) {
+		return getRoom(new JDPoint(x, y));
+	}
 	
 	public Room getRoom(JDPoint p) {
 		if (p == null) {
@@ -141,12 +144,7 @@ public class Dungeon implements Turnable, EventListener {
 			// invalid coordinates for this dungeon
 			return null;
 		}
-		Room r = theDungeon[p.getX()][p.getY()];
-		if (r.isWall()) {
-			return null;
-		} else {
-			return r;
-		}
+		return theDungeon[p.getX()][p.getY()];
 	}
 
 	public Room[][] getRooms() {

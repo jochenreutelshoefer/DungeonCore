@@ -3,14 +3,18 @@ package ai;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import dungeon.JDPoint;
 import dungeon.RoomInfo;
+import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.FleePercept;
 import figure.percept.HitPercept;
+import figure.percept.LeavesPercept;
 import figure.percept.MissPercept;
 import figure.percept.EntersPercept;
 import figure.percept.Percept;
@@ -23,13 +27,20 @@ import figure.percept.StepPercept;
  */
 public class HeroPositionLog {
 
+	private final FigureInfo owner;
 	private JDPoint lastHeroLocation = null;
+
 	private int lastHeroLocationInfoRound;
 
-	// make the list thread safe
+	public HeroPositionLog(FigureInfo owner) {
+		this.owner = owner;
+	}
+
 	private final List<Percept> perceptList = new LinkedList<>();
 
-	JDPoint getLastHeroPosition(){
+	private final Map<JDPoint, Integer> lastVisits = new HashMap<>();
+
+	public JDPoint getLastHeroPosition(){
 		return lastHeroLocation;
 	}
 
@@ -37,6 +48,15 @@ public class HeroPositionLog {
 		synchronized (perceptList) {
 			perceptList.add(p);
 		}
+	}
+
+	public boolean lastEnemyPositionVisited() {
+		if(lastVisits.containsKey(lastHeroLocation)) {
+			if(lastVisits.get(lastHeroLocation) >= lastHeroLocationInfoRound) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public synchronized void processPercepts() {
@@ -50,6 +70,18 @@ public class HeroPositionLog {
 			if (element instanceof EntersPercept) {
 				if (((EntersPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
 					this.lastHeroLocation = ((EntersPercept) element).getTo().getPoint();
+					lastHeroLocationInfoRound = element.getRound();
+				}
+
+				if(((EntersPercept) element).getFigure().equals(owner)) {
+					lastVisits.put(((EntersPercept) element).getTo().getPoint(), element.getRound());
+				}
+
+			}
+			if (element instanceof LeavesPercept) {
+				if (((LeavesPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
+					int dir = ((LeavesPercept) element).getDirection().getValue();
+					this.lastHeroLocation = ((LeavesPercept) element).getTo().getLocation();
 					lastHeroLocationInfoRound = element.getRound();
 				}
 			}
@@ -92,8 +124,6 @@ public class HeroPositionLog {
 				}
 			}
 		}
-
-
 	}
 
 

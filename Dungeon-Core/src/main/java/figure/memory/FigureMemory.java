@@ -14,7 +14,7 @@ public class FigureMemory extends MemoryObject{
 	public FigureMemory(Figure fig,FigureInfo f) {
 		this.clazz = fig.getClass();
 		this.name = fig.getName();
-		this.healthStatus = fig.getHealthLevel();
+		this.healthStatus = fig.getHealthLevel().getValue();
 		this.value = fig.getWorth();
 		this.hostile = fig.getControl().isHostileTo(f);
 		

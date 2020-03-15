@@ -229,7 +229,7 @@ public class Room extends DungeonWorldObject implements
 			turnNormal(round);
 		}
 		else {
-			fight.doFight();
+			fight.doFight(round);
 		}
 	}
 
@@ -521,6 +521,37 @@ public class Room extends DungeonWorldObject implements
 			int doorDirection = i + 1; // direction index starts with 1
 			setDoor(null, RouteInstruction.Direction.fromInteger(doorDirection), true);
 		}
+	}
+
+	public void removeDoors(RouteInstruction.Direction... directions) {
+		for (int i = 0; i < doors.length; i++) {
+			int doorDirection = i + 1; // direction index starts with 1
+			RouteInstruction.Direction dir = RouteInstruction.Direction.fromInteger(doorDirection);
+			if(contains(dir, directions)) {
+				setDoor(null, dir, true);
+			}
+		}
+	}
+
+
+	public void removeAllDoorsExcept(RouteInstruction.Direction... directions) {
+		for (int i = 0; i < doors.length; i++) {
+			int doorDirection = i + 1; // direction index starts with 1
+			RouteInstruction.Direction dir = RouteInstruction.Direction.fromInteger(doorDirection);
+			if(!contains(dir, directions)) {
+				setDoor(null, dir, true);
+			}
+		}
+	}
+
+	private boolean contains(RouteInstruction.Direction dir, RouteInstruction.Direction... directions) {
+		for (RouteInstruction.Direction direction : directions) {
+			if(direction == dir) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

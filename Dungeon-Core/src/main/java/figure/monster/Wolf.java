@@ -51,7 +51,14 @@ public class Wolf extends NatureMonster {
 		contrucHelpWolf(value);
 
 	}
-	
+
+	public Wolf(int value, AI ai, String name) {
+		super(value, ai);
+		contrucHelpWolf(value);
+		this.name = name;
+	}
+
+
 
 	public Wolf(int value, boolean special_attack) {
 		super(value);

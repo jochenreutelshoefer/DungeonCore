@@ -9,7 +9,8 @@ public enum HealthLevel {
 	Good(3),
 	Injured(2),
 	Weak(1),
-	Dying(0);
+	Dying(0),
+	Dead(-1);
 
 	public int getValue() {
 		return value;
@@ -34,8 +35,10 @@ public enum HealthLevel {
 		else if (percent > 10) {
 			return Weak;
 		}
-		else {
+		else if (percent > 0) {
 			return Dying;
+		} else {
+			return Dead;
 		}
 	}
 
@@ -53,8 +56,10 @@ public enum HealthLevel {
 			return Weak;
 		}
 		else if (value == 0) {
-
 			return Dying;
+		}
+		else if (value == -1) {
+			return Dead;
 		}
 		return null;
 	}

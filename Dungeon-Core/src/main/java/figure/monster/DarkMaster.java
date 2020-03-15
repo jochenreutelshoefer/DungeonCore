@@ -92,7 +92,7 @@ public class DarkMaster extends Monster {
 //		routing.push(new RouteInstruction(heroRoom));
 	}
 
-	public void turn(int j) {
+	public void turn(int round) {
 
 		int i = 0;
 		if (routing.empty()) {

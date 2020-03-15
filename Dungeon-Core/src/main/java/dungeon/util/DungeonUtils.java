@@ -14,6 +14,8 @@ import dungeon.Room;
 import dungeon.RoomInfo;
 import dungeon.Path;
 import figure.DungeonVisibilityMap;
+import figure.Figure;
+import figure.FigureInfo;
 
 public class DungeonUtils {
 
@@ -69,6 +71,13 @@ public class DungeonUtils {
 		}
 	}
 
+	public static Path findShortestPath(FigureInfo figure, JDPoint start, JDPoint goal, boolean crossBlockedDoors) {
+		Figure fighter = InfoUnitUnwrapper.getFighter(figure.getFighterID());
+		if(fighter == null) return null;
+		return findShortestPath(fighter.getActualDungeon(), start, goal, figure.getMap(), crossBlockedDoors);
+
+	}
+
 	public static Path findShortestPath(Dungeon dungeon, Room start, Room goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
 		return findShortestPath(dungeon, start.getPoint(), goal.getPoint(), visibilityMap, crossBlockedDoors);
 
@@ -115,7 +124,7 @@ public class DungeonUtils {
 				if(crossBlockedDoors) {
 					expansionNodes.add(new SearchNode(otherRoom, node, node.distanceWalked+1));
 				} else {
-					if(door.isPassable()) {
+					if(door.isPassable() != null && door.isPassable()) {  // TODO: find solution for not knowing the passable state due to vis
 						expansionNodes.add(new SearchNode(otherRoom, node,node.distanceWalked+1));
 					}
 				}

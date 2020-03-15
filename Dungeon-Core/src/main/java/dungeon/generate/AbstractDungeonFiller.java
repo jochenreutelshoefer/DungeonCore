@@ -15,7 +15,10 @@ import java.util.List;
 import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Path;
 import dungeon.Room;
+import dungeon.util.DungeonUtils;
+import figure.DungeonVisibilityMap;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
@@ -91,6 +94,20 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 		else {
 			return null;
 		}
+	}
+
+	@Override
+	public void setToWallUnreachableRoom(JDPoint heroEntryPoint) {
+		for (int x = 0; x < d.getSize().getX(); x++) {
+			for (int y = 0; y < d.getSize().getY(); y++) {
+				Path path = DungeonUtils.findShortestPath(d, heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap
+						.getAllVisMap(d), true);
+				if(path == null) {
+					d.getRoom(x, y).setIsWall(true);
+				}
+			}
+		}
+
 	}
 
 	protected abstract int[][] getMap();

@@ -131,7 +131,7 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 	@Override
 	public Action chooseFightAction() {
 		Action a = null;
-		if (this.h.getHealthLevel() <= 2 && Math.random() < 0.3) {
+		if (this.h.getHealthLevel().getValue() <= 2 && Math.random() < 0.3) {
 			a = Action.makeActionFlee();
 			this.h.checkAction(a);
 

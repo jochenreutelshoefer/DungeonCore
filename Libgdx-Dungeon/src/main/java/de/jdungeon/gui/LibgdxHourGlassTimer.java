@@ -67,9 +67,10 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 					this.getDimension().getHeight());
 
 			//fpsFont.setColor(textpaint.getFont().getColor());
+			// todo: use glyph layout to center
 			int screenX = this.position.getX() + this.getDimension().getWidth() / 2 - 5;
 			int screenY = this.getPositionOnScreen().getY() + this.getDimension().getHeight() + 4;
-			Assets.instance.fonts.defaultSmallFlipped.draw(batch, "" + DungeonGame.getInstance().getRound(), screenX, screenY);
+			Assets.instance.fonts.defaultNormalFlipped.draw(batch, "" + DungeonGame.getInstance().getRound(), screenX, screenY);
 		}
 	}
 

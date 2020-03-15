@@ -35,7 +35,7 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 				entryPoint = filler.getUnallocatedRimRoom(false).getPoint();
 			}
 			else {
-				entryPoint = new JDPoint(2, 4);
+				entryPoint = new JDPoint(0, 4);
 			}
 		}
 		return entryPoint;

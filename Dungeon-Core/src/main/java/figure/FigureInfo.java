@@ -264,7 +264,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return getRoomInfo(p.getX(), p.getY());
 	}
 
-	public int getHealthLevel() {
+	public HealthLevel getHealthLevel() {
 		return f.getHealthLevel();
 	}
 

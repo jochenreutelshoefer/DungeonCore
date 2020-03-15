@@ -35,7 +35,7 @@ public class MyMonsterIntelligence extends
 				heroIndex = i;
 			}
 		}
-		int healthLevel = monster.getHealthLevel();
+		int healthLevel = monster.getHealthLevel().getValue();
 		if (monsterCount == 1) {
 			// if(healthLevel <= Fighter.WOUNDED) {
 

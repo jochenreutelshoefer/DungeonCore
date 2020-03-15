@@ -99,6 +99,7 @@ import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
+import log.Log;
 import org.apache.log4j.Logger;
 import shrine.Shrine;
 import spell.AbstractSpell;
@@ -509,14 +510,14 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	@Override
-	public void turn(int i) {
+	public void turn(int round) {
 
 		// TODO: check is this really required?
-		if (lastTurn >= i) {
+		if (lastTurn >= round) {
 			return;
 		}
 		else {
-			lastTurn = i;
+			lastTurn = round;
 		}
 
 		final DungeonVisibilityMap roomVisibility = this.getRoomVisibility();
@@ -527,7 +528,7 @@ public abstract class Figure extends DungeonWorldObject
 		setActionPoints(1);
 
 		if (this.getActionPoints() > 0 && !isDead()) {
-			doActions(i);
+			doActions(round);
 		}
 	}
 
@@ -536,7 +537,7 @@ public abstract class Figure extends DungeonWorldObject
 	public boolean hurt(int value) {
 		Attribute h = this.getHealth();
 		h.modValue(value * (-1));
-		this.setStatus(this.getHealthLevel());
+		this.setStatus(this.getHealthLevel().getValue()); // TODO: refactor
 		return (h.getValue() <= 0);
 	}
 
@@ -653,7 +654,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			else {
 				allDmg = hit(s);
-				int healthBefore = getHealthLevel();
+				int healthBefore = getHealthLevel().getValue();
 				if (allDmg < 0) {
 					allDmg = 0;
 				}
@@ -662,7 +663,7 @@ public abstract class Figure extends DungeonWorldObject
 
 				dies = hurt(allDmg);
 
-				int healthAfter = getHealthLevel();
+				int healthAfter = getHealthLevel().getValue();
 
 				if (healthBefore != healthAfter) {
 					sanction(healthBefore - healthAfter);
@@ -688,11 +689,11 @@ public abstract class Figure extends DungeonWorldObject
 		return res;
 	}
 
-	public void doActions(int i) {
+	public void doActions(int round) {
 
 		if (control != null && !this.isDead()) {
 
-			Action a = retrieveMovementActionFromControl();
+			Action a = retrieveMovementActionFromControl(round);
 			int cnt = 0;
 			final Room room = this.getRoom();
 			while (!(a instanceof EndRoundAction) && cnt < 8) {
@@ -704,7 +705,7 @@ public abstract class Figure extends DungeonWorldObject
 				cnt++;
 
 				// TODO: unify action processing in fight and non-fight case
-				ActionResult res = processAction(a);
+				ActionResult res = processAction(a, round);
 				if (res.equals(ActionResult.DONE)) {
 					EventManager.getInstance().fireEvent(new WorldChangedEvent());
 				}
@@ -720,7 +721,7 @@ public abstract class Figure extends DungeonWorldObject
 				if (isDead()) {
 					break;
 				}
-				a = retrieveMovementActionFromControl();
+				a = retrieveMovementActionFromControl(round);
 
 				if (room.getDungeon().isGameOver()) {
 					break;
@@ -729,7 +730,9 @@ public abstract class Figure extends DungeonWorldObject
 
 			if (a instanceof EndRoundAction) {
 				// end round doesn't actually do anything but skip turn (for instance to wait for new action points in the next round).
+				Log.info(round + " "+ this.getName() + " " + a.getClass().getSimpleName());
 				control.actionProcessed(a, ActionResult.DONE);
+
 				int ap = this.getActionPoints();
 				for (int j = 0; j < ap; j++) {
 					room.distributePercept(new WaitPercept(this));
@@ -751,7 +754,7 @@ public abstract class Figure extends DungeonWorldObject
 		return isLamed;
 	}
 
-	public boolean fight() {
+	public boolean fight(int round) {
 		Room fightRoom = this.getRoom();
 		this.setActionPoints(1);
 		if (getActionPoints() > 0 && control != null && !this.dead) {
@@ -771,7 +774,7 @@ public abstract class Figure extends DungeonWorldObject
 					return true;
 				}
 				a = retrieveFightActionFromControl();
-				res = processAction(a, false);
+				res = processAction(a, false, round);
 				if (res.getSituation() == ActionResult.Situation.impossible) {
 					if (control != null) {
 						control.actionProcessed(a, res);
@@ -780,7 +783,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 
 			// TODO: unify action processing in fight and non-fight case
-			res = processAction(a);
+			res = processAction(a, round);
 			if (res.equals(ActionResult.DONE)) {
 				EventManager.getInstance().fireEvent(new WorldChangedEvent());
 			}
@@ -1018,8 +1021,8 @@ public abstract class Figure extends DungeonWorldObject
 		return false;
 	}
 
-	protected ActionResult processAction(Action a) {
-		return processAction(a, true);
+	protected ActionResult processAction(Action a, int round) {
+		return processAction(a, true, round);
 	}
 
 	public double getReadiness() {
@@ -1078,7 +1081,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	public ActionResult checkAction(Action a) {
-		return processAction(a, false);
+		return processAction(a, false, -1);
 	}
 
 	private ActionResult handleExpCodeChangeAction(ExpCodeChangeAction a, boolean doIt) {
@@ -1244,7 +1247,11 @@ public abstract class Figure extends DungeonWorldObject
 		return ActionResult.OTHER;
 	}
 
-	private ActionResult processAction(Action a, boolean doIt) {
+	private ActionResult processAction(Action a, boolean doIt, int round) {
+
+		if(doIt) {
+			Log.info(round + " "+ this.getName() + " [AP: +"+this.actionPoints+"] " + a.getClass().getSimpleName() + "("+((Object)a).toString()+")");
+		}
 
 		if (a == null) {
 			return null;
@@ -1805,22 +1812,26 @@ public abstract class Figure extends DungeonWorldObject
 		return actionPoints;
 	}
 
-	public int getHealthLevel() {
+
+
+	public HealthLevel getHealthLevel() {
 		int i = getCharacter().getHealth().perCent();
 		if (i > 70) {
-			return 4;
+			return HealthLevel.Strong;
 		}
 		else if (i > 45) {
-			return 3;
+			return HealthLevel.Good;
 		}
 		else if (i > 25) {
-			return 2;
+			return HealthLevel.Injured;
 		}
 		else if (i > 10) {
-			return 1;
+			return HealthLevel.Weak;
 		}
-		else {
-			return 0;
+		else if(i > 0){
+			return HealthLevel.Dying;
+		} else {
+			return HealthLevel.Dead;
 		}
 	}
 
@@ -1988,7 +1999,7 @@ public abstract class Figure extends DungeonWorldObject
 		return ActionResult.OTHER;
 	}
 
-	protected Action retrieveMovementActionFromControl() {
+	protected Action retrieveMovementActionFromControl(int round) {
 		if (control instanceof JDGUI) {
 			((JDGUI) control).onTurn();
 		}
