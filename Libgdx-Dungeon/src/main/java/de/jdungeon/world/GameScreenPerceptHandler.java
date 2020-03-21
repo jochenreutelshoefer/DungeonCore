@@ -279,9 +279,11 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			startAnimation(set, fig, p);
 		}
 
+		RoomInfo roomInfo = figure.getRoomInfo();
+		Boolean fightRunning = roomInfo.fightRunning();
 		if (!fig.equals(this.figure)
 				&& // check whether a fight has just started
-				!figure.getRoomInfo().fightRunning()) {
+				 fightRunning!= null && !fightRunning) {
 			screen.scrollTo(info.getNumber(), 0.4f, "enters percept");
 		}
 	}

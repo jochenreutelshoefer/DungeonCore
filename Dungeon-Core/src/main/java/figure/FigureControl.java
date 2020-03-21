@@ -93,26 +93,9 @@ public class FigureControl implements ControlUnit {
 	}
 
 
-	private void delay() {
-		try {
-			Thread.sleep(this.delay);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public Action getAction() {
-		/*
-		 * artificial delay to enable smooth visual display of action in the gui
-		 */
-		delay();
-
-		while (this.paused) {
-			delay();
-		}
-
 		Action a = null;
 		// TODO: test that fight actions really are fight actions etc, to find errors in AIs quicker
 		Boolean fightRunning = f.getRoomInfo().fightRunning();
