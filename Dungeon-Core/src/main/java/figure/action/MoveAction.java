@@ -6,6 +6,7 @@
  */
 package figure.action;
 
+import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
 
 /**
@@ -14,21 +15,27 @@ import dungeon.util.RouteInstruction;
  *
  */
 public class MoveAction extends Action {
-	
+
+	private final JDPoint startPoint;
 	private final int directionIndex;
 	private RouteInstruction.Direction direction = null;
-
 	private RouteInstruction.Direction dir;
 
-	public MoveAction(int dir) {
+	public MoveAction(JDPoint startPoint, int dir) {
 		super();
+		this.startPoint = startPoint;
 		directionIndex = dir;
 		direction = RouteInstruction.Direction.fromInteger(directionIndex);
 	}
 
-	public MoveAction(RouteInstruction.Direction direction) {
+	public MoveAction(JDPoint startPoint, RouteInstruction.Direction direction) {
+		this.startPoint = startPoint;
 		this.direction = direction;
 		this.directionIndex = direction.getValue();
+	}
+
+	public JDPoint getStartPoint() {
+		return startPoint;
 	}
 
 
@@ -46,6 +53,6 @@ public class MoveAction extends Action {
 	
 	@Override
 	public String toString() {
-		return (this.getClass()+" :"+ directionIndex);
+		return (this.getClass()+" :" + this.startPoint +" -> "+ RouteInstruction.Direction.fromInteger(directionIndex));
 	}
 }

@@ -9,8 +9,21 @@ public class CameraFlightSequenceManager {
 
 	private final List<CameraFlightSequence> sequences = new Vector<>();
 
+
+
 	public void addSequence(CameraFlightSequence movie) {
-		this.sequences.add(movie);
+		boolean skip = false;
+		if(!this.sequences.isEmpty()) {
+			CameraFlightSequence lastInQueue = this.sequences.get(this.sequences.size() - 1);
+			if(movie.getTargetPosition().equals(lastInQueue.getTargetPosition())) {
+				// we skip this, not to scroll to the same position twice
+				skip = true;
+			}
+		}
+
+		if(!skip) {
+			this.sequences.add(movie);
+		}
 	}
 
 	public synchronized CameraFlightSequence getCurrentSequence(float time) {

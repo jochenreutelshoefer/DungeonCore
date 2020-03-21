@@ -20,6 +20,11 @@ public class DefaultMovieSequence implements CameraFlightSequence {
 	}
 
 	@Override
+	public Pair<Float, Float> getTargetPosition() {
+		return scroller.getTargetPosition();
+	}
+
+	@Override
 	public float getScale(float timePassed) {
 		return scaler.getScale(timePassed);
 	}

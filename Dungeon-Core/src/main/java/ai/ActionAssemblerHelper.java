@@ -271,7 +271,7 @@ public class ActionAssemblerHelper {
 			actions.add(endRound);
 		}
 		*/
-		MoveAction moveAction = new MoveAction(dir);
+		MoveAction moveAction = new MoveAction(f.getRoomNumber(), dir);
 		actions.add(moveAction);
 		return actions;
 	}

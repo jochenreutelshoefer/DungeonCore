@@ -57,11 +57,11 @@ public class LuziaRunner {
 					int pos = 1; // TODO: refactor
 					int monsterPos = m.getPositionInRoomIndex();
 					if(pos != monsterPos) {
-					Action a = new MoveAction(otherDir);
+					Action a = new MoveAction(m.getRoomNumber(), otherDir);
 					actionQueue.add(a);
 					return new StepAction(pos);
 					} else {
-						return new MoveAction(otherDir);
+						return new MoveAction(m.getRoomNumber(), otherDir);
 					}
 				}
 			}

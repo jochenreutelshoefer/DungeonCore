@@ -161,9 +161,6 @@ public class RescuedNPCAI implements AI {
 
 	@Override
 	public Action chooseMovementAction() {
-		if (info.getActionPoints() == 0) {
-			return new EndRoundAction();
-		}
 
 		if (currentState == State.prisoner) {
 			return new DoNothingAction();
@@ -206,7 +203,7 @@ public class RescuedNPCAI implements AI {
 			// TODO: make it easier for AI to step towards the door for a move
 			int positionInRoomAtDoor = Figure.getDirPos(directionToMove.getValue());
 			if (info.getPositionInRoomIndex() == positionInRoomAtDoor) {
-				return new MoveAction(directionToMove);
+				return new MoveAction(this.info.getRoomNumber(), directionToMove);
 			}
 			else {
 				return new StepAction(positionInRoomAtDoor);

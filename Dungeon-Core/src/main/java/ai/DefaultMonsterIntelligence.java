@@ -164,7 +164,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	protected Action walk(int dir) {
-		Action a = new MoveAction(dir);
+		Action a = new MoveAction(this.monster.getRoomNumber(), dir);
 		// System.out.println("Dir to walk: "+dir);
 
 		int pos = -1;
@@ -552,13 +552,13 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		if (a <= 80) {
 			return null;
 		} else if (a <= 85) {
-			return Action.makeActionMove(RouteInstruction.SOUTH);
+			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.SOUTH);
 		} else if (a <= 90) {
-			return Action.makeActionMove(RouteInstruction.EAST);
+			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.EAST);
 		} else if (a <= 95) {
-			return Action.makeActionMove(RouteInstruction.NORTH);
+			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.NORTH);
 		} else {
-			return Action.makeActionMove(RouteInstruction.WEST);
+			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.WEST);
 		}
 	}
 

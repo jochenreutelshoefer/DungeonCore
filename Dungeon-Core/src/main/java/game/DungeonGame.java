@@ -142,7 +142,7 @@ public class DungeonGame implements Runnable {
 	}
 
 	public void worldTurn() {
-		Log.info("Starting world turn for round: "+round);
+		//Log.info("Starting world turn for round: "+round);
 		derDungeon.turn(round);
 		spellsTurn();
 		itemsTurn();

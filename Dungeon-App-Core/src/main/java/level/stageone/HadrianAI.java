@@ -36,7 +36,7 @@ public class HadrianAI extends AbstractAI {
 	private final PatrolBehaviour patrolAI;
 	private final FleeBehaviour fleeAI;
 	private final ChaserAI chaserAI = new ChaserAI();
-	private final HeroPositionLog heroLog;
+	private HeroPositionLog heroLog;
 
 	private State currentState = patrol;
 
@@ -60,7 +60,7 @@ public class HadrianAI extends AbstractAI {
 		fleePoints.add(new JDPoint(4, 4));
 		fleeAI = new FleeBehaviour(fleePoints);
 
-		heroLog = new HeroPositionLog(this.info);
+
 
 	}
 
@@ -70,6 +70,7 @@ public class HadrianAI extends AbstractAI {
 		patrolAI.setFigure(info);
 		chaserAI.setFigure(info);
 		fleeAI.setFigure(info);
+		heroLog = new HeroPositionLog(this.info);
 	}
 
 	@Override
@@ -114,6 +115,11 @@ public class HadrianAI extends AbstractAI {
 	@Override
 	public Action chooseMovementAction() {
 		heroLog.processPercepts();
+
+		if(currentState == patrol && heroLog.getLastHeroPosition() != null && !heroLog.lastEnemyPositionVisited()) {
+			// go from patrol to to chase mode
+			currentState = chase;
+		}
 
 		// if he is in 'chase' mode
 		if(currentState == chase) {

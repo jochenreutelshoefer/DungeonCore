@@ -4,16 +4,23 @@ import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import dungeon.Path;
 import dungeon.util.DungeonUtils;
+import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.percept.Percept;
 
 public class ChaserAI extends DefaultMonsterIntelligence {
 
-	private final HeroPositionLog heroLog;
+	private  HeroPositionLog heroLog;
 
 	public ChaserAI() {
-		heroLog = new HeroPositionLog(this.monster);
+
+	}
+
+	@Override
+	public void setFigure(FigureInfo info) {
+		super.setFigure(info);
+		heroLog = new HeroPositionLog(info);
 	}
 
 	@Override

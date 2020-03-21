@@ -691,20 +691,16 @@ public abstract class Figure extends DungeonWorldObject
 
 	public void doActions(int round) {
 
-		if (control != null && !this.isDead()) {
+		while (control != null && !this.isDead() && this.actionPoints > 0) {
 
 			Action a = retrieveMovementActionFromControl(round);
-			int cnt = 0;
 			final Room room = this.getRoom();
-			while (!(a instanceof EndRoundAction) && cnt < 8) {
 
 				if (room == null || room.getDungeon() == null || room.getDungeon().isGameOver()) {
-					// game is over or figure has left dungeon
+					// figure has left dungeon
 					break;
 				}
-				cnt++;
 
-				// TODO: unify action processing in fight and non-fight case
 				ActionResult res = processAction(a, round);
 				if (res.equals(ActionResult.DONE)) {
 					EventManager.getInstance().fireEvent(new WorldChangedEvent());
@@ -721,13 +717,11 @@ public abstract class Figure extends DungeonWorldObject
 				if (isDead()) {
 					break;
 				}
-				a = retrieveMovementActionFromControl(round);
-
 				if (room.getDungeon().isGameOver()) {
 					break;
 				}
-			}
 
+			/*
 			if (a instanceof EndRoundAction) {
 				// end round doesn't actually do anything but skip turn (for instance to wait for new action points in the next round).
 				Log.info(round + " "+ this.getName() + " " + a.getClass().getSimpleName());
@@ -738,20 +732,8 @@ public abstract class Figure extends DungeonWorldObject
 					room.distributePercept(new WaitPercept(this));
 				}
 			}
+			*/
 		}
-	}
-
-	private boolean lame() {
-		boolean isLamed = false;
-		if (blinded > 0) {
-			isLamed = true;
-			blinded--;
-		}
-		if (tumblings > 0) {
-			isLamed = true;
-			tumblings--;
-		}
-		return isLamed;
 	}
 
 	public boolean fight(int round) {
@@ -1029,43 +1011,43 @@ public abstract class Figure extends DungeonWorldObject
 		return this.actionPoints;
 	}
 
-	public boolean doorSmashes(Door d) {
+	public boolean doorSmashes(Door d, Figure other) {
 		Position pos = this.getPos();
 		Position posN1 = pos.getLast();
 		Position posN2 = pos.getNext();
 		if (posN1.getFigure() == null && posN2.getFigure() == null) {
 			if (Math.random() > 0.5) {
 				doStepTo(posN1.getIndex(), pos.getIndex());
-				getDoorSmash(d, false);
+				getDoorSmash(d, other, false);
 				return true;
 			}
 			else {
 				doStepTo(posN2.getIndex(), pos.getIndex());
-				getDoorSmash(d, false);
+				getDoorSmash(d, other,false);
 				return true;
 			}
 		}
 		else if (posN1.getFigure() == null) {
 			doStepTo(posN1.getIndex(), pos.getIndex());
-			getDoorSmash(d, false);
+			getDoorSmash(d, other,false);
 			return true;
 		}
 		else if (posN2.getFigure() == null) {
 			doStepTo(posN2.getIndex(), pos.getIndex());
-			getDoorSmash(d, false);
+			getDoorSmash(d, other, false);
 			return true;
 		}
 		else {
-			getDoorSmash(d, true);
+			getDoorSmash(d, other,true);
 			return false;
 		}
 	}
 
-	public void doorSmashesBack(Door d) {
-		getDoorSmash(d, false);
+	public void doorSmashesBack(Door d, Figure other) {
+		getDoorSmash(d, other,false);
 	}
 
-	private void getDoorSmash(Door d, boolean bigSmash) {
+	private void getDoorSmash(Door d, Figure other, boolean bigSmash) {
 		int healthBasic = (int) this.getHealth().getBasic();
 		int value;
 		if (bigSmash) {
@@ -1074,7 +1056,7 @@ public abstract class Figure extends DungeonWorldObject
 		else {
 			value = healthBasic / 8;
 		}
-		Percept p = new DoorSmashPercept(this, value);
+		Percept p = new DoorSmashPercept(this, other, value);
 		d.getRooms()[0].distributePercept(p);
 		d.getRooms()[1].distributePercept(p);
 		this.hurt(value);
@@ -1250,7 +1232,7 @@ public abstract class Figure extends DungeonWorldObject
 	private ActionResult processAction(Action a, boolean doIt, int round) {
 
 		if(doIt) {
-			Log.info(round + " "+ this.getName() + " [AP: +"+this.actionPoints+"] " + a.getClass().getSimpleName() + "("+((Object)a).toString()+")");
+			Log.info(round + " "+ this.getName() + " [AP: +"+this.actionPoints+"] " + a.getClass().getSimpleName() + "("+a.toString()+")");
 		}
 
 		if (a == null) {
@@ -1260,7 +1242,14 @@ public abstract class Figure extends DungeonWorldObject
 			return ActionResult.POSSIBLE;
 		}
 		if (a instanceof EndRoundAction) {
-			return ActionResult.POSSIBLE;
+			if(doIt) {
+				this.payActionPoint();
+				Percept p = new WaitPercept(this);
+				getRoom().distributePercept(p);
+				return ActionResult.DONE;
+			} else {
+				return ActionResult.POSSIBLE;
+			}
 		}
 		if (!(a instanceof SpellAction)) {
 			if (lastSpell != null) {
@@ -2122,8 +2111,7 @@ public abstract class Figure extends DungeonWorldObject
 					double otherRan = Math.random() * otherStr;
 					if (thisRan > otherRan || raid) {
 						// locale figure gets smashed
-						boolean moves = standing.doorSmashes(this.getRoom()
-								.getDoor(dir));
+						boolean moves = standing.doorSmashes(this.getRoom().getDoor(dir), standing);
 						if (moves) {
 							goThroughDoor(oldRoom, toGo);
 							return true;
@@ -2134,7 +2122,7 @@ public abstract class Figure extends DungeonWorldObject
 					}
 					else {
 						// intruder gets smashed and does not enter
-						this.doorSmashesBack(this.getRoom().getDoor(dir));
+						this.doorSmashesBack(this.getRoom().getDoor(dir), standing);
 						return false;
 					}
 				}

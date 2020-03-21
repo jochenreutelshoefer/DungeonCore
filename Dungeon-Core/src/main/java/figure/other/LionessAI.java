@@ -47,7 +47,7 @@ public class LionessAI extends AbstractAI {
 		
 		if(currentWalkTarget != null) {
 			int dir = new RouteInstruction(currentWalkTarget).getWay(info.getRoomInfo(), this.master.getMap());
-			return new MoveAction(dir);
+			return new MoveAction(this.info.getRoomNumber(), dir);
 		}
 		return null;
 	}

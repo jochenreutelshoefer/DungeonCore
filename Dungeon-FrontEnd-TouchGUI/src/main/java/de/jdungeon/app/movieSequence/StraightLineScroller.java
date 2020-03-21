@@ -20,6 +20,12 @@ public class StraightLineScroller implements ChangeViewportSequence {
 		diffY = targetPos.getB() - startPos.getB();
 	}
 
+
+	@Override
+	public Pair<Float, Float> getTargetPosition() {
+		return targetPos;
+	}
+
 	@Override
 	public Pair<Float, Float> getViewportPosition(float timePassed) {
 		timeCounter += timePassed;

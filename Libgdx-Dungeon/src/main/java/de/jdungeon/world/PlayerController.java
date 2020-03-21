@@ -148,11 +148,6 @@ public class PlayerController implements JDGUI {
 	public void onTurn() {
 		JDPoint roomNumber = this.heroInfo.getRoomNumber();
 		viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
-		// if player does not have an action point left,
-		// preemptively cause an EndRoundAction
-		if (this.getFigure().getActionPoints() == 0) {
-			plugAction(new EndRoundAction());
-		}
 	}
 
 	@Override
@@ -230,11 +225,6 @@ public class PlayerController implements JDGUI {
 	public Action getAction() {
 		synchronized (actionQueue) {
 			if (!actionQueue.isEmpty()) {
-				int currentActionPoints = this.getFigure().getActionPoints();
-				if(currentActionPoints == 0) {
-					// we need end round before doing the next actual action
-					return new EndRoundAction();
-				}
 				return actionQueue.remove(0);
 			}
 			else {

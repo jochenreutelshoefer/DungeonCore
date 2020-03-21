@@ -28,11 +28,6 @@ public abstract class Action {
 	}
 
 	@Deprecated
-	public static MoveAction makeActionMove(int dir) {
-		return new MoveAction(dir);
-	}
-
-	@Deprecated
 	public static FleeAction makeActionFlee(boolean panic) {
 		return new FleeAction(panic);
 	}
