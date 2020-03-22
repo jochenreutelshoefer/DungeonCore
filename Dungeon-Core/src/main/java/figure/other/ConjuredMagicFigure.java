@@ -24,16 +24,7 @@ public abstract class ConjuredMagicFigure extends Monster {
 	
 	public abstract boolean disappearAtEndOfFight();
 	
-	@Override
-	public boolean fight(int round) {
-		numberOfRoundsLived++;
-		if(numberOfRoundsLived == numberOfRoundsToLive) {
-			this.disappear();
-			return true;
-		}
-		super.fight(round);
-		return false;
-	}
+
 
 	public void disappear() {
 		Percept p = new DisappearPercept(this, this.getRoom());

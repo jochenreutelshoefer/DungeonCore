@@ -6,7 +6,7 @@ import ai.DefaultMonsterIntelligence;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.DoNothingAction;
+import figure.action.EndRoundAction;
 import figure.action.StepAction;
 import figure.monster.Orc;
 
@@ -35,11 +35,11 @@ public class OrcHaterAI extends DefaultMonsterIntelligence {
 					return AttackAction.makeActionAttack(figureInfo.getFighterID());
 				}
 		}
-		return new DoNothingAction();
+		return new EndRoundAction();
 	}
 
 	@Override
 	public Action chooseMovementAction() {
-		return new DoNothingAction();
+		return new EndRoundAction();
 	}
 }

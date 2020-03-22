@@ -19,7 +19,6 @@ public class Fight {
 	private final Room fightRoom;
 	private final List<Figure> fighterList;
 
-
 	public Fight(Room r) {
 		List<Figure> figuresSorted = new LinkedList<Figure>(r.getRoomFigures());
 		Collections.sort(figuresSorted, new MyFightOrderComparator());
@@ -31,7 +30,6 @@ public class Fight {
 			Figure mon = (l.get(i));
 			mon.fightBegins(l);
 		}
-
 	}
 
 	static class MyFightOrderComparator implements Comparator<Figure> {
@@ -64,62 +62,55 @@ public class Fight {
 	public void figureLeaves(Figure f) {
 		fighterList.remove(f);
 	}
-	
+
 	public void figureJoins(Figure f) {
 		fighterList.add(f);
 	}
-	
-	public void doFight(int round) {
-		
-		boolean endFight = false;
-		for(int i = 0; i < 3; i++) {
-			List<Figure> tempList = new LinkedList<>(fighterList);
-			if(tempList.size() <= 1) {
-				fightRoom.endFight();
-				break;
-			}
-			for (Figure element : tempList) {
-				if (!element.isDead()) {
-					boolean disappears = element.fight(round);
-					if (disappears) {
-						this.fighterList.remove(element);
-						this.fightRoom.figureLeaves(element);
-					}
 
-					if (!checkFightOn()) {
-						endFight = true;
-						break;
-					}
+	public void doFight(int round) {
+
+		boolean endFight = false;
+		List<Figure> tempList = new LinkedList<>(fighterList);
+		if (tempList.size() <= 1) {
+			fightRoom.endFight();
+			return;
+		}
+		for (Figure element : tempList) {
+			if (!element.isDead()) {
+				element.setActionPoints(1, round);
+				element.doActions(round, true);
+
+				if (!checkFightOn()) {
+					endFight = true;
+					break;
 				}
 			}
-			if(endFight) {
-				break;
-			}
 		}
-		if(endFight) {
+		if (endFight) {
 			fightRoom.endFight();
 		}
 	}
-	
+
 	private boolean checkFightOn() {
-		
+
 		boolean fightOn = false;
-		for (Iterator<Figure> iter = fighterList.iterator(); iter.hasNext();) {
+		for (Iterator<Figure> iter = fighterList.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
 			ControlUnit c = element.getControl();
-			if(c == null) {
+			if (c == null) {
 				return false;
 			}
-			for (Iterator<Figure> iter2 = fighterList.iterator(); iter2.hasNext();) {
+			for (Iterator<Figure> iter2 = fighterList.iterator(); iter2.hasNext(); ) {
 				Figure element2 = iter2.next();
-				if(element != element2) {
-					boolean b = element.getControl().isHostileTo(FigureInfo.makeFigureInfo(element2,element.getRoomVisibility()));
-					if(b) {
+				if (element != element2) {
+					boolean b = element.getControl()
+							.isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
+					if (b) {
 						fightOn = true;
 						break;
 					}
 				}
-				if(fightOn) {
+				if (fightOn) {
 					break;
 				}
 			}
@@ -130,5 +121,4 @@ public class Fight {
 	public List<Figure> getFightFigures() {
 		return fightRoom.getRoomFigures();
 	}
-
 }

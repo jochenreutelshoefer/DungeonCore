@@ -80,7 +80,7 @@ public class DungeonGame implements Runnable {
 		}
 	}
 
-	private void tickGuis() {
+	private void tickGuis(int round) {
 		Collection<Figure> l = guiFigures.keySet();
 
 		for (Iterator<Figure> iter = l.iterator(); iter.hasNext(); ) {
@@ -106,8 +106,11 @@ public class DungeonGame implements Runnable {
 				if (guiFigures.isEmpty()) {
 					break;
 				}
-				worldTurn();
-				tickGuis();
+				Log.info(System.currentTimeMillis() + " " + round + " start round");
+				worldTurn(round);
+				tickGuis(round);
+				Log.info(System.currentTimeMillis() + " " + round + " completed round");
+				round++;
 			} else {
 				try {
 					Thread.sleep(10);
@@ -141,12 +144,12 @@ public class DungeonGame implements Runnable {
 		}
 	}
 
-	public void worldTurn() {
+	public void worldTurn(int round) {
 		//Log.info("Starting world turn for round: "+round);
 		derDungeon.turn(round);
 		spellsTurn();
 		itemsTurn();
-		round++;
+
 	}
 
 	public void init(Dungeon d) {

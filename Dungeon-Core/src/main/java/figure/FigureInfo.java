@@ -18,6 +18,7 @@ import dungeon.ItemInfoOwner;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
+import dungeon.Room;
 import dungeon.RoomInfo;
 import dungeon.Path;
 import dungeon.util.DungeonUtils;
@@ -191,7 +192,9 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	 * @return Koordinate des Raumes
 	 */
 	public JDPoint getRoomNumber() {
-		return new JDPoint(f.getRoom().getNumber().getX(), f.getRoom()
+		Room room = f.getRoom();
+		if(room == null) return null;
+		return new JDPoint(room.getNumber().getX(), room
 				.getNumber().getY());
 	}
 

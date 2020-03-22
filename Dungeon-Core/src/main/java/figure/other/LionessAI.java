@@ -11,7 +11,7 @@ import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.DoNothingAction;
+import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.percept.EntersPercept;
 import figure.percept.Percept;
@@ -43,7 +43,7 @@ public class LionessAI extends AbstractAI {
 
 	@Override
 	public Action chooseMovementAction() {
-		if(master.getRoomNumber().equals(info.getRoomNumber())) return new DoNothingAction();
+		if(master.getRoomNumber().equals(info.getRoomNumber())) return new EndRoundAction();
 		
 		if(currentWalkTarget != null) {
 			int dir = new RouteInstruction(currentWalkTarget).getWay(info.getRoomInfo(), this.master.getMap());

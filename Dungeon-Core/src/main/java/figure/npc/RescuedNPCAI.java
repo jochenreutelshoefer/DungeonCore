@@ -13,7 +13,6 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.DoNothingAction;
 import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
@@ -163,7 +162,7 @@ public class RescuedNPCAI implements AI {
 	public Action chooseMovementAction() {
 
 		if (currentState == State.prisoner) {
-			return new DoNothingAction();
+			return new EndRoundAction();
 		}
 
 		if (currentState == State.following) {
@@ -181,7 +180,7 @@ public class RescuedNPCAI implements AI {
 					return new StepAction(positionLeftOfLeader);
 				}
 				// otherwise we just wait
-				return new DoNothingAction();
+				return new EndRoundAction();
 			}
 			else {
 				return followLeader();
@@ -191,7 +190,7 @@ public class RescuedNPCAI implements AI {
 		if (currentState == State.lost) {
 			return followLeader();
 		}
-		return new DoNothingAction();
+		return new EndRoundAction();
 	}
 
 	private Action followLeader() {
@@ -211,7 +210,7 @@ public class RescuedNPCAI implements AI {
 		}
 		else {
 			// we wait here for the hero to hopefully return
-			return new DoNothingAction();
+			return new EndRoundAction();
 		}
 	}
 }

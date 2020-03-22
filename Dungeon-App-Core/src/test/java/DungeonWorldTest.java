@@ -62,7 +62,7 @@ public class DungeonWorldTest extends TestCase {
 
 				for (int round = 0; round < 500; round++) {
 					assertEquals(dungeonGame.getRound(), round);
-					dungeonGame.worldTurn();
+					dungeonGame.worldTurn(round);
 					checkConsistentState(dungeon, dungeonFactory);
 				}
 			}

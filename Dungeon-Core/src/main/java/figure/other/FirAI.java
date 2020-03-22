@@ -11,7 +11,7 @@ import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.DoNothingAction;
+import figure.action.EndRoundAction;
 import figure.hero.HeroInfo;
 import figure.percept.AttackPercept;
 import figure.percept.FightEndedPercept;
@@ -43,7 +43,7 @@ public class FirAI extends AbstractAI {
 		if(attackers.contains(nextFigure)) {
 			return new AttackAction(nextFigure.getFighterID());
 		}
-		return new DoNothingAction();
+		return new EndRoundAction();
 	}
 
 	@Override

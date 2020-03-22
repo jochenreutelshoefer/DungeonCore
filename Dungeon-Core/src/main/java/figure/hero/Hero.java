@@ -114,13 +114,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private int sanctions = 0;
 
-	protected double fire_resist_rate = 1.0;
-
-	protected double lightning_resist_rate = 1.0;
-
-	protected double magic_resist_rate = 1.0;
-
-	protected double poison_resist_rate = 1.0;
 
 	public void setCharacter(Character c) {
 		this.c = c;
@@ -302,22 +295,22 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	@Override
 	public double getFireResistRate() {
-		return fire_resist_rate;
+		return 1;
 	}
 
 	@Override
 	public double getLightningResistRate() {
-		return lightning_resist_rate;
+		return 1;
 	}
 
 	@Override
 	public double getMagicResistRate() {
-		return magic_resist_rate;
+		return 1;
 	}
 
 	@Override
 	public double getPoisonResistRate() {
-		return poison_resist_rate;
+		return 1;
 	}
 
 	@Override
@@ -854,12 +847,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 				move(toGo);
 
-				if (fleeV < 0) {
-					// bei escape Zauberspruch
-					setActionPoints(1);
-				} else {
-					setActionPoints(0);
-				}
 
 				lookInRoom();
 				getRoom().checkFight(this);
@@ -875,7 +862,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public ScoutResult scout(ScoutAction action) {
+	public ScoutResult scout(ScoutAction action, int round) {
 		int dir = action.getDirection();
 		Room loc = getRoom();
 		Room toScout = loc.getNeighbourRoom(dir);
@@ -888,7 +875,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			List<Figure> monsters = toScout.getRoomFigures();
 			s += ("Du horchst und schaust duch die Ritzen in der Tür -" + "\n");
 
-			decActionPoints(1);
+			decActionPoints(1, round);
 			int scoutlevel = calcScout(toScout);
 			if (scoutlevel == 0) {
 				if (monsters.isEmpty()) {

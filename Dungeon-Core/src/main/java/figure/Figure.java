@@ -36,10 +36,8 @@ import fight.Slap;
 import fight.SlapResult;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.DoNothingAction;
 import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
-import figure.action.ExpCodeChangeAction;
 import figure.action.FleeAction;
 import figure.action.LayDownItemAction;
 import figure.action.LearnSpellAction;
@@ -133,6 +131,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	public static final int STATUS_CRITICAL = 0;
 
+	protected APCounter actionPoints;
 	protected Position pos = null;
 
 	protected Room room = null;
@@ -145,7 +144,6 @@ public abstract class Figure extends DungeonWorldObject
 	private AI ai;
 	protected AbstractReflexBehavior reflexReactionUnit;
 
-	protected int actionPoints = 0;
 
 	private Spell lastSpell = null;
 
@@ -265,11 +263,8 @@ public abstract class Figure extends DungeonWorldObject
 		return false;
 	}
 
-	public void decActionPoints(int k) {
-		actionPoints -= k;
-		if (actionPoints < 0) {
-			actionPoints = 0;
-		}
+	public void decActionPoints(int k, int round) {
+		this.actionPoints.payActionpoints(k, round);
 	}
 
 	public abstract int getLevel();
@@ -370,17 +365,17 @@ public abstract class Figure extends DungeonWorldObject
 
 	protected abstract List getModificationList();
 
-	public void payActionPoint() {
-			payMoveActionPoint();
+	public void payActionPoint(int round) {
+			payMoveActionPoint(round);
 	}
 
-	public void payMoveActionPoint() {
-			decActionPoints(1);
+	public void payMoveActionPoint(int round) {
+		actionPoints.payActionpoint(round);
 	}
 
-	public void payMoveActionPoints(int k) {
+	public void payMoveActionPoints(int k, int round) {
 		for (int i = 0; i < k; i++) {
-			payMoveActionPoint();
+			actionPoints.payActionpoint(round);
 		}
 	}
 
@@ -525,10 +520,10 @@ public abstract class Figure extends DungeonWorldObject
 			roomVisibility.resetTemporalVisibilities();
 		}
 
-		setActionPoints(1);
+		setActionPoints(1, round);
 
 		if (this.getActionPoints() > 0 && !isDead()) {
-			doActions(round);
+			doActions(round, false);
 		}
 	}
 
@@ -689,11 +684,16 @@ public abstract class Figure extends DungeonWorldObject
 		return res;
 	}
 
-	public void doActions(int round) {
+	public void doActions(int round, boolean fight) {
 
-		while (control != null && !this.isDead() && this.actionPoints > 0) {
+		while (control != null && !this.isDead() && this.actionPoints.getCurrentAP() > 0) {
 
-			Action a = retrieveMovementActionFromControl(round);
+			Action a;
+			if(fight) {
+				a = retrieveFightActionFromControl();
+			} else {
+				a = retrieveMovementActionFromControl(round);
+			}
 			final Room room = this.getRoom();
 
 				if (room == null || room.getDungeon() == null || room.getDungeon().isGameOver()) {
@@ -736,49 +736,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	public boolean fight(int round) {
-		Room fightRoom = this.getRoom();
-		this.setActionPoints(1);
-		if (getActionPoints() > 0 && control != null && !this.dead) {
-			ActionResult res = null;
-			Action a = null;
-			int cnt = 0;
-			while (res == null || res.getSituation() != ActionResult.Situation.possible) {
-				cnt++;
-				if (cnt > 10) {
 
-					break;
-				}
-				if (this.getRoom() == null || this.getActualDungeon() == null || this.getRoom()
-						.getDungeon()
-						.isGameOver()) {
-					// game is over or figure has left the building
-					return true;
-				}
-				a = retrieveFightActionFromControl();
-				res = processAction(a, false, round);
-				if (res.getSituation() == ActionResult.Situation.impossible) {
-					if (control != null) {
-						control.actionProcessed(a, res);
-					}
-				}
-			}
-
-			// TODO: unify action processing in fight and non-fight case
-			res = processAction(a, round);
-			if (res.equals(ActionResult.DONE)) {
-				EventManager.getInstance().fireEvent(new WorldChangedEvent());
-			}
-			if (control != null) {
-				control.actionProcessed(a, res);
-			}
-		}
-		if(fightRoom.equals(this.getRoom())) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 	public void attack(Figure op) {
 		// new look dir towards opponent
@@ -798,7 +756,7 @@ public abstract class Figure extends DungeonWorldObject
 	protected abstract boolean flee(RouteInstruction.Direction dir);
 
 	private boolean canPayActionPoints(int k) {
-			return getActionPoints() >= k;
+			return actionPoints.canPayActionpoints(k);
 	}
 
 	public boolean isAbleToLockDoor() {
@@ -905,7 +863,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private ActionResult handleAttackAction(AttackAction a, boolean doIt) {
+	private ActionResult handleAttackAction(AttackAction a, boolean doIt, int round) {
 		int targetIndex = a.getTarget();
 		Figure target = InfoUnitUnwrapper.getFighter(targetIndex);
 		if (target == null) {
@@ -916,7 +874,7 @@ public abstract class Figure extends DungeonWorldObject
 				if (this.getRoom() == target.getRoom()) {
 					if (doIt) {
 
-						this.payActionPoint();
+						this.payActionPoint(round);
 						attack(target);
 						return ActionResult.DONE;
 					}
@@ -940,7 +898,7 @@ public abstract class Figure extends DungeonWorldObject
 		return cobwebbed > 0;
 	}
 
-	public ActionResult handleFleeAction(FleeAction a, boolean doIt) {
+	public ActionResult handleFleeAction(FleeAction a, boolean doIt, int round) {
 		if (getRoom().fightRunning()) {
 
 			Room oldRoom = getRoom();
@@ -958,7 +916,7 @@ public abstract class Figure extends DungeonWorldObject
 						this.lookDir = dir.getValue();
 						Position oldPos = this.getPos();
 						flees = flee(dir);
-						this.payActionPoint();
+						this.payActionPoint(round);
 						if (flees) {
 							Percept p = new FleePercept(this, oldPos, dir.getValue(), true);
 							oldRoom.distributePercept(p);
@@ -995,7 +953,7 @@ public abstract class Figure extends DungeonWorldObject
 		if (getControl() != null) {
 			tellPercept(new FightEndedPercept(FigureInfo.makeInfos(figures, this)));
 		}
-		setActionPoints(0);
+		setActionPoints(0 , - 1);
 		if (lastSpell != null) {
 			lastSpell.resetSpell();
 			lastSpell = null;
@@ -1008,10 +966,10 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	public double getReadiness() {
-		return this.actionPoints;
+		return this.actionPoints.getCurrentAP();
 	}
 
-	public boolean doorSmashes(Door d, Figure other) {
+	private boolean doorSmashes(Door d, Figure other) {
 		Position pos = this.getPos();
 		Position posN1 = pos.getLast();
 		Position posN2 = pos.getNext();
@@ -1043,7 +1001,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	public void doorSmashesBack(Door d, Figure other) {
+	private void doorSmashesBack(Door d, Figure other) {
 		getDoorSmash(d, other,false);
 	}
 
@@ -1066,23 +1024,10 @@ public abstract class Figure extends DungeonWorldObject
 		return processAction(a, false, -1);
 	}
 
-	private ActionResult handleExpCodeChangeAction(ExpCodeChangeAction a, boolean doIt) {
-		if (this instanceof Hero) {
-			if (doIt) {
-				int index = a.getIndex();
-				this.getCharacter().setExpCode(index);
-				return ActionResult.DONE;
-			}
-			else {
-				return ActionResult.POSSIBLE;
-			}
-		}
-		return ActionResult.OTHER;
-	}
 
 	public abstract boolean canTakeItem(Item i);
 
-	private ActionResult handleTakeItemFromChestAction(TakeItemFromChestAction a, boolean doIt) {
+	private ActionResult handleTakeItemFromChestAction(TakeItemFromChestAction a, boolean doIt, int round) {
 		boolean fight = this.getRoom().fightRunning();
 		if (fight) {
 			if (this.canPayActionPoints(1)) {
@@ -1096,7 +1041,7 @@ public abstract class Figure extends DungeonWorldObject
 						if (this.canTakeItem(item)) {
 							if (doIt) {
 								this.takeItem(item);
-								this.payActionPoint();
+								this.payActionPoint(round);
 								return ActionResult.DONE;
 							}
 							else {
@@ -1131,8 +1076,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private ActionResult handleTakeItemAction(
-			TakeItemAction a, boolean doIt) {
+	private ActionResult handleTakeItemAction(TakeItemAction a, boolean doIt, int round) {
 		boolean fight = this.getRoom().fightRunning();
 		if (fight) {
 			if (this.canPayActionPoints(1)) {
@@ -1143,7 +1087,7 @@ public abstract class Figure extends DungeonWorldObject
 						if (this.canTakeItem(item)) {
 							if (doIt) {
 								this.takeItem(item);
-								this.payActionPoint();
+								this.payActionPoint(round);
 								this.getRoom().distributePercept(new TakePercept(this, item));
 								return ActionResult.DONE;
 							}
@@ -1180,7 +1124,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private ActionResult handleMoveAction(MoveAction a, boolean doIt) {
+	private ActionResult handleMoveAction(MoveAction a, boolean doIt, int round) {
 
 		if (this.getActionPoints() < 1) {
 			return ActionResult.NOAP;
@@ -1194,7 +1138,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		if (wayPassable(dir)) {
 			if (doIt) {
-				this.payMoveActionPoints(1);
+				this.payMoveActionPoints(1, round);
 				walk(a.getDirection());
 				return ActionResult.DONE;
 			}
@@ -1231,19 +1175,16 @@ public abstract class Figure extends DungeonWorldObject
 
 	private ActionResult processAction(Action a, boolean doIt, int round) {
 
-		if(doIt) {
-			Log.info(round + " "+ this.getName() + " [AP: +"+this.actionPoints+"] " + a.getClass().getSimpleName() + "("+a.toString()+")");
+		if(doIt && this instanceof Hero) {
+			Log.info(System.currentTimeMillis()+" "+ round + " do: "+ round + " "+ this.getName() + " [AP: "+this.actionPoints.getCurrentAP()+"] " + a.getClass().getSimpleName() + "("+a.toString()+")");
 		}
 
 		if (a == null) {
 			return null;
 		}
-		if (a instanceof DoNothingAction) {
-			return ActionResult.POSSIBLE;
-		}
 		if (a instanceof EndRoundAction) {
 			if(doIt) {
-				this.payActionPoint();
+				this.payActionPoint(round);
 				Percept p = new WaitPercept(this);
 				getRoom().distributePercept(p);
 				return ActionResult.DONE;
@@ -1273,10 +1214,10 @@ public abstract class Figure extends DungeonWorldObject
 			return handleEquipmentChangeAction((EquipmentChangeAction) a, doIt);
 		}
 		if (a instanceof AttackAction) {
-			return handleAttackAction(((AttackAction) a), doIt);
+			return handleAttackAction(((AttackAction) a), doIt, round);
 		}
 		if (a instanceof FleeAction) {
-			return handleFleeAction((FleeAction) a, doIt);
+			return handleFleeAction((FleeAction) a, doIt, round);
 		}
 		if (a instanceof LearnSpellAction) {
 			return handleLearnSpellAction((LearnSpellAction) a, doIt);
@@ -1284,27 +1225,24 @@ public abstract class Figure extends DungeonWorldObject
 		if (a instanceof LayDownItemAction) {
 			return handleLayDownItemAction(((LayDownItemAction) a), doIt);
 		}
-		if (a instanceof ExpCodeChangeAction) {
-			return handleExpCodeChangeAction((ExpCodeChangeAction) a, doIt);
-		}
 		if (a instanceof MoveAction) {
-			return handleMoveAction((MoveAction) a, doIt);
+			return handleMoveAction((MoveAction) a, doIt, round);
 		}
 		if (a instanceof TakeItemAction) {
-			return handleTakeItemAction((TakeItemAction) a, doIt);
+			return handleTakeItemAction((TakeItemAction) a, doIt, round);
 		}
 		if (a instanceof TakeItemFromChestAction) {
-			return handleTakeItemFromChestAction((TakeItemFromChestAction) a, doIt);
+			return handleTakeItemFromChestAction((TakeItemFromChestAction) a, doIt, round);
 		}
 		if (a instanceof UseItemAction) {
-			return handleUseItemAction(((UseItemAction) a), doIt);
+			return handleUseItemAction(((UseItemAction) a), doIt, round);
 		}
 		if (a instanceof StepAction) {
-			return handleStepAction(((StepAction) a), doIt);
+			return handleStepAction(((StepAction) a), doIt, round);
 		}
 
 		if (a instanceof ScoutAction) {
-			return handleScoutAction(((ScoutAction) a), doIt);
+			return handleScoutAction(((ScoutAction) a), doIt, round);
 		}
 
 		if (a instanceof SuicideAction) {
@@ -1343,7 +1281,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	protected abstract boolean isAbleToUseChest();
 
-	private ActionResult handleUseItemAction(UseItemAction a, boolean doIt) {
+	private ActionResult handleUseItemAction(UseItemAction a, boolean doIt, int round) {
 		// TODO check auf use moeglich
 		if (canPayActionPoints(1)) {
 			ItemInfo info = a.getItem();
@@ -1367,7 +1305,7 @@ public abstract class Figure extends DungeonWorldObject
 						boolean used = ((Usable) it).use(this, this.getActualDungeon()
 								.getUnwrapper()
 								.unwrappObject(target), a.isMeta());
-						this.payActionPoint();
+						this.payActionPoint(round);
 						Percept p = new UsePercept(this, (Usable) it);
 						getRoom().distributePercept(p);
 
@@ -1393,7 +1331,7 @@ public abstract class Figure extends DungeonWorldObject
 
 
 
-	private ActionResult handleStepAction(StepAction a, boolean doIt) {
+	private ActionResult handleStepAction(StepAction a, boolean doIt, int round) {
 		int targetIndex = a.getTargetIndex();
 		if (targetIndex == -1) {
 			return ActionResult.NO_TARGET;
@@ -1416,7 +1354,7 @@ public abstract class Figure extends DungeonWorldObject
 
 							doStepTo(targetIndex, oldPosIndex);
 
-							this.payActionPoint();
+							this.payActionPoint(round);
 							return ActionResult.DONE;
 						}
 						return ActionResult.POSSIBLE;
@@ -1443,7 +1381,7 @@ public abstract class Figure extends DungeonWorldObject
 
 				doStepTo(targetIndex, pos.getIndex());
 
-				this.payMoveActionPoint();
+				this.payMoveActionPoint(round);
 				return ActionResult.DONE;
 			}
 			return ActionResult.POSSIBLE;
@@ -1461,7 +1399,7 @@ public abstract class Figure extends DungeonWorldObject
 		getRoom().distributePercept(p);
 	}
 
-	private ActionResult handleScoutAction(ScoutAction action, boolean doIt) {
+	private ActionResult handleScoutAction(ScoutAction action, boolean doIt, int round) {
 		if (this.getActionPoints() < 1) {
 			return ActionResult.NOAP;
 		}
@@ -1480,11 +1418,11 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		if (doIt) {
 			lookDir = dir;
-			ScoutResult result = scout(action);
+			ScoutResult result = scout(action, round);
 			getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(this, this.getRoom(), dir);
 			getRoom().distributePercept(p);
-			this.payMoveActionPoint();
+			this.payMoveActionPoint(round);
 			return ActionResult.DONE;
 		}
 		return ActionResult.POSSIBLE;
@@ -1511,7 +1449,7 @@ public abstract class Figure extends DungeonWorldObject
 		return -1;
 	}
 
-	protected abstract ScoutResult scout(ScoutAction action);
+	protected abstract ScoutResult scout(ScoutAction action, int round);
 
 	protected abstract int getKilled(int dmg);
 
@@ -1547,6 +1485,8 @@ public abstract class Figure extends DungeonWorldObject
 		status = JDEnv.getResourceBundle().getString("status_strong");
 		shortStatus = JDEnv.getResourceBundle()
 				.getString("status_short_strong");
+
+		actionPoints = new APCounter(this);
 
 		figureID_counter++;
 		addFigure(this);
@@ -1755,8 +1695,8 @@ public abstract class Figure extends DungeonWorldObject
 		this.reflexReactionUnit.setRaidAttack(f);
 	}
 
-	public void setActionPoints(int actionPoints) {
-		this.actionPoints = actionPoints;
+	public void setActionPoints(int actionPoints, int round) {
+		this.actionPoints.setCurrentAP(actionPoints, round);
 	}
 
 	@Override
@@ -1798,7 +1738,7 @@ public abstract class Figure extends DungeonWorldObject
 	public abstract String getMclass();
 
 	public int getActionPoints() {
-		return actionPoints;
+		return actionPoints.getCurrentAP();
 	}
 
 
@@ -2035,7 +1975,7 @@ public abstract class Figure extends DungeonWorldObject
 					a = control.getAction();
 					if (a == null && !(control instanceof JDGUI)) {
 						// some messed up AI returning null;
-						a = new DoNothingAction();
+						a = new EndRoundAction();
 						break;
 					}
 				}
@@ -2072,6 +2012,8 @@ public abstract class Figure extends DungeonWorldObject
 		if (toLeave != target) {
 			toLeave.figureLeaves(this);
 			toLeave.distributePercept(leavePercept);
+		} else {
+			Log.warning("toLeave == target");
 		}
 
 
@@ -2276,7 +2218,9 @@ public abstract class Figure extends DungeonWorldObject
 		this.ai = AI;
 	}
 
-	public void incActionPoints(int i) {
-		this.actionPoints += i;
+	public void incActionPoints(int i, int round) {
+		for (int k = 0; k < i ; k++) {
+			this.actionPoints.incrementActionPoint(round);
+		}
 	}
 }

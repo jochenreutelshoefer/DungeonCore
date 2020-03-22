@@ -228,6 +228,13 @@ heart_icon
   orig: 250, 250
   offset: 0, 0
   index: -1
+helmet1
+  rotate: false
+  xy: 1566, 863
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 hour-glass-empty
   rotate: false
   xy: 1040, 546
@@ -272,7 +279,7 @@ key
   index: -1
 lupe
   rotate: false
-  xy: 1566, 863
+  xy: 1632, 863
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -300,7 +307,7 @@ mondrune
   index: -1
 no_image
   rotate: false
-  xy: 1632, 878
+  xy: 1698, 879
   size: 49, 49
   orig: 49, 49
   offset: 0, 0

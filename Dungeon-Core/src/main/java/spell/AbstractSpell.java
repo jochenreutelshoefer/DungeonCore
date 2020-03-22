@@ -356,7 +356,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 				if (doIt) {
 					if(costsAP) {
-						mage.payActionPoint();
+						mage.payActionPoint(-1);
 					}
 					if (canFire(mage)) {				
 						

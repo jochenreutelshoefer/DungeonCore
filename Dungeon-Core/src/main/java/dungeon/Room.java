@@ -1345,14 +1345,6 @@ public class Room extends DungeonWorldObject implements
 		this.spot = spot;
 	}
 
-	public boolean isPart_scouted() {
-		return part_scouted;
-	}
-
-	public void setPart_scouted(boolean b) {
-		part_scouted = b;
-	}
-
 	public Position[] getPositions() {
 		return positions;
 	}

@@ -65,7 +65,7 @@ public class Ogre extends CreatureMonster {
 		this.half_bonus = true;
 		this.makesgoldenHit = true;
 		System.out.println("Ogre.makeSpecialAttack!");
-		op.decActionPoints(1);
+		op.decActionPoints(1, -1);
 		if (op instanceof Hero) {
 			this.getRoom().distributePercept(new SpecialAttackPercept(op,this));
 			Inventory sachen = ((Hero) op).getInventory();

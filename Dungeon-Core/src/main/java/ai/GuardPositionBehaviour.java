@@ -1,13 +1,11 @@
 package ai;
 
-import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.util.RouteInstruction;
-import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.AttackAction;
-import figure.action.DoNothingAction;
+import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
 import figure.percept.Percept;
@@ -79,7 +77,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 		if(info.getRoomNumber().equals(pos.getLocation())) {
 			if(info.getPositionInRoomIndex() == pos.getIndex()) {
 				// we are in position, hence nothing to do
-				return new DoNothingAction();
+				return new EndRoundAction();
 
 			} else {
 				// we step to our guard position
