@@ -59,7 +59,7 @@ public class Spy extends NoTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage) {
+	public void sorcer(Figure mage, int round) {
 
 		List<Room> rooms = mage.getRoom().getNeighboursWithDoor();
 
@@ -70,7 +70,7 @@ public class Spy extends NoTargetSpell {
 		}
 
 		String str = JDEnv.getResourceBundle().getString("spell_spy_cast");
-		mage.tellPercept(new TextPercept(str));
+		mage.tellPercept(new TextPercept(str, round));
 
 	}
 

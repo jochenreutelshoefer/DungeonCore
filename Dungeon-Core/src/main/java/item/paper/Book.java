@@ -26,6 +26,7 @@ public Attribute getHitPoints() {
 	/**
 	 * @see Item#getText()
 	 */
+	@Override
 	public abstract String getText();
 	
 	

@@ -89,11 +89,11 @@ public class LevelExit extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		// TODO: factor out text
 		if(requiredFigureMissing()) {
 			// some figure to be escorted to exit is not here -> refuse
-			f.getRoomInfo().distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: "+requiredItems.toString()));
+			f.getRoomInfo().distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: "+requiredItems.toString(), round));
 			return false;
 		}
 
@@ -101,7 +101,7 @@ public class LevelExit extends Shrine {
 			// some item to be found to exit is not here -> refuse
 			Room roomInfo = f.getRoomInfo();
 			if(roomInfo != null) {
-				roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: "+requiredItems.toString()));
+				roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: "+requiredItems.toString(), round));
 			}
 			return false;
 		}
@@ -110,8 +110,7 @@ public class LevelExit extends Shrine {
 		for (Item requiredItem : requiredItems) {
 			f.removeItem(requiredItem);
 		}
-
-		EventManager.getInstance().fireEvent(new ExitUsedEvent(f, this));
+		f.getControl().exitUsed(this, f);
 		return true;
 	}
 

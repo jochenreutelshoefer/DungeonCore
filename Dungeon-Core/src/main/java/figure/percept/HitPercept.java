@@ -16,20 +16,20 @@ import figure.FigureInfo;
 
 public class HitPercept extends OpticalPercept {
 	
-	private Figure attacker;
-	private Figure victim;
-	private SlapResult res;
+	private final Figure attacker;
+	private final Figure victim;
+	private final SlapResult res;
 	private boolean indirect = false;
-	
-	public HitPercept(Figure a, Figure b, SlapResult res) {
-		super(b.getLocation());
+
+	public HitPercept(Figure a, Figure b, SlapResult res, int round) {
+		super(b.getLocation(), round);
 		attacker = a;
 		victim = b;
 		this.res = res;
 	}
 	
-	public HitPercept(Figure a, Figure b, SlapResult res, boolean indirect) {
-		super(b.getLocation());
+	public HitPercept(Figure a, Figure b, SlapResult res, boolean indirect, int round) {
+		super(b.getLocation(), round);
 		attacker = a;
 		victim = b;
 		this.res = res;

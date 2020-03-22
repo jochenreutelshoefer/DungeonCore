@@ -143,9 +143,9 @@ public class QuestShrine extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if(f.hasItem(this.requestedItem) && (goodItem != null)) {
-			 Percept p = new UsePercept(f,this);
+			 Percept p = new UsePercept(f,this, round);
 				f.getRoom().distributePercept(p);
 			//game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
 			f.removeItem(requestedItem);

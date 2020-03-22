@@ -21,11 +21,11 @@ public abstract class NoTargetSpell extends AbstractSpell {
 
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
-		sorcer(mage);
+	public void sorcer(Figure mage, RoomEntity target, int round) {
+		sorcer(mage, round);
 
 	}
 
-	protected abstract void sorcer(Figure mage);
+	protected abstract void sorcer(Figure mage, int round);
 
 }

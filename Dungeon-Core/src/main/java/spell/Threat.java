@@ -94,11 +94,10 @@ public class Threat extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if(target instanceof Figure) {
 			int value = getStrength(mage,(Figure)target);
-			((Figure)target).putFrightening(new Frightening(mage, value,
-					Frightening.TYPE_THREAT));
+			((Figure)target).putFrightening(new Frightening(mage, value, Frightening.TYPE_THREAT), round);
 			
 		}
 

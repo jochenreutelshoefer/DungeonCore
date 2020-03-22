@@ -28,7 +28,7 @@ public class LionessConjuration extends AbstractSpell {
 	}
 
 	@Override
-	public boolean canFire(Figure mage) {
+	public boolean canFire(Figure mage, int round) {
 		Room roomInfo = mage.getRoomInfo();
 		Position[] positions = roomInfo.getPositions();
 		boolean freePositionAvailable = false;
@@ -38,7 +38,7 @@ public class LionessConjuration extends AbstractSpell {
 				break;
 			}
 		}
-		return freePositionAvailable && super.canFire(mage);
+		return freePositionAvailable && super.canFire(mage, round);
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class LionessConjuration extends AbstractSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		Lioness lioness = Lioness.createLioness(800 * level, mage.getRoom()
 				.getDungeon(), FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility()));
 		Room room = mage.getRoom();
 		int targetPosition = Position.getFreePositionNear(mage.getRoom(), mage.getPositionInRoom());
-		room.figureEntersAtPosition(lioness, targetPosition);
+		room.figureEntersAtPosition(lioness, targetPosition, round);
 	}
 
 	@Override

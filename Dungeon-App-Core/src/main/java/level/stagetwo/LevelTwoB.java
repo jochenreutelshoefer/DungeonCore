@@ -120,7 +120,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			keyRoom.setChest(keyChest);
 			Orc orcGuard = new Orc(1000);
 			orcGuard.setAI(new ChaserAI());
-			keyRoom.figureEnters(orcGuard, 1);
+			keyRoom.figureEnters(orcGuard, 1, -1);
 			filler.addAllocatedRoom(keyRoom);
 
 			Room dwarfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 2));

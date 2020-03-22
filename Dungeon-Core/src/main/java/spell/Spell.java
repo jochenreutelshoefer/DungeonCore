@@ -15,9 +15,9 @@ import gui.Paragraph;
 public interface Spell {
 
 
-	void sorcer(Figure mage, RoomEntity target);
+	void sorcer(Figure mage, RoomEntity target, int round);
 
-	ActionResult fire(Figure figure, RoomEntity target, boolean doIt);
+	ActionResult fire(Figure figure, RoomEntity target, boolean doIt, int round);
 
 	String getName();
 

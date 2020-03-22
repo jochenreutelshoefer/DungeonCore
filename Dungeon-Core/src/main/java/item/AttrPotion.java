@@ -65,9 +65,9 @@ public class AttrPotion extends Item implements Usable {
 	}
 
 	@Override
-	public boolean use(Figure h, RoomEntity target, boolean meta) {
+	public boolean use(Figure h, RoomEntity target, boolean meta, int round) {
 		//Hero held = (Hero) h;
-		h.tellPercept(new TextPercept(Texts.getPoitionDrinkString(a)));
+		h.tellPercept(new TextPercept(Texts.getPoitionDrinkString(a), -1));
 
 		LinkedList modifications = getModifications(h);
 		int l = modifications.size();

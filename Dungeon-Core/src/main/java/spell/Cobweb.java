@@ -47,7 +47,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
 	
 	@Override
-	public void sorcer(Figure f, RoomEntity target) {
+	public void sorcer(Figure f, RoomEntity target, int round) {
 		((Figure)target).setCobwebbed(this.level * this.getStrength());
 	}
 	

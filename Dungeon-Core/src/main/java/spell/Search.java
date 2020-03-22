@@ -84,7 +84,7 @@ public class Search extends AbstractTargetSpell {
 
 	}
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		
 		if(target instanceof Figure) {
 			Figure m = (Figure)target;
@@ -95,12 +95,12 @@ public class Search extends AbstractTargetSpell {
 			Item it = list.get(i);
 			s += it.toString()+"\n";	
 		}
-		if(list.size() == 0) {
+		if(list.isEmpty()) {
 			s = JDEnv.getResourceBundle().getString("spell_search_cast_nothing");	
 		}
 		
 		String str = m.getName()+JDEnv.getResourceBundle().getString("spell_search_cast_done")+"\n"+s;
-		mage.tellPercept(new TextPercept(str));
+		mage.tellPercept(new TextPercept(str, round));
 		}
 		
 	}

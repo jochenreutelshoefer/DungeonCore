@@ -16,7 +16,7 @@ package item;
 import figure.attribute.Attribute;
 import figure.attribute.ItemModification;
 import figure.hero.Character;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import item.equipment.Armor;
 import item.equipment.Helmet;
 import item.equipment.Shield;
@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import spell.Bonebreaker;
-import spell.Discover;
 import spell.Escape;
 import spell.Fireball;
 import spell.GoldenHit;
@@ -171,7 +170,7 @@ public class ItemPool {
 	 * @return item
 	 */
 	
-	public static AbstractSpell spellArray [] = {new Bonebreaker(1),new Fireball(1),new GoldenHit(1)/*,new Convince(1)*/,new Discover(1),
+	public static AbstractSpell spellArray [] = {new Bonebreaker(1),new Fireball(1),new GoldenHit(1)/*,new Convince(1)*/,
 		new Escape(1), new GoldenThrow(1), new Heal(1),new Isolation(1), new KeyLocator(1),new Light(1), new Raid(1),new Repair(1),new Search(1),new Spy(1),new Steal(1), new Thunderstorm(1)};
 	
 	public static Item getRandomBookSpell() {
@@ -331,10 +330,9 @@ public class ItemPool {
 		return i;
 	}
 	
-	public static DungeonGame game = null;
-	public static void setGame(DungeonGame game) {
+	public static DungeonGameLoop game = null;
+	public static void setGame(DungeonGameLoop game) {
 		ItemPool.game = game;
-
 	}
 
 	/**

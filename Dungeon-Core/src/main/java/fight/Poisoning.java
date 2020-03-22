@@ -30,13 +30,13 @@ public class Poisoning implements Serializable {
 		return time;
 	}
 
-	public void sufferRound(Figure f) {
+	public void sufferRound(Figure f, int round) {
 		if (time > 0) {
 
 			Slap s = new Slap(actor, Slap.POISON,strength, 0, 150);
 			
 
-			SlapResult res = f.getSlap(s);
+			SlapResult res = f.getSlap(s, round);
 			actor.receiveSlapResult(res);
 //			f.getRoom().distributePercept(
 //					new TextPercept(JDEnv.getString("poison_damage")+": " + strength));

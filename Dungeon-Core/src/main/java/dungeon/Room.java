@@ -88,7 +88,7 @@ public class Room extends DungeonWorldObject implements
 
 	private final JDPoint number;
 
-	public void checkFight(Figure movedIn) {
+	public void checkFight(Figure movedIn, int round) {
 		boolean fight = false;
 		ControlUnit movedInControl = movedIn.getControl();
 		if(movedInControl == null) {
@@ -111,12 +111,12 @@ public class Room extends DungeonWorldObject implements
 			}
 		}
 		if (fight) {
-			startFight();
+			startFight(round);
 		}
 	}
 
-	private void startFight() {
-		this.fight = new Fight(this);
+	private void startFight(int round) {
+		this.fight = new Fight(this,round );
 	}
 
 	@Override
@@ -934,11 +934,11 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
-	public int figureEnters(Figure figure, int fromDir) {
+	public int figureEnters(Figure figure, int moveDir, int round) {
 
 		int inRoomIndex = -1;
 
-		if (fromDir == 0) {
+		if (moveDir == 0) {
 			inRoomIndex = (int) (Math.random() * 8);
 			while (positions[inRoomIndex].getFigure() != null) {
 				inRoomIndex = (int) (Math.random() * 8);
@@ -946,20 +946,20 @@ public class Room extends DungeonWorldObject implements
 		}
 		// TODO: check whether the pos is free!
 		// edit: is automatically shifted to next position if not free
-		if (fromDir == Dir.EAST) {
+		if (moveDir == Dir.EAST) {
 			inRoomIndex = 7;
 		}
-		if (fromDir == Dir.WEST) {
+		if (moveDir == Dir.WEST) {
 			inRoomIndex = 3;
 		}
-		if (fromDir == Dir.NORTH) {
+		if (moveDir == Dir.NORTH) {
 			inRoomIndex = 5;
 		}
-		if (fromDir == Dir.SOUTH) {
+		if (moveDir == Dir.SOUTH) {
 			inRoomIndex = 1;
 		}
 
-		figureEntersAtPosition(figure, fromDir, inRoomIndex);
+		figureEntersAtPosition(figure, moveDir, inRoomIndex, round);
 		return inRoomIndex;
 	}
 
@@ -969,10 +969,10 @@ public class Room extends DungeonWorldObject implements
 	 * - conjured figures being added during the game
 	 *
 	 * @param figure
-	 * @param fromDir
+	 * @param moveDir
 	 * @param inRoomIndex
 	 */
-	public void figureEntersAtPosition(Figure figure, int fromDir, int inRoomIndex) {
+	public void figureEntersAtPosition(Figure figure, int moveDir, int inRoomIndex, int round) {
 		Position position = positions[inRoomIndex];
 		if (!this.getDungeon().equals(figure.getActualDungeon())) {
 			figure.setActualDungeon(this.getDungeon());
@@ -981,8 +981,8 @@ public class Room extends DungeonWorldObject implements
 		if (figure.getPos() != null) {
 			figure.getPos().figureLeaves();
 		}
-		if (fromDir != 0) {
-			figure.setLookDir(fromDir);
+		if (moveDir != 0) {
+			figure.setLookDir(moveDir);
 		}
 		if (figure.getRoomVisibility() == null) {
 			figure.createVisibilityMap(dungeon);
@@ -1007,7 +1007,7 @@ public class Room extends DungeonWorldObject implements
 			getFight().figureJoins(figure);
 		}
 		else {
-			this.checkFight(figure);
+			this.checkFight(figure, round);
 		}
 	}
 
@@ -1032,8 +1032,8 @@ public class Room extends DungeonWorldObject implements
 		return result;
 	}
 
-	public void figureEntersAtPosition(Figure m, int position) {
-		figureEntersAtPosition(m, 0, position);
+	public void figureEntersAtPosition(Figure m, int position, int round) {
+		figureEntersAtPosition(m, 0, position, round);
 	}
 
 	public boolean addItem(Item i) {
@@ -1358,7 +1358,7 @@ public class Room extends DungeonWorldObject implements
 		Collection<Figure> removeTMP = new HashSet();
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
-			boolean disappears = element.fightEnded(roomFigures);
+			boolean disappears = element.fightEnded(roomFigures, -1);
 			if (disappears) {
 				// prevent concurrent modification
 

@@ -8,7 +8,7 @@ public interface Usable{
 
 	int dustCosts();
 
-    boolean use(Figure f, RoomEntity target, boolean meta);
+    boolean use(Figure f, RoomEntity target, boolean meta, int round);
     
     boolean usableOnce();
     

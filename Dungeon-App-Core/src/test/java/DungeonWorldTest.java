@@ -17,14 +17,12 @@ import figure.hero.HeroInfo;
 import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import game.JDEnv;
 import junit.framework.TestCase;
 import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
-import level.stageone.StartLevel;
-import user.DefaultDungeonSession;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -42,11 +40,9 @@ public class DungeonWorldTest extends TestCase {
 				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert", Zodiac.Aquarius,
 						Profession.Lumberjack);
 
-				DungeonGame dungeonGame = DungeonGame.getInstance();
+				DungeonGameLoop dungeonGame = new DungeonGameLoop(dungeon);
 
 				Figure.addFigure(hero);
-
-				dungeonGame.setDungeon(dungeon);
 
 				hero.setActualDungeon(dungeon);
 
@@ -55,10 +51,11 @@ public class DungeonWorldTest extends TestCase {
 
 				DungeonVisibilityMap heroVisMap = hero.getRoomVisibility();
 				HeroInfo heroInfo = new HeroInfo(hero, heroVisMap);
-				dungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(hero, 0);
+				dungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(hero, 0, -1);
 				control.setFigure(heroInfo);
 
-				dungeonGame.init(dungeon);
+				// todo: test
+				//dungeonGame.init(dungeon);
 
 				for (int round = 0; round < 500; round++) {
 					assertEquals(dungeonGame.getRound(), round);

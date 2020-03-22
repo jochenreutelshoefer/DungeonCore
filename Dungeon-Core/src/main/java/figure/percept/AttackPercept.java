@@ -19,12 +19,12 @@ import figure.FigureInfo;
 
 public class AttackPercept extends OpticalPercept {
 	
-	private Figure attacker;
-	private Figure victim;
-	private Slap slap;
+	private final Figure attacker;
+	private final Figure victim;
+	private final Slap slap;
 	
-	public AttackPercept(Figure a, Figure b, Slap s) {
-		super(b.getLocation());
+	public AttackPercept(Figure a, Figure b, Slap s, int round) {
+		super(b.getLocation(), round);
 		attacker = a;
 		victim = b;
 		slap = s;

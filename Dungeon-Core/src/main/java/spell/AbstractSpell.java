@@ -171,8 +171,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			return new Bonebreaker(1);
 		} else if (s.equals("key_locator")) {
 			return new KeyLocator(1);
-		} else if (s.equals("discover")) {
-			return new Discover(1);
 		} else if (s.equals("golden_throw")) {
 			return new GoldenThrow(1);
 		} else if (s.equals("steal")) {
@@ -197,14 +195,14 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	@Override
 	public abstract String getText();
 
-	public boolean canFire(Figure mage) {
+	public boolean canFire(Figure mage, int round) {
 		int diff = getDifficulty();
 		double psy = mage.getPsycho().getValue();
 		double k = (Math.random() * psy);
 		if (k < diff) {
 
 			String str = JDEnv.getResourceBundle().getString("spell_failed");
-			mage.tellPercept(new TextPercept(str));
+			mage.tellPercept(new TextPercept(str, round));
 
 			return false;
 		}
@@ -329,7 +327,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	
 
 	@Override
-	public ActionResult fire(Figure mage, RoomEntity target, boolean doIt) {
+	public ActionResult fire(Figure mage, RoomEntity target, boolean doIt, int round) {
 
 		if(this instanceof TargetSpell) {
 			if(!((TargetSpell)this).distanceOkay(mage, target)) {
@@ -338,7 +336,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			if (!((TargetSpell)this).isApplicable(mage, target)) {
 				if(doIt) {
 					String str = JDEnv.getResourceBundle().getString("spell_wrong_target");
-					mage.tellPercept(new TextPercept(str));
+					mage.tellPercept(new TextPercept(str, round));
 				}
 				if(target == null) {
 					return ActionResult.NO_TARGET;
@@ -358,9 +356,9 @@ public abstract class AbstractSpell implements Spell, Serializable {
 					if(costsAP) {
 						mage.payActionPoint(-1);
 					}
-					if (canFire(mage)) {				
+					if (canFire(mage, round)) {
 						
-						sorcerStep(mage, target);
+						sorcerStep(mage, target, round);
 						
 						return ActionResult.DONE;
 					}else {
@@ -375,12 +373,12 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			} else {
 
 				String str = Texts.noDust();
-				mage.tellPercept(new TextPercept(str));
+				mage.tellPercept(new TextPercept(str, round));
 				return ActionResult.DUST;
 			}
 		} else {
 			String str = Texts.notNow();
-			mage.tellPercept(new TextPercept(str));
+			mage.tellPercept(new TextPercept(str, round));
 			return ActionResult.MODE;
 		}
 
@@ -389,12 +387,12 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	protected int stepsNec = 1;
 	private int stepCnt = 0;
 	
-	protected void sorcerStep(Figure mage, RoomEntity target) {
+	protected void sorcerStep(Figure mage, RoomEntity target, int round) {
 		stepCnt++;
 		if(stepCnt == stepsNec) {
-			payAndSorcer(mage, target);
+			payAndSorcer(mage, target, round);
 		}else {
-			Percept p = new SpellPercept(mage, this,true);
+			Percept p = new SpellPercept(mage, this,true, round);
 			mage.getRoom().distributePercept(p);
 		}
 	}
@@ -404,12 +402,12 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		stepCnt = 0;
 	}
 	
-	private void payAndSorcer(Figure mage, RoomEntity target) {
+	private void payAndSorcer(Figure mage, RoomEntity target, int round) {
 		int c = calcCost();
 		mage.getDust().modValue(c * (-1));
-		Percept p = new SpellPercept(mage, this);
+		Percept p = new SpellPercept(mage, this, round);
 		mage.getRoom().distributePercept(p);
-		sorcer(mage, target);
+		sorcer(mage, target, round);
 		mage.resetLastSpell();
 		stepCnt = 0;
 	}

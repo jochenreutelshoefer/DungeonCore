@@ -22,7 +22,6 @@ import item.paper.Scroll;
 import java.util.LinkedList;
 import java.util.List;
 
-import spell.Discover;
 import spell.Repair;
 import spell.AbstractSpell;
 import util.JDColor;
@@ -131,7 +130,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 
 			String s = JDEnv.getResourceBundle().getString("sorcLab_desolated");
 
-			owner.tellPercept(new TextPercept(s));
+			owner.tellPercept(new TextPercept(s, round));
 			owner = null;
 			activated = false;
 		}
@@ -208,17 +207,17 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	public void metaClick(Figure f, Object target) {
 		// AKTION MACHEN
 		if (activated) {
-			Percept p = new UsePercept(f, this);
+			Percept p = new UsePercept(f, this, -1);
 			this.getRoom()
 					.distributePercept(p);
-			(actions.get(actionPointer)).fire((Hero) f);
+			(actions.get(actionPointer)).fire((Hero) f, -1);
 		} else {
-			use(f, null, false);
+			use(f, null, false, -1);
 		}
 	}
 
 	private void activate(Figure f) {
-		Percept p = new UsePercept(f, this);
+		Percept p = new UsePercept(f, this, -1);
 		f.getRoom().distributePercept(p);
 		activated = true;
 		owner = f;
@@ -231,7 +230,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 
 		}
 		String s = JDEnv.getResourceBundle().getString("sorcLab_setup");
-		f.tellPercept(new TextPercept(s));
+		f.tellPercept(new TextPercept(s, -1));
 	}
 
 	@Override
@@ -240,7 +239,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 
 		if (!activated) {
 			Attribute dust = ((Hero) f).getDust();
@@ -256,7 +255,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 
 					String s = JDEnv.getResourceBundle().getString(
 							"sorcLab_no_dust");
-					f.tellPercept(new TextPercept(s));
+					f.tellPercept(new TextPercept(s, round));
 				}
 			} else {
 
@@ -267,7 +266,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 				} else {
 					String s = JDEnv.getResourceBundle().getString(
 							"sorcLab_no_dust");
-					f.tellPercept(new TextPercept(s));
+					f.tellPercept(new TextPercept(s, round));
 				}
 			}
 
@@ -409,11 +408,11 @@ class SorcerLabAction {
 		}
 	}
 
-	public void fire(Hero h) {
+	public void fire(Hero h, int round) {
 		if (h.payDust(cost)) {
 
 			if (spell) {
-				sp.fire(h, null, true);
+				sp.fire(h, null, true, round);
 			} else {
 				if (key == 0) {
 					h.takeItem(new HealPotion(20));
@@ -432,16 +431,13 @@ class SorcerLabAction {
 				if (key == 4) {
 					h.takeItem(new Scroll(new Repair(1), 5));
 				}
-				if (key == 5) {
-					h.takeItem(new Scroll(new Discover(1), 5));
-				}
 			}
 			String s = JDEnv.getResourceBundle().getString(
 					"sorcLab_action_done");
-			h.tellPercept(new TextPercept(s));
+			h.tellPercept(new TextPercept(s, round));
 
 		} else {
-			h.tellPercept(new TextPercept(Texts.noDust()));
+			h.tellPercept(new TextPercept(Texts.noDust(), round));
 		}
 	}
 }

@@ -95,7 +95,7 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 
 		if(target instanceof Monster) {
 			Monster m = (Monster)target;
@@ -122,7 +122,7 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 			
 		}
 		String str = JDEnv.getResourceBundle().getString("spell_convince_cast")+" "+m.getName()+" ("+res+")";
-		mage.tellPercept(new TextPercept(str));
+		mage.tellPercept(new TextPercept(str, round));
 		
 		m.getReflexReactionUnit().setConvinced(mage,res);
 		}

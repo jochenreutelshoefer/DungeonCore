@@ -10,17 +10,13 @@ import java.util.List;
 
 import figure.Figure;
 import figure.FigureInfo;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 
 public abstract class Percept {
 	
 	protected Figure viewer;
 	protected int round; 
 	
-	public Percept() {
-		round = DungeonGame.getInstance().getRound();
-	}
-
 	public Percept(int gameRound) {
 		round = gameRound;
 	}

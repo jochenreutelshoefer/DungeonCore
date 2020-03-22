@@ -62,7 +62,7 @@ public class Steal extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 
 		if (target instanceof Figure) {
 			Figure m = (Figure) target;
@@ -84,7 +84,7 @@ public class Steal extends AbstractTargetSpell {
 				String str = (m.getName()
 						+ JDEnv.getResourceBundle().getString(
 								"spell_steal_cast") + ":" + best);
-				mage.tellPercept(new TextPercept(str));
+				mage.tellPercept(new TextPercept(str, round));
 			}
 
 		}

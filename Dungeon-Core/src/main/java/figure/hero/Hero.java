@@ -11,7 +11,6 @@ import ai.DefaultHeroReflexBehavior;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import fight.Frightening;
 import fight.Slap;
@@ -20,7 +19,6 @@ import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.Spellbook;
-import figure.action.Action;
 import figure.action.ScoutAction;
 import figure.action.ScoutResult;
 import figure.attribute.Attribute;
@@ -30,9 +28,8 @@ import figure.percept.DiePercept;
 import figure.percept.InfoPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
-import figure.percept.ShieldBlockPercept;
 import figure.percept.TextPercept;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import game.InfoEntity;
 import game.InfoProvider;
 import item.Bunch;
@@ -42,8 +39,6 @@ import item.ItemInfo;
 import item.Key;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
-import item.interfaces.ItemOwner;
-import item.quest.LuziasBall;
 import log.Log;
 import shrine.Shrine;
 import spell.AbstractSpell;
@@ -722,8 +717,8 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			this.getHealth().setValue(1);
 			this.getRoom().figureDies(this);
 			Room respawnRoom2 = this.getRespawnRoom();
-			respawnRoom2.figureEnters(this,0);
-			respawnRoom2.distributePercept(new InfoPercept(InfoPercept.RESPAWN));
+			respawnRoom2.figureEnters(this,0, -1);
+			respawnRoom2.distributePercept(new InfoPercept(InfoPercept.RESPAWN, -1));
 			return 1;
 		}
 		else {
@@ -784,22 +779,22 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	protected void lookInRoom() {
-		this.getRoom().getDungeon().getRoom(getLocation()).setVisited(DungeonGame.getInstance().getRound());
+	protected void lookInRoom(int round) {
+		this.getRoom().getDungeon().getRoom(getLocation()).setVisited(round);
 		if (this.getRoom().getDungeon().getRoom(getLocation()).getShrine() != null) {
 			Shrine s = this.getRoom().getDungeon().getRoom(getLocation()).getShrine();
-			this.tellPercept(new TextPercept(s.getStory()));
+			this.tellPercept(new TextPercept(s.getStory(), round));
 
 		}
 		if (!this.getRoom().getDungeon().getRoomNr(getLocation().getX(),
 				getLocation().getY()).getItems().isEmpty()) {
-			this.tellPercept(new InfoPercept(InfoPercept.FOUND_ITEM));
+			this.tellPercept(new InfoPercept(InfoPercept.FOUND_ITEM, round));
 		}
 	}
 
 
 	@Override
-	public boolean flee(RouteInstruction.Direction fleeDirection) {
+	public boolean flee(RouteInstruction.Direction fleeDirection, int round) {
 		Room toGo = this.getRoom().getDungeon().getRoomAt(getRoom(), fleeDirection);
 		Door d = this.getRoom().getDungeon().getRoom(getLocation()).getConnectionTo(toGo);
 
@@ -845,11 +840,11 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 				}
 
-				move(toGo);
+				move(toGo, round);
 
 
-				lookInRoom();
-				getRoom().checkFight(this);
+				lookInRoom(round);
+				getRoom().checkFight(this, round);
 				return true;
 			} else {
 
@@ -884,7 +879,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 					for (int i = 0; i < monsters.size(); i++) {
 						s += "...aber Du kannst leider nichts rauskriegen";
 						if (Math.random() < 0.4) {
-							toScout.distributePercept(new ScoutPercept(this, getRoom(), dir));
+							toScout.distributePercept(new ScoutPercept(this, getRoom(), dir, round));
 						}
 					}
 
@@ -897,7 +892,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				} else {
 					for (int i = 0; i < monsters.size(); i++) {
 						if (Math.random() < 0.4) {
-							toScout.distributePercept(new ScoutPercept(this, getRoom(), dir));
+							toScout.distributePercept(new ScoutPercept(this, getRoom(), dir, round));
 						}
 					}
 					s += (" und ...Du wirst entdeckt!");
@@ -937,7 +932,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		} else {
 			s += ("Das funktioniert so jetzt gerade nicht...");
 		}
-		tellPercept(new TextPercept(s));
+		tellPercept(new TextPercept(s, round));
 		return new ScoutResult(this, visStatusResult);
 	}
 

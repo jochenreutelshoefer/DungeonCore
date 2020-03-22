@@ -17,11 +17,13 @@ public abstract class OpticalPercept extends Percept {
 
 	Set<JDPoint> locations = new HashSet<>();
 
-	public OpticalPercept(JDPoint room) {
+	public OpticalPercept(JDPoint room, int round) {
+		super(round);
 		locations.add(room);
 	}
 
-	public OpticalPercept(JDPoint room1, JDPoint room2) {
+	public OpticalPercept(JDPoint room1, JDPoint room2, int round) {
+		super(round);
 		locations.add(room1);
 		locations.add(room2);
 	}

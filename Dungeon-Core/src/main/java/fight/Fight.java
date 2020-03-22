@@ -19,7 +19,7 @@ public class Fight {
 	private final Room fightRoom;
 	private final List<Figure> fighterList;
 
-	public Fight(Room r) {
+	public Fight(Room r, int round) {
 		List<Figure> figuresSorted = new LinkedList<Figure>(r.getRoomFigures());
 		Collections.sort(figuresSorted, new MyFightOrderComparator());
 		fighterList = figuresSorted;
@@ -28,7 +28,7 @@ public class Fight {
 		List<Figure> l = r.getRoomFigures();
 		for (int i = 0; i < l.size(); i++) {
 			Figure mon = (l.get(i));
-			mon.fightBegins(l);
+			mon.fightBegins(l, round);
 		}
 	}
 

@@ -50,7 +50,7 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		npc.takeItem(new Wolfknife(25, false));
 		// TODO: use setControl!
 		npc.setAI(new RescuedNPCAI());
-		hostageRoom.figureEnters(npc, 0);
+		hostageRoom.figureEnters(npc, 0, -1);
 
 
 		Room exitRoom = filler.getUnallocatedRandomRoom(new RoomPositionConstraint() {
@@ -61,9 +61,9 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		});
 		exitRoom.setShrine(new LevelExit(npc));
 
-		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0);
-		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0);
-		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0);
+		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0, -1);
+		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0, -1);
+		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0, -1);
 
 
 		return dungeon;

@@ -67,7 +67,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		return false;
 	}
 	
@@ -212,16 +212,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 		return sum;
 	}
 
-	/**
-	 * @see Shrine#clicked(fighter)
-	 */
-	public void clicked(Figure f, boolean right) {
-//		if(f.isGuiControlled()) {
-//			//Trader_window win = new Trader_window(f.getControl().getGui().getMainFrame(),this);
-//		}
-	}
-
-	
+	@Override
 	public List<Item> getItems() {
 		return items;
 	}

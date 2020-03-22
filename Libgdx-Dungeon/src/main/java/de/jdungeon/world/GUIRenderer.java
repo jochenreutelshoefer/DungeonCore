@@ -156,7 +156,7 @@ public class GUIRenderer implements Disposable {
 		int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromRightBorder;
 		int hourGlassHeight = (int) (hourGlassWidth * 1.6);
 		int hourglassYPos = dustBarPosition.getY() + screenHeightBy25;
-		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager);
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager, game.getSession());
 		this.libgdxGuiElements.add(hourglass);
 
 

@@ -72,11 +72,11 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
 	
 	private String name;
 
-	
-	String story;
+
+	protected String story;
 
 	
-	String text;
+	protected String text;
 
 	//public static Game game;
 

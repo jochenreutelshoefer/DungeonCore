@@ -31,8 +31,8 @@ public class LeavesPercept extends OpticalPercept {
 	}
 
 
-	public LeavesPercept(Figure f, Room r1 , RouteInstruction.Direction direction) {
-		super(r1.getNumber());
+	public LeavesPercept(Figure f, Room r1 , RouteInstruction.Direction direction, int round) {
+		super(r1.getNumber(), round);
 		figure = f;
 		from = r1;
 		this.direction = direction;

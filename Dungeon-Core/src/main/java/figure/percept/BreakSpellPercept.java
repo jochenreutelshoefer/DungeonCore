@@ -8,10 +8,10 @@ import figure.FigureInfo;
 
 public class BreakSpellPercept extends OpticalPercept {
 
-	private Figure f;
+	private final Figure f;
 
-	public BreakSpellPercept(Figure f) {
-		super(f.getLocation());
+	public BreakSpellPercept(Figure f, int round) {
+		super(f.getLocation(), round);
 		this.f = f;
 		
 	}

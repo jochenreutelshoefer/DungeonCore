@@ -55,8 +55,8 @@ public class InfoScroll extends Item implements Usable{
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
-		f.tellPercept(new TextPercept(content));
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
+		f.tellPercept(new TextPercept(content, -1));
 		return true;
 	}
 

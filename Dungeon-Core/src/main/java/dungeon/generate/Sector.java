@@ -8,7 +8,7 @@
 package dungeon.generate;
 
 import figure.monster.Monster;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class Sector {
 	protected Dungeon d;
 
 	
-	protected DungeonGame game;
+	protected DungeonGameLoop game;
 
 	
 	AbstractDungeonFiller df;
@@ -54,7 +54,7 @@ public class Sector {
 		int number,
 		int avMonsterStrength,
 		int mainSize,
-		DungeonGame game,
+		DungeonGameLoop game,
 		AbstractDungeonFiller df) {
 		this.df = df;
 		this.d = d;

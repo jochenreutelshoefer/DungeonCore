@@ -71,7 +71,7 @@ public class RevealMapShrine extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		boolean revealedSomething = false;
 		for (Room revealedRoom : revealedRooms) {
 			int discoveryStatus = f.getRoomVisibility().getDiscoveryStatus(revealedRoom.getNumber());

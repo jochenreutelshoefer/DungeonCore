@@ -53,6 +53,7 @@ public class ArmorItem extends EquipmentItem{
 			}
 		
 
+ @Override
  public String getText(){
 	return ("\n"+JDEnv.getResourceBundle().getString("gui_armor")+": "+getArmorValue()+"/"+armorValue+"\n"+ JDEnv.getResourceBundle().getString("state")+": "
 	+ (int) hitPoints.getValue()

@@ -61,7 +61,7 @@ public class EscapeRoute extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if (target instanceof Door) {
 			AbstractSpell.addTimedSpell(new EscapeRouteInstance(this.getStrength(),
 					(Door) target, mage));

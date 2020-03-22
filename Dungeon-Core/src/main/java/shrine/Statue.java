@@ -63,7 +63,7 @@ public void metaClick(Figure f){
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		return false;
 	}
 	
@@ -117,11 +117,7 @@ public void metaClick(Figure f){
 		return null;
 	}
 
-	/**
-	 * @see Usable#use(fighter)
-	 */
-	
-	
+
 	@Override
 	public boolean canBeUsedBy(Figure f) {
 		return false;

@@ -9,7 +9,7 @@ package dungeon.generate;
 import dungeon.JDPoint;
 import figure.Figure;
 import figure.monster.Monster;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import game.JDEnv;
 import item.Item;
 import item.quest.Rune;
@@ -26,11 +26,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 
 	public boolean succes = true;
-	private final DungeonGame game;
+	private final DungeonGameLoop game;
 
 	private static final String[] word = { "JAVA", "CLUB", "BEAR" };
 
-	public SectorDungeonFiller1(Dungeon d, int value, DungeonGame game,
+	public SectorDungeonFiller1(Dungeon d, int value, DungeonGameLoop game,
 			int level) {
 		super(d, runeCreater(level));
 		this.game = game;
@@ -71,14 +71,6 @@ public class SectorDungeonFiller1 extends AbstractDungeonFiller {
 	@Override
 	public void fillDungeon() throws DungeonGenerationFailedException {
 
-		Sector s1 = new Sector1(d, d.getPoint(18, 39), 1, 800, 24, game, this);
-
-		if (!JDEnv.isBeginnerGame()) {
-			Sector s2 = new Sector2(d, (d.getRoomAt(s1.getConnectionRoom(),
-							RouteInstruction.direction(RouteInstruction.NORTH))
-							.getNumber()), 2, 1400, 40, game,
-					this);
-		}
 
 	}
 

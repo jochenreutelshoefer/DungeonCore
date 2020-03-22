@@ -80,7 +80,7 @@ public class BookAttr extends Book {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int rounde) {
 		Attribute a = f.getAttribute(attribute);
 		double value = a.getBasic();
 		int add = 0;

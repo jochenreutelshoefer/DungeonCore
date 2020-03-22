@@ -1,5 +1,6 @@
 package user;
 
+import dungeon.Dungeon;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
@@ -22,6 +23,8 @@ public interface DungeonSession {
 
 	DungeonFactory getLastCompleted();
 
+	Dungeon getCurrentDungeon();
+
 	int getCurrentStage();
 
 	void notifyExit(LevelExit exit, Figure figure);
@@ -38,6 +41,5 @@ public interface DungeonSession {
 
 	void learnSkill(Spell spell);
 
-
-
+	int getDungeonRound();
 }

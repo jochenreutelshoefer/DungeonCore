@@ -133,7 +133,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 		Room wolfRoom = dungeon.getRoom(4 ,5 );
 		HadrianAI ai = new HadrianAI();
 		Wolf hadrian = new Wolf( 1100, ai, "Hadrian" );
-		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue());
+		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getRoomVisibility()));
 		filler.setAllFound(hadrian.getRoomVisibility());
 		filler.addAllocatedRoom(wolfRoom);

@@ -85,12 +85,12 @@ public class Repair extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		//ItemChoiceView v = new ItemChoiceView(mage.getGame().getGui().getMainFrame(),"Gegenstand ausw�hlen",this,mage, false);
 		if (target instanceof Item) {
 			repairItem((Item) target);
 			String str = JDEnv.getResourceBundle().getString("spell_rapair_cast");
-			mage.tellPercept(new TextPercept(str));
+			mage.tellPercept(new TextPercept(str, round));
 		}
 
 	}

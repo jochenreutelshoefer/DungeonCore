@@ -14,29 +14,19 @@ import game.JDEnv;
 import gui.Paragraph;
 public class DustItem extends Item {
 
-	/**
-	 * @see Item#getHitPoints()
-	 */
-	public static double ratio = 2;
+	public static final double ratio = 2;
 
-	
-	
-
-	
-	double cnt;
+	private double cnt;
 
 	
 	public DustItem(int value) {
 		super(value,false);
-		
 		cnt = (value/ratio);
 	}
 	
 	public DustItem(double cnt) {
 		super((int)(cnt* ratio),false);
-		
-		this.cnt = cnt;	
-		
+		this.cnt = cnt;
 	}
 	
 	public Attribute getHitPoints() {

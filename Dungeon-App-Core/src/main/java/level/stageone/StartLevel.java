@@ -110,7 +110,7 @@ public class StartLevel extends AbstractDungeonFactory {
 
 			Room wolfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 2));
 			if (wolfRoom == null) continue;
-			wolfRoom.figureEnters(new Wolf(900), RouteInstruction.Direction.North.getValue());
+			wolfRoom.figureEnters(new Wolf(900), RouteInstruction.Direction.North.getValue(), -1);
 			//wolfRoom.figureEnters(new Spider(900), RouteInstruction.Direction.West.getValue());
 			//wolfRoom.figureEnters(new Ghul(900), RouteInstruction.Direction.West.getValue());
 			filler.addAllocatedRoom(wolfRoom);

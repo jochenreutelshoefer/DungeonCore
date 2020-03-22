@@ -17,6 +17,7 @@ import java.util.List;
 import ai.AI;
 import dungeon.JDPoint;
 import log.Log;
+import shrine.LevelExit;
 
 public class FigureControl implements ControlUnit {
 
@@ -69,6 +70,11 @@ public class FigureControl implements ControlUnit {
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
 		brain.notifyVisibilityStatusIncrease(p);
+	}
+
+	@Override
+	public void exitUsed(LevelExit exit, Figure f) {
+		// nothing
 	}
 
 	@Override

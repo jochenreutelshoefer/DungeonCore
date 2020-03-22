@@ -73,10 +73,10 @@ public class MightyStruck extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if (target instanceof Figure) {
 			Figure m = (Figure) target;
-			m.getSlap(new Slap(mage, this.getStrength(), 100, 150));
+			m.getSlap(new Slap(mage, this.getStrength(), 100, 150), round);
 			if (m instanceof Hero) {
 				if (Math.random() > 0.5) {
 					Armor a = ((Hero) m).getInventory().getArmor1();

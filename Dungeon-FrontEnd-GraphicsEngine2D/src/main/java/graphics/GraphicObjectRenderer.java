@@ -52,13 +52,11 @@ import item.paper.Scroll;
 import item.quest.DarkMasterKey;
 import item.quest.Feather;
 import item.quest.Incense;
-import item.quest.LuziasBall;
 import item.quest.Rune;
 import item.quest.Thing;
 import log.Log;
 import shrine.Angel;
 import shrine.Brood;
-import shrine.Luzia;
 import shrine.MoonRuneFinderShrine;
 import shrine.ScoutShrine;
 import shrine.Shrine;
@@ -485,12 +483,6 @@ public class GraphicObjectRenderer {
 							new RelativeRectangle(itemPointRelative, roomSize_12_100, roomSize_12_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
-				else if (itemArray[i].getItemClass().equals(LuziasBall.class)) {
-
-					itemObs[i] = new GraphicObject(itemArray[i],
-							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
-							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
-				}
 				else if (itemArray[i].getItemClass().equals(Book.class)) {
 
 					itemObs[i] = new GraphicObject(itemArray[i],
@@ -908,23 +900,6 @@ public class GraphicObjectRenderer {
 			int xsize = (int) (roomSize / 3.6);
 			int ysize = (int) (roomSize / 3.7);
 			JDImageProxy<?> im = ImageManager.getImage(s);
-			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, shrineRect, JDColor.YELLOW);
-		}
-		else if (s.getShrineIndex() == Shrine.SHRINE_LUZIA) {
-			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
-			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
-			int xsize = (int) (roomSize / 3.6);
-			int ysize = (int) (roomSize / 2.5);
-
-			JDImageProxy<?> im = ImageManager.getImage(s);
-			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
-				xpos = roomOffsetX + (8 * ROOMSIZE_BY_10);
-				ypos = roomOffsetY + (5 * ROOMSIZE_BY_36);
-				xsize = (int) (roomSize / 4.5);
-				ysize = (int) (roomSize / 3.5);
-			}
-
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}

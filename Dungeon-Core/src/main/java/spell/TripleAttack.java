@@ -61,11 +61,11 @@ public static int[][] values = { { 1, 1, 10, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if(target instanceof Figure) {
-			mage.attack((Figure)target);
-			mage.attack((Figure)target);
-			mage.attack((Figure)target);
+			mage.attack((Figure)target, round);
+			mage.attack((Figure)target, round);
+			mage.attack((Figure)target, round);
 		}
 	}
 

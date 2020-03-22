@@ -111,7 +111,7 @@ public boolean needsTarget() {
 			Monster master = new DarkMaster(
 					location);
 			master.takeItem(ItemPool.getGift(60, 2));
-			location.figureEnters(master,0);
+			location.figureEnters(master,0, -1);
 			masterOut= true;
 //			newStatement(
 //							"Ein lautes dunkles Lachen erhebt sich, es scheint "
@@ -249,7 +249,7 @@ public boolean needsTarget() {
 		 * @see usable#use(fighter)
 		 */
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		// TODO Auto-generated method stub
 		return false;
 	}

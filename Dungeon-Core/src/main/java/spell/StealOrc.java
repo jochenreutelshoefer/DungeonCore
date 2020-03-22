@@ -90,7 +90,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if (target instanceof Figure) {
 			List<Item> l = ((Figure) target).getAllItems();
 			
@@ -116,7 +116,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 			if(it != null) {
 				((Figure)target).removeItem(it);
 				mage.takeItem(it);
-				mage.getRoom().distributePercept(new TextPercept("Geklaut: "+it.toString()));
+				mage.getRoom().distributePercept(new TextPercept("Geklaut: "+it.toString(), round));
 			}
 
 		}

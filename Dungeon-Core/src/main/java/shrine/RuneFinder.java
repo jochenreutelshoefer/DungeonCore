@@ -116,15 +116,15 @@ public class RuneFinder extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
-		Percept p = new UsePercept(f, this);
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
+		Percept p = new UsePercept(f, this, round);
 		f.getRoom().distributePercept(p);
 		// game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
 		ItemOwner o = rune.getOwner();
 		JDPoint point = o.getLocation();
 		
 		String s = "Die Rune befindet sich im Moment in Raum: " + point.toString();
-		 f.tellPercept(new TextPercept(s));
+		 f.tellPercept(new TextPercept(s, round));
 		return true;
 	}
 

@@ -472,7 +472,7 @@ public class Character implements Serializable {
 		for (int i = 0; i < j; i++) {
 			dust.incBasic();
 		}
-		owner.tellPercept(new InfoPercept(InfoPercept.LEVEL_UP));
+		owner.tellPercept(new InfoPercept(InfoPercept.LEVEL_UP, -1));
 
 		spellPoints++;
 		AbstractSpell s = getSpellForLevelUp(level);
@@ -704,7 +704,7 @@ public class Character implements Serializable {
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
-									"Du hast Deine Fertigkeit mit der Axt verbessert!"));
+									"Du hast Deine Fertigkeit mit der Axt verbessert!", -1));
 				}
 			}
 			break;
@@ -719,7 +719,7 @@ public class Character implements Serializable {
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
-									"Du hast Deine Fertigkeit mit dem Kn�ppel verbessert!"));
+									"Du hast Deine Fertigkeit mit dem Kn�ppel verbessert!", -1));
 				}
 			}
 			break;
@@ -734,7 +734,7 @@ public class Character implements Serializable {
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
-									"Du hast Deine Fertigkeit mit der Lanze verbessert!"));
+									"Du hast Deine Fertigkeit mit der Lanze verbessert!", -1));
 				}
 			}
 			break;
@@ -749,7 +749,7 @@ public class Character implements Serializable {
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
-									"Du hast Deine Fertigkeit mit dem Schwert verbessert!"));
+									"Du hast Deine Fertigkeit mit dem Schwert verbessert!", -1));
 				}
 			}
 			break;
@@ -764,7 +764,7 @@ public class Character implements Serializable {
 				if (after > before) {
 					owner
 							.tellPercept(new TextPercept(
-									"Du hast Deine Fertigkeit mit dem Wolfsmesser verbessert!"));
+									"Du hast Deine Fertigkeit mit dem Wolfsmesser verbessert!", -1));
 				}
 			}
 			break;

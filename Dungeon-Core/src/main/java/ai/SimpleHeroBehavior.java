@@ -9,6 +9,7 @@ package ai;
 import java.util.ArrayList;
 import java.util.List;
 
+import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -18,6 +19,7 @@ import figure.percept.Percept;
 import game.ControlUnit;
 import dungeon.Door;
 import dungeon.JDPoint;
+import shrine.LevelExit;
 
 /**
  * Einfachste rein zufallsbasierte Steuerung eines Helden. Nur fuer Testzwecke.
@@ -50,6 +52,11 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 	@Override
 	public void notifyVisibilityStatusDecrease(JDPoint p) {
 
+	}
+
+	@Override
+	public void exitUsed(LevelExit exit, Figure f) {
+		// nothing
 	}
 
 	@Override

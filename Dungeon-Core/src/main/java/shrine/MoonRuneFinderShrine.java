@@ -64,20 +64,20 @@ public class MoonRuneFinderShrine extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if(!f.canPayDust(COST)) return false;
 
 		f.payDust(COST);
 
 		JDPoint location = rune.getLocation();
-		tellDirection(location, f);
+		tellDirection(location, f, round);
 
 		return true;
 	}
 
-	private void tellDirection(JDPoint location, Figure f) {
+	private void tellDirection(JDPoint location, Figure f, int round) {
 		// TODO: factor out text
-		f.tellPercept(new TextPercept("Die Mondrune befindet sich im Moment bei" + ": " + location));
+		f.tellPercept(new TextPercept("Die Mondrune befindet sich im Moment bei" + ": " + location, round));
 		f.getRoomVisibility().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
 	}
 

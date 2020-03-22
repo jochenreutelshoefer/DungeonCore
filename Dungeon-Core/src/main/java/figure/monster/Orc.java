@@ -78,21 +78,21 @@ public class Orc extends CreatureMonster {
 			List<Item> heroItems = sachen.getUnusedItems();
 			Collections.sort(heroItems, new ItemValueComparator());
 			List<Item> stolen = new LinkedList<Item>();
-			op.tellPercept(new TextPercept(getName() + " klaut Dir: "));
+			op.tellPercept(new TextPercept(getName() + " klaut Dir: ", -1));
 			while (Item.calcValueSum(stolen) < 30) {
 				if (heroItems.size() == 0) {
 					break;
 				}
 				Item toGive = (heroItems.remove(0));
 				stolen.add(toGive);
-				op.tellPercept(new TextPercept(toGive.toString()));
+				op.tellPercept(new TextPercept(toGive.toString(), -1));
 				sachen.giveAwayItem(toGive, this);
 
 			}
-			op.tellPercept(new TextPercept(getName() + " beklaut Dich und verschwindet durch die Tür.. "));
+			op.tellPercept(new TextPercept(getName() + " beklaut Dich und verschwindet durch die Tür.. ", -1));
 
 		}
-		flee(getFleeDirection());
+		flee(getFleeDirection(), -1);
 		this.specialAttackCounter = 50;
 		return true;
 

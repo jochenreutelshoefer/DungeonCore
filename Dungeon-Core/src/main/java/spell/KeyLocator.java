@@ -89,32 +89,32 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if (target instanceof Door) {
 			Door d = ((Door) target);
 			if (d.hasLock()) {
 				d.getLock().setKeyLocatable(mage);
-				tellKeyLocation(mage, d);
+				tellKeyLocation(mage, d, round);
 			}
 		}
 		else if (target instanceof Lock) {
 			((Lock) target).setKeyLocatable(mage);
-			tellDirection(((Lock) target).getKey().getOwner().getLocation(), mage);
+			tellDirection(((Lock) target).getKey().getOwner().getLocation(), mage, round);
 		}
 		else {
-			mage.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("spell_keyLocator_cast_nothing")));
+			mage.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("spell_keyLocator_cast_nothing"), round));
 		}
 	}
 
-	public static void tellKeyLocation(Figure mage, Door d) {
+	public static void tellKeyLocation(Figure mage, Door d, int round) {
 		ItemOwner owner = d.getKey().getOwner();
 		JDPoint location = owner.getLocation();
-		tellDirection(location, mage);
+		tellDirection(location, mage, round);
 	}
 
-	private static void tellDirection(JDPoint location, Figure f) {
+	private static void tellDirection(JDPoint location, Figure f, int round) {
 		f.tellPercept(new TextPercept(JDEnv.getResourceBundle()
-				.getString("spell_keyLocator_cast_found") + ": " + location));
+				.getString("spell_keyLocator_cast_found") + ": " + location, round));
 		f.getRoomVisibility().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
 	}
 

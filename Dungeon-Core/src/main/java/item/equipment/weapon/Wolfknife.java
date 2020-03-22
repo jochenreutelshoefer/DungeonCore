@@ -32,7 +32,8 @@ public class Wolfknife extends Weapon {
 
     }
     
-    public String getName() {
+    @Override
+	public String getName() {
     	return name;
     }
 

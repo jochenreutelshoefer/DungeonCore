@@ -8,9 +8,9 @@ import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import dungeon.JDPoint;
+import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.EndRoundAction;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.other.Fir;
@@ -21,7 +21,9 @@ import figure.percept.TextPercept;
 import game.JDGUI;
 import item.ItemInfo;
 import log.Log;
+import shrine.LevelExit;
 import text.StatementManager;
+import user.DungeonSession;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -45,9 +47,7 @@ import de.jdungeon.gui.activity.FleeActivity;
  */
 public class PlayerController implements JDGUI {
 
-
-
-
+	private final DungeonSession dungeonSession;
 	private HeroInfo heroInfo;
 
 	private ActionAssembler actionAssembler;
@@ -68,7 +68,8 @@ public class PlayerController implements JDGUI {
 	private GameScreen gameScreen;
 
 
-	public PlayerController() {
+	public PlayerController(DungeonSession dungeonSession) {
+		this.dungeonSession = dungeonSession;
 		attackActivity = new AttackActivity(this);
 		fleeActivity = new FleeActivity(this);
 	}
@@ -151,11 +152,6 @@ public class PlayerController implements JDGUI {
 	}
 
 	@Override
-	public ItemInfo getSelectedInventoryItem() {
-		return this.gameScreen.getGuiRenderer().getItemWheel().getSelectedInventoryItem();
-	}
-
-	@Override
 	public FigureInfo getFigure() {
 		return heroInfo;
 	}
@@ -166,16 +162,9 @@ public class PlayerController implements JDGUI {
 	}
 
 	@Override
-	public void fightEnded() {
-		this.visibilityIncreasedRooms.clear();
-	}
-
-
-
-	@Override
 	public void actionProcessed(Action a, ActionResult res) {
 		if (res.getSituation() == ActionResult.Situation.impossible) {
-			perceptQueue.add(new TextPercept(StatementManager.getStatement(res).getText()));
+			perceptQueue.add(new TextPercept(StatementManager.getStatement(res).getText(), -1));
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 	}
@@ -212,6 +201,12 @@ public class PlayerController implements JDGUI {
 		synchronized (visibilityIncreasedRooms) {
 			visibilityIncreasedRooms.add(p);
 		}
+	}
+
+	@Override
+	public void exitUsed(LevelExit exit, Figure f) {
+		gameScreen.pause();
+		dungeonSession.notifyExit(exit, f);
 	}
 
 	private void updateRoomViewModel(JDPoint p) {

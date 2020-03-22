@@ -9,7 +9,6 @@ import fight.Slap;
 import figure.Figure;
 import figure.action.Action;
 import figure.attribute.Attribute;
-import game.DungeonGame;
 
 /**
  * Endgegner von Sektor 1. Wird herbeigerufen von verletzten Monstern. Ist allwissend.
@@ -78,8 +77,8 @@ public class DarkMaster extends Monster {
 	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
-		attack(op);
-		attack(op);
+		attack(op, -1);
+		attack(op, -1);
 
 		this.specialAttackCounter = 50;
 		return false;
@@ -103,7 +102,7 @@ public class DarkMaster extends Monster {
 			System.out.println("Meister Routingn : " + ri.toString());
 			boolean direction = false;
 			if ((ri.getDestination() != null)) {
-				if (ri.getDestination() == this.getRoom()) {
+				if (ri.getDestination() == this.getRoom().getNumber()) {
 					System.out.println("Meister angekommen -> pop");
 					routing.pop();
 					if (!routing.empty()) {
@@ -121,7 +120,7 @@ public class DarkMaster extends Monster {
 
 			}
 
-			boolean marched = walk(RouteInstruction.Direction.fromInteger(i));
+			boolean marched = walk(RouteInstruction.Direction.fromInteger(i), round);
 			if (!marched) {
 				this.getHeroRouteInstruction();
 			}
@@ -153,7 +152,7 @@ public class DarkMaster extends Monster {
 	}
 
 	@Override
-	public Slap slay(Figure m) {
+	public Slap slay(Figure m, int round) {
 		return null;
 //		if (m == null) {
 //			//System.out.println("ziel ist null!");

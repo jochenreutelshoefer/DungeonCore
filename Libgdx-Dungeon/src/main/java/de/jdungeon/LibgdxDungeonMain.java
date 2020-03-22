@@ -15,7 +15,7 @@ import event.ExitUsedEvent;
 import event.PlayerDiedEvent;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import game.JDEnv;
 import level.DungeonFactory;
 import level.DungeonStartEvent;
@@ -138,7 +138,7 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 	}
 
 	@Override
-	public Session getSession() {
+	public DefaultDungeonSession getSession() {
 		return (DefaultDungeonSession)dungeonSession;
 	}
 
@@ -166,13 +166,12 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 			this.dispose();
 		}
 		if(event instanceof ExitUsedEvent) {
-			DungeonGame.getInstance().stopRunning();
 
 			// pause screen rendering
 			this.getScreen().pause();
 
 			// change screen to skill selection
-			this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
+			//this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
 			de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
 			this.setCurrentScreen(screen);
 
@@ -191,23 +190,21 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 			// initialize new dungeon
 			DungeonFactory dungeonFactory = ((DungeonStartEvent) event).getEvent().getDungeon();
 
-			PlayerController controller = new PlayerController();
 			// create new controller
-
+			PlayerController controller = new PlayerController(this.dungeonSession);
 
 			HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
 
 			getCurrentScreen().pause();
 
 			// create and set new GameScreen
-			GameScreen gameScreen = new GameScreen(this, controller, DungeonGame.getInstance().getDungeon().getSize());
+			GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize());
 			setCurrentScreen(gameScreen);
 
 			getCurrentScreen().resume();
 
 			// start world game loop
 			((DefaultDungeonSession)this.dungeonSession).startGame(controller);
-			DungeonGame.getInstance().restartRunning();
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();

@@ -184,7 +184,7 @@ public void metaClick(Figure f) {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if(r != null) {
 			this.location.addItem(r);
 			r = null;
@@ -200,7 +200,7 @@ public void metaClick(Figure f) {
 		//shrineView v = new shrineView(f.getGame().getMain(), "Runenschrein", true,f,this); 
 		if (r != null) {
 			 //game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
-			 Percept p = new UsePercept(f,this);
+			 Percept p = new UsePercept(f,this, -1);
 			 f.getRoom().distributePercept(p);
 			
 			this.location.addItem(r);

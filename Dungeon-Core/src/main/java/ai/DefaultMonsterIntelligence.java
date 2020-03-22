@@ -16,7 +16,6 @@ import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
 import item.ItemInfo;
-import item.quest.LuziaAmulett;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -44,9 +43,6 @@ import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import figure.percept.Percept;
 
-/**
- * Standard-verhalten der Monster.
- */
 public class DefaultMonsterIntelligence extends AbstractAI {
 
 	protected MonsterInfo monster;
@@ -114,18 +110,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return factor;
 	}
 
-	private boolean hasLuziaAmulett() {
-		List<ItemInfo> l = monster.getAllItems();
-		for (Iterator<ItemInfo> iter = l.iterator(); iter.hasNext();) {
-			ItemInfo element = iter.next();
-			if (element.getItemClass() == LuziaAmulett.class) {
-				return true;
-
-			}
-		}
-		return false;
-	}
-
 	@Override
 	public Action chooseMovementAction() {
 
@@ -140,12 +124,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			return a;
 		}
 
-		if (hasLuziaAmulett()) {
-			Action a = LuziaRunner.getAction(monster);
-			if (a != null) {
-				return a;
-			}
-		}
 
 		int randomWalkFactor = getRandomWalkFactor();
 		if (Math.random() * 100 < 1.0 * randomWalkFactor) {

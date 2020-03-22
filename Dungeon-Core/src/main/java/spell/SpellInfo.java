@@ -58,7 +58,7 @@ public class SpellInfo extends InfoEntity {
 		InfoUnitUnwrapper unwrapper = new InfoUnitUnwrapper(map.getDungeon());
 		Figure figure = (Figure) unwrapper.unwrappObject(actor);
 		if(figure == null) return ActionResult.UNKNOWN;
-		return spell.fire(figure, unwrapper.unwrappObject(target), false);
+		return spell.fire(figure, unwrapper.unwrappObject(target), false, -1);
 	}
 
 	@Override

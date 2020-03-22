@@ -67,14 +67,14 @@ public class Ogre extends CreatureMonster {
 		System.out.println("Ogre.makeSpecialAttack!");
 		op.decActionPoints(1, -1);
 		if (op instanceof Hero) {
-			this.getRoom().distributePercept(new SpecialAttackPercept(op,this));
+			this.getRoom().distributePercept(new SpecialAttackPercept(op,this, -1));
 			Inventory sachen = ((Hero) op).getInventory();
 			Helmet helm = sachen.getHelmet1();
 			if (helm != null) {
 				helm.takeRelDamage(0.3);
 			}
 		}
-		attack(op);
+		attack(op, -1);
 		
 
 		this.specialAttackCounter = 50;

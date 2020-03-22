@@ -77,7 +77,7 @@ public class Escape extends NoTargetSpell {
 
 
 	@Override
-	public void sorcer(Figure mage) {
+	public void sorcer(Figure mage, int round) {
 				mage.setEscape(level);
 				mage.incActionPoints(1, - 1);
 				mage.handleFleeAction(new FleeAction(false),true, - 1);

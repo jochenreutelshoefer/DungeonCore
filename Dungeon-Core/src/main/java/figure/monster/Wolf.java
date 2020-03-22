@@ -92,9 +92,9 @@ public class Wolf extends NatureMonster {
 	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
-		attack(op);
-		attack(op);
-		attack(op);
+		attack(op, -1);
+		attack(op, -1);
+		attack(op, -1);
 		this.specialAttackCounter = 50;
 		return false;
 	}

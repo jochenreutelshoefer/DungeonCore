@@ -71,7 +71,7 @@ public static int[][] values = { { 1, 1, 8, 8, 1 }, { 15, 13, 12, 25, 2 } };
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity op) {
+	public void sorcer(Figure mage, RoomEntity op, int round) {
 		if(op instanceof Hero) {
 			List<Item> l;
 			l = ((Hero) op).getInventory().getWeaponList();

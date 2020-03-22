@@ -127,7 +127,7 @@ public class Brood extends Shrine {
 					m.setSpitted(true);
 					addItem(m);
 					addWay(m);
-					location.figureEnters(m,0);
+					location.figureEnters(m,0, -1);
 					points = 0;
 				}
 			}
@@ -140,7 +140,7 @@ public class Brood extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		//
 		return true;
 	}

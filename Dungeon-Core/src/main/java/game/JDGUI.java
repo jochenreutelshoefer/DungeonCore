@@ -33,7 +33,6 @@ public interface JDGUI extends ControlUnit{
 	 */
 	void onTurn();
 
-	ItemInfo getSelectedInventoryItem();
 
 	FigureInfo getFigure();
 	
@@ -42,5 +41,4 @@ public interface JDGUI extends ControlUnit{
 	 */
 	void gameRoundEnded();
 
-	void fightEnded();
 }

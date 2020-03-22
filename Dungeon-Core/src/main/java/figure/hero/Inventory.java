@@ -10,7 +10,6 @@ import item.equipment.Helmet;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
-import item.quest.LuziasBall;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -259,27 +258,6 @@ public class Inventory implements Serializable {
 
 	}
 
-	public boolean hasLuziaBall() {
-		boolean b = false;
-		for (int i = 0; i < items.size(); i++) {
-			Item it = items.get(i);
-			if (it instanceof LuziasBall) {
-				b = true;
-			}
-		}
-		return b;
-	}
-
-	public LuziasBall getLuziasBall() {
-
-		for (int i = 0; i < items.size(); i++) {
-			Item it = items.get(i);
-			if (it instanceof LuziasBall) {
-				return (LuziasBall) it;
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * Man kann ihm hier eine Ruestung geben
@@ -853,14 +831,13 @@ public class Inventory implements Serializable {
 	public void payRel(double d) {
 		List<Item> things = getUnusedItems();
 		if (d > 0) {
-			((Hero) owner).tellPercept(new TextPercept(
-					"Panisch fliehend verlierst Du:"));
+			((Hero) owner).tellPercept(new TextPercept("Panisch fliehend verlierst Du:", -1));
 		}
 
 		for (int i = 0; i < things.size(); i++) {
 			if (Math.random() < d) {
 				Item it = ((things.get(i)));
-				((Hero) owner).tellPercept(new TextPercept(it.toString()));
+				((Hero) owner).tellPercept(new TextPercept(it.toString(), -1));
 				this.layDown(it);
 			}
 		}

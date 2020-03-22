@@ -56,11 +56,11 @@ public class FirConjuration extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 				Fir fir = new Fir(500 * level, mage.getRoom().getDungeon());
 				Room room = mage.getRoom();
 				int pos = ((Position)target).getIndex();
-				room.figureEntersAtPosition(fir, pos);
+				room.figureEntersAtPosition(fir, pos, round);
 	}
 
 	@Override

@@ -113,7 +113,7 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			DungeonVisibilityMap runeRunnerRoomVisibility = runeRunner.createVisibilityMap(dungeon);
 			FigureInfo runnerInfo = FigureInfo.makeFigureInfo(runeRunner, runeRunnerRoomVisibility);
 			runeRunner.setAI(new RuneRunnerAI(runnerInfo, ItemInfo.makeItemInfo(rune, runeRunnerRoomVisibility)));
-			orcRoom.figureEnters(runeRunner, RouteInstruction.Direction.North.getValue());
+			orcRoom.figureEnters(runeRunner, RouteInstruction.Direction.North.getValue(), -1);
 			runeRunner.takeItem(rune);
 			runeRunner.takeItem(new DustItem(8));
 			filler.addAllocatedRoom(orcRoom);
@@ -121,14 +121,14 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			Room ogreRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
 			if (ogreRoom == null) continue;
 			Ogre ogre = new Ogre(2000);
-			ogreRoom.figureEnters(ogre, RouteInstruction.Direction.North.getValue());
+			ogreRoom.figureEnters(ogre, RouteInstruction.Direction.North.getValue(), -1);
 			filler.addAllocatedRoom(ogreRoom);
 
 			Room wolfRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
 			if (wolfRoom == null) continue;
 			Wolf wolf = new Wolf(800);
 			wolf.takeItem(new DustItem(4));
-			wolfRoom.figureEnters(wolf, RouteInstruction.Direction.North.getValue());
+			wolfRoom.figureEnters(wolf, RouteInstruction.Direction.North.getValue(), -1);
 			filler.addAllocatedRoom(wolfRoom);
 
 			// remove some doors

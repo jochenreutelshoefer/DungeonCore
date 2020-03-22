@@ -47,7 +47,7 @@ public class AncientMapFragment extends Item implements Usable {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		DungeonVisibilityMap roomVisibility = f.getRoomVisibility();
 		for (JDPoint room : rooms) {
 			int discoveryStatus = roomVisibility.getDiscoveryStatus(room);

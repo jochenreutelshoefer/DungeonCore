@@ -90,11 +90,11 @@ public class Angel extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if(target instanceof Feather) {
 			ownedItems.add((Feather) target);
 			f.removeItem((Item)target);
-			f.tellPercept(new TextPercept(JDEnv.getString("thanks")));
+			f.tellPercept(new TextPercept(JDEnv.getString("thanks"), round));
 			checkCompleted();
 			return true;
 		}else {

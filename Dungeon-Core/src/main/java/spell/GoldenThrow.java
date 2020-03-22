@@ -78,7 +78,7 @@ public class GoldenThrow extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 
 		((Figure) target).setGolden_hit(level);
 		//setzt nur die Trefferwahrscheinlichkeit f�r den n�chsten Schlag hoch
@@ -87,10 +87,10 @@ public class GoldenThrow extends AbstractTargetSpell implements TargetSpell {
 		//ActionEvent ae = new ActionEvent(f.slap,0,"golden_throw");
 		//f.causeActionEvent(GuiFacade.BUTTON_SLAP,"golden_throw");
 		String str = JDEnv.getResourceBundle().getString("spell_goldenThrow_cast");
-		mage.tellPercept(new TextPercept(str));
+		mage.tellPercept(new TextPercept(str, round));
 		//mage.incFightAP(1);
 		mage.setDouble_bonus(true);
-		mage.attack((Figure) target);
+		mage.attack((Figure) target, round);
 		//f.actionPerformed(ae);
 		Inventory inv = ((Hero) mage).getInventory();
 

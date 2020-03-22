@@ -20,14 +20,14 @@ public class SpellPercept extends OpticalPercept {
 	private AbstractSpell spell;
 	private boolean begins = false;
 	
-	public SpellPercept(Figure f, AbstractSpell s) {
-		super(f.getLocation());
+	public SpellPercept(Figure f, AbstractSpell s, int round) {
+		super(f.getLocation(), round);
 		this.f = f;
 		this.spell = s;
 	}
 	
-	public SpellPercept(Figure f, AbstractSpell s, boolean begins) {
-		super(f.getLocation());
+	public SpellPercept(Figure f, AbstractSpell s, boolean begins, int round) {
+		super(f.getLocation(), round);
 		this.f = f;
 		this.spell = s;
 		this.begins = begins;

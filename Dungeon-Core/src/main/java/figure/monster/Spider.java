@@ -120,7 +120,7 @@ public class Spider extends NatureMonster {
 					ruestung.takeRelDamage(0.3);
 				}
 				
-				getRoom().distributePercept(new SpecialAttackPercept(op,this));
+				getRoom().distributePercept(new SpecialAttackPercept(op,this, -1));
 				
 			}
 			//attack(op);

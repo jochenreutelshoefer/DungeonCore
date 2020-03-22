@@ -157,11 +157,11 @@ public class Corpse extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if (items != null) {
 			String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
-			f.tellPercept(new TextPercept(s));
-			Percept p = new UsePercept(f, this);
+			f.tellPercept(new TextPercept(s, round));
+			Percept p = new UsePercept(f, this, round);
 			this.location.addItems(items, null);
 			f.getRoom().distributePercept(p);
 			items = null;

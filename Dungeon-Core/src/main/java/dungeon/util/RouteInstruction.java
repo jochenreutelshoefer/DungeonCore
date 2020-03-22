@@ -1,8 +1,7 @@
 package dungeon.util;
 
-import dungeon.Dir;
 import figure.DungeonVisibilityMap;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 //import dungeon.*;
 import dungeon.JDPoint;
 import dungeon.Room;
@@ -84,34 +83,41 @@ public class RouteInstruction {
 
 	};
 	
-	private Room destination;
+	private JDPoint destination;
 
 	
 	private int direction;
 
 
-	public RouteInstruction(Room r) {
+	public RouteInstruction(JDPoint r) {
 		destination = r;
 	}
 	
 	public RouteInstruction(RoomInfo r) {
-		destination = DungeonGame.getInstance().getDungeon().getRoom(r.getLocation());
+		destination = r.getNumber();
 	}
 
 
 	public int getWay(Room start, DungeonVisibilityMap visMap) {
 		if(destination != null) {
-			return DungeonUtils.getFirstStepFromTo(start.getDungeon(), start, destination, visMap).getValue();
+			return DungeonUtils.getFirstStepFromTo(start.getDungeon(), start.getPoint(), destination, visMap).getValue();
 		}
 		else {
 			return direction;
 		}
 		
 	}
-	
+
 	public int getWay(JDPoint start, DungeonVisibilityMap visMap) {
-		return getWay(destination.getDungeon().getRoom(start), visMap);
+		if(destination != null) {
+			return DungeonUtils.getFirstStepFromTo(visMap.getDungeon(), start, destination, visMap).getValue();
+		}
+		else {
+			return direction;
+		}
+
 	}
+
 
 	public int getWay(RoomInfo start, DungeonVisibilityMap visMap) {
 		return getWay(start.getNumber(), visMap);
@@ -171,7 +177,7 @@ public class RouteInstruction {
 		return direction;
 	}
 
-	public Room getDestination() {
+	public JDPoint getDestination() {
 		return destination;
 	}
 

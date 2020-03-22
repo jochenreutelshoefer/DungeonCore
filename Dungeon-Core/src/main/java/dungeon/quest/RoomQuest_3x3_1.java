@@ -76,13 +76,13 @@ public class RoomQuest_3x3_1 extends RoomQuest {
 
 		setDoors();	
 		for(int i = 0; i < 3; i++) {
-			rooms[0][1].figureEnters(df.getBigMonster(1900),0);	
-			rooms[1][0].figureEnters(df.getBigMonster(1900),0);	
-			rooms[1][2].figureEnters(df.getBigMonster(1900),0);	
-			rooms[2][1].figureEnters(df.getBigMonster(1900),0);	
+			rooms[0][1].figureEnters(df.getBigMonster(1900),0, -1);
+			rooms[1][0].figureEnters(df.getBigMonster(1900),0, -1);
+			rooms[1][2].figureEnters(df.getBigMonster(1900),0, -1);
+			rooms[2][1].figureEnters(df.getBigMonster(1900),0, -1);
 		}
 		for(int i = 0; i < 4; i++) {
-			rooms[1][1].figureEnters(df.getSmallMonster(800),0);	
+			rooms[1][1].figureEnters(df.getSmallMonster(800),0, -1);
 		}
 		List<Item> items = new LinkedList<Item>();
 		if(takeItems == null || takeItems.size() == 0) {

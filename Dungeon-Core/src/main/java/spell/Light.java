@@ -80,7 +80,7 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 
 		if (target instanceof Monster) {
 			Figure m = (Figure) target;
@@ -102,7 +102,7 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 				res = (strength * 2) / m.getLevel();
 			}
 			String str = JDEnv.getResourceBundle().getString("spell_light_cast")+" " + m.getName() + " (" + res + ")";
-			mage.tellPercept(new TextPercept(str));
+			mage.tellPercept(new TextPercept(str, round));
 			if (m instanceof UndeadMonster) {
 				res *= 1.6;
 			}

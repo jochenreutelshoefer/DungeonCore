@@ -7,9 +7,6 @@ import figure.action.ScoutResult;
 import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
-import item.interfaces.Locatable;
-import item.interfaces.LocatableItem;
-import item.quest.DarkMasterKey;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,7 +16,6 @@ import java.util.Stack;
 import ai.DefaultMonsterIntelligence;
 import ai.DefaultMonsterReflexBehavior;
 import dungeon.Door;
-import dungeon.Dungeon;
 import dungeon.Position;
 import dungeon.Room;
 import dungeon.util.RouteInstruction;
@@ -29,18 +25,14 @@ import fight.SlapResult;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.Spellbook;
-import figure.action.Action;
 import figure.attribute.Attribute;
 import figure.attribute.TimedAttributeModification;
-import figure.percept.DiePercept;
 import figure.percept.FleePercept;
 import figure.percept.ItemDroppedPercept;
-import figure.percept.Percept;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import game.InfoEntity;
 import game.InfoProvider;
 import gui.Paragraphable;
-import log.Log;
 
 /**
  * Superklasse fuer alle moeglichen Monster, abgeleitet von Fighter.
@@ -50,8 +42,6 @@ import log.Log;
  */
 public abstract class Monster extends Figure implements Paragraphable,
 		InfoProvider {
-
-
 
 	@Deprecated
 	public final static int GHUL = 2;
@@ -246,7 +236,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Deprecated
-	public static Monster createMonster(Class<? extends Monster> type, int value, DungeonGame game) {
+	public static Monster createMonster(Class<? extends Monster> type, int value, DungeonGameLoop game) {
 		if (type == Wolf.class) {
 			return new Wolf(value);
 		}
@@ -562,9 +552,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		Door d = actualDungeon.getRoom(location).getConnectionTo(wannaGo);
 		if ((d != null) && (d.isPassable(this)) && (wannaGo != null)
 				&& (!wannaGo.hasStatue())) {
-			move(wannaGo);
-			lastMove = RouteInstruction.WEST;
-
 			return true;
 		} else
 			return false;
@@ -597,7 +584,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected void lookInRoom() {
+	protected void lookInRoom(int round) {
 
 	}
 
@@ -642,14 +629,14 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected boolean flee(RouteInstruction.Direction dir) {
+	protected boolean flee(RouteInstruction.Direction dir, int round) {
 		Room from = getRoom();
 		if (Math.random() < calcFleeChance()) {
 			Position oldPos = this.getPos();
-			boolean done = walk(dir);
+			boolean done = walk(dir, round);
 			if (done) {
 				// [TODO] SUCCESSFULL?
-				FleePercept p = new FleePercept(this, oldPos, dir.getValue(), false);
+				FleePercept p = new FleePercept(this, oldPos, dir.getValue(), false, round);
 				from.distributePercept(p);
 			}
 			return done;
@@ -676,7 +663,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 			}
 
 		} else if (lastMove == RouteInstruction.EAST) {
-			if (!goWest()) {
 				if (this.getRoom().directionPassable(RouteInstruction.WEST)) {
 					return RouteInstruction.WEST;
 				} else if (this.getRoom().directionPassable(
@@ -690,7 +676,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 					return RouteInstruction.EAST;
 				}
 
-			}
 		} else if (lastMove == RouteInstruction.NORTH) {
 			if (this.getRoom().directionPassable(RouteInstruction.SOUTH)) {
 				return RouteInstruction.SOUTH;
@@ -725,29 +710,14 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return true;
 	}
 
-	protected int fleeHelp(int handycap) {
-		int value = ((int) (Math.random() * handycap));
-		// int antiFlee = 10;
-		if (value < psycho.getValue() - 3) {
-			return 5;
-		} else if (value < psycho.getValue() * 2) {
-			return 4;
-		} else if (value < psycho.getValue() * 3) {
-			return 3;
-		} else if (value < psycho.getValue() * 4) {
-			return 2;
-		} else if (value < (handycap - 3)) {
-			return 1;
-		} else
-			return 0;
-	}
+
 
 	@Override
 	public int getKilled(int damage) {
 
 
 		if (!items.isEmpty()) {
-			getRoom().distributePercept(new ItemDroppedPercept(items, this));
+			getRoom().distributePercept(new ItemDroppedPercept(items, this, -1));
 			getRoom().addItems(items, null);
 		}
 
@@ -785,11 +755,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	 */
 	public void setLuzia(boolean b) {
 		luzia = b;
-	}
-
-	@Override
-	public void fightBegins(List<Figure> l) {
-
 	}
 
 	/**

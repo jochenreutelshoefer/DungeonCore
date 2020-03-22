@@ -1,6 +1,6 @@
 package dungeon.quest;
 import figure.monster.Monster;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import item.Item;
 import item.ItemPool;
 import shrine.InfoShrine;
@@ -18,7 +18,7 @@ public class Encompass_quest extends Quest {
 	
 	public static int size = 5;
 	
-	public Encompass_quest(Room r, Dungeon d, int level, DungeonGame game) {
+	public Encompass_quest(Room r, Dungeon d, int level, DungeonGameLoop game) {
 		int [][] a = getArray();
 		fillRooms(d,r,a,level, game);
 	}
@@ -37,7 +37,7 @@ public class Encompass_quest extends Quest {
 	public void action() {
 	}
 
-	private void fillRooms(Dungeon d, Room r, int [][]a, int level, DungeonGame game) {
+	private void fillRooms(Dungeon d, Room r, int [][]a, int level, DungeonGameLoop game) {
 		JDPoint p = r.getNumber();
 		for(int i = 0; i < 5; i++) {
 			for(int j = 0; j < 5; j++) {
@@ -47,7 +47,7 @@ public class Encompass_quest extends Quest {
 				if(c == 0) {
 					Monster m = AbstractDungeonFiller.getBigMonster(12000,game);
 					AbstractDungeonFiller.equipAMonster(m);
-					raum.figureEnters(m,0);
+					raum.figureEnters(m,0, -1);
 				}
 				if(c == 1) {
 					

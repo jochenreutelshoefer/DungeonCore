@@ -10,20 +10,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.Position;
-import dungeon.Room;
 import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
 
 public class FleePercept extends OpticalPercept {
 	
-	private Figure f;
-	private Position from;
-	private int dir;
-	private boolean success;
+	private final Figure f;
+	private final Position from;
+	private final int dir;
+	private final boolean success;
 	
-	public FleePercept(Figure f, Position from, int dir, boolean suc) {
-		super(f.getLocation());
+	public FleePercept(Figure f, Position from, int dir, boolean suc, int round) {
+		super(f.getLocation(), round);
 		this.f = f;
 		this.from = from;
 		this.dir = dir;

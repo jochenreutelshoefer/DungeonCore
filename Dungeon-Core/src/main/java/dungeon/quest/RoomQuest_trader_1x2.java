@@ -57,8 +57,8 @@ public class RoomQuest_trader_1x2 extends RoomQuest {
 		Door keyDoor = new Door(rooms[0][1], rooms[0][0], k);
 		rooms[0][1].setDoor(keyDoor, RouteInstruction.WEST, true);
 		//toPutIn.add(k);
-		rooms[0][0].figureEnters(df.getBigMonster(1500),0);
-		rooms[0][0].figureEnters(df.getBigMonster(1500),0);
+		rooms[0][0].figureEnters(df.getBigMonster(1500),0, -1);
+		rooms[0][0].figureEnters(df.getBigMonster(1500),0, -1);
 		
 		Trader trader = new Trader(70,df.getDungeon());
 		df.getDungeon().addShrine(trader);

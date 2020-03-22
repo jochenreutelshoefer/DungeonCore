@@ -11,8 +11,8 @@ public class WaitPercept extends OpticalPercept {
 	
 	private final Figure f;
 	
-	public WaitPercept(Figure f) {
-		super(f.getLocation());
+	public WaitPercept(Figure f, int round) {
+		super(f.getLocation(), round);
 		this.f = f;
 	}
 	

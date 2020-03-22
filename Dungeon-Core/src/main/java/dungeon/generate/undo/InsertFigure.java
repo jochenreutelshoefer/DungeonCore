@@ -20,7 +20,7 @@ public class InsertFigure implements DungeonChangeAction {
 
 	@Override
 	public boolean doAction() {
-		room.figureEnters(figure, 0);
+		room.figureEnters(figure, 0, -1);
 		return true;
 	}
 

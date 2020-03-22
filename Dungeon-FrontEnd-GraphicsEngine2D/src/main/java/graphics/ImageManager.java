@@ -55,7 +55,6 @@ import item.paper.InfoScroll;
 import item.quest.DarkMasterKey;
 import item.quest.Feather;
 import item.quest.Incense;
-import item.quest.LuziasBall;
 import item.quest.MoonRune;
 import item.quest.Rune;
 import item.quest.Thing;
@@ -65,7 +64,6 @@ import shrine.Brood;
 import shrine.DarkMasterShrine;
 import shrine.HealthFountain;
 import shrine.LevelExit;
-import shrine.Luzia;
 import shrine.MoonRuneFinderShrine;
 import shrine.QuestShrine;
 import shrine.RepairShrine;
@@ -1392,12 +1390,6 @@ public class ImageManager {
 			}
 
 		}
-		else if (shrineIndex == Shrine.SHRINE_LUZIA) {
-			im = ImageManager.luziaImage;
-			if (s.getType() == Luzia.SOLVED || s.getType() == Luzia.DEAD) {
-				im = ImageManager.luzia_hutImage;
-			}
-		}
 		return im;
 	}
 
@@ -1465,7 +1457,6 @@ public class ImageManager {
 		itemMap.put(Incense.class, ImageManager.potion_greenImage);
 		itemMap.put(Key.class, ImageManager.keyImage);
 		itemMap.put(DarkMasterKey.class, ImageManager.cristall_redImage);
-		itemMap.put(LuziasBall.class, ImageManager.kugelImage);
 		itemMap.put(Book.class, ImageManager.bookImage);
 		itemMap.put(Thing.class, ImageManager.amulettImage);
 		itemMap.put(MoonRune.class, new JDImageProxy<>("kristall_blau.gif", loader));

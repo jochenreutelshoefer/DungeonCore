@@ -104,7 +104,7 @@ public class Skeleton extends UndeadMonster {
 			Weapon weap = ((Weapon) l.get(0));
 			weap.takeRelDamage(0.3);
 		}
-		getRoom().distributePercept(new SpecialAttackPercept(op,this));
+		getRoom().distributePercept(new SpecialAttackPercept(op,this, -1));
 		this.specialAttackCounter = 50;
 		return false;
 

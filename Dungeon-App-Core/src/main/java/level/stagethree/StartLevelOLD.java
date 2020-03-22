@@ -222,7 +222,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 			monster.setAI(new GuardPositionBehaviour(positionToGuard));
 			Room guardRoom = positionToGuard.getRoom();
 			if (guardRoom == null) return false;
-			guardRoom.figureEnters(monster, RouteInstruction.turnOpp(dir).getValue());
+			guardRoom.figureEnters(monster, RouteInstruction.turnOpp(dir).getValue(), -1);
 			guardRoom.setFloorIndex(FLOOR_INDEX_EXIT);
 		}
 		return true;
@@ -249,7 +249,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 			// TODO: use setControl!
 			preGuardMonster.setAI(new PreGuardBehaviour(preGuardRoom));
 
-			preGuardRoom.figureEnters(preGuardMonster, RouteInstruction.direction(random(4) + 1).getValue());
+			preGuardRoom.figureEnters(preGuardMonster, RouteInstruction.direction(random(4) + 1).getValue(), -1);
 			exitRoom.setDoor(new Door(exitRoom, doorDirection, exitKey), doorDirection, true);
 		}
 		return true;

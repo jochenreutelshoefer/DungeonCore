@@ -26,7 +26,7 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import item.DustItem;
 import item.HealPotion;
 import item.Item;
@@ -165,7 +165,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	}
 
-	public static Monster getBigMonster(int value, DungeonGame game) {
+	public static Monster getBigMonster(int value, DungeonGameLoop game) {
 		int k = (int) (Math.random() * 3);
 		if (k == 0) {
 			return new Spider(value);

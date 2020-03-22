@@ -47,7 +47,7 @@ public class Prayer extends NoTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage) {
+	public void sorcer(Figure mage, int round) {
 		mage.setBonusLive(true);
 		mage.setRespawnRoom(mage.getRoom());
 

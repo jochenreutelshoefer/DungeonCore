@@ -107,7 +107,7 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 		rooms[0][0].setChest(ch2);
 		Monster m = df.getBigMonster(1000);
 		df.equipMonster(m,1);
-		rooms[0][0].figureEnters(m,0);
+		rooms[0][0].figureEnters(m,0, -1);
 		return true;
 	}
 

@@ -1,5 +1,7 @@
 package figure;
 
+import java.io.Serializable;
+
 import figure.hero.Hero;
 import log.Log;
 
@@ -9,7 +11,7 @@ import log.Log;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 22.03.20.
  */
-public class APCounter {
+public class APCounter implements Serializable {
 
 	private int currentAP = 0;
 	private final Figure figure;

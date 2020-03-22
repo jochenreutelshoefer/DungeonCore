@@ -446,7 +446,7 @@ public class DefaultHall extends AbstractHall {
 			Room r = rooms.get(k);
 			if (r.getRoomQuest() == null && (!r.isStart())) {
 				Monster mon = (Monster) monsters.removeFirst();
-				r.figureEnters(mon,0);
+				r.figureEnters(mon,0, -1);
 			}
 		}
 	}
@@ -463,7 +463,7 @@ public class DefaultHall extends AbstractHall {
 					&& (!r.hasStatue()));
 
 		}
-		r.figureEnters(m,0);
+		r.figureEnters(m,0, -1);
 	}
 
 	public void addMonsterToList(Monster m) {

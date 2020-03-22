@@ -64,7 +64,7 @@ public class Thunderstorm extends NoTargetSpell {
 
 
 	@Override
-	public void sorcer(Figure mage) {
+	public void sorcer(Figure mage, int round) {
 		if(mage.getRoom().fightRunning()) {
 		List<Figure> monster = mage.getRoom().getFight().getFightFigures();
 		boolean first = false;
@@ -73,12 +73,10 @@ public class Thunderstorm extends NoTargetSpell {
 			if (m != mage) {
 				if (!first) {
 					first = true;
-					m.putFrightening(new Frightening(mage, 3,
-							Frightening.TYPE_THUNDER));
+					m.putFrightening(new Frightening(mage, 3, Frightening.TYPE_THUNDER), round);
 				} else {
 					if (Math.random() < 0.3) {
-						m.putFrightening(new Frightening(mage, 2,
-								Frightening.TYPE_THUNDER));
+						m.putFrightening(new Frightening(mage, 2, Frightening.TYPE_THUNDER), round);
 					}
 				}
 			}
@@ -92,7 +90,7 @@ public class Thunderstorm extends NoTargetSpell {
 					Figure behindFigure = p.getFigure();
 					if(behindFigure != null) {
 						behindFigure.putFrightening(new Frightening(mage, 2,
-								Frightening.TYPE_THUNDER));
+								Frightening.TYPE_THUNDER), round);
 					}
 					
 				}
@@ -100,7 +98,7 @@ public class Thunderstorm extends NoTargetSpell {
 		}
 		String str = JDEnv.getResourceBundle().getString(
 				"spell_thunderstorm_cast");
-		mage.tellPercept(new TextPercept(str));	
+		mage.tellPercept(new TextPercept(str, round));
 		
 	}
 

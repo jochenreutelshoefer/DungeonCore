@@ -20,8 +20,8 @@ public class ScoutPercept extends OpticalPercept {
 	private final Room from;
 	private final int dir;
 	
-	public ScoutPercept(Figure f, Room from, int dir) {
-		super(from.getNumber());
+	public ScoutPercept(Figure f, Room from, int dir, int round) {
+		super(from.getNumber(), round);
 		this.f = f;
 		this.from = from;
 		this.dir = dir;

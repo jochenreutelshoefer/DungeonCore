@@ -76,10 +76,9 @@ public class Xmas extends Shrine {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if (it != null) {
-			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString(
-					"shrine_xmas_use")));
+			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("shrine_xmas_use"), round));
 			this.location.addItem(it);
 			it = null;
 		} else {

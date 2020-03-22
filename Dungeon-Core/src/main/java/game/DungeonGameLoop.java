@@ -16,15 +16,9 @@ import item.ItemPool;
 import log.Log;
 import spell.AbstractSpell;
 import spell.TimedSpellInstance;
-import test.TestTracker;
 
-/**
- * Die Klasse Game verwaltet den ganzen Spielablauf. Sie verwaltet Dungeon, Held
- * und GUI. Abwechselnd bekommt der Held und dann wieder der Dungeon eine
- * Spielrunde. Sie enthaelt die Methoden, die aus den GUI-Befehlen entsprechende
- * Aktionen (Klasse Action) erstellen und auffuehren.
- */
-public class DungeonGame implements Runnable {
+
+public class DungeonGameLoop {
 
 	private int round = 0;
 
@@ -32,32 +26,12 @@ public class DungeonGame implements Runnable {
 
 	private final Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
 
-
-	private TestTracker tracker;
-
-	private static DungeonGame instance = null;
 	private boolean running = true;
 
-	//TODO: this should certainly NOT be a singleton!
+	private Thread loop;
 
-	@Deprecated
-	public static DungeonGame getInstance() {
-		if (instance == null) {
-			instance = new DungeonGame();
-		}
-		return instance;
-	}
-
-	private DungeonGame() {
-		tracker = new TestTracker();
-	}
-
-	public Dungeon getDungeon() {
-		return derDungeon;
-	}
-
-	public void setDungeon(Dungeon d) {
-		this.derDungeon = d;
+	public DungeonGameLoop(Dungeon derDungeon) {
+		this.derDungeon = derDungeon;
 	}
 
 	public int getRound() {
@@ -94,34 +68,6 @@ public class DungeonGame implements Runnable {
 		running = false;
 	}
 
-	public void restartRunning() {
-		running = true;
-	}
-
-	@Override
-	public void run() {
-		while (true) {
-			if (running) {
-				checkGuiFigures();
-				if (guiFigures.isEmpty()) {
-					break;
-				}
-				Log.info(System.currentTimeMillis() + " " + round + " start round");
-				worldTurn(round);
-				tickGuis(round);
-				Log.info(System.currentTimeMillis() + " " + round + " completed round");
-				round++;
-			} else {
-				try {
-					Thread.sleep(10);
-				}
-				catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	private void spellsTurn() {
 		List<TimedSpellInstance> spells = AbstractSpell.timedSpells;
 		for (int i = 0; i < spells.size(); i++) {
@@ -149,23 +95,38 @@ public class DungeonGame implements Runnable {
 		derDungeon.turn(round);
 		spellsTurn();
 		itemsTurn();
-
 	}
 
 	public void init(Dungeon d) {
-		this.round = 0;
 		ItemPool.setGame(this);
+
+		// todo: do somewhere else
 		Figure.createVisibilityMaps(derDungeon);
 		Figure.setMonsterControls();
-	}
 
-	public void setTestTracker(TestTracker tracker) {
-		this.tracker = tracker;
+		this.loop = new Thread(new Loop());
+		loop.start();
 	}
 
 	public void putGuiFigure(Hero held, JDGUI gui) {
 		guiFigures.put(held, gui);
 	}
 
+	private class Loop implements Runnable {
+		@Override
+		public void run() {
+			while (running) {
+				checkGuiFigures();
+				if (guiFigures.isEmpty()) {
+					break;
+				}
+				Log.info(System.currentTimeMillis() + " " + round + " start round");
+				worldTurn(round);
+				tickGuis(round);
+				Log.info(System.currentTimeMillis() + " " + round + " completed round");
+				round++;
+			}
 
+		}
+	}
 }

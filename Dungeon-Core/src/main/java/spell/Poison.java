@@ -65,7 +65,7 @@ public class Poison extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if (target instanceof Figure) {
 			((Figure) target).poison(new Poisoning(mage, this.getStrength(), 8));
 		}

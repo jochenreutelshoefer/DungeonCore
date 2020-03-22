@@ -81,12 +81,12 @@ public class RoomQuest_2x2_1 extends RoomQuest {
 
 		rooms[1][1].setChest(ch2);
 		rooms[1][0].setChest(ch1);
-		rooms[1][0].figureEnters(df.getSmallMonster(800),0);
+		rooms[1][0].figureEnters(df.getSmallMonster(800),0, -1);
 		if(shrine != null) {
 			rooms[1][0].setShrine(shrine);
 		}
 		for (int i = 0; i < 3; i++) {
-			rooms[0][1].figureEnters(df.getBigMonster(1200),0);
+			rooms[0][1].figureEnters(df.getBigMonster(1200),0, -1);
 		}
 
 		return true;

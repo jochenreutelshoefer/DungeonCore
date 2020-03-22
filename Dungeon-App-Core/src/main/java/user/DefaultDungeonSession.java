@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import dungeon.Dungeon;
-import dungeon.JDPoint;
 import dungeon.Room;
+import event.EventManager;
+import event.ExitUsedEvent;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.hero.Hero;
@@ -15,7 +16,7 @@ import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
 import game.ControlUnit;
-import game.DungeonGame;
+import game.DungeonGameLoop;
 import game.JDGUI;
 import level.DefaultDungeonManager;
 import level.DungeonFactory;
@@ -43,7 +44,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	private Hero heroBackup;
 	private final User user;
 	private int heroType;
-	private DungeonGame dungeonGame;
+	private DungeonGameLoop dungeonGame;
 	private DungeonFactory lastCompletedDungeonFactory;
 	private DungeonFactory lastSelectedDungeonFactory;
 	private Dungeon derDungeon;
@@ -106,9 +107,10 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	 */
 	public void startGame(JDGUI gui) {
 		this.gui = gui;
+
+		dungeonGame = new DungeonGameLoop(this.derDungeon);
 		dungeonGame.putGuiFigure(currentHero, gui);
-		dungeonThread = new Thread(dungeonGame);
-		dungeonThread.start();
+		dungeonGame.init(derDungeon);
 	}
 
 
@@ -160,6 +162,15 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		}
 	}
 
+	@Override
+	public int getDungeonRound() {
+		if(dungeonGame !=  null) {
+			dungeonGame.getRound();
+		}
+
+		return -1;
+	}
+
 	/**
 	 * Tells the players decision for the type of hero to be played
 	 *
@@ -173,7 +184,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public HeroInfo initDungeon(DungeonFactory dungeonFactory, ControlUnit control) {
 		lastSelectedDungeonFactory = dungeonFactory;
-		dungeonGame = DungeonGame.getInstance();
 
 		derDungeon = dungeonFactory.createDungeon();
 		Hero currentHero = getCurrentHero();
@@ -185,14 +195,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		this.currentHero.clearVisibilityMaps();
 		//makeHeroBackup();
 
-		// todo: remove - for debug only
-		currentHero.getSpellbook().addSpell(new Raid());
-
-		DungeonGame dungeonGame = DungeonGame.getInstance();
-
+		// todo: refactor
 		Figure.addFigure(currentHero);
-
-		dungeonGame.setDungeon(derDungeon);
 
 		currentHero.setActualDungeon(derDungeon);
 		currentHero.setControl(control);
@@ -203,7 +207,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 		control.setFigure(heroInfo);
 
-		derDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(currentHero, 0);
+		derDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(currentHero, 0, -1);
 		return heroInfo;
 
 	}
@@ -222,14 +226,16 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	/**
 	 * Returns the dungeon currently played by this session
 	 *
-	 * @return
+	 * @return the current dungeon
 	 */
+	@Override
 	public Dungeon getCurrentDungeon() {
 		return derDungeon;
 	}
 
 	@Override
 	public void notifyExit(LevelExit exit, Figure figure) {
+		dungeonGame.stopRunning();
 		if(figure.equals(currentHero)) {
 			Dungeon currentDungeon = getCurrentDungeon();
 			if(! completedDungeons.containsKey(lastSelectedDungeonFactory) && currentDungeon != null) {
@@ -239,6 +245,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			makeHeroBackup();
 			derDungeon = null;
 		}
+		new Thread(() -> EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit))).start();
 	}
 
 	private void makeHeroBackup() {

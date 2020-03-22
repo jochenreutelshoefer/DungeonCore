@@ -10,11 +10,11 @@ import figure.FigureInfo;
 
 public class DisappearPercept extends OpticalPercept {
 
-	private Figure f;
-	private Room from;
+	private final Figure f;
+	private final Room from;
 	
-	public DisappearPercept(Figure f, Room from) {
-		super(from.getNumber());
+	public DisappearPercept(Figure f, Room from, int round) {
+		super(from.getNumber(), round);
 		this.f = f;
 		this.from = from;
 	}

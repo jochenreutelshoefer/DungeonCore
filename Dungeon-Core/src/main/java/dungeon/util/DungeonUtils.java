@@ -19,10 +19,6 @@ import figure.FigureInfo;
 
 public class DungeonUtils {
 
-
-
-
-
 	public static RouteInstruction.Direction getNeighbourDirectionFromTo(
 			Room from, Room to) {
 		JDPoint fromP = from.getNumber();
@@ -140,6 +136,15 @@ public class DungeonUtils {
 			return null;
 		} else {
 			return RouteInstruction.Direction.fromInteger(start.getConnectionDirectionTo(shortestPath.get(1)));
+		}
+	}
+
+	public static RouteInstruction.Direction getFirstStepFromTo(Dungeon dungeon, JDPoint start, JDPoint destination, DungeonVisibilityMap visMap) {
+		Path shortestPath = findShortestPath(dungeon, start, destination, visMap, false);
+		if(shortestPath == null) {
+			return null;
+		} else {
+			return RouteInstruction.Direction.fromInteger(dungeon.getRoom(start).getConnectionDirectionTo(shortestPath.get(1)));
 		}
 	}
 

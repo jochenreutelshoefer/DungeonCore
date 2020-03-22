@@ -14,8 +14,8 @@ public class FightEndedPercept extends OpticalPercept {
 
 	private final List<FigureInfo> figures;
 
-	public FightEndedPercept(List<FigureInfo> figures) {
-		super(figures.iterator().next().getRoomNumber());
+	public FightEndedPercept(List<FigureInfo> figures, int round) {
+		super(figures.iterator().next().getRoomNumber(), round);
 		this.figures = figures;
 	}
 

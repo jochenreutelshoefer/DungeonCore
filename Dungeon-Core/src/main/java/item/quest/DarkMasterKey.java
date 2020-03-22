@@ -80,6 +80,7 @@ public class DarkMasterKey extends Item implements Locatable{
 	/* (non-Javadoc)
 	 * @see item#getText()
 	 */
+	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
 		return JDEnv.getResourceBundle().getString("portal_stone_text");

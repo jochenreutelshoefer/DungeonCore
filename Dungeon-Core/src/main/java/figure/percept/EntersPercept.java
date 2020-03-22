@@ -29,8 +29,8 @@ public class EntersPercept extends OpticalPercept {
 	}
 
 
-	public EntersPercept(Figure f, Room r1) {
-		super(r1.getNumber());
+	public EntersPercept(Figure f, Room r1, int round) {
+		super(r1.getNumber(), round);
 		figure = f;
 		from = r1;
 	}

@@ -110,17 +110,17 @@ public class GoldenHit extends AbstractTargetSpell implements TargetSpell{
 	
 	
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		
 				mage.setGolden_hit(level);
 				//setzt nur die Trefferwahrscheinlichkeit f�r den n�chsten Schlag hoch
 				
 				//und l�st dann einen Schlag aus
 				String str = JDEnv.getResourceBundle().getString("spell_goldenHit_cast");
-				mage.tellPercept(new TextPercept(str));
+				mage.tellPercept(new TextPercept(str, round));
 				
 				if(target instanceof Figure){
-				mage.attack((Figure)target);
+				mage.attack((Figure)target, round);
 				}
 				else {
 					System.out.println("kein fighter als target bei golden_hit!");

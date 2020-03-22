@@ -85,7 +85,7 @@ public class Bonebreaker extends AbstractTargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 		
 		if (target instanceof Figure) {
 			Figure m = (Figure)target;
@@ -96,11 +96,11 @@ public class Bonebreaker extends AbstractTargetSpell {
 			}
 			Slap slap = new Slap(mage, 0,0,150);
 			slap.setValueMagic(hit);
-			SlapResult s = m.getSlap(slap);
+			SlapResult s = m.getSlap(slap, round);
 			((Hero) mage).receiveSlapResult(s);
 			
 			String str = JDEnv.getResourceBundle().getString("spell_bonebreaker_cast")+"!(" + hit + ")";
-			mage.tellPercept(new TextPercept(str));
+			mage.tellPercept(new TextPercept(str, round));
 		}
 
 	}

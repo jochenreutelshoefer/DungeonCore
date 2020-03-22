@@ -95,7 +95,7 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 
 		if (target instanceof Figure) {
 			Figure m = (Figure) target;
@@ -105,11 +105,13 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 			int value = (int) Arith.gauss(strength, 0.5);
 			Slap slap = new Slap(mage, 0, 0, 150);
 			slap.setValueFire(value);
-			SlapResult s = m.getSlap(slap);
+			SlapResult s = m.getSlap(slap, round);
 			((Hero) mage).receiveSlapResult(s);
+
+
 			String str = JDEnv.getResourceBundle().getString("spell_fireball_cast")+"!(" + value
 					+ ")";
-			mage.tellPercept(new TextPercept(str));
+			mage.tellPercept(new TextPercept(str, round));
 
 		}
 

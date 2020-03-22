@@ -65,13 +65,13 @@ public class Isolation extends AbstractSpell {
 	}
 	
 	@Override
-	public void sorcer(Figure sorcerer, RoomEntity o) {
+	public void sorcer(Figure sorcerer, RoomEntity o, int round) {
 		Room r = sorcerer.getRoom();
 		Door[] d = r.getDoors();
 		IsolationInstance instance = new IsolationInstance(this.getStrength(),d);
 		AbstractSpell.addTimedSpell(instance);
 		String str = JDEnv.getResourceBundle().getString("spell_isolation_cast");
-		sorcerer.tellPercept(new TextPercept(str));
+		sorcerer.tellPercept(new TextPercept(str, round));
 	}
 	
 }

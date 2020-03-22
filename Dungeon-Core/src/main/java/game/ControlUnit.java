@@ -7,6 +7,7 @@
 package game;
 
 import dungeon.JDPoint;
+import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
@@ -70,5 +71,5 @@ public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	 */
 	void notifyVisibilityStatusIncrease(JDPoint p);
 
-
+	void exitUsed(LevelExit exit, Figure f);
 }

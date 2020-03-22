@@ -8,8 +8,8 @@ public class FightBeginsPercept extends OpticalPercept {
 
 	private final List<FigureInfo> figures;
 
-	public FightBeginsPercept(List<FigureInfo> figures) {
-		super(figures.iterator().next().getRoomNumber());
+	public FightBeginsPercept(List<FigureInfo> figures, int round) {
+		super(figures.iterator().next().getRoomNumber(), round);
 		this.figures = figures;
 	}
 	

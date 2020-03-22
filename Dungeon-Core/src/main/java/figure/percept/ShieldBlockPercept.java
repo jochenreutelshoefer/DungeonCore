@@ -17,8 +17,8 @@ public class ShieldBlockPercept extends OpticalPercept {
 	
 	private Figure f;
 
-	public ShieldBlockPercept(Figure f) {
-		super(f.getLocation());
+	public ShieldBlockPercept(Figure f, int round) {
+		super(f.getLocation(), round);
 		this.f = f;
 	}
 	

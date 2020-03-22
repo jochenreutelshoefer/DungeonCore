@@ -158,7 +158,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 			List<Item> droppedItems = new ArrayList<>(this.items);
 			this.items.clear();
 			f.getActualDungeon().getRoom(location).addItems(droppedItems, null);
-			f.getRoom().distributePercept(new ItemDroppedPercept(droppedItems, f));
+			f.getRoom().distributePercept(new ItemDroppedPercept(droppedItems, f, -1));
 		}
 	}
 

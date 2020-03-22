@@ -91,7 +91,8 @@ public class BookSpell extends Book implements Usable{
 		return 0;
 	}
 
-	public boolean use(Figure f, RoomEntity target, boolean meta) {
+	@Override
+	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		List<Spell> theBook = f.getSpellbook().getSpells();
 		String name = theSpell.getName();
 		for(int i = 0; i < theBook.size(); i++) {

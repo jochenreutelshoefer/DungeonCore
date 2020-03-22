@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
-import game.DungeonGame;
+import game.DungeonGameLoop;
+import user.DefaultDungeonSession;
 import util.JDDimension;
 
 import de.jdungeon.app.event.EndRoundEvent;
@@ -19,12 +20,14 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 
 	private final HeroInfo hero;
 	private final GUIImageManager imageManager;
+	private final DefaultDungeonSession session;
 	private final PaintBuilder paint;
 
-	public LibgdxHourGlassTimer(JDPoint position, JDDimension dimension, HeroInfo hero, GUIImageManager imageManager) {
+	public LibgdxHourGlassTimer(JDPoint position, JDDimension dimension, HeroInfo hero, GUIImageManager imageManager, DefaultDungeonSession session) {
 		super(position, dimension);
 		this.hero = hero;
 		this.imageManager = imageManager;
+		this.session = session;
 		paint = new PaintBuilder();
 		paint.setFontSize(14);
 		paint.setColor(Colors.WHITE);
@@ -70,7 +73,7 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 			// todo: use glyph layout to center
 			int screenX = this.position.getX() + this.getDimension().getWidth() / 2 - 5;
 			int screenY = this.getPositionOnScreen().getY() + this.getDimension().getHeight() + 4;
-			Assets.instance.fonts.defaultNormalFlipped.draw(batch, "" + DungeonGame.getInstance().getRound(), screenX, screenY);
+			Assets.instance.fonts.defaultNormalFlipped.draw(batch, "" + session.getDungeonRound(), screenX, screenY);
 		}
 	}
 

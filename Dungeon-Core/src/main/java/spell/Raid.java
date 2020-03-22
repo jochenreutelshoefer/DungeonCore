@@ -140,7 +140,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public void sorcer(Figure mage, RoomEntity target) {
+	public void sorcer(Figure mage, RoomEntity target, int round) {
 
 		Room targetRoom = ((Figure) target).getRoom();
 		Room mageRoom = mage.getRoom();
@@ -149,7 +149,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 		RouteInstruction.Direction dir = mageRoom.getDirection(d);
 		mage.makeRaid((Figure) target);
 
-		mage.walk(dir);
+		mage.walk(dir, round);
 
 	}
 

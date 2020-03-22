@@ -30,7 +30,8 @@ public class InfoPercept extends Percept {
 //	public static final int U = 16;
 	
 	private final int code;
-	public InfoPercept(int code) {
+	public InfoPercept(int code, int round) {
+		super(round);
 		this.code = code;
 	}
 	/**

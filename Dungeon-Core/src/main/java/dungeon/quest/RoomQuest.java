@@ -271,7 +271,7 @@ public abstract class RoomQuest {
 		for (int i = 0; i < cnt; i++) {
 			Monster m = getMonster(avStrength, typeCode);
 			df.equipMonster(m, 2);
-			getRandomRoom().figureEnters(m, 0);
+			getRandomRoom().figureEnters(m, 0, -1);
 		}
 
 	}

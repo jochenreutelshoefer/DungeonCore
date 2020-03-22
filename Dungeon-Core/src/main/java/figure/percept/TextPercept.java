@@ -14,9 +14,10 @@ import figure.FigureInfo;
 
 public class TextPercept extends Percept {
 	
-	private String text;
+	private final String text;
 	
-	public TextPercept(String s) {
+	public TextPercept(String s, int round) {
+		super(round);
 		text = s;
 	}
 	/**
