@@ -42,7 +42,6 @@ public class DungeonWorldTest extends TestCase {
 
 				DungeonGameLoop dungeonGame = new DungeonGameLoop(dungeon);
 
-				Figure.addFigure(hero);
 
 				hero.setActualDungeon(dungeon);
 
@@ -53,12 +52,9 @@ public class DungeonWorldTest extends TestCase {
 				HeroInfo heroInfo = new HeroInfo(hero, heroVisMap);
 				dungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(hero, 0, -1);
 				control.setFigure(heroInfo);
-
-				// todo: test
-				//dungeonGame.init(dungeon);
+				dungeon.prepare();
 
 				for (int round = 0; round < 500; round++) {
-					assertEquals(dungeonGame.getRound(), round);
 					dungeonGame.worldTurn(round);
 					checkConsistentState(dungeon, dungeonFactory);
 				}

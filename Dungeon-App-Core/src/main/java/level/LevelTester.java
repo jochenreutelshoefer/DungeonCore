@@ -22,6 +22,7 @@ public class LevelTester {
 		for(int i = 0; i < RUNS; i++) {
 			System.out.println("Run "+i);
 			Dungeon dungeon = startLevelFactory.createDungeon();
+			dungeon.prepare();
 
 		}
 

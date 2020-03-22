@@ -100,14 +100,12 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 	public void setToWallUnreachableRoom(JDPoint heroEntryPoint) {
 		for (int x = 0; x < d.getSize().getX(); x++) {
 			for (int y = 0; y < d.getSize().getY(); y++) {
-				Path path = DungeonUtils.findShortestPath(d, heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap
-						.getAllVisMap(d), true);
+				Path path = DungeonUtils.findShortestPath(heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap.getAllVisMap(d), true);
 				if(path == null) {
 					d.getRoom(x, y).setIsWall(true);
 				}
 			}
 		}
-
 	}
 
 	protected abstract int[][] getMap();
@@ -117,36 +115,6 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 		return d;
 	}
 
-	protected int validateNetCnt(Room startRoom, boolean print) {
-		List<Room> hash = new LinkedList<Room>();
-		Room first = startRoom;
-		hash.add(first);
-		int k = 0;
-		while (k < hash.size()) {
-
-			Room r = hash.get(k);
-			if (r.getShrine() != null && (r.getShrine() instanceof Statue)) {
-				// System.out.println("ValidateCnt: StatueRoom wird nicht expandiert!");
-
-			}
-			else {
-				Door[] doors = r.getDoors();
-				for (int i = 0; i < 4; i++) {
-					if (doors[i] != null) {
-						Room a = doors[i].getOtherRoom(r);
-						if (!hash.contains(a)) {
-							hash.add(a);
-						}
-					}
-				}
-			}
-			k++;
-
-		}
-		int l = hash.size();
-		return l;
-
-	}
 
 	public abstract void fillDungeon() throws DungeonGenerationFailedException;
 

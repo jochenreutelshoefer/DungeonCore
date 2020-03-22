@@ -1,5 +1,7 @@
 package figure.attribute;
 
+import java.io.Serializable;
+
 import gui.Texts;
 
 //import java.util.*;
@@ -8,11 +10,11 @@ import gui.Texts;
  * Hilfsklasse zum Modifizieren von Attributwerten
  * Welches Attribut und um wieviel verändert werden soll. - Bei magischen Gegenständen
  */
-public class ItemModification {
+public class ItemModification implements Serializable {
 
-	private double value;
+	private final double value;
 
-	private int attribute;
+	private final int attribute;
 
 	public ItemModification(int key, int value) {
 

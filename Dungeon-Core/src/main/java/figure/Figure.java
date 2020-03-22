@@ -153,7 +153,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	private static int figureID_counter = 1;
 
-	private static final Map<Integer, Figure> allFigures = new HashMap<>();
 
 	protected int level;
 
@@ -206,14 +205,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	public void setBonusLive(boolean bonusLive) {
 		this.bonusLive = bonusLive;
-	}
-
-	public static void addFigure(Figure f) {
-		allFigures.put(Integer.valueOf(f.getFighterID()), f);
-	}
-
-	public static Figure getFigure(int id) {
-		return allFigures.get(Integer.valueOf(id));
 	}
 
 	public abstract String getName();
@@ -382,9 +373,7 @@ public abstract class Figure extends DungeonWorldObject
 	protected void dieAndLeave() {
 		dead = true;
 		this.getRoom().figureDies(this);
-
-		Figure.removeFigure(this);
-
+		getActualDungeon().removeFigureFromIndex(this);
 	}
 
 	public boolean payDust(double value) {
@@ -403,9 +392,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	public void heal(double value) {
 		Attribute healthAttr = getHealth();
-
 		if (healthAttr.getValue() + value <= healthAttr.getBasic()) {
-
 			healthAttr.modValue(value);
 		}
 		else {
@@ -417,48 +404,21 @@ public abstract class Figure extends DungeonWorldObject
 		heal((double) value);
 	}
 
-	public int getFighterID() {
+	public int getFigureID() {
 		if (this.figureID == -1) {
 			throw new IllegalStateException("FigureId not set, check correct Figure initialization.");
 		}
 		return this.figureID;
 	}
 
-	public static void createVisibilityMaps(Dungeon d) {
-		allFigures.clear();
-		Set<Integer> s = allFigures.keySet();
-		for (Iterator<Integer> iter = s.iterator(); iter.hasNext(); ) {
-			Integer element = iter.next();
-			Figure f = allFigures.get(element);
-			f.createVisibilityMap(d);
-		}
-	}
 
-	public static void setMonsterControls() {
-		Set<Integer> s = allFigures.keySet();
-		for (Iterator<Integer> iter = s.iterator(); iter.hasNext(); ) {
-			Integer element = iter.next();
-			Figure f = allFigures.get(element);
-			if (f instanceof Monster) {
-				MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(f,
-						f.getRoomVisibility());
-				AbstractAI ai = new DefaultMonsterIntelligence();
-				if (f.getSpecifiedAI() != null) {
-					ai = f.getSpecifiedAI();
-				}
-				ai.setFigure(info);
-				ControlUnit control = new FigureControl(info, ai);
-				if (f.getControl() == null) {
-					f.setControl(control);
-				}
-			}
-		}
-	}
+
 
 	AbstractAI specifiedAI = null;
 
 	public static void removeFigure(Figure f) {
-		allFigures.remove(Integer.valueOf(f.getFighterID()));
+
+
 	}
 
 	protected Attribute bravery = new Attribute(Attribute.BRAVE, 6);
@@ -866,7 +826,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	private ActionResult handleAttackAction(AttackAction a, boolean doIt, int round) {
 		int targetIndex = a.getTarget();
-		Figure target = InfoUnitUnwrapper.getFighter(targetIndex);
+		Figure target = actualDungeon.getFigureIndex().get(targetIndex);
 		if (target == null) {
 			return ActionResult.WRONG_TARGET;
 		}
@@ -1480,15 +1440,14 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	private void constrHelp() {
-		this.figureID = figureID_counter;
 		status = JDEnv.getResourceBundle().getString("status_strong");
 		shortStatus = JDEnv.getResourceBundle()
 				.getString("status_short_strong");
 
 		actionPoints = new APCounter(this);
 
+		this.figureID = figureID_counter;
 		figureID_counter++;
-		addFigure(this);
 	}
 
 	public void setActualDungeon(Dungeon d) {

@@ -81,7 +81,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public Path getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		return DungeonUtils.findShortestPath(this.f.getActualDungeon(), p1, p2, this.map, false);
+		return DungeonUtils.findShortestPath( p1, p2, this.map, false);
 	}
 
 	public abstract List<ItemInfo> getAllItems();
@@ -276,7 +276,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public int getFighterID() {
-		return f.getFighterID();
+		return f.getFigureID();
 	}
 
 	public ActionResult checkAction(Action a) {

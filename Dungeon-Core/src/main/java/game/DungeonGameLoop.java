@@ -22,7 +22,7 @@ public class DungeonGameLoop {
 
 	private int round = 0;
 
-	private Dungeon derDungeon;
+	private final Dungeon derDungeon;
 
 	private final Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
 
@@ -99,11 +99,6 @@ public class DungeonGameLoop {
 
 	public void init(Dungeon d) {
 		ItemPool.setGame(this);
-
-		// todo: do somewhere else
-		Figure.createVisibilityMaps(derDungeon);
-		Figure.setMonsterControls();
-
 		this.loop = new Thread(new Loop());
 		loop.start();
 	}

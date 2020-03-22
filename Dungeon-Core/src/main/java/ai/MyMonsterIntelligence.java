@@ -43,7 +43,7 @@ public class MyMonsterIntelligence extends
 				return Action.makeActionFlee();
 			} else {
 				return Action
-						.makeActionAttack(/* monster.getFighterID(), */heroIndex);
+						.makeActionAttack(/* monster.getFigureID(), */heroIndex);
 			}
 		}
 		if (monsterCount == 2) {
@@ -51,14 +51,14 @@ public class MyMonsterIntelligence extends
 				return Action.makeActionFlee();
 			} else {
 				return Action
-						.makeActionAttack(/* monster.getFighterID(), */heroIndex);
+						.makeActionAttack(/* monster.getFigureID(), */heroIndex);
 			}
 		}
 		if (monsterCount > 2) {
 			return Action
-					.makeActionAttack(/* monster.getFighterID(), */heroIndex);
+					.makeActionAttack(/* monster.getFigureID(), */heroIndex);
 		}
-		return Action.makeActionAttack(/* monster.getFighterID(), */heroIndex);
+		return Action.makeActionAttack(/* monster.getFigureID(), */heroIndex);
 	}
 
 	private int getFleeDirection() {

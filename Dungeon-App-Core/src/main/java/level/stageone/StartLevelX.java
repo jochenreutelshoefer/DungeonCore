@@ -50,14 +50,11 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 	@Override
 	public Dungeon createDungeon() {
-		Dungeon dungeon = null;
 
 		List<Key> allKeys = Key.generateKeylist();
 		Key exitKey = allKeys.get(0);
 
-		int limit = 20;
-		int counter = 0;
-		dungeon = new Dungeon(DUNGEON_SIZE_X, DUNGEON_SIZE_Y);
+		Dungeon dungeon = new Dungeon(DUNGEON_SIZE_X, DUNGEON_SIZE_Y);
 		createAllDoors(dungeon);
 		filler = new SimpleDungeonFiller(dungeon, new ArrayList<Key>());
 		Room exitRoom = dungeon.getRoomNr(4,0);

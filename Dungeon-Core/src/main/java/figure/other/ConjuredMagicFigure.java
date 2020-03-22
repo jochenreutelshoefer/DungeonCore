@@ -35,7 +35,7 @@ public abstract class ConjuredMagicFigure extends Monster {
 			getRoom().addItems(items, null);
 		}
 
-		Figure.removeFigure(this);
+		getActualDungeon().removeFigureFromIndex(this);
 		
 	}
 

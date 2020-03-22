@@ -35,6 +35,7 @@ public class DefaultTargetScope implements TargetScope {
 	public List<? extends RoomInfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
 		if(targetClass.equals(FigureInfo.class)) {
 			RoomInfo roomInfo = actor.getRoomInfo();
+			if(roomInfo == null) return Collections.emptyList();
 			List<FigureInfo> figureInfos = roomInfo.getFigureInfos();
 			figureInfos.remove(actor);
 			return figureInfos;

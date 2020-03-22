@@ -114,7 +114,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	public Action chooseMovementAction() {
 
 		if (monster.getActionPoints() == 0) {
-			Action a = Action.makeEndRoundAction(/* monster.getFighterID() */);
+			Action a = Action.makeEndRoundAction(/* monster.getFigureID() */);
 			lastAction = a;
 			return a;
 		}

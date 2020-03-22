@@ -1,32 +1,39 @@
 package dungeon;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import ai.AbstractAI;
+import ai.DefaultMonsterIntelligence;
 import dungeon.util.InfoUnitUnwrapper;
+import dungeon.util.RouteInstruction;
 import event.Event;
+import event.EventListener;
 import event.EventManager;
 import event.PlayerDiedEvent;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
+import figure.FigureControl;
+import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.monster.Monster;
+import figure.monster.MonsterInfo;
+import game.ControlUnit;
 import game.Turnable;
-import event.EventListener;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import shrine.Shrine;
-import dungeon.util.RouteInstruction;
 
 /**
  * Diese Klasse bildet den Dungeon, welcher aus einem 2D-Array von Raeumen
  * besteht Enthaelt einen Backtracking-Algorithmus zum Suchen von Wegen.
- * 
- * 
  */
 public class Dungeon implements Turnable, EventListener {
 
@@ -46,6 +53,12 @@ public class Dungeon implements Turnable, EventListener {
 
 	private final InfoUnitUnwrapper unwrapper;
 
+	public Map<Integer, Figure> getFigureIndex() {
+		return Collections.unmodifiableMap(figureIndex);
+	}
+
+	Map<Integer, Figure> figureIndex = new HashMap<>();
+
 	public Dungeon(int sizeX, int sizeY) {
 		EventManager.getInstance().registerListener(this);
 		unwrapper = new InfoUnitUnwrapper(this);
@@ -60,9 +73,53 @@ public class Dungeon implements Turnable, EventListener {
 		}
 	}
 
+	public void prepare() {
+		for (int i = 0; i < this.getSize().getX(); i++) {
+			for (int j = 0; j < this.getSize().getY(); j++) {
+				List<Figure> roomFigures = theDungeon[i][j].getRoomFigures();
+				for (Figure roomFigure : roomFigures) {
+					figureIndex.put(roomFigure.getFigureID(), roomFigure);
+				}
+			}
+		}
+
+		createVisibilityMaps();
+		setMonsterControls();
+	}
+
+	private void createVisibilityMaps() {
+		Set<Integer> s = figureIndex.keySet();
+		for (Iterator<Integer> iter = s.iterator(); iter.hasNext(); ) {
+			Integer element = iter.next();
+			Figure f = figureIndex.get(element);
+			f.createVisibilityMap(this);
+		}
+	}
+
+	private void setMonsterControls() {
+		Set<Integer> s = figureIndex.keySet();
+		for (Iterator<Integer> iter = s.iterator(); iter.hasNext(); ) {
+			Integer element = iter.next();
+			Figure f = figureIndex.get(element);
+			if (f instanceof Monster) {
+				MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(f,
+						f.getRoomVisibility());
+				AbstractAI ai = new DefaultMonsterIntelligence();
+				if (f.getSpecifiedAI() != null) {
+					ai = f.getSpecifiedAI();
+				}
+				ai.setFigure(info);
+				ControlUnit control = new FigureControl(info, ai);
+				if (f.getControl() == null) {
+					f.setControl(control);
+				}
+			}
+		}
+	}
+
 	public Collection<Room> getAllRooms() {
 		Set<Room> result = new HashSet<Room>();
-		for(int i = 0; i < getRooms().length; i++) {
+		for (int i = 0; i < getRooms().length; i++) {
 			result.addAll(Arrays.asList(getRooms()[i]));
 		}
 		return result;
@@ -72,13 +129,12 @@ public class Dungeon implements Turnable, EventListener {
 		Set<Room> result = new HashSet<Room>();
 		Collection<Room> allRooms = getAllRooms();
 		for (Room room : allRooms) {
-			if(room.isWall()) {
+			if (room.isWall()) {
 				result.add(room);
 			}
 		}
 		return result;
 	}
-
 
 	public Dungeon(int x, int y, int xh, int yh) {
 		this(x, y);
@@ -110,7 +166,7 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	public void addShrine(Shrine s) {
-		if(s != null) {
+		if (s != null) {
 			shrines.add(s);
 		}
 	}
@@ -134,12 +190,12 @@ public class Dungeon implements Turnable, EventListener {
 	public Room getRoom(int x, int y) {
 		return getRoom(new JDPoint(x, y));
 	}
-	
+
 	public Room getRoom(JDPoint p) {
 		if (p == null) {
 			return null;
 		}
-		if(p.getY() < 0 || p.getY() >= this.getSize().getY()
+		if (p.getY() < 0 || p.getY() >= this.getSize().getY()
 				|| p.getX() < 0 || p.getX() >= this.getSize().getX()) {
 			// invalid coordinates for this dungeon
 			return null;
@@ -174,7 +230,8 @@ public class Dungeon implements Turnable, EventListener {
 				&& (y < theDungeon[0].length)) {
 			return theDungeon[x][y];
 			// }
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -190,18 +247,21 @@ public class Dungeon implements Turnable, EventListener {
 		if (dir == RouteInstruction.Direction.North) {
 			JDPoint p = r.getNumber();
 			return getRoomNr(p.getX(), p.getY() - 1);
-		} else if (dir == RouteInstruction.Direction.East) {
+		}
+		else if (dir == RouteInstruction.Direction.East) {
 			JDPoint p = r.getNumber();
 			return getRoomNr(p.getX() + 1, p.getY());
-		} else if (dir == RouteInstruction.Direction.West) {
+		}
+		else if (dir == RouteInstruction.Direction.West) {
 			JDPoint p = r.getNumber();
 			return getRoomNr(p.getX() - 1, p.getY());
-		} else if (dir == RouteInstruction.Direction.South) {
+		}
+		else if (dir == RouteInstruction.Direction.South) {
 			JDPoint p = r.getNumber();
 			return getRoomNr(p.getX(), p.getY() + 1);
-		} else {
+		}
+		else {
 			return null;
-
 		}
 	}
 
@@ -231,7 +291,6 @@ public class Dungeon implements Turnable, EventListener {
 		for (int i = 0; i < this.size.getX(); i++) {
 			for (int j = 0; j < this.size.getY(); j++) {
 				addMonsters(field[i][j], alle);
-
 			}
 		}
 		return alle;
@@ -248,7 +307,6 @@ public class Dungeon implements Turnable, EventListener {
 				i++;
 			}
 		}
-
 	}
 
 	@Override
@@ -260,7 +318,7 @@ public class Dungeon implements Turnable, EventListener {
 
 	@Override
 	public void notify(Event event) {
-		if(event instanceof PlayerDiedEvent) {
+		if (event instanceof PlayerDiedEvent) {
 			this.gameOver = true;
 		}
 	}
@@ -269,7 +327,9 @@ public class Dungeon implements Turnable, EventListener {
 		return unwrapper;
 	}
 
-
+	public void removeFigureFromIndex(Figure figure) {
+		figureIndex.remove(Integer.valueOf(figure.getFigureID()));
+	}
 }
 
 

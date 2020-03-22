@@ -54,7 +54,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 	private JDGUI gui;
 	private final Map<DungeonFactory, Integer> completedDungeons = new HashMap<>();
-	private Thread dungeonThread;
 
 	public DefaultDungeonSession(User user) {
 		this.user = user;
@@ -165,7 +164,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getDungeonRound() {
 		if(dungeonGame !=  null) {
-			dungeonGame.getRound();
+			return dungeonGame.getRound();
 		}
 
 		return -1;
@@ -195,9 +194,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		this.currentHero.clearVisibilityMaps();
 		//makeHeroBackup();
 
-		// todo: refactor
-		Figure.addFigure(currentHero);
-
 		currentHero.setActualDungeon(derDungeon);
 		currentHero.setControl(control);
 
@@ -208,6 +204,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		control.setFigure(heroInfo);
 
 		derDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(currentHero, 0, -1);
+		derDungeon.prepare();
 		return heroInfo;
 
 	}
@@ -245,7 +242,12 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			makeHeroBackup();
 			derDungeon = null;
 		}
-		new Thread(() -> EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit))).start();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit));
+			}
+		}).start();
 	}
 
 	private void makeHeroBackup() {

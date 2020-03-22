@@ -33,10 +33,6 @@ public class InfoUnitUnwrapper {
 		this.dungeon = dungeon;
 	}
 
-	public static Figure getFighter(int index) {
-		return Figure.getFigure(index);
-	}
-
 	public Collection<Object> unwrappObjects(Collection<? extends InfoEntity> entities) {
 		Collection<Object> result = new HashSet<>();
 		for (InfoEntity entity : entities) {
@@ -74,7 +70,7 @@ public class InfoUnitUnwrapper {
 			}
 		}
 		if (o instanceof FigureInfo) {
-			return this.getFighter(((FigureInfo) o).getFighterID());
+			return dungeon.getFigureIndex().get(((FigureInfo) o).getFighterID());
 		}
 		if (o instanceof PositionInRoomInfo) {
 			int index = ((PositionInRoomInfo)o).getIndex();

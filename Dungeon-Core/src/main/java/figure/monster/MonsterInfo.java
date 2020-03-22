@@ -35,7 +35,7 @@ public class MonsterInfo extends FigureInfo {
 	
 	@Override
 	public Path getShortestWayFromTo(JDPoint p1, JDPoint p2) {
-		return DungeonUtils.findShortestPath(this.monster.getActualDungeon(), p1, p2, this.map, false);
+		return DungeonUtils.findShortestPath( p1, p2, this.map, false);
 	}
 	
 	public int getLastMove() {
