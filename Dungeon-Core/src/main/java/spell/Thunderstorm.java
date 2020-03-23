@@ -66,7 +66,7 @@ public class Thunderstorm extends NoTargetSpell {
 	@Override
 	public void sorcer(Figure mage, int round) {
 		if(mage.getRoom().fightRunning()) {
-		List<Figure> monster = mage.getRoom().getFight().getFightFigures();
+		List<Figure> monster = mage.getRoom().getRoomFigures();
 		boolean first = false;
 		for (int i = 0; i < monster.size(); i++) {
 			Figure m = monster.get(i);

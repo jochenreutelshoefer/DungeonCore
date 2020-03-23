@@ -18,7 +18,6 @@ import dungeon.generate.Sector;
 import dungeon.quest.Quest;
 import dungeon.quest.RoomQuest;
 import dungeon.util.RouteInstruction;
-import fight.Fight;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
@@ -70,7 +69,6 @@ public class Room extends DungeonWorldObject implements
 
 	private HiddenSpot spot;
 
-	private Fight fight = null;
 
 	private Shrine s;
 
@@ -116,7 +114,8 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	private void startFight(int round) {
-		this.fight = new Fight(this,round );
+		this.fightRunning = true;
+		//this.fight = new Fight(this,round );
 	}
 
 	@Override
@@ -137,7 +136,7 @@ public class Room extends DungeonWorldObject implements
 
 	public double calcFleeDiff() {
 		double diff = 0;
-		List<Figure> l = getFight().getFightFigures();
+		List<Figure> l = getRoomFigures();
 		for (int i = 0; i < l.size(); i++) {
 			diff += l.get(i).getAntiFleeValue();
 		}
@@ -212,7 +211,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public boolean fightRunning() {
-		return fight != null;
+		return fightRunning;
 	}
 
 	private void tickFigures(int round) {
@@ -222,27 +221,82 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
+	private boolean fightRunning = false;
+
 	public void turn(int round) {
 		tickFigures(round);
 
-		if (fight == null) {
-			turnNormal(round);
+		if (!fightRunning) {
+			for (Figure roomFigure : roomFigures) {
+				if (this.dungeon.isGameOver()) {
+					break;
+				}
+				Figure element = roomFigure;
+
+				// todo: refactor
+				element.lastTurn = round;
+
+				final DungeonVisibilityMap roomVisibility = element.getRoomVisibility();
+				if (roomVisibility != null) {
+					roomVisibility.resetTemporalVisibilities();
+				}
+
+				element.setActionPoints(1, round);
+
+				if (element.getActionPoints() > 0 && !element.isDead()) {
+					element.doActions(round, false);
+				}
+			}
 		}
 		else {
-			fight.doFight(round);
+			//fight.doFight(round);
+			boolean endFight = false;
+			List<Figure> tempList = new LinkedList<>(getRoomFigures());
+			if (tempList.size() <= 1) {
+				endFight();
+				return;
+			}
+			for (Figure element : tempList) {
+				if (!element.isDead()) {
+					element.setActionPoints(1, round);
+					element.doActions(round, true);
+
+					if (!checkFightOn()) {
+						endFight = true;
+						break;
+					}
+				}
+			}
+			if (endFight) {
+				endFight();
+			}
 		}
 	}
 
-	private void turnNormal(int round) {
-		List<Figure> figures = new LinkedList<Figure>();
-		figures.addAll(roomFigures);
-		for (Iterator<Figure> iter = figures.iterator(); iter.hasNext(); ) {
-			if (this.dungeon.isGameOver()) {
-				break;
-			}
+	private boolean checkFightOn() {
+
+		boolean fightOn = false;
+		for (Iterator<Figure> iter = getRoomFigures().iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
-			element.turn(round);
+			ControlUnit c = element.getControl();
+			if (c == null) {
+				return false;
+			}
+			for (Iterator<Figure> iter2 = getRoomFigures().iterator(); iter2.hasNext(); ) {
+				Figure element2 = iter2.next();
+				if (element != element2) {
+					boolean hostileTo = element.getControl().isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
+					if (hostileTo) {
+						fightOn = true;
+						break;
+					}
+				}
+				if (fightOn) {
+					break;
+				}
+			}
 		}
+		return fightOn;
 	}
 
 	public void setShrine(Shrine s) {
@@ -1003,12 +1057,7 @@ public class Room extends DungeonWorldObject implements
 		roomFigures.add(figure);
 
 
-		if (this.fightRunning()) {
-			getFight().figureJoins(figure);
-		}
-		else {
 			this.checkFight(figure, round);
-		}
 	}
 
 	public int getDeadFigurePos(Figure figure) {
@@ -1116,9 +1165,6 @@ public class Room extends DungeonWorldObject implements
 		// might already be a new position in other room after fleeing
 		if (pos != null && pos.getRoom().equals(this)) {
 			pos.figureLeaves();
-		}
-		if (fight != null) {
-			fight.figureLeaves(m);
 		}
 		return roomFigures.remove(m);
 	}
@@ -1349,13 +1395,11 @@ public class Room extends DungeonWorldObject implements
 		return positions;
 	}
 
-	public Fight getFight() {
-		return fight;
-	}
-
 	public void endFight() {
-		fight = null;
-		Collection<Figure> removeTMP = new HashSet();
+		fightRunning = false;
+
+		// remove magic conjured creature that disappear at the end of a fight
+		Collection<Figure> removeTMP = new HashSet<>();
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
 			boolean disappears = element.fightEnded(roomFigures, -1);
@@ -1366,9 +1410,6 @@ public class Room extends DungeonWorldObject implements
 				element.getRoomVisibility().resetVisibilityStatus(this.number);
 
 				element.getPos().figureLeaves();
-				if (fight != null) {
-					fight.figureLeaves(element);
-				}
 				removeTMP.add(element);
 			}
 		}

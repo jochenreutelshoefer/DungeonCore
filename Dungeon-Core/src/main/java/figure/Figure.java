@@ -444,7 +444,7 @@ public abstract class Figure extends DungeonWorldObject
 		return getRoom().getDungeon().getRoom(getLocation());
 	}
 
-	private int lastTurn = -1;
+	public int lastTurn = -1;
 
 	public void timeTick(int round) {
 
@@ -468,6 +468,7 @@ public abstract class Figure extends DungeonWorldObject
 	@Override
 	public void turn(int round) {
 
+		/*
 		// TODO: check is this really required?
 		if (lastTurn >= round) {
 			return;
@@ -486,6 +487,7 @@ public abstract class Figure extends DungeonWorldObject
 		if (this.getActionPoints() > 0 && !isDead()) {
 			doActions(round, false);
 		}
+		*/
 	}
 
 	protected abstract void sanction(int i);
@@ -672,7 +674,7 @@ public abstract class Figure extends DungeonWorldObject
 				}
 				control.actionProcessed(a, res);
 
-				if (getRoom().getFight() != null) {
+				if (getRoom().fightRunning()) {
 					break;
 				}
 				if (isDead()) {
@@ -913,7 +915,7 @@ public abstract class Figure extends DungeonWorldObject
 		if (getControl() != null) {
 			tellPercept(new FightEndedPercept(FigureInfo.makeInfos(figures, this), round));
 		}
-		setActionPoints(0 , - 1);
+		//setActionPoints(0 , - 1);
 		if (lastSpell != null) {
 			lastSpell.resetSpell();
 			lastSpell = null;
