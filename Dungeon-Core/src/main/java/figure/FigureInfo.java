@@ -239,10 +239,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return false;
 	}
 
-	public boolean isThief() {
-		return f.isThief();
-	}
-
 	public int getLevel() {
 		return f.getLevel();
 	}

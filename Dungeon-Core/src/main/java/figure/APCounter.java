@@ -2,7 +2,6 @@ package figure;
 
 import java.io.Serializable;
 
-import figure.hero.Hero;
 import log.Log;
 
 /**
@@ -13,10 +12,12 @@ import log.Log;
  */
 public class APCounter implements Serializable {
 
+	private static final boolean AP_LOGGING = false;
+
 	private int currentAP = 0;
 	private final Figure figure;
-	private int lastSetRound;
-	private int lastPayRound;
+	private int lastSetRound; // for debugging
+	private int lastPayRound; // for debugging
 	public APCounter(Figure figure) {
 		this.figure = figure;
 	}
@@ -24,7 +25,7 @@ public class APCounter implements Serializable {
 	public void setCurrentAP(int value, int round) {
 		int before = currentAP;
 		this.currentAP = value;
-		if(figure instanceof Hero) {
+		if(AP_LOGGING) {
 			Log.info(System.currentTimeMillis()+" "+ round+" Hero SET AP round "+round+" - before: "+before +" - after: "+currentAP);
 		}
 		lastSetRound = round;
@@ -34,7 +35,7 @@ public class APCounter implements Serializable {
 	public void incrementActionPoint(int round) {
 		int before = currentAP;
 		currentAP += 1;
-		if(figure instanceof Hero) {
+		if(AP_LOGGING) {
 			Log.info(System.currentTimeMillis()+" "+ round+" Hero INC AP round "+round+" - before: "+before +" - after: "+currentAP);
 		}
 		lastSetRound = round;
@@ -47,7 +48,7 @@ public class APCounter implements Serializable {
 		} else {
 			throw new IllegalArgumentException("cannot pay action points: "+k+ " only having "+currentAP);
 		}
-		if(figure instanceof Hero) {
+		if(AP_LOGGING) {
 			Log.info(System.currentTimeMillis()+" "+ round+" Hero pays APs round "+round + " "+k+" - before: "+before +" - after: "+currentAP);
 		}
 		lastPayRound = round;
@@ -58,7 +59,7 @@ public class APCounter implements Serializable {
 		if(currentAP > 0){
 			currentAP -= 1;
 		}
-		if(figure instanceof Hero) {
+		if(AP_LOGGING) {
 			Log.info(System.currentTimeMillis()+" "+ round+" Hero pays AP round "+round + " - before: "+before +" - after: "+currentAP);
 		}
 		lastPayRound = round;

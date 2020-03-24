@@ -71,7 +71,12 @@ public class AttackActivity extends AbstractExecutableActivity {
 		if(getHostileFiguresList().isEmpty()) {
 			return false;
 		}
-		return controller.getActionAssembler().getFigure().getRoomInfo().fightRunning();
+		RoomInfo roomInfo = controller.getActionAssembler().getFigure().getRoomInfo();
+		if(roomInfo.fightRunning() == null) {
+			// todo: happens, but this is really weird, hence the figure has no visibility of its current room
+			return false;
+		}
+		return roomInfo.fightRunning();
 	}
 
 	@Override

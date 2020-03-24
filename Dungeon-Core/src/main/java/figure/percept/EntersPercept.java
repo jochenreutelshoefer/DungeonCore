@@ -31,6 +31,9 @@ public class EntersPercept extends OpticalPercept {
 
 	public EntersPercept(Figure f, Room r1, int round) {
 		super(r1.getNumber(), round);
+		if(f == null) {
+			throw new IllegalArgumentException("Figure may not be null");
+		}
 		figure = f;
 		from = r1;
 	}

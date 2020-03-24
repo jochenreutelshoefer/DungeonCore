@@ -54,7 +54,6 @@ public class HeroUtil {
 		int creature = 0;
 		int dust = 0;
 		double dustReg = 0;
-		boolean thief = false;
 		Spellbook spells = new Spellbook();
 
 		Hero held = null;
@@ -85,7 +84,6 @@ public class HeroUtil {
 
 		case Hero.HEROCODE_HUNTER:
 			waffe = new Club(25, false);
-			thief = true;
 			healthVal = (int) hunterBasic[0];
 			strengthVal = (int) hunterBasic[1];
 			dexterityVal = (int) hunterBasic[2];
@@ -159,9 +157,6 @@ public class HeroUtil {
 		held.setSpellbook(spells);
 
 		held.getCharacter().setSpellPoints(1);
-		if (thief) {
-			held.setThief(true);
-		}
 
 		if (held.getHeroCode() == Hero.HEROCODE_DRUID) {
 			AbstractSpell s = new Bonebreaker(1);
@@ -193,7 +188,6 @@ public class HeroUtil {
 		} else if (prof.equals(Profession.Thief)) {
 			if (held.getHeroCode() != Hero.HEROCODE_HUNTER) {
 				held.getSpellbook().addSpell(new Search(1));
-				held.setThief(true);
 			}
 
 		} else if (prof.equals(Profession.Hunter)) {

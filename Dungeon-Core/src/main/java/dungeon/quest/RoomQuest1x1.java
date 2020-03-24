@@ -72,7 +72,7 @@ public class RoomQuest1x1 extends ReversibleRoomQuest {
 			else {
 				// TODO: key back to game !?!?
 				key = df.getNextKey();
-				actions.add(new SetItem(DungeonFillUtils.getRandomMonster(df.getDungeon(), new HashSet<Room>()), key));
+				actions.add(new SetItem(DungeonFillUtils.getRandomMonster(df.getDungeon(), new HashSet<>()), key));
 				Room entrance = df.getDungeon().getRoomAt(rooms[0][0],
 						RouteInstruction.direction(dir));
 				Door d = null;

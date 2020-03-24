@@ -13,8 +13,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import dungeon.generate.DefaultHall;
-import dungeon.generate.Sector;
 import dungeon.quest.Quest;
 import dungeon.quest.RoomQuest;
 import dungeon.util.RouteInstruction;
@@ -43,16 +41,7 @@ import shrine.Shrine;
 import shrine.Statue;
 import util.JDColor;
 
-/**
- * Ein Raum des Dungeons. Kann dynamisch enthalten: Gegenstaende, Monster, Held ;
- * Kann statisch enthalten: Truhe, Schrein, Versteck, 4 Tueren;
- * <p>
- * Ein Raum weis zu welchen Quest, Halle, Sektor, Dungeon er gehoert Der
- * aktuelle Sichtbarkeitsstatus des Helden auf diesen Raum wird hier
- * gespeichert.
- */
-public class Room extends DungeonWorldObject implements
-		ItemOwner, RoomEntity {
+public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	public static final int NO = 0;
 
@@ -68,7 +57,6 @@ public class Room extends DungeonWorldObject implements
 	private final Position[] positions = new Position[8];
 
 	private HiddenSpot spot;
-
 
 	private Shrine s;
 
@@ -89,8 +77,8 @@ public class Room extends DungeonWorldObject implements
 	public void checkFight(Figure movedIn, int round) {
 		boolean fight = false;
 		ControlUnit movedInControl = movedIn.getControl();
-		if(movedInControl == null) {
-			Log.warning("figure without control moves into room: "+movedIn.getName());
+		if (movedInControl == null) {
+			Log.warning("figure without control moves into room: " + movedIn.getName());
 		}
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
@@ -100,8 +88,10 @@ public class Room extends DungeonWorldObject implements
 			}
 			ControlUnit currentControl = element.getControl();
 			if (currentControl != null) {
-				boolean currentIsHostileToMovedIn = currentControl.isHostileTo(FigureInfo.makeFigureInfo(movedIn, element.getRoomVisibility()));
-				boolean movedInIsHostileToCurrent = movedInControl.isHostileTo(FigureInfo.makeFigureInfo(element, movedIn.getRoomVisibility()));
+				boolean currentIsHostileToMovedIn = currentControl.isHostileTo(FigureInfo.makeFigureInfo(movedIn, element
+						.getRoomVisibility()));
+				boolean movedInIsHostileToCurrent = movedInControl.isHostileTo(FigureInfo.makeFigureInfo(element, movedIn
+						.getRoomVisibility()));
 				if ((currentIsHostileToMovedIn || movedInIsHostileToCurrent)) {
 					// if one of them wants to start a fight, we start a fight
 					fight = true;
@@ -181,13 +171,13 @@ public class Room extends DungeonWorldObject implements
 
 	private int floorIndex;
 
-	public String oldInfos;
+	private String oldInfos;
 
 	private RoomQuest rquest;
 
-	private DefaultHall hall = null;
+	//private DefaultHall hall = null;
 
-	private Sector sec = null;
+	//private Sector sec = null;
 
 	private Door[] doors = new Door[4];
 
@@ -226,54 +216,36 @@ public class Room extends DungeonWorldObject implements
 	public void turn(int round) {
 		tickFigures(round);
 
-		if (!fightRunning) {
-			for (Figure roomFigure : roomFigures) {
-				if (this.dungeon.isGameOver()) {
-					break;
-				}
-				Figure element = roomFigure;
-
-				// todo: refactor
-				element.lastTurn = round;
-
-				final DungeonVisibilityMap roomVisibility = element.getRoomVisibility();
-				if (roomVisibility != null) {
-					roomVisibility.resetTemporalVisibilities();
-				}
-
-				element.setActionPoints(1, round);
-
-				if (element.getActionPoints() > 0 && !element.isDead()) {
-					element.doActions(round, false);
-				}
+		for (Figure roomFigure : roomFigures) {
+			if (this.dungeon.isGameOver()) {
+				break;
 			}
-		}
-		else {
-			//fight.doFight(round);
-			boolean endFight = false;
-			List<Figure> tempList = new LinkedList<>(getRoomFigures());
-			if (tempList.size() <= 1) {
-				endFight();
-				return;
-			}
-			for (Figure element : tempList) {
-				if (!element.isDead()) {
-					element.setActionPoints(1, round);
-					element.doActions(round, true);
 
-					if (!checkFightOn()) {
-						endFight = true;
-						break;
-					}
-				}
+			// todo: refactor
+			roomFigure.lastTurn = round;
+
+			final DungeonVisibilityMap roomVisibility = roomFigure.getRoomVisibility();
+			if (roomVisibility != null) {
+				roomVisibility.resetTemporalVisibilities();
 			}
-			if (endFight) {
-				endFight();
+
+			roomFigure.setActionPoints(1, round);
+			if (roomFigure.getActionPoints() > 0 && !roomFigure.isDead()) {
+				roomFigure.doActions(round, fightRunning);
+
+				// might be that after an action the fight is resolved
+				if (fightRunning && !checkFightOn()) {
+					endFight();
+				}
 			}
 		}
 	}
 
 	private boolean checkFightOn() {
+
+		if (getRoomFigures().size() <= 1) {
+			return false;
+		}
 
 		boolean fightOn = false;
 		for (Iterator<Figure> iter = getRoomFigures().iterator(); iter.hasNext(); ) {
@@ -285,7 +257,8 @@ public class Room extends DungeonWorldObject implements
 			for (Iterator<Figure> iter2 = getRoomFigures().iterator(); iter2.hasNext(); ) {
 				Figure element2 = iter2.next();
 				if (element != element2) {
-					boolean hostileTo = element.getControl().isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
+					boolean hostileTo = element.getControl()
+							.isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
 					if (hostileTo) {
 						fightOn = true;
 						break;
@@ -315,10 +288,7 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public int getFloorIndex() {
-		if (hall == null) {
-			return floorIndex;
-		}
-		return hall.getFloorIndex();
+		return floorIndex;
 	}
 
 	public int[] makeDoorInfo() {
@@ -581,18 +551,17 @@ public class Room extends DungeonWorldObject implements
 		for (int i = 0; i < doors.length; i++) {
 			int doorDirection = i + 1; // direction index starts with 1
 			RouteInstruction.Direction dir = RouteInstruction.Direction.fromInteger(doorDirection);
-			if(contains(dir, directions)) {
+			if (contains(dir, directions)) {
 				setDoor(null, dir, true);
 			}
 		}
 	}
 
-
 	public void removeAllDoorsExcept(RouteInstruction.Direction... directions) {
 		for (int i = 0; i < doors.length; i++) {
 			int doorDirection = i + 1; // direction index starts with 1
 			RouteInstruction.Direction dir = RouteInstruction.Direction.fromInteger(doorDirection);
-			if(!contains(dir, directions)) {
+			if (!contains(dir, directions)) {
 				setDoor(null, dir, true);
 			}
 		}
@@ -600,7 +569,7 @@ public class Room extends DungeonWorldObject implements
 
 	private boolean contains(RouteInstruction.Direction dir, RouteInstruction.Direction... directions) {
 		for (RouteInstruction.Direction direction : directions) {
-			if(direction == dir) {
+			if (direction == dir) {
 				return true;
 			}
 		}
@@ -748,6 +717,7 @@ public class Room extends DungeonWorldObject implements
 	public Door[] getDoors() {
 		return doors;
 	}
+
 
 	public boolean removeDoor(Door d, boolean otherRoom) {
 		if (d == null) {
@@ -1056,8 +1026,7 @@ public class Room extends DungeonWorldObject implements
 		figure.setLocation(this);
 		roomFigures.add(figure);
 
-
-			this.checkFight(figure, round);
+		this.checkFight(figure, round);
 	}
 
 	public int getDeadFigurePos(Figure figure) {
@@ -1125,7 +1094,6 @@ public class Room extends DungeonWorldObject implements
 	}
 
 	public void setVisited(int i) {
-		oldInfos = ("\n\nLetzter Stand\n" + getInfoText(ALL, true));
 	}
 
 	public void figureDies(Figure figure) {
@@ -1178,54 +1146,6 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
-	public String getInfoText(int c, boolean scouted) {
-		String info = new String();
-		if (!isWall) {
-			info += ("Raum " + number + ":\n" + "Besucht: ");
-		}
-		else {
-			info += ("Stelle: " + number + ":\n" + ": ");
-		}
-		if (visited == 0) {
-			info += ("nein" + "\n");
-		}
-		else {
-			info += (Integer.toString(visited) + "\n");
-		}
-
-		if (c >= LITTLE) {
-			int i = roomFigures.size();
-			if (i != 0) {
-				info += ("Monster: ");
-				for (int j = 0; j < i; j++) {
-					info += ("  " + roomFigures.get(j) + ", ");
-				}
-			}
-			else {
-				info += ("Keine Monster.\n");
-			}
-
-			if (s != null) {
-				info += ("\n" + s) + "\n ";
-			}
-		}
-		if (c == ALL) {
-			int k = items.size();
-			if (k != 0) {
-				info += ("\nGegenstande: " + "\n");
-				for (int j = 0; j < k; j++) {
-					info += ("  " + items.get(j) + "\n");
-				}
-			}
-			else {
-				info += ("Keine Gegenstaende.");
-			}
-		}
-		if (!scouted) {
-			info += oldInfos;
-		}
-		return info;
-	}
 
 	public JDPoint getNumber() {
 		return number;
@@ -1341,24 +1261,6 @@ public class Room extends DungeonWorldObject implements
 		}
 	}
 
-	public DefaultHall getHall() {
-		return hall;
-	}
-
-	public Sector getSec() {
-		return sec;
-	}
-
-	public boolean setHall(DefaultHall hall) {
-		if (this.hall == null) {
-			this.hall = hall;
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	@Override
 	public String toString() {
 		String s = " Raum Nr.: " + number;
@@ -1371,12 +1273,10 @@ public class Room extends DungeonWorldObject implements
 		return s;
 	}
 
-	public void setSec(Sector sec) {
-		this.sec = sec;
-	}
 
+	@Deprecated
 	public boolean isClaimed() {
-		return (hall != null) || (sec != null);
+		return false;
 	}
 
 	public Dungeon getDungeon() {

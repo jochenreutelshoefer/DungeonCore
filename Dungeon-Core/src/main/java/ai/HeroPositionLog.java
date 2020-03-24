@@ -41,7 +41,7 @@ public class HeroPositionLog {
 	private final List<Percept> perceptList = new LinkedList<>();
 
 	private void setLastHeroLocationInfoRound(int lastHeroLocationInfoRound, JDPoint lastHeroLocation, Percept element) {
-		//Log.info("Setting hero position log last pos to: "+lastHeroLocation + " (round "+ lastHeroLocationInfoRound + ") ["+element.getClass().getName()+"]");
+		Log.info("Setting hero position log last pos to: "+lastHeroLocation + " (round "+ lastHeroLocationInfoRound + ") ["+element.getClass().getName()+"]");
 		this.lastHeroLocation = lastHeroLocation;
 		this.lastHeroLocationInfoRound = lastHeroLocationInfoRound;
 	}
@@ -130,9 +130,8 @@ public class HeroPositionLog {
 			}
 			if (element instanceof ScoutPercept) {
 				if (((ScoutPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					int dir = ((ScoutPercept) element).getDir();
 					RoomInfo r = ((ScoutPercept) element).getRoom();
-					setLastHeroLocationInfoRound(element.getRound(), r.getNeighbourRoom(dir).getNumber(), element);
+					setLastHeroLocationInfoRound(element.getRound(), r.getNumber(), element);
 				}
 			}
 		}

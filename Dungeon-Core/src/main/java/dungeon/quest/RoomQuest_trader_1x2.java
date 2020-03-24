@@ -8,6 +8,8 @@
  */
 package dungeon.quest;
 
+import dungeon.Dungeon;
+import dungeon.generate.DungeonFillUtils;
 import item.Item;
 import item.Key;
 
@@ -34,7 +36,8 @@ public class RoomQuest_trader_1x2 extends RoomQuest {
 			return false;
 		}
 		claimRooms();
-		if (df.getDungeon().getRoom(this.location).getHall().validateNet()) {
+		Dungeon dungeon = this.df.getDungeon();
+		if (DungeonFillUtils.validateNet(dungeon.getAllRooms(), dungeon.getRoom(this.location))) {
 			////System.out.println("Halle mit rq erfolgreich validiert!");
 		} else {
 			////System.out.println(

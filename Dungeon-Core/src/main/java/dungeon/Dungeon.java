@@ -285,35 +285,11 @@ public class Dungeon implements Turnable, EventListener {
 		}
 	}
 
-	public List<Figure> getAlleMonster() {
-		List<Figure> alle = new LinkedList<Figure>();
-		Room[][] field = getRooms();
-		for (int i = 0; i < this.size.getX(); i++) {
-			for (int j = 0; j < this.size.getY(); j++) {
-				addMonsters(field[i][j], alle);
-			}
-		}
-		return alle;
-	}
 
-	private void addMonsters(Room raum, List<Figure> alle) {
-		List<Figure> liste = raum.getRoomFigures();
-		int length = liste.size();
-		if (length > 0) {
-			int i = 0;
-			while (i < length) {
-				Monster m = (Monster) liste.get(i);
-				alle.add(m);
-				i++;
-			}
-		}
-	}
 
 	@Override
 	public Collection<Class<? extends Event>> getEvents() {
-		List<Class<? extends Event>> events = new ArrayList<Class<? extends Event>>(1);
-		events.add(PlayerDiedEvent.class);
-		return events;
+		return Collections.singletonList(PlayerDiedEvent.class);
 	}
 
 	@Override
@@ -328,7 +304,7 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	public void removeFigureFromIndex(Figure figure) {
-		figureIndex.remove(Integer.valueOf(figure.getFigureID()));
+		figureIndex.remove(figure.getFigureID());
 	}
 }
 

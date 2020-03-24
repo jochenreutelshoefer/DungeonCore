@@ -21,7 +21,7 @@ import figure.monster.Monster;
 public class DungeonFillUtils {
 
 	public static Monster getRandomMonster(Dungeon dungeon, Collection<Room> excludeRoomList) {
-		List<Figure> alleMonster = dungeon.getAlleMonster();
+		Collection<Figure> alleMonster = dungeon.getFigureIndex().values();
 		List<Monster> potentialMonster = new ArrayList<>();
 		for (Figure figure : alleMonster) {
 			if(figure instanceof Monster) {
@@ -35,13 +35,13 @@ public class DungeonFillUtils {
 	}
 
 	public static boolean validateNet(Collection<Room> rooms, Room startPoint) {
-		return validateNet(rooms, startPoint, new HashSet<Room>());
+		return validateNet(rooms, startPoint, new HashSet<>());
 	}
 
 	public static boolean validateNet(Collection<Room> rooms, Room startPoint, Collection<Room> exclude) {
 		// tODO: distinguish allocated and reachable, as there are allocated rooms that need to be reachable
-		List<Room> reachableRooms = new LinkedList<Room>();
-		List<Room> roomsThatShouldBeReachable = new LinkedList<Room>();
+		List<Room> reachableRooms = new LinkedList<>();
+		List<Room> roomsThatShouldBeReachable = new LinkedList<>();
 		for (Room r : rooms) {
 			if (!exclude.contains(r) && !r.isWall()) {
 				// all room not in a RQ should be reachable
@@ -65,13 +65,9 @@ public class DungeonFillUtils {
 			}
 			k++;
 		}
-		if (reachableRooms.size() >= roomsThatShouldBeReachable.size()) {
-			// all non rq rooms can be reached
-			return true;
-		} else {
-			// not every non rq room can be reached
-			return false;
-		}
+		// all non rq rooms can be reached
+		// not every non rq room can be reached
+		return reachableRooms.size() >= roomsThatShouldBeReachable.size();
 
 	}
 
@@ -88,7 +84,6 @@ public class DungeonFillUtils {
 					}
 				}
 			}
-
 		}
 	}
 }

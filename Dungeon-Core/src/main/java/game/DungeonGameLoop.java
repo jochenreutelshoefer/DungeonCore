@@ -75,26 +75,10 @@ public class DungeonGameLoop {
 		}
 	}
 
-	private final List<Turnable> turnableItems = new ArrayList<Turnable>();
-
-	public void addTurnableItem(Item i) {
-		if (i instanceof Turnable) {
-			turnableItems.add((Turnable) i);
-		}
-	}
-
-	private void itemsTurn() {
-		for (Iterator<Turnable> iter = turnableItems.iterator(); iter.hasNext(); ) {
-			Turnable element = iter.next();
-			element.turn(round);
-		}
-	}
-
 	public void worldTurn(int round) {
 		//Log.info("Starting world turn for round: "+round);
 		derDungeon.turn(round);
 		spellsTurn();
-		itemsTurn();
 	}
 
 	public void init(Dungeon d) {
@@ -115,10 +99,10 @@ public class DungeonGameLoop {
 				if (guiFigures.isEmpty()) {
 					break;
 				}
-				Log.info(System.currentTimeMillis() + " " + round + " start round");
+				//Log.info(System.currentTimeMillis() + " " + round + " start round");
 				worldTurn(round);
 				tickGuis(round);
-				Log.info(System.currentTimeMillis() + " " + round + " completed round");
+				//Log.info(System.currentTimeMillis() + " " + round + " completed round");
 				round++;
 			}
 

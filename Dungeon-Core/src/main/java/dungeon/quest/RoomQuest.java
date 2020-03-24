@@ -16,7 +16,6 @@ import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.Path;
-import dungeon.generate.DefaultHall;
 import dungeon.generate.DungeonFillUtils;
 import dungeon.generate.DungeonFiller;
 import dungeon.util.DungeonUtils;
@@ -83,7 +82,6 @@ public abstract class RoomQuest {
 			for (int j = 0; j < sizeY; j++) {
 				Room r = df.getDungeon().getRoomNr(location.getX() + i, location.getY() + j);
 				if ((r != null)
-						&& (r.getHall() == halle)
 						&& (r.getRoomQuest() == null)
 						&& (!r.isStart())
 						&& (!r.hasHallDoor())
@@ -101,8 +99,7 @@ public abstract class RoomQuest {
 
 	protected boolean doorsRemoved = false;
 
-	protected final boolean wallMade = false;
-	protected DefaultHall halle;
+	//protected DefaultHall halle;
 	public RoomQuest(
 			JDPoint p, DungeonFiller df,
 			int x,
@@ -192,9 +189,6 @@ public abstract class RoomQuest {
 		}
 		boolean room_ok = true;
 		if (entrance.getRoomQuest() != null) {
-			room_ok = false;
-		}
-		if (entrance.getHall() != r.getHall()) {
 			room_ok = false;
 		}
 

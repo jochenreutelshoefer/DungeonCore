@@ -168,7 +168,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	private boolean raiding = false;
 
-	private boolean thief = false;
 
 	private List<Poisoning> poisonings = new LinkedList<Poisoning>();
 
@@ -674,13 +673,7 @@ public abstract class Figure extends DungeonWorldObject
 				}
 				control.actionProcessed(a, res);
 
-				if (getRoom().fightRunning()) {
-					break;
-				}
-				if (isDead()) {
-					break;
-				}
-				if (room.getDungeon().isGameOver()) {
+				if (isDead() || room.getDungeon().isGameOver()) {
 					break;
 				}
 
@@ -1137,7 +1130,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	private ActionResult processAction(Action a, boolean doIt, int round) {
 
-		if(doIt && this instanceof Hero) {
+		if(doIt) {
 			Log.info(System.currentTimeMillis()+" "+ round + " do: "+ round + " "+ this.getName() + " [AP: "+this.actionPoints.getCurrentAP()+"] " + a.getClass().getSimpleName() + "("+a.toString()+")");
 		}
 
@@ -1637,13 +1630,6 @@ public abstract class Figure extends DungeonWorldObject
 		this.double_bonus = double_bonus;
 	}
 
-	public boolean isThief() {
-		return thief;
-	}
-
-	public void setThief(boolean thief) {
-		this.thief = thief;
-	}
 
 	public boolean isRaiding() {
 		return raiding;

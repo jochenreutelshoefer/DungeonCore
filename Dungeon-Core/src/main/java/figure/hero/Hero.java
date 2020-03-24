@@ -328,7 +328,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	@Override
 	public boolean isAbleToTakeItemInFight(Item it) {
-		return this.isThief() && isAbleToTakeItem(it);
+		return isAbleToTakeItem(it);
 	}
 
 	@Override
