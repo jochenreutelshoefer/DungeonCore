@@ -20,8 +20,9 @@ import figure.monster.Monster;
  */
 public class DungeonFillUtils {
 
+
 	public static Monster getRandomMonster(Dungeon dungeon, Collection<Room> excludeRoomList) {
-		Collection<Figure> alleMonster = dungeon.getFigureIndex().values();
+		Collection<Figure> alleMonster = dungeon.collectAllFigures();
 		List<Monster> potentialMonster = new ArrayList<>();
 		for (Figure figure : alleMonster) {
 			if(figure instanceof Monster) {

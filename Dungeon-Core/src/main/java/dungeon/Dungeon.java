@@ -306,6 +306,16 @@ public class Dungeon implements Turnable, EventListener {
 	public void removeFigureFromIndex(Figure figure) {
 		figureIndex.remove(figure.getFigureID());
 	}
+
+	public Collection<Figure> collectAllFigures() {
+		List<Figure> result = new ArrayList<>();
+		for (int i = 0; i < theDungeon.length; i++) {
+			for (int j = 0; j < theDungeon[0].length; j++) {
+				result.addAll(theDungeon[i][j].getRoomFigures());
+			}
+		}
+		return result;
+	}
 }
 
 

@@ -133,6 +133,15 @@ public class DungeonVisibilityMap {
 		}
 	}
 
+	public void resetTemporalVisibilities() {
+		synchronized (cache) {
+			for (RoomObservationStatus roomObservationStatus : cache) {
+				roomObservationStatus.resetVisibilityStatus();
+			}
+			cache.clear();
+		}
+	}
+
 	@Deprecated
 	public void setDiscoveryStatus(int x, int y, int status) {
 		rooms[x][y].setDiscoveryStatus(status);
@@ -210,14 +219,7 @@ public class DungeonVisibilityMap {
 		return rooms;
 	}
 
-	public void resetTemporalVisibilities() {
-		synchronized (cache) {
-			for (RoomObservationStatus roomObservationStatus : cache) {
-				roomObservationStatus.resetVisibilityStatus();
-			}
-			cache.clear();
-		}
-	}
+
 
 	public void removeScoutedVisibility(Position position) {
 		final Set<JDPoint> scoutedRoomsFromThisPosition = scoutCache.get(position);

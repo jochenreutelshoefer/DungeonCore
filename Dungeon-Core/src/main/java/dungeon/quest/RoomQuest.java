@@ -83,7 +83,6 @@ public abstract class RoomQuest {
 				Room r = df.getDungeon().getRoomNr(location.getX() + i, location.getY() + j);
 				if ((r != null)
 						&& (r.getRoomQuest() == null)
-						&& (!r.isStart())
 						&& (!r.hasHallDoor())
 						&& (!r.hasLockedDoor())) {
 					rooms[j][i] = r;
@@ -134,32 +133,7 @@ public abstract class RoomQuest {
 		}
 	}
 
-	public static RoomQuest newRoomQuest(
-			String type,
-			JDPoint rq_point,
-			List<Item> restItems,
-			Shrine s,
-			DungeonFiller df) {
 
-		RoomQuest rq = null;
-		if (type.equals(X3_1)) {
-			rq = new RoomQuest_3x3_1(rq_point, df, restItems);
-		}
-		if (type.equals(X2_1)) {
-			rq = new RoomQuest_2x2_1(rq_point, df, restItems, s);
-		}
-		if (type.equals(X1_1)) {
-			rq =
-					new RoomQuest_1x1_1(
-							rq_point,
-							df,
-							true,
-							true,
-							s,
-							restItems);
-		}
-		return rq;
-	}
 
 	protected void claimRooms() {
 		for (int i = 0; i < sizeX; i++) {

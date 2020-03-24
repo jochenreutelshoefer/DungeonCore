@@ -264,9 +264,6 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		return r.getFloorIndex();
 	}
 
-	public HiddenSpot getSpot() {
-		return r.getSpot();
-	}
 
 	public ShrineInfo getShrine() {
 

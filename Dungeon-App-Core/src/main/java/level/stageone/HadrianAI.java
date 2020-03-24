@@ -117,7 +117,7 @@ public class HadrianAI extends AbstractAI {
 		heroLog.processPercepts();
 
 		if(currentState == patrol && heroLog.getLastHeroPosition() != null && !heroLog.lastEnemyPositionVisited()) {
-			// go from patrol to to chase mode
+			// go from patrol mode to chase mode
 			currentState = chase;
 		}
 

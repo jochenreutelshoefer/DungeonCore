@@ -1124,16 +1124,6 @@ public class GraphicObjectRenderer {
 			}
 		}
 
-		if ((r.getSpot() != null) && (r.getSpot().
-
-				isFound())) {
-			GraphicObject spotOb = new GraphicObject(r.getSpot(),
-					new RelativeRectangle(spotPosition,
-							getSpotDimension()), null,
-					ImageManager.spotImage);
-			graphObs.add(spotOb);
-		}
-
 		List<HeroInfo> heroInfos = r.getHeroInfos();
 		if (!heroInfos.isEmpty()) {
 			for (HeroInfo heroInfo : heroInfos) {

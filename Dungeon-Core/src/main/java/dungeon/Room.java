@@ -56,8 +56,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	private final Position[] positions = new Position[8];
 
-	private HiddenSpot spot;
-
 	private Shrine s;
 
 	private Chest chest;
@@ -147,22 +145,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return new RoomMemory(this, info);
 	}
 
-	public boolean monstersThere() {
-		for (Iterator<Figure> iter = this.roomFigures.iterator(); iter.hasNext(); ) {
-			Figure element = iter.next();
-			if (element instanceof Monster) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private int visited;
-
-	private boolean start = false;
-
-	private boolean part_scouted = false;
-
 	private final Item[] itemArray = new Item[4];
 
 	public void setFloorIndex(int floorIndex) {
@@ -171,13 +153,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	private int floorIndex;
 
-	private String oldInfos;
-
 	private RoomQuest rquest;
-
-	//private DefaultHall hall = null;
-
-	//private Sector sec = null;
 
 	private Door[] doors = new Door[4];
 
@@ -186,7 +162,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		roomFigures = new CopyOnWriteArrayList<>();
 		items = new CopyOnWriteArrayList<>();
 		number = dungeon.getPoint(x, y);
-		oldInfos = new String("");
 		for (int i = 0; i < positions.length; i++) {
 			positions[i] = new Position(this, i);
 		}
@@ -205,9 +180,12 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	private void tickFigures(int round) {
-		for (Iterator<Figure> i = roomFigures.iterator(); i.hasNext(); ) {
-			Figure element = i.next();
-			element.timeTick(round);
+		for (Figure roomFigure : roomFigures) {
+			roomFigure.timeTick(round);
+			final DungeonVisibilityMap roomVisibility = roomFigure.getRoomVisibility();
+			if (roomVisibility != null) {
+				roomVisibility.resetTemporalVisibilities();
+			}
 		}
 	}
 
@@ -223,11 +201,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 			// todo: refactor
 			roomFigure.lastTurn = round;
-
-			final DungeonVisibilityMap roomVisibility = roomFigure.getRoomVisibility();
-			if (roomVisibility != null) {
-				roomVisibility.resetTemporalVisibilities();
-			}
 
 			roomFigure.setActionPoints(1, round);
 			if (roomFigure.getActionPoints() > 0 && !roomFigure.isDead()) {
@@ -248,17 +221,14 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		}
 
 		boolean fightOn = false;
-		for (Iterator<Figure> iter = getRoomFigures().iterator(); iter.hasNext(); ) {
-			Figure element = iter.next();
+		for (Figure element : getRoomFigures()) {
 			ControlUnit c = element.getControl();
 			if (c == null) {
 				return false;
 			}
-			for (Iterator<Figure> iter2 = getRoomFigures().iterator(); iter2.hasNext(); ) {
-				Figure element2 = iter2.next();
+			for (Figure element2 : getRoomFigures()) {
 				if (element != element2) {
-					boolean hostileTo = element.getControl()
-							.isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
+					boolean hostileTo = element.getControl().isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
 					if (hostileTo) {
 						fightOn = true;
 						break;
@@ -402,13 +372,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return rquest;
 	}
 
-	public void setStart() {
-		start = true;
-	}
-
-	public boolean isStart() {
-		return start;
-	}
 
 	@Override
 	public boolean addItems(List<Item> l, ItemOwner o) {
@@ -486,7 +449,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			else {
 				boolean done = false;
 				if (workList.isEmpty()) {
-					done = true;
 					break;
 				}
 				Item it = workList.getFirst();
@@ -573,7 +535,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -777,7 +738,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	public List<Room> getScoutableNeighbours() {
-		List<Room> l = new LinkedList<Room>();
+		List<Room> l = new LinkedList<>();
 		for (int i = 0; i < doors.length; i++) {
 			Door d = doors[i];
 			if (d != null) {
@@ -817,15 +778,13 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	public int getConnectionDirectionTo(Room r) {
-		Room[] neighbours = new Room[4];
-		for (int i = 0; i < neighbours.length; i++) {
+		for (int i = 0; i < doors.length; i++) {
 			if (doors[i] != null) {
 				if (doors[i].getOtherRoom(this) == r) {
 					return i + 1;
 				}
 			}
 		}
-
 		return -1;
 	}
 
@@ -848,8 +807,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	public Door getConnectionTo(Room r) {
-		Room[] neighbours = new Room[4];
-		for (int i = 0; i < neighbours.length; i++) {
+		for (int i = 0; i < doors.length; i++) {
 			if (doors[i] != null) {
 				if (doors[i].getOtherRoom(this) == r) {
 					return doors[i];
@@ -937,26 +895,11 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return roomFigures;
 	}
 
-	private void setDieMonster(LinkedList<Figure> l) {
-		roomFigures = l;
-	}
-
-	private void setItems(List<Item> l) {
-		items = l;
-	}
 
 	public void addQuest(Quest q) {
 		quests.add(q);
 	}
 
-	public boolean partOfQuest(Quest q) {
-		if (quests.contains(q)) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 
 	public int figureEnters(Figure figure, int moveDir, int round) {
 
@@ -1089,13 +1032,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return true;
 	}
 
-	public int getVisited() {
-		return visited;
-	}
-
-	public void setVisited(int i) {
-	}
-
 	public void figureDies(Figure figure) {
 		if (figure.getRoom() != this) {
 			throw new IllegalArgumentException();
@@ -1157,32 +1093,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	public int getY() {
 		return number.getY();
-	}
-
-	public boolean searchForSpot(double intensity) {
-		return spot != null && spot.found((int) intensity);
-	}
-
-	public boolean searchForDoors(double intensity) {
-		for (int i = 0; i < 4; i++) {
-			if (doors[i] != null && doors[i].isHidden()) {
-				return doors[i].found((int) intensity);
-			}
-		}
-		return false;
-	}
-
-	public Room getKlon(Room r) {
-		Room x = new Room(r.getPoint().getX(), r.getPoint().getY(), r.dungeon);
-		x.setDoors(r.getDoors());
-		x.setDieMonster(new LinkedList<>(r.getRoomFigures()));
-		x.setItems(new LinkedList<>(r.getItems()));
-		x.setVisited(r.getVisited());
-		x.floorIndex = r.getFloorIndex();
-		if (r.getShrine() != null) {
-			x.setShrine(r.getShrine(), false);
-		}
-		return x;
 	}
 
 	/**
@@ -1281,14 +1191,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	public Dungeon getDungeon() {
 		return dungeon;
-	}
-
-	public HiddenSpot getSpot() {
-		return spot;
-	}
-
-	public void setSpot(HiddenSpot spot) {
-		this.spot = spot;
 	}
 
 	public Position[] getPositions() {

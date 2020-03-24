@@ -1855,14 +1855,22 @@ public abstract class Figure extends DungeonWorldObject
 				else {
 					this.tellPercept(new InfoPercept(InfoPercept.LOCKED_DOOR, round));
 				}
+				if(!canPayActionPoints(1)) {
+					return ActionResult.NOAP;
+				}
 				if (doIt) {
+					this.payMoveActionPoint(round);
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
 			}
 			else if (info.isKeylocatable(this)) {
+				if(!canPayActionPoints(1)) {
+					return ActionResult.NOAP;
+				}
 				if (doIt) {
 					KeyLocator.tellKeyLocation(this, d, round);
+					this.payMoveActionPoint(round);
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
