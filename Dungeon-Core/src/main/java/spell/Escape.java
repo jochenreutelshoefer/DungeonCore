@@ -79,7 +79,7 @@ public class Escape extends NoTargetSpell {
 	@Override
 	public void sorcer(Figure mage, int round) {
 				mage.setEscape(level);
-				mage.incActionPoints(1, - 1);
+				//mage.incActionPoints(1, - 1); // Todo: re-implement speed boost
 				mage.handleFleeAction(new FleeAction(false),true, - 1);
 	}
 

@@ -105,9 +105,6 @@ public class Dungeon implements Turnable, EventListener {
 				MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(f,
 						f.getRoomVisibility());
 				AbstractAI ai = new DefaultMonsterIntelligence();
-				if (f.getSpecifiedAI() != null) {
-					ai = f.getSpecifiedAI();
-				}
 				ai.setFigure(info);
 				ControlUnit control = new FigureControl(info, ai);
 				if (f.getControl() == null) {

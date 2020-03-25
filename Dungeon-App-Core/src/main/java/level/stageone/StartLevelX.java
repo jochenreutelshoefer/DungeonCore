@@ -11,6 +11,7 @@ import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DeadEndPath;
 import dungeon.generate.DistanceAtLeastConstraint;
+import dungeon.generate.DistanceAtMostConstraint;
 import dungeon.quest.ReversibleRoomQuest;
 import dungeon.quest.RoomQuestWall;
 import dungeon.util.RouteInstruction;
@@ -56,7 +57,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		Dungeon dungeon = new Dungeon(DUNGEON_SIZE_X, DUNGEON_SIZE_Y);
 		createAllDoors(dungeon);
-		filler = new SimpleDungeonFiller(dungeon, new ArrayList<Key>());
+		filler = new SimpleDungeonFiller(dungeon, new ArrayList<>());
 		Room exitRoom = dungeon.getRoomNr(4,0);
 		exitRoom.removeAllDoorsExcept(Direction.South);
 		filler.addAllocatedRoom(exitRoom);
@@ -98,6 +99,15 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		Room exitPath41 = dungeon.getRoomNr(4,1);
 		exitPath41.removeAllDoorsExcept(Direction.North, Direction.South);
+
+		// we set a spy tower in the middle
+		Room hall45 = dungeon.getRoom(4,5);
+		hall45.setShrine(new ScoutShrine(hall45, 1));
+		filler.addAllocatedRoom(hall45);
+
+		// we set a health fountain
+		Room fountainRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
+		fountainRoom.setShrine(new HealthFountain(30, 1));
 
 		if(Math.random() > 0.5) {
 			// key to be found on the right

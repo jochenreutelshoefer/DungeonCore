@@ -61,6 +61,9 @@ public class Attribute implements Serializable {
 	public static final int HIT_POINTS = 20;
 
 	public static final int FOUNTAIN = 21;
+	public static final int OXYGEN = 21;
+
+	// todo : refactor to enum
 
 	public Attribute(int name, int v) {
 		this.name = name;

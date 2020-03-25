@@ -144,9 +144,16 @@ public class GUIRenderer implements Disposable {
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
 		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.health);
 		this.libgdxGuiElements.add(healthView);
-		JDPoint dustBarPosition = new JDPoint(posX, barHeight + 5);
-		LibgdxHealthBar dustView = new LibgdxHealthBar(dustBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
+
+		JDPoint secondBarPosition = new JDPoint(posX, barHeight + 5);
+		LibgdxHealthBar oxygenView = new LibgdxHealthBar(secondBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.oxygen);
+		this.libgdxGuiElements.add(oxygenView);
+
+
+		JDPoint thirdBarPosition = new JDPoint(posX, 2* barHeight + 7);
+		LibgdxHealthBar dustView = new LibgdxHealthBar(thirdBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
 		this.libgdxGuiElements.add(dustView);
+
 
 		/*
 		 * init hour glass
@@ -155,7 +162,7 @@ public class GUIRenderer implements Disposable {
 		int offsetFromRightBorder = screenWidth / 100;
 		int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromRightBorder;
 		int hourGlassHeight = (int) (hourGlassWidth * 1.6);
-		int hourglassYPos = dustBarPosition.getY() + screenHeightBy25;
+		int hourglassYPos = thirdBarPosition.getY() + screenHeightBy25;
 		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager, game.getSession());
 		this.libgdxGuiElements.add(hourglass);
 

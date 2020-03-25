@@ -869,7 +869,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			List<Figure> monsters = toScout.getRoomFigures();
 			s += ("Du horchst und schaust duch die Ritzen in der Tür -" + "\n");
 
-			decActionPoints(1, round);
+			decActionPoints(action, round);
 			int scoutlevel = calcScout(toScout);
 			if (scoutlevel == 0) {
 				if (monsters.isEmpty()) {

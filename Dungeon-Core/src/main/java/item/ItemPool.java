@@ -60,7 +60,7 @@ public class ItemPool {
 	}
 
 	private static String[] spells = { "repair", "heal", "golden_hit", 
-				"escape", "thunderstorm", "bonebreaker", "fireball", "spy","key_locator","discover","isolation","escapeRoute", "fir"};
+				"escape", "thunderstorm", "bonebreaker", "fireball", "spy","key_locator", "isolation","escapeRoute", "fir"};
 				
 	private static int repair = 8;
 	private static int heal = 9;
@@ -71,13 +71,12 @@ public class ItemPool {
 	private static int fireball = 7;
 	private static int spy = 9;
 	private static int key_locator = 8;
-	private static int discover = 8;
 	private static int isolation = 5;
 	private static int escapeRoute= 5;
 	private static int fir = 8;
 	
 	private static int [] spell_values = { repair, heal, golden_hit, 
-				escape, thunderstorm, bonebreaker, fireball, spy, key_locator, discover, isolation, escapeRoute};
+				escape, thunderstorm, bonebreaker, fireball, spy, key_locator, isolation, escapeRoute};
 	
 	public static Item getRandomItem(int value, double quotient) {
 		Item i = null;
@@ -635,44 +634,7 @@ public class ItemPool {
 			}
 		}
 		
-		
-		
-//		if(worth >= 100) {
-//			//////System.out.println("Modification �ber 100 gefordert!!!
-//
-//			getModifications(worth/3,l);
-//			getModifications((2*worth)/3,l);
-//			
-//					}
-//		else if(worth >= 50) {
-//			modHelp mod1 = new modHelp(getRandomAttr(),2);
-//			l.add(mod1);
-//			worth -= 40;
-//			getModifications(worth, l);
-//		}
-//		else if(worth >= 20) {
-//			modHelp mod1 = new modHelp(getRandomAttr(),1);
-//			l.add(mod1);
-//			worth -= 20;
-//			getModifications(worth, l);
-//		}
-//		else if(worth >= 15) {
-//			modHelp mod1 = new modHelp("DustReg", 0.2);
-//			l.add(mod1);
-//			worth -= 15;
-//			getModifications(worth, l);
-//		}
-//		else if(worth >= 5) {
-//			modHelp mod1 = new modHelp("DustReg", 0.1);
-//			l.add(mod1);
-//			worth -= 5;
-//			getModifications(worth, l);
-//		}
-//		else {
-//			
-//		}
-			
-		
+
 	}
 
 

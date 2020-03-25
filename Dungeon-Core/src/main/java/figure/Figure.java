@@ -2,18 +2,13 @@ package figure;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import ai.AI;
-import ai.AbstractAI;
 import ai.AbstractReflexBehavior;
-import ai.DefaultMonsterIntelligence;
 import dungeon.Chest;
 import dungeon.Dir;
 import dungeon.Door;
@@ -62,12 +57,12 @@ import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.memory.FigureMemory;
 import figure.monster.Monster;
-import figure.monster.MonsterInfo;
 import figure.other.ConjuredMagicFigure;
 import figure.percept.AttackPercept;
 import figure.percept.BreakSpellPercept;
 import figure.percept.DiePercept;
 import figure.percept.DoorSmashPercept;
+import figure.percept.EntersPercept;
 import figure.percept.FightBeginsPercept;
 import figure.percept.FightEndedPercept;
 import figure.percept.FleePercept;
@@ -75,7 +70,6 @@ import figure.percept.HitPercept;
 import figure.percept.InfoPercept;
 import figure.percept.LeavesPercept;
 import figure.percept.MissPercept;
-import figure.percept.EntersPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.ShieldBlockPercept;
@@ -131,7 +125,11 @@ public abstract class Figure extends DungeonWorldObject
 
 	public static final int STATUS_CRITICAL = 0;
 
-	protected APCounter actionPoints;
+	public APAgility getAgility() {
+		return agility;
+	}
+
+	protected APAgility agility;
 	protected Position pos = null;
 
 	protected Room room = null;
@@ -144,7 +142,6 @@ public abstract class Figure extends DungeonWorldObject
 	private AI ai;
 	protected AbstractReflexBehavior reflexReactionUnit;
 
-
 	private Spell lastSpell = null;
 
 	private int figureID = -1;
@@ -152,7 +149,6 @@ public abstract class Figure extends DungeonWorldObject
 	protected Spellbook spellbook;
 
 	private static int figureID_counter = 1;
-
 
 	protected int level;
 
@@ -167,7 +163,6 @@ public abstract class Figure extends DungeonWorldObject
 	public boolean half_bonus = false;
 
 	private boolean raiding = false;
-
 
 	private List<Poisoning> poisonings = new LinkedList<Poisoning>();
 
@@ -253,8 +248,8 @@ public abstract class Figure extends DungeonWorldObject
 		return false;
 	}
 
-	public void decActionPoints(int k, int round) {
-		this.actionPoints.payActionpoints(k, round);
+	public void decActionPoints(ScoutAction action, int round) {
+		this.agility.payActionPoint(action, round);
 	}
 
 	public abstract int getLevel();
@@ -334,10 +329,9 @@ public abstract class Figure extends DungeonWorldObject
 
 	public abstract void receiveSlapResult(SlapResult r);
 
-
 	@Override
 	public String toString() {
-		return this.getClass().getName()+" "+getName()+" "+this.pos.toString();
+		return this.getClass().getName() + " " + getName() + " " + this.pos.toString();
 	}
 
 	public void tellPercept(Percept p) {
@@ -355,18 +349,12 @@ public abstract class Figure extends DungeonWorldObject
 
 	protected abstract List getModificationList();
 
-	public void payActionPoint(int round) {
-			payMoveActionPoint(round);
+	public void payActionPoint(Action action, int round) {
+		payMoveActionPoint(action, round);
 	}
 
-	public void payMoveActionPoint(int round) {
-		actionPoints.payActionpoint(round);
-	}
-
-	public void payMoveActionPoints(int k, int round) {
-		for (int i = 0; i < k; i++) {
-			actionPoints.payActionpoint(round);
-		}
+	private void payMoveActionPoint(Action action, int round) {
+		agility.payActionPoint(action, round);
 	}
 
 	protected void dieAndLeave() {
@@ -386,8 +374,6 @@ public abstract class Figure extends DungeonWorldObject
 	public boolean payDust(int val) {
 		return payDust((double) val);
 	}
-
-
 
 	public void heal(double value) {
 		Attribute healthAttr = getHealth();
@@ -410,15 +396,6 @@ public abstract class Figure extends DungeonWorldObject
 		return this.figureID;
 	}
 
-
-
-
-	AbstractAI specifiedAI = null;
-
-	public static void removeFigure(Figure f) {
-
-
-	}
 
 	protected Attribute bravery = new Attribute(Attribute.BRAVE, 6);
 
@@ -462,6 +439,9 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			this.sufferPoisonings(round);
 		}
+
+		// here the figure gets his AP (and oxygen management happens)
+		this.agility.turn(round);
 	}
 
 	@Override
@@ -629,12 +609,12 @@ public abstract class Figure extends DungeonWorldObject
 					getKilled(allDmg);
 					gameOver();
 				}
-				res = new SlapResult( dies, this, allDmg, s);
+				res = new SlapResult(dies, this, allDmg, s);
 				p = new HitPercept(attacker, this, res, round);
 			}
 		}
 		else {
-			res = new SlapResult( false, this, allDmg, s);
+			res = new SlapResult(false, this, allDmg, s);
 			p = new MissPercept(attacker, this, round);
 		}
 
@@ -648,34 +628,35 @@ public abstract class Figure extends DungeonWorldObject
 
 	public void doActions(int round, boolean fight) {
 
-		while (control != null && !this.isDead() && this.actionPoints.getCurrentAP() > 0) {
+		while (control != null && !this.isDead() && this.agility.getCurrentAP() > 0) {
 
 			Action a;
-			if(fight) {
+			if (fight) {
 				a = retrieveFightActionFromControl();
-			} else {
+			}
+			else {
 				a = retrieveMovementActionFromControl(round);
 			}
 			final Room room = this.getRoom();
 
-				if (room == null || room.getDungeon() == null || room.getDungeon().isGameOver()) {
-					// figure has left dungeon
-					break;
-				}
+			if (room == null || room.getDungeon() == null || room.getDungeon().isGameOver()) {
+				// figure has left dungeon
+				break;
+			}
 
-				ActionResult res = processAction(a, round);
-				if (res.equals(ActionResult.DONE)) {
-					EventManager.getInstance().fireEvent(new WorldChangedEvent());
-				}
+			ActionResult res = processAction(a, round);
+			if (res.equals(ActionResult.DONE)) {
+				EventManager.getInstance().fireEvent(new WorldChangedEvent());
+			}
 
-				if (control == null) {
-					break;
-				}
-				control.actionProcessed(a, res);
+			if (control == null) {
+				break;
+			}
+			control.actionProcessed(a, res);
 
-				if (isDead() || room.getDungeon().isGameOver()) {
-					break;
-				}
+			if (isDead() || room.getDungeon().isGameOver()) {
+				break;
+			}
 
 			/*
 			if (a instanceof EndRoundAction) {
@@ -691,8 +672,6 @@ public abstract class Figure extends DungeonWorldObject
 			*/
 		}
 	}
-
-
 
 	public void attack(Figure op, int round) {
 		// new look dir towards opponent
@@ -712,7 +691,7 @@ public abstract class Figure extends DungeonWorldObject
 	protected abstract boolean flee(RouteInstruction.Direction dir, int round);
 
 	private boolean canPayActionPoints(int k) {
-			return actionPoints.canPayActionpoints(k);
+		return agility.canPayActionpoints(k);
 	}
 
 	public boolean isAbleToLockDoor() {
@@ -830,7 +809,7 @@ public abstract class Figure extends DungeonWorldObject
 				if (this.getRoom() == target.getRoom()) {
 					if (doIt) {
 
-						this.payActionPoint(round);
+						this.payActionPoint(a, round);
 						attack(target, round);
 						return ActionResult.DONE;
 					}
@@ -872,7 +851,7 @@ public abstract class Figure extends DungeonWorldObject
 						this.lookDir = dir.getValue();
 						Position oldPos = this.getPos();
 						flees = flee(dir, round);
-						this.payActionPoint(round);
+						this.payActionPoint(a, round);
 						if (flees) {
 							Percept p = new FleePercept(this, oldPos, dir.getValue(), true, round);
 							oldRoom.distributePercept(p);
@@ -921,7 +900,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	public double getReadiness() {
-		return this.actionPoints.getCurrentAP();
+		return this.agility.getCurrentAP();
 	}
 
 	private boolean doorSmashes(Door d, Figure other, int round) {
@@ -936,13 +915,13 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			else {
 				doStepTo(posN2.getIndex(), pos.getIndex(), round);
-				getDoorSmash(d, other,false, round);
+				getDoorSmash(d, other, false, round);
 				return true;
 			}
 		}
 		else if (posN1.getFigure() == null) {
 			doStepTo(posN1.getIndex(), pos.getIndex(), round);
-			getDoorSmash(d, other,false, round);
+			getDoorSmash(d, other, false, round);
 			return true;
 		}
 		else if (posN2.getFigure() == null) {
@@ -951,13 +930,13 @@ public abstract class Figure extends DungeonWorldObject
 			return true;
 		}
 		else {
-			getDoorSmash(d, other,true, round);
+			getDoorSmash(d, other, true, round);
 			return false;
 		}
 	}
 
 	private void doorSmashesBack(Door d, Figure other, int round) {
-		getDoorSmash(d, other,false, round);
+		getDoorSmash(d, other, false, round);
 	}
 
 	private void getDoorSmash(Door d, Figure other, boolean bigSmash, int round) {
@@ -979,7 +958,6 @@ public abstract class Figure extends DungeonWorldObject
 		return processAction(a, false, -1);
 	}
 
-
 	public abstract boolean canTakeItem(Item i);
 
 	private ActionResult handleTakeItemFromChestAction(TakeItemFromChestAction a, boolean doIt, int round) {
@@ -996,7 +974,7 @@ public abstract class Figure extends DungeonWorldObject
 						if (this.canTakeItem(item)) {
 							if (doIt) {
 								this.takeItem(item);
-								this.payActionPoint(round);
+								this.payActionPoint(a, round);
 								return ActionResult.DONE;
 							}
 							else {
@@ -1042,7 +1020,7 @@ public abstract class Figure extends DungeonWorldObject
 						if (this.canTakeItem(item)) {
 							if (doIt) {
 								this.takeItem(item);
-								this.payActionPoint(round);
+								this.payActionPoint(a, round);
 								this.getRoom().distributePercept(new TakePercept(this, item, round));
 								return ActionResult.DONE;
 							}
@@ -1093,7 +1071,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		if (wayPassable(dir)) {
 			if (doIt) {
-				this.payMoveActionPoints(1, round);
+				this.payMoveActionPoint(a, round);
 				walk(a.getDirection(), round);
 				return ActionResult.DONE;
 			}
@@ -1130,20 +1108,22 @@ public abstract class Figure extends DungeonWorldObject
 
 	private ActionResult processAction(Action a, boolean doIt, int round) {
 
-		if(doIt) {
-			Log.info(System.currentTimeMillis()+" "+ round + " do: "+ round + " "+ this.getName() + " [AP: "+this.actionPoints.getCurrentAP()+"] " + a.getClass().getSimpleName() + "("+a.toString()+")");
+		if (doIt) {
+			Log.info(System.currentTimeMillis() + " " + round + " do: " + round + " " + this.getName() + " [AP: " + this.agility
+					.getCurrentAP() + "] " + a.getClass().getSimpleName() + "(" + a.toString() + ")");
 		}
 
 		if (a == null) {
 			return null;
 		}
 		if (a instanceof EndRoundAction) {
-			if(doIt) {
-				this.payActionPoint(round);
+			if (doIt) {
+				this.payActionPoint(a, round);
 				Percept p = new WaitPercept(this, round);
 				getRoom().distributePercept(p);
 				return ActionResult.DONE;
-			} else {
+			}
+			else {
 				return ActionResult.POSSIBLE;
 			}
 		}
@@ -1259,7 +1239,7 @@ public abstract class Figure extends DungeonWorldObject
 						boolean used = ((Usable) it).use(this, this.getActualDungeon()
 								.getUnwrapper()
 								.unwrappObject(target), a.isMeta(), round);
-						this.payActionPoint(round);
+						this.payActionPoint(a, round);
 						Percept p = new UsePercept(this, (Usable) it, round);
 						getRoom().distributePercept(p);
 
@@ -1282,8 +1262,6 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		return ActionResult.NOAP;
 	}
-
-
 
 	private ActionResult handleStepAction(StepAction a, boolean doIt, int round) {
 		int targetIndex = a.getTargetIndex();
@@ -1308,7 +1286,7 @@ public abstract class Figure extends DungeonWorldObject
 
 							doStepTo(targetIndex, oldPosIndex, round);
 
-							this.payActionPoint(round);
+							this.payActionPoint(a, round);
 							return ActionResult.DONE;
 						}
 						return ActionResult.POSSIBLE;
@@ -1319,7 +1297,8 @@ public abstract class Figure extends DungeonWorldObject
 				}
 				return ActionResult.POSITION;
 			}
-			else {return ActionResult.NOAP;
+			else {
+				return ActionResult.NOAP;
 			}
 		}
 		else {
@@ -1335,7 +1314,7 @@ public abstract class Figure extends DungeonWorldObject
 
 				doStepTo(targetIndex, pos.getIndex(), round);
 
-				this.payMoveActionPoint(round);
+				this.payMoveActionPoint(a, round);
 				return ActionResult.DONE;
 			}
 			return ActionResult.POSSIBLE;
@@ -1367,7 +1346,8 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		int direction = action.getDirection();
 		Room scoutTarget = getRoom().getNeighbourRoom(direction);
-		if(getRoomVisibility().getStatusObject(scoutTarget.getNumber()).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (getRoomVisibility().getStatusObject(scoutTarget.getNumber())
+				.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return ActionResult.UNKNOWN;
 		}
 		if (doIt) {
@@ -1376,7 +1356,7 @@ public abstract class Figure extends DungeonWorldObject
 			getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(this, this.getRoom(), dir, round);
 			getRoom().distributePercept(p);
-			this.payMoveActionPoint(round);
+			this.payMoveActionPoint(action, round);
 			return ActionResult.DONE;
 		}
 		return ActionResult.POSSIBLE;
@@ -1385,7 +1365,6 @@ public abstract class Figure extends DungeonWorldObject
 	/**
 	 * Returns the position index that is required to be at
 	 * to move in the given direction
-	 *
 	 */
 	public static int getDirPos(int dir) {
 		if (dir == Dir.NORTH) {
@@ -1439,7 +1418,7 @@ public abstract class Figure extends DungeonWorldObject
 		shortStatus = JDEnv.getResourceBundle()
 				.getString("status_short_strong");
 
-		actionPoints = new APCounter(this);
+		agility = new APAgility(this);
 
 		this.figureID = figureID_counter;
 		figureID_counter++;
@@ -1630,7 +1609,6 @@ public abstract class Figure extends DungeonWorldObject
 		this.double_bonus = double_bonus;
 	}
 
-
 	public boolean isRaiding() {
 		return raiding;
 	}
@@ -1638,10 +1616,6 @@ public abstract class Figure extends DungeonWorldObject
 	public void makeRaid(Figure f) {
 		raiding = true;
 		this.reflexReactionUnit.setRaidAttack(f);
-	}
-
-	public void setActionPoints(int actionPoints, int round) {
-		this.actionPoints.setCurrentAP(actionPoints, round);
 	}
 
 	@Override
@@ -1683,10 +1657,8 @@ public abstract class Figure extends DungeonWorldObject
 	public abstract String getMclass();
 
 	public int getActionPoints() {
-		return actionPoints.getCurrentAP();
+		return agility.getCurrentAP();
 	}
-
-
 
 	public HealthLevel getHealthLevel() {
 		int i = getCharacter().getHealth().perCent();
@@ -1702,9 +1674,10 @@ public abstract class Figure extends DungeonWorldObject
 		else if (i > 10) {
 			return HealthLevel.Weak;
 		}
-		else if(i > 0){
+		else if (i > 0) {
 			return HealthLevel.Dying;
-		} else {
+		}
+		else {
 			return HealthLevel.Dead;
 		}
 	}
@@ -1759,7 +1732,7 @@ public abstract class Figure extends DungeonWorldObject
 		if (pos != null) {
 			return pos.getIndex();
 		}
-		if(isDead()) {
+		if (isDead()) {
 			return getRoom().getDeadFigurePos(this);
 		}
 		return 0;
@@ -1855,22 +1828,22 @@ public abstract class Figure extends DungeonWorldObject
 				else {
 					this.tellPercept(new InfoPercept(InfoPercept.LOCKED_DOOR, round));
 				}
-				if(!canPayActionPoints(1)) {
+				if (!canPayActionPoints(1)) {
 					return ActionResult.NOAP;
 				}
 				if (doIt) {
-					this.payMoveActionPoint(round);
+					this.payMoveActionPoint(a, round);
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
 			}
 			else if (info.isKeylocatable(this)) {
-				if(!canPayActionPoints(1)) {
+				if (!canPayActionPoints(1)) {
 					return ActionResult.NOAP;
 				}
 				if (doIt) {
 					KeyLocator.tellKeyLocation(this, d, round);
-					this.payMoveActionPoint(round);
+					this.payMoveActionPoint(a, round);
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
@@ -1965,16 +1938,15 @@ public abstract class Figure extends DungeonWorldObject
 		if (toLeave != target) {
 			toLeave.figureLeaves(this);
 			toLeave.distributePercept(leavePercept);
-		} else {
+		}
+		else {
 			Log.warning("toLeave == target");
 		}
-
 
 		target.figureEnters(this, dir, round);
 		lookInRoom(round);
 		Percept enterPercept = new EntersPercept(this, target, round);
 		target.distributePercept(enterPercept);
-
 	}
 
 	public boolean walk(RouteInstruction.Direction dir, int round) {
@@ -2039,8 +2011,6 @@ public abstract class Figure extends DungeonWorldObject
 
 		// actual movement
 		move(toGo, round);
-
-
 	}
 
 	public Dungeon getActualDungeon() {
@@ -2157,13 +2127,7 @@ public abstract class Figure extends DungeonWorldObject
 		return lastSpell;
 	}
 
-	public AbstractAI getSpecifiedAI() {
-		return specifiedAI;
-	}
 
-	public void setSpecifiedAI(AbstractAI specifiedAI) {
-		this.specifiedAI = specifiedAI;
-	}
 
 	public abstract int getWorth();
 
@@ -2171,9 +2135,4 @@ public abstract class Figure extends DungeonWorldObject
 		this.ai = AI;
 	}
 
-	public void incActionPoints(int i, int round) {
-		for (int k = 0; k < i ; k++) {
-			this.actionPoints.incrementActionPoint(round);
-		}
-	}
 }

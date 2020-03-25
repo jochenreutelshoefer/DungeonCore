@@ -61,7 +61,10 @@ public class Ogre extends CreatureMonster {
 	@Override
 	protected boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
-		
+
+		// TODO: re-implement as a skill using oxygen reduction
+
+		/*
 		this.half_bonus = true;
 		this.makesgoldenHit = true;
 		System.out.println("Ogre.makeSpecialAttack!");
@@ -80,6 +83,8 @@ public class Ogre extends CreatureMonster {
 		this.specialAttackCounter = 50;
 		return false;
 
+		*/
+		return false;
 	}
 	
 	@Override

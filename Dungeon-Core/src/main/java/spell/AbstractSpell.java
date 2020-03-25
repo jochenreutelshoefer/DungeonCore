@@ -9,6 +9,7 @@ import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
+import figure.action.SpellAction;
 import figure.action.result.ActionResult;
 import figure.percept.Percept;
 import figure.percept.SpellPercept;
@@ -354,7 +355,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 				if (doIt) {
 					if(costsAP) {
-						mage.payActionPoint(-1);
+						mage.payActionPoint(null, -1); // todo: find solution for action to pass
 					}
 					if (canFire(mage, round)) {
 						

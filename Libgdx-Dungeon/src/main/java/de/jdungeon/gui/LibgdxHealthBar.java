@@ -26,7 +26,7 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 	private final LibgdxHealthBar.Kind kind;
 
 	public enum Kind {
-		health, dust
+		health, dust, oxygen
 	}
 
 	public LibgdxHealthBar(JDPoint position, JDDimension dimension, HeroInfo info,
@@ -61,6 +61,11 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 			baseValue = figure.getAttributeBasic(Attribute.DUST);
 			actualValue = figure.getAttributeValue(Attribute.DUST);
 			coloredBar = ImageManager.health_bar_yellow;
+		}else if (kind == Kind.oxygen) {
+			Attribute oxygen = figure.getAgility().getOxygen();
+			baseValue = oxygen.getBasic();
+			actualValue = oxygen.getValue();
+			coloredBar = ImageManager.health_bar_blue;
 		}
 
 		if (actualValue < 0) {

@@ -555,6 +555,7 @@ public class ImageManager {
 	public static JDImageProxy<?> health_bar_empty;
 	public static JDImageProxy<?> health_bar_yellow;
 	public static JDImageProxy<?> health_bar_red;
+	public static JDImageProxy<?> health_bar_blue;
 
 	public static JDImageProxy<?> inventory_figure_background;
 
@@ -926,6 +927,7 @@ public class ImageManager {
 			health_bar_empty = new JDImageProxy<>(a, "guiItems/health_bar_empty.gif");
 			health_bar_red = new JDImageProxy<>(a, "guiItems/health_bar_red.gif");
 			health_bar_yellow = new JDImageProxy<>(a, "guiItems/health_bar_yellow.gif");
+			health_bar_blue = new JDImageProxy<>(a, "guiItems/health_bar_blue.gif");
 
 			inventory_figure_background = new JDImageProxy<>(a,
 					"figure-shadow1.gif");

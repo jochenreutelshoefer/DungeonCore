@@ -194,6 +194,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	public void turn(int round) {
 		tickFigures(round);
 
+		// todo: refactor this out of this class into Dungeon or DungeonGameLoop
 		for (Figure roomFigure : roomFigures) {
 			if (this.dungeon.isGameOver()) {
 				break;
@@ -202,7 +203,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			// todo: refactor
 			roomFigure.lastTurn = round;
 
-			roomFigure.setActionPoints(1, round);
 			if (roomFigure.getActionPoints() > 0 && !roomFigure.isDead()) {
 				roomFigure.doActions(round, fightRunning);
 
@@ -245,6 +245,9 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	public void setShrine(Shrine s) {
 		if (this.s != null) {
 			throw new IllegalStateException("check for shrine before setting one!");
+		}
+		if(s.getRoom() != null && !s.getRoom().equals(this)) {
+			throw new IllegalStateException("location room not matching");
 		}
 		this.getDungeon().addShrine(s);
 		setShrine(s, true);

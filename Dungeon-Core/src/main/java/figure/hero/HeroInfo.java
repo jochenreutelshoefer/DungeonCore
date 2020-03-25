@@ -6,6 +6,7 @@
  */
 package figure.hero;
 
+import figure.APAgility;
 import item.Item;
 import item.ItemInfo;
 import item.equipment.Armor;
@@ -58,6 +59,9 @@ public class HeroInfo extends FigureInfo {
 	}
 
 
+	public APAgility getAgility() {
+		return h.getAgility();
+	}
 
 	public int getHeroCode() {
 		return h.getHeroCode();
