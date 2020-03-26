@@ -88,12 +88,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected String[] lvl_names;
 
-
-	@Override
-	public int filterFrightening(Frightening f) {
-		return f.getValue();
-	}
-	
 	@Override
 	protected boolean tryUnlockDoor(Door d, boolean doIt) {
 		return false;
@@ -102,7 +96,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	protected List<TimedAttributeModification> modifications = new LinkedList<>();
 
 	protected Attribute strength ;
-	protected Attribute dexterity = new Attribute(Attribute.DEXTERITY,7);
+	protected Attribute dexterity = new Attribute(Attribute.Type.Dexterity,7);
 
 	@Override
 	protected APAgility createAgility() {
@@ -112,7 +106,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	public Attribute getStrength() {
 		if (strength == null) {
-			return new Attribute(Attribute.STRENGTH, 3);
+			return new Attribute(Attribute.Type.Strength, 3);
 		}
 		return strength;
 	}
@@ -144,21 +138,20 @@ public abstract class Monster extends Figure implements Paragraphable,
 		int cth_modifier = (int) (Math.random() * 8) - 4;
 		value = (int) ((((double) value) / (getCHANCE_TO_HIT() + cth_modifier)) * 6);
 		int k = (int) ((this.getHEALTH_DAMAGE_BALANCE() - 2 + ((int) (Math
-				.random() * 4))) * Math.sqrt(this.getLevel()));
+				.random() * 4))) * Math.sqrt(1 /*concept off*/));
 		
 		int HealthI = (int) ((double) value / k);
 
 		
-		health = new Attribute(Attribute.HEALTH, HealthI);
-		psycho = new Attribute(Attribute.PSYCHO, 10);
-		dust  = new Attribute(Attribute.DUST,10);
-		int average = k;
+		health = new Attribute(Attribute.Type.Health, HealthI);
+		psycho = new Attribute(Attribute.Type.Psycho, 10);
+		dust  = new Attribute(Attribute.Type.Dust,10);
 
 		int scatter = getSCATTER();
-		minDamage = average - scatter;
-		maxDamage = average + scatter;
+		minDamage = k - scatter;
+		maxDamage = k + scatter;
 
-		chanceToHit = new Attribute(Attribute.CHANCE_TO_HIT,
+		chanceToHit = new Attribute(Attribute.Type.OtherDeprecatedAttributeType,
 				getCHANCE_TO_HIT() + cth_modifier);
 	}
 
@@ -286,7 +279,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	public Attribute getAttribute(int name) {
+	public Attribute getAttribute(Attribute.Type type) {
 		return null;
 	}
 	
@@ -477,22 +470,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		}
 	}
 	
-	@Override
-	public int getLevel() {
-		int potenz = 2;
-		int unit = 2000;
-
-		int i = 1;
-		while (true) {
-			if (worth >= pot(i, potenz) * unit) {
-			} else {
-				return i;
-			}
-			i++;
-		}
-
-	}
-
 	public static int pot(int base, int pot) {
 		int erg = 1;
 		for (int i = 0; i < pot; i++) {
@@ -512,7 +489,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 	@Override
 	protected void sanction(int i) {
 		for (int j = 0; j < i; j++) {
-			bravery.modValue((-1));
 			psycho.modValue((-1));
 			chanceToHit.modValue((-4));
 		}
@@ -572,20 +548,12 @@ public abstract class Monster extends Figure implements Paragraphable,
 		if (psycho.getValue() < psycho.getBasic()) {
 			psycho.modValue(1);
 		}
-		if (bravery.getValue() < bravery.getBasic()) {
-			bravery.modValue(1);
-		}
 		if (chanceToHit.getValue() + 2 < chanceToHit.getBasic()) {
 			chanceToHit.modValue(2);
 		} else if (chanceToHit.getValue() + 1 < chanceToHit.getBasic()) {
 			chanceToHit.modValue(1);
 		}
 
-	}
-
-	@Override
-	public Attribute getBrave() {
-		return bravery;
 	}
 
 	@Override
@@ -605,7 +573,8 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public int getKnowledgeBalance(Figure f) {
-		return level - f.getLevel();
+		// concept off
+		return 0;
 	}
 
 	protected abstract boolean makeSpecialAttack(Figure target);
@@ -655,7 +624,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return RouteInstruction.Direction.fromInteger(getFleeDir());
 	}
 
-	public int getFleeDir() {
+	private int getFleeDir() {
 		if (lastMove == RouteInstruction.WEST) {
 			if (this.getRoom().directionPassable(RouteInstruction.EAST)) {
 				return RouteInstruction.EAST;

@@ -9,21 +9,22 @@ public class DerivedAttribute extends Attribute {
 
 	private double base = 0;
 
-	private Attribute master;
+	private final Attribute master;
 	private int formularKey = 0;
 
-	public DerivedAttribute(int name, Attribute master, int key) {
+	public DerivedAttribute(Type name, Attribute master, int key) {
 		super(name, 0);
 		this.formularKey = key;
 		this.master = master;
 	}
 
+	@Override
 	public double getBasic() {
 		return derive();
 	}
 
+	@Override
 	public double getValue() {
-		// System.out.println("getValue() - derived");
 		return derive();
 
 	}
@@ -39,10 +40,12 @@ public class DerivedAttribute extends Attribute {
 		return res;
 	}
 
+	@Override
 	public void incBasic(double d) {
 		base += d;
 	}
 
+	@Override
 	public void modValue(double d) {
 		base += d;
 	}

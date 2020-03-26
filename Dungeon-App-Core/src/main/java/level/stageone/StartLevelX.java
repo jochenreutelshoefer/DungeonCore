@@ -21,6 +21,7 @@ import figure.monster.Wolf;
 import item.HealPotion;
 import item.Item;
 import item.Key;
+import item.OxygenPotion;
 import item.VisibilityCheatBall;
 import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
@@ -108,6 +109,13 @@ public class StartLevelX extends AbstractDungeonFactory {
 		// we set a health fountain
 		Room fountainRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
 		fountainRoom.setShrine(new HealthFountain(30, 1));
+		filler.isAllocated(fountainRoom);
+
+		// we set a gimmick chest room
+		Room gimmickRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
+		Chest gimmickChest = new Chest(new OxygenPotion());
+		gimmickRoom.setChest(gimmickChest);
+		filler.isAllocated(gimmickRoom);
 
 		if(Math.random() > 0.5) {
 			// key to be found on the right

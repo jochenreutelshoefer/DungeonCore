@@ -21,8 +21,8 @@ public class Ghul extends UndeadMonster {
 	protected void construcHelpGhul(int value) {
 		tumbleValue = 5;
 		this.antiTumbleValue = 70;
-		this.strength = new Attribute(Attribute.STRENGTH,12);
-		this.dexterity = new Attribute(Attribute.DEXTERITY,6);
+		this.strength = new Attribute(Attribute.Type.Strength,12);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity,6);
 		
 		if(level >= 2) {
 			this.spellbook.addSpell(new Poison(1));

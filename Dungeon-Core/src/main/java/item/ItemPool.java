@@ -43,13 +43,10 @@ import spell.Isolation;
 import spell.KeyLocator;
 import spell.Light;
 import spell.Raid;
-import spell.Repair;
 import spell.Search;
 import spell.AbstractSpell;
 import spell.Spy;
 import spell.Steal;
-import spell.Thunderstorm;
-
 
 public class ItemPool {
 	
@@ -170,7 +167,7 @@ public class ItemPool {
 	 */
 	
 	public static AbstractSpell spellArray [] = {new Bonebreaker(1),new Fireball(1),new GoldenHit(1)/*,new Convince(1)*/,
-		new Escape(1), new GoldenThrow(1), new Heal(1),new Isolation(1), new KeyLocator(1),new Light(1), new Raid(1),new Repair(1),new Search(1),new Spy(1),new Steal(1), new Thunderstorm(1)};
+		new Escape(1), new GoldenThrow(1), new Heal(1),new Isolation(1), new KeyLocator(1),new Light(1), new Raid(1),new Search(1),new Spy(1),new Steal(1)};
 	
 	public static Item getRandomBookSpell() {
 		return new BookSpell(spellArray[((int)Math.random()*spellArray.length)]);
@@ -179,12 +176,7 @@ public class ItemPool {
 	
 	private static Item getBook(int value) {
 		if(value >= 100) {
-			if(Math.random() < 0.2) {
 				return new BookSpell(new Bonebreaker(1),10);
-			}
-			else {
-				return new BookSpell(new Thunderstorm(1),10);
-			}	
 		}
 		else if(value >= 80) {
 			if(Math.random() < 0.3) {
@@ -203,13 +195,8 @@ public class ItemPool {
 			}	
 		} 
 		else if(value >= 40) {
-			if(Math.random() < 0.2) {
-				return new BookSpell(new Repair(1),10);		
-			}
-			else {
 				return new BookSpell(new Heal(1),10);
-			}	
-		} 
+		}
 		else return getRandomItem(value, 1+ Math.random());
 	}
 
@@ -384,9 +371,9 @@ public class ItemPool {
 	public static Item zauberersWeisheit() {
 		Helmet weisheit = new Helmet(20,true);
 		LinkedList mods = new LinkedList();
-		ItemModification mod1 = new ItemModification(Attribute.PSYCHO,1);
-		ItemModification mod2 = new ItemModification(Attribute.DUSTREG,0.2);
-		ItemModification mod3 = new ItemModification(Attribute.DUST,5);
+		ItemModification mod1 = new ItemModification(Attribute.Type.Psycho,1);
+		ItemModification mod2 = new ItemModification(Attribute.Type.DustReg,0.2);
+		ItemModification mod3 = new ItemModification(Attribute.Type.Dust,5);
 		
 		mods.add(mod1);
 		mods.add(mod2);
@@ -402,9 +389,9 @@ public class ItemPool {
 	public static Item atlethenhaut() {
 		Armor haut = new Armor(20,true);
 		LinkedList mods = new LinkedList();
-		ItemModification mod1 = new ItemModification(Attribute.DEXTERITY,1);
-		ItemModification mod2 = new ItemModification(Attribute.STRENGTH,1);
-		ItemModification mod3 = new ItemModification(Attribute.HEALTH,5);
+		ItemModification mod1 = new ItemModification(Attribute.Type.Dexterity,1);
+		ItemModification mod2 = new ItemModification(Attribute.Type.Strength,1);
+		ItemModification mod3 = new ItemModification(Attribute.Type.Health,5);
 		mods.add(mod1);
 		mods.add(mod2);	
 		mods.add(mod3);
@@ -429,9 +416,9 @@ public class ItemPool {
 	
 	public static Item ebertsklinge() {
 		Sword ebertsklinge = new Sword(1,15, 25,true, 35);
-		ItemModification mod1 = new ItemModification(Attribute.STRENGTH,1);
-		ItemModification mod2 = new ItemModification(Attribute.PSYCHO,1);
-		ItemModification mod3 = new ItemModification(Attribute.DEXTERITY,1);
+		ItemModification mod1 = new ItemModification(Attribute.Type.Strength,1);
+		ItemModification mod2 = new ItemModification(Attribute.Type.Psycho,1);
+		ItemModification mod3 = new ItemModification(Attribute.Type.Dexterity,1);
 		LinkedList mods = new LinkedList();
 		mods.add(mod1);
 		mods.add(mod2);
@@ -493,7 +480,7 @@ public class ItemPool {
 		getModifications(magic, l);
 		
 		if(code == 1) {
-			i = Weapon.newWeapon(item1,true);
+			i = Weapon.newRandomWeapon(item1,true);
 			
 		}
 		else if(code == 2) {
@@ -575,65 +562,6 @@ public class ItemPool {
 				getModifications(rest,l);	
 			}
 		}
-		else if(k <= summieren(p,6)) {
-			int rest = buyWeapon(Attribute.AXE,worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,7)) {
-			int rest = buyWeapon(Attribute.CLUB,worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,8)) {
-			int rest = buyWeapon(Attribute.LANCE,worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,9)) {
-			int rest = buyWeapon(Attribute.SWORD,worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,10)) {
-			int rest = buyWeapon(Attribute.WOLFKNIFE,worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,11)) {
-			int rest = buyNature(worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,12)) {
-			int rest = buyCreature(worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		else if(k <= summieren(p,13)) {
-			int rest = buyUndead(worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}else if(k <= summieren(p,14)) {
-			int rest = buyScout(worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}else if(k <= summieren(p,15)) {
-			int rest = buyThreat(worth,l);
-			if(rest > 5) {
-				getModifications(rest,l);	
-			}
-		}
-		
 
 	}
 
@@ -862,63 +790,63 @@ public class ItemPool {
 		}
 		if(value > 100) {
 			value -= 100;
-			l.add(new ItemModification(Attribute.HEALTH,30));	
+			l.add(new ItemModification(Attribute.Type.Health,30));
 		}
 		else if(value > 70) {
 			value -= 70;
-			l.add(new ItemModification(Attribute.HEALTH,20));	
+			l.add(new ItemModification(Attribute.Type.Health,20));
 		}
 		else if(value > 50) {
 			value -= 50;
-			l.add(new ItemModification(Attribute.HEALTH,15));	
+			l.add(new ItemModification(Attribute.Type.Health,15));
 		}
 		else if(value > 40) {
 			value -= 30;
-			l.add(new ItemModification(Attribute.HEALTH,13));	
+			l.add(new ItemModification(Attribute.Type.Health,13));
 		}
 		else if(value > 30) {
 			value -= 30;
-			l.add(new ItemModification(Attribute.HEALTH,11));	
+			l.add(new ItemModification(Attribute.Type.Health,11));
 		}
 		else if(value >= 26) {
 			value -= 26;
-			l.add(new ItemModification(Attribute.HEALTH,10));	
+			l.add(new ItemModification(Attribute.Type.Health,10));
 		}
 		else if(value >= 22) {
 			value -= 22;
-			l.add(new ItemModification(Attribute.HEALTH,9));	
+			l.add(new ItemModification(Attribute.Type.Health,9));
 		}
 		else if(value >= 18) {
 			value -= 18;
-			l.add(new ItemModification(Attribute.HEALTH,8));	
+			l.add(new ItemModification(Attribute.Type.Health,8));
 		}
 		else if(value >= 15) {
 			value -= 15;
-			l.add(new ItemModification(Attribute.HEALTH,7));	
+			l.add(new ItemModification(Attribute.Type.Health,7));
 		}
 		else if(value >= 12) {
 			value -= 12;
-			l.add(new ItemModification(Attribute.HEALTH,6));	
+			l.add(new ItemModification(Attribute.Type.Health,6));
 		}
 		else if(value >= 10) {
 			value -= 10;
-			l.add(new ItemModification(Attribute.HEALTH,5));	
+			l.add(new ItemModification(Attribute.Type.Health,5));
 		}
 		else if(value >= 8) {
 			value -= 8;
-			l.add(new ItemModification(Attribute.HEALTH,4));	
+			l.add(new ItemModification(Attribute.Type.Health,4));
 		}
 		else if(value >= 5) {
 			value -= 5;
-			l.add(new ItemModification(Attribute.HEALTH,3));	
+			l.add(new ItemModification(Attribute.Type.Health,3));
 		}
 		else if(value >= 2) {
 			value -= 2;
-			l.add(new ItemModification(Attribute.HEALTH,2));	
+			l.add(new ItemModification(Attribute.Type.Health,2));
 		}
 		else if(value >= 1) {
 			value -= 1;
-			l.add(new ItemModification(Attribute.HEALTH,1));
+			l.add(new ItemModification(Attribute.Type.Health,1));
 				
 		}
 		rest = value + rest;
@@ -935,63 +863,63 @@ public class ItemPool {
 		}
 		if(value > 100) {
 			value -= 100;
-			l.add(new ItemModification(Attribute.DUST,30));	
+			l.add(new ItemModification(Attribute.Type.Dust,30));
 		}
 		else if(value > 70) {
 			value -= 70;
-			l.add(new ItemModification(Attribute.DUST,20));	
+			l.add(new ItemModification(Attribute.Type.Dust,20));
 		}
 		else if(value > 50) {
 			value -= 50;
-			l.add(new ItemModification(Attribute.DUST,15));	
+			l.add(new ItemModification(Attribute.Type.Dust,15));
 		}
 		else if(value > 40) {
 			value -= 30;
-			l.add(new ItemModification(Attribute.DUST,13));	
+			l.add(new ItemModification(Attribute.Type.Dust,13));
 		}
 		else if(value > 30) {
 			value -= 30;
-			l.add(new ItemModification(Attribute.DUST,11));	
+			l.add(new ItemModification(Attribute.Type.Dust,11));
 		}
 		else if(value >= 26) {
 			value -= 26;
-			l.add(new ItemModification(Attribute.DUST,10));	
+			l.add(new ItemModification(Attribute.Type.Dust,10));
 		}
 		else if(value >= 22) {
 			value -= 22;
-			l.add(new ItemModification(Attribute.DUST,9));	
+			l.add(new ItemModification(Attribute.Type.Dust,9));
 		}
 		else if(value >= 18) {
 			value -= 18;
-			l.add(new ItemModification(Attribute.DUST,8));	
+			l.add(new ItemModification(Attribute.Type.Dust,8));
 		}
 		else if(value >= 15) {
 			value -= 15;
-			l.add(new ItemModification(Attribute.DUST,7));	
+			l.add(new ItemModification(Attribute.Type.Dust,7));
 		}
 		else if(value >= 12) {
 			value -= 12;
-			l.add(new ItemModification(Attribute.DUST,6));	
+			l.add(new ItemModification(Attribute.Type.Dust,6));
 		}
 		else if(value >= 10) {
 			value -= 10;
-			l.add(new ItemModification(Attribute.DUST,5));	
+			l.add(new ItemModification(Attribute.Type.Dust,5));
 		}
 		else if(value >= 8) {
 			value -= 8;
-			l.add(new ItemModification(Attribute.DUST,4));	
+			l.add(new ItemModification(Attribute.Type.Dust,4));
 		}
 		else if(value >= 5) {
 			value -= 5;
-			l.add(new ItemModification(Attribute.DUST,3));	
+			l.add(new ItemModification(Attribute.Type.Dust,3));
 		}
 		else if(value >= 2) {
 			value -= 2;
-			l.add(new ItemModification(Attribute.DUST,2));	
+			l.add(new ItemModification(Attribute.Type.Dust,2));
 		}
 		else if(value >= 1) {
 			value -= 1;
-			l.add(new ItemModification(Attribute.DUST,1));
+			l.add(new ItemModification(Attribute.Type.Dust,1));
 				
 		}
 		rest = value + rest;
@@ -1008,27 +936,27 @@ public class ItemPool {
 		}
 		if(value >= 100) {
 			value -= 100;
-			l.add(new ItemModification(Attribute.DUSTREG,0.7));	
+			l.add(new ItemModification(Attribute.Type.DustReg,0.7));
 		}
 		else if(value >= 70) {
 			value -= 70;
-			l.add(new ItemModification(Attribute.DUSTREG,0.5));	
+			l.add(new ItemModification(Attribute.Type.DustReg,0.5));
 		}
 		else if(value >= 50) {
 			value -= 50;
-			l.add(new ItemModification(Attribute.DUSTREG,0.4));	
+			l.add(new ItemModification(Attribute.Type.DustReg,0.4));
 		}
 		else if(value >= 35) {
 			value -= 35;
-			l.add(new ItemModification(Attribute.DUSTREG,0.3));	
+			l.add(new ItemModification(Attribute.Type.DustReg,0.3));
 		}
 		else if(value >= 20) {
 			value -= 20;
-			l.add(new ItemModification(Attribute.DUSTREG,0.2));	
+			l.add(new ItemModification(Attribute.Type.DustReg,0.2));
 		}
 		else if(value >= 8) {
 			value -= 8;
-			l.add(new ItemModification(Attribute.DUSTREG,0.1));
+			l.add(new ItemModification(Attribute.Type.DustReg,0.1));
 				
 		}
 		rest = value + rest;
@@ -1044,27 +972,27 @@ public class ItemPool {
 		}
 		if(value >= 100) {
 			value -= 100;
-			l.add(new ItemModification(Attribute.STRENGTH,6));	
+			l.add(new ItemModification(Attribute.Type.Strength,6));
 		}
 		else if(value >= 80) {
 			value -= 80;
-			l.add(new ItemModification(Attribute.STRENGTH,5));	
+			l.add(new ItemModification(Attribute.Type.Strength,5));
 		}
 		else if(value >= 60) {
 			value -= 60;
-			l.add(new ItemModification(Attribute.STRENGTH,4));	
+			l.add(new ItemModification(Attribute.Type.Strength,4));
 		}
 		else if(value >= 40) {
 			value -= 40;
-			l.add(new ItemModification(Attribute.STRENGTH,3));	
+			l.add(new ItemModification(Attribute.Type.Strength,3));
 		}
 		else if(value >= 25) {
 			value -= 25;
-			l.add(new ItemModification(Attribute.STRENGTH,2));	
+			l.add(new ItemModification(Attribute.Type.Strength,2));
 		}
 		else if(value >= 10) {
 			value -= 10;
-			l.add(new ItemModification(Attribute.STRENGTH,1));
+			l.add(new ItemModification(Attribute.Type.Strength,1));
 				
 		}
 		rest = value + rest;
@@ -1081,27 +1009,27 @@ public class ItemPool {
 		}
 		if(value >= 100) {
 			value -= 100;
-			l.add(new ItemModification(Attribute.DEXTERITY,6));	
+			l.add(new ItemModification(Attribute.Type.Dexterity,6));
 		}
 		else if(value >= 80) {
 			value -= 80;
-			l.add(new ItemModification(Attribute.DEXTERITY,5));	
+			l.add(new ItemModification(Attribute.Type.Dexterity,5));
 		}
 		else if(value >= 60) {
 			value -= 60;
-			l.add(new ItemModification(Attribute.DEXTERITY,4));	
+			l.add(new ItemModification(Attribute.Type.Dexterity,4));
 		}
 		else if(value >= 40) {
 			value -= 40;
-			l.add(new ItemModification(Attribute.DEXTERITY,3));	
+			l.add(new ItemModification(Attribute.Type.Dexterity,3));
 		}
 		else if(value >= 25) {
 			value -= 25;
-			l.add(new ItemModification(Attribute.DEXTERITY,2));	
+			l.add(new ItemModification(Attribute.Type.Dexterity,2));
 		}
 		else if(value >= 10) {
 			value -= 10;
-			l.add(new ItemModification(Attribute.DEXTERITY,1));
+			l.add(new ItemModification(Attribute.Type.Dexterity,1));
 				
 		}
 		rest = value + rest;
@@ -1118,27 +1046,27 @@ public class ItemPool {
 		}
 		if(value >= 100) {
 			value -= 100;
-			l.add(new ItemModification(Attribute.PSYCHO,6));	
+			l.add(new ItemModification(Attribute.Type.Psycho,6));
 		}
 		else if(value >= 80) {
 			value -= 80;
-			l.add(new ItemModification(Attribute.PSYCHO,5));	
+			l.add(new ItemModification(Attribute.Type.Psycho,5));
 		}
 		else if(value >= 60) {
 			value -= 60;
-			l.add(new ItemModification(Attribute.PSYCHO,4));	
+			l.add(new ItemModification(Attribute.Type.Psycho,4));
 		}
 		else if(value >= 40) {
 			value -= 40;
-			l.add(new ItemModification(Attribute.PSYCHO,3));	
+			l.add(new ItemModification(Attribute.Type.Psycho,3));
 		}
 		else if(value >= 25) {
 			value -= 25;
-			l.add(new ItemModification(Attribute.PSYCHO,2));	
+			l.add(new ItemModification(Attribute.Type.Psycho,2));
 		}
 		else if(value >= 10) {
 			value -= 10;
-			l.add(new ItemModification(Attribute.PSYCHO,1));
+			l.add(new ItemModification(Attribute.Type.Psycho,1));
 				
 		}
 		rest = value + rest;
@@ -1356,82 +1284,9 @@ public class ItemPool {
 //		return rest;	
 //	}
 //	
-	private static int buyNature(int value, LinkedList l) {
-		
-		int rest = 0;
-		int s = Attribute.NATURE_KNOWLEDGE;
-		//eventuell einen gr��eren Teil �brig lassen
-		if(Math.random() < 0.1) {
-			rest = (int)(0.4+ (Math.random()/5)) * value;
-			value -= rest;
-		}
-		
-		if(value >= 400) {
-			value -= 400;
-			l.add(new ItemModification(s,25));	
-		}
-		else if(value >= 250) {
-			value -= 250;
-			l.add(new ItemModification(s,20));	
-		}
-//		else if(value >= 200) {
-//			value -= 200;
-//			l.add(new modHelp(s,18));	
-//		}
-		else if(value >= 160) {
-			value -= 160;
-			l.add(new ItemModification(s,16));	
-		}
-//		else if(value >= 130) {
-//			value -= 130;
-//			l.add(new modHelp(s,14));	
-//		}
-//		else if(value >= 100) {
-//			value -= 100;
-//			l.add(new modHelp(s,12));	
-//		}
-//		else if(value >= 80) {
-//			value -= 80;
-//			l.add(new modHelp(s,10));	
-//		}
-//		else if(value >= 68) {
-//			value -= 68;
-//			l.add(new modHelp(s,8));	
-//		}
-//		else if(value >= 57) {
-//			value -= 57;
-//			l.add(new modHelp(s,7));	
-//		}
-//		else if(value >= 46) {
-//			value -= 46;
-//			l.add(new modHelp(s,6));	
-//		}
-		else if(value >= 36) {
-			value -= 36;
-			l.add(new ItemModification(s,5));	
-		}
-//		else if(value >= 27) {
-//			value -= 27;
-//			l.add(new modHelp(s,4));	
-//		}
-//		else if(value >= 18) {
-//			value -= 18;
-//			l.add(new modHelp(s,3));	
-//		}
-//		else if(value >= 10) {
-//			value -= 10;
-//			l.add(new modHelp(s,2));	
-//		}
-//		else if(value >= 5) {
-//			value -= 5;
-//			l.add(new modHelp(s,1));
-//				
-//		}
-		rest = value + rest;
-		return rest;	
-	}
+
 	
-	private static int buyWeapon(int s,int value, LinkedList l) {
+	private static int buyWeapon(Attribute.Type s,int value, LinkedList l) {
 		
 		int rest = 0;
 		//String s = "Nature_Knowledge";
@@ -1505,215 +1360,15 @@ public class ItemPool {
 		rest = value + rest;
 		return rest;	
 	}
-	
-	private static int buyCreature(int value, LinkedList l) {
-		
-		int rest = 0;
-		int s = Attribute.CREATURE_KNOWLEDGE;
-		//eventuell einen gr��eren Teil �brig lassen
-		if(Math.random() < 0.1) {
-			rest = (int)(0.4+ (Math.random()/5)) * value;
-			value -= rest;
-		}
-		
-		if(value >= 400) {
-			value -= 400;
-			l.add(new ItemModification(s,25));	
-		}
-		else if(value >= 250) {
-			value -= 250;
-			l.add(new ItemModification(s,20));	
-		}
-//		else if(value >= 200) {
-//			value -= 200;
-//			l.add(new modHelp(s,18));	
-//		}
-		else if(value >= 160) {
-			value -= 160;
-			l.add(new ItemModification(s,16));	
-		}
-//		else if(value >= 130) {
-//			value -= 130;
-//			l.add(new modHelp(s,14));	
-//		}
-//		else if(value >= 100) {
-//			value -= 100;
-//			l.add(new modHelp(s,12));	
-//		}
-		else if(value >= 80) {
-			value -= 80;
-			l.add(new ItemModification(s,10));	
-		}
-//		else if(value >= 68) {
-//			value -= 68;
-//			l.add(new modHelp(s,8));	
-//		}
-//		else if(value >= 57) {
-//			value -= 57;
-//			l.add(new modHelp(s,7));	
-//		}
-//		else if(value >= 46) {
-//			value -= 46;
-//			l.add(new modHelp(s,6));	
-//		}
-		else if(value >= 36) {
-			value -= 36;
-			l.add(new ItemModification(s,5));	
-		}
-//		else if(value >= 27) {
-//			value -= 27;
-//			l.add(new modHelp(s,4));	
-//		}
-//		else if(value >= 18) {
-//			value -= 18;
-//			l.add(new modHelp(s,3));	
-//		}
-//		else if(value >= 10) {
-//			value -= 10;
-//			l.add(new modHelp(s,2));	
-//		}
-//		else if(value >= 5) {
-//			value -= 5;
-//			l.add(new modHelp(s,1));
-//				
-//		}
-		rest = value + rest;
-		return rest;	
-	}
-	
-	private static int buyUndead(int value, LinkedList l) {
-		
-		int rest = 0;
-		int s = Attribute.UNDEAD_KNOWLEDGE;
-		//eventuell einen gr��eren Teil �brig lassen
-		if(Math.random() < 0.1) {
-			rest = (int)(0.4+ (Math.random()/5)) * value;
-			value -= rest;
-		}
-		
-		if(value >= 400) {
-			value -= 400;
-			l.add(new ItemModification(s,25));	
-		}
-		else if(value >= 250) {
-			value -= 250;
-			l.add(new ItemModification(s,20));	
-		}
-//		else if(value >= 200) {
-//			value -= 200;
-//			l.add(new modHelp(s,18));	
-//		}
-		else if(value >= 160) {
-			value -= 160;
-			l.add(new ItemModification(s,16));	
-		}
-//		else if(value >= 130) {
-//			value -= 130;
-//			l.add(new modHelp(s,14));	
-//		}
-//		else if(value >= 100) {
-//			value -= 100;
-//			l.add(new modHelp(s,12));	
-//		}
-		else if(value >= 80) {
-			value -= 80;
-			l.add(new ItemModification(s,10));	
-		}
-//		else if(value >= 68) {
-//			value -= 68;
-//			l.add(new modHelp(s,8));	
-//		}
-//		else if(value >= 57) {
-//			value -= 57;
-//			l.add(new modHelp(s,7));	
-//		}
-//		else if(value >= 46) {
-//			value -= 46;
-//			l.add(new modHelp(s,6));	
-//		}
-		else if(value >= 36) {
-			value -= 36;
-			l.add(new ItemModification(s,5));	
-		}
-//		else if(value >= 27) {
-//			value -= 27;
-//			l.add(new modHelp(s,4));	
-//		}
-//		else if(value >= 18) {
-//			value -= 18;
-//			l.add(new modHelp(s,3));	
-//		}
-//		else if(value >= 10) {
-//			value -= 10;
-//			l.add(new modHelp(s,2));	
-//		}
-//		else if(value >= 5) {
-//			value -= 5;
-//			l.add(new modHelp(s,1));
-//				
-//		}
-		rest = value + rest;
-		return rest;	
-	}
-	
-	private static int buyScout(int value, LinkedList l) {
-		
-		int rest = 0;
-		//eventuell einen gr��eren Teil �brig lassen
-		if(Math.random() < 0.1) {
-			rest = (int)(0.4+ (Math.random()/5)) * value;
-			value -= rest;
-		}
-		
-		if(value >= 100) {
-			value -= 100;
-			l.add(new ItemModification(Attribute.SCOUT,3));	
-		}
-		else if(value >= 50) {
-			value -= 50;
-			l.add(new ItemModification(Attribute.SCOUT,2));	
-		}
-		else if(value >= 20) {
-			value -= 20;
-			l.add(new ItemModification(Attribute.SCOUT,1));
-				
-		}
-		rest = value + rest;
-		return rest;	
-	}
-	
-	private static int buyThreat(int value, LinkedList l) {
-		
-		int rest = 0;
-		//eventuell einen gr��eren Teil �brig lassen
-		if(Math.random() < 0.1) {
-			rest = (int)(0.4+ (Math.random()/5)) * value;
-			value -= rest;
-		}
-		
-		if(value >= 100) {
-			value -= 100;
-			l.add(new ItemModification(Attribute.THREAT,3));	
-		}
-		else if(value >= 50) {
-			value -= 50;
-			l.add(new ItemModification(Attribute.THREAT,2));	
-		}
-		else if(value >= 20) {
-			value -= 20;
-			l.add(new ItemModification(Attribute.THREAT,1));
-				
-		}
-		rest = value + rest;
-		return rest;	
-	}
+
+
 
 	public static AttrPotion[] getElexirs(int count, int value) {
 		AttrPotion[] potions = new AttrPotion[count];
 		int a = (value - 10) * 2;
 		for (int i = 0; i < count; i++) {
-			int s = Character.getRandomAttr();
-			potions[i] = new AttrPotion(s, value + ((int) Math.random() * a));
+			Attribute.Type s = Character.getRandomAttr();
+			potions[i] = new AttrPotion(s, value + ((int) (Math.random() * a)));
 	
 		}
 		return potions;

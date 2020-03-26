@@ -19,16 +19,13 @@ public class Dwarf extends Monster {
 	public static final int CHANCE_TO_HIT = 40;
 	protected static final int SCATTER = 5;
 	
-	public  Dwarf() {
+	public Dwarf() {
 		super(7000);
 		tumbleValue = 0;
-		this.strength = new Attribute(Attribute.STRENGTH,12);
-		this.dexterity = new Attribute(Attribute.DEXTERITY,5);
+		this.strength = new Attribute(Attribute.Type.Strength,12);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity,5);
 		// TODO Auto-generated constructor stub
 		name = "Alberich";
-
-
-
 	}
 	
 	@Override

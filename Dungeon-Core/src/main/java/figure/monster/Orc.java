@@ -37,8 +37,8 @@ public class Orc extends CreatureMonster {
 	}
 
 	protected void construcHelpOrc(int value) {
-		this.strength = new Attribute(Attribute.STRENGTH, 7);
-		this.dexterity = new Attribute(Attribute.DEXTERITY, 8);
+		this.strength = new Attribute(Attribute.Type.Strength, 7);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity, 8);
 		this.lvl_names = new String[] {
 				JDEnv.getString("orc1"),
 				JDEnv.getString("orc2"),
@@ -80,7 +80,7 @@ public class Orc extends CreatureMonster {
 			List<Item> stolen = new LinkedList<Item>();
 			op.tellPercept(new TextPercept(getName() + " klaut Dir: ", -1));
 			while (Item.calcValueSum(stolen) < 30) {
-				if (heroItems.size() == 0) {
+				if (heroItems.isEmpty()) {
 					break;
 				}
 				Item toGive = (heroItems.remove(0));

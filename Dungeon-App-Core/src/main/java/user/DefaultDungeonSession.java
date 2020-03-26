@@ -195,9 +195,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		this.currentHero.clearVisibilityMaps();
 
 		// fill up bars (health, oxygen, dust)
-		Attribute health = this.currentHero.getAttribute(Attribute.HEALTH);
+		Attribute health = this.currentHero.getAttribute(Attribute.Type.Health);
 		health.setValue(health.getBasic());
-		Attribute dust = this.currentHero.getAttribute(Attribute.DUST);
+		Attribute dust = this.currentHero.getAttribute(Attribute.Type.Dust);
 		dust.setValue(dust.getBasic());
 		Attribute oxygen = this.currentHero.getAgility().getOxygen();
 		oxygen.setValue(oxygen.getBasic());

@@ -26,7 +26,7 @@ public class HealthFountain extends Shrine {
 	public HealthFountain(int max, int rate) {
 		
 		super();
-		health = new Attribute(Attribute.FOUNTAIN, max);
+		health = new Attribute(Attribute.Type.Foutain, max);
 		this.rate = rate;
 		story = JDEnv.getResourceBundle().getString("see_health_fountain");
 		

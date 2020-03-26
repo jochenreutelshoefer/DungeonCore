@@ -33,10 +33,10 @@ public class DarkMaster extends Monster {
 		name = "Dunkler Meister";
 		int value = 2500;
 		int HealthI = value / (50 + (int) (Math.random() * 10));
-		this.strength = new Attribute(Attribute.STRENGTH,8);
+		this.strength = new Attribute(Attribute.Type.Strength,8);
 		value = value / HealthI;
-		health = new Attribute((Attribute.HEALTH), HealthI);
-		psycho = new Attribute((Attribute.PSYCHO), 20);
+		health = new Attribute((Attribute.Type.Health), HealthI);
+		psycho = new Attribute((Attribute.Type.Psycho), 20);
 		int average = value / (3 + (int) (Math.random() * 4));
 		int scatter = 1 + (int) (Math.random() * (average / 4));
 		minDamage = average - scatter;
@@ -44,7 +44,7 @@ public class DarkMaster extends Monster {
 		//	value = value / average;
 		chanceToHit =
 			new Attribute(
-				(Attribute.CHANCE_TO_HIT),
+				(Attribute.Type.OtherDeprecatedAttributeType),
 				(int) (((float) value / average) * 6));
 		//(100));
 
@@ -131,6 +131,7 @@ public class DarkMaster extends Monster {
 		}
 	}
 	
+	@Override
 	protected int getHEALTH_DAMAGE_BALANCE() {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}

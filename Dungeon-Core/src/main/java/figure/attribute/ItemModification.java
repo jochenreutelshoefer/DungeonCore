@@ -14,20 +14,20 @@ public class ItemModification implements Serializable {
 
 	private final double value;
 
-	private final int attribute;
+	private final Attribute.Type attribute;
 
-	public ItemModification(int key, int value) {
+	public ItemModification(Attribute.Type key, int value) {
 
 		this.value = value;
 		this.attribute = key;
 	}
 
-	public ItemModification(int attribute, double value) {
+	public ItemModification(Attribute.Type attribute, double value) {
 		this.value = value;
 		this.attribute = attribute;
 	}
 
-	public int getAttribute() {
+	public Attribute.Type getAttribute() {
 		return attribute;
 	}
 

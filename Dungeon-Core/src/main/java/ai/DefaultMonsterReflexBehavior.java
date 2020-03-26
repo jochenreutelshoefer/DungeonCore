@@ -26,35 +26,13 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 	
 	protected Action getMovementAction() {
 		Action a = new EndRoundAction();
-		if(shockRounds > 0){
-			Action b = stepAwayFromDoor();
-			if(b != null) {
-				a = b;
-			}
-		}
-		
+
 		this.convincedRounds = 0;
-		this.shockRounds = 0;
 		
 		return a;
 	}
 	
-	private Action stepAwayFromDoor() {
-		Room other = m.getLastFrighener().getRoom();
-		Room here = m.getRoom();
-		int dir = DungeonUtils.getNeighbourDirectionFromTo(here, other)
-				.getValue();
-		int pos = getDoorPos(dir);
-		if(m.getPositionInRoom() == pos) {
-			Position p = getRandomFreePos();
-			if(p != null) {
-				return new StepAction(p.getIndex());
-			}
-			
-		}
-		return null;
-	}
-	
+
 	private Position getRandomFreePos() {
 		Position [] possis = m.getRoom().getPositions();
 		List<Position> l = new LinkedList<Position>();
@@ -187,8 +165,6 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 			Action a = DefaultMonsterIntelligence.getFleeAction((MonsterInfo)(m.makeInfoObject(m.getRoomVisibility())));
 			if(a != null) {
 				return a;
-			} else {
-				return DefaultMonsterIntelligence.getStepAwayAction((MonsterInfo)(m.makeInfoObject(m.getRoomVisibility())),FigureInfo.makeFigureInfo(m.getLastFrighener(),m.getRoomVisibility()));
 			}
 		}
 		return null;

@@ -31,8 +31,7 @@ public class Wolf extends NatureMonster {
 	public static Wolf buildCustomWolf(int chance_to_hit, int damage, int health,int scatter, double healthRec, String name) {
 		int value = (int) (((double)chance_to_hit * damage * health) / 5.8);
 		Wolf w = new Wolf(value);
-		w.health = new Attribute(Attribute.HEALTH,health);
-		w.chanceToHit = new Attribute(Attribute.CHANCE_TO_HIT, chance_to_hit);
+		w.health = new Attribute(Attribute.Type.Health,health);
 		w.minDamage = damage - scatter;
 		w.maxDamage = damage + scatter;
 		w.name = name;
@@ -60,7 +59,7 @@ public class Wolf extends NatureMonster {
 
 	@Override
 	protected APAgility createAgility() {
-		return new APAgility(10, 1.5);
+		return new APAgility(12, 1.8);
 	}
 
 
@@ -75,8 +74,8 @@ public class Wolf extends NatureMonster {
 	protected void contrucHelpWolf(int value) {
 		
 		antiTumbleValue = 10;
-		this.strength = new Attribute(Attribute.STRENGTH,5);
-		this.dexterity = new Attribute(Attribute.DEXTERITY,11);
+		this.strength = new Attribute(Attribute.Type.Strength,5);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity,11);
 		String[] lvl_names = { JDEnv.getString("wolf1"), JDEnv.getString("wolf2"), JDEnv.getString("wolf3"),
 				JDEnv.getString("wolf4"), JDEnv.getString("wolf5"), JDEnv.getString("wolf6") };
 		this.lvl_names = lvl_names;

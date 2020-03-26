@@ -90,16 +90,16 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 			if (bal < -1) {
 
 			} else if (bal == -1) {
-				res = (strength / 5) / m.getLevel();
+				res = (strength / 5) ;
 
 			} else if (bal == 0) {
-				res = (strength / 2) / m.getLevel();
+				res = (strength / 2) ;
 
 			} else if (bal == 1) {
-				res = (strength / 1) / m.getLevel();
+				res = (strength / 1);
 
 			} else if (bal > 1) {
-				res = (strength * 2) / m.getLevel();
+				res = (strength * 2) ;
 			}
 			String str = JDEnv.getResourceBundle().getString("spell_light_cast")+" " + m.getName() + " (" + res + ")";
 			mage.tellPercept(new TextPercept(str, round));

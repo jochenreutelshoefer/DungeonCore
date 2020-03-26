@@ -13,16 +13,10 @@ import item.paper.Scroll;
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-/**
- * @author Jochen
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
+
 import java.util.LinkedList;
 import java.util.List;
 
-import spell.Repair;
 import spell.AbstractSpell;
 import util.JDColor;
 import dungeon.Room;
@@ -39,10 +33,6 @@ import gui.Texts;
 
 public class SorcerLab extends Shrine implements VisibilityModifier {
 
-	/**
-	 * @param actualP
-	 * 
-	 */
 	boolean firstTime = true;
 
 	double dustRate = 0.4;
@@ -285,7 +275,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 	}
 
 	private void testHeroLevel(Hero h) {
-		int l = h.getCharacter().getLevel();
+		int l = 1;
 		if (l > heroLevel) {
 			if (l >= 1 && heroLevel < 1) {
 				actions.add(new SorcerLabAction(2));
@@ -329,17 +319,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see usable#use(fighter)
-	 */
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see usable#usableOnce()
-	 */
 	@Override
 	public boolean usableOnce() {
 		// TODO Auto-generated method stub
@@ -361,7 +341,7 @@ class SorcerLabAction {
 	int cost;
 
 	String[] strings = { "Heiltrank", "Elexir: Geschicklichkeit",
-			"Elexir: Stärke", "Elexir: Psyche", "Zauberrolle: Reparieren", "Zauberrolle: Entdecken" };
+			"Elexir: Stärke", "Elexir: Psyche",  "Zauberrolle: Entdecken" };
 
 	public SorcerLabAction(int key) {
 		this.key = key;
@@ -381,10 +361,6 @@ class SorcerLabAction {
 		}
 		case 3: {
 			cost = 10;
-			break;
-		}
-		case 4: {
-			cost = 3;
 			break;
 		}
 		case 5: {
@@ -419,17 +395,14 @@ class SorcerLabAction {
 				}
 				if (key == 1) {
 					h.takeItem(
-							new AttrPotion(Attribute.DEXTERITY, 25));
+							new AttrPotion(Attribute.Type.Dexterity, 25));
 				}
 				if (key == 2) {
 					h.takeItem(
-							new AttrPotion(Attribute.STRENGTH, 25));
+							new AttrPotion(Attribute.Type.Strength, 25));
 				}
 				if (key == 3) {
-					h.takeItem(new AttrPotion(Attribute.PSYCHO, 25));
-				}
-				if (key == 4) {
-					h.takeItem(new Scroll(new Repair(1), 5));
+					h.takeItem(new AttrPotion(Attribute.Type.Psycho, 25));
 				}
 			}
 			String s = JDEnv.getResourceBundle().getString(

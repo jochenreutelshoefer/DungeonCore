@@ -102,7 +102,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		this.drawBoundsDimension = drawBoundsDimension;
 		this.centerMode = centerMode;
 		this.radius = radius;
-		info.getSpellBuffer();
 		this.binding = new LibgdxItemWheelBindingSetSimple(selectedIndex, itemPositions, provider, reoccurrenceCycleSize);
 		//markedPointIndex = selectedIndex;
 

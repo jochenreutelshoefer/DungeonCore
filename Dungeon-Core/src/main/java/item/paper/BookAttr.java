@@ -17,9 +17,9 @@ import gui.Texts;
  */
 public class BookAttr extends Book {
 	
-	int attribute;
+	Attribute.Type attribute;
 	int level;
-	public BookAttr(int attr, int level) {
+	public BookAttr(Attribute.Type attr, int level) {
 		super(Arith.exp(10,level));
 		this.level = level;
 		attribute = attr;

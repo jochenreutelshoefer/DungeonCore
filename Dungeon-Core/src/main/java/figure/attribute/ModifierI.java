@@ -6,11 +6,11 @@ import java.util.*;
  * Modifikationen gesetzt und bei remove() wieder zurueckgenommen.
  *
  */
-public interface ModifierI{
+public interface ModifierI {
 
-    List getModifications();
+    List<ItemModification> getModifications();
 
-    List getRemoveModifications();
+    List<ItemModification> getRemoveModifications();
 
 
 }

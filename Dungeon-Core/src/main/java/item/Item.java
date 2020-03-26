@@ -2,12 +2,12 @@ package item;
 
 import dungeon.Position;
 import dungeon.RoomEntity;
+import figure.attribute.Attribute;
 import item.equipment.Armor;
 import item.equipment.Helmet;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import item.interfaces.ItemOwner;
-import item.interfaces.Locatable;
 import item.interfaces.LocatableItem;
 import item.quest.Rune;
 
@@ -204,7 +204,7 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 		int i = (int) (Math.random() * 100);
 
 		if (i < 30) {
-			return Weapon.newWeapon(value,false);
+			return Weapon.newRandomWeapon(value,false);
 		} else if (i < 35) {
 			return new Shield(value,false);
 		} else if (i < 40) {
@@ -221,14 +221,14 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 
 
 	@Override
-	public LinkedList getRemoveModifications() {
+	public List<ItemModification> getRemoveModifications() {
 
 		//kreirt die umgekehrten Modifikationen
 		int i = modifications.size();
-		LinkedList neg = new LinkedList();
+		List<ItemModification> neg = new LinkedList<>();
 		for (int j = 0; j < i; j++) {
 			double k = ((ItemModification) (modifications.get(j))).getValue();
-			int s = ((ItemModification) (modifications.get(j))).getAttribute();
+			Attribute.Type s = ((ItemModification) (modifications.get(j))).getAttribute();
 			neg.add(new ItemModification(s, k * (-1)));
 		}
 		return neg;

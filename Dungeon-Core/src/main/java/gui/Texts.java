@@ -46,7 +46,9 @@ public class Texts {
 	public static  final String THREAT_KEY = "attr_threat";
 		
 	public static  final String HEALTH_KEY = "attr_health";
-	
+
+	public static  final String OXYGEN_KEY = "attr_oxygen";
+
 	public static  final String DUST_KEY = "attr_dust";
 		
 	public static final String DUSTREG_KEY = "attr_dustReg";
@@ -109,28 +111,11 @@ public class Texts {
 		
 	public static final String POTION_PSYCHO_KEY = "use_potion_psycho";
 		
-	public static final String POTION_AXE_KEY = "use_potion_axe";
-		
-	public static final String POTION_CLUB_KEY = "use_potion_club";
-	
-	public static final String POTION_LANCE_KEY =  "use_potion_lance";
-	
-	public static final String POTION_SWORD_KEY = "use_potion_sword";
-		
-	public static final String POTION_WOLFKNIFE_KEY = "use_potion_wolfknife";
-		
-	public static final String POTION_NATURE_KNOWLEDGE_KEY = "use_potion_nature";
-	
-	public static final String POTION_CREATURE_KNOWLEDGE_KEY = "use_potion_creature";
-		
-	public static final String POTION_UNDEAD_KNOWLEDGE_KEY = "use_potion_undead";
-	
-	public static final String POTION_SCOUT_KEY = "use_potion_scout";
-		
-	public static  final String POTION_ = "use_potion_threat";
+
 		
 	public static  final String POTION_HEALTH_KEY = "use_potion_health";
-	
+	public static  final String POTION_OXYGEN_KEY = "use_potion_oxygen";
+
 	public static  final String POTION_DUST_KEY = "use_potion_dust";
 		
 	public static final String POTION_DUSTREG_KEY = "use_potion_dustReg";
@@ -432,25 +417,25 @@ public class Texts {
 	}
 
 
-	private static String[] wolves = { "Rasjim", "Marabin", "Firin", "Forin",
+	private static final String[] wolves = { "Rasjim", "Marabin", "Firin", "Forin",
 			"Filkin", "Verin", "Djorin", "Lutjin", "Lojart" };
 
-	private static String[] bears = { "Balum", "Burmet", "Baril", "Banur",
+	private static final String[] bears = { "Balum", "Burmet", "Baril", "Banur",
 			"Barnim", "Baribal" };
 
-	private static String[] orcs = { "Grom", "Silmo", "Kos", "Bafög", "Ruz",
+	private static final String[] orcs = { "Grom", "Silmo", "Kos", "Bafög", "Ruz",
 			"Nomos", "Gon", "Orlot", "Gil", "Fom", "Orsil", "Gogol", "Hamon",
 			"Fuga", "Komi", "Aargau" };
 
-	private static String[] ogres = { "Gul`Dan", "Gre`Tol", "Han`Tar",
+	private static final String[] ogres = { "Gul`Dan", "Gre`Tol", "Han`Tar",
 			"Mre`Halon", "Ma`Negunz", "Gha`Sal", "Khe`Tal", "Khaz`Naleh",
 			"Tar`Malkhen", "Mhen`Uor", "Thar`He", "Nir`Bahar" };
 
-	private static String[] skeletons = { "Karakzun", "Girkonras", "Rakzan",
+	private static final String[] skeletons = { "Karakzun", "Girkonras", "Rakzan",
 			"Cknobber", "Razzek", "Urzep", "Venkzar", "Chazdir", "Nogaz",
 			"Rutzif", "Chozgori" };
 
-	private static String[] ghuls = { "Denator", "Anator", "Helator",
+	private static final String[] ghuls = { "Denator", "Anator", "Helator",
 			"Kilanor", "Talior", "Tawenor", "Draganor", "Salachor", "Rakumor",
 			"Serapor", "Khalcedor" };
 
@@ -505,103 +490,52 @@ public class Texts {
 
 	}
 	
-	public static String getAttributeName(int attrKey) {
-		if(attrKey == Attribute.AXE) {
-			return getString(AXE_KEY);
-		}
-	else if(attrKey == Attribute.CLUB) {
-		return getString(CLUB_KEY);
-	}
-	else if(attrKey == Attribute.LANCE) {
-		return getString(LANCE_KEY);
-	}
-	else if(attrKey == Attribute.SWORD) {
-		return getString(SWORD_KEY);
-	}
-	else if(attrKey == Attribute.WOLFKNIFE) {
-		return getString(WOLFKNIFE_KEY);
-	}
-	else if(attrKey == Attribute.STRENGTH) {
+	public static String getAttributeName(Attribute.Type attrKey) {
+	if(attrKey == Attribute.Type.Strength) {
 		return getString(STRENGTH_KEY);
 	}
-	else if(attrKey == Attribute.DEXTERITY) {
+	else if(attrKey == Attribute.Type.Dexterity) {
 		return getString(DEXTERITY_KEY);
 	}
-	else if(attrKey == Attribute.PSYCHO) {
+	else if(attrKey == Attribute.Type.Psycho) {
 		return getString(PSYCHO_KEY);
 	}
-	else if(attrKey == Attribute.NATURE_KNOWLEDGE) {
-		return getString(NATURE_KNOWLEDGE_KEY);
-	}
-	else if(attrKey == Attribute.CREATURE_KNOWLEDGE) {
-		return getString(CREATURE_KNOWLEDGE_KEY);
-	}
-	else if(attrKey == Attribute.UNDEAD_KNOWLEDGE) {
-		return getString(UNDEAD_KNOWLEDGE_KEY);
-	}
-	else if(attrKey == Attribute.DUST) {
+	else if(attrKey == Attribute.Type.Dust) {
 		return getString(DUST_KEY);
 	}
-	else if(attrKey == Attribute.DUSTREG) {
+	else if(attrKey == Attribute.Type.DustReg) {
 		return getString(DUSTREG_KEY);
 	}
-	else if(attrKey == Attribute.SCOUT) {
-		return getString(SCOUT_KEY);
-	}
-	else if(attrKey == Attribute.HEALTH) {
+	else if(attrKey == Attribute.Type.Health) {
 		return getString(HEALTH_KEY);
 	}
-	else if(attrKey == Attribute.THREAT) {
-		return getString(THREAT_KEY);
+	else if(attrKey == Attribute.Type.Oxygen) {
+		return getString(OXYGEN_KEY);
 	}
 		return "Attribute name not found!";
 	}
 	
-	public static String getPoitionDrinkString(int attrKey) {
-		if(attrKey == Attribute.AXE) {
-			return getString(POTION_AXE_KEY);
-		}
-	else if(attrKey == Attribute.CLUB) {
-		return getString(POTION_CLUB_KEY);
-	}
-	else if(attrKey == Attribute.LANCE) {
-		return getString(POTION_LANCE_KEY);
-	}
-	else if(attrKey == Attribute.SWORD) {
-		return getString(POTION_SWORD_KEY);
-	}
-	else if(attrKey == Attribute.WOLFKNIFE) {
-		return getString(POTION_WOLFKNIFE_KEY);
-	}
-	else if(attrKey == Attribute.STRENGTH) {
+	public static String getPoitionDrinkString(Attribute.Type attrKey) {
+	if(attrKey == Attribute.Type.Strength) {
 		return getString(POTION_STRENGTH_KEY);
 	}
-	else if(attrKey == Attribute.DEXTERITY) {
+	else if(attrKey == Attribute.Type.Dexterity) {
 		return getString(POTION_DEXTERITY_KEY);
 	}
-	else if(attrKey == Attribute.PSYCHO) {
+	else if(attrKey == Attribute.Type.Psycho) {
 		return getString(POTION_PSYCHO_KEY);
 	}
-	else if(attrKey == Attribute.NATURE_KNOWLEDGE) {
-		return getString(POTION_NATURE_KNOWLEDGE_KEY);
-	}
-	else if(attrKey == Attribute.CREATURE_KNOWLEDGE) {
-		return getString(POTION_CREATURE_KNOWLEDGE_KEY);
-	}
-	else if(attrKey == Attribute.UNDEAD_KNOWLEDGE) {
-		return getString(POTION_UNDEAD_KNOWLEDGE_KEY);
-	}
-	else if(attrKey == Attribute.DUST) {
+	else if(attrKey == Attribute.Type.Dust) {
 		return getString(POTION_DUST_KEY);
 	}
-	else if(attrKey == Attribute.DUSTREG) {
+	else if(attrKey == Attribute.Type.DustReg) {
 		return getString(POTION_DUSTREG_KEY);
 	}
-	else if(attrKey == Attribute.SCOUT) {
-		return getString(POTION_SCOUT_KEY);
-	}
-	else if(attrKey == Attribute.HEALTH) {
+	else if(attrKey == Attribute.Type.Health) {
 		return getString(POTION_HEALTH_KEY);
+	}
+	else if(attrKey == Attribute.Type.Oxygen) {
+		return getString(POTION_OXYGEN_KEY);
 	}
 	
 		return "Attribute potion String not found!";

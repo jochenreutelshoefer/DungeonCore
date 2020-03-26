@@ -12,7 +12,6 @@ import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.util.RouteInstruction;
-import fight.Frightening;
 import fight.Slap;
 import fight.SlapResult;
 import figure.APAgility;
@@ -30,7 +29,6 @@ import figure.percept.InfoPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.TextPercept;
-import game.DungeonGameLoop;
 import game.InfoEntity;
 import game.InfoProvider;
 import item.Bunch;
@@ -110,7 +108,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private int sanctions = 0;
 
-
 	public void setCharacter(Character c) {
 		this.c = c;
 	}
@@ -122,8 +119,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	private final Bunch bund = new Bunch();
 
 	private final JDPoint oldLocation = new JDPoint(0, 0);
-
-	private int kills = 0;
 
 	private final int HeroCode;
 
@@ -149,11 +144,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public int filterFrightening(Frightening fr) {
-		return fr.getValue();
-	}
-	
-	@Override
 	public int getWorth() {
 		return 1000 + (500 * level);
 	}
@@ -171,22 +161,13 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				shield.madeBlock(dmg);
 				return true;
 			}
-				
-			
 		}
-		
 		return false;
-		
 	}
 
 	@Override
 	public boolean canTakeItem(Item i) {
 		return inv.canTakeItem(i);
-	}
-
-	@Override
-	public int getLevel() {
-		return c.getLevel();
 	}
 
 	@Override
@@ -198,7 +179,8 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		if (f instanceof Monster) {
 			return c.getKnowledgeBalance((Monster) f);
 		} else {
-			return this.getLevel() - f.getLevel();
+			// concept is off
+			return 0;
 		}
 	}
 
@@ -239,7 +221,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				PsychoVal, Axe, Lance, Sword, Club, Wolfknife, nature,
 				creature, undead, scout, brave, dust, dustReg, this);
 		
-		this.bravery = new Attribute(Attribute.BRAVE, brave);
 		inv = new Inventory(3, 3, 3, 3, this);
 		bund.setOwner(this);
 		inv.addItem(bund);
@@ -263,7 +244,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			brave = 5;
 		}
 		c = character;
-		this.bravery = new Attribute(Attribute.BRAVE, brave);
 		inv = new Inventory(3, 3, 3, 3, this);
 		inv.addItem(bund);
 	}
@@ -362,14 +342,16 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public Attribute getAttribute(int name) {
+	public Attribute getAttribute(Attribute.Type name) {
+		if(name == Attribute.Type.Oxygen) {
+			return this.getAgility().getOxygen();
+		}
 		return this.c.getAttribute(name);
 	}
 
 	@Override
 	protected void sanction(int i) {
 		for (int j = 0; j < i; j++) {
-			getBrave().modValue((-1));
 			getCharacter().getPsycho().modValue((-1));
 			getCharacter().getDexterity().modValue((-1));
 			getCharacter().getStrength().modValue((-1));
@@ -381,13 +363,12 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	@Override
 	public void recover() {
 		double healing = getActionPoints()
-				* getCharacter().getAttribute(Attribute.HEALTHREG).getValue();
+				* getCharacter().getAttribute(Attribute.Type.HealthReg).getValue();
 		heal(healing);
 
 		recDust(getCharacter().getDustReg().getValue());
 
 		if (sanctions > 0) {
-			getBrave().modValue(1);
 			getCharacter().getPsycho().modValue(1);
 			getCharacter().getDexterity().modValue(1);
 			getCharacter().getStrength().modValue(1);
@@ -563,10 +544,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	@Override
 	public void receiveSlapResult(SlapResult r) {
-		getCharacter().giveExp(r);
-		if (r.isLethal()) {
-			kills++;
-		}
 	}
 
 	@Override
@@ -581,7 +558,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	protected int calcScout(Room r) {
 		int level = 0;
 		int handycap = 120;
-		for (int i = 0; i < getCharacter().getScout().getValue(); i++) { // scout
+		for (int i = 0; i < getCharacter().getPsycho().getValue(); i++) { // scout
 			// gibt
 			// den
 			// Wert
@@ -666,24 +643,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			return 0;
 	}
 
-	public int threat(Monster m) {
-		int handycap = 90;
-		int k = getCharacter().getKnowledge(m)
-				+ (int) getCharacter().getThreat().getValue();
-
-		int l = 0;
-		for (int i = 0; i < k; i++) {
-			int o = threatHelp(handycap);
-			if (o > l) {
-				l = o;
-			}
-		}
-
-		if (getCharacter().getKnowledge(m) == 0) {
-			l = 0;
-		}
-		return l;
-	}
 
 	@Override
 	public boolean payDust(int k) {

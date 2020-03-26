@@ -20,8 +20,6 @@ import de.jdungeon.game.Image;
 
 public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 
-
-
 	private final HeroInfo figure;
 	private final LibgdxHealthBar.Kind kind;
 
@@ -53,13 +51,13 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 		double actualValue = 1;
 		JDImageProxy coloredBar = null;
 		if (kind == Kind.health) {
-			baseValue = figure.getAttributeBasic(Attribute.HEALTH);
-			actualValue = figure.getAttributeValue(Attribute.HEALTH);
+			baseValue = figure.getAttributeBasic(Attribute.Type.Health);
+			actualValue = figure.getAttributeValue(Attribute.Type.Health);
 			coloredBar = ImageManager.health_bar_red;
 		}
 		else if (kind == Kind.dust) {
-			baseValue = figure.getAttributeBasic(Attribute.DUST);
-			actualValue = figure.getAttributeValue(Attribute.DUST);
+			baseValue = figure.getAttributeBasic(Attribute.Type.Dust);
+			actualValue = figure.getAttributeValue(Attribute.Type.Dust);
 			coloredBar = ImageManager.health_bar_yellow;
 		}else if (kind == Kind.oxygen) {
 			Attribute oxygen = figure.getAgility().getOxygen();

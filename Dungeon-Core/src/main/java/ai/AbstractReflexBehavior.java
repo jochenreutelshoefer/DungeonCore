@@ -45,7 +45,7 @@ public abstract class AbstractReflexBehavior implements ActionSpecifier, Seriali
 	}
 	
 	public void setConvinced(Figure fig, int strength) {
-		convincedRounds = strength / (this.f.getLevel()+1);
+		convincedRounds = strength / (1+1);
 		this.convincor = fig;
 		if(actualType == 0) {
 			actualType = TYPE_CONVINCED;

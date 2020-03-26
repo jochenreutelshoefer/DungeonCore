@@ -76,8 +76,8 @@ public class Spider extends NatureMonster {
 	protected void construcHelpBear(int value) {
 		tumbleValue = 10;
 		this.antiTumbleValue = 80;
-		this.strength = new Attribute(Attribute.STRENGTH,12);
-		this.dexterity = new Attribute(Attribute.DEXTERITY,9);
+		this.strength = new Attribute(Attribute.Type.Strength,12);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity,9);
 		
 		if(level >= 2) {
 			this.spellbook.addSpell(new Cobweb(1));

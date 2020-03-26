@@ -241,8 +241,6 @@ public abstract class Figure extends DungeonWorldObject
 		this.agility.payActionPoint(action, round);
 	}
 
-	public abstract int getLevel();
-
 	public void poison(Poisoning p) {
 		poisonings.add(p);
 	}
@@ -268,44 +266,15 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private Figure lastFrighener = null;
 
-	public void putFrightening(Frightening fr, int round) {
-		int decreasing = filterFrightening(fr);
-		lastFrighener = fr.getActor();
-		this.getBrave().modValue(decreasing * (-1));
-		shock(decreasing, round);
-	}
 
-	private void shock(int value, int round) {
-		if (value > 0) {
-			this.spellBreak(round);
-		}
-		double braveVal = this.getBrave().getValue();
-		double braveBase = this.getBrave().getBasic();
-		double percent = braveVal / braveBase;
-		int shocks = 0;
-		int i = 0;
-		while (i < value) {
-			i++;
-			if (Math.random() > percent) {
-				shocks++;
-			}
-		}
-		this.reflexReactionUnit.setShock(shocks);
-	}
 
-	public Attribute getBrave() {
-		return bravery;
-	}
-
-	protected abstract int filterFrightening(Frightening fr);
 
 	public void healPoisonings() {
 		poisonings = new LinkedList<>();
 	}
 
-	public abstract Attribute getAttribute(int s);
+	public abstract Attribute getAttribute(Attribute.Type type);
 
 	public abstract Attribute getPsycho();
 
@@ -385,8 +354,6 @@ public abstract class Figure extends DungeonWorldObject
 		return this.figureID;
 	}
 
-
-	protected Attribute bravery = new Attribute(Attribute.BRAVE, 6);
 
 	public abstract double getFireResistRate();
 
@@ -1173,31 +1140,12 @@ public abstract class Figure extends DungeonWorldObject
 			return handleSuicideAction((SuicideAction) a, doIt);
 		}
 
-		if (a instanceof SkillUpAction) {
-			return handleSkillUpAction((SkillUpAction) a, round);
-		}
-
 		return ActionResult.UNKNOWN;
 	}
 
 	private ActionResult handleSuicideAction(SuicideAction a, boolean doIt) {
 		this.getKilled(-1);
 		return ActionResult.DONE;
-	}
-
-	private ActionResult handleSkillUpAction(SkillUpAction a, int round) {
-		if (this instanceof Hero) {
-			Character c = this.getCharacter();
-			if (c.hasSkillPoints()) {
-				int key = a.getKey();
-				Attribute att = this.getAttribute(key);
-				att.incBasic();
-				c.decSkillPoints();
-				this.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("learnSkill"), round));
-				return ActionResult.DONE;
-			}
-		}
-		return ActionResult.OTHER;
 	}
 
 	protected abstract boolean isAbleToUseShrine();
@@ -2065,10 +2013,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	public AbstractReflexBehavior getReflexReactionUnit() {
 		return reflexReactionUnit;
-	}
-
-	public Figure getLastFrighener() {
-		return lastFrighener;
 	}
 
 	private ActionResult handleUseChestAction(UseChestAction a, boolean doIt) {

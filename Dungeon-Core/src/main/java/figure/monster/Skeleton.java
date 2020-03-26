@@ -3,20 +3,8 @@ package figure.monster;
 import ai.AI;
 import figure.Figure;
 import figure.attribute.Attribute;
-import figure.hero.Hero;
-import figure.percept.SpecialAttackPercept;
 import game.JDEnv;
 import gui.Texts;
-import item.Item;
-import item.ItemValueComparator;
-import item.equipment.weapon.Weapon;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import spell.Rust;
-import dungeon.Dungeon;
 
 public class Skeleton extends UndeadMonster {
 
@@ -52,14 +40,10 @@ public class Skeleton extends UndeadMonster {
 				JDEnv.getString("skel4"), JDEnv.getString("skel5"), JDEnv.getString("skel6") };
 		this.lvl_names = lvl_names;
 		this.antiTumbleValue = 20;
-		this.strength = new Attribute(Attribute.STRENGTH,7);
-		this.dexterity = new Attribute(Attribute.DEXTERITY,9);
+		this.strength = new Attribute(Attribute.Type.Strength,7);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity,9);
 		tumbleValue = 0;
 		name = (Texts.getName("skeleton"));
-
-		if(level >= 2) {
-			spellbook.addSpell(new Rust(1));
-		}
 	}
 
 	@Override
@@ -94,18 +78,7 @@ public class Skeleton extends UndeadMonster {
 	
 	@Override
 	protected boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
-		List<Item> l = new LinkedList<Item>();
-		if (op instanceof Hero) {
-			l = ((Hero) op).getInventory().getWeaponList();
-		}
-		Collections.sort(l, new ItemValueComparator());
-		if (l.size() > 0) {
-			Weapon weap = ((Weapon) l.get(0));
-			weap.takeRelDamage(0.3);
-		}
-		getRoom().distributePercept(new SpecialAttackPercept(op,this, -1));
-		this.specialAttackCounter = 50;
+		// special attack is off
 		return false;
 
 	}

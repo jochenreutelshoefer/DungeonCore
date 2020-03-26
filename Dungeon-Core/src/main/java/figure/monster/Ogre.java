@@ -34,8 +34,8 @@ public class Ogre extends CreatureMonster {
 		
 		tumbleValue = 30;
 		this.antiTumbleValue = 80;
-		this.strength = new Attribute(Attribute.STRENGTH,12);
-		this.dexterity = new Attribute(Attribute.DEXTERITY,6);
+		this.strength = new Attribute(Attribute.Type.Strength,12);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity,6);
 		String[] lvl_names =
 			{
 				JDEnv.getString("ogre1"),

@@ -239,10 +239,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return false;
 	}
 
-	public int getLevel() {
-		return f.getLevel();
-	}
-
 	public RoomInfo getRoomInfo() {
 		return RoomInfo.makeRoomInfo(f.getRoom(), map);
 	}

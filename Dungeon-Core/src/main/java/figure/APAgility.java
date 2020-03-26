@@ -22,11 +22,11 @@ public class APAgility implements Serializable {
 	private final double recoveryRate;
 
 	public APAgility() {
-		this(10, 1);
+		this(12, 1);
 	}
 
 	public APAgility(int max, double recoveryRate) {
-		oxygen = new Attribute(Attribute.OXYGEN, max);
+		oxygen = new Attribute(Attribute.Type.Oxygen, max);
 		apCounter = new APCounter();
 		this.recoveryRate = recoveryRate;
 	}

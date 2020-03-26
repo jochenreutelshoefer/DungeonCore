@@ -66,7 +66,6 @@ import shrine.HealthFountain;
 import shrine.LevelExit;
 import shrine.MoonRuneFinderShrine;
 import shrine.QuestShrine;
-import shrine.RepairShrine;
 import shrine.RevealMapShrine;
 import shrine.ScoutShrine;
 import shrine.Shrine;
@@ -1299,7 +1298,6 @@ public class ImageManager {
 
 	private void createShrineClassMap() {
 		shrineMap.put(HealthFountain.class, ImageManager.fountainImage);
-		shrineMap.put(RepairShrine.class, ImageManager.repairImage);
 		shrineMap.put(Statue.class, ImageManager.statueImage);
 		shrineMap.put(Angel.class, ImageManager.engelImage);
 		shrineMap.put(SorcerLab.class, ImageManager.sorcLabImage);

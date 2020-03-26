@@ -23,8 +23,6 @@ import static figure.hero.Hero.HeroCategory.Mage;
 
 public class HeroUtil {
 
-
-
 	// HP, ST,DX,PY,AX, LZ, SW, KN, WM,NN,KN, UN,SC, DU, SP
 	public static final double[] warriorBasic = { 42, 8, 6, 5, 10, 10, 20, 10,
 			0, 0, 10, 0, 1, 10, 0.2 };
@@ -178,8 +176,7 @@ public class HeroUtil {
 		if (prof == null)
 			return;
 		if (prof.equals(Profession.Lumberjack)) {
-			held.getAttribute(Attribute.AXE).incBasic(10);
-			held.getAttribute(Attribute.STRENGTH).incBasic(1);
+			held.getAttribute(Attribute.Type.Strength).incBasic(1);
 		} else if (prof.equals(Profession.Trader)) {
 			Item unique = ItemPool.getUnique(40, 0);
 			held.takeItem(unique);
@@ -200,11 +197,11 @@ public class HeroUtil {
 		} else if (prof.equals(Profession.Alchemist)) {
 			// todo: implement
 		} else if (prof.equals(Profession.Sorcerer)) {
-			held.getAttribute(Attribute.DUSTREG).incBasic(0.3);
-			held.getAttribute(Attribute.DUST).incBasic(4);
+			held.getAttribute(Attribute.Type.DustReg).incBasic(0.3);
+			held.getAttribute(Attribute.Type.Dust).incBasic(4);
 
 		} else if (prof.equals(Profession.Sailor)) {
-			held.getAttribute(Attribute.HEALTH).incBasic(8);
+			held.getAttribute(Attribute.Type.Health).incBasic(8);
 		}
 
 	}

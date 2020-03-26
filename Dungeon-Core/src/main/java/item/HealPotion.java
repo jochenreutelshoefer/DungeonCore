@@ -11,22 +11,14 @@ import gui.Texts;
 
 public class HealPotion extends AttrPotion implements Usable{
 
-    //String Type;
 
     public HealPotion(int value){
-    	super(Attribute.HEALTH,value);
-	
+    	super(Attribute.Type.Health, value);
 	}
     
     @Override
 	public int getItemKey() {
     	return Item.ITEM_KEY_HEALPOTION;
     }
-
-	@Override
-	public int dustCosts() {
-		return 0;
-	}
-
 
 }

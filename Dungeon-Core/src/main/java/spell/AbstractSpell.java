@@ -154,9 +154,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	public static AbstractSpell getSpell(String s) {
-		if (s.equals("repair")) {
-			return new Repair(1);
-		} else if (s.equals("heal")) {
+		if (s.equals("heal")) {
 			return new Heal(1);
 		} else if (s.equals("escape")) {
 			return new Escape(1);
@@ -164,8 +162,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			return new GoldenHit(1);
 		} else if (s.equals("spy")) {
 			return new Spy(1);
-		} else if (s.equals("thunderstorm")) {
-			return new Thunderstorm(1);
 		} else if (s.equals("fireball")) {
 			return new Fireball(1);
 		} else if (s.equals("bonebreaker")) {
