@@ -138,19 +138,19 @@ public class GUIRenderer implements Disposable {
 		/*
 		 * init health bars
 		 */
-		int barHeight = screenHeight / 30;
-		int barWidth = barHeight * 8;
+		int barHeight = screenHeight / 42;
+		int barWidth = barHeight * 12;
 		int posX = screenWidth - barWidth - 10;
 		JDPoint healthBarPosition = new JDPoint(posX, 5);
 		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.health);
 		this.libgdxGuiElements.add(healthView);
 
-		JDPoint secondBarPosition = new JDPoint(posX, barHeight + 5);
+		JDPoint secondBarPosition = new JDPoint(posX, barHeight + 8);
 		LibgdxHealthBar oxygenView = new LibgdxHealthBar(secondBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.oxygen);
 		this.libgdxGuiElements.add(oxygenView);
 
 
-		JDPoint thirdBarPosition = new JDPoint(posX, 2* barHeight + 7);
+		JDPoint thirdBarPosition = new JDPoint(posX, 2* barHeight + 11);
 		LibgdxHealthBar dustView = new LibgdxHealthBar(thirdBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
 		this.libgdxGuiElements.add(dustView);
 
@@ -272,9 +272,6 @@ public class GUIRenderer implements Disposable {
 		}
 	}
 
-	public LibgdxFocusManager getFocusManager() {
-		return focusManager;
-	}
 
 	public LibgdxGameOverView getGameOverView() {
 		return gameOverView;

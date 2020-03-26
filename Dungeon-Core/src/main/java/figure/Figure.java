@@ -100,17 +100,6 @@ import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
 
-/**
- * Oberklasse fuer eine Figur. Eine Figur befindet sich immer in genau einem
- * Raum und kann sich durch Tueren in andere Raeume bewegen. Unterklassen
- * muessen alle abstrakten Methoden fuer den Kampf implementieren. In dieser
- * Klasse werden die Aktionspunkte verwaltet. Jede Runde erhaelt eine Figur
- * Aktionspunkte um Aktionen ausfuehren zu koennen. Die Aktionen werden in
- * processMovementAction() bzw. im Kampf in processFightAction() ausgefuehrt.
- *
- * @see Monster
- * @see Hero
- */
 
 public abstract class Figure extends DungeonWorldObject
 		implements ItemOwner, Turnable, VisibilityModifier, Paragraphable, Serializable, RoomEntity {
@@ -1418,11 +1407,13 @@ public abstract class Figure extends DungeonWorldObject
 		shortStatus = JDEnv.getResourceBundle()
 				.getString("status_short_strong");
 
-		agility = new APAgility(this);
+		agility = createAgility();
 
 		this.figureID = figureID_counter;
 		figureID_counter++;
 	}
+
+	protected abstract APAgility createAgility();
 
 	public void setActualDungeon(Dungeon d) {
 		actualDungeon = d;

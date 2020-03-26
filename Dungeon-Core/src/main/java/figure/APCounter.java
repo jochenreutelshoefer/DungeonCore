@@ -15,12 +15,8 @@ public class APCounter implements Serializable {
 	private static final boolean AP_LOGGING = false;
 
 	private int currentAP = 0;
-	private final Figure figure;
 	private int lastSetRound; // for debugging
 	private int lastPayRound; // for debugging
-	public APCounter(Figure figure) {
-		this.figure = figure;
-	}
 
 	public void setCurrentAP(int value, int round) {
 		int before = currentAP;

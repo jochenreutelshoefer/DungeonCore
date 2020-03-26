@@ -1,6 +1,7 @@
 package figure.monster;
 
 
+import figure.APAgility;
 import spell.MightyStruck;
 import dungeon.Dungeon;
 import item.equipment.Helmet;
@@ -51,6 +52,11 @@ public class Ogre extends CreatureMonster {
 		if(level >= 2) {
 			spellbook.addSpell(new MightyStruck(1));
 		}
+	}
+
+	@Override
+	protected APAgility createAgility() {
+		return new APAgility(8, 0.7);
 	}
 	
 	@Override

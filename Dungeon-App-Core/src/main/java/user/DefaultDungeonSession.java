@@ -10,6 +10,7 @@ import event.EventManager;
 import event.ExitUsedEvent;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
+import figure.attribute.Attribute;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.hero.HeroUtil;
@@ -22,7 +23,6 @@ import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
-import spell.Raid;
 import spell.Spell;
 import util.DeepCopyUtil;
 
@@ -48,7 +48,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	private DungeonFactory lastCompletedDungeonFactory;
 	private DungeonFactory lastSelectedDungeonFactory;
 	private Dungeon derDungeon;
-	private HeroInfo heroInfo;
 
 	private final DungeonManager manager;
 
@@ -113,10 +112,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	}
 
 
-
 	/**
 	 * Returns the hero object that is currently played by this session
-	 * @return
+	 * @return current session hero
 	 */
 	@Override
 	public Hero getCurrentHero() {
@@ -166,7 +164,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		if(dungeonGame !=  null) {
 			return dungeonGame.getRound();
 		}
-
 		return -1;
 	}
 
@@ -185,14 +182,25 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		lastSelectedDungeonFactory = dungeonFactory;
 
 		derDungeon = dungeonFactory.createDungeon();
+
+		/*
+		 Prepare hero for new dungeon
+		 */
 		Hero currentHero = getCurrentHero();
 
 		// we need to clear the keys from the last dungeonFactory (as they would work in the new one also)
 		currentHero.getInventory().clearKeys();
 
-		// we make a copy of this hero for potential restart after death
+		// reset vis map
 		this.currentHero.clearVisibilityMaps();
-		//makeHeroBackup();
+
+		// fill up bars (health, oxygen, dust)
+		Attribute health = this.currentHero.getAttribute(Attribute.HEALTH);
+		health.setValue(health.getBasic());
+		Attribute dust = this.currentHero.getAttribute(Attribute.DUST);
+		dust.setValue(dust.getBasic());
+		Attribute oxygen = this.currentHero.getAgility().getOxygen();
+		oxygen.setValue(oxygen.getBasic());
 
 		currentHero.setActualDungeon(derDungeon);
 		currentHero.setControl(control);
@@ -209,15 +217,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 	}
 
-
-
 	@Override
 	public void revertHero() {
 		currentHero = (Hero) DeepCopyUtil.copy(heroBackup);
-	}
-
-	public HeroInfo getHeroInfo() {
-		return heroInfo;
 	}
 
 	/**

@@ -86,10 +86,11 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 				dimension.getHeight());
 
 		TextureAtlas.AtlasRegion coloredBarAtlasRegion = Assets.instance.getAtlasRegion(coloredBar, Assets.instance.getGuiAtlas());
+		double widthPercentage = dimension.getWidth() * percentage;
 		batch.draw(coloredBarAtlasRegion,
 				position.getX(),
 				position.getY(),
-				(int) (dimension.getWidth() * percentage),
+				(int) widthPercentage,
 				dimension.getHeight()
 		);
 	}

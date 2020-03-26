@@ -15,6 +15,7 @@ import dungeon.util.RouteInstruction;
 import fight.Frightening;
 import fight.Slap;
 import fight.SlapResult;
+import figure.APAgility;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.RoomObservationStatus;
@@ -791,6 +792,10 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		}
 	}
 
+	@Override
+	protected APAgility createAgility() {
+		return new APAgility();
+	}
 
 	@Override
 	public boolean flee(RouteInstruction.Direction fleeDirection, int round) {

@@ -58,6 +58,10 @@ public class Wolf extends NatureMonster {
 		this.name = name;
 	}
 
+	@Override
+	protected APAgility createAgility() {
+		return new APAgility(10, 1.5);
+	}
 
 
 	public Wolf(int value, boolean special_attack) {

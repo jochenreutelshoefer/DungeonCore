@@ -910,24 +910,19 @@ public class ImageManager {
 
 			paperBackground = new JDImageProxy<>(a, "paper_background.gif");
 
-			border_double_left_upper_corner = new JDImageProxy<>(a,
-					"border_double_left_upper_corner.gif");
-			border_double_left_lower_corner = new JDImageProxy<>(a,
-					"border_double_left_lower_corner.gif");
-			border_double_right_upper_corner = new JDImageProxy<>(a,
-					"border_double_right_upper_corner.gif");
-			border_double_right_lower_corner = new JDImageProxy<>(a,
-					"border_double_right_lower_corner.gif");
+			border_double_left_upper_corner = new JDImageProxy<>(a, "border_double_left_upper_corner.gif");
+			border_double_left_lower_corner = new JDImageProxy<>(a, "border_double_left_lower_corner.gif");
+			border_double_right_upper_corner = new JDImageProxy<>(a, "border_double_right_upper_corner.gif");
+			border_double_right_lower_corner = new JDImageProxy<>(a, "border_double_right_lower_corner.gif");
 			border_double_top = new JDImageProxy<>(a, "border_double_top.gif");
-			border_double_bottom = new JDImageProxy<>(a,
-					"border_double_bottom.gif");
+			border_double_bottom = new JDImageProxy<>(a, "border_double_bottom.gif");
 			border_double_left = new JDImageProxy<>(a, "border_double_left.gif");
 			border_double_right = new JDImageProxy<>(a, "border_double_right.gif");
 
 			health_bar_empty = new JDImageProxy<>(a, "guiItems/health_bar_empty.gif");
-			health_bar_red = new JDImageProxy<>(a, "guiItems/health_bar_red.gif");
-			health_bar_yellow = new JDImageProxy<>(a, "guiItems/health_bar_yellow.gif");
-			health_bar_blue = new JDImageProxy<>(a, "guiItems/health_bar_blue.gif");
+			health_bar_red = new JDImageProxy<>(a, "guiItems/health_bar_bare_red.gif");
+			health_bar_yellow = new JDImageProxy<>(a, "guiItems/health_bar_bare_yellow.gif");
+			health_bar_blue = new JDImageProxy<>(a, "guiItems/health_bar_bare_blue.gif");
 
 			inventory_figure_background = new JDImageProxy<>(a,
 					"figure-shadow1.gif");

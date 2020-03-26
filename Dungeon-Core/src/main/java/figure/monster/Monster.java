@@ -1,6 +1,7 @@
 package figure.monster;
 
 import ai.AI;
+import figure.APAgility;
 import figure.HealthLevel;
 import figure.action.ScoutAction;
 import figure.action.ScoutResult;
@@ -102,7 +103,11 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected Attribute strength ;
 	protected Attribute dexterity = new Attribute(Attribute.DEXTERITY,7);
-	
+
+	@Override
+	protected APAgility createAgility() {
+		return new APAgility();
+	}
 
 	@Override
 	public Attribute getStrength() {

@@ -1,5 +1,6 @@
 package figure;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -14,29 +15,30 @@ import figure.attribute.Attribute;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 25.03.20.
  */
-public class APAgility {
-
-	private final Figure figure;
-
-
+public class APAgility implements Serializable {
 
 	private final Attribute oxygen;
 	private final APCounter apCounter;
+	private final double recoveryRate;
 
-	public APAgility(Figure figure) {
-		this.figure = figure;
-		oxygen = new Attribute(Attribute.OXYGEN, 10);
-		apCounter = new APCounter(figure);
+	public APAgility() {
+		this(10, 1);
+	}
+
+	public APAgility(int max, double recoveryRate) {
+		oxygen = new Attribute(Attribute.OXYGEN, max);
+		apCounter = new APCounter();
+		this.recoveryRate = recoveryRate;
 	}
 
 	public void turn(int round) {
 		// figure gets an AP only if there is at least a little amount of oxygen
-		if(oxygen.getValue() > 1) {
+		if(oxygen.getValue() >= 1) {
 			apCounter.setCurrentAP(1, round);
 		}
 
 		// take a breath instead
-		oxygen.addToMax(1);
+		oxygen.addToMax(recoveryRate);
 
 	}
 
@@ -51,12 +53,11 @@ public class APAgility {
 		OXYGEN_ACTIONS.add(StepAction.class);
 		OXYGEN_ACTIONS.add(AttackAction.class);
 		OXYGEN_ACTIONS.add(FleeAction.class);
-
 	}
 
 	public void payActionPoint(Action action, int round) {
 		apCounter.payActionpoint(round);
-		if(OXYGEN_ACTIONS.contains(action.getClass())) {
+		if(action != null && OXYGEN_ACTIONS.contains(action.getClass())) {
 			oxygen.modValue(-2);
 		}
 	}
