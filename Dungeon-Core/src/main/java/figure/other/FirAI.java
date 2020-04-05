@@ -38,10 +38,10 @@ public class FirAI extends AbstractAI {
 		FigureInfo lastFigure = roomInfo.getPositionInRoom(lastIndex).getFigure();
 		FigureInfo nextFigure = roomInfo.getPositionInRoom(nextIndex).getFigure();
 		if(attackers.contains(lastFigure)) {
-			return new AttackAction(lastFigure.getFighterID());
+			return new AttackAction(info, lastFigure.getFighterID());
 		}
 		if(attackers.contains(nextFigure)) {
-			return new AttackAction(nextFigure.getFighterID());
+			return new AttackAction(info, nextFigure.getFighterID());
 		}
 		return new EndRoundAction();
 	}

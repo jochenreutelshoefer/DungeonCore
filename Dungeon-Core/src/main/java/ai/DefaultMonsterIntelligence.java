@@ -6,6 +6,8 @@
  */
 package ai;
 
+import figure.action.AttackAction;
+import figure.action.FleeAction;
 import figure.monster.DarkMaster;
 import figure.monster.Dwarf;
 import figure.monster.Ghul;
@@ -114,7 +116,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	public Action chooseMovementAction() {
 
 		if (monster.getActionPoints() == 0) {
-			Action a = Action.makeEndRoundAction(/* monster.getFigureID() */);
+			Action a = new EndRoundAction();
 			lastAction = a;
 			return a;
 		}
@@ -142,7 +144,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	protected Action walk(int dir) {
-		Action a = new MoveAction(this.monster.getRoomNumber(), dir);
+		Action a = new MoveAction(this.monster, this.monster.getRoomNumber(), dir);
 		// System.out.println("Dir to walk: "+dir);
 
 		int pos = -1;
@@ -163,7 +165,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			return a;
 		} else {
 			actionQueue.add(a);
-			return new StepAction(pos);
+			return new StepAction(this.info, pos);
 		}
 
 	}
@@ -207,14 +209,14 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			PositionInRoomInfo info = monster.getRoomInfo().getPositionInRoom(
 					wantIndex);
 			if (!info.isOccupied()) {
-				return new StepAction(wantIndex);
+				return new StepAction(monster, wantIndex);
 			}
 		} else if (leftDist > rightDist) {
 			int wantIndex = Position.getNextIndex(posIndex, false);
 			PositionInRoomInfo info = monster.getRoomInfo().getPositionInRoom(
 					wantIndex);
 			if (!info.isOccupied()) {
-				return new StepAction(wantIndex);
+				return new StepAction(monster, wantIndex);
 			}
 		}
 
@@ -222,8 +224,8 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	public static Action getFleeAction(FigureInfo monster) {
-		Action a = Action.makeActionFlee();
-		ActionResult res = monster.checkAction(Action.makeActionFlee());
+		Action a = new FleeAction(monster);
+		ActionResult res = monster.checkAction(a);
 		if (res.getSituation() == ActionResult.Situation.possible) {
 			return a;
 		} else {
@@ -249,7 +251,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		if (stepsA.length > 0) {
 
 			DoorStep step = stepsA[0];
-			return new StepAction(step.getIndex());
+			return new StepAction(monster, step.getIndex());
 		}
 		return null;
 
@@ -385,16 +387,16 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		}
 		if (step1 != null && step2 != null) {
 			if (step1.getDistance() > step2.getDistance()) {
-				return new StepAction(step2.getIndex());
+				return new StepAction(monster, step2.getIndex());
 			} else {
-				return new StepAction(step1.getIndex());
+				return new StepAction(monster, step1.getIndex());
 			}
 		} else {
 			if (step1 != null) {
-				return new StepAction(step1.getIndex());
+				return new StepAction(monster, step1.getIndex());
 			} else {
 				if (step2 != null) {
-					new StepAction(step2.getIndex());
+					new StepAction(monster, step2.getIndex());
 				}
 			}
 		}
@@ -467,9 +469,9 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			return getActionForMonsterCount2();
 		}
 		if (monsterCount > 2) {
-			return Action.makeActionAttack(heroIndex);
+			return new AttackAction(monster, heroIndex);
 		}
-		return Action.makeActionAttack(heroIndex);
+		return new AttackAction(monster, heroIndex);
 	}
 
 	protected Action getActionForMonsterCount2() {
@@ -480,17 +482,17 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			if (a != null) {
 				return a;
 			} else {
-				return Action.makeActionAttack(heroIndex);
+				return new AttackAction(monster, heroIndex);
 			}
 		} else {
 			if (Math.random() > 0.2) {
-				return Action.makeActionAttack(heroIndex);
+				return new AttackAction(monster, heroIndex);
 			} else {
 				StepAction step = stepToEnemy();
 				if (step != null) {
 					return step;
 				} else {
-					return Action.makeActionAttack(heroIndex);
+					return new AttackAction(monster, heroIndex);
 				}
 			}
 		}
@@ -505,17 +507,17 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			if (a != null) {
 				return a;
 			} else {
-				return Action.makeActionAttack(heroIndex);
+				return new AttackAction(monster, heroIndex);
 			}
 		} else {
 			if (Math.random() > 0.2) {
-				return Action.makeActionAttack(heroIndex);
+				return new AttackAction(monster, heroIndex);
 			} else {
 				StepAction step = stepToEnemy();
 				if (step != null) {
 					return step;
 				} else {
-					return Action.makeActionAttack(heroIndex);
+					return new AttackAction(monster, heroIndex);
 				}
 			}
 		}
@@ -530,13 +532,13 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		if (a <= 80) {
 			return null;
 		} else if (a <= 85) {
-			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.SOUTH);
+			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.SOUTH);
 		} else if (a <= 90) {
-			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.EAST);
+			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.EAST);
 		} else if (a <= 95) {
-			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.NORTH);
+			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.NORTH);
 		} else {
-			return new MoveAction(this.monster.getRoomInfo().getLocation(), RouteInstruction.WEST);
+			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.WEST);
 		}
 	}
 
@@ -565,7 +567,7 @@ class DoorStep implements Comparable<DoorStep> {
 
 	@Override
 	public int compareTo(DoorStep o) {
-		if (o instanceof DoorStep) {
+		if (o != null) {
 			DoorStep other = o;
 			if (this.distance < other.distance) {
 				return 1;

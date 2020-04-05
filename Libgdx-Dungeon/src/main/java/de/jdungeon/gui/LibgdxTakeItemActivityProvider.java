@@ -46,7 +46,7 @@ public class LibgdxTakeItemActivityProvider extends LibgdxItemActivityItemProvid
 	@Override
 	public void activityPressed(Activity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		guiControl.plugAction(new TakeItemAction((ItemInfo) infoEntity.getObject()));
+		guiControl.plugAction(new TakeItemAction(this.info, (ItemInfo) infoEntity.getObject()));
 	}
 
 }

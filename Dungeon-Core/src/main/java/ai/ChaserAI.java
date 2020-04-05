@@ -6,6 +6,7 @@ import dungeon.Path;
 import dungeon.util.DungeonUtils;
 import figure.FigureInfo;
 import figure.action.Action;
+import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.percept.Percept;
 
@@ -36,7 +37,7 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 			return a;
 		}
 
-		return Action.makeActionAttack(getHeroIndex());
+		return new AttackAction(info, getHeroIndex());
 	}
 
 	@Override

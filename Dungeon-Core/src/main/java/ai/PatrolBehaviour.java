@@ -57,7 +57,7 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 
 	@Override
 	public Action chooseFightAction() {
-		return Action.makeActionAttack(getHeroIndex());
+		return new AttackAction(this.info, getHeroIndex());
 	}
 
 	@Override

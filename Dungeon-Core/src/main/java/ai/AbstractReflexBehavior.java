@@ -32,7 +32,7 @@ public abstract class AbstractReflexBehavior implements ActionSpecifier, Seriali
 		if(raidAttacking) {
 			raidAttacking = false;
 			
-			Action a = new AttackAction(raidTarget.getFigureID());
+			Action a = new AttackAction(f, raidTarget.getFigureID());
 			raidTarget = null;
 			return a;
 		}

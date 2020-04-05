@@ -38,7 +38,7 @@ public class LionessAI extends AbstractAI {
 		}
 		FigureInfo target = figureInfos.get(((int)(Math.random() * figureInfos.size())));
 		
-		return new AttackAction(target.getFighterID());
+		return new AttackAction(this.info, target.getFighterID());
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class LionessAI extends AbstractAI {
 		
 		if(currentWalkTarget != null) {
 			int dir = new RouteInstruction(currentWalkTarget.getNumber()).getWay(info.getRoomInfo(), this.master.getMap());
-			return new MoveAction(this.info.getRoomNumber(), dir);
+			return new MoveAction(this.info, this.info.getRoomNumber(), dir);
 		}
 		return null;
 	}

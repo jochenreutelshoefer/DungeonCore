@@ -27,6 +27,6 @@ public class SteppingBehaviour extends AbstractMonsterBehaviour {
 	@Override
 	public Action chooseMovementAction() {
 		int index = (int) (Math.random() * 8);
-		return new StepAction(index);
+		return new StepAction(this.info, index);
 	}
 }

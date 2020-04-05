@@ -138,14 +138,14 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 					while(fig == null || fig == f || fig == this.convincor) {
 						fig = l.get((int)(Math.random()*l.size()));
 					}
-					return new AttackAction(fig.getFigureID());
+					return new AttackAction(this.f, fig.getFigureID());
 				}else {
 					Action a = getFleeAction();
 					if(a != null) {
 						return a;
 					}else {
 						if(f.getRoom().getRoomFigures().contains(this.convincor)) {
-							return new AttackAction(this.convincor.getFigureID());
+							return new AttackAction(this.f, this.convincor.getFigureID());
 						}else {
 							convincedRounds = 0;
 							return null;

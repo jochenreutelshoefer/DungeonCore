@@ -16,7 +16,7 @@ import figure.percept.Percept;
  */
 public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 
-	private Position pos;
+	private final Position pos;
 	DefaultMonsterIntelligence defaultFightAI = new DefaultMonsterIntelligence();
 
 	public GuardPositionBehaviour(Position pos) {
@@ -49,24 +49,24 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 				if(otherFigure != null) {
 					// someone in the way
 					if(otherFigure.isHostile(this.info)) {
-						return new AttackAction(otherFigure.getFighterID());
+						return new AttackAction(this.info, otherFigure.getFighterID());
 					} else {
-						return new StepAction(info.getPos().getNextIndex());
+						return new StepAction(info, info.getPos().getNextIndex());
 					}
 				}
-				return new StepAction(lastIndex);
+				return new StepAction(info, lastIndex);
 			} else {
 				int nextIndex = info.getPos().getNextIndex();
 				FigureInfo otherFigure = info.getRoomInfo().getPositionInRoom(nextIndex).getFigure();
 				if(otherFigure != null) {
 					// someone in the way
 					if(otherFigure.isHostile(this.info)) {
-						return new AttackAction(otherFigure.getFighterID());
+						return new AttackAction(this.info, otherFigure.getFighterID());
 					} else {
-						return new StepAction(info.getPos().getLastIndex());
+						return new StepAction(info, info.getPos().getLastIndex());
 					}
 				}
-				return new StepAction(nextIndex);
+				return new StepAction(info, nextIndex);
 			}
 		}
 		return defaultFightAI.chooseFightAction();
@@ -81,11 +81,11 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 
 			} else {
 				// we step to our guard position
-				return new StepAction(pos.getIndex());
+				return new StepAction(info, pos.getIndex());
 			}
 		} else {
 			// we make our way towards the guarding position
-			return new MoveAction(this.info.getRoomNumber(), new RouteInstruction(pos.getRoom().getNumber()).getWay(info.getRoomNumber(), this.info.getMap()));
+			return new MoveAction(this.info, this.info.getRoomNumber(), new RouteInstruction(pos.getRoom().getNumber()).getWay(info.getRoomNumber(), this.info.getMap()));
 		}
 	}
 }

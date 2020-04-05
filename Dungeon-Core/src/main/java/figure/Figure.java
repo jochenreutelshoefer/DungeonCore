@@ -29,6 +29,7 @@ import fight.Frightening;
 import fight.Poisoning;
 import fight.Slap;
 import fight.SlapResult;
+import figure.action.AbstractExecutableAction;
 import figure.action.Action;
 import figure.action.AttackAction;
 import figure.action.EndRoundAction;
@@ -311,7 +312,7 @@ public abstract class Figure extends DungeonWorldObject
 		payMoveActionPoint(action, round);
 	}
 
-	private void payMoveActionPoint(Action action, int round) {
+	public void payMoveActionPoint(Action action, int round) {
 		agility.payActionPoint(action, round);
 	}
 
@@ -644,9 +645,9 @@ public abstract class Figure extends DungeonWorldObject
 
 	public abstract int getKnowledgeBalance(Figure f);
 
-	protected abstract boolean flee(RouteInstruction.Direction dir, int round);
+	public abstract boolean flee(RouteInstruction.Direction dir, int round);
 
-	private boolean canPayActionPoints(int k) {
+	public boolean canPayActionPoints(int k) {
 		return agility.canPayActionpoints(k);
 	}
 
@@ -755,6 +756,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	private ActionResult handleAttackAction(AttackAction a, boolean doIt, int round) {
+		/*
 		int targetIndex = a.getTarget();
 		Figure target = actualDungeon.getFigureIndex().get(targetIndex);
 		if (target == null) {
@@ -774,6 +776,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			return ActionResult.NOAP;
 		}
+		*/
 		return ActionResult.MODE;
 	}
 
@@ -785,7 +788,7 @@ public abstract class Figure extends DungeonWorldObject
 		return cobwebbed > 0;
 	}
 
-	protected boolean isPinnedToGround() {
+	public boolean isPinnedToGround() {
 		return cobwebbed > 0;
 	}
 
@@ -1072,6 +1075,11 @@ public abstract class Figure extends DungeonWorldObject
 		if (a == null) {
 			return null;
 		}
+
+		if(a instanceof AbstractExecutableAction) {
+			return ((AbstractExecutableAction)a).handle(doIt, round);
+		}
+
 		if (a instanceof EndRoundAction) {
 			if (doIt) {
 				this.payActionPoint(a, round);
@@ -1201,6 +1209,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	private ActionResult handleStepAction(StepAction a, boolean doIt, int round) {
+		/*
 		int targetIndex = a.getTargetIndex();
 		if (targetIndex == -1) {
 			return ActionResult.NO_TARGET;
@@ -1256,9 +1265,11 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			return ActionResult.POSSIBLE;
 		}
+		*/
+		return null;
 	}
 
-	private void doStepTo(int targetFieldindex, int oldPosIndex, int round) {
+	public void doStepTo(int targetFieldindex, int oldPosIndex, int round) {
 		Position newPos = getRoom().getPositions()[targetFieldindex];
 
 		this.lookDir = Position.getDirFromTo(pos.getIndex(), targetFieldindex);
@@ -1319,7 +1330,8 @@ public abstract class Figure extends DungeonWorldObject
 		return -1;
 	}
 
-	protected abstract ScoutResult scout(ScoutAction action, int round);
+	@Deprecated // unify across different figure types
+	public abstract ScoutResult scout(ScoutAction action, int round);
 
 	protected abstract int getKilled(int dmg);
 
@@ -1741,7 +1753,8 @@ public abstract class Figure extends DungeonWorldObject
 		return control;
 	}
 
-	protected abstract boolean tryUnlockDoor(Door d, boolean doIt);
+	@Deprecated // todo: unifiy across different figure types
+	public abstract boolean tryUnlockDoor(Door d, boolean doIt);
 
 	private ActionResult handleLockAction(LockAction a, boolean doIt, int round) {
 		DoorInfo info = a.getDoor();
@@ -1849,7 +1862,7 @@ public abstract class Figure extends DungeonWorldObject
 		return a;
 	}
 
-	protected boolean wayPassable(int dir) {
+	public boolean wayPassable(int dir) {
 		Room toGo = getRoom().getDungeon().getRoomAt(
 				getRoom().getDungeon().getRoom(getLocation()),
 				RouteInstruction.direction(dir));

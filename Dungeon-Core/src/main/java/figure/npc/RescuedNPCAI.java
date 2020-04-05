@@ -143,7 +143,7 @@ public class RescuedNPCAI implements AI {
 			}
 		}
 		if (target != null) {
-			return AttackAction.makeActionAttack(target.getFighterID());
+			return new AttackAction(info, target.getFighterID());
 		}
 		return null;
 	}
@@ -171,13 +171,13 @@ public class RescuedNPCAI implements AI {
 				int positionRightOfLeader = Position.getNextIndex(leaderPosIndex, true);
 				PositionInRoomInfo positionNextOnTheRight = info.getRoomInfo().getPositionInRoom(positionRightOfLeader);
 				if (!positionNextOnTheRight.isOccupied() && !(info.getPositionInRoomIndex() == positionNextOnTheRight.getIndex())) {
-					return new StepAction(positionRightOfLeader);
+					return new StepAction(this.info, positionRightOfLeader);
 				}
 				int positionLeftOfLeader = Position.getNextIndex(leaderPosIndex, false);
 				PositionInRoomInfo leftPosition = info.getRoomInfo().getPositionInRoom(positionLeftOfLeader);
 				if (!leftPosition.isOccupied()
 						&& !(info.getPositionInRoomIndex() == leftPosition.getIndex())) {
-					return new StepAction(positionLeftOfLeader);
+					return new StepAction(this.info, positionLeftOfLeader);
 				}
 				// otherwise we just wait
 				return new EndRoundAction();
@@ -202,10 +202,10 @@ public class RescuedNPCAI implements AI {
 			// TODO: make it easier for AI to step towards the door for a move
 			int positionInRoomAtDoor = Figure.getDirPos(directionToMove.getValue());
 			if (info.getPositionInRoomIndex() == positionInRoomAtDoor) {
-				return new MoveAction(this.info.getRoomNumber(), directionToMove);
+				return new MoveAction(this.info, this.info.getRoomNumber(), directionToMove);
 			}
 			else {
-				return new StepAction(positionInRoomAtDoor);
+				return new StepAction(this.info, positionInRoomAtDoor);
 			}
 		}
 		else {

@@ -32,7 +32,7 @@ public class OrcHaterAI extends DefaultMonsterIntelligence {
 							return step;
 						}
 					}
-					return AttackAction.makeActionAttack(figureInfo.getFighterID());
+					return new AttackAction(this.monster, figureInfo.getFighterID());
 				}
 		}
 		return new EndRoundAction();

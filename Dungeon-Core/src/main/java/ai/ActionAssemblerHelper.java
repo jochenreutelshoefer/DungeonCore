@@ -23,8 +23,10 @@ import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
+import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
+import figure.action.FleeAction;
 import figure.action.LayDownItemAction;
 import figure.action.LearnSpellAction;
 import figure.action.LockAction;
@@ -39,7 +41,6 @@ import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import game.RoomInfoEntity;
 import item.ItemInfo;
-import log.Log;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -52,7 +53,7 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaAttack(FigureInfo o) {
-		Action a = Action.makeActionAttack(o.getFighterID());
+		Action a = new AttackAction(figure, o.getFighterID());
 		return Collections.singletonList(a);
 	}
 
@@ -61,24 +62,14 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaFlee() {
-		Action a = Action.makeActionFlee();
-		return Collections.singletonList(a);
-	}
-
-	public List<Action> wannaFleePanic(int dir) {
-		Action a = Action.makeActionFlee(true);
-		return Collections.singletonList(a);
-	}
-
-	public List<Action> wannaLernSpell(SpellInfo spell) {
-		Action a = new LearnSpellAction(spell);
+		Action a = new FleeAction(figure);
 		return Collections.singletonList(a);
 	}
 
 	/**
 	 * Tries to identify the next best door in the current room of the figure to be locked/unlocked
 	 * and creates a action sequence respectively
-	 *
+	 * <p>
 	 * returns null if there is no door to lock/unlock or if there are multiple and it's not clear which to use
 	 *
 	 * @return actions to lock the next best door
@@ -87,24 +78,25 @@ public class ActionAssemblerHelper {
 		DoorInfo[] doors = this.figure.getRoomInfo().getDoors();
 		DoorInfo doorWithLock = null;
 		for (DoorInfo door : doors) {
-			if(door != null) {
-				if(door.hasLock()) {
+			if (door != null) {
+				if (door.hasLock()) {
 					// found door with a lock
-					if(doorWithLock != null) {
+					if (doorWithLock != null) {
 						// it is the second door in this room with a lock
 						int currentFigurePosition = figure.getPositionInRoomIndex();
-						if(figure.getPositionInRoomIndex() == door.getPositionAtDoor(figure.getRoomInfo(), false).getIndex()) {
+						if (figure.getPositionInRoomIndex() == door.getPositionAtDoor(figure.getRoomInfo(), false)
+								.getIndex()) {
 							// figure is already on correct position for this door
 							doorWithLock = door;
 						}
-					} else {
+					}
+					else {
 						doorWithLock = door;
 					}
-
 				}
 			}
 		}
-		if(doorWithLock == null) {
+		if (doorWithLock == null) {
 			// did not find an appropriate door the lock/unlock
 			return null;
 		}
@@ -123,10 +115,9 @@ public class ActionAssemblerHelper {
 				actions.add(endRoundAction);
 			}
 		}
-		FigureInfo f = getFigure();
-		RouteInstruction.Direction dir = d.getDirection(f.getRoomNumber());
+		RouteInstruction.Direction dir = d.getDirection(figure.getRoomNumber());
 		if (dir != null) {
-			Action a = new LockAction(d);
+			Action a = new LockAction(figure, d);
 			actions.add(a);
 		}
 		return actions;
@@ -162,7 +153,7 @@ public class ActionAssemblerHelper {
 			target = findAndStepTowardsTarget(it, actions);
 		}
 
-		Action a = new UseItemAction(it, target, meta);
+		Action a = new UseItemAction(this.figure, it, target, meta);
 		actions.add(a);
 		return actions;
 	}
@@ -209,8 +200,6 @@ public class ActionAssemblerHelper {
 		return target;
 	}
 
-
-
 	public List<Action> wannaUseShrine(RoomInfoEntity target, boolean right) {
 		List<Action> actions = new ArrayList<>();
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
@@ -254,7 +243,7 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaTakeItem(ItemInfo item) {
-		Action take = new TakeItemAction(item);
+		Action take = new TakeItemAction(this.figure, item);
 		return Collections.singletonList(take);
 	}
 
@@ -271,7 +260,7 @@ public class ActionAssemblerHelper {
 			actions.add(endRound);
 		}
 		*/
-		MoveAction moveAction = new MoveAction(f.getRoomNumber(), dir);
+		MoveAction moveAction = new MoveAction(f, f.getRoomNumber(), dir);
 		actions.add(moveAction);
 		return actions;
 	}
@@ -280,17 +269,16 @@ public class ActionAssemblerHelper {
 		List<Action> actions = new ArrayList<>();
 		if (getFigure().getActionPoints() >= 1) {
 
-			StepAction step = new StepAction(i);
+			StepAction step = new StepAction(this.figure, i);
 			actions.add(step);
 			if (getFigure().getActionPoints() == 1) {
 				EndRoundAction endRoundAction = new EndRoundAction();
 				actions.add(endRoundAction);
 			}
-
 		}
 		else {
 			EndRoundAction ndRoundAction = new EndRoundAction();
-			StepAction stepAction = new StepAction(i);
+			StepAction stepAction = new StepAction(this.figure, i);
 			actions.add(ndRoundAction);
 			actions.add(stepAction);
 			EndRoundAction endRoundAction = new EndRoundAction();
@@ -304,7 +292,7 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> itemClicked(ItemInfo o, boolean right) {
-		Action a = new TakeItemAction(o);
+		Action a = new TakeItemAction(this.figure, o);
 		return Collections.singletonList(a);
 	}
 
@@ -323,13 +311,7 @@ public class ActionAssemblerHelper {
 			return Collections.emptyList();
 		}
 		if (right) {
-			if (f.getRoomInfo().fightRunning()) {
-
-				return wannaFleePanic(dir);
-			}
-			else {
-				return wannaScout(dir);
-			}
+			return wannaScout(dir);
 		}
 		else {
 
@@ -347,16 +329,17 @@ public class ActionAssemblerHelper {
 		return Collections.emptyList();
 	}
 
-	public  List<Action> shrineClicked(boolean right) {
+	public List<Action> shrineClicked(boolean right) {
 		return wannaUseShrine(null, right);
 	}
 
-	public List<Action>  chestClicked(Object o, boolean right) {
-		if(o == null) {
+	public List<Action> chestClicked(Object o, boolean right) {
+		if (o == null) {
 			ChestInfo chest = this.figure.getRoomInfo().getChest();
-			if(chest != null) {
+			if (chest != null) {
 				o = chest;
-			} else {
+			}
+			else {
 				return Collections.emptyList();
 			}
 		}
@@ -365,13 +348,12 @@ public class ActionAssemblerHelper {
 			ChestInfo chest = ((ChestInfo) o);
 			if (chest.getLocation().equals(f.getRoomNumber())) {
 				return wannaUseChest(right);
-
 			}
 		}
 		return Collections.emptyList();
 	}
 
-	public  List<Action> positionClicked(PositionInRoomInfo pos, boolean right) {
+	public List<Action> positionClicked(PositionInRoomInfo pos, boolean right) {
 		return wannaStepToPosition(pos);
 	}
 
@@ -383,22 +365,22 @@ public class ActionAssemblerHelper {
 		PositionInRoomInfo pos = figure.getPos();
 		int currentPosIndex = pos.getIndex();
 		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
-		if(currentPos == Position.Pos.NW || currentPos == Position.Pos.N || currentPos == Position.Pos.NE ) {
+		if (currentPos == Position.Pos.NW || currentPos == Position.Pos.N || currentPos == Position.Pos.NE) {
 			return Collections.emptyList();
 		}
-		if(currentPos == Position.Pos.E) {
+		if (currentPos == Position.Pos.E) {
 			return wannaStepToPosition(Position.Pos.NE);
 		}
-		if(currentPos == Position.Pos.SE) {
+		if (currentPos == Position.Pos.SE) {
 			return wannaStepToPosition(Position.Pos.E);
 		}
-		if(currentPos == Position.Pos.S) {
+		if (currentPos == Position.Pos.S) {
 			return wannaStepToPosition(Position.Pos.N);
 		}
-		if(currentPos == Position.Pos.SW) {
+		if (currentPos == Position.Pos.SW) {
 			return wannaStepToPosition(Position.Pos.W);
 		}
-		if(currentPos == Position.Pos.W) {
+		if (currentPos == Position.Pos.W) {
 			return wannaStepToPosition(Position.Pos.NW);
 		}
 		return Collections.emptyList();
@@ -408,22 +390,22 @@ public class ActionAssemblerHelper {
 		PositionInRoomInfo pos = figure.getPos();
 		int currentPosIndex = pos.getIndex();
 		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
-		if(currentPos == Position.Pos.SW || currentPos == Position.Pos.S || currentPos == Position.Pos.SE ) {
+		if (currentPos == Position.Pos.SW || currentPos == Position.Pos.S || currentPos == Position.Pos.SE) {
 			return Collections.emptyList();
 		}
-		if(currentPos == Position.Pos.E) {
+		if (currentPos == Position.Pos.E) {
 			return wannaStepToPosition(Position.Pos.SE);
 		}
-		if(currentPos == Position.Pos.NE) {
+		if (currentPos == Position.Pos.NE) {
 			return wannaStepToPosition(Position.Pos.E);
 		}
-		if(currentPos == Position.Pos.N) {
+		if (currentPos == Position.Pos.N) {
 			return wannaStepToPosition(Position.Pos.S);
 		}
-		if(currentPos == Position.Pos.NW) {
+		if (currentPos == Position.Pos.NW) {
 			return wannaStepToPosition(Position.Pos.W);
 		}
-		if(currentPos == Position.Pos.W) {
+		if (currentPos == Position.Pos.W) {
 			return wannaStepToPosition(Position.Pos.SW);
 		}
 		return Collections.emptyList();
@@ -433,22 +415,22 @@ public class ActionAssemblerHelper {
 		PositionInRoomInfo pos = figure.getPos();
 		int currentPosIndex = pos.getIndex();
 		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
-		if(currentPos == Position.Pos.SW || currentPos == Position.Pos.W || currentPos == Position.Pos.NW ) {
+		if (currentPos == Position.Pos.SW || currentPos == Position.Pos.W || currentPos == Position.Pos.NW) {
 			return Collections.emptyList();
 		}
-		if(currentPos == Position.Pos.E) {
+		if (currentPos == Position.Pos.E) {
 			return wannaStepToPosition(Position.Pos.W);
 		}
-		if(currentPos == Position.Pos.NE) {
+		if (currentPos == Position.Pos.NE) {
 			return wannaStepToPosition(Position.Pos.N);
 		}
-		if(currentPos == Position.Pos.N) {
+		if (currentPos == Position.Pos.N) {
 			return wannaStepToPosition(Position.Pos.NW);
 		}
-		if(currentPos == Position.Pos.SE) {
+		if (currentPos == Position.Pos.SE) {
 			return wannaStepToPosition(Position.Pos.S);
 		}
-		if(currentPos == Position.Pos.S) {
+		if (currentPos == Position.Pos.S) {
 			return wannaStepToPosition(Position.Pos.SW);
 		}
 		return Collections.emptyList();
@@ -458,22 +440,22 @@ public class ActionAssemblerHelper {
 		PositionInRoomInfo pos = figure.getPos();
 		int currentPosIndex = pos.getIndex();
 		Position.Pos currentPos = Position.Pos.fromValue(currentPosIndex);
-		if(currentPos == Position.Pos.SE || currentPos == Position.Pos.E || currentPos == Position.Pos.NE ) {
+		if (currentPos == Position.Pos.SE || currentPos == Position.Pos.E || currentPos == Position.Pos.NE) {
 			return Collections.emptyList();
 		}
-		if(currentPos == Position.Pos.W) {
+		if (currentPos == Position.Pos.W) {
 			return wannaStepToPosition(Position.Pos.E);
 		}
-		if(currentPos == Position.Pos.NW) {
+		if (currentPos == Position.Pos.NW) {
 			return wannaStepToPosition(Position.Pos.N);
 		}
-		if(currentPos == Position.Pos.N) {
+		if (currentPos == Position.Pos.N) {
 			return wannaStepToPosition(Position.Pos.NE);
 		}
-		if(currentPos == Position.Pos.SW) {
+		if (currentPos == Position.Pos.SW) {
 			return wannaStepToPosition(Position.Pos.S);
 		}
-		if(currentPos == Position.Pos.S) {
+		if (currentPos == Position.Pos.S) {
 			return wannaStepToPosition(Position.Pos.SE);
 		}
 		return Collections.emptyList();
@@ -483,11 +465,9 @@ public class ActionAssemblerHelper {
 		return wannaStepToPosition(pos, false);
 	}
 
+	@Deprecated // unanimated not used
 	public List<Action> wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
-		Action a = new StepAction(pos.getIndex());
-		if (unanimated) {
-			a.setUnanimated();
-		}
+		Action a = new StepAction(this.figure, pos.getIndex());
 		return Collections.singletonList(a);
 	}
 
@@ -508,5 +488,4 @@ public class ActionAssemblerHelper {
 		Action a = new EndRoundAction();
 		return Collections.singletonList(a);
 	}
-
 }

@@ -25,7 +25,7 @@ public class ExecutableUseItemActivity extends AbstractExecutableActivity {
 	@Override
 	public void execute() {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		guiControl.plugAction(new UseItemAction((ItemInfo) getObject()));
+		guiControl.plugAction(new UseItemAction(this.guiControl.getFigure(), (ItemInfo) getObject()));
 	}
 
 	@Override

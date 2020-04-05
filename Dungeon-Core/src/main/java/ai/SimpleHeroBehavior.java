@@ -12,6 +12,7 @@ import java.util.List;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
+import figure.action.FleeAction;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
@@ -139,7 +140,7 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 	public Action chooseFightAction() {
 		Action a = null;
 		if (this.h.getHealthLevel().getValue() <= 2 && Math.random() < 0.3) {
-			a = Action.makeActionFlee();
+			a = new FleeAction(h);
 			this.h.checkAction(a);
 
 			return a;

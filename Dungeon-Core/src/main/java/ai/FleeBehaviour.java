@@ -40,7 +40,7 @@ public class FleeBehaviour extends DefaultMonsterIntelligence {
 		}
 
 		// can not flee, hence attack
-		return AttackAction.makeActionAttack(getHeroIndex());
+		return new AttackAction(this.info, getHeroIndex());
 	}
 
 	private FigureInfo selectEnemy(List<FigureInfo> figureInfos) {

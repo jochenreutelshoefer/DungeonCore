@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Eigenschaft oder Faehigkeit der Figur dar. Eine Attribut besteht aus 2
  * Werten. Dem Basiswert und dem aktuellen Wert. Der Basiswert gibt an wie stark
  * die Eigenschaft prinzipiell ausgepraegt ist und der aktuelle Wert stellt das
- * momentane auf die Umstaende angepasste Ma� dar.
+ * momentane auf die Umstaende angepasste Maß dar.
  */
 public class Attribute implements Serializable {
 

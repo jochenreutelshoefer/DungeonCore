@@ -89,7 +89,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	protected String[] lvl_names;
 
 	@Override
-	protected boolean tryUnlockDoor(Door d, boolean doIt) {
+	public boolean tryUnlockDoor(Door d, boolean doIt) {
 		return false;
 	}
 
@@ -319,7 +319,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected ScoutResult scout(ScoutAction action, int round) {
+	public ScoutResult scout(ScoutAction action, int round) {
 		// by default monster cannot scout
 		return new ScoutResult(this, 0);
 	}
@@ -603,7 +603,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected boolean flee(RouteInstruction.Direction dir, int round) {
+	public boolean flee(RouteInstruction.Direction dir, int round) {
 		Room from = getRoom();
 		if (Math.random() < calcFleeChance()) {
 			Position oldPos = this.getPos();

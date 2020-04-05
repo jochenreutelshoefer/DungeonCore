@@ -352,7 +352,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private boolean checkFleeAction() {
-		return figure.checkAction(new FleeAction(false)).getSituation() == ActionResult.Situation.possible;
+		return figure.checkAction(new FleeAction(this.figure)).getSituation() == ActionResult.Situation.possible;
 	}
 
 	private LibgdxMoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {
@@ -380,7 +380,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		for (int i = 0; i < 4; i++) {
 			DoorInfo door = doors[i];
 			if (door != null && door.hasLock()) {
-				Action action = new LockAction(door);
+				Action action = new LockAction(this.figure, door);
 				LibgdxDoorElement doorElement = new LibgdxDoorElement(doorCoordinates[i], (i == 0 || i == 2) ? southNorth : eastWest, this, door
 						.isLocked(), this.figure.hasKey(door), action, door, guiControl);
 				doorElements.add(doorElement);
@@ -421,7 +421,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		}
 		for (int i = 0; i < 8; i++) {
 			FigureInfo otherFigure = roomInfo.getPositionInRoom(i).getFigure();
-			Action action = new StepAction(i);
+			Action action = new StepAction(this.figure, i);
 			// TODO: cache this
 			if (figure.checkAction(action).getSituation() == ActionResult.Situation.possible) {
 				positionElements.add(freeStepPositionElements[i]);
