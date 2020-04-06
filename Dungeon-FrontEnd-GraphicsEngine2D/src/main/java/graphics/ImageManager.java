@@ -68,7 +68,7 @@ import shrine.MoonRuneFinderShrine;
 import shrine.QuestShrine;
 import shrine.RevealMapShrine;
 import shrine.ScoutShrine;
-import shrine.Shrine;
+import shrine.Location;
 import shrine.ShrineInfo;
 import shrine.SorcerLab;
 import shrine.Statue;
@@ -1294,7 +1294,7 @@ public class ImageManager {
 		return null;
 	}
 
-	public static Map<Class<? extends Shrine>, JDImageProxy<?>> shrineMap = new HashMap<>();
+	public static Map<Class<? extends Location>, JDImageProxy<?>> shrineMap = new HashMap<>();
 
 	private void createShrineClassMap() {
 		shrineMap.put(HealthFountain.class, ImageManager.fountainImage);
@@ -1325,13 +1325,13 @@ public class ImageManager {
 	public static JDImageProxy<?> getImage(ShrineInfo s) {
 
 		int shrineIndex = s.getShrineIndex();
-		Class<? extends Shrine> shrineClass = s.getShrineClass();
+		Class<? extends Location> shrineClass = s.getShrineClass();
 		if (shrineMap.containsKey(shrineClass)) {
 			return shrineMap.get(shrineClass);
 		}
 
 		JDImageProxy<?> im = null;
-		if (shrineIndex == Shrine.SHRINE_BROOD) {
+		if (shrineIndex == Location.SHRINE_BROOD) {
 			if ((s).getType() == Brood.BROOD_NATURE) {
 				im = ImageManager.caveImage;
 			}
@@ -1342,7 +1342,7 @@ public class ImageManager {
 				im = ImageManager.graveImage;
 			}
 		}
-		else if (shrineIndex == Shrine.SHRINE_RUNE) {
+		else if (shrineIndex == Location.SHRINE_RUNE) {
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_yellowImage;
 			}
@@ -1354,7 +1354,7 @@ public class ImageManager {
 			}
 
 		}
-		else if (shrineIndex == Shrine.SHRINE_CORPSE) {
+		else if (shrineIndex == Location.SHRINE_CORPSE) {
 
 			if ((s).getType() == 0) {
 				im = ImageManager.dead_dwarfImage;
@@ -1373,7 +1373,7 @@ public class ImageManager {
 				im = ImageManager.dead_mageImage;
 			}
 		}
-		else if (shrineIndex == Shrine.SHRINE_RUNEFINDER) {
+		else if (shrineIndex == Location.SHRINE_RUNEFINDER) {
 			if ((s).getType() == 1) {
 				im = ImageManager.shrine_small_yellowImage;
 			}

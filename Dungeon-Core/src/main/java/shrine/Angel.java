@@ -15,7 +15,7 @@ import java.util.List;
 import spell.Prayer;
 import util.JDColor;
 
-public class Angel extends Shrine {
+public class Angel extends Location {
 	
 	List<Item> requestedItems = new LinkedList<Item>();
 	List<Item> ownedItems = new LinkedList<Item>();
@@ -42,7 +42,7 @@ public class Angel extends Shrine {
 	@Override
 	public int getShrineIndex() {
 		// TODO Auto-generated method stub
-		return Shrine.SHRINE_ANGEL;
+		return Location.SHRINE_ANGEL;
 	}
 
 	@Override

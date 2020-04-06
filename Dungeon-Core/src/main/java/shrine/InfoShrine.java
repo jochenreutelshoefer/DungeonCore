@@ -9,14 +9,13 @@
 package shrine;
 
 import dungeon.RoomEntity;
-import item.interfaces.Usable;
 import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
 import figure.hero.Hero;
 import game.JDEnv;
 
-public class InfoShrine extends Shrine {
+public class InfoShrine extends Location {
 
 	String info;
 
@@ -30,7 +29,7 @@ public class InfoShrine extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#turn(int)
+	 * @see Location#turn(int)
 	 */
 	@Override
 	public void turn(int round) {
@@ -46,7 +45,7 @@ public class InfoShrine extends Shrine {
 
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_INFO;
+		return Location.SHRINE_INFO;
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class InfoShrine extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getStatus()
+	 * @see Location#getStatus()
 	 */
 	@Override
 	public String getStatus() {

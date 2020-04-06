@@ -15,7 +15,7 @@ import util.JDColor;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 05.01.19.
  */
-public class ScoutShrine extends Shrine {
+public class ScoutShrine extends Location {
 
 	private List<Room> roomsList;
 

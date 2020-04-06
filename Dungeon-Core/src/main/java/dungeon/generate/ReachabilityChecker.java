@@ -1,13 +1,10 @@
 package dungeon.generate;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
 
 import dungeon.Chest;
@@ -20,7 +17,7 @@ import item.Item;
 import item.Key;
 import item.interfaces.ItemOwner;
 import shrine.LevelExit;
-import shrine.Shrine;
+import shrine.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -175,7 +172,7 @@ public class ReachabilityChecker {
 
 			//if(!allowThroughExit) {
 				// everything should be reachable without going 'over'/'through' exit
-				Shrine shrine = dungeon.getRoom(point).getShrine();
+				Location shrine = dungeon.getRoom(point).getShrine();
 				if(shrine instanceof LevelExit) {
 					// we do not expand the exit room
 					return result;

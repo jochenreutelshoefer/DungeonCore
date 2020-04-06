@@ -6,9 +6,6 @@ import shrine.*;
 
 import figure.Figure;
 import figure.attribute.Attribute;
-import figure.hero.*;
-import figure.hero.Character;
-import figure.monster.Monster;
 import game.JDEnv;
 
 public class Texts {
@@ -467,7 +464,7 @@ public class Texts {
 
 	public static String shrine(ShrineInfo s) {
 		String info = new String("");
-		if (s.getShrineIndex() == Shrine.SHRINE_BROOD) {
+		if (s.getShrineIndex() == Location.SHRINE_BROOD) {
 			if (s.getType() == Brood.BROOD_NATURE) {
 				info = (bundle.getString("see_brood_nature"));
 			}
@@ -479,10 +476,10 @@ public class Texts {
 			}
 		}
 
-		if (s.getShrineIndex() == Shrine.SHRINE_RUNE) {
+		if (s.getShrineIndex() == Location.SHRINE_RUNE) {
 			info = (bundle.getString("see_rune_shrine"));
 		}
-		if (s.getShrineIndex() == Shrine.SHRINE_HEALTH_FOUNTAIN) {
+		if (s.getShrineIndex() == Location.SHRINE_HEALTH_FOUNTAIN) {
 			info = (bundle.getString("see_health_fountain"));
 		}
 

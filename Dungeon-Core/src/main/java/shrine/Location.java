@@ -22,7 +22,7 @@ import dungeon.Room;
  * Ist von Anfang an einem Raum zugeordnet, nicht mobil.
  *
  */
-public abstract class Shrine implements Usable, Turnable, InfoProvider{
+public abstract class Location implements Usable, Turnable, InfoProvider{
 
 
 	// TODO: factor out this list, use class objects
@@ -80,10 +80,10 @@ public abstract class Shrine implements Usable, Turnable, InfoProvider{
 
 	//public static Game game;
 
-    public Shrine(Room p){
+    public Location(Room p){
 		location = p;
     }
-     public Shrine(){
+     public Location(){
 		
     }
      

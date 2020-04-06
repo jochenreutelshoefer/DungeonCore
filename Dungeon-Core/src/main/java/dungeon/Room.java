@@ -23,7 +23,6 @@ import figure.RoomObservationStatus;
 import figure.hero.Hero;
 import figure.memory.MemoryObject;
 import figure.memory.RoomMemory;
-import figure.monster.Monster;
 import figure.percept.InfoPercept;
 import figure.percept.OpticalPercept;
 import figure.percept.Percept;
@@ -37,7 +36,7 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import log.Log;
-import shrine.Shrine;
+import shrine.Location;
 import shrine.Statue;
 import util.JDColor;
 
@@ -56,7 +55,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	private final Position[] positions = new Position[8];
 
-	private Shrine s;
+	private Location s;
 
 	private Chest chest;
 
@@ -242,7 +241,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return fightOn;
 	}
 
-	public void setShrine(Shrine s) {
+	public void setShrine(Location s) {
 		if (this.s != null) {
 			throw new IllegalStateException("check for shrine before setting one!");
 		}
@@ -253,7 +252,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		setShrine(s, true);
 	}
 
-	public void setShrine(Shrine s, boolean setShrineLocation) {
+	public void setShrine(Location s, boolean setShrineLocation) {
 		this.s = s;
 		if (s != null && setShrineLocation) {
 			s.setLocation(this);
@@ -886,7 +885,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return d;
 	}
 
-	public Shrine getShrine() {
+	public Location getShrine() {
 		return s;
 	}
 

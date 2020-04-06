@@ -18,7 +18,7 @@ import util.JDColor;
 import dungeon.Room;
 
 
-public class RuneShrine extends Shrine implements ItemOwner {
+public class RuneShrine extends Location implements ItemOwner {
 
 	
 	int index;
@@ -49,7 +49,7 @@ public class RuneShrine extends Shrine implements ItemOwner {
 	
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_RUNE;
+		return Location.SHRINE_RUNE;
 	}
 public void metaClick(Figure f) {
 		

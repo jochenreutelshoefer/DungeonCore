@@ -16,7 +16,7 @@ import util.JDColor;
 import dungeon.Room;
 import dungeon.util.RouteInstruction;
 
-public class Brood extends Shrine {
+public class Brood extends Location {
 
 	private final int type;
 	//String Type;
@@ -102,7 +102,7 @@ public class Brood extends Shrine {
 	
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_BROOD;
+		return Location.SHRINE_BROOD;
 	}
 
 	

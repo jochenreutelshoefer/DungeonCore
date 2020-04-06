@@ -5,16 +5,14 @@ import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
-import game.JDEnv;
 import item.quest.MoonRune;
-import shrine.Shrine;
 import util.JDColor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 22.01.18.
  */
-public class MoonRuneFinderShrine extends Shrine {
+public class MoonRuneFinderShrine extends Location {
 
 	private static int COST = 3;
 	private final MoonRune rune;

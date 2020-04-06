@@ -1,8 +1,7 @@
 package dungeon.generate.undo;
 
-import dungeon.Dungeon;
 import dungeon.Room;
-import shrine.Shrine;
+import shrine.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -10,11 +9,11 @@ import shrine.Shrine;
  */
 public class SetShrineAction implements DungeonChangeAction {
 
-	private final Shrine shrine;
+	private final Location shrine;
 	private final Room room;
 	private boolean possible;
 
-	public SetShrineAction(Shrine shrine, Room room) {
+	public SetShrineAction(Location shrine, Room room) {
 		this.shrine = shrine;
 		this.room = room;
 	}

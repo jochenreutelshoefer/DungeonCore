@@ -28,8 +28,7 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
-import item.Item;
-import shrine.Shrine;
+import shrine.Location;
 
 public abstract class RoomQuest {
 
@@ -255,7 +254,7 @@ public abstract class RoomQuest {
 
 	}
 
-	public void plugShrine(Shrine s) {
+	public void plugShrine(Location s) {
 
 		List<Room> roomList = getAllRoomsList();
 		Map<Path, Room> ways = new HashMap<>();

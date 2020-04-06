@@ -3,7 +3,6 @@ package shrine;
 import java.util.ArrayList;
 import java.util.List;
 
-import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.Figure;
@@ -15,7 +14,7 @@ import util.JDColor;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 24.04.16.
  */
-public class RevealMapShrine extends Shrine {
+public class RevealMapShrine extends Location {
 
 	private final List<Room> revealedRooms;
 
@@ -32,7 +31,7 @@ public class RevealMapShrine extends Shrine {
 
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_REVEALMAP;
+		return Location.SHRINE_REVEALMAP;
 	}
 
 	@Override

@@ -28,11 +28,10 @@ import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
 import figure.action.FleeAction;
 import figure.action.LayDownItemAction;
-import figure.action.LearnSpellAction;
 import figure.action.LockAction;
 import figure.action.MoveAction;
 import figure.action.ScoutAction;
-import figure.action.ShrineAction;
+import figure.action.UseLocationAction;
 import figure.action.SkillUpAction;
 import figure.action.SpellAction;
 import figure.action.StepAction;
@@ -143,7 +142,7 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaSpell(SpellInfo sp, RoomInfoEntity target) {
-		Action a = new SpellAction(sp, target);
+		Action a = new SpellAction(this.figure, sp, target);
 		return Collections.singletonList(a);
 	}
 
@@ -205,7 +204,7 @@ public class ActionAssemblerHelper {
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NE.getValue()) {
 			actions.addAll(wannaStepToPosition(Position.Pos.NE));
 		}
-		Action a = new ShrineAction(target, right);
+		Action a = new UseLocationAction(this.figure, target, right);
 		actions.add(a);
 		return actions;
 	}
@@ -237,7 +236,7 @@ public class ActionAssemblerHelper {
 		if (this.getFigure().getPositionInRoomIndex() != Position.Pos.NW.getValue()) {
 			actions.addAll(wannaStepToPosition(Position.Pos.NW));
 		}
-		Action a = new UseChestAction(right);
+		Action a = new UseChestAction(this.figure, right);
 		actions.add(a);
 		return actions;
 	}

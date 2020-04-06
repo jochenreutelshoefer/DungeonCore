@@ -5,7 +5,6 @@ import item.AttrPotion;
 import item.DustItem;
 import item.HealPotion;
 import item.Item;
-import item.paper.Scroll;
 
 /*
  * Created on 04.08.2004
@@ -31,7 +30,7 @@ import figure.percept.UsePercept;
 import game.JDEnv;
 import gui.Texts;
 
-public class SorcerLab extends Shrine implements VisibilityModifier {
+public class SorcerLab extends Location implements VisibilityModifier {
 
 	boolean firstTime = true;
 
@@ -157,7 +156,7 @@ public class SorcerLab extends Shrine implements VisibilityModifier {
 
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_SORCER_LAB;
+		return Location.SHRINE_SORCER_LAB;
 	}
 
 	/*

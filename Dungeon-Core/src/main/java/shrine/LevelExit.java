@@ -6,8 +6,6 @@ import java.util.List;
 
 import dungeon.Room;
 import dungeon.RoomEntity;
-import event.EventManager;
-import event.ExitUsedEvent;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.percept.TextPercept;
@@ -19,7 +17,7 @@ import util.JDColor;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 20.03.16.
  */
-public class LevelExit extends Shrine {
+public class LevelExit extends Location {
 
 	private List<Figure> requiredFigures = new ArrayList<>();
 	private List<Item> requiredItems = new ArrayList<>();

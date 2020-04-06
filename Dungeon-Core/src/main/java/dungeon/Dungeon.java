@@ -29,7 +29,7 @@ import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.ControlUnit;
 import game.Turnable;
-import shrine.Shrine;
+import shrine.Location;
 
 /**
  * Diese Klasse bildet den Dungeon, welcher aus einem 2D-Array von Raeumen
@@ -47,7 +47,7 @@ public class Dungeon implements Turnable, EventListener {
 	@Deprecated
 	private JDPoint heroPosition;
 
-	private final Set<Shrine> shrines = new HashSet<Shrine>();
+	private final Set<Location> shrines = new HashSet<Location>();
 
 	private boolean gameOver = false;
 
@@ -162,7 +162,7 @@ public class Dungeon implements Turnable, EventListener {
 		roomsTurn(round);
 	}
 
-	public void addShrine(Shrine s) {
+	public void addShrine(Location s) {
 		if (s != null) {
 			shrines.add(s);
 		}
@@ -175,7 +175,7 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	private void shrinesTurn(int round) {
-		for (Shrine shrine : shrines) {
+		for (Location shrine : shrines) {
 			shrine.turn(round);
 		}
 	}

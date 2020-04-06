@@ -16,12 +16,11 @@ import item.Key;
 import java.util.LinkedList;
 import java.util.List;
 
-import shrine.Shrine;
+import shrine.Location;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
 import figure.monster.Monster;
 public class RoomQuest_1x1_1 extends RoomQuest {
@@ -33,11 +32,11 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 	 * @uml.property name="s"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
-	Shrine s;
+	Location s;
 	
 	
 	public RoomQuest_1x1_1(JDPoint p, DungeonFiller df, boolean locked,
-			boolean chest, Shrine s, List<Item> restItems) {
+						   boolean chest, Location s, List<Item> restItems) {
 		super(p,df,1,1);
 		this.s = s;
 		sector_items = restItems;

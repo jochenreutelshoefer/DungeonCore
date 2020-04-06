@@ -25,7 +25,7 @@ import figure.hero.Hero;
 import game.JDEnv;
 
 
-public class Trader extends Shrine /*implements itemOwner*/{
+public class Trader extends Location /*implements itemOwner*/{
 	
 	double rate = 1.6;
 	int rounds_to_change = 10;
@@ -109,7 +109,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_TRADER;
+		return Location.SHRINE_TRADER;
 	}
 
 	
@@ -118,7 +118,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	/**
-	 * @see Shrine#getColor()
+	 * @see Location#getColor()
 	 */
 	@Override
 	public JDColor getColor() {
@@ -126,7 +126,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	/**
-	 * @see Shrine#getStory()
+	 * @see Location#getStory()
 	 */
 	@Override
 	public String getStory() {
@@ -142,7 +142,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	/**
-	 * @see Shrine#getText()
+	 * @see Location#getText()
 	 */
 	@Override
 	public String getText() {
@@ -218,7 +218,7 @@ public class Trader extends Shrine /*implements itemOwner*/{
 	}
 
 	/**
-	 * @see Shrine#getStatus()
+	 * @see Location#getStatus()
 	 */
 	@Override
 	public String getStatus() {

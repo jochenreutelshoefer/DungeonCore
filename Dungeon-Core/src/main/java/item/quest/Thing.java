@@ -1,16 +1,11 @@
 package item.quest;
 
-import java.util.Iterator;
-import java.util.List;
-
-import dungeon.Room;
 import dungeon.RoomEntity;
 import item.Item;
 import item.interfaces.ItemOwner;
-import item.interfaces.Locatable;
 import item.interfaces.LocatableItem;
 import item.interfaces.Usable;
-import shrine.Shrine;
+import shrine.Location;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
@@ -102,7 +97,7 @@ public class Thing extends Item implements Usable, LocatableItem {
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if (f instanceof Hero) {
 			if (f.getRoom().getShrine() == this.sup) {
-				((Shrine) sup).use(f, this, meta, round);
+				((Location) sup).use(f, this, meta, round);
 				return true;
 			}
 		}

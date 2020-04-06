@@ -9,7 +9,6 @@ import java.util.Set;
 
 import dungeon.Chest;
 import dungeon.Door;
-import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFillUtils;
@@ -26,7 +25,7 @@ import figure.monster.Monster;
 import item.Item;
 import item.ItemPool;
 import item.Key;
-import shrine.Shrine;
+import shrine.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -35,7 +34,7 @@ import shrine.Shrine;
 public class RoomQuest1x1 extends ReversibleRoomQuest {
 
 	private boolean locked = false;
-	private Shrine s;
+	private Location s;
 	private Key key;
 	private boolean finalized = false;
 
@@ -43,14 +42,14 @@ public class RoomQuest1x1 extends ReversibleRoomQuest {
 		super(p, df, 1, 1);
 	}
 
-	public RoomQuest1x1(JDPoint p, DungeonFiller df, boolean locked, Shrine s) {
+	public RoomQuest1x1(JDPoint p, DungeonFiller df, boolean locked, Location s) {
 		super(p, df, 1, 1);
 		this.s = s;
 		this.locked = locked;
 
 	}
 
-	public RoomQuest1x1(DungeonFiller df, boolean locked, Shrine s) {
+	public RoomQuest1x1(DungeonFiller df, boolean locked, Location s) {
 		super(df, 1, 1);
 		this.s = s;
 		this.locked = locked;

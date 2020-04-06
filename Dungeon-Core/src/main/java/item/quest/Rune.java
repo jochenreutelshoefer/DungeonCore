@@ -3,7 +3,6 @@ import dungeon.RoomEntity;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
-import game.RoomInfoEntity;
 import item.Item;
 import item.interfaces.Locatable;
 import item.interfaces.Usable;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import shrine.RuneShrine;
-import shrine.Shrine;
+import shrine.Location;
 
 
 
@@ -103,7 +102,7 @@ public class Rune extends Item implements Usable, Locatable {
 
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round){
-		Shrine s = ((Hero)f).getRoom().getShrine(); 
+		Location s = ((Hero)f).getRoom().getShrine();
 		if(s instanceof RuneShrine){
 			if (((RuneShrine) s).takeItem(this)) {
 	    	 ((Hero)f).getInventory().removeItem(this);

@@ -407,7 +407,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 		HeroInfo hero = monster.getRoomInfo().getHeroInfo();
 		if (hero != null) {
-			Action a = new SpellAction(s, hero);
+			Action a = new SpellAction(this.info, s, hero);
 			ActionResult res = monster.checkAction(a);
 			if (res.getSituation() == ActionResult.Situation.possible) {
 				return a;

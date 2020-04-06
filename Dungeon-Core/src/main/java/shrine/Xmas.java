@@ -23,7 +23,7 @@ import game.JDEnv;
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class Xmas extends Shrine {
+public class Xmas extends Location {
 
 	Item it;
 
@@ -42,7 +42,7 @@ public class Xmas extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getStory()
+	 * @see Location#getStory()
 	 */
 	@Override
 	public String getStory() {
@@ -58,7 +58,7 @@ public class Xmas extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getText()
+	 * @see Location#getText()
 	 */
 	@Override
 	public String getText() {
@@ -67,7 +67,7 @@ public class Xmas extends Shrine {
 
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_XMAS;
+		return Location.SHRINE_XMAS;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class Xmas extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getStatus()
+	 * @see Location#getStatus()
 	 */
 	@Override
 	public String getStatus() {

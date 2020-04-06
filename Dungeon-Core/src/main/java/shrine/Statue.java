@@ -21,10 +21,10 @@ import game.JDEnv;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class Statue extends Shrine {
+public class Statue extends Location {
 
 	/**
-	 * @see Shrine#turn(int)
+	 * @see Location#turn(int)
 	 * 
 	 * 
 	 */
@@ -68,7 +68,7 @@ public void metaClick(Figure f){
 	}
 	
 	/**
-	 * @see Shrine#getColor()
+	 * @see Location#getColor()
 	 */
 	@Override
 	public JDColor getColor() {
@@ -80,7 +80,7 @@ public void metaClick(Figure f){
 		return false;
 	}
 	/**
-	 * @see Shrine#getStory()
+	 * @see Location#getStory()
 	 */
 	@Override
 	public String getStory() {
@@ -89,7 +89,7 @@ public void metaClick(Figure f){
 	
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_STATUE;
+		return Location.SHRINE_STATUE;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public void metaClick(Figure f){
 	}
 
 	/**
-	 * @see Shrine#getText()
+	 * @see Location#getText()
 	 */
 	@Override
 	public String getText() {
@@ -110,7 +110,7 @@ public void metaClick(Figure f){
 
 	
 	/**
-	 * @see Shrine#getStatus()
+	 * @see Location#getStatus()
 	 */
 	@Override
 	public String getStatus() {

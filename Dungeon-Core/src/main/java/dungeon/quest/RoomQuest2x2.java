@@ -8,7 +8,6 @@ import java.util.List;
 
 import dungeon.Chest;
 import dungeon.Door;
-import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFiller;
@@ -23,7 +22,7 @@ import figure.monster.Monster;
 import item.Item;
 import item.ItemPool;
 import item.Key;
-import shrine.Shrine;
+import shrine.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -32,7 +31,7 @@ import shrine.Shrine;
 public class RoomQuest2x2 extends ReversibleRoomQuest {
 
 	private List<Item> items;
-	private Shrine shrine ;
+	private Location shrine ;
 
 	public RoomQuest2x2(JDPoint p, DungeonFiller df, int x, int y) {
 		super(p, df, x, y);
@@ -50,12 +49,12 @@ public class RoomQuest2x2 extends ReversibleRoomQuest {
 
 	}
 
-	public RoomQuest2x2(DungeonFiller df, List<Item> items, Shrine shrine) {
+	public RoomQuest2x2(DungeonFiller df, List<Item> items, Location shrine) {
 		this(df, items);
 		this.shrine = shrine;
 	}
 
-	public RoomQuest2x2(JDPoint p, DungeonFiller df, List<Item> items, Shrine shrine) {
+	public RoomQuest2x2(JDPoint p, DungeonFiller df, List<Item> items, Location shrine) {
 		this(p, df, items);
 		this.shrine = shrine;
 	}

@@ -25,10 +25,9 @@ import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
 import item.Item;
-import item.interfaces.Usable;
 import util.JDColor;
 
-public class Corpse extends Shrine {
+public class Corpse extends Location {
 	private final int type;
 	private List<Item> items;
 
@@ -47,7 +46,7 @@ public class Corpse extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getStory()
+	 * @see Location#getStory()
 	 */
 	@Override
 	public String getStory() {
@@ -61,7 +60,7 @@ public class Corpse extends Shrine {
 
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_CORPSE;
+		return Location.SHRINE_CORPSE;
 	}
 
 	public void metaClick(Figure f) {
@@ -120,7 +119,7 @@ public class Corpse extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getText()
+	 * @see Location#getText()
 	 */
 	@Override
 	public String getText() {

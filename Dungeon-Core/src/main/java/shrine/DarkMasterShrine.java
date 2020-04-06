@@ -23,7 +23,7 @@ import figure.monster.Monster;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class DarkMasterShrine extends Shrine {
+public class DarkMasterShrine extends Location {
 
 	/**
 	 * @param actualP
@@ -159,7 +159,7 @@ public boolean needsTarget() {
 	
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_DARK_MASTER;
+		return Location.SHRINE_DARK_MASTER;
 	}
 
 	/*

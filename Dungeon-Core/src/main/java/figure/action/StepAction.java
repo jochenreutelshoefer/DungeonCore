@@ -7,6 +7,7 @@
 package figure.action;
 
 import dungeon.Position;
+import dungeon.Room;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
@@ -27,7 +28,12 @@ public class StepAction extends AbstractExecutableAction {
 		if (targetIndex == -1) {
 			return ActionResult.NO_TARGET;
 		}
-		if (figure.getRoom().fightRunning()) {
+		Room room = figure.getRoom();
+		if(room != null) {
+			// exit/death problem
+			return ActionResult.UNKNOWN;
+		}
+		if (room.fightRunning()) {
 			if (figure.canPayActionPoints(1)) {
 
 				if (figure.isPinnedToGround()) {

@@ -21,14 +21,14 @@ import dungeon.JDPoint;
 
 public class ShrineInfo extends RoomInfoEntity {
 
-	private final Shrine s;
+	private final Location s;
 
-	public ShrineInfo(Shrine s, DungeonVisibilityMap map) {
+	public ShrineInfo(Location s, DungeonVisibilityMap map) {
 		super(map);
 		this.s = s;
 	}
 
-	public Class<? extends Shrine> getShrineClass() {
+	public Class<? extends Location> getShrineClass() {
 		return s.getClass();
 	}
 

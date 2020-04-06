@@ -25,7 +25,6 @@ import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
 import event.EventManager;
 import event.WorldChangedEvent;
-import fight.Frightening;
 import fight.Poisoning;
 import fight.Slap;
 import fight.SlapResult;
@@ -36,18 +35,15 @@ import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
 import figure.action.FleeAction;
 import figure.action.LayDownItemAction;
-import figure.action.LearnSpellAction;
 import figure.action.LockAction;
 import figure.action.MoveAction;
 import figure.action.ScoutAction;
 import figure.action.ScoutResult;
-import figure.action.ShrineAction;
-import figure.action.SkillUpAction;
+import figure.action.UseLocationAction;
 import figure.action.SpellAction;
 import figure.action.StepAction;
 import figure.action.SuicideAction;
 import figure.action.TakeItemAction;
-import figure.action.TakeItemFromChestAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import figure.action.result.ActionResult;
@@ -94,8 +90,7 @@ import item.interfaces.ItemOwner;
 import item.interfaces.Usable;
 import log.Log;
 import org.apache.log4j.Logger;
-import shrine.Shrine;
-import spell.AbstractSpell;
+import shrine.Location;
 import spell.KeyLocator;
 import spell.Spell;
 import spell.SpellInfo;
@@ -132,7 +127,7 @@ public abstract class Figure extends DungeonWorldObject
 	private AI ai;
 	protected AbstractReflexBehavior reflexReactionUnit;
 
-	private Spell lastSpell = null;
+	public Spell lastSpell = null;
 
 	private int figureID = -1;
 
@@ -663,32 +658,6 @@ public abstract class Figure extends DungeonWorldObject
 		return dead;
 	}
 
-	private ActionResult handleEquipmentChangeAction(EquipmentChangeAction a,
-													 boolean doIt) {
-		if (this instanceof Hero) {
-			if (doIt) {
-				int type = a.getEqupipmentType();
-				int index = a.getIndex();
-
-				if (type == EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR) {
-					this.getInventory().setArmorIndex(index);
-				}
-				if (type == EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON) {
-					this.getInventory().setWeaponIndex(index);
-				}
-				if (type == EquipmentChangeAction.EQUIPMENT_TYPE_HELMET) {
-					this.getInventory().setHelmetIndex(index);
-				}
-				if (type == EquipmentChangeAction.EQUIPMENT_TYPE_SHIELD) {
-					this.getInventory().setShieldIndex(index);
-				}
-				return ActionResult.DONE;
-			}
-			return ActionResult.POSSIBLE;
-		}
-		return ActionResult.OTHER;
-	}
-
 	private Item getItemForInfo(ItemInfo item) {
 		List<Item> allItems = this.getAllItems();
 		//allItems.forEach(i -> System.out.println(i.isMagic()));
@@ -919,54 +888,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	public abstract boolean canTakeItem(Item i);
 
-	private ActionResult handleTakeItemFromChestAction(TakeItemFromChestAction a, boolean doIt, int round) {
-		boolean fight = this.getRoom().fightRunning();
-		if (fight) {
-			if (this.canPayActionPoints(1)) {
-				ItemInfo info = a.getItem();
-				Item item = getRoom().getChest().getItem(info);
-				if (this.isAbleToTakeItemInFight(item)) {
-					if (this.getRoom().getChest().hasItem(item)) {
-						if (!(this.getPos().getIndex() == Position.Pos.NW.getValue())) {
-							return ActionResult.POSITION;
-						}
-						if (this.canTakeItem(item)) {
-							if (doIt) {
-								this.takeItem(item);
-								this.payActionPoint(a, round);
-								return ActionResult.DONE;
-							}
-							else {
-								return ActionResult.POSSIBLE;
-							}
-						}
-					}
-				}
-				return ActionResult.OTHER;
-			}
-			else {
-				return ActionResult.NOAP;
-			}
-		}
-		else {
-			ItemInfo info = a.getItem();
-			Item item = getRoom().getChest().getItem(info);
-			if (this.isAbleToTakeItem(item)) {
-				if (this.getRoom().getChest().hasItem(item)) {
-					if (this.canTakeItem(item)) {
-						if (doIt) {
-							this.takeItem(item);
-							return ActionResult.DONE;
-						}
-						else {
-							return ActionResult.POSSIBLE;
-						}
-					}
-				}
-			}
-			return ActionResult.OTHER;
-		}
-	}
+
 
 	private ActionResult handleTakeItemAction(TakeItemAction a, boolean doIt, int round) {
 		boolean fight = this.getRoom().fightRunning();
@@ -1043,27 +965,6 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private ActionResult handleLearnSpellAction(LearnSpellAction a, boolean doIt) {
-		if (this instanceof Hero) {
-			SpellInfo info = a.getSpell();
-			List<AbstractSpell> spells = ((Hero) this).getCharacter().getSpellBuffer();
-			for (Iterator<AbstractSpell> iter = spells.iterator(); iter.hasNext(); ) {
-				AbstractSpell element = iter.next();
-				SpellInfo tmp = new SpellInfo(element, this.getRoomVisibility());
-				if (tmp.equals(info)) {
-					if (((Hero) this).getCharacter().getSpellPoints() >= element
-							.getLernCost()) {
-						if (doIt) {
-							((Hero) this).learnSpell(element);
-							return ActionResult.DONE;
-						}
-						return ActionResult.POSSIBLE;
-					}
-				}
-			}
-		}
-		return ActionResult.OTHER;
-	}
 
 	private ActionResult processAction(Action a, boolean doIt, int round) {
 
@@ -1103,23 +1004,17 @@ public abstract class Figure extends DungeonWorldObject
 		if (a instanceof UseChestAction) {
 			return handleUseChestAction((UseChestAction) a, doIt);
 		}
-		if (a instanceof ShrineAction) {
-			return handleShrineAction((ShrineAction) a, doIt, round);
+		if (a instanceof UseLocationAction) {
+			return handleShrineAction((UseLocationAction) a, doIt, round);
 		}
 		if (a instanceof SpellAction) {
 			return handleSpellAction((SpellAction) a, doIt, round);
-		}
-		if (a instanceof EquipmentChangeAction) {
-			return handleEquipmentChangeAction((EquipmentChangeAction) a, doIt);
 		}
 		if (a instanceof AttackAction) {
 			return handleAttackAction(((AttackAction) a), doIt, round);
 		}
 		if (a instanceof FleeAction) {
 			return handleFleeAction((FleeAction) a, doIt, round);
-		}
-		if (a instanceof LearnSpellAction) {
-			return handleLearnSpellAction((LearnSpellAction) a, doIt);
 		}
 		if (a instanceof LayDownItemAction) {
 			return handleLayDownItemAction(((LayDownItemAction) a), doIt);
@@ -1130,20 +1025,15 @@ public abstract class Figure extends DungeonWorldObject
 		if (a instanceof TakeItemAction) {
 			return handleTakeItemAction((TakeItemAction) a, doIt, round);
 		}
-		if (a instanceof TakeItemFromChestAction) {
-			return handleTakeItemFromChestAction((TakeItemFromChestAction) a, doIt, round);
-		}
 		if (a instanceof UseItemAction) {
 			return handleUseItemAction(((UseItemAction) a), doIt, round);
 		}
 		if (a instanceof StepAction) {
 			return handleStepAction(((StepAction) a), doIt, round);
 		}
-
 		if (a instanceof ScoutAction) {
 			return handleScoutAction(((ScoutAction) a), doIt, round);
 		}
-
 		if (a instanceof SuicideAction) {
 			return handleSuicideAction((SuicideAction) a, doIt);
 		}
@@ -1156,9 +1046,9 @@ public abstract class Figure extends DungeonWorldObject
 		return ActionResult.DONE;
 	}
 
-	protected abstract boolean isAbleToUseShrine();
+	public abstract boolean isAbleToUseShrine();
 
-	protected abstract boolean isAbleToUseChest();
+	public abstract boolean isAbleToUseChest();
 
 	private ActionResult handleUseItemAction(UseItemAction a, boolean doIt, int round) {
 		// TODO check auf use moeglich
@@ -1333,7 +1223,7 @@ public abstract class Figure extends DungeonWorldObject
 	@Deprecated // unify across different figure types
 	public abstract ScoutResult scout(ScoutAction action, int round);
 
-	protected abstract int getKilled(int dmg);
+	public abstract int getKilled(int dmg);
 
 	public abstract Attribute getHealth();
 
@@ -1991,7 +1881,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private Spell unWrappSpellInfo(SpellInfo a) {
+	public Spell unWrappSpellInfo(SpellInfo a) {
 		if (a == null) {
 			return null;
 		}
@@ -2007,7 +1897,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	private ActionResult handleSpellAction(SpellAction a, boolean doIt, int round) {
-
+	/*
 		Spell sp = unWrappSpellInfo(a.getSpell());
 		if (sp != null) {
 
@@ -2021,6 +1911,7 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			return ActionResult.NOAP;
 		}
+		*/
 		return ActionResult.UNKNOWN;
 	}
 
@@ -2029,6 +1920,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	private ActionResult handleUseChestAction(UseChestAction a, boolean doIt) {
+		/*
 		boolean right = false;
 		if (a.isMeta()) {
 			right = true;
@@ -2046,11 +1938,14 @@ public abstract class Figure extends DungeonWorldObject
 				return ActionResult.POSSIBLE;
 			}
 		}
+		*/
 		return ActionResult.OTHER;
+
 	}
 
-	private ActionResult handleShrineAction(ShrineAction a, boolean doIt, int round) {
-		Shrine s = this.getRoom().getShrine();
+	private ActionResult handleShrineAction(UseLocationAction a, boolean doIt, int round) {
+		/*
+		Location s = this.getRoom().getShrine();
 		if (s != null && this.isAbleToUseShrine()) {
 			if (!(this.getPos().getIndex() == Position.Pos.NE.getValue())) {
 				return ActionResult.POSITION;
@@ -2068,6 +1963,7 @@ public abstract class Figure extends DungeonWorldObject
 				return ActionResult.POSSIBLE;
 			}
 		}
+		*/
 		return ActionResult.OTHER;
 	}
 

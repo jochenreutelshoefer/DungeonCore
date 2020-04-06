@@ -11,20 +11,18 @@ package dungeon.quest;
 import dungeon.generate.DungeonFiller;
 import item.Item;
 import item.ItemPool;
-import item.quest.Rune;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.Chest;
 import dungeon.JDPoint;
-import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
-import shrine.Shrine;
+import shrine.Location;
 
 public class RoomQuest_3x3_1 extends RoomQuest {
 
-	private Shrine shrine;
+	private Location shrine;
 	private List<Item> takeItems;
 	
 	int [][] doors = { {0,1,1,0},
@@ -46,7 +44,7 @@ public class RoomQuest_3x3_1 extends RoomQuest {
 		this.takeItems = takeItems;
 	}
 
-	public RoomQuest_3x3_1(JDPoint p, DungeonFiller df, List<Item> takeItemsm, Shrine shrine) {
+	public RoomQuest_3x3_1(JDPoint p, DungeonFiller df, List<Item> takeItemsm, Location shrine) {
 		this(p,df,takeItemsm);
 
 		this.shrine = shrine;

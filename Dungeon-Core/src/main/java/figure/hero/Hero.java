@@ -39,7 +39,7 @@ import item.Key;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import log.Log;
-import shrine.Shrine;
+import shrine.Location;
 import spell.AbstractSpell;
 
 /**
@@ -741,7 +741,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	@Override
 	protected void lookInRoom(int round) {
 		if (this.getRoom().getDungeon().getRoom(getLocation()).getShrine() != null) {
-			Shrine s = this.getRoom().getDungeon().getRoom(getLocation()).getShrine();
+			Location s = this.getRoom().getDungeon().getRoom(getLocation()).getShrine();
 			this.tellPercept(new TextPercept(s.getStory(), round));
 
 		}

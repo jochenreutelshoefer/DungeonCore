@@ -11,12 +11,11 @@ package shrine;
 
 import dungeon.RoomEntity;
 import util.JDColor;
-import dungeon.Room;
 import figure.Figure;
 import figure.attribute.Attribute;
 import game.JDEnv;
 
-public class HealthFountain extends Shrine {
+public class HealthFountain extends Location {
 
 	
 	private final Attribute health;
@@ -78,7 +77,7 @@ public class HealthFountain extends Shrine {
 	}
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_HEALTH_FOUNTAIN;
+		return Location.SHRINE_HEALTH_FOUNTAIN;
 	}
 	
 	@Override

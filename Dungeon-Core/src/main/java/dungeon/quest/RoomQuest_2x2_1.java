@@ -20,14 +20,13 @@ import java.util.List;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;
-import dungeon.generate.AbstractDungeonFiller;
 import dungeon.util.RouteInstruction;
-import shrine.Shrine;
+import shrine.Location;
 
 public class RoomQuest_2x2_1 extends RoomQuest {
 
 	private List<Item> items;
-	private Shrine shrine ;
+	private Location shrine ;
 
 	public RoomQuest_2x2_1(JDPoint p, DungeonFiller df, List<Item> items) {
 		super(p, df, 2, 2);
@@ -35,7 +34,7 @@ public class RoomQuest_2x2_1 extends RoomQuest {
 
 	}
 
-	public RoomQuest_2x2_1(JDPoint p, DungeonFiller df, List<Item> items, Shrine shrine) {
+	public RoomQuest_2x2_1(JDPoint p, DungeonFiller df, List<Item> items, Location shrine) {
 		this(p, df, items);
 		this.shrine = shrine;
 	}

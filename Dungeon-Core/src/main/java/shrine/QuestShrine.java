@@ -22,7 +22,7 @@ import util.JDColor;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class QuestShrine extends Shrine {
+public class QuestShrine extends Location {
 
 	private final String name;
 	Item requestedItem;
@@ -66,7 +66,7 @@ public class QuestShrine extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#turn(int)
+	 * @see Location#turn(int)
 	 */
 	@Override
 	public void turn(int round) {
@@ -83,7 +83,7 @@ public class QuestShrine extends Shrine {
 	   }
 
 	/**
-	 * @see Shrine#getColor()
+	 * @see Location#getColor()
 	 */
 	@Override
 	public JDColor getColor() {
@@ -91,7 +91,7 @@ public class QuestShrine extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getStory()
+	 * @see Location#getStory()
 	 */
 	@Override
 	public String getStory() {
@@ -100,7 +100,7 @@ public class QuestShrine extends Shrine {
 	
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_QUEST;
+		return Location.SHRINE_QUEST;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class QuestShrine extends Shrine {
 	}
 
 	/**
-	 * @see Shrine#getText()
+	 * @see Location#getText()
 	 */
 	@Override
 	public String getText() {
@@ -125,7 +125,7 @@ public class QuestShrine extends Shrine {
 		
 	}
 	/**
-	 * @see Shrine#getStatus()
+	 * @see Location#getStatus()
 	 */
 	@Override
 	public String getStatus() {

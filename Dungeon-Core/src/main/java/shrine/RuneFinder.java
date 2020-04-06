@@ -17,13 +17,12 @@ import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
 import item.interfaces.ItemOwner;
-import item.interfaces.Usable;
 import item.quest.Rune;
 import util.JDColor;
 import dungeon.JDPoint;
 import dungeon.Room;
 
-public class RuneFinder extends Shrine {
+public class RuneFinder extends Location {
 
 	private final Rune rune;
 
@@ -48,7 +47,7 @@ public class RuneFinder extends Shrine {
 
 	@Override
 	public int getShrineIndex() {
-		return Shrine.SHRINE_RUNEFINDER;
+		return Location.SHRINE_RUNEFINDER;
 	}
 	
 	public void metaClick(Figure f) {
@@ -68,7 +67,7 @@ public class RuneFinder extends Shrine {
 		return false;
 	}
 	/**
-	 * @see Shrine#turn(int)
+	 * @see Location#turn(int)
 	 */
 	@Override
 	public void turn(int round) {
@@ -103,7 +102,7 @@ public class RuneFinder extends Shrine {
 	
 
 	/**
-	 * @see Shrine#getStatus()
+	 * @see Location#getStatus()
 	 */
 	@Override
 	public String getStatus() {
