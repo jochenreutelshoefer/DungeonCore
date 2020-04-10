@@ -127,8 +127,6 @@ public abstract class Figure extends DungeonWorldObject
 	private AI ai;
 	protected AbstractReflexBehavior reflexReactionUnit;
 
-	public Spell lastSpell = null;
-
 	private int figureID = -1;
 
 	protected Spellbook spellbook;
@@ -293,12 +291,6 @@ public abstract class Figure extends DungeonWorldObject
 		if (control != null) {
 			control.tellPercept(p);
 		}
-	}
-
-	public Spell resetLastSpell() {
-		Spell s = lastSpell;
-		lastSpell = null;
-		return s;
 	}
 
 	protected abstract List getModificationList();
@@ -502,18 +494,6 @@ public abstract class Figure extends DungeonWorldObject
 		return slapDmg + fireDmg + lightningDmg + poisonDmg + magicDmg;
 	}
 
-	private void spellBreak(int round) {
-		if (lastSpell != null) {
-			int cost = lastSpell.getCost();
-			int pay = cost / 3;
-			this.payDust(pay);
-			lastSpell.resetSpell();
-			lastSpell = null;
-
-			this.getRoom().distributePercept(new BreakSpellPercept(this, round));
-		}
-	}
-
 	public SlapResult getSlap(Slap s, int round) {
 
 		Figure attacker = s.getActor();
@@ -547,8 +527,6 @@ public abstract class Figure extends DungeonWorldObject
 				if (allDmg < 0) {
 					allDmg = 0;
 				}
-
-				spellBreak(round);
 
 				dies = hurt(allDmg);
 
@@ -658,7 +636,8 @@ public abstract class Figure extends DungeonWorldObject
 		return dead;
 	}
 
-	private Item getItemForInfo(ItemInfo item) {
+	@Deprecated // todo: refactor unwrapping
+	public Item getItemForInfo(ItemInfo item) {
 		List<Item> allItems = this.getAllItems();
 		//allItems.forEach(i -> System.out.println(i.isMagic()));
 		for (Item it : allItems) {
@@ -670,8 +649,8 @@ public abstract class Figure extends DungeonWorldObject
 		return null;
 	}
 
-	private ActionResult handleLayDownItemAction(LayDownItemAction a,
-												 boolean doIt) {
+	private ActionResult handleLayDownItemAction(LayDownItemAction a, boolean doIt) {
+		/*
 		if (a.getItem() != null) {
 			ItemInfo itemInfo = a.getItem();
 			Item item = getItemForInfo(itemInfo);
@@ -714,9 +693,11 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			return ActionResult.POSSIBLE;
 		}
+		*/
+		return ActionResult.UNKNOWN;
 	}
 
-	protected abstract boolean layDown(Item it);
+	public abstract boolean layDown(Item it);
 
 	protected void gameOver() {
 		if (control instanceof JDGUI) {
@@ -815,20 +796,11 @@ public abstract class Figure extends DungeonWorldObject
 		if (getControl() != null) {
 			tellPercept(new FightEndedPercept(FigureInfo.makeInfos(figures, this), round));
 		}
-		//setActionPoints(0 , - 1);
-		if (lastSpell != null) {
-			lastSpell.resetSpell();
-			lastSpell = null;
-		}
 		return false;
 	}
 
 	protected ActionResult processAction(Action a, int round) {
 		return processAction(a, true, round);
-	}
-
-	public double getReadiness() {
-		return this.agility.getCurrentAP();
 	}
 
 	private boolean doorSmashes(Door d, Figure other, int round) {
@@ -992,172 +964,16 @@ public abstract class Figure extends DungeonWorldObject
 				return ActionResult.POSSIBLE;
 			}
 		}
-		if (!(a instanceof SpellAction)) {
-			if (lastSpell != null) {
-				lastSpell.resetSpell();
-				lastSpell = null;
-			}
-		}
-		if (a instanceof LockAction) {
-			return handleLockAction((LockAction) a, doIt, round);
-		}
-		if (a instanceof UseChestAction) {
-			return handleUseChestAction((UseChestAction) a, doIt);
-		}
-		if (a instanceof UseLocationAction) {
-			return handleShrineAction((UseLocationAction) a, doIt, round);
-		}
-		if (a instanceof SpellAction) {
-			return handleSpellAction((SpellAction) a, doIt, round);
-		}
-		if (a instanceof AttackAction) {
-			return handleAttackAction(((AttackAction) a), doIt, round);
-		}
-		if (a instanceof FleeAction) {
-			return handleFleeAction((FleeAction) a, doIt, round);
-		}
-		if (a instanceof LayDownItemAction) {
-			return handleLayDownItemAction(((LayDownItemAction) a), doIt);
-		}
-		if (a instanceof MoveAction) {
-			return handleMoveAction((MoveAction) a, doIt, round);
-		}
-		if (a instanceof TakeItemAction) {
-			return handleTakeItemAction((TakeItemAction) a, doIt, round);
-		}
-		if (a instanceof UseItemAction) {
-			return handleUseItemAction(((UseItemAction) a), doIt, round);
-		}
-		if (a instanceof StepAction) {
-			return handleStepAction(((StepAction) a), doIt, round);
-		}
-		if (a instanceof ScoutAction) {
-			return handleScoutAction(((ScoutAction) a), doIt, round);
-		}
-		if (a instanceof SuicideAction) {
-			return handleSuicideAction((SuicideAction) a, doIt);
-		}
 
 		return ActionResult.UNKNOWN;
 	}
 
-	private ActionResult handleSuicideAction(SuicideAction a, boolean doIt) {
-		this.getKilled(-1);
-		return ActionResult.DONE;
-	}
+
 
 	public abstract boolean isAbleToUseShrine();
 
 	public abstract boolean isAbleToUseChest();
 
-	private ActionResult handleUseItemAction(UseItemAction a, boolean doIt, int round) {
-		// TODO check auf use moeglich
-		if (canPayActionPoints(1)) {
-			ItemInfo info = a.getItem();
-			Item it = this.getItem(info);
-			if (it instanceof Usable) {
-				Usable usable = (Usable) it;
-				RoomInfoEntity target = a.getTarget();
-				InfoUnitUnwrapper unwrapper = this.getRoom().getDungeon().getUnwrapper();
-				if (((Usable) it).needsTarget() && target == null) {
-					return ActionResult.NO_TARGET;
-				}
-				if (((Usable) it).needsTarget()) {
-					Collection<PositionInRoomInfo> interactionPositions = target.getInteractionPositions();
-					Collection<Object> positions = unwrapper.unwrappObjects(interactionPositions);
-					if (!positions.contains(this.getPos())) {
-						return ActionResult.POSITION;
-					}
-				}
-				if (usable.canBeUsedBy(this)) {
-					if (doIt) {
-						boolean used = ((Usable) it).use(this, this.getActualDungeon()
-								.getUnwrapper()
-								.unwrappObject(target), a.isMeta(), round);
-						this.payActionPoint(a, round);
-						Percept p = new UsePercept(this, (Usable) it, round);
-						getRoom().distributePercept(p);
-
-						if (used && (((Usable) it).usableOnce())) {
-							removeItem(it);
-						}
-						if (used) {
-
-							return ActionResult.DONE;
-						}
-						else {
-							return ActionResult.FAILED;
-						}
-					}
-					return ActionResult.POSSIBLE;
-				}
-				return ActionResult.OTHER;
-			}
-			return ActionResult.ITEM;
-		}
-		return ActionResult.NOAP;
-	}
-
-	private ActionResult handleStepAction(StepAction a, boolean doIt, int round) {
-		/*
-		int targetIndex = a.getTargetIndex();
-		if (targetIndex == -1) {
-			return ActionResult.NO_TARGET;
-		}
-		if (getRoom().fightRunning()) {
-			if (canPayActionPoints(1)) {
-
-				if (this.isPinnedToGround()) {
-					return ActionResult.OTHER;
-				}
-
-				Position newPos = getRoom().getPositions()[targetIndex];
-				Figure neighbour;
-
-				int oldPosIndex = pos.getIndex();
-				if (pos.getDistanceTo(newPos) == 1) {
-					neighbour = newPos.getFigure();
-					if (neighbour == null) {
-						if (doIt) {
-
-							doStepTo(targetIndex, oldPosIndex, round);
-
-							this.payActionPoint(a, round);
-							return ActionResult.DONE;
-						}
-						return ActionResult.POSSIBLE;
-					}
-					else {
-						return ActionResult.WRONG_TARGET;
-					}
-				}
-				return ActionResult.POSITION;
-			}
-			else {
-				return ActionResult.NOAP;
-			}
-		}
-		else {
-			if (this.getActionPoints() < 1) {
-				return ActionResult.NOAP;
-			}
-
-			Position newPos = getRoom().getPositions()[targetIndex];
-			if (newPos.getFigure() != null) {
-				return ActionResult.WRONG_TARGET;
-			}
-			if (doIt) {
-
-				doStepTo(targetIndex, pos.getIndex(), round);
-
-				this.payMoveActionPoint(a, round);
-				return ActionResult.DONE;
-			}
-			return ActionResult.POSSIBLE;
-		}
-		*/
-		return null;
-	}
 
 	public void doStepTo(int targetFieldindex, int oldPosIndex, int round) {
 		Position newPos = getRoom().getPositions()[targetFieldindex];
@@ -1168,36 +984,6 @@ public abstract class Figure extends DungeonWorldObject
 		StepPercept p = new StepPercept(this, oldPosIndex, targetFieldindex, round);
 		pos = newPos;
 		getRoom().distributePercept(p);
-	}
-
-	private ActionResult handleScoutAction(ScoutAction action, boolean doIt, int round) {
-		if (this.getActionPoints() < 1) {
-			return ActionResult.NOAP;
-		}
-		int dir = action.getDirection();
-		if (pos.getIndex() != getDirPos(dir)) {
-			return ActionResult.POSITION;
-		}
-		Room toScout = getRoom().getNeighbourRoom(dir);
-		if (toScout == null) {
-			return ActionResult.UNKNOWN;
-		}
-		int direction = action.getDirection();
-		Room scoutTarget = getRoom().getNeighbourRoom(direction);
-		if (getRoomVisibility().getStatusObject(scoutTarget.getNumber())
-				.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return ActionResult.UNKNOWN;
-		}
-		if (doIt) {
-			lookDir = dir;
-			ScoutResult result = scout(action, round);
-			getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
-			Percept p = new ScoutPercept(this, this.getRoom(), dir, round);
-			getRoom().distributePercept(p);
-			this.payMoveActionPoint(action, round);
-			return ActionResult.DONE;
-		}
-		return ActionResult.POSSIBLE;
 	}
 
 	/**
@@ -1646,56 +1432,6 @@ public abstract class Figure extends DungeonWorldObject
 	@Deprecated // todo: unifiy across different figure types
 	public abstract boolean tryUnlockDoor(Door d, boolean doIt);
 
-	private ActionResult handleLockAction(LockAction a, boolean doIt, int round) {
-		DoorInfo info = a.getDoor();
-		RouteInstruction.Direction direction = info.getDirection(getRoom().getLocation());
-		if (direction == null) {
-			return ActionResult.WRONG_TARGET;
-		}
-		Door d = getRoom().getDoor(direction);
-		if (this.isAbleToLockDoor()) {
-			Position positionAtDoor = d.getPositionAtDoor(this.getRoom(), false);
-			if (!this.getPos().equals(positionAtDoor)) {
-				return ActionResult.POSITION;
-			}
-
-			boolean wasLocked = d.getLocked();
-			boolean ok = this.tryUnlockDoor(d, doIt);
-
-			if (ok) {
-
-				if (wasLocked) {
-					this.tellPercept(new InfoPercept(InfoPercept.UNLOCKED_DOOR, round));
-				}
-				else {
-					this.tellPercept(new InfoPercept(InfoPercept.LOCKED_DOOR, round));
-				}
-				if (!canPayActionPoints(1)) {
-					return ActionResult.NOAP;
-				}
-				if (doIt) {
-					this.payMoveActionPoint(a, round);
-					return ActionResult.DONE;
-				}
-				return ActionResult.POSSIBLE;
-			}
-			else if (info.isKeylocatable(this)) {
-				if (!canPayActionPoints(1)) {
-					return ActionResult.NOAP;
-				}
-				if (doIt) {
-					KeyLocator.tellKeyLocation(this, d, round);
-					this.payMoveActionPoint(a, round);
-					return ActionResult.DONE;
-				}
-				return ActionResult.POSSIBLE;
-			}
-			return ActionResult.ITEM;
-		}
-
-		return ActionResult.OTHER;
-	}
-
 	protected Action retrieveMovementActionFromControl(int round) {
 		if (control instanceof JDGUI) {
 			((JDGUI) control).onTurn();
@@ -1896,81 +1632,9 @@ public abstract class Figure extends DungeonWorldObject
 		return null;
 	}
 
-	private ActionResult handleSpellAction(SpellAction a, boolean doIt, int round) {
-	/*
-		Spell sp = unWrappSpellInfo(a.getSpell());
-		if (sp != null) {
-
-			if (lastSpell != null && lastSpell != sp) {
-				lastSpell.resetSpell();
-				lastSpell = null;
-			}
-
-			if (canPayActionPoints(1)) {
-				return sp.fire(this, this.getActualDungeon().getUnwrapper().unwrappObject(a.getTarget()), doIt, round);
-			}
-			return ActionResult.NOAP;
-		}
-		*/
-		return ActionResult.UNKNOWN;
-	}
-
 	public AbstractReflexBehavior getReflexReactionUnit() {
 		return reflexReactionUnit;
 	}
-
-	private ActionResult handleUseChestAction(UseChestAction a, boolean doIt) {
-		/*
-		boolean right = false;
-		if (a.isMeta()) {
-			right = true;
-		}
-		if (!(this.getPos().getIndex() == Position.Pos.NW.getValue())) {
-			return ActionResult.POSITION;
-		}
-		Chest s = this.getRoom().getChest();
-		if (s != null && this.isAbleToUseChest()) {
-			if (doIt) {
-				s.clicked(this, right);
-				return ActionResult.DONE;
-			}
-			else {
-				return ActionResult.POSSIBLE;
-			}
-		}
-		*/
-		return ActionResult.OTHER;
-
-	}
-
-	private ActionResult handleShrineAction(UseLocationAction a, boolean doIt, int round) {
-		/*
-		Location s = this.getRoom().getShrine();
-		if (s != null && this.isAbleToUseShrine()) {
-			if (!(this.getPos().getIndex() == Position.Pos.NE.getValue())) {
-				return ActionResult.POSITION;
-			}
-
-			if (doIt) {
-
-				if (s.canBeUsedBy(this)) {
-					s.use(this, this.getActualDungeon().getUnwrapper().unwrappObject(a.getTarget()), a.isMeta(), round);
-					return ActionResult.DONE;
-				}
-				return ActionResult.OTHER;
-			}
-			else {
-				return ActionResult.POSSIBLE;
-			}
-		}
-		*/
-		return ActionResult.OTHER;
-	}
-
-	public Spell getLastSpell() {
-		return lastSpell;
-	}
-
 
 
 	public abstract int getWorth();

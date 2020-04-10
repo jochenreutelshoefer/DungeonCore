@@ -32,12 +32,6 @@ public class SpellAction extends AbstractExecutableAction {
 	public ActionResult handle(boolean doIt, int round) {
 		Spell sp = figure.unWrappSpellInfo(spell);
 		if (sp != null) {
-			// todo: refactor
-			if (figure.lastSpell != null && figure.lastSpell != sp) {
-				figure.lastSpell.resetSpell();
-				figure.lastSpell = null;
-			}
-
 			if (figure.canPayActionPoints(1)) {
 				return sp.fire(figure, figure.getActualDungeon().getUnwrapper().unwrappObject(target), doIt, round);
 			}

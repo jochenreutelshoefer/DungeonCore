@@ -32,11 +32,6 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 			return a;
 		}
 
-		a = this.wannaSpell();
-		if (a != null) {
-			return a;
-		}
-
 		return new AttackAction(info, getHeroIndex());
 	}
 

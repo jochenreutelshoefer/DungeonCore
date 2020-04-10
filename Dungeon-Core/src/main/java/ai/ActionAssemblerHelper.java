@@ -215,19 +215,19 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaLayDownItem(ItemInfo it) {
-		Action a = new LayDownItemAction(it);
+		Action a = new LayDownItemAction(this.figure, it);
 		return Collections.singletonList(a);
 	}
 
 	@Deprecated
 	public List<Action> wannaLayDownEquipmentItem(int type) {
-		Action a = new LayDownItemAction(true, type);
+		Action a = new LayDownItemAction(this.figure, true, type);
 		return Collections.singletonList(a);
 	}
 
 	@Deprecated
 	public List<Action> wannaLayDownItem(int index) {
-		Action a = new LayDownItemAction(false, index);
+		Action a = new LayDownItemAction(this.figure, false, index);
 		return Collections.singletonList(a);
 	}
 

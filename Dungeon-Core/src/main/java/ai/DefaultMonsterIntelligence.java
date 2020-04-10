@@ -403,20 +403,6 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return null;
 	}
 
-	protected Action trySpell(SpellInfo s) {
-
-		HeroInfo hero = monster.getRoomInfo().getHeroInfo();
-		if (hero != null) {
-			Action a = new SpellAction(this.info, s, hero);
-			ActionResult res = monster.checkAction(a);
-			if (res.getSituation() == ActionResult.Situation.possible) {
-				return a;
-			}
-
-		}
-		return null;
-
-	}
 
 	protected int getHeroIndex() {
 		List<FigureInfo> infos = monster.getRoomInfo().getFigureInfos();
@@ -429,34 +415,9 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return heroIndex;
 	}
 
-	protected Action wannaSpell() {
-		// Spell fortsetzen
-		if (monster.getLastSpell() != null) {
-			Action a = trySpell(monster.getLastSpell());
-			if (a != null) {
-				return a;
-			}
-		}
-
-		List<SpellInfo> spells = monster.getSpells();
-		for (Iterator<SpellInfo> iter = spells.iterator(); iter.hasNext();) {
-			SpellInfo element = iter.next();
-			Action a = trySpell(element);
-			if (a != null) {
-				return a;
-			}
-
-		}
-		return null;
-	}
 
 	@Override
 	public Action chooseFightAction() {
-
-		Action a = wannaSpell();
-		if (a != null) {
-			return a;
-		}
 
 		int monsterCount = monster.getRoomInfo().getMonsterInfos().size();
 		int heroIndex = getHeroIndex();
@@ -523,24 +484,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		}
 	}
 
-	public Action turnElse(int c) {
 
-		int a = (int) (Math.random() * 100);
-		if (c == 1) { // damit er auf jeden Fall weggeht
-			a = (int) (Math.random() * 20) + 80;
-		}
-		if (a <= 80) {
-			return null;
-		} else if (a <= 85) {
-			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.SOUTH);
-		} else if (a <= 90) {
-			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.EAST);
-		} else if (a <= 95) {
-			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.NORTH);
-		} else {
-			return new MoveAction(this.monster, this.monster.getRoomInfo().getLocation(), RouteInstruction.WEST);
-		}
-	}
 
 }
 

@@ -678,7 +678,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 	}
 
 	@Override
-	protected boolean layDown(Item i) {
+	public boolean layDown(Item i) {
 		actualDungeon.getRoom(location).takeItem(i);
 		items.remove(i);
 		return true;

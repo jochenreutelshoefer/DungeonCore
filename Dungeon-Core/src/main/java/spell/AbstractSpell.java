@@ -359,9 +359,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 						
 						return ActionResult.DONE;
 					}else {
-						if(this.stepsNec == 1) {
-							mage.resetLastSpell();
-						}
 						return ActionResult.FAILED;
 					}
 				}
@@ -405,7 +402,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		Percept p = new SpellPercept(mage, this, round);
 		mage.getRoom().distributePercept(p);
 		sorcer(mage, target, round);
-		mage.resetLastSpell();
 		stepCnt = 0;
 	}
 

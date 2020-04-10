@@ -6,44 +6,88 @@
  */
 package figure.action;
 
+import figure.Figure;
+import figure.FigureInfo;
+import figure.action.result.ActionResult;
+import figure.hero.Hero;
+import figure.hero.Inventory;
+import item.Item;
 import item.ItemInfo;
 
-public class LayDownItemAction extends Action {
-	
+public class LayDownItemAction extends AbstractExecutableAction {
+
+	private final Figure figure;
 	private boolean equipment;
 	private int index;
 	private ItemInfo item = null;
-	
+
 	public ItemInfo getItem() {
 		return item;
 	}
 
 	@Deprecated
-	public LayDownItemAction(boolean equip, int index) {
-		this.equipment=equip;
+	public LayDownItemAction(FigureInfo info, boolean equip, int index) {
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+		this.equipment = equip;
 		this.index = index;
 	}
 
-	public LayDownItemAction(ItemInfo item) {
+	public LayDownItemAction(FigureInfo info, ItemInfo item) {
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
 		this.item = item;
 	}
 
-	/**
-	 * @return Returns the equipment.
-	 */
-	@Deprecated
-	public boolean isEquipment() {
+	private boolean isEquipment() {
 		return equipment;
 	}
 
-	/**
-	 * @return Returns the index.
-	 */
-	@Deprecated
-	public int getIndex() {
+	private int getIndex() {
 		return index;
 	}
-	
-	
 
+	@Override
+	public ActionResult handle(boolean doIt, int round) {
+		if (getItem() != null) {
+			ItemInfo itemInfo = getItem();
+			Item item = figure.getItemForInfo(itemInfo);
+			if (doIt) {
+				figure.layDown(item);
+				return ActionResult.DONE;
+			}
+			return ActionResult.POSSIBLE;
+		}
+		boolean equip = isEquipment();
+		int index = getIndex();
+
+		if (equip) {
+			if (figure instanceof Hero) {
+				if (doIt) {
+					Inventory inv = ((Hero) figure).getInventory();
+					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR) {
+						inv.layDown(inv.getArmor(inv.getArmorIndex()));
+					}
+					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_HELMET) {
+						inv.layDown(inv.getHelmet(inv.getHelmetIndex()));
+					}
+					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_SHIELD) {
+						inv.layDown(inv.getShield(inv.getShieldIndex()));
+					}
+					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON) {
+						inv.layDown(inv.getWeapon(inv.getWeaponIndex()));
+					}
+					return ActionResult.DONE;
+				}
+				return ActionResult.POSSIBLE;
+			}
+			return ActionResult.OTHER;
+		}
+		else {
+			if (doIt) {
+				Item ding = figure.getItems().get(index);
+				figure.layDown(ding);
+				return ActionResult.DONE;
+			}
+			return ActionResult.POSSIBLE;
+		}
+	}
 }

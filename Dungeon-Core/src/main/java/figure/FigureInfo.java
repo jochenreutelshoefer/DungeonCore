@@ -243,12 +243,6 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return RoomInfo.makeRoomInfo(f.getRoom(), map);
 	}
 
-	public SpellInfo getLastSpell() {
-		if (f.getLastSpell() != null) {
-			return new SpellInfo(f.getLastSpell(), map);
-		}
-		return null;
-	}
 
 	public RoomInfo getRoomInfo(int x, int y) {
 		if (f.getRoom() == null || f.getActualDungeon() == null) return null;

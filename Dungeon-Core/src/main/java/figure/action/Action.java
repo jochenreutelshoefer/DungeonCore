@@ -16,7 +16,7 @@ public abstract class Action {
 
 	@Override
 	public String toString() {
-		return this.getClass().toString() + " " + super.toString();
+		return this.getClass() + " " + super.toString();
 	}
 
 }

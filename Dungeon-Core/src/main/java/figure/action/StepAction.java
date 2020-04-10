@@ -6,6 +6,7 @@
  */
 package figure.action;
 
+import com.sun.istack.internal.NotNull;
 import dungeon.Position;
 import dungeon.Room;
 import figure.Figure;
@@ -17,9 +18,12 @@ public class StepAction extends AbstractExecutableAction {
 	private int targetIndex = -1;
 	private final Figure figure;
 
-	public StepAction(FigureInfo figureInfo, int index) {
+	public StepAction(@NotNull FigureInfo figureInfo, int index) {
 		super();
-		targetIndex = index;
+		if(figureInfo == null) {
+			throw new IllegalArgumentException("figureInfo may not be null for "+this.getClass().getSimpleName());
+		}
+ 		targetIndex = index;
 		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFighterID());
 	}
 
@@ -29,7 +33,7 @@ public class StepAction extends AbstractExecutableAction {
 			return ActionResult.NO_TARGET;
 		}
 		Room room = figure.getRoom();
-		if(room != null) {
+		if(room == null) {
 			// exit/death problem
 			return ActionResult.UNKNOWN;
 		}
