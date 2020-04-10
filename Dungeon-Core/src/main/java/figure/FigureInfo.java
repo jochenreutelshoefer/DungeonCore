@@ -35,6 +35,7 @@ import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 import log.Log;
+import skill.Skill;
 import spell.AbstractSpell;
 import spell.SpellInfo;
 
@@ -243,6 +244,10 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return RoomInfo.makeRoomInfo(f.getRoom(), map);
 	}
 
+
+	public <T extends Skill> T getSkill(Class<T> clazz) {
+		return this.f.getSkill(clazz);
+	}
 
 	public RoomInfo getRoomInfo(int x, int y) {
 		if (f.getRoom() == null || f.getActualDungeon() == null) return null;

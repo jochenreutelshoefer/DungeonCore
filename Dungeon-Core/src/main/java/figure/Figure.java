@@ -2,6 +2,7 @@ package figure;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -91,6 +92,10 @@ import item.interfaces.Usable;
 import log.Log;
 import org.apache.log4j.Logger;
 import shrine.Location;
+import skill.AttackSkill;
+import skill.Skill;
+import skill.SkillAction;
+import skill.SkillMap;
 import spell.KeyLocator;
 import spell.Spell;
 import spell.SpellInfo;
@@ -502,8 +507,7 @@ public abstract class Figure extends DungeonWorldObject
 
 		float precision = s.getPrecision();
 
-		int chance = (int) (precision - precision
-				* ((((double) eludeValue) / 100)));
+		int chance = (int) (precision - precision * ((((double) eludeValue) / 100)));
 
 		boolean dies = false;
 		SlapResult res = null;
@@ -649,53 +653,6 @@ public abstract class Figure extends DungeonWorldObject
 		return null;
 	}
 
-	private ActionResult handleLayDownItemAction(LayDownItemAction a, boolean doIt) {
-		/*
-		if (a.getItem() != null) {
-			ItemInfo itemInfo = a.getItem();
-			Item item = getItemForInfo(itemInfo);
-			if (doIt) {
-				this.layDown(item);
-				return ActionResult.DONE;
-			}
-			return ActionResult.POSSIBLE;
-		}
-		boolean equip = a.isEquipment();
-		int index = a.getIndex();
-
-		if (equip) {
-			if (this instanceof Hero) {
-				if (doIt) {
-					Inventory inv = ((Hero) this).getInventory();
-					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_ARMOR) {
-						inv.layDown(inv.getArmor(inv.getArmorIndex()));
-					}
-					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_HELMET) {
-						inv.layDown(inv.getHelmet(inv.getHelmetIndex()));
-					}
-					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_SHIELD) {
-						inv.layDown(inv.getShield(inv.getShieldIndex()));
-					}
-					if (index == EquipmentChangeAction.EQUIPMENT_TYPE_WEAPON) {
-						inv.layDown(inv.getWeapon(inv.getWeaponIndex()));
-					}
-					return ActionResult.DONE;
-				}
-				return ActionResult.POSSIBLE;
-			}
-			return ActionResult.OTHER;
-		}
-		else {
-			if (doIt) {
-				Item ding = this.getItems().get(index);
-				layDown(ding);
-				return ActionResult.DONE;
-			}
-			return ActionResult.POSSIBLE;
-		}
-		*/
-		return ActionResult.UNKNOWN;
-	}
 
 	public abstract boolean layDown(Item it);
 
@@ -705,88 +662,17 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	private ActionResult handleAttackAction(AttackAction a, boolean doIt, int round) {
-		/*
-		int targetIndex = a.getTarget();
-		Figure target = actualDungeon.getFigureIndex().get(targetIndex);
-		if (target == null) {
-			return ActionResult.WRONG_TARGET;
-		}
-		if (getRoom().fightRunning()) {
-			if (canPayActionPoints(1)) {
-				if (this.getRoom() == target.getRoom()) {
-					if (doIt) {
-
-						this.payActionPoint(a, round);
-						attack(target, round);
-						return ActionResult.DONE;
-					}
-					return ActionResult.POSSIBLE;
-				}
-			}
-			return ActionResult.NOAP;
-		}
-		*/
-		return ActionResult.MODE;
-	}
 
 	public void setCobwebbed(int k) {
 		cobwebbed += k;
-	}
-
-	public boolean isCobwebbed() {
-		return cobwebbed > 0;
 	}
 
 	public boolean isPinnedToGround() {
 		return cobwebbed > 0;
 	}
 
-	public ActionResult handleFleeAction(FleeAction a, boolean doIt, int round) {
-		if (getRoom().fightRunning()) {
-
-			Room oldRoom = getRoom();
-			if (canPayActionPoints(1)) {
-
-				if (this.isPinnedToGround()) {
-					return ActionResult.OTHER;
-				}
-
-				boolean flees;
-				RouteInstruction.Direction dir = pos.getPossibleFleeDirection();
-				if (dir != null && getRoom().getDoor(dir) != null
-						&& getRoom().getDoor(dir).isPassable(this)) {
-					if (doIt) {
-						this.lookDir = dir.getValue();
-						Position oldPos = this.getPos();
-						flees = flee(dir, round);
-						this.payActionPoint(a, round);
-						if (flees) {
-							Percept p = new FleePercept(this, oldPos, dir.getValue(), true, round);
-							oldRoom.distributePercept(p);
-							getRoom().distributePercept(p);
-						}
-						else {
-							Percept p = new FleePercept(this, oldPos, dir.getValue(), false, round);
-							oldRoom.distributePercept(p);
-						}
-						return ActionResult.DONE;
-					}
-					return ActionResult.POSSIBLE;
-				}
-				return ActionResult.POSITION;
-			}
-			return ActionResult.NOAP;
-		}
-		return ActionResult.MODE;
-	}
 
 	protected abstract void setMakingSpecialAttack(boolean b);
-
-	public void fightBegins(List<Figure> figures, int round) {
-		tellPercept(new FightBeginsPercept(FigureInfo.makeInfos(figures, this), round));
-		setMakingSpecialAttack(false);
-	}
 
 	public boolean fightEnded(List<Figure> figures, int round) {
 		if (this instanceof ConjuredMagicFigure) {
@@ -797,6 +683,12 @@ public abstract class Figure extends DungeonWorldObject
 			tellPercept(new FightEndedPercept(FigureInfo.makeInfos(figures, this), round));
 		}
 		return false;
+	}
+
+	private final SkillMap skillSet = new SkillMap();
+
+	public <T extends Skill> T getSkill(Class<T> clazz) {
+		return skillSet.get(clazz);
 	}
 
 	protected ActionResult processAction(Action a, int round) {
@@ -860,84 +752,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	public abstract boolean canTakeItem(Item i);
 
-
-
-	private ActionResult handleTakeItemAction(TakeItemAction a, boolean doIt, int round) {
-		boolean fight = this.getRoom().fightRunning();
-		if (fight) {
-			if (this.canPayActionPoints(1)) {
-				ItemInfo info = a.getItem();
-				Item item = getRoom().getItem(info);
-				if (this.isAbleToTakeItemInFight(item)) {
-					if (this.getRoom().hasItem(item)) {
-						if (this.canTakeItem(item)) {
-							if (doIt) {
-								this.takeItem(item);
-								this.payActionPoint(a, round);
-								this.getRoom().distributePercept(new TakePercept(this, item, round));
-								return ActionResult.DONE;
-							}
-							else {
-								return ActionResult.POSSIBLE;
-							}
-						}
-					}
-				}
-				return ActionResult.OTHER;
-			}
-			else {
-				return ActionResult.NOAP;
-			}
-		}
-		else {
-			ItemInfo info = a.getItem();
-			Item item = getRoom().getItem(info);
-			if (this.isAbleToTakeItem(item)) {
-				if (this.getRoom().hasItem(item)) {
-					if (this.canTakeItem(item)) {
-						if (doIt) {
-							this.takeItem(item);
-							this.getRoom().distributePercept(new TakePercept(this, item, round));
-							return ActionResult.DONE;
-						}
-						else {
-							return ActionResult.POSSIBLE;
-						}
-					}
-				}
-			}
-			return ActionResult.OTHER;
-		}
-	}
-
-	private ActionResult handleMoveAction(MoveAction a, boolean doIt, int round) {
-
-		if (this.getActionPoints() < 1) {
-			return ActionResult.NOAP;
-		}
-		int dir = a.getDirectionIndex();
-		if (pos.getIndex() != getDirPos(dir)) {
-			return ActionResult.POSITION;
-		}
-		if (this.isPinnedToGround()) {
-			return ActionResult.OTHER;
-		}
-		if (wayPassable(dir)) {
-			if (doIt) {
-				this.payMoveActionPoint(a, round);
-				walk(a.getDirection(), round);
-				return ActionResult.DONE;
-			}
-			else {
-				return ActionResult.POSSIBLE;
-			}
-		}
-		else {
-			return ActionResult.WRONG_TARGET;
-		}
-	}
-
-
 	private ActionResult processAction(Action a, boolean doIt, int round) {
 
 		if (doIt) {
@@ -951,6 +765,10 @@ public abstract class Figure extends DungeonWorldObject
 
 		if(a instanceof AbstractExecutableAction) {
 			return ((AbstractExecutableAction)a).handle(doIt, round);
+		}
+
+		if(a instanceof SkillAction) {
+			return ((SkillAction)a).getSkill().execute(((SkillAction)a), doIt, round);
 		}
 
 		if (a instanceof EndRoundAction) {
@@ -1044,6 +862,8 @@ public abstract class Figure extends DungeonWorldObject
 				.getString("status_short_strong");
 
 		agility = createAgility();
+
+		this.skillSet.put(AttackSkill.class, new AttackSkill());
 
 		this.figureID = figureID_counter;
 		figureID_counter++;
@@ -1247,7 +1067,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	@Override
 	public Paragraph[] getParagraphs() {
-		Paragraph[] p = new Paragraph[4];
+		Paragraph[] p = new Paragraph[3];
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
@@ -1265,21 +1085,11 @@ public abstract class Figure extends DungeonWorldObject
 		p[2].setCentered();
 		p[2].setColor(JDColor.black);
 
-		p[3] = new Paragraph(getSpecialsText());
-		p[3].setSize(10);
-		p[3].setCentered();
-		p[3].setColor(JDColor.black);
 
 		return p;
 	}
 
-	protected String getSpecialsText() {
-		String s = "";
-		if (isCobwebbed()) {
-			s += JDEnv.getString("spell_net_name");
-		}
-		return s;
-	}
+
 
 	public abstract String getMclass();
 
@@ -1599,7 +1409,7 @@ public abstract class Figure extends DungeonWorldObject
 		blinded += k;
 	}
 
-	protected void fireModifications() {
+	private void fireModifications() {
 		List modifications = getModificationList();
 		if (!modifications.isEmpty()) {
 

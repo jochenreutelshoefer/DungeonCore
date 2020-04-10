@@ -39,11 +39,6 @@ public abstract class AbstractReflexBehavior implements ActionSpecifier, Seriali
 		return null;
 	}
 
-	public void setShock(int value) {
-		shockRounds += 2*value;
-		actualType = TYPE_FLEE;
-	}
-	
 	public void setConvinced(Figure fig, int strength) {
 		convincedRounds = strength / (1+1);
 		this.convincor = fig;

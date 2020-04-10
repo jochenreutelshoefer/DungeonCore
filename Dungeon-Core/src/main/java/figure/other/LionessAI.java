@@ -15,6 +15,7 @@ import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.percept.EntersPercept;
 import figure.percept.Percept;
+import skill.AttackSkill;
 
 public class LionessAI extends AbstractAI {
 
@@ -37,8 +38,11 @@ public class LionessAI extends AbstractAI {
 			}
 		}
 		FigureInfo target = figureInfos.get(((int)(Math.random() * figureInfos.size())));
-		
-		return new AttackAction(this.info, target.getFighterID());
+		return this.info.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(info)
+				.target(target)
+				.get();
 	}
 
 	@Override

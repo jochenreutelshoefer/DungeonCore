@@ -3,6 +3,7 @@ package spell;
 import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
+import figure.action.SpellAction;
 import figure.action.result.ActionResult;
 import game.InfoEntity;
 import game.RoomInfoEntity;
@@ -15,32 +16,24 @@ import gui.Paragraph;
 public interface Spell {
 
 
-	void sorcer(Figure mage, RoomEntity target, int round);
+	abstract ActionResult fire(Figure figure, RoomEntity target, boolean doIt, int round);
 
-	ActionResult fire(Figure figure, RoomEntity target, boolean doIt, int round);
+	abstract String getName();
 
-	String getName();
+	abstract int getLevel();
 
-	int getLevel();
+	abstract int getType();
 
-	int getType();
+	abstract boolean isPossibleFight();
 
-	@Deprecated
-	int getLernCost();
+	abstract boolean isPossibleNormal();
 
-	boolean isPossibleFight();
+	abstract String getText();
 
-	boolean isPossibleNormal();
+	abstract int getDifficulty();
 
-	String getText();
+	abstract int getCost();
 
-	int getDifficulty();
+	abstract Paragraph[] getParagraphs();
 
-	int getCost();
-
-	Paragraph[] getParagraphs();
-
-	void resetSpell();
-
-	InfoEntity getInfoObject(DungeonVisibilityMap map);
 }

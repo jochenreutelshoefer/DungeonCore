@@ -32,7 +32,6 @@ import figure.action.LockAction;
 import figure.action.MoveAction;
 import figure.action.ScoutAction;
 import figure.action.UseLocationAction;
-import figure.action.SkillUpAction;
 import figure.action.SpellAction;
 import figure.action.StepAction;
 import figure.action.TakeItemAction;
@@ -40,6 +39,7 @@ import figure.action.UseChestAction;
 import figure.action.UseItemAction;
 import game.RoomInfoEntity;
 import item.ItemInfo;
+import skill.AttackSkill;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -52,8 +52,14 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaAttack(FigureInfo o) {
-		Action a = new AttackAction(figure, o.getFighterID());
-		return Collections.singletonList(a);
+		//Action a = new AttackAction(figure, o.getFighterID());
+
+		AttackSkill.AttackSkillAction attackSkillAction = figure.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(figure)
+				.target(o)
+				.get();
+		return Collections.singletonList(attackSkillAction);
 	}
 
 	public FigureInfo getFigure() {
@@ -467,11 +473,6 @@ public class ActionAssemblerHelper {
 	@Deprecated // unanimated not used
 	public List<Action> wannaStepToPosition(PositionInRoomInfo pos, boolean unanimated) {
 		Action a = new StepAction(this.figure, pos.getIndex());
-		return Collections.singletonList(a);
-	}
-
-	public List<Action> wannaSkillUp(int key) {
-		Action a = new SkillUpAction(key);
 		return Collections.singletonList(a);
 	}
 

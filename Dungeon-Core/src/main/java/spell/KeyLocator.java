@@ -76,19 +76,6 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public int getLernCost() {
-		return 1;
-	}
-
-	public boolean fightModus() {
-		return isPossibleInFight;
-	}
-
-	public boolean normalModus() {
-		return isPossibleNormal;
-	}
-
-	@Override
 	public void sorcer(Figure mage, RoomEntity target, int round) {
 		if (target instanceof Door) {
 			Door d = ((Door) target);

@@ -74,14 +74,6 @@ public class Fireball extends AbstractTargetSpell implements TargetSpell{
 //		return level;
 //	}
 
-	public boolean fightModus() {
-		return isPossibleFight();
-	}
-
-	public boolean normalModus() {
-		return isPossibleNormal();
-	}
-
 	public Fireball(int level) {
 
 		super(level, VALUES[level - 1]);

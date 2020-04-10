@@ -13,6 +13,7 @@ import figure.action.result.ActionResult;
 /**
  * Angriffsaktion. Enthaelt das Ziel.
  */
+@Deprecated
 public class AttackAction extends AbstractExecutableAction {
 	
 	private final Figure target;

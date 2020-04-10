@@ -66,14 +66,6 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 		return AbstractSpell.SPELL_LIGHT;
 	}
 
-	public boolean fightModus() {
-		return isPossibleFight();
-	}
-
-	public boolean normalModus() {
-		return isPossibleNormal();
-	}
-
 	@Override
 	public Class<? extends RoomInfoEntity> getTargetClass() {
 		return FigureInfo.class;

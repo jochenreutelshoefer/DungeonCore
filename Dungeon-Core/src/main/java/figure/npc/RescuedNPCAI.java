@@ -22,6 +22,7 @@ import figure.percept.EntersPercept;
 import figure.percept.FleePercept;
 import figure.percept.LeavesPercept;
 import figure.percept.Percept;
+import skill.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -143,7 +144,11 @@ public class RescuedNPCAI implements AI {
 			}
 		}
 		if (target != null) {
-			return new AttackAction(info, target.getFighterID());
+			return this.info.getSkill(AttackSkill.class)
+					.newAction()
+					.attacker(info)
+					.target(target)
+					.get();
 		}
 		return null;
 	}

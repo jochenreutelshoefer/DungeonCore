@@ -37,8 +37,7 @@ import util.JDColor;
  * und einen Kosten-Wert (Menge an Zauberstaub).
  */
 public abstract class AbstractSpell implements Spell, Serializable {
-	
-	
+
 	public static final int SPELL_BONEBREAKER = 1;
 	public static final int SPELL_CONVINCE = 2;
 	public static final int SPELL_DISCOVER = 3;
@@ -134,11 +133,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	}
 
-	@Override
-	public InfoEntity getInfoObject(DungeonVisibilityMap map) {
-		return new SpellInfo(this, map);
-	}
-
 	public AbstractSpell(int level, int[] values) {
 		this.level = level;
 		this.diffMin = values[0];
@@ -146,11 +140,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		this.cost = values[2];
 		this.strength = values[3];
 		valueSet = values;
-	}
-
-	@Override
-	public int getLernCost() {
-		return this.getConfigValues()[4];
 	}
 
 	public static AbstractSpell getSpell(String s) {
@@ -391,11 +380,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		}
 	}
 	
-	@Override
-	public void resetSpell() {
-		stepCnt = 0;
-	}
-	
 	private void payAndSorcer(Figure mage, RoomEntity target, int round) {
 		int c = calcCost();
 		mage.getDust().modValue(c * (-1));
@@ -404,6 +388,8 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		sorcer(mage, target, round);
 		stepCnt = 0;
 	}
+
+	protected abstract void sorcer(Figure mage, RoomEntity target, int round);
 
 	/**
 	 * Returns the difficulty.
@@ -428,17 +414,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 
 	/**
-	 * Sets the difficulty.
-	 * 
-	 * @param difficulty
-	 *            The difficulty to set
-	 * 
-	 */
-	public void setDifficulty(int difficulty) {
-		this.diff = difficulty;
-	}
-
-	/**
 	 * Sets the worth.
 	 * 
 	 * @param worth
@@ -447,31 +422,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	 */
 	public void setWorth(int worth) {
 		this.worth = worth;
-	}
-
-	/**
-	 * Returns the fix_cost.
-	 * 
-	 * @return int
-	 * 
-	 */
-	public int getFix_cost() {
-		return fixCost;
-	}
-
-	/**
-	 * Sets the fix_cost.
-	 * 
-	 * @param fix_cost
-	 *            The fix_cost to set
-	 * 
-	 */
-	public void setFix_cost(int fix_cost) {
-		this.fixCost = fix_cost;
-	}
-
-	public int getStepCnt() {
-		return stepCnt;
 	}
 
 }

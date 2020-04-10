@@ -9,6 +9,7 @@ import figure.action.Action;
 import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.percept.Percept;
+import skill.AttackSkill;
 
 public class ChaserAI extends DefaultMonsterIntelligence {
 
@@ -31,8 +32,11 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 		if (a != null && Math.random() > 0.3) {
 			return a;
 		}
-
-		return new AttackAction(info, getHeroIndex());
+		return this.info.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(info)
+				.target(getHero())
+				.get();
 	}
 
 	@Override

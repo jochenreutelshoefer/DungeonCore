@@ -10,6 +10,7 @@ import dungeon.util.InfoUnitUnwrapper;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
+import figure.action.SpellAction;
 import figure.action.result.ActionResult;
 import figure.memory.MemoryObject;
 import game.InfoEntity;
@@ -22,6 +23,7 @@ public class SpellInfo extends InfoEntity {
 		super(map);
 		this.spell = s;
 	}
+
 	
 	public Class<? extends InfoEntity> getTargetClass() {
 		if(spell instanceof TargetSpell) {
@@ -70,9 +72,7 @@ public class SpellInfo extends InfoEntity {
 		return spell instanceof TargetSpell;
 	}
 	
-	public int getLernCost() {
-		return spell.getLernCost();
-	}
+
 	@Override
 	public String toString()  {
 		return spell.toString();
@@ -80,15 +80,7 @@ public class SpellInfo extends InfoEntity {
 	public int getLevel() {
 		return spell.getLevel();
 	}
-	
-	public boolean isFight() {
-		return spell.isPossibleFight();
-	}
-	
-	public boolean isNormal() {
-		return spell.isPossibleNormal();
-		
-	}
+
 	
 	@Override
 	public Paragraph[] getParagraphs() {

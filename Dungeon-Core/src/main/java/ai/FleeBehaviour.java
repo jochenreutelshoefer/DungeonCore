@@ -8,8 +8,8 @@ import dungeon.RoomInfo;
 import dungeon.util.DungeonUtils;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
+import skill.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -40,7 +40,11 @@ public class FleeBehaviour extends DefaultMonsterIntelligence {
 		}
 
 		// can not flee, hence attack
-		return new AttackAction(this.info, getHeroIndex());
+		return this.info.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(info)
+				.target(getHero())
+				.get();
 	}
 
 	private FigureInfo selectEnemy(List<FigureInfo> figureInfos) {
@@ -57,7 +61,7 @@ public class FleeBehaviour extends DefaultMonsterIntelligence {
 
 		// TODO : need to do something to prevent fleeing into the enemy (-> avoid last known enemy position?)
 		for (JDPoint fleeTarget : fleeTargets) {
-			if(fleeTarget.equals(this.monster.getRoomNumber())) return EndRoundAction.instance; // we stay and wait
+			if (fleeTarget.equals(this.monster.getRoomNumber())) return EndRoundAction.instance; // we stay and wait
 
 			Path shortestPath = DungeonUtils.findShortestPath(this.monster, this.monster.getRoomInfo()
 					.getNumber(), fleeTarget, false);

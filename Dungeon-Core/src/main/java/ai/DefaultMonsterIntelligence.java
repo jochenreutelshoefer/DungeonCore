@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import skill.AttackSkill;
 import spell.SpellInfo;
 import dungeon.Dir;
 import dungeon.Door;
@@ -415,6 +416,17 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return heroIndex;
 	}
 
+	protected HeroInfo getHero() {
+		List<FigureInfo> infos = monster.getRoomInfo().getFigureInfos();
+		HeroInfo heroIndex = null;
+		for (int i = 0; i < infos.size(); i++) {
+			if (infos.get(i) instanceof HeroInfo) {
+				heroIndex = ((HeroInfo) infos.get(i));
+			}
+		}
+		return heroIndex;
+	}
+
 
 	@Override
 	public Action chooseFightAction() {
@@ -430,9 +442,9 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			return getActionForMonsterCount2();
 		}
 		if (monsterCount > 2) {
-			return new AttackAction(monster, heroIndex);
+			return attack();
 		}
-		return new AttackAction(monster, heroIndex);
+		return attack();
 	}
 
 	protected Action getActionForMonsterCount2() {
@@ -443,17 +455,17 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 			if (a != null) {
 				return a;
 			} else {
-				return new AttackAction(monster, heroIndex);
+				return attack();
 			}
 		} else {
 			if (Math.random() > 0.2) {
-				return new AttackAction(monster, heroIndex);
+				return attack();
 			} else {
 				StepAction step = stepToEnemy();
 				if (step != null) {
 					return step;
 				} else {
-					return new AttackAction(monster, heroIndex);
+					return attack();
 				}
 			}
 		}
@@ -461,31 +473,35 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	protected Action getActionForMonsterCount1() {
-		int heroIndex = getHeroIndex();
 		int healthLevel = monster.getHealthLevel().getValue();
 		if (healthLevel <= Figure.STATUS_HEALTHY && Math.random() < 0.05) {
 			Action a = getFleeAction(monster);
 			if (a != null) {
 				return a;
 			} else {
-				return new AttackAction(monster, heroIndex);
+				return attack();
 			}
 		} else {
 			if (Math.random() > 0.2) {
-				return new AttackAction(monster, heroIndex);
+				return attack();
 			} else {
 				StepAction step = stepToEnemy();
 				if (step != null) {
 					return step;
 				} else {
-					return new AttackAction(monster, heroIndex);
+					return attack();
 				}
 			}
 		}
 	}
 
-
-
+	private Action attack() {
+		return this.info.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(monster)
+				.target(getHero())
+				.get();
+	}
 }
 
 class DoorStep implements Comparable<DoorStep> {

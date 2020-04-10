@@ -5,10 +5,10 @@ import java.util.List;
 import ai.DefaultMonsterIntelligence;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.StepAction;
 import figure.monster.Orc;
+import skill.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -25,15 +25,19 @@ public class OrcHaterAI extends DefaultMonsterIntelligence {
 	public Action chooseFightAction() {
 		List<FigureInfo> figureInfos = this.info.getRoomInfo().getFigureInfos();
 		for (FigureInfo figureInfo : figureInfos) {
-				if (figureInfo.getFigureClass().equals(Orc.class)) {
-					if (Math.random() * 2 > 1) {
-						StepAction step = stepToEnemy();
-						if (step != null) {
-							return step;
-						}
+			if (figureInfo.getFigureClass().equals(Orc.class)) {
+				if (Math.random() * 2 > 1) {
+					StepAction step = stepToEnemy();
+					if (step != null) {
+						return step;
 					}
-					return new AttackAction(this.monster, figureInfo.getFighterID());
 				}
+				return this.info.getSkill(AttackSkill.class)
+						.newAction()
+						.attacker(info)
+						.target(figureInfo)
+						.get();
+			}
 		}
 		return new EndRoundAction();
 	}

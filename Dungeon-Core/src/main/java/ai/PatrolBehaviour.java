@@ -12,6 +12,7 @@ import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.percept.Percept;
 import log.Log;
+import skill.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -37,7 +38,7 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 		for (Double value : patrolObjectives.values()) {
 			sum += value;
 		}
-		Map<JDPoint, Double> normalizedPatrolObjectives = new HashMap<JDPoint, Double>();
+		Map<JDPoint, Double> normalizedPatrolObjectives = new HashMap<>();
 
 		for (JDPoint point : patrolObjectives.keySet()) {
 			normalizedPatrolObjectives.put(point, patrolObjectives.get(point) / sum);
@@ -57,7 +58,11 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 
 	@Override
 	public Action chooseFightAction() {
-		return new AttackAction(this.info, getHeroIndex());
+		return this.info.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(info)
+				.target(getHero())
+				.get();
 	}
 
 	@Override

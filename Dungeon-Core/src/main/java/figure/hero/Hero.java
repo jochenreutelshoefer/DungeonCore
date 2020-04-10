@@ -899,16 +899,4 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		return new ScoutResult(this, visStatusResult);
 	}
 
-	public boolean learnSpell(AbstractSpell s) {
-		if (c.getSpellBuffer().contains(s)) {
-			int k = s.getLernCost();
-			if (c.getSpellPoints() >= k) {
-				c.decSpellPoints(k);
-				this.getSpellbook().addSpell(s);
-				c.getSpellBuffer().remove(s);
-				return true;
-			}
-		}
-		return false;
-	}
 }

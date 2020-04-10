@@ -9,6 +9,7 @@ import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
 import figure.percept.Percept;
+import skill.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -49,7 +50,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 				if(otherFigure != null) {
 					// someone in the way
 					if(otherFigure.isHostile(this.info)) {
-						return new AttackAction(this.info, otherFigure.getFighterID());
+						return attack(otherFigure);
 					} else {
 						return new StepAction(info, info.getPos().getNextIndex());
 					}
@@ -61,7 +62,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 				if(otherFigure != null) {
 					// someone in the way
 					if(otherFigure.isHostile(this.info)) {
-						return new AttackAction(this.info, otherFigure.getFighterID());
+						return attack(otherFigure);
 					} else {
 						return new StepAction(info, info.getPos().getLastIndex());
 					}
@@ -70,6 +71,14 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 			}
 		}
 		return defaultFightAI.chooseFightAction();
+	}
+
+	private Action attack(FigureInfo otherFigure) {
+		return this.info.getSkill(AttackSkill.class)
+				.newAction()
+				.attacker(info)
+				.target(otherFigure)
+				.get();
 	}
 
 	@Override

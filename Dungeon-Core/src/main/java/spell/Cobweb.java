@@ -52,11 +52,6 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	}
 	
 	@Override
-	public int getLernCost() {
-		return 1;
-	}
-	
-	@Override
 	public String getName() {
 		return JDEnv.getString("spell_net_name");
 	}
