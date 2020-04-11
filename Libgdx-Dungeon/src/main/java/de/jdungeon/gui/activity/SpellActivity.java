@@ -7,6 +7,7 @@ import java.util.Set;
 import figure.action.result.ActionResult;
 import game.InfoEntity;
 import game.RoomInfoEntity;
+import spell.Spell;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -20,12 +21,11 @@ import de.jdungeon.world.PlayerController;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 22.02.20.
  */
-public class SpellActivity extends AbstractExecutableActivity {
+public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 
 	private final SpellInfo spell;
 	private final ActionAssembler actionAssembler;
 	private final LibgdxFocusManager focusManager;
-
 	public SpellActivity(SpellInfo spell, PlayerController controller) {
 		this.spell = spell;
 		this.actionAssembler = controller.getActionAssembler();
@@ -111,7 +111,7 @@ public class SpellActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public Object getObject() {
+	public SpellInfo getObject() {
 		return spell;
 	}
 }

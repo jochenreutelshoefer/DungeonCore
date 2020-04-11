@@ -23,6 +23,7 @@ import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
+import skill.HealSkill;
 import spell.Spell;
 import util.DeepCopyUtil;
 
@@ -121,6 +122,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		if(currentHero == null) {
 			currentHero = HeroUtil.getBasicHero(heroType, "Gisbert", Zodiac.Aquarius,
 					Profession.Lumberjack);
+			// todo: testing only
+			currentHero.getSkillSet().put(HealSkill.class, new HealSkill());
 		}
 		return currentHero;
 	}
@@ -190,6 +193,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 		// we need to clear the keys from the last dungeonFactory (as they would work in the new one also)
 		currentHero.getInventory().clearKeys();
+
 
 		// reset vis map
 		this.currentHero.clearVisibilityMaps();

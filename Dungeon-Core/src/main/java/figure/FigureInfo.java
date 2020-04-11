@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import dungeon.DoorInfo;
 import dungeon.ItemInfoOwner;
@@ -247,6 +248,10 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 
 	public <T extends Skill> T getSkill(Class<T> clazz) {
 		return this.f.getSkill(clazz);
+	}
+
+	public Collection<Skill> getSkills() {
+		return f.getSkillSet().getSkills();
 	}
 
 	public RoomInfo getRoomInfo(int x, int y) {

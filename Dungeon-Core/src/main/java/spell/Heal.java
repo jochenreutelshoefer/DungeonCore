@@ -53,14 +53,6 @@ public class Heal extends NoTargetSpell {
 		return JDEnv.getResourceBundle().getString("spell_heal_text");
 	}
 	
-	public boolean fightModus(){
-		return isPossibleInFight;
-	}
-	
-	public boolean normalModus(){
-		return isPossibleNormal;
-	}
-	
 	public Heal(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
 	}

@@ -134,8 +134,7 @@ public class ActionAssembler implements EventListener {
 			handleShrineInfoClick(((ShrineInfo) clickedObject), doubleClick);
 		}
 		else if (clickedObject instanceof PositionInRoomInfo) {
-			handlePosInfoClick(((PositionInRoomInfo) clickedObject),
-					doubleClick);
+			handlePosInfoClick(((PositionInRoomInfo) clickedObject), doubleClick);
 		}
 		else if (clickedObject instanceof RoomInfo) {
 			handleRoomInfoClick(((RoomInfo) clickedObject), doubleClick);

@@ -8,6 +8,5 @@ import figure.action.result.ActionResult;
  */
 public abstract class AbstractExecutableAction extends Action {
 
-
 	public abstract ActionResult handle(boolean doIt, int round);
 }

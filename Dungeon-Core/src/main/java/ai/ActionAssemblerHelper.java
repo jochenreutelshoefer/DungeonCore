@@ -23,7 +23,6 @@ import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
 import figure.action.FleeAction;
@@ -40,6 +39,8 @@ import figure.action.UseItemAction;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 import skill.AttackSkill;
+import skill.FleeSkill;
+import skill.Skill;
 import spell.SpellInfo;
 import spell.TargetScope;
 
@@ -55,8 +56,7 @@ public class ActionAssemblerHelper {
 		//Action a = new AttackAction(figure, o.getFighterID());
 
 		AttackSkill.AttackSkillAction attackSkillAction = figure.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(figure)
+				.newActionFor(figure)
 				.target(o)
 				.get();
 		return Collections.singletonList(attackSkillAction);
@@ -66,9 +66,12 @@ public class ActionAssemblerHelper {
 		return figure;
 	}
 
+	public List<Action> wannaDo(Class<? extends Skill> skillClass) {
+		return Collections.singletonList(figure.getSkill(skillClass).newActionFor(figure).get());
+	}
+
 	public List<Action> wannaFlee() {
-		Action a = new FleeAction(figure);
-		return Collections.singletonList(a);
+		return Collections.singletonList(figure.getSkill(FleeSkill.class).newActionFor(figure).get());
 	}
 
 	/**

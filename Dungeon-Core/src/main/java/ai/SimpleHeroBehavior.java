@@ -21,6 +21,7 @@ import game.ControlUnit;
 import dungeon.Door;
 import dungeon.JDPoint;
 import shrine.LevelExit;
+import skill.FleeSkill;
 
 /**
  * Einfachste rein zufallsbasierte Steuerung eines Helden. Nur fuer Testzwecke.
@@ -140,10 +141,11 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 	public Action chooseFightAction() {
 		Action a = null;
 		if (this.h.getHealthLevel().getValue() <= 2 && Math.random() < 0.3) {
-			a = new FleeAction(h);
-			this.h.checkAction(a);
-
-			return a;
+			a = this.h.getSkill(FleeSkill.class).newActionFor(h).get();
+			ActionResult actionResult = this.h.checkAction(a);
+			if(actionResult.getSituation() == ActionResult.Situation.possible) {
+				return a;
+			}
 		}
 
 		if(!fightActionQueue.isEmpty()) {

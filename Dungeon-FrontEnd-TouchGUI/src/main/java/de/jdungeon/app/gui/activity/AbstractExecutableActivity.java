@@ -8,7 +8,7 @@ import gui.Paragraphable;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 25.01.18.
  */
-public abstract class AbstractExecutableActivity implements ExecutableActivity {
+public abstract class AbstractExecutableActivity<T> implements ExecutableActivity<T> {
 
 	@Override
 	public Paragraph[] getParagraphs() {

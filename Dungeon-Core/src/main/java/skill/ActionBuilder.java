@@ -1,10 +1,20 @@
 package skill;
 
+import figure.FigureInfo;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 10.04.20.
  */
-public abstract class ActionBuilder<T extends SkillAction> {
+public abstract class ActionBuilder<SKILL extends Skill, ACTION extends SkillAction> {
 
-	public abstract T get();
+	protected final FigureInfo actor;
+	protected SKILL skill;
+
+	protected ActionBuilder(SKILL skill, FigureInfo actor) {
+		this.actor = actor;
+		this.skill = skill;
+	}
+
+	public abstract ACTION get();
 }

@@ -31,6 +31,7 @@ import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
 import item.ItemInfo;
 import shrine.ShrineInfo;
+import skill.FleeSkill;
 import util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;
@@ -294,7 +295,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private void updateAllElementsIfNecessary() {
-		if (worldHasChanged) {
+		if (worldHasChanged && ! this.figure.isDead()) {
 			updatePositionElements();
 			updateDoorElements();
 			updateMoveElements();
@@ -352,7 +353,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private boolean checkFleeAction() {
-		return figure.checkAction(new FleeAction(this.figure)).getSituation() == ActionResult.Situation.possible;
+		return figure.checkAction(figure.getSkill(FleeSkill.class).newActionFor(figure).get()).getSituation() == ActionResult.Situation.possible;
 	}
 
 	private LibgdxMoveElement createMoveWest(int moveElementSize, JDDimension moveElementDimension) {

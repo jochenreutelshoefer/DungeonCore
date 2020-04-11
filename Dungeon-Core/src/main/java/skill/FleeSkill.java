@@ -13,37 +13,37 @@ import figure.percept.Percept;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 10.04.20.
  */
-public class FleeSkill extends Skill<FleeSkill.FleeAction>{
-
+public class FleeSkill extends SimpleSkill {
 
 	@Override
-	public ActionResult execute(FleeAction a, boolean doIt, int round) {
-		Room room = a.figure.getRoom();
+	public ActionResult doExecute(SimpleSkillAction a, boolean doIt, int round) {
+		Figure actor = a.getActor();
+		Room room = actor.getRoom();
 		if (room != null && room.fightRunning()) {
 
-			Room oldRoom = a.figure.getRoom();
-			if (a.figure.canPayActionPoints(1)) {
+			Room oldRoom = actor.getRoom();
+			if (actor.canPayActionPoints(1)) {
 
-				if (a.figure.isPinnedToGround()) {
+				if (actor.isPinnedToGround()) {
 					return ActionResult.OTHER;
 				}
 
 				boolean flees;
-				RouteInstruction.Direction dir = a.figure.getPos().getPossibleFleeDirection();
-				if (dir != null && a.figure.getRoom().getDoor(dir) != null
-						&& a.figure.getRoom().getDoor(dir).isPassable(a.figure)) {
+				RouteInstruction.Direction dir = actor.getPos().getPossibleFleeDirection();
+				if (dir != null && actor.getRoom().getDoor(dir) != null
+						&& actor.getRoom().getDoor(dir).isPassable(actor)) {
 					if (doIt) {
-						a.figure.setLookDir(dir.getValue());
-						Position oldPos = a.figure.getPos();
-						flees = a.figure.flee(dir, round);
-						a.figure.payActionPoint(a, round);
+						actor.setLookDir(dir.getValue());
+						Position oldPos = actor.getPos();
+						flees = actor.flee(dir, round);
+						actor.payActionPoint(a, round);
 						if (flees) {
-							Percept p = new FleePercept(a.figure, oldPos, dir.getValue(), true, round);
+							Percept p = new FleePercept(actor, oldPos, dir.getValue(), true, round);
 							oldRoom.distributePercept(p);
-							a.figure.getRoom().distributePercept(p);
+							actor.getRoom().distributePercept(p);
 						}
 						else {
-							Percept p = new FleePercept(a.figure, oldPos, dir.getValue(), false, round);
+							Percept p = new FleePercept(actor, oldPos, dir.getValue(), false, round);
 							oldRoom.distributePercept(p);
 						}
 						return ActionResult.DONE;
@@ -55,37 +55,6 @@ public class FleeSkill extends Skill<FleeSkill.FleeAction>{
 			return ActionResult.NOAP;
 		}
 		return ActionResult.MODE;
-	}
-
-	@Override
-	public FleeActionBuilder newAction() {
-		return new FleeActionBuilder();
-	}
-
-	static class FleeAction extends SkillAction{
-
-		private final Figure figure;
-
-		public FleeAction(FleeSkill skill, FigureInfo info) {
-			super(skill);
-			figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
-		}
-	}
-
-	static class FleeActionBuilder extends ActionBuilder<FleeSkill.FleeAction> {
-		private FleeSkill skill;
-		private FigureInfo figure;
-
-		FleeActionBuilder actor(FleeSkill skill, FigureInfo figure) {
-			this.skill = skill;
-			this.figure = figure;
-			return this;
-		}
-
-		@Override
-		public FleeAction get() {
-			return new FleeAction(skill, figure);
-		}
 	}
 
 }

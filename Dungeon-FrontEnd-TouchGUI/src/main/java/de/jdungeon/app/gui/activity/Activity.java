@@ -7,8 +7,8 @@ import gui.Paragraphable;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 25.01.18.
  */
-public interface Activity extends Paragraphable {
+public interface Activity<T> extends Paragraphable {
 
-	Object getObject();
+	T getObject();
 
 }

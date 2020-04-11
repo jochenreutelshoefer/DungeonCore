@@ -6,7 +6,6 @@
  */
 package ai;
 
-import figure.action.AttackAction;
 import figure.action.FleeAction;
 import figure.monster.DarkMaster;
 import figure.monster.Dwarf;
@@ -17,34 +16,30 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
-import item.ItemInfo;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
 import skill.AttackSkill;
-import spell.SpellInfo;
 import dungeon.Dir;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.action.MoveAction;
-import figure.action.SpellAction;
 import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;
 import figure.percept.Percept;
+import skill.FleeSkill;
 
 public class DefaultMonsterIntelligence extends AbstractAI {
 
@@ -225,7 +220,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	public static Action getFleeAction(FigureInfo monster) {
-		Action a = new FleeAction(monster);
+		Action a = monster.getSkill(FleeSkill.class).newActionFor(monster).get();
 		ActionResult res = monster.checkAction(a);
 		if (res.getSituation() == ActionResult.Situation.possible) {
 			return a;
@@ -497,8 +492,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 	private Action attack() {
 		return this.info.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(monster)
+				.newActionFor(monster)
 				.target(getHero())
 				.get();
 	}

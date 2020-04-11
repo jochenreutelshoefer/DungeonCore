@@ -6,7 +6,6 @@ import dungeon.Path;
 import dungeon.util.DungeonUtils;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.percept.Percept;
 import skill.AttackSkill;
@@ -33,8 +32,7 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 			return a;
 		}
 		return this.info.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(info)
+				.newActionFor(info)
 				.target(getHero())
 				.get();
 	}

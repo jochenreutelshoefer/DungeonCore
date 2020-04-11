@@ -106,14 +106,6 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 		return AbstractSpell.SPELL_RAID;
 	}
 
-	public boolean fightModus() {
-		return isPossibleInFight;
-	}
-
-	public boolean normalModus() {
-		return isPossibleNormal;
-	}
-
 	public Raid(int level) {
 
 		super(level, values[level - 1]);

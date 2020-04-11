@@ -2,7 +2,6 @@ package figure;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,19 +9,15 @@ import java.util.List;
 
 import ai.AI;
 import ai.AbstractReflexBehavior;
-import dungeon.Chest;
 import dungeon.Dir;
 import dungeon.Door;
-import dungeon.DoorInfo;
 import dungeon.Dungeon;
 import dungeon.DungeonWorldObject;
 import dungeon.JDPoint;
 import dungeon.Position;
-import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import dungeon.util.DungeonUtils;
-import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
 import event.EventManager;
 import event.WorldChangedEvent;
@@ -31,56 +26,34 @@ import fight.Slap;
 import fight.SlapResult;
 import figure.action.AbstractExecutableAction;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
-import figure.action.EquipmentChangeAction;
-import figure.action.FleeAction;
-import figure.action.LayDownItemAction;
-import figure.action.LockAction;
-import figure.action.MoveAction;
 import figure.action.ScoutAction;
 import figure.action.ScoutResult;
-import figure.action.UseLocationAction;
-import figure.action.SpellAction;
-import figure.action.StepAction;
-import figure.action.SuicideAction;
-import figure.action.TakeItemAction;
-import figure.action.UseChestAction;
-import figure.action.UseItemAction;
 import figure.action.result.ActionResult;
 import figure.attribute.Attribute;
 import figure.attribute.TimedAttributeModification;
 import figure.hero.Character;
-import figure.hero.Hero;
 import figure.hero.Inventory;
 import figure.memory.FigureMemory;
 import figure.monster.Monster;
 import figure.other.ConjuredMagicFigure;
 import figure.percept.AttackPercept;
-import figure.percept.BreakSpellPercept;
 import figure.percept.DiePercept;
 import figure.percept.DoorSmashPercept;
 import figure.percept.EntersPercept;
-import figure.percept.FightBeginsPercept;
 import figure.percept.FightEndedPercept;
-import figure.percept.FleePercept;
 import figure.percept.HitPercept;
-import figure.percept.InfoPercept;
 import figure.percept.LeavesPercept;
 import figure.percept.MissPercept;
 import figure.percept.Percept;
-import figure.percept.ScoutPercept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.StepPercept;
-import figure.percept.TakePercept;
 import figure.percept.TextPercept;
 import figure.percept.TumblingPercept;
-import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 import game.ControlUnit;
 import game.JDEnv;
 import game.JDGUI;
-import game.RoomInfoEntity;
 import game.Turnable;
 import gui.Paragraph;
 import gui.Paragraphable;
@@ -88,15 +61,13 @@ import item.Item;
 import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
-import item.interfaces.Usable;
 import log.Log;
 import org.apache.log4j.Logger;
-import shrine.Location;
 import skill.AttackSkill;
+import skill.FleeSkill;
 import skill.Skill;
 import skill.SkillAction;
 import skill.SkillMap;
-import spell.KeyLocator;
 import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
@@ -309,6 +280,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	protected void dieAndLeave() {
+		Logger.getLogger(this.getClass()).info("Figure dies:  "+ this);
 		dead = true;
 		this.getRoom().figureDies(this);
 		getActualDungeon().removeFigureFromIndex(this);
@@ -685,6 +657,10 @@ public abstract class Figure extends DungeonWorldObject
 		return false;
 	}
 
+	public SkillMap getSkillSet() {
+		return skillSet;
+	}
+
 	private final SkillMap skillSet = new SkillMap();
 
 	public <T extends Skill> T getSkill(Class<T> clazz) {
@@ -864,6 +840,7 @@ public abstract class Figure extends DungeonWorldObject
 		agility = createAgility();
 
 		this.skillSet.put(AttackSkill.class, new AttackSkill());
+		this.skillSet.put(FleeSkill.class, new FleeSkill());
 
 		this.figureID = figureID_counter;
 		figureID_counter++;

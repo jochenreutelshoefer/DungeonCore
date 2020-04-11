@@ -1,5 +1,7 @@
 package skill;
 
+import figure.Figure;
+import figure.FigureInfo;
 import figure.action.Action;
 
 /**
@@ -8,10 +10,20 @@ import figure.action.Action;
  */
 public abstract class SkillAction extends Action {
 
-	private final Skill skill;
+	protected final Skill skill;
+	protected final FigureInfo actor;
 
-	public SkillAction(Skill skill) {
+	public SkillAction(Skill skill, FigureInfo actor) {
 		this.skill = skill;
+		this.actor = actor;
+	}
+
+	public FigureInfo getActorInfo() {
+		return actor;
+	}
+
+	public Figure getActor() {
+		return actor.getMap().getDungeon().getFigureIndex().get(actor.getFighterID());
 	}
 
 	public Skill getSkill() {

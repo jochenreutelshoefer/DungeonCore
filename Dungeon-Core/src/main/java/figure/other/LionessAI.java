@@ -10,7 +10,6 @@ import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.percept.EntersPercept;
@@ -39,8 +38,7 @@ public class LionessAI extends AbstractAI {
 		}
 		FigureInfo target = figureInfos.get(((int)(Math.random() * figureInfos.size())));
 		return this.info.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(info)
+				.newActionFor(info)
 				.target(target)
 				.get();
 	}
@@ -80,8 +78,7 @@ public class LionessAI extends AbstractAI {
 			EntersPercept movement = ((EntersPercept)p);
 			FigureInfo figure = movement.getFigure();
 			if(figure.equals(master)) {
-				RoomInfo target = movement.getTo();
-				currentWalkTarget = target;
+				currentWalkTarget = movement.getTo();
 			}
 		}
 

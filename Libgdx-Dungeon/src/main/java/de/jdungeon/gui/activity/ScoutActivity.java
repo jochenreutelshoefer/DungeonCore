@@ -41,11 +41,9 @@ public class ScoutActivity extends AbstractExecutableActivity {
 			return false;
 		}
 		Boolean fightRunning = roomInfo.fightRunning();
-		DoorInfo door = roomInfo
-				.getDoor(direction);
+		DoorInfo door = roomInfo.getDoor(direction);
 		if (door == null) return false;
-		PositionInRoomInfo scoutPosition = door
-				.getPositionAtDoor(roomInfo, false);
+		PositionInRoomInfo scoutPosition = door.getPositionAtDoor(roomInfo, false);
 		return fightRunning != null && !fightRunning && (!scoutPosition.isOccupied() || actionAssembler.getFigure()
 				.equals(scoutPosition.getFigure()));
 	}

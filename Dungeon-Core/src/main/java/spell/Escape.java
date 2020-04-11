@@ -10,8 +10,11 @@
 package spell;
 
 import figure.Figure;
-import figure.action.FleeAction;
+import figure.FigureInfo;
 import game.JDEnv;
+import skill.FleeSkill;
+import skill.SimpleSkill;
+import skill.SkillAction;
 
 public class Escape extends NoTargetSpell {
 
@@ -66,8 +69,9 @@ public class Escape extends NoTargetSpell {
 	public void sorcer(Figure mage, int round) {
 		mage.setEscape(level);
 		//mage.incActionPoints(1, - 1); // Todo: re-implement speed boost
-		FleeAction a = new FleeAction(mage);
-		a.handle(true, -1);
+		FleeSkill skill = mage.getSkill(FleeSkill.class);
+		SimpleSkill.SimpleSkillAction a = skill.newActionFor(FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility())).get();
+		skill.doExecute(a, true, -1);
 	}
 
 	@Override

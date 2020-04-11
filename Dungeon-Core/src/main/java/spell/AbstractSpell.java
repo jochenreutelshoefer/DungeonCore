@@ -7,16 +7,12 @@ import java.util.List;
 import dungeon.Position;
 import dungeon.Room;
 import dungeon.RoomEntity;
-import figure.DungeonVisibilityMap;
 import figure.Figure;
-import figure.action.SpellAction;
 import figure.action.result.ActionResult;
 import figure.percept.Percept;
 import figure.percept.SpellPercept;
 import figure.percept.TextPercept;
-import game.InfoEntity;
 import game.JDEnv;
-import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Texts;
 import spell.conjuration.FirConjuration;
@@ -30,7 +26,7 @@ import util.JDColor;
  * zufallsbasiert ausgewuerfelt obs jetzt konkret geklappt hat. Erst dann wird
  * sorcer() aufgerufen. Dort sind in den Unterklassen dann die Modifikationen an
  * der Umwelt implementiert.
- * 
+ * <p>
  * Jeder Zauberspruch hat einen Mindestwissen-Wert (muss mit Psyche
  * ueberschritten werden, damit eine Figur ihn versuchen darf), einen
  * Schwierigkeitswert (wirkt sich auf die Wahrscheinlichkeit des gelingens aus)
@@ -42,20 +38,20 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static final int SPELL_CONVINCE = 2;
 	public static final int SPELL_DISCOVER = 3;
 	public static final int SPELL_ESCAPE = 4;
-	public static final int SPELL_FIREBALL = 5; 
+	public static final int SPELL_FIREBALL = 5;
 	public static final int SPELL_GOLDENHIT = 6;
-	public static final int SPELL_GOLDENTHROW = 7;  
-	public static final int SPELL_HEAL = 8 ;
-	public static final int SPELL_ISOLATION = 9; 
+	public static final int SPELL_GOLDENTHROW = 7;
+	public static final int SPELL_HEAL = 8;
+	public static final int SPELL_ISOLATION = 9;
 	public static final int SPELL_KEYLOCATOR = 10;
-	public static final int SPELL_LIGHT = 11 ;
+	public static final int SPELL_LIGHT = 11;
 	public static final int SPELL_RAID = 12;
 	public static final int SPELL_SPY = 13;
 	public static final int SPELL_STEAL = 14;
 	public static final int SPELL_THUNDERSTORM = 15;
 	public static final int SPELL_REPAIR = 16;
-	public static final int SPELL_SEARCH = 17;	
-	public static final int SPELL_THREAT = 18;	
+	public static final int SPELL_SEARCH = 17;
+	public static final int SPELL_THREAT = 18;
 	public static final int SPELL_COBWEB = 19;
 	public static final int SPELL_ESCAPEROUTE = 20;
 	public static final int SPELL_POISONING = 21;
@@ -66,9 +62,9 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static final int SPELL_PRAYER = 26;
 	public static final int SPELL_FIR = 27;
 	public static final int SPELL_LIONESS = 28;
-	
+
 	public static List<TimedSpellInstance> timedSpells = new ArrayList<TimedSpellInstance>();
-	
+
 	protected int[] valueSet = new int[5];
 
 	public static void addTimedSpell(TimedSpellInstance s) {
@@ -78,7 +74,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static void removeTimedSpell(TimedSpellInstance s) {
 		timedSpells.remove(s);
 	}
-	
+
 	public int[] getConfigValues() {
 		return valueSet;
 	}
@@ -98,7 +94,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	protected int cost;
 
 	private static String spell = null;
-	
+
 	private boolean costsAP = true;
 
 	public void setCostsAP(boolean costsAP) {
@@ -115,7 +111,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public AbstractSpell() {
 
 	}
-	
+
 	@Override
 	public abstract int getType();
 
@@ -125,12 +121,11 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		this.diff = diff;
 		this.cost = cost;
 		this.strength = strength;
-		valueSet[0]=diffMin;
-		valueSet[1]=diff;
-		valueSet[2]=cost;
-		valueSet[3]=strength;
-		valueSet[4]=learnCost;
-
+		valueSet[0] = diffMin;
+		valueSet[1] = diff;
+		valueSet[2] = cost;
+		valueSet[3] = strength;
+		valueSet[4] = learnCost;
 	}
 
 	public AbstractSpell(int level, int[] values) {
@@ -145,32 +140,46 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static AbstractSpell getSpell(String s) {
 		if (s.equals("heal")) {
 			return new Heal(1);
-		} else if (s.equals("escape")) {
+		}
+		else if (s.equals("escape")) {
 			return new Escape(1);
-		} else if (s.equals("golden_hit")) {
+		}
+		else if (s.equals("golden_hit")) {
 			return new GoldenHit(1);
-		} else if (s.equals("spy")) {
+		}
+		else if (s.equals("spy")) {
 			return new Spy(1);
-		} else if (s.equals("fireball")) {
+		}
+		else if (s.equals("fireball")) {
 			return new Fireball(1);
-		} else if (s.equals("bonebreaker")) {
+		}
+		else if (s.equals("bonebreaker")) {
 			return new Bonebreaker(1);
-		} else if (s.equals("key_locator")) {
+		}
+		else if (s.equals("key_locator")) {
 			return new KeyLocator(1);
-		} else if (s.equals("golden_throw")) {
+		}
+		else if (s.equals("golden_throw")) {
 			return new GoldenThrow(1);
-		} else if (s.equals("steal")) {
+		}
+		else if (s.equals("steal")) {
 			return new Steal(1);
-		} else if (s.equals("search")) {
+		}
+		else if (s.equals("search")) {
 			return new Search(1);
-		} else if (s.equals("isolation")) {
+		}
+		else if (s.equals("isolation")) {
 			return new Isolation(1);
-		} else if (s.equals("escapeRoute")) {
+		}
+		else if (s.equals("escapeRoute")) {
 			return new EscapeRoute(1);
-		} else if (s.equals("fir")) {
+		}
+		else if (s.equals("fir")) {
 			return new FirConjuration(1);
-		} else
+		}
+		else {
 			return null;
+		}
 	}
 
 	@Override
@@ -198,10 +207,11 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	public boolean rightModus(Figure mage) {
 		Room room = mage.getRoom();
-		if(room == null) return false;
+		if (room == null) return false;
 		if (!room.fightRunning()) {
 			return isPossibleNormal();
-		} else {
+		}
+		else {
 			return isPossibleFight();
 		}
 	}
@@ -245,17 +255,15 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		return p;
 	}
 
-
 	public int getDifficultyMin() {
 		return this.getConfigValues()[0];
 	}
-
 
 	@Override
 	public int getCost() {
 		return this.cost;
 	}
-	
+
 	public int getStrength() {
 		return this.strength;
 	}
@@ -266,9 +274,8 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	/**
 	 * Returns the level.
-	 * 
+	 *
 	 * @return int
-	 * 
 	 */
 	@Override
 	public int getLevel() {
@@ -280,58 +287,59 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	public boolean isAbleToCast(Figure mage) {
-		if(mage.getRoom().fightRunning()) {
+		if (mage.getRoom().fightRunning()) {
 			return this.isPossibleFight();
-		}else {
+		}
+		else {
 			return this.isPossibleNormal();
 		}
 	}
-	
+
 	private int calcCost() {
 		int c;
 		if (fixCost == -1) {
 			c = getCost();
-		} else {
+		}
+		else {
 			c = fixCost;
 		}
 		return c;
 	}
-	
-	public static boolean distanceMax(Figure mage, Object target,int max) {
-		if(target instanceof Figure) {
-			Figure victim = ((Figure)target);
-			if(mage.getRoom() == victim.getRoom()) {
+
+	public static boolean distanceMax(Figure mage, Object target, int max) {
+		if (target instanceof Figure) {
+			Figure victim = ((Figure) target);
+			if (mage.getRoom() == victim.getRoom()) {
 				int magePos = mage.getPositionInRoom();
 				int victimPos = victim.getPositionInRoom();
-				int dist = Position.getMinDistanceFromTo(magePos,victimPos);
+				int dist = Position.getMinDistanceFromTo(magePos, victimPos);
 				return dist <= max;
 			}
 		}
 		return false;
 	}
-	
-	
 
 	@Override
 	public ActionResult fire(Figure mage, RoomEntity target, boolean doIt, int round) {
 
-		if(this instanceof TargetSpell) {
-			if(!((TargetSpell)this).distanceOkay(mage, target)) {
+		if (this instanceof TargetSpell) {
+			if (!((TargetSpell) this).distanceOkay(mage, target)) {
 				return ActionResult.DISTANCE;
 			}
-			if (!((TargetSpell)this).isApplicable(mage, target)) {
-				if(doIt) {
+			if (!((TargetSpell) this).isApplicable(mage, target)) {
+				if (doIt) {
 					String str = JDEnv.getResourceBundle().getString("spell_wrong_target");
 					mage.tellPercept(new TextPercept(str, round));
 				}
-				if(target == null) {
+				if (target == null) {
 					return ActionResult.NO_TARGET;
-				} else {
+				}
+				else {
 					return ActionResult.WRONG_TARGET;
 				}
 			}
 		}
-		
+
 		int d = (int) mage.getDust().getValue();
 		int c = calcCost();
 
@@ -339,47 +347,42 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			if (d >= c) {
 
 				if (doIt) {
-					if(costsAP) {
+					if (costsAP) {
 						mage.payActionPoint(null, -1); // todo: find solution for action to pass
 					}
-					if (canFire(mage, round)) {
-						
-						sorcerStep(mage, target, round);
-						
-						return ActionResult.DONE;
-					}else {
-						return ActionResult.FAILED;
-					}
+					sorcerStep(mage, target, round);
+					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
-
-			} else {
+			}
+			else {
 
 				String str = Texts.noDust();
 				mage.tellPercept(new TextPercept(str, round));
 				return ActionResult.DUST;
 			}
-		} else {
+		}
+		else {
 			String str = Texts.notNow();
 			mage.tellPercept(new TextPercept(str, round));
 			return ActionResult.MODE;
 		}
-
 	}
-	
+
 	protected int stepsNec = 1;
 	private int stepCnt = 0;
-	
+
 	protected void sorcerStep(Figure mage, RoomEntity target, int round) {
 		stepCnt++;
-		if(stepCnt == stepsNec) {
+		if (stepCnt == stepsNec) {
 			payAndSorcer(mage, target, round);
-		}else {
-			Percept p = new SpellPercept(mage, this,true, round);
+		}
+		else {
+			Percept p = new SpellPercept(mage, this, true, round);
 			mage.getRoom().distributePercept(p);
 		}
 	}
-	
+
 	private void payAndSorcer(Figure mage, RoomEntity target, int round) {
 		int c = calcCost();
 		mage.getDust().modValue(c * (-1));
@@ -393,9 +396,8 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	/**
 	 * Returns the difficulty.
-	 * 
+	 *
 	 * @return int
-	 * 
 	 */
 	@Override
 	public int getDifficulty() {
@@ -404,24 +406,19 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	/**
 	 * Returns the worth.
-	 * 
+	 *
 	 * @return int
-	 * 
 	 */
 	public int getWorth() {
 		return worth;
 	}
 
-
 	/**
 	 * Sets the worth.
-	 * 
-	 * @param worth
-	 *            The worth to set
-	 * 
+	 *
+	 * @param worth The worth to set
 	 */
 	public void setWorth(int worth) {
 		this.worth = worth;
 	}
-
 }

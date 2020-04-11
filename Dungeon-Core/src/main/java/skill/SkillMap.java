@@ -1,7 +1,9 @@
 package skill;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -17,5 +19,9 @@ public class SkillMap {
 
 	public <T extends Skill> T get(Class<T> clazz) {
 		return (T)map.get(clazz);
+	}
+
+	public Collection<Skill> getSkills() {
+		return map.values();
 	}
 }

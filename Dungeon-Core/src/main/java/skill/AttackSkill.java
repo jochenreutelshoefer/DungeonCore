@@ -11,7 +11,7 @@ import figure.action.result.ActionResult;
 public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 	@Override
-	public ActionResult execute(AttackSkillAction a, boolean doIt, int round) {
+	public ActionResult doExecute(AttackSkillAction a, boolean doIt, int round) {
 		if (a.target == null) {
 			return ActionResult.WRONG_TARGET;
 		}
@@ -32,23 +32,17 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 	}
 
 	@Override
-	public AttackActionBuilder newAction() {
-		return new AttackActionBuilder(this);
+	public AttackActionBuilder newActionFor(FigureInfo actor) {
+		return new AttackActionBuilder(this, actor);
 	}
 
-	public static class AttackActionBuilder extends ActionBuilder<AttackSkillAction> {
+	public static class AttackActionBuilder extends ActionBuilder<AttackSkill, AttackSkillAction> {
 
-		private final AttackSkill skill;
-		private  FigureInfo attacker;
-		private  FigureInfo target;
+		private FigureInfo target;
 
-		public AttackActionBuilder(AttackSkill skill) {
+		private AttackActionBuilder(AttackSkill skill, FigureInfo attacker) {
+			super(skill, attacker);
 			this.skill = skill;
-		}
-
-		public  AttackActionBuilder attacker(FigureInfo info) {
-			this.attacker = info;
-			return this;
 		}
 
 		public AttackActionBuilder target(FigureInfo target) {
@@ -58,7 +52,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 		@Override
 		public AttackSkillAction get() {
-			return new AttackSkillAction(skill, attacker, target.getFighterID());
+			return new AttackSkillAction(skill, actor, target.getFighterID());
 		}
 	}
 
@@ -68,10 +62,9 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 		private final Figure target;
 
 		AttackSkillAction(AttackSkill skill, FigureInfo attackerInfo, int targetID) {
-			super(skill);
+			super(skill, attackerInfo);
 			attacker = attackerInfo.getMap().getDungeon().getFigureIndex().get(attackerInfo.getFighterID());
 			target = attackerInfo.getMap().getDungeon().getFigureIndex().get(targetID);
 		}
-
 	}
 }

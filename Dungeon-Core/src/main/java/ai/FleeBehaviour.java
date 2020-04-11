@@ -41,8 +41,7 @@ public class FleeBehaviour extends DefaultMonsterIntelligence {
 
 		// can not flee, hence attack
 		return this.info.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(info)
+				.newActionFor(info)
 				.target(getHero())
 				.get();
 	}

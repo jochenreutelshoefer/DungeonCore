@@ -38,7 +38,7 @@ public class LionessConjuration extends AbstractSpell {
 				break;
 			}
 		}
-		return freePositionAvailable && super.canFire(mage, round);
+		return freePositionAvailable;
 	}
 
 	@Override

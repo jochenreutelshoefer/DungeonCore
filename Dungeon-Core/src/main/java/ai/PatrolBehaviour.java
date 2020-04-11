@@ -8,7 +8,6 @@ import dungeon.Path;
 import dungeon.RoomInfo;
 import dungeon.util.DungeonUtils;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.percept.Percept;
 import log.Log;
@@ -59,8 +58,7 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 	@Override
 	public Action chooseFightAction() {
 		return this.info.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(info)
+				.newActionFor(info)
 				.target(getHero())
 				.get();
 	}

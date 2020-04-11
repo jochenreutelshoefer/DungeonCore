@@ -12,7 +12,7 @@ import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 27.01.18.
  */
-public class ExecutableTakeItemActivity extends AbstractExecutableActivity {
+public class ExecutableTakeItemActivity extends AbstractExecutableActivity<ItemInfo> {
 
 	protected final ActionAssembler guiControl;
 	protected final ItemInfo item;
@@ -25,7 +25,7 @@ public class ExecutableTakeItemActivity extends AbstractExecutableActivity {
 	@Override
 	public void execute() {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		guiControl.plugAction(new TakeItemAction(guiControl.getFigure(), (ItemInfo) getObject()));
+		guiControl.plugAction(new TakeItemAction(guiControl.getFigure(), getObject()));
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class ExecutableTakeItemActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public Object getObject() {
+	public ItemInfo getObject() {
 		return item;
 	}
 

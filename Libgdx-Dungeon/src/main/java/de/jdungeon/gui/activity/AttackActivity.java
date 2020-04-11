@@ -67,6 +67,7 @@ public class AttackActivity extends AbstractExecutableActivity {
 
 	@Override
 	public boolean isCurrentlyPossible() {
+		// todo: logics for "isCurrentlyPossible" should ne be implemented in GUI but in core (to be available for AIs as well)
 		if(controller.getActionAssembler().getFigure() == null) return false;
 		if(getHostileFiguresList().isEmpty()) {
 			return false;

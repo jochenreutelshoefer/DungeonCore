@@ -4,7 +4,6 @@ import dungeon.Position;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
@@ -75,8 +74,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 
 	private Action attack(FigureInfo otherFigure) {
 		return this.info.getSkill(AttackSkill.class)
-				.newAction()
-				.attacker(info)
+				.newActionFor(info)
 				.target(otherFigure)
 				.get();
 	}

@@ -14,7 +14,7 @@ import figure.FigureInfo;
 import figure.action.result.ActionResult;
 import figure.percept.FleePercept;
 import figure.percept.Percept;
-
+@Deprecated
 public class FleeAction extends AbstractExecutableAction {
 
 	private final Figure figure;

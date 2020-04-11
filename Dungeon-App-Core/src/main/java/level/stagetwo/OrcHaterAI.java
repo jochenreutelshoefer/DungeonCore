@@ -33,8 +33,7 @@ public class OrcHaterAI extends DefaultMonsterIntelligence {
 					}
 				}
 				return this.info.getSkill(AttackSkill.class)
-						.newAction()
-						.attacker(info)
+						.newActionFor(info)
 						.target(figureInfo)
 						.get();
 			}

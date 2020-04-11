@@ -6,7 +6,7 @@ import figure.action.result.ActionResult;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 25.01.18.
  */
-public interface ExecutableActivity extends Activity {
+public interface ExecutableActivity<T> extends Activity<T> {
 
 	void execute();
 

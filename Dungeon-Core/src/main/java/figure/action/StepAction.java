@@ -25,6 +25,9 @@ public class StepAction extends AbstractExecutableAction {
 		}
  		targetIndex = index;
 		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFighterID());
+		if(figure == null) {
+			throw new IllegalArgumentException("figure may not be null for "+this.getClass().getSimpleName());
+		}
 	}
 
 	@Override

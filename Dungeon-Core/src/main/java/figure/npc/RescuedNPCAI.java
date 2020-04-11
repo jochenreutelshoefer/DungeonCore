@@ -12,7 +12,6 @@ import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
@@ -145,8 +144,7 @@ public class RescuedNPCAI implements AI {
 		}
 		if (target != null) {
 			return this.info.getSkill(AttackSkill.class)
-					.newAction()
-					.attacker(info)
+					.newActionFor(info)
 					.target(target)
 					.get();
 		}

@@ -10,6 +10,10 @@ import figure.action.FleeAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
 import figure.attribute.Attribute;
+import skill.AttackSkill;
+import skill.FleeSkill;
+import skill.Skill;
+import skill.SkillAction;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -47,17 +51,20 @@ public class APAgility implements Serializable {
 	}
 
 	private static final Collection<Class<? extends Action>> OXYGEN_ACTIONS = new HashSet<>();
+	private static final Collection<Class<? extends Skill>> OXYGEN_SKILLS = new HashSet<>();
 
 	static {
+		// TODO: after completion of refactoring towards Skills, refactor this set to work on Skills, not on actions any more
 		OXYGEN_ACTIONS.add(MoveAction.class);
 		OXYGEN_ACTIONS.add(StepAction.class);
-		OXYGEN_ACTIONS.add(AttackAction.class);
-		OXYGEN_ACTIONS.add(FleeAction.class);
+		OXYGEN_ACTIONS.add(AttackSkill.AttackSkillAction.class);
+		OXYGEN_SKILLS.add(FleeSkill.class);
 	}
 
 	public void payActionPoint(Action action, int round) {
 		apCounter.payActionpoint(round);
-		if(action != null && OXYGEN_ACTIONS.contains(action.getClass())) {
+		if(action != null && (OXYGEN_ACTIONS.contains(action.getClass()) // todo: refactor : unify
+				|| (action instanceof SkillAction && (OXYGEN_SKILLS.contains(((SkillAction)action).getSkill().getClass()))))) {
 			oxygen.modValue(-2);
 		}
 	}
