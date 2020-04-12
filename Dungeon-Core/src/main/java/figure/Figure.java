@@ -65,6 +65,7 @@ import log.Log;
 import org.apache.log4j.Logger;
 import skill.AttackSkill;
 import skill.FleeSkill;
+import skill.ScoutSkill;
 import skill.Skill;
 import skill.SkillAction;
 import skill.SkillMap;
@@ -207,7 +208,7 @@ public abstract class Figure extends DungeonWorldObject
 		return false;
 	}
 
-	public void decActionPoints(ScoutAction action, int round) {
+	public void decActionPoints(Action action, int round) {
 		this.agility.payActionPoint(action, round);
 	}
 
@@ -841,6 +842,7 @@ public abstract class Figure extends DungeonWorldObject
 
 		this.skillSet.put(AttackSkill.class, new AttackSkill());
 		this.skillSet.put(FleeSkill.class, new FleeSkill());
+		this.skillSet.put(ScoutSkill.class, new ScoutSkill());
 
 		this.figureID = figureID_counter;
 		figureID_counter++;

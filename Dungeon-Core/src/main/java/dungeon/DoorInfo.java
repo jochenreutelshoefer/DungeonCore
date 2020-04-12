@@ -96,6 +96,10 @@ public class DoorInfo extends RoomInfoEntity {
 		return door.equals(((DoorInfo) obj).door);
 	}
 
+
+	public PositionInRoomInfo getPositionAtDoor(RoomInfo room) {
+		return getPositionAtDoor(room, false);
+	}
 	public PositionInRoomInfo getPositionAtDoor(RoomInfo room, boolean other) {
 		return new PositionInRoomInfo(door.getPositionAtDoor(map.getDungeon().getRoom(room.getPoint()), other), map);
 	}

@@ -66,4 +66,7 @@ public class ScoutAction extends AbstractExecutableAction{
 		}
 		return ActionResult.POSSIBLE;
 	}
+
+
+
 }

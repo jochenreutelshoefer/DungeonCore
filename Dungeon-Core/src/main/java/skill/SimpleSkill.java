@@ -50,7 +50,6 @@ public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
 		@Override
 		public ACTION get() {
 			try {
-				Constructor<?>[] constructors = clazz.getConstructors();
 				Constructor constructor = clazz.getConstructor(new Class[]{SimpleSkill.class, FigureInfo.class});
 				return (ACTION)constructor.newInstance(this.skill, actor);
 			}

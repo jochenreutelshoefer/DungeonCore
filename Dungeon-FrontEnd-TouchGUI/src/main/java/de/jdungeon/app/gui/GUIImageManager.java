@@ -29,6 +29,7 @@ public class GUIImageManager {
 	public static final String PLUS = "guiItems/plus.gif";
 	public static final String MINUS = "guiItems/minus.gif";
 	public static final String SWORD_ICON = "guiItems/sword_icon.gif";
+	public static final String SCOUT_ICON = "guiItems/eye130x130.png";
 	public static final String FOOT_ICON = "guiItems/foot_icon.gif";
 	public static final String HEART_ICON = "guiItems/heart_icon.gif";
 	public static final String TARGET_ICON = "guiItems/target_icon.gif";

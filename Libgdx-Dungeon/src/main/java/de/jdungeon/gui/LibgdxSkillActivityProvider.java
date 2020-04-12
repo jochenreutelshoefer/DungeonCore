@@ -9,8 +9,10 @@ import java.util.Map;
 import figure.hero.HeroInfo;
 import skill.FleeSkill;
 import skill.HealSkill;
+import skill.ScoutSkill;
 import skill.SimpleSkill;
 import skill.Skill;
+import skill.TargetSkill;
 import spell.AbstractSpell;
 import spell.SpellInfo;
 
@@ -21,6 +23,7 @@ import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
 import de.jdungeon.gui.activity.SimpleSkillActivity;
 import de.jdungeon.gui.activity.SpellActivity;
+import de.jdungeon.gui.activity.TargetSkillActivity;
 import de.jdungeon.world.PlayerController;
 
 public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
@@ -35,6 +38,7 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
 		skillImageMap.put(HealSkill.class, GUIImageManager.HEART_ICON);
 		skillImageMap.put(FleeSkill.class, GUIImageManager.FOOT_ICON);
+		skillImageMap.put(ScoutSkill.class, GUIImageManager.SCOUT_ICON);
 	}
 
 
@@ -71,6 +75,9 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 			if(skill instanceof SimpleSkill) {
 				activityCache.add(new SimpleSkillActivity(controller, (SimpleSkill)skill));
 			}
+			if(skill instanceof TargetSkill) {
+				activityCache.add(new TargetSkillActivity(controller, (TargetSkill)skill));
+			}
 		}
 
 		// todo: what about the non-simple skills ???
@@ -91,7 +98,8 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
 		Object object = a.getObject();
 		Class<?> skillClass = object.getClass();
-		if (a instanceof SimpleSkillActivity && skillImageMap.containsKey(skillClass)) {
+		if ((a instanceof SimpleSkillActivity||a instanceof TargetSkillActivity)
+				&& skillImageMap.containsKey(skillClass)) {
 			return skillImageMap.get(skillClass);
 		}
 
