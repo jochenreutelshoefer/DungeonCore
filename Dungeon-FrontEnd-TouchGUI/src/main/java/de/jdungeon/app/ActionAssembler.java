@@ -7,11 +7,9 @@ import java.util.List;
 
 import ai.ActionAssemblerHelper;
 import dungeon.ChestInfo;
-import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
@@ -22,7 +20,6 @@ import figure.action.EndRoundAction;
 import figure.action.ScoutAction;
 import figure.hero.HeroInfo;
 import game.JDGUI;
-import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
 import shrine.ShrineInfo;
@@ -31,7 +28,6 @@ import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.ClickType;
 import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.event.InventoryItemClickedEvent;
-import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
 
 /**
@@ -46,7 +42,6 @@ public class ActionAssembler implements EventListener {
 
 	private final JDGUI gui;
 	private Action lastAction;
-	private int repeatActionCounter;
 	private final ActionAssemblerHelper actionAssembler;
 
 	public ActionAssembler(FigureInfo figure, JDGUI gui) {
@@ -56,37 +51,10 @@ public class ActionAssembler implements EventListener {
 		EventManager.getInstance().registerListener(this);
 	}
 
-	public void triggerPlannedActions() {
-
-		// we repeat scout actions until scout was successful
-		if (lastAction instanceof ScoutAction) {
-			int direction = ((ScoutAction) lastAction).getDirection();
-			RoomInfo scoutedRoom = figure.getRoomInfo().getNeighbourRoom(direction);
-			if ((scoutedRoom != null) && scoutedRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
-				if (!figure.getRoomInfo().fightRunning() && repeatActionCounter < 10) {
-					plugAction(lastAction);
-				}
-			}
-		}
-	}
-
-
 	public FigureInfo getFigure() {
 		return figure;
 	}
 
-	/**
-	 * Thread-blackboard put method (called by UI-Thread)
-	 *
-	 * The gui thread plugs an action to be performed by the UI-controlled figure.
-	 *
-	 * Adds a particular Action to the action sequence to be executed
-	 *
-	 * @param action action to be executed
-	 */
-	public void plugAction(Action action) {
-		plugActions(Collections.singletonList(action));
-	}
 
 	/**
 	 * Thread-blackboard put method (called by UI-Thread)
@@ -104,13 +72,6 @@ public class ActionAssembler implements EventListener {
 			actions.add(new EndRoundAction());
 		}
 		for (Action a : actions) {
-			if (lastAction == a) {
-				repeatActionCounter++;
-			}
-			else {
-				repeatActionCounter = 0;
-			}
-			lastAction = a;
 			// plugging action into the actual thread blackboard data
 			gui.plugAction(a);
 		}
@@ -152,59 +113,9 @@ public class ActionAssembler implements EventListener {
 		return actionAssembler;
 	}
 
-	public void itemWheelActivityClicked(Activity item, RoomInfoEntity target) {
-		if (item == null) {
-			return;
-		}
-		Object o = item.getObject();
-		if (o instanceof ItemInfo) {
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			List<Action> actions = actionAssembler.wannaUseItem((ItemInfo) o, target, false);
-			plugActions(actions);
-		}
-	}
-
-	public void scoutingActivity(RoomInfoEntity highlightedEntity) {
-		if (highlightedEntity != null) {
-			if (highlightedEntity instanceof RoomInfo) {
-				int directionToScout = Dir.getDirFromToIfNeighbour(
-						figure.getRoomNumber(),
-						((RoomInfo) highlightedEntity).getNumber());
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				List<Action> actions = actionAssembler.wannaScout(directionToScout);
-				plugActions(actions);
-			}
-			else if (highlightedEntity instanceof DoorInfo) {
-				int directionToScout = ((DoorInfo) highlightedEntity).getDir(figure.getRoomNumber());
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-				List<Action> actions = actionAssembler.wannaScout(directionToScout);
-				plugActions(actions);
-			}
-		}
-		else {
-			PositionInRoomInfo pos = figure.getPos();
-			if(pos == null) {
-				// hero dead, game over but gui still active
-				return;
-			}
-			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
-
-			if (possibleFleeDirection != null) {
-				DoorInfo door = figure.getRoomInfo().getDoor(
-						possibleFleeDirection);
-				if (door != null) {
-					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-					List<Action> actions = actionAssembler.wannaScout(possibleFleeDirection);
-					plugActions(actions);
-				}
-			}
-		}
-	}
-
 	private void handleDoorInfoClick(DoorInfo doorInfo, boolean doubleClick) {
 		List<Action> actions = actionAssembler.doorClicked(doorInfo, doubleClick);
 		plugActions(actions);
-
 	}
 
 	private void handleChestInfoClick(ChestInfo chestInfo, boolean doubleClick) {
@@ -300,8 +211,8 @@ public class ActionAssembler implements EventListener {
 		plugActions(getActionAssemblerHelper().wannaWalk(directionValue));
 	}
 
-	public void wannaScout(int directionValue) {
-		plugActions(getActionAssemblerHelper().wannaScout(directionValue));
+	public List<Action> wannaScout(int directionValue) {
+		return getActionAssemblerHelper().wannaScout(directionValue);
 	}
 
 	public void wannaUseChest() {

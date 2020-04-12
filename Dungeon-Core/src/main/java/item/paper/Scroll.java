@@ -111,7 +111,7 @@ public class Scroll extends Item implements UsableWithTarget {
 	
 	@Override
 	public Paragraph[] getParagraphs() {
-		Paragraph []p = new Paragraph[5];
+		Paragraph []p = new Paragraph[3];
 		p[0] = new Paragraph(scroll()+": "+theSpell.getName());
 		p[0].setSize(24);
 		p[0].setCentered();
@@ -129,15 +129,7 @@ public class Scroll extends Item implements UsableWithTarget {
 		p[2].setCentered();
 		p[2].setColor(JDColor.black);
 		
-		p[3] = new Paragraph((JDEnv.getResourceBundle().getString("spell_min_wisdom")+": "+theSpell.getDifficultyMin()));
-		p[3].setSize(14);
-		p[3].setCentered();
-		p[3].setColor(JDColor.black);
-		
-		p[4] = new Paragraph((JDEnv.getResourceBundle().getString("spell_difficulty")+": "+theSpell.getDifficulty()));
-		p[4].setSize(14);
-		p[4].setCentered();
-		p[4].setColor(JDColor.black);
+
 		
 		return p;
 	}

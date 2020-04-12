@@ -19,7 +19,6 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
-import item.ItemInfo;
 import log.Log;
 import shrine.LevelExit;
 import text.StatementManager;
@@ -27,6 +26,8 @@ import user.DungeonSession;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.gui.activity.Activity;
+import de.jdungeon.gui.activity.ActivityPlan;
 import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
 
@@ -56,22 +57,36 @@ public class PlayerController implements JDGUI {
 
 	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
 	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
-	private final Vector<Action> actionQueue = new Vector<>();
 	private final List<Percept> perceptQueue = new CopyOnWriteArrayList<>();
 	private final List<Percept> perceptQueueTransport = new CopyOnWriteArrayList<>();
+	private final Vector<Action> actionQueue = new Vector<>();
+	private ActivityPlan currentActivityPlan;
+
 	private ViewModel viewModel;
 
 	private final AttackActivity attackActivity;
 	private final FleeActivity fleeActivity;
 
-
 	private GameScreen gameScreen;
-
 
 	public PlayerController(DungeonSession dungeonSession) {
 		this.dungeonSession = dungeonSession;
 		attackActivity = new AttackActivity(this);
 		fleeActivity = new FleeActivity(this);
+	}
+
+	public void plugActivityPlan(ActivityPlan currentActivityPlan) {
+		// todo: is this okay to just silently override any plan if a new one comes along?
+		this.currentActivityPlan = currentActivityPlan;
+	}
+
+	public boolean plugActivity(Activity activity) {
+		if(activity.isCurrentlyPossible()) {
+			plugActivityPlan(activity.createExecutionPlan());
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public FleeActivity getFleeActivity() {
@@ -102,7 +117,6 @@ public class PlayerController implements JDGUI {
 	public HeroInfo getHeroInfo() {
 		return heroInfo;
 	}
-
 
 	public GameScreen getGameScreen() {
 		return gameScreen;
@@ -222,8 +236,12 @@ public class PlayerController implements JDGUI {
 			if (!actionQueue.isEmpty()) {
 				return actionQueue.remove(0);
 			}
-			else {
-				actionAssembler.triggerPlannedActions();
+		}
+		if(currentActivityPlan != null) {
+			synchronized (currentActivityPlan) {  // todo: make thread safe
+				if(currentActivityPlan != null && !currentActivityPlan.isCompleted()) {
+					return currentActivityPlan.getNextAction();
+				}
 			}
 		}
 		return null;
@@ -252,7 +270,7 @@ public class PlayerController implements JDGUI {
 		synchronized (perceptQueue) {
 			perceptQueue.add(p);
 		}
-		if(gameScreen != null) { // initialization issue at level start
+		if (gameScreen != null) { // initialization issue at level start
 			gameScreen.checkCameraPosition();
 		}
 	}

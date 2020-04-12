@@ -2,9 +2,6 @@ package figure.monster;
 
 
 import ai.AI;
-import spell.TripleAttack;
-import dungeon.Dungeon;
-import dungeon.JDPoint;
 import figure.*;
 import figure.attribute.Attribute;
 
@@ -82,9 +79,6 @@ public class Wolf extends NatureMonster {
 
 		name = (Texts.getName("wolf"));
 		
-		if(level >= 2) {
-			spellbook.addSpell(new TripleAttack(1));
-		}
 	}
 	
 	@Override
@@ -94,11 +88,6 @@ public class Wolf extends NatureMonster {
 
 	@Override
 	protected boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
-		attack(op, -1);
-		attack(op, -1);
-		attack(op, -1);
-		this.specialAttackCounter = 50;
 		return false;
 	}
 	

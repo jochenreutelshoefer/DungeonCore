@@ -1,5 +1,7 @@
 package skill;
 
+import dungeon.Room;
+import figure.Figure;
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
 
@@ -19,21 +21,47 @@ public abstract class Skill<ACTION extends SkillAction> {
 	}
 
 	public ActionResult execute(ACTION action, boolean doIt, int round) {
-		if(! action.getActor().canPayDust(dustCosts)) {
+		Figure actor = action.getActor();
+		if(actor == null) return ActionResult.OTHER; // hero death problem
+		Room room = actor.getRoom();
+		boolean fightRunning = room.fightRunning();
+		if(!isPossibleFight() && Boolean.TRUE.equals(fightRunning)) {
+			return ActionResult.MODE;
+		}
+		if(!isPossibleNonFight() && Boolean.FALSE.equals(fightRunning)) {
+			return ActionResult.MODE;
+		}
+		if(! actor.canPayDust(dustCosts)) {
 			return ActionResult.DUST;
 		}
-		if(! action.getActor().canPayActionPoints(1)) {
+		if(! actor.canPayActionPoints(1)) {
 			return ActionResult.NOAP;
 		}
+		if(!checkPositionOk(action)) {
+			return ActionResult.POSITION;
+		}
+		if(!checkDistanceOk(action)) {
+			return ActionResult.DISTANCE;
+		}
+
+		// do action
+		ActionResult actionResult = doExecute(action, doIt, round);
+
 
 		// if done, pay dust costs
-		ActionResult actionResult = doExecute(action, doIt, round);
 		if(doIt && actionResult.getSituation() == ActionResult.Situation.done) {
-			action.getActor().payDust(dustCosts);
+			actor.payDust(dustCosts);
 		}
 		return actionResult;
 	}
 
+	protected abstract boolean checkPositionOk(ACTION action);
+
+	protected abstract boolean checkDistanceOk(ACTION action);
+
+	protected abstract boolean isPossibleFight();
+
+	protected abstract boolean isPossibleNonFight();
 
 	public abstract ActionResult doExecute(ACTION action, boolean doIt, int round);
 

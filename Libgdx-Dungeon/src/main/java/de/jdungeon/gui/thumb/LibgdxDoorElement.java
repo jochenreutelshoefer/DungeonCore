@@ -22,15 +22,13 @@ public class LibgdxDoorElement extends LibgdxAnimatedSmartControlElement {
 
 	private final boolean locked;
 	private final boolean hasKey;
-	private final Action action;
 	private final DoorInfo clickableObject;
 	private final ActionAssembler guiControl;
 
-	public LibgdxDoorElement(JDPoint position, final JDDimension dimension, final LibgdxGUIElement parent, final boolean locked, final boolean hasKey, Action action, DoorInfo clickableObject, ActionAssembler guiControl) {
+	public LibgdxDoorElement(JDPoint position, final JDDimension dimension, final LibgdxGUIElement parent, final boolean locked, final boolean hasKey, DoorInfo clickableObject, ActionAssembler guiControl) {
 		super(position, dimension, parent);
 		this.locked = locked;
 		this.hasKey = hasKey;
-		this.action = action;
 		this.clickableObject = clickableObject;
 		this.guiControl = guiControl;
 

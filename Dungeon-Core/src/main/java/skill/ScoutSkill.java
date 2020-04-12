@@ -26,17 +26,40 @@ public class ScoutSkill extends TargetSkill<RouteInstruction.Direction> {
 	}
 
 	@Override
-	public ActionResult doExecute(TargetSkillAction<RouteInstruction.Direction> action, boolean doIt, int round) {
+	protected boolean checkPositionOk(TargetSkillAction<RouteInstruction.Direction> action) {
 		Figure figure = action.getActor();
 		Position position = figure.getPos();
+		RouteInstruction.Direction target = action.getTarget();
+		int dir = target.getValue();
+		if (position.getIndex() != Figure.getDirPos(dir)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean checkDistanceOk(TargetSkillAction<RouteInstruction.Direction> action) {
+		return true;
+	}
+
+	@Override
+	protected boolean isPossibleFight() {
+		return false;
+	}
+
+	@Override
+	protected boolean isPossibleNonFight() {
+		return true;
+	}
+
+	@Override
+	public ActionResult doExecute(TargetSkillAction<RouteInstruction.Direction> action, boolean doIt, int round) {
+		Figure figure = action.getActor();
 		if (figure.getActionPoints() < 1) {
 			return ActionResult.NOAP;
 		}
 		RouteInstruction.Direction target = action.getTarget();
 		int dir = target.getValue();
-		if (position.getIndex() != Figure.getDirPos(dir)) {
-			return ActionResult.POSITION;
-		}
 		Room toScout = figure.getRoom().getNeighbourRoom(dir);
 		if (toScout == null) {
 			return ActionResult.UNKNOWN;

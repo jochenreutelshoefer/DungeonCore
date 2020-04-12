@@ -34,6 +34,18 @@ public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
 		}
 	}
 
+	@Override
+	protected boolean checkPositionOk(SimpleSkillAction action) {
+		// assumed position for SimpleSkills is arbitrary by default (overwrite otherwise)
+		return true;
+	}
+
+	@Override
+	protected boolean checkDistanceOk(SimpleSkillAction action) {
+		// as we dont deal with a target here, the distance to target is okay.
+		return true;
+	}
+
 	/**
 	 * @author Jochen Reutelshoefer (denkbares GmbH)
 	 * @created 11.04.20.

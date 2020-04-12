@@ -4,16 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.Position;
-import dungeon.Room;
-import dungeon.util.DungeonUtils;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.AttackAction;
 import figure.action.EndRoundAction;
-import figure.action.StepAction;
 import figure.monster.Monster;
 import figure.monster.MonsterInfo;
+import skill.AttackSkill;
 
 public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 
@@ -138,14 +135,20 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 					while(fig == null || fig == f || fig == this.convincor) {
 						fig = l.get((int)(Math.random()*l.size()));
 					}
-					return new AttackAction(this.f, fig.getFigureID());
-				}else {
+					return this.f.getSkill(AttackSkill.class)
+							.newActionFor(FigureInfo.makeFigureInfo(f, f.getRoomVisibility()))
+							.target(FigureInfo.makeFigureInfo(fig, f.getRoomVisibility()))
+							.get();
+				} else {
 					Action a = getFleeAction();
 					if(a != null) {
 						return a;
 					}else {
 						if(f.getRoom().getRoomFigures().contains(this.convincor)) {
-							return new AttackAction(this.f, this.convincor.getFigureID());
+							return this.f.getSkill(AttackSkill.class)
+									.newActionFor(FigureInfo.makeFigureInfo(f, f.getRoomVisibility()))
+									.target(FigureInfo.makeFigureInfo(this.convincor, f.getRoomVisibility()))
+									.get();
 						}else {
 							convincedRounds = 0;
 							return null;

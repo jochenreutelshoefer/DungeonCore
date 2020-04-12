@@ -6,8 +6,6 @@ import java.util.Map;
 import spell.Bonebreaker;
 import spell.Convince;
 import spell.Fireball;
-import spell.GoldenHit;
-import spell.GoldenThrow;
 import spell.Heal;
 import spell.Isolation;
 import spell.KeyLocator;
@@ -16,7 +14,6 @@ import spell.Raid;
 import spell.Search;
 import spell.Spell;
 import spell.Spy;
-import spell.Steal;
 
 import de.jdungeon.util.Pair;
 
@@ -45,8 +42,8 @@ public class SkillSelectionManager {
 		skillMap.put(1, new Pair<>(new Raid(), new Heal()));
 		skillMap.put(2, new Pair<Spell, Spell>(new Search(), new Fireball()));
 		skillMap.put(3, new Pair<Spell, Spell>(new Convince(), new Bonebreaker()));
-		skillMap.put(4, new Pair<Spell, Spell>(new GoldenHit(), new KeyLocator()));
-		skillMap.put(5, new Pair<Spell, Spell>(new Spy(), new GoldenThrow()));
+		skillMap.put(4, new Pair<Spell, Spell>(new Spy(), new KeyLocator()));
+		skillMap.put(5, new Pair<Spell, Spell>(new Spy(), new Heal()));
 		skillMap.put(6, new Pair<Spell, Spell>(new Isolation(), new Light()));
 	}
 

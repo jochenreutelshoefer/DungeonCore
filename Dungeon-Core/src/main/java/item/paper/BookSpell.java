@@ -29,13 +29,13 @@ public class BookSpell extends Book implements Usable{
 
 	int dust = 2;
 	public BookSpell(AbstractSpell s, int k) {
-		super(s.getWorth());
+		super(10);
 		theSpell = s;
 		dust = k;
 	}
 	
 	public BookSpell(AbstractSpell s) {
-		super(s.getWorth());
+		super(10);
 		theSpell = s;
 		
 	}

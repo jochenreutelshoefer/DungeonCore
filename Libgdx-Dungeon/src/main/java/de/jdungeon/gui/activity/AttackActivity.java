@@ -6,11 +6,11 @@ import java.util.List;
 
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import figure.action.Action;
+import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.app.gui.smartcontrol.UIFeedback;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.world.PlayerController;
@@ -21,17 +21,16 @@ import de.jdungeon.world.PlayerController;
  */
 public class AttackActivity extends AbstractExecutableActivity {
 
-	private final PlayerController controller;
-
 	public AttackActivity(PlayerController controller) {
-		this.controller = controller;
+		super(controller);
 	}
 
 	@Override
-	public void execute() {
-
-		ActionAssembler actionAssembler = controller.getActionAssembler();
-		LibgdxFocusManager focusManager = controller.getGameScreen().getFocusManager();
+	public ActivityPlan createExecutionPlan() {
+		List<Action> actions = new ArrayList<>();
+		PlayerController controller = this.playerController;
+		ActionAssembler actionAssembler = playerController.getActionAssembler();
+		LibgdxFocusManager focusManager = playerController.getGameScreen().getFocusManager();
 		Object highlightedEntity = focusManager.getWorldFocusObject();
 		if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(actionAssembler
 				.getFigure().getRoomInfo().getLocation())) {
@@ -41,24 +40,25 @@ public class AttackActivity extends AbstractExecutableActivity {
 		}
 		List<FigureInfo> hostileFigures = getHostileFiguresList();
 		if (highlightedEntity instanceof FigureInfo) {
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaAttack((FigureInfo) highlightedEntity));
+			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaAttack((FigureInfo) highlightedEntity));
 		} else if (hostileFigures.size() == 1) {
 			FigureInfo target = hostileFigures.get(0);
-			actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaAttack(target));
+			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaAttack(target));
 			focusManager.setWorldFocusObject(target);
 		} else {
 			controller.getGameScreen().getGuiRenderer().setMessage(UIFeedback.SelectEnemy.getMessage());
 		}
+
+		return new SimpleActivityPlan(this, actions);
 	}
 
 	private List<FigureInfo> getHostileFiguresList() {
-		RoomInfo roomInfo = controller.getActionAssembler().getFigure().getRoomInfo();
+		RoomInfo roomInfo = playerController.getFigure().getRoomInfo();
 		if(roomInfo == null) return Collections.emptyList();
 		List<FigureInfo> figureInfos = roomInfo.getFigureInfos();
 		List<FigureInfo> hostileFigures = new ArrayList<>();
 		for (FigureInfo figureInfo : figureInfos) {
-			if (figureInfo.isHostile(controller.getActionAssembler().getFigure())) {
+			if (figureInfo.isHostile(playerController.getFigure())) {
 				hostileFigures.add(figureInfo);
 			}
 		}
@@ -66,18 +66,23 @@ public class AttackActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public boolean isCurrentlyPossible() {
+	public ActionResult possible() {
 		// todo: logics for "isCurrentlyPossible" should ne be implemented in GUI but in core (to be available for AIs as well)
-		if(controller.getActionAssembler().getFigure() == null) return false;
+		if(playerController.getFigure() == null) return ActionResult.UNKNOWN;
 		if(getHostileFiguresList().isEmpty()) {
-			return false;
+			return ActionResult.NO_TARGET;
 		}
-		RoomInfo roomInfo = controller.getActionAssembler().getFigure().getRoomInfo();
+		RoomInfo roomInfo = playerController.getActionAssembler().getFigure().getRoomInfo();
 		if(roomInfo.fightRunning() == null) {
 			// todo: happens, but this is really weird, hence the figure has no visibility of its current room
-			return false;
+			return ActionResult.UNKNOWN;
 		}
-		return roomInfo.fightRunning();
+		boolean fightRunning = roomInfo.fightRunning();
+		if(!fightRunning) {
+			return ActionResult.MODE;
+		} else {
+			return ActionResult.POSSIBLE;
+		}
 	}
 
 	@Override

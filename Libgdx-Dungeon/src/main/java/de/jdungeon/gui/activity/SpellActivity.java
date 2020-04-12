@@ -7,13 +7,11 @@ import java.util.Set;
 import figure.action.result.ActionResult;
 import game.InfoEntity;
 import game.RoomInfoEntity;
-import spell.Spell;
 import spell.SpellInfo;
 import spell.TargetScope;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.world.PlayerController;
 
@@ -27,18 +25,19 @@ public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 	private final ActionAssembler actionAssembler;
 	private final LibgdxFocusManager focusManager;
 	public SpellActivity(SpellInfo spell, PlayerController controller) {
+		super(controller);
 		this.spell = spell;
 		this.actionAssembler = controller.getActionAssembler();
 		this.focusManager = controller.getGameScreen().getFocusManager();
 	}
 
 	@Override
-	public void execute() {
+	public ActivityPlan createExecutionPlan() {
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 		RoomInfoEntity target = findTarget(highlightedEntity, true);
 
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		actionAssembler.plugActions(actionAssembler.getActionAssemblerHelper().wannaSpell(spell, target));
+		return new SimpleActivityPlan(this, actionAssembler.getActionAssemblerHelper().wannaSpell(spell, target));
 	}
 
 	private RoomInfoEntity findTarget(RoomInfoEntity highlightedEntity, boolean doIt) {
@@ -103,11 +102,9 @@ public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 	}
 
 	@Override
-	public boolean isCurrentlyPossible() {
+	public ActionResult possible() {
 		RoomInfoEntity target = findTarget(focusManager.getWorldFocusObject(), false);
-		ActionResult currentlyPossible = spell.isCurrentlyPossible(actionAssembler.getFigure(), target);
-
-		return currentlyPossible == ActionResult.POSSIBLE;
+		return spell.isCurrentlyPossible(actionAssembler.getFigure(), target);
 	}
 
 	@Override

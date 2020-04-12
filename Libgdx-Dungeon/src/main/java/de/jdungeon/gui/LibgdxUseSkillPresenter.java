@@ -11,8 +11,7 @@ import event.EventListener;
 import event.WorldChangedEvent;
 import util.JDDimension;
 
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.ExecutableActivity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.thumb.LibgdxActivityGUIElement;
 
 /**
@@ -104,7 +103,7 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 		for (Activity activity : newActivities) {
 			if (tileIndex < this.relativeItemTilePositions.length) {
 				String activityImage = this.provider.getActivityImage(activity);
-				LibgdxActivityGUIElement libgdxActivityGUIElement = new LibgdxActivityGUIElement(relativeItemTilePositions[tileIndex], tileDimension,  (ExecutableActivity) activity, activityImage, imageBg, imageInactiveBg);
+				LibgdxActivityGUIElement libgdxActivityGUIElement = new LibgdxActivityGUIElement(relativeItemTilePositions[tileIndex], tileDimension,  activity, activityImage, imageBg, imageInactiveBg);
 				activities.add(libgdxActivityGUIElement);
 			}
 			tileIndex++;

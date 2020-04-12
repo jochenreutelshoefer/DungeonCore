@@ -7,12 +7,11 @@ import figure.FigureInfo;
 import figure.action.TakeItemAction;
 import item.ItemInfo;
 
-import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.InventoryImageManager;
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.smartcontrol.ExecutableTakeItemActivity;
-import de.jdungeon.game.Game;
+import de.jdungeon.gui.activity.Activity;
+import de.jdungeon.gui.activity.ExecutableTakeItemActivity;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -20,9 +19,9 @@ import de.jdungeon.game.Game;
  */
 public class LibgdxTakeItemActivityProvider extends LibgdxItemActivityItemProvider {
 	private final FigureInfo info;
-	private final ActionAssembler guiControl;
+	private final PlayerController guiControl;
 
-	public LibgdxTakeItemActivityProvider(FigureInfo info, InventoryImageManager inventoryImageManager, ActionAssembler guiControl) {
+	public LibgdxTakeItemActivityProvider(FigureInfo info, InventoryImageManager inventoryImageManager, PlayerController guiControl) {
 		super(info, inventoryImageManager, guiControl);
 		this.info = info;
 		this.guiControl = guiControl;

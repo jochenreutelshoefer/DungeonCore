@@ -33,6 +33,7 @@ public class GUIImageManager {
 	public static final String FOOT_ICON = "guiItems/foot_icon.gif";
 	public static final String HEART_ICON = "guiItems/heart_icon.gif";
 	public static final String TARGET_ICON = "guiItems/target_icon.gif";
+	public static final String LION_ICON = "guiItems/lion_icon.png";
 	public static final String SHIELD_ICON = "guiItems/shield_icon.gif";
 	public static final String HIGHLIGHT = "guiItems/highlight_square.gif";
 	public static final String HAMMER = "guiItems/icon_hammer2.gif";

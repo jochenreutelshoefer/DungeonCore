@@ -6,7 +6,7 @@ import dungeon.JDPoint;
 import util.JDDimension;
 
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.activity.Activity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.asset.Assets;
 
 /**

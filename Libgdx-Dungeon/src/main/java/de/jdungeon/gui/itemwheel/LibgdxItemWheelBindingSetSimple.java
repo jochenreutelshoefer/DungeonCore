@@ -6,11 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.ActivityProvider;
-import de.jdungeon.app.gui.activity.DefaultActivity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.LibgdxActivityProvider;
 
 public class LibgdxItemWheelBindingSetSimple implements LibgdxItemWheelBindingSet {
@@ -171,20 +168,6 @@ public class LibgdxItemWheelBindingSetSimple implements LibgdxItemWheelBindingSe
 		if (!inserted) {
 			throw new IllegalArgumentException(
 					"Item wheel binding set not implemented for this case: too many items!");
-		}
-
-	}
-
-	private void removeBinding(DefaultActivity itemInfo) {
-		Set<Integer> keySet = mapping.keySet();
-		/*
-		 * TODO: optimize this using bidirectional map
-		 */
-		for (Integer integer : keySet) {
-			if (mapping.get(integer).equals(itemInfo)) {
-				mapping.remove(integer);
-				break;
-			}
 		}
 
 	}

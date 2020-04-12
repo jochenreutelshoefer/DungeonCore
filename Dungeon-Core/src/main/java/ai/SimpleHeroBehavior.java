@@ -12,7 +12,6 @@ import java.util.List;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.FleeAction;
 import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.monster.MonsterInfo;

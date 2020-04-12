@@ -27,6 +27,7 @@ public class LionessConjuration extends AbstractSpell {
 		return "Beschwört eine Löwin.";
 	}
 
+	/*
 	@Override
 	public boolean canFire(Figure mage, int round) {
 		Room roomInfo = mage.getRoomInfo();
@@ -40,6 +41,7 @@ public class LionessConjuration extends AbstractSpell {
 		}
 		return freePositionAvailable;
 	}
+	*/
 
 	@Override
 	public boolean isPossibleNormal() {

@@ -52,11 +52,7 @@ public class Dwarf extends Monster {
 	@Override
 	public boolean makeSpecialAttack(Figure op) {
 		//Fighter op = getTarget();
-		attack(op, -1);
-		attack(op, -1);
-		
-		this.specialAttackCounter = 50;
-		
+
 		return false;
 	}
 	

@@ -15,8 +15,7 @@ import item.ItemInfo;
 import util.JDDimension;
 
 import de.jdungeon.app.gui.InventoryImageManager;
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.ExecutableActivity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 import de.jdungeon.gui.LibgdxActivityProvider;
 import de.jdungeon.gui.LibgdxGUIElement;
@@ -99,7 +98,7 @@ public class LibgdxFloorItemPresenter extends LibgdxActivityPresenter implements
 		for (Activity activity : newActivities) {
 			if (tileIndex < this.itemTilePositions.length) {
 				JDImageProxy image = inventoryImageManager.getJDImage((ItemInfo) activity.getObject());
-				activities.add(new LibgdxActivityGUIElement(itemTilePositions[tileIndex], tileDimension,  (ExecutableActivity) activity, image
+				activities.add(new LibgdxActivityGUIElement(itemTilePositions[tileIndex], tileDimension, activity, image
 						.getFilenameBlank(), null, null));
 			}
 			tileIndex++;

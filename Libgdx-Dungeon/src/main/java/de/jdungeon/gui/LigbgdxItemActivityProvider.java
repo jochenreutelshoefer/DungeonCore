@@ -6,18 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import dungeon.ItemInfoOwner;
-import figure.FigureInfo;
-import figure.action.TakeItemAction;
 import item.ItemInfo;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.smartcontrol.ExecutableTakeItemActivity;
-import de.jdungeon.game.Game;
-import de.jdungeon.game.Image;
+import de.jdungeon.gui.activity.Activity;
+import de.jdungeon.gui.activity.ExecutableTakeItemActivity;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -26,11 +21,11 @@ import de.jdungeon.game.Image;
 public abstract class LigbgdxItemActivityProvider implements LibgdxActivityProvider {
 
 	private final ItemInfoOwner info;
-	private final ActionAssembler guiControl;
+	private final PlayerController guiControl;
 	private final Map<Class, String> imageCache = new HashMap<>();
 	private final InventoryImageManager inventoryImageManager;
 
-	public LigbgdxItemActivityProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, ActionAssembler guiControl) {
+	public LigbgdxItemActivityProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, PlayerController guiControl) {
 		this.info = info;
 		this.guiControl = guiControl;
 		this.inventoryImageManager = inventoryImageManager;

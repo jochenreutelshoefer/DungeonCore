@@ -73,6 +73,10 @@ public class Dungeon implements Turnable, EventListener {
 		}
 	}
 
+	public void insertFigure(Figure figure) {
+		figureIndex.put(figure.getFigureID(), figure);
+	}
+
 	public void prepare() {
 		for (int i = 0; i < this.getSize().getX(); i++) {
 			for (int j = 0; j < this.getSize().getY(); j++) {

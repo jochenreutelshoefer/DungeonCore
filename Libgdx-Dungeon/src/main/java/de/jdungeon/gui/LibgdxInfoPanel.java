@@ -21,7 +21,6 @@ import util.JDDimension;
 import de.jdungeon.app.gui.ColorConverter;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
-import de.jdungeon.app.gui.activity.DefaultActivity;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Color;
@@ -197,21 +196,6 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 				image = ImageManager.getImage((ItemInfo) content).getFilenameBlank();
 			}
 			return image;
-		}
-		if (content instanceof DefaultActivity) {
-			DefaultActivity activity = (DefaultActivity) content;
-			if (activity.getObject() instanceof ItemInfo) {
-				String image = inventoryImageManager.getJDImage(
-						(ItemInfo) activity.getObject()).getFilenameBlank();
-				if (image.equals(guiImageManager.getJDImage(
-						GUIImageManager.NO_IMAGE).getFilenameBlank())) {
-					image = ImageManager.getImage((ItemInfo) content).getFilenameBlank();
-				}
-				return image;
-			}
-			else {
-				return skillImageManager.getImage(activity.getObject());
-			}
 		}
 		return null;
 	}

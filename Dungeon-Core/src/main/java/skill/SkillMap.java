@@ -1,5 +1,6 @@
 package skill;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Set;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 10.04.20.
  */
-public class SkillMap {
+public class SkillMap implements Serializable {
 
 	private final Map<Class<? extends Skill>, Skill> map = new HashMap<>();
 

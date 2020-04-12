@@ -11,8 +11,6 @@ import spell.Convince;
 import spell.Escape;
 import spell.EscapeRoute;
 import spell.Fireball;
-import spell.GoldenHit;
-import spell.GoldenThrow;
 import spell.Heal;
 import spell.Isolation;
 import spell.KeyLocator;
@@ -199,9 +197,6 @@ public class Character implements Serializable {
 		if (code == Hero.HEROCODE_WARRIOR) {
 			if (level == 0) {
 				
-				spellBuffer.add(new GoldenHit(1));
-				spellBuffer.add(new GoldenThrow(1));
-
 			}
 			if (level == 2) {
 				spellBuffer.add(new Isolation(1));

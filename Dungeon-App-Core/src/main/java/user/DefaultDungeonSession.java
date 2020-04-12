@@ -24,6 +24,7 @@ import level.DungeonFactory;
 import level.DungeonManager;
 import shrine.LevelExit;
 import skill.HealSkill;
+import skill.LionessConjureSkill;
 import spell.Spell;
 import util.DeepCopyUtil;
 
@@ -124,6 +125,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 					Profession.Lumberjack);
 			// todo: testing only
 			currentHero.getSkillSet().put(HealSkill.class, new HealSkill());
+			currentHero.getSkillSet().put(LionessConjureSkill.class, new LionessConjureSkill());
 		}
 		return currentHero;
 	}

@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import figure.action.Action;
-import figure.action.AttackAction;
-import figure.action.FleeAction;
 import figure.action.MoveAction;
 import figure.action.StepAction;
 import figure.attribute.Attribute;

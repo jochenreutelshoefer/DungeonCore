@@ -2,8 +2,7 @@ package de.jdungeon.gui;
 
 import java.util.List;
 
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.game.Image;
+import de.jdungeon.gui.activity.Activity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

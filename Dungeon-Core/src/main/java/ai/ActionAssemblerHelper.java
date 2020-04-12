@@ -25,7 +25,6 @@ import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.EndRoundAction;
 import figure.action.EquipmentChangeAction;
-import figure.action.FleeAction;
 import figure.action.LayDownItemAction;
 import figure.action.LockAction;
 import figure.action.MoveAction;

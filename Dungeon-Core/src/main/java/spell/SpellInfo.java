@@ -91,10 +91,6 @@ public class SpellInfo extends InfoEntity {
 		return spell.getCost();
 	}
 	
-	public int getDifficulty() {
-		return spell.getDifficulty();
-	}
-	
 	public String getText() {
 		return spell.getText();
 	}

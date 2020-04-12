@@ -26,27 +26,13 @@ import item.equipment.weapon.Lance;
 import item.equipment.weapon.Sword;
 import item.equipment.weapon.Weapon;
 import item.equipment.weapon.Wolfknife;
-import item.paper.BookSpell;
 import item.paper.Scroll;
 import item.paper.ScrollMagic;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import spell.Bonebreaker;
-import spell.Escape;
-import spell.Fireball;
-import spell.GoldenHit;
-import spell.GoldenThrow;
-import spell.Heal;
-import spell.Isolation;
-import spell.KeyLocator;
-import spell.Light;
-import spell.Raid;
-import spell.Search;
 import spell.AbstractSpell;
-import spell.Spy;
-import spell.Steal;
 
 public class ItemPool {
 	
@@ -155,49 +141,9 @@ public class ItemPool {
 			i = new Shield(value,false);
 		}
 		else if(k <= summieren(p,8)) {
-			i = getBook(value);
+			//i = getBook(value);
 		}
 		return i;
-	}
-
-	/**
-	 * Method getBook.
-	 * @param value
-	 * @return item
-	 */
-	
-	public static AbstractSpell spellArray [] = {new Bonebreaker(1),new Fireball(1),new GoldenHit(1)/*,new Convince(1)*/,
-		new Escape(1), new GoldenThrow(1), new Heal(1),new Isolation(1), new KeyLocator(1),new Light(1), new Raid(1),new Search(1),new Spy(1),new Steal(1)};
-	
-	public static Item getRandomBookSpell() {
-		return new BookSpell(spellArray[((int)Math.random()*spellArray.length)]);
-	}
-	
-	
-	private static Item getBook(int value) {
-		if(value >= 100) {
-				return new BookSpell(new Bonebreaker(1),10);
-		}
-		else if(value >= 80) {
-			if(Math.random() < 0.3) {
-				return new BookSpell(new Fireball(1),10);
-			}
-			else {
-				return new BookSpell(new GoldenHit(1),10);		
-			}	
-		} 
-		else if(value >= 60) {
-			if(Math.random() < 0.2) {
-				return new BookSpell(new Escape(1),10);
-			}
-			else {
-				return new BookSpell(new Spy(1),10);	
-			}	
-		} 
-		else if(value >= 40) {
-				return new BookSpell(new Heal(1),10);
-		}
-		else return getRandomItem(value, 1+ Math.random());
 	}
 
 
@@ -301,7 +247,7 @@ public class ItemPool {
 			i = getMagicShield(value,quotient);
 		}
 		else if(k <= summieren(p,10)) {
-			i = getBook(value);
+			//i = getBook(value);
 		}
 		
 		else if(k <= summieren(p,11)) {
@@ -658,7 +604,7 @@ public class ItemPool {
 			i = new HealPotion(value);
 		}
 		else if(k <= summieren(p,8)) {
-			i = getBook(value);
+			//i = getBook(value);
 			if ( i == null) {
 				i = getLowerItem(value, quotient);
 			}
@@ -709,7 +655,7 @@ public class ItemPool {
 				i = new HealPotion(value);
 			}
 			else if(k <= summieren(p,8)) {
-				i = getBook(value);
+				//i = getBook(value);
 				if ( i == null) {
 					i = getLowerItem(value, quotient);
 				}

@@ -1,5 +1,6 @@
 package de.jdungeon.app.gui.activity;
 
+@Deprecated
 public class SkillActivityProvider {
 
 	public static final String ATTACK = "Angreifen";

@@ -14,17 +14,13 @@ import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
 import graphics.ImageManager;
-import item.Item;
-import item.ItemInfo;
 import text.Statement;
 import util.JDDimension;
 
-import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.TextPerceptView;
-import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.screen.InfoMessagePopupEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
@@ -198,7 +194,7 @@ public class GUIRenderer implements Disposable {
 		JDPoint smartControlRoomPanelPosition = new JDPoint(screenWidth - SMART_CONTROL_SIZE, screenHeight - SMART_CONTROL_SIZE - itemPresenterHeight / 2);
 		Gdx.app.log(TAG, "Initializing Smart Control Panel at: "+smartControlRoomPanelPosition.getX() +" / "+smartControlRoomPanelPosition.getY());
 		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
-		smartControl = new SmartControlPanel( smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController.getPlayerController().getActionAssembler());
+		smartControl = new SmartControlPanel( smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController.getPlayerController());
 		this.libgdxGuiElements.add(smartControl);
 
 
@@ -210,9 +206,7 @@ public class GUIRenderer implements Disposable {
 		int wheelSize = 350;
 		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
 		double wheelCenterY = screenHeight + wheelSize / 2 + 120;
-		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController
-				.getPlayerController()
-				.getActionAssembler(), focusManager);
+		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController.getPlayerController(), focusManager);
 		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(50, wheelCenterY),
 				itemWheelSize,
 				figure,

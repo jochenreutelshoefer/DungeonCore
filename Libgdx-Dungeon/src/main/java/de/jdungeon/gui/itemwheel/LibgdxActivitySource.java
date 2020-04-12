@@ -1,6 +1,6 @@
 package de.jdungeon.gui.itemwheel;
 
-import de.jdungeon.app.gui.activity.Activity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.LibgdxActivityProvider;
 
 /**

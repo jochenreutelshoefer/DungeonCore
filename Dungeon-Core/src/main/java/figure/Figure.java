@@ -122,7 +122,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	public boolean half_bonus = false;
 
-	private boolean raiding = false;
+	public boolean raiding = false;
 
 	private List<Poisoning> poisonings = new LinkedList<Poisoning>();
 
@@ -256,6 +256,7 @@ public abstract class Figure extends DungeonWorldObject
 	@Override
 	public abstract boolean removeItem(Item i);
 
+	// todo: unify
 	public abstract void receiveSlapResult(SlapResult r);
 
 	@Override
@@ -580,18 +581,7 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-	public void attack(Figure op, int round) {
-		// new look dir towards opponent
-		lookDir = Position.getDirFromTo(getPositionInRoom(),
-				op.getPositionInRoom());
 
-		Slap u = slay(op, round);
-
-		getRoom().distributePercept(new AttackPercept(this, op, u, round));
-		SlapResult res = op.getSlap(u, round);
-
-		this.receiveSlapResult(res);
-	}
 
 	public abstract int getKnowledgeBalance(Figure f);
 
@@ -886,11 +876,11 @@ public abstract class Figure extends DungeonWorldObject
 
 	public abstract Attribute getDust();
 
-	protected abstract float getActualChanceToHit(Figure m);
+	public abstract float getActualChanceToHit(Figure m);
 
-	protected abstract int getActualRangeCapability(int range);
+	public abstract int getActualRangeCapability(int range);
 
-	protected float rangeFilter(float c, int dist) {
+	public float rangeFilter(float c, int dist) {
 
 		if (dist == 1) {
 			c = ((c * 100) / 100);
@@ -939,41 +929,7 @@ public abstract class Figure extends DungeonWorldObject
 		return getRoomVisibility().getStatusObject(p);
 	}
 
-	protected Slap slay(Figure m, int round) {
 
-		double tumbleFactor = 1;
-
-		assert m != null;
-		int dist = Position.getMinDistanceFromTo(this.getPositionInRoom(),
-				m.getPositionInRoom());
-
-		float weaponBaseChance = getActualChanceToHit(m);
-		float rangedPrecision = rangeFilter(weaponBaseChance, dist);
-		float precision = (float) (rangedPrecision * (((double) getActualRangeCapability(dist)) / 100));
-
-		int value = getSlapStrength(m);
-
-		if (this.raiding) {
-			raiding = false;
-			this.half_bonus = true;
-			value += 4;
-			precision *= 2;
-			tumbleFactor = 4;
-			this.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("raiding_attack"), round));
-		}
-
-		if (half_bonus) {
-			half_bonus = false;
-			value *= 1.5;
-		}
-		if (double_bonus) {
-			double_bonus = false;
-			value *= 2;
-		}
-
-		return new Slap(this, value,
-				(int) (tumbleFactor * getTumbleValue(m)), precision);
-	}
 
 	public abstract int getSlapStrength(Figure m);
 

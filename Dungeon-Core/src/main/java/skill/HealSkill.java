@@ -16,6 +16,16 @@ public class HealSkill extends SimpleSkill {
 	}
 
 	@Override
+	protected boolean isPossibleFight() {
+		return true;
+	}
+
+	@Override
+	protected boolean isPossibleNonFight() {
+		return true;
+	}
+
+	@Override
 	public ActionResult doExecute(SimpleSkillAction a, boolean doIt, int round) {
 		if(doIt) {
 			Figure actor = a.getActor();

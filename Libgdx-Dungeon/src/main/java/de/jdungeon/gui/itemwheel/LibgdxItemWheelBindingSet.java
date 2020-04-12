@@ -1,7 +1,6 @@
 package de.jdungeon.gui.itemwheel;
 
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.ActivitySource;
+import de.jdungeon.gui.activity.Activity;
 
 public interface LibgdxItemWheelBindingSet extends LibgdxActivitySource {
 

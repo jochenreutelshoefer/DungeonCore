@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
-import de.jdungeon.app.gui.activity.ExecutableActivity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.gui.LibgdxGUIElement;
 
@@ -15,12 +15,12 @@ import de.jdungeon.gui.LibgdxGUIElement;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.02.20.
  */
-public class LibgdxActivityControlElement  extends LibgdxAnimatedSmartControlElement {
+public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElement {
 
-	private final ExecutableActivity activity;
+	private final Activity activity;
 	private final String skillImage;
 
-	public LibgdxActivityControlElement(JDPoint position, final JDDimension dimension, LibgdxGUIElement parent,  ExecutableActivity activity, final String skillImage) {
+	public LibgdxActivityControlElement(JDPoint position, final JDDimension dimension, LibgdxGUIElement parent, Activity activity, final String skillImage) {
 		super(position, dimension, parent);
 		this.skillImage = skillImage;
 		this.activity = activity;
@@ -65,7 +65,7 @@ public class LibgdxActivityControlElement  extends LibgdxAnimatedSmartControlEle
 	public boolean handleClickEvent(int x, int y) {
 		super.handleClickEvent(x, y);
 		if(activity.isCurrentlyPossible()) {
-			activity.execute();
+			activity.plugToController();
 		}
 		return true;
 	}

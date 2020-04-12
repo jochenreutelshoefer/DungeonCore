@@ -4,9 +4,7 @@ import spell.AbstractSpell;
 import spell.SpellInfo;
 
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.activity.Activity;
 import de.jdungeon.app.gui.activity.SkillActivityProvider;
-import de.jdungeon.game.Image;
 
 public class SkillImageManager {
 
@@ -14,14 +12,6 @@ public class SkillImageManager {
 
 	public SkillImageManager(GUIImageManager guiImageManager) {
 		this.guiImageManager = guiImageManager;
-	}
-
-	public Image getSkillImage(Activity activity) {
-		return guiImageManager.getImage(getImage(activity.getObject()));
-	}
-
-	public Image getIm(Object o) {
-		return guiImageManager.getImage(getImage(o));
 	}
 
 	public String getImage(Object o) {

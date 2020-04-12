@@ -1,12 +1,12 @@
-package de.jdungeon.app.gui.smartcontrol;
+package de.jdungeon.gui.activity;
 
 import figure.action.UseItemAction;
-import game.RoomInfoEntity;
+import figure.action.result.ActionResult;
 import item.ItemInfo;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -14,23 +14,22 @@ import de.jdungeon.app.gui.activity.AbstractExecutableActivity;
  */
 public class ExecutableUseItemActivity extends AbstractExecutableActivity<ItemInfo> {
 
-	protected final ActionAssembler guiControl;
 	protected final ItemInfo item;
 
-	public ExecutableUseItemActivity(ActionAssembler control, ItemInfo item) {
-		this.guiControl = control;
+	public ExecutableUseItemActivity(PlayerController control, ItemInfo item) {
+		super(control);
 		this.item = item;
 	}
 
 	@Override
-	public void execute() {
+	public ActivityPlan createExecutionPlan() {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		guiControl.plugAction(new UseItemAction(this.guiControl.getFigure(), getObject()));
+		return new SimpleActivityPlan(this, new UseItemAction(playerController.getFigure(), getObject()));
 	}
 
 	@Override
-	public boolean isCurrentlyPossible() {
-		return true;
+	public ActionResult possible() {
+		return ActionResult.POSSIBLE;
 	}
 
 	@Override

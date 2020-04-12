@@ -9,6 +9,7 @@ import java.util.Map;
 import figure.hero.HeroInfo;
 import skill.FleeSkill;
 import skill.HealSkill;
+import skill.LionessConjureSkill;
 import skill.ScoutSkill;
 import skill.SimpleSkill;
 import skill.Skill;
@@ -16,9 +17,9 @@ import skill.TargetSkill;
 import spell.AbstractSpell;
 import spell.SpellInfo;
 
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.activity.ExecutableActivity;
+import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
 import de.jdungeon.gui.activity.SimpleSkillActivity;
@@ -28,8 +29,7 @@ import de.jdungeon.world.PlayerController;
 
 public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
-
-	private static final Map<Class<? extends ExecutableActivity>, String> activityImageMap = new HashMap<>();
+	private static final Map<Class<? extends Activity>, String> activityImageMap = new HashMap<>();
 	private static final Map<Class<? extends Skill>, String> skillImageMap = new HashMap<>();
 
 	static {
@@ -39,14 +39,12 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		skillImageMap.put(HealSkill.class, GUIImageManager.HEART_ICON);
 		skillImageMap.put(FleeSkill.class, GUIImageManager.FOOT_ICON);
 		skillImageMap.put(ScoutSkill.class, GUIImageManager.SCOUT_ICON);
+		skillImageMap.put(LionessConjureSkill.class, GUIImageManager.LION_ICON);
 	}
-
 
 	private final HeroInfo info;
 	private final PlayerController controller;
 	private final List<Activity> activityCache = new ArrayList<>();
-
-
 
 	public LibgdxSkillActivityProvider(PlayerController controller) {
 		super();
@@ -72,11 +70,11 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		// add simple skills (fetched from the figure)
 		Collection<Skill> skills = info.getSkills();
 		for (Skill skill : skills) {
-			if(skill instanceof SimpleSkill) {
-				activityCache.add(new SimpleSkillActivity(controller, (SimpleSkill)skill));
+			if (skill instanceof SimpleSkill) {
+				activityCache.add(new SimpleSkillActivity(controller, (SimpleSkill) skill));
 			}
-			if(skill instanceof TargetSkill) {
-				activityCache.add(new TargetSkillActivity(controller, (TargetSkill)skill));
+			if (skill instanceof TargetSkill) {
+				activityCache.add(new TargetSkillActivity(controller, (TargetSkill) skill));
 			}
 		}
 
@@ -85,20 +83,20 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		// todo: shouldn't these spell activities somehow also obtained from the controller?
 		List<SpellInfo> spells = info.getSpells();
 		for (SpellInfo spell : spells) {
-				activityCache.add(new SpellActivity(spell, controller));
+			activityCache.add(new SpellActivity(spell, controller));
 		}
 	}
 
 	@Override
 	public String getActivityImage(Activity a) {
-		if(a  == null) return null;
+		if (a == null) return null;
 		if (activityImageMap.containsKey(a.getClass())) {
 			return activityImageMap.get(a.getClass());
 		}
 
 		Object object = a.getObject();
 		Class<?> skillClass = object.getClass();
-		if ((a instanceof SimpleSkillActivity||a instanceof TargetSkillActivity)
+		if ((a instanceof SimpleSkillActivity || a instanceof TargetSkillActivity)
 				&& skillImageMap.containsKey(skillClass)) {
 			return skillImageMap.get(skillClass);
 		}
@@ -121,12 +119,13 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		if (activity == null) {
 			return;
 		}
-
-		if (activity instanceof ExecutableActivity) {
-			((ExecutableActivity) activity).execute();
-			return;
+		boolean possible = activity.plugToController();
+		if(possible) {
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		}
-
+		else {
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+		}
 	}
-
 }
+

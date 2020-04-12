@@ -12,14 +12,8 @@ import item.equipment.weapon.Weapon;
 import item.equipment.weapon.Wolfknife;
 import item.paper.Scroll;
 import spell.Bonebreaker;
-import spell.Convince;
-import spell.Fireball;
-import spell.GoldenHit;
-import spell.Raid;
 import spell.Search;
 import spell.AbstractSpell;
-
-import static figure.hero.Hero.HeroCategory.Mage;
 
 public class HeroUtil {
 

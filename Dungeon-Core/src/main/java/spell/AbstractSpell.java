@@ -75,10 +75,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		timedSpells.remove(s);
 	}
 
-	public int[] getConfigValues() {
-		return valueSet;
-	}
-
 	protected int level = 1;
 
 	protected int diff;
@@ -144,9 +140,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		else if (s.equals("escape")) {
 			return new Escape(1);
 		}
-		else if (s.equals("golden_hit")) {
-			return new GoldenHit(1);
-		}
 		else if (s.equals("spy")) {
 			return new Spy(1);
 		}
@@ -158,9 +151,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		}
 		else if (s.equals("key_locator")) {
 			return new KeyLocator(1);
-		}
-		else if (s.equals("golden_throw")) {
-			return new GoldenThrow(1);
 		}
 		else if (s.equals("steal")) {
 			return new Steal(1);
@@ -190,21 +180,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	@Override
 	public abstract String getText();
 
-	public boolean canFire(Figure mage, int round) {
-		int diff = getDifficulty();
-		double psy = mage.getPsycho().getValue();
-		double k = (Math.random() * psy);
-		if (k < diff) {
-
-			String str = JDEnv.getResourceBundle().getString("spell_failed");
-			mage.tellPercept(new TextPercept(str, round));
-
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean rightModus(Figure mage) {
 		Room room = mage.getRoom();
 		if (room == null) return false;
@@ -218,7 +193,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	@Override
 	public Paragraph[] getParagraphs() {
-		Paragraph[] p = new Paragraph[5];
+		Paragraph[] p = new Paragraph[3];
 		p[0] = new Paragraph(getName());
 		p[0].setSize(24);
 		p[0].setCentered();
@@ -238,25 +213,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		p[2].setCentered();
 		p[2].setColor(JDColor.black);
 
-		p[3] = new Paragraph(JDEnv.getResourceBundle().getString(
-				"spell_difficulty")
-				+ ": " + getDifficulty());
-		p[3].setSize(14);
-		p[3].setCentered();
-		p[3].setColor(JDColor.black);
-
-		p[4] = new Paragraph(JDEnv.getResourceBundle().getString(
-				"spell_min_wisdom")
-				+ ": " + getDifficultyMin());
-		p[4].setSize(14);
-		p[4].setCentered();
-		p[4].setColor(JDColor.black);
-
 		return p;
-	}
-
-	public int getDifficultyMin() {
-		return this.getConfigValues()[0];
 	}
 
 	@Override
@@ -394,31 +351,9 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	protected abstract void sorcer(Figure mage, RoomEntity target, int round);
 
-	/**
-	 * Returns the difficulty.
-	 *
-	 * @return int
-	 */
 	@Override
 	public int getDifficulty() {
 		return this.diff;
 	}
 
-	/**
-	 * Returns the worth.
-	 *
-	 * @return int
-	 */
-	public int getWorth() {
-		return worth;
-	}
-
-	/**
-	 * Sets the worth.
-	 *
-	 * @param worth The worth to set
-	 */
-	public void setWorth(int worth) {
-		this.worth = worth;
-	}
 }

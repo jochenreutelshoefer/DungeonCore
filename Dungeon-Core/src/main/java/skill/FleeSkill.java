@@ -16,6 +16,16 @@ import figure.percept.Percept;
 public class FleeSkill extends SimpleSkill {
 
 	@Override
+	protected boolean isPossibleFight() {
+		return true;
+	}
+
+	@Override
+	protected boolean isPossibleNonFight() {
+		return false;
+	}
+
+	@Override
 	public ActionResult doExecute(SimpleSkillAction a, boolean doIt, int round) {
 		Figure actor = a.getActor();
 		Room room = actor.getRoom();

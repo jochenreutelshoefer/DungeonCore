@@ -24,6 +24,7 @@ public class KeyboardControl {
 	private final PlayerController playerController;
 	private final CameraHelper cameraHelper;
 
+
 	public KeyboardControl(PlayerController playerController, CameraHelper cameraHelper) {
 		this.playerController = playerController;
 		this.cameraHelper = cameraHelper;
@@ -45,9 +46,9 @@ public class KeyboardControl {
 
 		if (isFight) {
 			if (input.isKeyPressed(Keys.SPACE)) {
-				if (playerController.getAttackActivity().isCurrentlyPossible()) {
-					//Log.info("Keyboard control triggers attack - deltaTime: "+deltaTime + "  lastEvent"+lastEvent);
-					playerController.getAttackActivity().execute();
+				boolean possible = playerController.plugActivity(playerController.getAttackActivity());
+				if(possible) {
+					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 					return eventProcessed();
 				}
 				else {
@@ -130,6 +131,8 @@ public class KeyboardControl {
 		return false;
 	}
 
+
+
 	private Boolean handleCursorEvents(boolean isFight, ActionAssembler actionAssembler) {
 		if (altPressed()) {
 			// cursor keys with alt modifier do scouting
@@ -165,19 +168,31 @@ public class KeyboardControl {
 				RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 				if (possibleFleeDirection != null) {
 					if (possibleFleeDirection == RouteInstruction.Direction.East && input.isKeyPressed(Keys.RIGHT)) {
-						actionAssembler.wannaFlee();
+						boolean possible = playerController.getFleeActivity().plugToController();
+						if(!possible) {
+							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+						}
 						return eventProcessed();
 					}
 					else if (possibleFleeDirection == RouteInstruction.Direction.West && input.isKeyPressed(Keys.LEFT)) {
-						actionAssembler.wannaFlee();
+						boolean possible = playerController.getFleeActivity().plugToController();
+						if(!possible) {
+							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+						}
 						return eventProcessed();
 					}
 					else if (possibleFleeDirection == RouteInstruction.Direction.North && input.isKeyPressed(Keys.UP)) {
-						actionAssembler.wannaFlee();
+						boolean possible = playerController.getFleeActivity().plugToController();
+						if(!possible) {
+							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+						}
 						return eventProcessed();
 					}
 					else if (possibleFleeDirection == RouteInstruction.Direction.South && input.isKeyPressed(Keys.DOWN)) {
-						actionAssembler.wannaFlee();
+						boolean possible = playerController.getFleeActivity().plugToController();
+						if(!possible) {
+							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+						}
 						return eventProcessed();
 					}
 					else {

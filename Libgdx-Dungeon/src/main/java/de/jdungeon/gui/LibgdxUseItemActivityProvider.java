@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeon.ItemInfoOwner;
+import figure.action.Action;
 import item.ItemInfo;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.InventoryImageManager;
-import de.jdungeon.app.gui.activity.Activity;
-import de.jdungeon.app.gui.smartcontrol.ExecutableUseItemActivity;
+import de.jdungeon.gui.activity.Activity;
+import de.jdungeon.gui.activity.ExecutableUseItemActivity;
+import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -18,10 +20,10 @@ import de.jdungeon.app.gui.smartcontrol.ExecutableUseItemActivity;
  */
 public class LibgdxUseItemActivityProvider extends LibgdxItemActivityItemProvider {
 	private final ItemInfoOwner info;
-	private final ActionAssembler actionAssembler;
+	private final PlayerController actionAssembler;
 	private final LibgdxFocusManager focusManager;
 
-	public LibgdxUseItemActivityProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, ActionAssembler actionAssembler, LibgdxFocusManager focusManager) {
+	public LibgdxUseItemActivityProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, PlayerController actionAssembler, LibgdxFocusManager focusManager) {
 		super(info, inventoryImageManager, actionAssembler);
 		this.info = info;
 		this.actionAssembler = actionAssembler;
@@ -46,8 +48,15 @@ public class LibgdxUseItemActivityProvider extends LibgdxItemActivityItemProvide
 	@Override
 	public void activityPressed(Activity infoEntity) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		actionAssembler.itemWheelActivityClicked(infoEntity,
-				focusManager.getWorldFocusObject());
+		if (infoEntity == null) {
+			return;
+		}
+		Object o = infoEntity.getObject();
+		if (o instanceof ItemInfo) {
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+			List<Action> actions = actionAssembler.getActionAssembler().getActionAssemblerHelper().wannaUseItem((ItemInfo) o, focusManager.getWorldFocusObject(), false);
+			actionAssembler.plugActions(actions);
+		}
 	}
 
 

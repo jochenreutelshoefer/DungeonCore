@@ -6,7 +6,6 @@
  */
 package ai;
 
-import figure.action.FleeAction;
 import figure.monster.DarkMaster;
 import figure.monster.Dwarf;
 import figure.monster.Ghul;
