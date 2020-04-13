@@ -16,8 +16,12 @@ public class AudioEffectsManager {
 
 	public static AbstractAudioSet SKEL_HURT;
 	public static AbstractAudioSet DOOR_CLOSE;
+	public static AbstractAudioSet DOOR_SOUND;
 	public static AbstractAudioSet DOOR_LOCK;
+	public static AbstractAudioSet DOOR_ENTERS;
 	public static AbstractAudioSet CHEST_OPEN;
+	public static AbstractAudioSet FOOTSTEPS_QUICK;
+	public static AbstractAudioSet FOOTSTEPS_QUICK_FADING;
 
 	public static AbstractAudioSet MAGIC_FIREBALL;
 	public static AbstractAudioSet SPIDER_DIES;
@@ -80,8 +84,14 @@ public class AudioEffectsManager {
 			TAKE_ITEM = a.createAudioSet(new String [] {"qubodupItemHandling1.wav", "qubodupItemHandling2.wav", "qubodupItemHandling3.wav", "qubodupItemHandling4.wav", "qubodupItemHandling5.wav",});
 			SMASH = create(a, "smash.wav", "punch.mp3" );
 			HIT = create(a, "dang.mp3" );
-			DOOR_CLOSE = create(a, "door-closed.wav" );
+
+			FOOTSTEPS_QUICK = create(a, "footsteps-running-1.mp3", "footsteps-running-2.mp3", "footsteps-running-3.mp3" );
+			FOOTSTEPS_QUICK_FADING = create(a, "footsteps-running-away-fading-short.mp3" );
+
+			DOOR_CLOSE = create(a, "door-closed.wav", "door-closed-2.mp3", "door-closed-3.mp3" );
+			DOOR_ENTERS = create(a, "door-squeak-enters-1a.mp3", "door-squeak-enters-2c.mp3" );
 			DOOR_LOCK = create(a,  "door-lock.wav" );
+			DOOR_SOUND = create(a, "door-front-opening-a.mp3", "door-knock.mp3", "door-violently-closing-wooden.mp3");
 			DOOR_SMASH = create(a,  "punch_or_whack_-Vladimir-403040765.mp3", "Sharp Punch-SoundBible.com-1947392621.mp3", "Strong_Punch-Mike_Koenig-574430706.mp3" );
 			CHEST_OPEN = create(a,  "Opening Casket-SoundBible.mp3", "Cracking Chest Open-SoundBible" );
 			MONSTER_HURT = create(a, "monster-pain1.wav",

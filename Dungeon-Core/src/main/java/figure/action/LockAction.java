@@ -53,7 +53,7 @@ public class LockAction extends AbstractExecutableAction {
 					return ActionResult.NOAP;
 				}
 				if (doIt) {
-					figure.payMoveActionPoint(this, round);
+					figure.payActionPoint(this, round);
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;
@@ -64,7 +64,7 @@ public class LockAction extends AbstractExecutableAction {
 				}
 				if (doIt) {
 					KeyLocator.tellKeyLocation(figure, d, round);
-					figure.payMoveActionPoint(this, round);
+					figure.payActionPoint(this, round);
 					return ActionResult.DONE;
 				}
 				return ActionResult.POSSIBLE;

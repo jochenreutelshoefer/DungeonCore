@@ -61,7 +61,7 @@ public class ScoutAction extends AbstractExecutableAction{
 			figure.getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(figure, figure.getRoom(), dir, round);
 			figure.getRoom().distributePercept(p);
-			figure.payMoveActionPoint(this, round);
+			figure.payActionPoint(this, round);
 			return ActionResult.DONE;
 		}
 		return ActionResult.POSSIBLE;

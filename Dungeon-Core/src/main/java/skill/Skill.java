@@ -54,6 +54,7 @@ public abstract class Skill<ACTION extends SkillAction> implements Serializable 
 		// if done, pay dust costs
 		if(doIt && actionResult.getSituation() == ActionResult.Situation.done) {
 			actor.payDust(dustCosts);
+			actor.payActionPoint(action, round);
 		}
 		return actionResult;
 	}

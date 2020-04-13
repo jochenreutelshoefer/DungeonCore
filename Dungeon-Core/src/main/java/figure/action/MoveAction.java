@@ -88,7 +88,7 @@ public class MoveAction extends AbstractExecutableAction {
 		}
 		if (figure.wayPassable(dir)) {
 			if (doIt) {
-				figure.payMoveActionPoint(this, round);
+				figure.payActionPoint(this, round);
 				figure.walk(getDirection(), round);
 				return ActionResult.DONE;
 			}

@@ -190,6 +190,13 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	private void handleFleePercept(FleePercept p) {
 		newStatement(StatementManager.getStatement(p, this.figure));
 
+		if(p.isSuccess()) {
+			AudioEffectsManager.playSound(AudioEffectsManager.FOOTSTEPS_QUICK_FADING);
+			AudioEffectsManager.playSound(AudioEffectsManager.DOOR_CLOSE);
+		} else {
+			AudioEffectsManager.playSound(AudioEffectsManager.FOOTSTEPS_QUICK);
+		}
+
 		FigureInfo fleeingFigure = p.getFigure();
 		DefaultAnimationSet set = AnimationUtils.getFigure_running(fleeingFigure);
 		if (set != null) {
@@ -269,6 +276,8 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (fig.equals(this.figure)) {
 			// we reset the selected room, as hero has moved on
 			screen.getFocusManager().setWorldFocusObject((RoomInfoEntity) null);
+		} else {
+			AudioEffectsManager.playSound(AudioEffectsManager.DOOR_ENTERS);
 		}
 
 		if (set != null) {
@@ -388,6 +397,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	private void handleDoorSmashPercept(DoorSmashPercept p) {
 		FigureInfo victim = p.getVictim();
 		AudioEffectsManager.playSound(AudioEffectsManager.DOOR_SMASH);
+		AudioEffectsManager.playSound(AudioEffectsManager.DOOR_SOUND);
 		newStatement(StatementManager.getStatement(p, figure));
 
 		if (p.getValue() > 0) {

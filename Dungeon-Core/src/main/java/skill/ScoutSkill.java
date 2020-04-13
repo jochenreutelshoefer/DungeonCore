@@ -76,7 +76,6 @@ public class ScoutSkill extends TargetSkill<RouteInstruction.Direction> {
 			figure.getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(figure, figure.getRoom(), dir, round);
 			figure.getRoom().distributePercept(p);
-			figure.payMoveActionPoint(action, round);
 			return ActionResult.DONE;
 		}
 		return ActionResult.POSSIBLE;

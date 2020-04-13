@@ -274,10 +274,6 @@ public abstract class Figure extends DungeonWorldObject
 	protected abstract List getModificationList();
 
 	public void payActionPoint(Action action, int round) {
-		payMoveActionPoint(action, round);
-	}
-
-	public void payMoveActionPoint(Action action, int round) {
 		agility.payActionPoint(action, round);
 	}
 

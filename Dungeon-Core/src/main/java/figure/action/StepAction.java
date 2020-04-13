@@ -81,7 +81,7 @@ public class StepAction extends AbstractExecutableAction {
 			}
 			if (doIt) {
 				figure.doStepTo(targetIndex, figure.getPos().getIndex(), round);
-				figure.payMoveActionPoint(this, round);
+				figure.payActionPoint(this, round);
 				return ActionResult.DONE;
 			}
 			return ActionResult.POSSIBLE;
