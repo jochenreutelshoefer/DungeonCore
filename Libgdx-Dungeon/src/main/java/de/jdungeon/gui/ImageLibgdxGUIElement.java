@@ -16,8 +16,8 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 
 	private final String filename;
 	protected final String backGround;
-	private int relativeOffsetX = 0;
-	private int relativeOffsetY = 0;
+	protected int relativeOffsetX = 0;
+	protected int relativeOffsetY = 0;
 
 	public ImageLibgdxGUIElement(JDPoint position, JDDimension dimension, String im) {
 		this(position, dimension, im, null);
@@ -62,7 +62,7 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 
 	}
 
-	protected void drawBackground(SpriteBatch batch, int x, int y, int width, int height) {
+	private void drawBackground(SpriteBatch batch, int x, int y, int width, int height) {
 		// draw background
 		TextureAtlas.AtlasRegion backGroundRegion = null;
 		if(backGround != null) {
@@ -78,11 +78,4 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 		return backGround;
 	}
 
-	public void setRelativeOffsetY(int relativeOffsetY) {
-		this.relativeOffsetY = relativeOffsetY;
-	}
-
-	public void setRelativeOffsetX(int relativeOffsetX) {
-		this.relativeOffsetX = relativeOffsetX;
-	}
 }

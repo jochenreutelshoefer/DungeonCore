@@ -19,6 +19,8 @@ public class GUIImageManager {
 	public static final String PARCHMENT = "guiItems/Parchment.gif";
 	public static final String MANA_BATTERY = "guiItems/ManaBattery.gif";
 	public static final String POTION = "guiItems/Potion.gif";
+	public static final String POTION_DUST = "guiItems/Zauberstaub.png";
+	public static final String POTION_DUST_SW = "guiItems/ZauberstaubSW.png";
 	public static final String BUNCH = "guiItems/bunch2.gif";
 	public static final String POTION_BLUE = "guiItems/mana-potion.gif";
 	public static final String ATTACK_SWORD = "guiItems/attack-sword.gif";

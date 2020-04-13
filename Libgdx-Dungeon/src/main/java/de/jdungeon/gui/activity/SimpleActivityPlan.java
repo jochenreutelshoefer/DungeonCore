@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import figure.action.Action;
+import figure.action.SpellAction;
+import skill.SkillAction;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -40,5 +42,25 @@ public class SimpleActivityPlan implements ActivityPlan {
 	@Override
 	public boolean isCompleted() {
 		return actionSequence.isEmpty();
+	}
+
+	@Override
+	public int getLength() {
+		return actionSequence.size();
+	}
+
+	@Override
+	public int totalDustCosts() {
+		// sum up all costs of all actions in the plan
+		int costs = 0;
+		for (Action action : actionSequence) {
+			if(action instanceof SkillAction) {
+				costs += ((SkillAction)action).getSkill().getDustCosts();
+			}
+			if(action instanceof SpellAction) {
+				 costs += ((SpellAction) action).getSpell().getCost();
+			}
+		}
+		return costs;
 	}
 }

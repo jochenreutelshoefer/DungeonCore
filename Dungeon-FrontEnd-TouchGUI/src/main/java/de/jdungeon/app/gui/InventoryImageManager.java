@@ -53,7 +53,7 @@ public class InventoryImageManager {
 		itemClassImageMap.put(Thing.class,  guiImageManager.getJDImageProxy(GUIImageManager.MANA_BATTERY));
 		itemClassImageMap.put(Key.class,  guiImageManager.getJDImageProxy("guiItems/key.gif"));
 		itemClassImageMap.put(MoonRune.class,  guiImageManager.getJDImageProxy("guiItems/mondrune.png"));
-		itemClassImageMap.put(DustItem.class,  guiImageManager.getJDImageProxy("guiItems/Zauberstaub.png"));
+		itemClassImageMap.put(DustItem.class,  guiImageManager.getJDImageProxy(GUIImageManager.POTION_DUST));
 	}
 
 	private final GUIImageManager guiImageManager;

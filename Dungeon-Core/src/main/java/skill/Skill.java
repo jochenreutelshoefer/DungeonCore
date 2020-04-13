@@ -1,5 +1,7 @@
 package skill;
 
+import java.io.Serializable;
+
 import dungeon.Room;
 import figure.Figure;
 import figure.FigureInfo;
@@ -9,7 +11,7 @@ import figure.action.result.ActionResult;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 10.04.20.
  */
-public abstract class Skill<ACTION extends SkillAction> {
+public abstract class Skill<ACTION extends SkillAction> implements Serializable {
 
 	private int dustCosts = 0;
 
@@ -24,6 +26,7 @@ public abstract class Skill<ACTION extends SkillAction> {
 		Figure actor = action.getActor();
 		if(actor == null) return ActionResult.OTHER; // hero death problem
 		Room room = actor.getRoom();
+		if(room == null) return ActionResult.OTHER; // exit dungeon problem
 		boolean fightRunning = room.fightRunning();
 		if(!isPossibleFight() && Boolean.TRUE.equals(fightRunning)) {
 			return ActionResult.MODE;
@@ -67,4 +70,7 @@ public abstract class Skill<ACTION extends SkillAction> {
 
 	public abstract <BUILDER extends ActionBuilder<?, ACTION>> BUILDER newActionFor(FigureInfo actor);
 
+	public int getDustCosts() {
+		return dustCosts;
+	}
 }
