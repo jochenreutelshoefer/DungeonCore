@@ -84,7 +84,6 @@ public class UseItemAction extends AbstractExecutableAction {
 						boolean used = ((Usable) it).use(figure, figure.getActualDungeon()
 								.getUnwrapper()
 								.unwrappObject(target), this.isMeta(), round);
-						figure.payActionPoint(this, round);
 						Percept p = new UsePercept(figure, (Usable) it, round);
 						figure.getRoom().distributePercept(p);
 

@@ -2,8 +2,12 @@ package skill;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 
 import figure.FigureInfo;
+import game.RoomInfoEntity;
+import spell.TargetScope;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -16,7 +20,7 @@ public abstract class TargetSkill<TARGET> extends Skill<TargetSkill.TargetSkillA
 		return new TargetSkillActionBuilder(this, actor, TargetSkillAction.class);
 	}
 
-	public abstract Class<TARGET> getTargetClass();
+	public abstract TargetScope getTargetScope();
 
 	public static class TargetSkillActionBuilder<SKILL extends TargetSkill, ACTION extends TargetSkillAction<TARGET>, TARGET> extends ActionBuilder<SKILL, ACTION> {
 
@@ -74,4 +78,6 @@ public abstract class TargetSkill<TARGET> extends Skill<TargetSkill.TargetSkillA
 			return target;
 		}
 	}
+
+
 }

@@ -1,8 +1,8 @@
 package ai;
 
 import dungeon.JDPoint;
-import dungeon.RoomInfo;
 import dungeon.Path;
+import dungeon.RoomInfo;
 import dungeon.util.DungeonUtils;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -12,7 +12,7 @@ import skill.AttackSkill;
 
 public class ChaserAI extends DefaultMonsterIntelligence {
 
-	private  HeroPositionLog heroLog;
+	private HeroPositionLog heroLog;
 
 	public ChaserAI() {
 
@@ -31,9 +31,16 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 		if (a != null && Math.random() > 0.3) {
 			return a;
 		}
+		FigureInfo enemy = getHero();
+		if (enemy == null) {
+			enemy = getEnemy();
+		}
+		if (enemy == null) {
+			return new EndRoundAction();
+		}
 		return this.info.getSkill(AttackSkill.class)
 				.newActionFor(info)
-				.target(getHero())
+				.target(enemy)
 				.get();
 	}
 
@@ -63,7 +70,8 @@ public class ChaserAI extends DefaultMonsterIntelligence {
 		Path l = monster.getShortestWayFromTo(monster.getRoomNumber(), lastHeroLocation);
 		if (l != null) {
 			RoomInfo nextRoomToGo = l.get(1);
-			int dir = DungeonUtils.getNeighbourDirectionFromTo(monster.getRoomNumber(), nextRoomToGo.getNumber()).getValue();
+			int dir = DungeonUtils.getNeighbourDirectionFromTo(monster.getRoomNumber(), nextRoomToGo.getNumber())
+					.getValue();
 			return walk(dir);
 		}
 

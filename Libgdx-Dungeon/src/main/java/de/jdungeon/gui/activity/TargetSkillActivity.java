@@ -1,11 +1,19 @@
 package de.jdungeon.gui.activity;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import ai.ActionAssemblerHelper;
 import dungeon.DoorInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
+import figure.FigureInfo;
 import figure.action.result.ActionResult;
+import game.InfoEntity;
 import game.RoomInfoEntity;
 import skill.TargetSkill;
+import spell.TargetScope;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.gui.LibgdxFocusManager;
@@ -25,46 +33,31 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan() {
+	public ActivityPlan createExecutionPlan(boolean doIt) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		TargetSkill.TargetSkillAction<TARGET> action = createAction();
+		TargetSkill.TargetSkillAction<TARGET> action = createAction(doIt);
 		// action cannot be null here, as it is guarded by the isPossible-mechanism
 		return new SimpleActivityPlan(this, action);
 	}
 
-	private TargetSkill.TargetSkillAction<TARGET> createAction() {
-		TARGET target = findUniqueTargetOfClass();
+	private TargetSkill.TargetSkillAction<TARGET> createAction(boolean doIt) {
+		TARGET target = findUniqueTargetOfClass(doIt);
 		if(target == null) return null;
 		return skill.newActionFor(playerController.getFigure()).target(target).get();
 	}
 
 	@Override
 	public ActionResult possible() {
-		TargetSkill.TargetSkillAction<TARGET> action = createAction();
+		TargetSkill.TargetSkillAction<TARGET> action = createAction(false);
 		if(action == null) return ActionResult.NO_TARGET;
 		return skill.execute(action, false, -1);
 	}
 
-	private TARGET findUniqueTargetOfClass() {
-		LibgdxFocusManager focusManager = playerController.getGameScreen().getFocusManager();
-		RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
-		// todo: handle highlighted entities
-
-		Class<? extends TARGET> targetClass = skill.getTargetClass();
-		if(targetClass.equals(RouteInstruction.Direction.class)) {
-
-			// are we next to a door?
-			int actorPositionIndex = playerController.getFigure().getPositionInRoomIndex();
-			RoomInfo room = playerController.getFigure().getRoomInfo();
-			if(room == null) return null; // exit problem
-			DoorInfo[] doors = room.getDoors();
-			for (DoorInfo door : doors) {
-				if(door != null && door.getPositionAtDoor(room).getIndex() == actorPositionIndex) {
-					return (TARGET)door.getDirection(room.getNumber());
-				}
-			}
+	private TARGET findUniqueTargetOfClass(boolean doIt) {
+		RoomInfoEntity target = findTarget(playerController.getFigure(), playerController.getGameScreen().getFocusManager(), skill.getTargetScope(), doIt);
+		if(target != null) {
+			return (TARGET) target;
 		}
-
 		return null;
 	}
 
@@ -72,4 +65,34 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 	public TargetSkill<TARGET> getObject() {
 		return skill;
 	}
+
+	public static RoomInfoEntity findTarget(FigureInfo figure, LibgdxFocusManager focusManager, TargetScope targetScope, boolean doIt) {
+
+		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
+		List<? extends RoomInfoEntity> potentialTargets = targetScope.getTargetEntitiesInScope(figure, highlightedEntity);
+
+		if(potentialTargets != null && potentialTargets.size() == 1) {
+			RoomInfoEntity target = potentialTargets.get(0);
+				if(doIt) {
+					focusManager.setWorldFocusObject((RoomInfoEntity) target);
+				}
+			return target;
+		}
+		// we do not have a unique target, maybe the GUI will help to disambiguate one day (todo)
+		return null;
+	}
+
+	private static Set<Class<? extends InfoEntity>> toClasses(List<? extends InfoEntity> targetEntitiesInScope) {
+		Set<Class<? extends InfoEntity>> result = new HashSet<>();
+		if(targetEntitiesInScope == null) {
+			return result;
+		}
+		for (InfoEntity infoEntity : targetEntitiesInScope) {
+			if(infoEntity != null) {
+				result.add(infoEntity.getClass());
+			}
+		}
+		return result;
+	}
+
 }

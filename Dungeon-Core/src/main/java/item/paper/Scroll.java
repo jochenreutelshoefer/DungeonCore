@@ -49,7 +49,6 @@ public class Scroll extends Item implements UsableWithTarget {
 
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		theSpell.setCostsAP(false);
 		ActionResult res = theSpell.fire(f, target,true, round);
 		if(res.getSituation() == ActionResult.Situation.done) {
 			return true;

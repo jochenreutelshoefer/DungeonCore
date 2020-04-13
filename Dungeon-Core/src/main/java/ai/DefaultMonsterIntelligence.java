@@ -421,6 +421,17 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return heroIndex;
 	}
 
+	protected FigureInfo getEnemy() {
+		List<FigureInfo> infos = monster.getRoomInfo().getFigureInfos();
+		for (int i = 0; i < infos.size(); i++) {
+			FigureInfo aFigure = infos.get(i);
+			if (aFigure.isHostile(this.monster)) {
+				return aFigure;
+			}
+		}
+		return null;
+	}
+
 
 	@Override
 	public Action chooseFightAction() {

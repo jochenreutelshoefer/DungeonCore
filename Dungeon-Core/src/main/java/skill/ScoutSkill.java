@@ -5,40 +5,47 @@ import java.util.List;
 import dungeon.Door;
 import dungeon.Position;
 import dungeon.Room;
+import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.Figure;
+import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.action.ScoutResult;
 import figure.action.result.ActionResult;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.TextPercept;
+import spell.DefaultTargetScope;
+import spell.TargetScope;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 12.04.20.
  */
-public class ScoutSkill extends TargetSkill<RouteInstruction.Direction> {
+public class ScoutSkill extends TargetSkill<RoomInfo> {
 
 	@Override
-	public Class<RouteInstruction.Direction> getTargetClass() {
-		return RouteInstruction.Direction.class;
-	}
-
-	@Override
-	protected boolean checkPositionOk(TargetSkillAction<RouteInstruction.Direction> action) {
+	protected boolean checkPositionOk(TargetSkillAction<RoomInfo> action) {
 		Figure figure = action.getActor();
 		Position position = figure.getPos();
-		RouteInstruction.Direction target = action.getTarget();
-		int dir = target.getValue();
+		RoomInfo target = action.getTarget();
+		if(target == null) {
+			return false;
+		}
+		int dir = getDir(target, figure);
 		if (position.getIndex() != Figure.getDirPos(dir)) {
 			return false;
 		}
 		return true;
 	}
 
+	private int getDir(RoomInfo target, Figure figure) {
+		RoomInfo currentRoom = FigureInfo.makeFigureInfo(figure, figure.getRoomVisibility()).getRoomInfo();
+		return currentRoom.getDirectionTo(target);
+	}
+
 	@Override
-	protected boolean checkDistanceOk(TargetSkillAction<RouteInstruction.Direction> action) {
+	protected boolean checkDistanceOk(TargetSkillAction<RoomInfo> action) {
 		return true;
 	}
 
@@ -53,13 +60,12 @@ public class ScoutSkill extends TargetSkill<RouteInstruction.Direction> {
 	}
 
 	@Override
-	public ActionResult doExecute(TargetSkillAction<RouteInstruction.Direction> action, boolean doIt, int round) {
+	public ActionResult doExecute(TargetSkillAction<RoomInfo> action, boolean doIt, int round) {
 		Figure figure = action.getActor();
 		if (figure.getActionPoints() < 1) {
 			return ActionResult.NOAP;
 		}
-		RouteInstruction.Direction target = action.getTarget();
-		int dir = target.getValue();
+		int dir = getDir(action.getTarget(), figure);
 		Room toScout = figure.getRoom().getNeighbourRoom(dir);
 		if (toScout == null) {
 			return ActionResult.UNKNOWN;
@@ -81,12 +87,11 @@ public class ScoutSkill extends TargetSkill<RouteInstruction.Direction> {
 		return ActionResult.POSSIBLE;
 	}
 
-	public ScoutResult scout(TargetSkillAction<RouteInstruction.Direction> action, int round) {
+	public ScoutResult scout(TargetSkillAction<RoomInfo> action, int round) {
 		Figure figure = action.getActor();
-		RouteInstruction.Direction target = action.getTarget();
-		int dir = target.getValue();
 		Room loc = figure.getRoom();
-		Room toScout = loc.getNeighbourRoom(dir);
+		Room toScout = action.getTarget().getRoom();
+		int dir = loc.getConnectionDirectionTo(toScout);
 		Door d = loc.getConnectionTo(toScout);
 
 		boolean scoutable = ((d != null));
@@ -226,5 +231,10 @@ public class ScoutSkill extends TargetSkill<RouteInstruction.Direction> {
 		else {
 			return 0;
 		}
+	}
+
+	@Override
+	public TargetScope<RoomInfo> getTargetScope() {
+		return new DefaultTargetScope<>(RoomInfo.class);
 	}
 }

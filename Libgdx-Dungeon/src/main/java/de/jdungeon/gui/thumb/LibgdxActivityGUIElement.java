@@ -47,7 +47,8 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 	public void paint(SpriteBatch batch) {
 		super.paint(batch);
 		ActionResult possibleState = activity.possible();
-		ActivityPlan executionPlan = activity.createExecutionPlan();
+		ActivityPlan executionPlan = activity.createExecutionPlan(false);
+		if(executionPlan == null) return; // level exit problem
 
 		int tileWidth = this.getDimension().getWidth();
 		int tileHeight = this.getDimension().getHeight();

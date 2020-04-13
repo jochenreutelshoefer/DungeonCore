@@ -25,6 +25,7 @@ import level.DungeonManager;
 import shrine.LevelExit;
 import skill.HealSkill;
 import skill.LionessConjureSkill;
+import spell.Raid;
 import spell.Spell;
 import util.DeepCopyUtil;
 
@@ -126,6 +127,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			// todo: testing only
 			currentHero.getSkillSet().put(HealSkill.class, new HealSkill());
 			currentHero.getSkillSet().put(LionessConjureSkill.class, new LionessConjureSkill());
+			currentHero.getSpellbook().addSpell(new Raid());
 		}
 		return currentHero;
 	}

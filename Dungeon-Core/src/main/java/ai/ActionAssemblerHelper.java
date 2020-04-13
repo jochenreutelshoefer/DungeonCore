@@ -16,6 +16,7 @@ import dungeon.ChestInfo;
 import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
+import dungeon.LockInfo;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
@@ -35,6 +36,7 @@ import figure.action.StepAction;
 import figure.action.TakeItemAction;
 import figure.action.UseChestAction;
 import figure.action.UseItemAction;
+import game.InfoEntity;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 import skill.AttackSkill;
@@ -151,13 +153,15 @@ public class ActionAssemblerHelper {
 
 	public List<Action> wannaSpell(SpellInfo sp, RoomInfoEntity target) {
 		Action a = new SpellAction(this.figure, sp, target);
-		return Collections.singletonList(a);
+		List<Action> result = new ArrayList<>();
+		result.add(a);
+		return result;
 	}
 
 	public List<Action> wannaUseItem(ItemInfo it, RoomInfoEntity target, boolean meta) {
 		List<Action> actions = new ArrayList<>();
 		if (target == null && it.needsTarget()) {
-			target = findAndStepTowardsTarget(it, actions);
+			throw new IllegalStateException("should not happen -> todo");
 		}
 
 		Action a = new UseItemAction(this.figure, it, target, meta);
@@ -165,47 +169,8 @@ public class ActionAssemblerHelper {
 		return actions;
 	}
 
-	private RoomInfoEntity findAndStepTowardsTarget(ItemInfo item, List<Action> actions) {
-		RoomInfoEntity target = null;
-		if (item.isUsableWithTarget()) {
-			TargetScope targetScope = item.getTargetScope();
-			List<? extends RoomInfoEntity> targetEntitiesInScope = targetScope.getTargetEntitiesInScope(this.getFigure());
-			if (targetEntitiesInScope.size() == 1) {
-				// there is only one possibility
-				target = targetEntitiesInScope.get(0);
-			}
-		}
-		if (target != null) {
-			Collection<PositionInRoomInfo> interactionPositions = target.getInteractionPositions();
-			if (!interactionPositions.isEmpty()) {
-				PositionInRoomInfo currentPos = getFigure().getPos();
-				if (!interactionPositions.contains(currentPos)) {
-					// TODO: filter for position in same room !
-					Collection<PositionInRoomInfo> interactionPositionsInCurrentRoom = new HashSet<>();
-					for (PositionInRoomInfo interactionPosition : interactionPositions) {
-						if (interactionPosition.getLocation().equals(getFigure().getRoomNumber())) {
-							interactionPositionsInCurrentRoom.add(interactionPosition);
-						}
-					}
-					PositionInRoomInfo position = null;
-					if (!interactionPositionsInCurrentRoom.isEmpty()) {
-						position = interactionPositionsInCurrentRoom.iterator().next();
-					}
-					else {
-						if (!interactionPositions.isEmpty()) {
-							position = interactionPositions.iterator().next();
-						}
-					}
-					if (position != null) {
-						actions.addAll(wannaStepToPosition(position));
-						EndRoundAction endR = new EndRoundAction();
-						actions.add(endR);
-					}
-				}
-			}
-		}
-		return target;
-	}
+
+
 
 	public List<Action> wannaUseShrine(RoomInfoEntity target, boolean right) {
 		List<Action> actions = new ArrayList<>();
@@ -255,6 +220,7 @@ public class ActionAssemblerHelper {
 	}
 
 	public List<Action> wannaWalk(int dir) {
+		if(figure.isDead()) return Collections.emptyList(); // death problem
 		List<Action> actions = new ArrayList<>();
 		FigureInfo f = getFigure();
 		int index = Figure.getDirPos(dir);

@@ -120,6 +120,9 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 		}
 
 		public AttackActionBuilder target(FigureInfo target) {
+			if(target == null) {
+				throw new IllegalArgumentException("target my not be null");
+			}
 			this.target = target;
 			return this;
 		}

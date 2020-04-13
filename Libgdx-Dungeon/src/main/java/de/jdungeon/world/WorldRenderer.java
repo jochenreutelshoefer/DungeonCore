@@ -22,6 +22,7 @@ import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
+import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
@@ -171,8 +172,9 @@ public class WorldRenderer implements Disposable {
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 
 			// check for animation for this figure
-			if (pair.getA().getClickableObject() instanceof FigureInfo) {
-				FigureInfo figure = (FigureInfo) pair.getA().getClickableObject();
+			Object clickableObject = pair.getA().getClickableObject();
+			if (clickableObject instanceof FigureInfo) {
+				FigureInfo figure = (FigureInfo) clickableObject;
 				AnimationFrame animationImage = animationManager.getAnimationImage(figure, this.viewModel.roomViews[x][y]
 						.getRoomInfo());
 				if (animationImage != null) {
@@ -229,6 +231,10 @@ public class WorldRenderer implements Disposable {
 							pair.getA().getRectangle().getWidth(),
 							pair.getA().getRectangle().getHeight());
 				}
+			}
+			RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
+			if(worldFocusObject != null && worldFocusObject.equals(clickableObject)) {
+				updateHighlightedObjectInformation(x, y, pair.getA());
 			}
 		}
 	}
@@ -296,18 +302,25 @@ public class WorldRenderer implements Disposable {
 					// remember some data for rendering of highlight box
 
 					focusManager.setWorldFocusObject((clickedGraphicObject));
-					DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
-					highlightBoxX = rectangle.getX(roomX * ROOM_SIZE);
-					highlightBoxY = rectangle.getY(roomY * ROOM_SIZE);
-					highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
-					highlightTexture = new Texture(highlightBox);
-					highlightedObject = clickedObject;
+					updateHighlightedObjectInformation(roomX, roomY, clickedGraphicObject);
 				}
 
 				return true;
 			}
+		} else {
+			// 'nothing' has been clicked by the user, hence we de-select the selected object
+			focusManager.setWorldFocusObject((RoomInfoEntity)null);
 		}
 		return false;
+	}
+
+	private void updateHighlightedObjectInformation(int roomX, int roomY, GraphicObject clickedGraphicObject) {
+		DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
+		highlightBoxX = rectangle.getX(roomX * ROOM_SIZE);
+		highlightBoxY = rectangle.getY(roomY * ROOM_SIZE);
+		highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
+		highlightTexture = new Texture(highlightBox);
+		highlightedObject = clickedGraphicObject.getClickableObject();
 	}
 
 	private int highlightBoxX;

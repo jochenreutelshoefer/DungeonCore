@@ -28,7 +28,7 @@ public class FleeActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan() {
+	public ActivityPlan createExecutionPlan(boolean doIt) {
 		List<Action> actions = new ArrayList<>();
 		ActionAssembler actionAssembler = playerController.getActionAssembler();
 		PositionInRoomInfo pos = actionAssembler.getFigure().getPos();

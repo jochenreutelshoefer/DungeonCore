@@ -726,8 +726,13 @@ public abstract class Figure extends DungeonWorldObject
 			return null;
 		}
 
+		// todo: continue refactoring towards skills
 		if(a instanceof AbstractExecutableAction) {
-			return ((AbstractExecutableAction)a).handle(doIt, round);
+			ActionResult actionResult = ((AbstractExecutableAction) a).handle(doIt, round);
+			if(doIt && actionResult.getSituation() == ActionResult.Situation.done) {
+				this.payActionPoint(a, round);
+			}
+			return actionResult;
 		}
 
 		if(a instanceof SkillAction) {

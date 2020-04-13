@@ -23,7 +23,7 @@ public abstract class AbstractTargetSpell extends AbstractSpell implements Targe
 
 	@Override
 	public TargetScope getTargetScope() {
-		return DefaultTargetScope.createDefaultScope(getTargetClass());
+		return AbstractTargetScope.createDefaultScope(getTargetClass());
 	}
 
 	@Override

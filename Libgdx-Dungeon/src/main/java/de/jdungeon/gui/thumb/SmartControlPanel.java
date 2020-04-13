@@ -185,7 +185,8 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 			@Override
 			public boolean handleClickEvent(int x, int y) {
 				super.handleClickEvent(x, y);
-				EventManager.getInstance().fireEvent(new ShrineButtonClickedEvent());
+				// todo: refactor using Activities
+				SmartControlPanel.this.playerController.plugActions(SmartControlPanel.this.playerController.getActionAssembler().getActionAssemblerHelper(). wannaUseShrine(null, false));
 				return true;
 			}
 		};
@@ -202,7 +203,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 			public boolean handleClickEvent(int x, int y) {
 				super.handleClickEvent(x, y);
 				AudioEffectsManager.playSound(AudioEffectsManager.CHEST_OPEN);
-				EventManager.getInstance().fireEvent(new ToggleChestViewEvent());
+				// todo: refactor using Activities
 				SmartControlPanel.this.playerController.plugActions(SmartControlPanel.this.playerController.getActionAssembler().getActionAssemblerHelper().chestClicked(null, false));
 				return true;
 			}

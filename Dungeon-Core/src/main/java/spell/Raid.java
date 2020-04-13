@@ -68,9 +68,14 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 
 	@Override
 	public TargetScope getTargetScope() {
-		return new TargetScope() {
+		return new TargetScope<FigureInfo>() {
 			@Override
-			public List<? extends RoomInfoEntity> getTargetEntitiesInScope(FigureInfo actor) {
+			public Class<FigureInfo> getTargetClass() {
+				return FigureInfo.class;
+			}
+
+			@Override
+			public List<FigureInfo> getTargetEntitiesInScope(FigureInfo actor, RoomInfoEntity highlightedEntity) {
 				PositionInRoomInfo position = actor.getPos();
 				if (position == null) {
 					return Collections.emptyList();
@@ -88,6 +93,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 				}
 				return neighbourRoom.getFigureInfos();
 			}
+
 		};
 	}
 

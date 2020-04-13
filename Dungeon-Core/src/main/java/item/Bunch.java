@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ai.ActionAssemblerHelper;
 import dungeon.Door;
 import dungeon.Lock;
 import dungeon.LockInfo;
@@ -27,7 +28,7 @@ import game.JDEnv;
 import game.RoomInfoEntity;
 import item.interfaces.Locatable;
 import item.interfaces.UsableWithTarget;
-import spell.DefaultTargetScope;
+import spell.AbstractTargetScope;
 import spell.TargetScope;
 
 public class Bunch extends Item implements Serializable, UsableWithTarget {
@@ -106,7 +107,7 @@ public class Bunch extends Item implements Serializable, UsableWithTarget {
 
 	@Override
 	public TargetScope getTargetScope() {
-		return DefaultTargetScope.createDefaultScope(LockInfo.class);
+		return AbstractTargetScope.createDefaultScope(LockInfo.class);
 	}
 
 	@Override
@@ -116,8 +117,7 @@ public class Bunch extends Item implements Serializable, UsableWithTarget {
 
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		List<? extends RoomInfoEntity> targetLocks = getTargetScope().getTargetEntitiesInScope(FigureInfo.makeFigureInfo(f, f
-				.getRoomVisibility()));
+		List<LockInfo> targetLocks = AbstractTargetScope.getTargetLocks(FigureInfo.makeFigureInfo(f, f.getRoomVisibility()));
 		if (targetLocks.size() == 1) {
 			RoomInfoEntity lockInfo = targetLocks.iterator().next();
 			Lock lock = (Lock) new InfoUnitUnwrapper(f.getActualDungeon()).unwrappObject(lockInfo);

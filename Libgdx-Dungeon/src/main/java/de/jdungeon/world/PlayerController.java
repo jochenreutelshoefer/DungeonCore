@@ -82,7 +82,7 @@ public class PlayerController implements JDGUI {
 
 	public boolean plugActivity(Activity activity) {
 		if(activity.isCurrentlyPossible()) {
-			plugActivityPlan(activity.createExecutionPlan());
+			plugActivityPlan(activity.createExecutionPlan(true));
 			return true;
 		} else {
 			return false;

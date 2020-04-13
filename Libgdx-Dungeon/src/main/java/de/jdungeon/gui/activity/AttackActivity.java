@@ -26,18 +26,15 @@ public class AttackActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan() {
+	public ActivityPlan createExecutionPlan(boolean doIt) {
 		List<Action> actions = new ArrayList<>();
-		PlayerController controller = this.playerController;
 		ActionAssembler actionAssembler = playerController.getActionAssembler();
 		LibgdxFocusManager focusManager = playerController.getGameScreen().getFocusManager();
 		Object highlightedEntity = focusManager.getWorldFocusObject();
-		if(highlightedEntity instanceof FigureInfo && !((FigureInfo)highlightedEntity).getRoomInfo().getPoint().equals(actionAssembler
-				.getFigure().getRoomInfo().getLocation())) {
-			// moved out of room since last figure focus hence reset focus
-			focusManager.setWorldFocusObject((RoomInfoEntity)null);
-			highlightedEntity = null;
-		}
+		FigureInfo figure = actionAssembler.getFigure();
+		if(figure == null) return null; // level exit problem
+		RoomInfo roomInfo = figure.getRoomInfo();
+		if(roomInfo == null) return null;  // level exit problem
 		List<FigureInfo> hostileFigures = getHostileFiguresList();
 		if (highlightedEntity instanceof FigureInfo) {
 			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaAttack((FigureInfo) highlightedEntity));
@@ -46,7 +43,7 @@ public class AttackActivity extends AbstractExecutableActivity {
 			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaAttack(target));
 			focusManager.setWorldFocusObject(target);
 		} else {
-			controller.getGameScreen().getGuiRenderer().setMessage(UIFeedback.SelectEnemy.getMessage());
+			this.playerController.getGameScreen().getGuiRenderer().setMessage(UIFeedback.SelectEnemy.getMessage());
 		}
 
 		return new SimpleActivityPlan(this, actions);

@@ -39,7 +39,7 @@ public class ScoutActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan() {
+	public ActivityPlan createExecutionPlan(boolean doIt) {
 		List<Action> actions = scoutingActivity(actionAssembler.getFigure().getRoomInfo().getDoor(direction));
 		return new SimpleActivityPlan(this, actions);
 	}

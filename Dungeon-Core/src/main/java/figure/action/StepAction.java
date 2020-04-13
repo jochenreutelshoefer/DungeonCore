@@ -56,7 +56,6 @@ public class StepAction extends AbstractExecutableAction {
 					if (neighbour == null) {
 						if (doIt) {
 							figure.doStepTo(targetIndex, oldPosIndex, round);
-							figure.payActionPoint(this, round);
 							return ActionResult.DONE;
 						}
 						return ActionResult.POSSIBLE;
@@ -81,7 +80,6 @@ public class StepAction extends AbstractExecutableAction {
 			}
 			if (doIt) {
 				figure.doStepTo(targetIndex, figure.getPos().getIndex(), round);
-				figure.payActionPoint(this, round);
 				return ActionResult.DONE;
 			}
 			return ActionResult.POSSIBLE;

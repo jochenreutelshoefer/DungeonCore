@@ -91,12 +91,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	private static String spell = null;
 
-	private boolean costsAP = true;
-
-	public void setCostsAP(boolean costsAP) {
-		this.costsAP = costsAP;
-	}
-
 	public static String spell() {
 		if (spell == null) {
 			spell = JDEnv.getResourceBundle().getString("spell");
@@ -304,9 +298,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			if (d >= c) {
 
 				if (doIt) {
-					if (costsAP) {
-						mage.payActionPoint(null, -1); // todo: find solution for action to pass
-					}
 					sorcerStep(mage, target, round);
 					return ActionResult.DONE;
 				}

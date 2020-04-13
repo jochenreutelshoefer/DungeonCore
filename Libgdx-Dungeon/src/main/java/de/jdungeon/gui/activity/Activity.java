@@ -16,7 +16,7 @@ public interface Activity<T> extends Paragraphable {
 
 	boolean plugToController();
 
-	ActivityPlan createExecutionPlan();
+	ActivityPlan createExecutionPlan(boolean doIt);
 
 	boolean isCurrentlyPossible();
 
