@@ -22,8 +22,8 @@ public class HeroUtil {
 			0, 0, 10, 0, 1, 10, 0.2 };
 	public static final double[] hunterBasic = { 35, 5, 9, 5, 0, 0, 0, 20, 10,
 			0, 0, 10, 3, 13, 0.3 };
-	public static final double[] druidBasic = { 39, 6, 6, 7, 0, 0, 0, 10, 20,
-			10, 0, 0, 2, 20, 0.6 };
+	public static final double[] druidBasic = { 39, 7, 6, 7, 0, 0, 0, 10, 20,
+			10, 0, 0, 1, 10, 0.2 };
 	public static final double[] mageBasic = { 30, 5, 5, 9, 0, 10, 0, 0, 20,
 			10, 10, 10, 1, 23, 1.0 };
 
@@ -96,7 +96,8 @@ public class HeroUtil {
 					wolfknife, nature, creature, undead, scout, dust, dustReg, 0);
 			break;
 		case Hero.HEROCODE_DRUID:
-			waffe = new Wolfknife(25, false);
+			//waffe = new Wolfknife(25, false);
+			waffe = new Sword(25, false);
 			healthVal = (int) druidBasic[0];
 			strengthVal = (int) druidBasic[1];
 			dexterityVal = (int) druidBasic[2];
@@ -149,16 +150,6 @@ public class HeroUtil {
 		held.setSpellbook(spells);
 
 		held.getCharacter().setSpellPoints(1);
-
-		if (held.getHeroCode() == Hero.HEROCODE_DRUID) {
-			AbstractSpell s = new Bonebreaker(1);
-			Scroll scroll1 = new Scroll(s, 5);
-			Scroll scroll2 = new Scroll(s, 5);
-			Scroll scroll3 = new Scroll(s, 5);
-			held.takeItem(scroll1);
-			held.takeItem(scroll2);
-			held.takeItem(scroll3);
-		}
 
 		held.takeItem(waffe);
 		held.takeItem(new Armor(10, false));

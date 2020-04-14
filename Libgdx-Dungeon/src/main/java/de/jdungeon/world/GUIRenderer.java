@@ -348,7 +348,7 @@ public class GUIRenderer implements Disposable {
 			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(getMessage()));
 			// TODO: test
 			// should animate red enemy blobs if there are multiple and no enemy is selected
-			smartControl.animateEnemyBlobs();
+			//smartControl.animateEnemyBlobs();
 		}
 	}
 

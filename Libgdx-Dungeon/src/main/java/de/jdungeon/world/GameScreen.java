@@ -273,7 +273,7 @@ public class GameScreen extends AbstractGameScreen {
 		final Iterator<JDPoint> pointIterator = points.iterator();
 		while (pointIterator.hasNext()) {
 			final JDPoint point = pointIterator.next();
-			if (heroRoom.isNeighbour(point)) {
+			if (heroRoom.isNeighbourIncludeCorners(point)) {
 				pointIterator.remove();
 			}
 		}

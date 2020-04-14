@@ -116,10 +116,17 @@ public class HadrianAI extends AbstractAI {
 	public Action chooseMovementAction() {
 		heroLog.processPercepts();
 
+		// at first stay alive
+		if(this.info.getHealthLevel().getValue() < HealthLevel.Injured.getValue()) {
+			currentState = flee;
+		}
+
 		if(currentState == patrol && heroLog.getLastHeroPosition() != null && !heroLog.lastEnemyPositionVisited()) {
 			// go from patrol mode to chase mode
 			currentState = chase;
 		}
+
+
 
 		// if he is in 'chase' mode
 		if(currentState == chase) {

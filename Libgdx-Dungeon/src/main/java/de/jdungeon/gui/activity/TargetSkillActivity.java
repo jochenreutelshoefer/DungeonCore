@@ -4,10 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ai.ActionAssemblerHelper;
-import dungeon.DoorInfo;
-import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
 import game.InfoEntity;
@@ -15,7 +11,6 @@ import game.RoomInfoEntity;
 import skill.TargetSkill;
 import spell.TargetScope;
 
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.world.PlayerController;
 
@@ -34,7 +29,6 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 
 	@Override
 	public ActivityPlan createExecutionPlan(boolean doIt) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		TargetSkill.TargetSkillAction<TARGET> action = createAction(doIt);
 		// action cannot be null here, as it is guarded by the isPossible-mechanism
 		return new SimpleActivityPlan(this, action);

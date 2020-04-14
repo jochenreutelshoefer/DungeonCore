@@ -25,7 +25,6 @@ public class ExecutableTakeItemActivity extends AbstractExecutableActivity<ItemI
 
 	@Override
 	public ActivityPlan createExecutionPlan(boolean doIt) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return new SimpleActivityPlan(this, new TakeItemAction(figure, getObject()));
 	}
 

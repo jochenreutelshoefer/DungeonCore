@@ -48,7 +48,6 @@ public class KeyboardControl {
 			if (input.isKeyPressed(Keys.SPACE)) {
 				boolean possible = playerController.plugActivity(playerController.getAttackActivity());
 				if(possible) {
-					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 					return eventProcessed();
 				}
 				else {
@@ -231,6 +230,7 @@ public class KeyboardControl {
 		//Log.info("Reseting last key event timer");
 		// we log a time stamp to be able to filter duplicate processing
 		last_key_pressed_event = System.currentTimeMillis();
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return true;
 	}
 

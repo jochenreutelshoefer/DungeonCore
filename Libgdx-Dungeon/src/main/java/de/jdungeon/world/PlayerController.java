@@ -268,7 +268,10 @@ public class PlayerController implements JDGUI {
 			updateRoomViewModel(number);
 		}
 		synchronized (perceptQueue) {
-			perceptQueue.add(p);
+			if(!perceptQueue.contains(p)) {
+				// we need to be aware of duplicates, if percept is distributed to multiple rooms (with vis state)
+				perceptQueue.add(p);
+			}
 		}
 		if (gameScreen != null) { // initialization issue at level start
 			gameScreen.checkCameraPosition();

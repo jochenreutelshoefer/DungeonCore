@@ -37,7 +37,6 @@ import figure.hero.Inventory;
 import figure.memory.FigureMemory;
 import figure.monster.Monster;
 import figure.other.ConjuredMagicFigure;
-import figure.percept.AttackPercept;
 import figure.percept.DiePercept;
 import figure.percept.DoorSmashPercept;
 import figure.percept.EntersPercept;
@@ -48,7 +47,6 @@ import figure.percept.MissPercept;
 import figure.percept.Percept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.StepPercept;
-import figure.percept.TextPercept;
 import figure.percept.TumblingPercept;
 import figure.percept.WaitPercept;
 import game.ControlUnit;
@@ -658,51 +656,52 @@ public abstract class Figure extends DungeonWorldObject
 		return processAction(a, true, round);
 	}
 
-	private boolean doorSmashes(Door d, Figure other, int round) {
+	private boolean doorSmashes(Door d, Figure other, int round, int strengthDiff) {
+
 		Position pos = this.getPos();
 		Position posN1 = pos.getLast();
 		Position posN2 = pos.getNext();
 		if (posN1.getFigure() == null && posN2.getFigure() == null) {
 			if (Math.random() > 0.5) {
 				doStepTo(posN1.getIndex(), pos.getIndex(), round);
-				getDoorSmash(d, other, false, round);
-				return true;
 			}
 			else {
 				doStepTo(posN2.getIndex(), pos.getIndex(), round);
-				getDoorSmash(d, other, false, round);
-				return true;
 			}
+			getDoorSmash(d, other, false, round, strengthDiff);
+			return true;
 		}
 		else if (posN1.getFigure() == null) {
 			doStepTo(posN1.getIndex(), pos.getIndex(), round);
-			getDoorSmash(d, other, false, round);
+			getDoorSmash(d, other, false, round, strengthDiff);
 			return true;
 		}
 		else if (posN2.getFigure() == null) {
 			doStepTo(posN2.getIndex(), pos.getIndex(), round);
-			getDoorSmash(d, other, false, round);
+			getDoorSmash(d, other, false, round, strengthDiff);
 			return true;
 		}
 		else {
-			getDoorSmash(d, other, true, round);
+			getDoorSmash(d, other, true, round, strengthDiff);
 			return false;
 		}
 	}
 
-	private void doorSmashesBack(Door d, Figure other, int round) {
-		getDoorSmash(d, other, false, round);
+	private void doorSmashesBack(Door d, Figure other, int round, int strengthDiff) {
+		getDoorSmash(d, other, false, round, strengthDiff);
 	}
 
-	private void getDoorSmash(Door d, Figure other, boolean bigSmash, int round) {
+	private void getDoorSmash(Door d, Figure other, boolean bigSmash, int round, int strengthDiff) {
 		int healthBasic = (int) this.getHealth().getBasic();
 		int value;
 		if (bigSmash) {
-			value = healthBasic / 4;
+			value = (healthBasic / 4) + strengthDiff/2;
 		}
 		else {
-			value = healthBasic / 8;
+			value = (healthBasic / 8) + strengthDiff/2;
 		}
+		if(value <= 0) value = 1;
+
 		Percept p = new DoorSmashPercept(this, other, value, round);
 		d.getRooms()[0].distributePercept(p);
 		d.getRooms()[1].distributePercept(p);
@@ -1094,6 +1093,8 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	public String getStatus() {
+		// todo: refactor
+		this.setStatus(this.getHealthLevel().getValue());
 		return status;
 	}
 
@@ -1277,9 +1278,9 @@ public abstract class Figure extends DungeonWorldObject
 		boolean passable = wayPassable(dir.getValue());
 
 		Room oldRoom = getRoom();
-		Room toGo = getRoom().getDungeon().getRoomAt(
-				getRoom().getDungeon().getRoom(getLocation()),
-				dir);
+		Room toGo = getRoom().getDungeon().getRoomAt(getRoom().getDungeon().getRoom(getLocation()), dir);
+
+		this.setLookDir(dir.getValue());
 
 		if (passable) {
 			Room before = this.getRoom();
@@ -1293,16 +1294,21 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			else {
 				if (standing.getControl().isHostileTo(FigureInfo.makeFigureInfo(this, standing.getRoomVisibility()))
-						|| this.getControl()
-						.isHostileTo(FigureInfo.makeFigureInfo(standing, this.getRoomVisibility()))) {
+						|| this.getControl().isHostileTo(FigureInfo.makeFigureInfo(standing, this.getRoomVisibility()))) {
+
+					// some visibility information for non-active figure during door smashing
+					ScoutResult scoutThis = new ScoutResult(standing, RoomObservationStatus.VISIBILITY_FIGURES);
+					standing.getRoomVisibility().addVisibilityModifier(this.getLocation(), scoutThis);
+
 					boolean raid = this.isRaiding();
 					int thisStr = (int) this.getStrength().getValue();
 					int otherStr = (int) standing.getStrength().getValue();
+					int strengthDiff = thisStr - otherStr;
 					double thisRan = Math.random() * thisStr;
 					double otherRan = Math.random() * otherStr;
 					if (thisRan > otherRan || raid) {
 						// locale figure gets smashed
-						boolean moves = standing.doorSmashes(this.getRoom().getDoor(dir), standing, round);
+						boolean moves = standing.doorSmashes(this.getRoom().getDoor(dir), standing, round, strengthDiff);
 						if (moves) {
 							goThroughDoor(oldRoom, toGo, round);
 							return true;
@@ -1313,7 +1319,7 @@ public abstract class Figure extends DungeonWorldObject
 					}
 					else {
 						// intruder gets smashed and does not enter
-						this.doorSmashesBack(this.getRoom().getDoor(dir), standing, round);
+						this.doorSmashesBack(this.getRoom().getDoor(dir), standing, round, -1*strengthDiff);
 						return false;
 					}
 				}

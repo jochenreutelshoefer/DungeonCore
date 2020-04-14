@@ -9,6 +9,7 @@ import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
+import figure.RoomObservationStatus;
 import figure.action.Action;
 import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
@@ -52,13 +53,11 @@ public class ScoutActivity extends AbstractExecutableActivity {
 				int directionToScout = Dir.getDirFromToIfNeighbour(
 						figure.getRoomNumber(),
 						((RoomInfo) highlightedEntity).getNumber());
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				List<Action> actions = actionAssembler.wannaScout(directionToScout);
 				return actions;
 			}
 			else if (highlightedEntity instanceof DoorInfo) {
 				int directionToScout = ((DoorInfo) highlightedEntity).getDir(figure.getRoomNumber());
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				List<Action> actions = actionAssembler.wannaScout(directionToScout);
 				return actions;
 			}
@@ -75,7 +74,6 @@ public class ScoutActivity extends AbstractExecutableActivity {
 				DoorInfo door = figure.getRoomInfo().getDoor(
 						possibleFleeDirection);
 				if (door != null) {
-					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 					List<Action> actions = actionAssembler.wannaScout(possibleFleeDirection.getValue());
 					return actions;
 				}
@@ -98,6 +96,11 @@ public class ScoutActivity extends AbstractExecutableActivity {
 		boolean fight = fightRunning != null && fightRunning;
 		if(fight) {
 			return ActionResult.MODE;
+		}
+
+		if(door.getOtherRoom(roomInfo).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
+			// already visible
+			return ActionResult.WRONG_TARGET;
 		}
 
 		boolean ok = (!scoutPosition.isOccupied() || actionAssembler.getFigure().equals(scoutPosition.getFigure()));

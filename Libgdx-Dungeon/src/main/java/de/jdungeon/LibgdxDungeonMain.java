@@ -152,7 +152,7 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		if(event instanceof StartNewGameEvent) {
 			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
-			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Warrior.getCode());
+			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 
 			/*
 			EventManager.getInstance().fireEvent(new DungeonStartEvent(new DungeonSelectedEvent(new StartLevel())));

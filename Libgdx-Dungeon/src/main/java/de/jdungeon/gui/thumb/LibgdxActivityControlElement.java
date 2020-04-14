@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
 import util.JDDimension;
 
+import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.gui.LibgdxGUIElement;
@@ -65,6 +66,7 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 	public boolean handleClickEvent(int x, int y) {
 		super.handleClickEvent(x, y);
 		if(activity.isCurrentlyPossible()) {
+			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 			activity.plugToController();
 		}
 		return true;

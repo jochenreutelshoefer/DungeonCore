@@ -19,6 +19,7 @@ public class AudioEffectsManager {
 	public static AbstractAudioSet DOOR_SOUND;
 	public static AbstractAudioSet DOOR_LOCK;
 	public static AbstractAudioSet DOOR_ENTERS;
+	public static AbstractAudioSet DOOR_SMASH;
 	public static AbstractAudioSet CHEST_OPEN;
 	public static AbstractAudioSet FOOTSTEPS_QUICK;
 	public static AbstractAudioSet FOOTSTEPS_QUICK_FADING;
@@ -32,7 +33,6 @@ public class AudioEffectsManager {
 	public static AbstractAudioSet MAGIC_BLING;
 
 	public static AbstractAudioSet TAKE_ITEM;
-	public static AbstractAudioSet DOOR_SMASH;
 
 	// unused
 	public static AbstractAudioSet HIT;

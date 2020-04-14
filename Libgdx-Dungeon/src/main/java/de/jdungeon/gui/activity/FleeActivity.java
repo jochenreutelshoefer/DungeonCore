@@ -34,15 +34,11 @@ public class FleeActivity extends AbstractExecutableActivity {
 		PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
 		RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 		if (possibleFleeDirection != null) {
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaFlee());
 		} else {
 			StepAction stepActionToDoor = DefaultMonsterIntelligence.getStepActionToDoor(actionAssembler.getFigure());
 			if(stepActionToDoor != null) {
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 				actions.add(stepActionToDoor);
-			} else {
-				AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 			}
 		}
 		return new SimpleActivityPlan(this, actions);

@@ -28,8 +28,6 @@ public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 	@Override
 	public ActivityPlan createExecutionPlan(boolean doIt) {
 		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), doIt);
-
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return new SimpleActivityPlan(this, actionAssembler.getActionAssemblerHelper().wannaSpell(spell, target));
 	}
 

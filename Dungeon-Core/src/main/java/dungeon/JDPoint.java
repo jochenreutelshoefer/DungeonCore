@@ -88,6 +88,14 @@ public class JDPoint implements Serializable{
 	public boolean isNeighbour(JDPoint p) {
 		return relativeTo(p) != null;
 	}
+
+	public boolean isNeighbourIncludeCorners(JDPoint p) {
+		if(Math.abs(this.getY() - p.getY()) <= 1  &&
+				Math.abs(this.getX() - p.getX()) <= 1) {
+			return true;
+		}
+		return false;
+	}
 		     
     public RouteInstruction.Direction relativeTo(JDPoint p){
 	if(p.getX() == this.x){

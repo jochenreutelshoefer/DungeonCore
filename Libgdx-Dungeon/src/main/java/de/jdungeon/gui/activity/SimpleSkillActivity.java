@@ -21,7 +21,6 @@ public class SimpleSkillActivity extends SkillActivity<SimpleSkill> {
 
 	@Override
 	public ActivityPlan createExecutionPlan(boolean doIt) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return new SimpleActivityPlan(this, skill.newActionFor(playerController.getFigure()).get());
 	}
 
