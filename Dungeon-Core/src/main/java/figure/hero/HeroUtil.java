@@ -18,14 +18,10 @@ import spell.AbstractSpell;
 public class HeroUtil {
 
 	// HP, ST,DX,PY,AX, LZ, SW, KN, WM,NN,KN, UN,SC, DU, SP
-	public static final double[] warriorBasic = { 42, 8, 6, 5, 10, 10, 20, 10,
-			0, 0, 10, 0, 1, 10, 0.2 };
-	public static final double[] hunterBasic = { 35, 5, 9, 5, 0, 0, 0, 20, 10,
-			0, 0, 10, 3, 13, 0.3 };
-	public static final double[] druidBasic = { 39, 7, 6, 7, 0, 0, 0, 10, 20,
-			10, 0, 0, 1, 10, 0.2 };
-	public static final double[] mageBasic = { 30, 5, 5, 9, 0, 10, 0, 0, 20,
-			10, 10, 10, 1, 23, 1.0 };
+	public static final double[] warriorBasic = { 42, 8, 6, 5, 10, 10, 20, 10, 0, 0, 10, 0, 1, 10, 0.2 };
+	public static final double[] hunterBasic = { 35, 5, 9, 5, 0, 0, 0, 20, 10, 0, 0, 10, 3, 13, 0.3 };
+	public static final double[] druidBasic = { 40, 8, 6, 6, 0, 0, 0, 10, 20, 10, 0, 0, 1, 10, 0.2 };
+	public static final double[] mageBasic = { 30, 5, 5, 9, 0, 10, 0, 0, 20, 10, 10, 10, 1, 23, 1.0 };
 
 	public static Hero getBasicHero(int heroCode, String heroName, Zodiac sign,
 			Profession prof) {

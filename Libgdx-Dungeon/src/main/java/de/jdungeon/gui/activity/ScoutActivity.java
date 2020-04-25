@@ -99,7 +99,7 @@ public class ScoutActivity extends AbstractExecutableActivity {
 
 		RoomInfo targetRoom = findTargetRoom(target);
 		if (targetRoom == null) return ActionResult.WRONG_TARGET;
-
+		if(targetRoom.getConnectionDirectionTo(roomInfo)== -1)  return ActionResult.WRONG_TARGET;
 		int scoutDir = roomInfo.getDirectionTo(targetRoom);
 		DoorInfo door = roomInfo.getDoor(scoutDir);
 		PositionInRoomInfo scoutPosition = door.getPositionAtDoor(roomInfo, false);

@@ -906,7 +906,7 @@ public class GraphicObjectRenderer {
 		return ob;
 	}
 
-	private JDGraphicObject getHeroGraphicObject(HeroInfo info) {
+	public JDGraphicObject getHeroGraphicObject(HeroInfo info) {
 		int positionInRoomIndex = info
 				.getPositionInRoomIndex();
 		if (positionInRoomIndex == -1) return null;

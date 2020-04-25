@@ -1114,7 +1114,6 @@ public class ImageManager {
 	public static DefaultAnimationSet getAnimationSet(MonsterInfo monster, Motion motion, RouteInstruction.Direction direction) {
 		Class<? extends Monster> monsterClass = monster.getMonsterClass();
 		if (monsterAnimationMap.containsKey(monsterClass)) {
-
 			CharacterAnimationSet characterAnimationSet = monsterAnimationMap.get(monsterClass);
 			if(characterAnimationSet.containsMotion(motion)) {
 				return  characterAnimationSet.getAnimationSet(motion, direction);

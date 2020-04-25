@@ -37,7 +37,7 @@ import de.jdungeon.game.Image;
  */
 public class DungeonSelectionScreen extends MenuScreen implements EventListener {
 
-	public static final JDDimension HERO_DIMENSION = new JDDimension(130, 130);
+	public static final JDDimension HERO_DIMENSION = new JDDimension(110, 110);
 	public static final int X_DISTANCE = 150;
 
 	private final DungeonSession session;

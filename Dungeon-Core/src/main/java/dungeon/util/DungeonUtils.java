@@ -10,11 +10,10 @@ import java.util.Set;
 import dungeon.DoorInfo;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
+import dungeon.Path;
 import dungeon.Room;
 import dungeon.RoomInfo;
-import dungeon.Path;
 import figure.DungeonVisibilityMap;
-import figure.Figure;
 import figure.FigureInfo;
 
 public class DungeonUtils {
@@ -24,7 +23,6 @@ public class DungeonUtils {
 		JDPoint fromP = from.getNumber();
 		JDPoint toP = to.getNumber();
 		return getNeighbourDirectionFromTo(fromP, toP);
-
 	}
 
 	public static RouteInstruction.Direction getNeighbourDirectionFromTo(
@@ -35,7 +33,6 @@ public class DungeonUtils {
 			}
 			else if (fromP.getY() == toP.getY() + 1) {
 				return RouteInstruction.Direction.North;
-
 			}
 			else {
 				// doPrint("Sind keine Nachbarn: dungeon.setNeighbourDirectionFromTo()");
@@ -51,7 +48,6 @@ public class DungeonUtils {
 			else if (fromP.getX() == toP.getX() + 1) {
 				// doPrint("Gefundene Richtung: WEST!");
 				return RouteInstruction.Direction.West;
-
 			}
 			else {
 				// doPrint("Sind keine Nachbarn: dungeon.setNeighbourDirectionFromTo()");
@@ -69,12 +65,10 @@ public class DungeonUtils {
 
 	public static Path findShortestPath(FigureInfo figure, JDPoint start, JDPoint goal, boolean crossBlockedDoors) {
 		return findShortestPath(start, goal, figure.getMap(), crossBlockedDoors);
-
 	}
 
 	public static Path findShortestPath(Room start, Room goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
 		return findShortestPath(start.getPoint(), goal.getPoint(), visibilityMap, crossBlockedDoors);
-
 	}
 
 	public static Path findShortestPath(JDPoint start, JDPoint goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {
@@ -83,9 +77,9 @@ public class DungeonUtils {
 		Set<JDPoint> closed = new HashSet<>();
 		fringe.add(new SearchNode(startRoom, null, 0));
 
-		while(!fringe.isEmpty()) {
+		while (!fringe.isEmpty()) {
 			SearchNode node = fringe.remove(0);// get first from fringe
-			if(node.room.getPoint().equals(goal)) {
+			if (node.room.getPoint().equals(goal)) {
 				// we found our goal
 				return createPathTo(node);
 			}
@@ -98,7 +92,7 @@ public class DungeonUtils {
 	private static Path createPathTo(SearchNode node) {
 		List<RoomInfo> roomSequence = new ArrayList<>();
 		SearchNode current = node;
-		while(current != null) {
+		while (current != null) {
 			roomSequence.add(current.room);
 			current = current.predecessor;
 		}
@@ -110,16 +104,19 @@ public class DungeonUtils {
 		Collection<SearchNode> expansionNodes = new ArrayList<>();
 		RoomInfo room = node.room;
 		DoorInfo[] doors = room.getDoors();
-		for (DoorInfo door : doors) {
-			if(door != null) {
-				RoomInfo otherRoom = door.getOtherRoom(room);
-				if(closed.contains(otherRoom.getPoint())) continue; // already visited
+		if (doors != null) {
+			for (DoorInfo door : doors) {
+				if (door != null) {
+					RoomInfo otherRoom = door.getOtherRoom(room);
+					if (closed.contains(otherRoom.getPoint())) continue; // already visited
 
-				if(crossBlockedDoors) {
-					expansionNodes.add(new SearchNode(otherRoom, node, node.distanceWalked+1));
-				} else {
-					if(door.isPassable() != null && door.isPassable()) {  // TODO: find solution for not knowing the passable state due to vis
-						expansionNodes.add(new SearchNode(otherRoom, node,node.distanceWalked+1));
+					if (crossBlockedDoors) {
+						expansionNodes.add(new SearchNode(otherRoom, node, node.distanceWalked + 1));
+					}
+					else {
+						if (door.isPassable() != null && door.isPassable()) {  // TODO: find solution for not knowing the passable state due to vis
+							expansionNodes.add(new SearchNode(otherRoom, node, node.distanceWalked + 1));
+						}
 					}
 				}
 			}
@@ -130,19 +127,22 @@ public class DungeonUtils {
 
 	public static RouteInstruction.Direction getFirstStepFromTo(Dungeon dungeon, Room start, Room destination, DungeonVisibilityMap visMap) {
 		Path shortestPath = findShortestPath(start, destination, visMap, false);
-		if(shortestPath == null) {
+		if (shortestPath == null) {
 			return null;
-		} else {
+		}
+		else {
 			return RouteInstruction.Direction.fromInteger(start.getConnectionDirectionTo(shortestPath.get(1)));
 		}
 	}
 
 	public static RouteInstruction.Direction getFirstStepFromTo(Dungeon dungeon, JDPoint start, JDPoint destination, DungeonVisibilityMap visMap) {
 		Path shortestPath = findShortestPath(start, destination, visMap, false);
-		if(shortestPath == null) {
+		if (shortestPath == null) {
 			return null;
-		} else {
-			return RouteInstruction.Direction.fromInteger(dungeon.getRoom(start).getConnectionDirectionTo(shortestPath.get(1)));
+		}
+		else {
+			return RouteInstruction.Direction.fromInteger(dungeon.getRoom(start)
+					.getConnectionDirectionTo(shortestPath.get(1)));
 		}
 	}
 

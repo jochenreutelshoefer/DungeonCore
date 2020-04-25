@@ -15,6 +15,7 @@ import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
 import figure.other.Fir;
 import figure.other.Lioness;
+import figure.percept.EntersPercept;
 import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
@@ -84,10 +85,11 @@ public class PlayerController implements JDGUI {
 	}
 
 	public boolean plugActivity(Activity activity, Object target) {
-		if(activity.isCurrentlyPossible(target)) {
+		if (activity.isCurrentlyPossible(target)) {
 			plugActivityPlan(activity.createExecutionPlan(true, target));
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -244,9 +246,9 @@ public class PlayerController implements JDGUI {
 				return actionQueue.remove(0);
 			}
 		}
-		if(currentActivityPlan != null) {
+		if (currentActivityPlan != null) {
 			synchronized (currentActivityPlan) {  // todo: make thread safe
-				if(currentActivityPlan != null && !currentActivityPlan.isCompleted()) {
+				if (currentActivityPlan != null && !currentActivityPlan.isCompleted()) {
 					return currentActivityPlan.getNextAction();
 				}
 			}
@@ -271,17 +273,32 @@ public class PlayerController implements JDGUI {
 
 		}
 		*/
+		if (p instanceof EntersPercept  // someone enters
+			&&(((EntersPercept) p).getTo().equals(this.getFigure().getRoomInfo())) // into the room of this figure
+				&& (!((EntersPercept) p).getFigure().equals(this.getFigure()))) { // who is not this figure
+			// we interrupt the current plan to allow the player to react
+			interrupt(p);
+		}
 		if (number != null) {
 			updateRoomViewModel(number);
 		}
+
 		synchronized (perceptQueue) {
-			if(!perceptQueue.contains(p)) {
+			if (!perceptQueue.contains(p)) {
 				// we need to be aware of duplicates, if percept is distributed to multiple rooms (with vis state)
 				perceptQueue.add(p);
 			}
 		}
 		if (gameScreen != null) { // initialization issue at level start
 			gameScreen.checkCameraPosition();
+		}
+	}
+
+	private void interrupt(Percept p) {
+		if(!this.actionQueue.isEmpty()) {
+			// we interrupt the current sequence of actions
+			this.actionQueue.clear();
+			this.perceptQueue.add(new InterruptPercept(this.getFigure(), p.getRound()));
 		}
 	}
 

@@ -51,8 +51,6 @@ public class DungeonSelectionTile extends ImageGUIElement {
 			}
 			fired = true;
 
-		} else {
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 		return true;
 	}

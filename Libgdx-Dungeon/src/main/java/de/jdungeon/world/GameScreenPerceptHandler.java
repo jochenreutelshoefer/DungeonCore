@@ -10,6 +10,7 @@ import audio.AudioEffectsManager;
 import dungeon.Position;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
+import figure.hero.HeroInfo;
 import figure.percept.AttackPercept;
 import figure.percept.BreakSpellPercept;
 import figure.percept.DiePercept;
@@ -37,6 +38,8 @@ import figure.percept.UsePercept;
 import figure.percept.WaitPercept;
 import game.PerceptHandler;
 import game.RoomInfoEntity;
+import graphics.GraphicObjectRenderer;
+import graphics.JDGraphicObject;
 import graphics.JDImageProxy;
 import log.Log;
 import text.Statement;
@@ -67,6 +70,13 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	}
 
 	public void handlePercept(Percept p) {
+
+		if(p instanceof InterruptPercept) {
+			// this is a special case, no world percept, but only communication between PlayerController and PerceptHandler
+			// to visualize a interrupt in the players action plan
+			handleInterruptPercept((InterruptPercept)p);
+		}
+
 		if (p instanceof WaitPercept) {
 			handleWaitPercept((WaitPercept) p);
 		}
@@ -157,6 +167,17 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		if (p instanceof FightBeginsPercept) {
 			handleFightBeginsPercept((FightBeginsPercept) p);
 		}
+	}
+
+	private void handleInterruptPercept(InterruptPercept p) {
+		GraphicObjectRenderer objectRenderer = screen.getGraphicObjectRenderer();
+		JDGraphicObject heroGraphicObject = objectRenderer.getHeroGraphicObject((HeroInfo) this.figure);
+		JDImageProxy<?> image = heroGraphicObject.getLocatedImage().getImage();
+		// constant image, as we just want to display the exclamation mark text
+		JDImageProxy[] images = { image, image, image, image, };
+		int[] times = { 70, 70, 70, 70 };
+		DefaultAnimationSet ani = new DefaultAnimationSet(images, times);
+		startAnimation(ani, this.figure, "   !", p);
 	}
 
 	private void handleFightBeginsPercept(FightBeginsPercept p) {
