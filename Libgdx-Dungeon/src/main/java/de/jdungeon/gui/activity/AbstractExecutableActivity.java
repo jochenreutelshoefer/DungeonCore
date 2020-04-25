@@ -20,8 +20,8 @@ public abstract class AbstractExecutableActivity<T> implements Activity<T> {
 	}
 
 	@Override
-	public boolean plugToController() {
-		return playerController.plugActivity(this);
+	public boolean plugToController(Object target) {
+		return playerController.plugActivity(this, target);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public abstract class AbstractExecutableActivity<T> implements Activity<T> {
 
 
 	@Override
-	public boolean isCurrentlyPossible() {
-		return possible().getSituation() == ActionResult.Situation.possible;
+	public boolean isCurrentlyPossible(Object target) {
+		return possible(target).getSituation() == ActionResult.Situation.possible;
 	}
 }

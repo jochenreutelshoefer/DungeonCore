@@ -18,6 +18,7 @@ public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 	private final SpellInfo spell;
 	private final ActionAssembler actionAssembler;
 	private final LibgdxFocusManager focusManager;
+
 	public SpellActivity(SpellInfo spell, PlayerController controller) {
 		super(controller);
 		this.spell = spell;
@@ -26,15 +27,15 @@ public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
-		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), doIt);
+	public ActivityPlan createExecutionPlan(boolean doIt, Object targetObject) {
+		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), doIt, targetObject);
 		return new SimpleActivityPlan(this, actionAssembler.getActionAssemblerHelper().wannaSpell(spell, target));
 	}
 
 
 	@Override
-	public ActionResult possible() {
-		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), false);
+	public ActionResult possible(Object targetObject) {
+		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), false, targetObject);
 		return spell.isCurrentlyPossible(actionAssembler.getFigure(), target);
 	}
 

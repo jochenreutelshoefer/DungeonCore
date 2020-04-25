@@ -20,12 +20,12 @@ public class SimpleSkillActivity extends SkillActivity<SimpleSkill> {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
+	public ActivityPlan createExecutionPlan(boolean doIt, Object target) {
 		return new SimpleActivityPlan(this, skill.newActionFor(playerController.getFigure()).get());
 	}
 
 	@Override
-	public ActionResult possible() {
+	public ActionResult possible(Object target) {
 		SimpleSkill.SimpleSkillAction simpleSkillTestAction = skill.newActionFor(playerController.getFigure()).get();
 		return skill.execute(simpleSkillTestAction, false, -1);
 	}

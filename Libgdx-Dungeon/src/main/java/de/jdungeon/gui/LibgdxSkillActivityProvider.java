@@ -119,7 +119,7 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		if (activity == null) {
 			return;
 		}
-		boolean possible = activity.plugToController();
+		boolean possible = activity.plugToController(null);
 		if(possible) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		}

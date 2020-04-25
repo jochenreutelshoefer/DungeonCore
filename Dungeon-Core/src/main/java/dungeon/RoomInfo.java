@@ -59,7 +59,9 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 	public DoorInfo getDoor(int dir) {
-		return new DoorInfo(r.getDoor(dir), map);
+		Door door = r.getDoor(dir);
+		if(door == null) return null;
+		return new DoorInfo(door, map);
 	}
 
 	public DoorInfo getDoor(RouteInstruction.Direction dir) {

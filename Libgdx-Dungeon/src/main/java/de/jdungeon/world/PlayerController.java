@@ -30,6 +30,7 @@ import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.activity.ActivityPlan;
 import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
+import de.jdungeon.gui.activity.ScoutActivity;
 
 /**
  * This class basically controls the interaction from the world (world loop)
@@ -66,6 +67,7 @@ public class PlayerController implements JDGUI {
 
 	private final AttackActivity attackActivity;
 	private final FleeActivity fleeActivity;
+	private final ScoutActivity scoutActivity;
 
 	private GameScreen gameScreen;
 
@@ -73,6 +75,7 @@ public class PlayerController implements JDGUI {
 		this.dungeonSession = dungeonSession;
 		attackActivity = new AttackActivity(this);
 		fleeActivity = new FleeActivity(this);
+		scoutActivity = new ScoutActivity(this);
 	}
 
 	public void plugActivityPlan(ActivityPlan currentActivityPlan) {
@@ -80,13 +83,17 @@ public class PlayerController implements JDGUI {
 		this.currentActivityPlan = currentActivityPlan;
 	}
 
-	public boolean plugActivity(Activity activity) {
-		if(activity.isCurrentlyPossible()) {
-			plugActivityPlan(activity.createExecutionPlan(true));
+	public boolean plugActivity(Activity activity, Object target) {
+		if(activity.isCurrentlyPossible(target)) {
+			plugActivityPlan(activity.createExecutionPlan(true, target));
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public ScoutActivity getScoutActivity() {
+		return scoutActivity;
 	}
 
 	public FleeActivity getFleeActivity() {

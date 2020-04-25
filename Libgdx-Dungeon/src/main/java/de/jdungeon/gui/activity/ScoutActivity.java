@@ -1,10 +1,12 @@
 package de.jdungeon.gui.activity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import dungeon.Dir;
 import dungeon.DoorInfo;
+import dungeon.JDPoint;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
 import dungeon.util.RouteInstruction;
@@ -15,23 +17,18 @@ import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.activity.SkillActivityProvider;
 import de.jdungeon.world.PlayerController;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
- * @created 22.02.20.
+ * @created 25.04.20.
  */
 public class ScoutActivity extends AbstractExecutableActivity {
 
-	private final ActionAssembler actionAssembler;
-	private final RouteInstruction.Direction direction;
 
-	public ScoutActivity(PlayerController playerController, RouteInstruction.Direction direction) {
+	public ScoutActivity(PlayerController playerController) {
 		super(playerController);
-		this.actionAssembler = playerController.getActionAssembler();
-		this.direction = direction;
 	}
 
 	@Override
@@ -40,26 +37,29 @@ public class ScoutActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
-		List<Action> actions = scoutingActivity(actionAssembler.getFigure().getRoomInfo().getDoor(direction));
+	public ActivityPlan createExecutionPlan(boolean doIt, Object target) {
+		List<Action> actions = scoutingActivity(target);
 		return new SimpleActivityPlan(this, actions);
 	}
 
-	public List<Action> scoutingActivity(RoomInfoEntity highlightedEntity) {
+	private List<Action> scoutingActivity(Object highlightedEntity) {
+		ActionAssembler actionAssembler = playerController.getActionAssembler();
 		FigureInfo figure = actionAssembler.getFigure();
 
 		if (highlightedEntity != null) {
 			if (highlightedEntity instanceof RoomInfo) {
-				int directionToScout = Dir.getDirFromToIfNeighbour(
-						figure.getRoomNumber(),
-						((RoomInfo) highlightedEntity).getNumber());
-				List<Action> actions = actionAssembler.wannaScout(directionToScout);
-				return actions;
+				int directionToScout = Dir.getDirFromToIfNeighbour(figure.getRoomNumber(), ((RoomInfo) highlightedEntity).getNumber());
+				return actionAssembler.wannaScout(directionToScout);
 			}
 			else if (highlightedEntity instanceof DoorInfo) {
 				int directionToScout = ((DoorInfo) highlightedEntity).getDir(figure.getRoomNumber());
-				List<Action> actions = actionAssembler.wannaScout(directionToScout);
-				return actions;
+				return actionAssembler.wannaScout(directionToScout);
+			}
+			else if (highlightedEntity instanceof RouteInstruction.Direction) {
+				DoorInfo door = figure.getRoomInfo().getDoor((RouteInstruction.Direction)highlightedEntity);
+				if (door != null) {
+					return actionAssembler.wannaScout(((RouteInstruction.Direction)highlightedEntity).getValue());
+				}
 			}
 		}
 		else {
@@ -71,11 +71,9 @@ public class ScoutActivity extends AbstractExecutableActivity {
 			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 
 			if (possibleFleeDirection != null) {
-				DoorInfo door = figure.getRoomInfo().getDoor(
-						possibleFleeDirection);
+				DoorInfo door = figure.getRoomInfo().getDoor(possibleFleeDirection);
 				if (door != null) {
-					List<Action> actions = actionAssembler.wannaScout(possibleFleeDirection.getValue());
-					return actions;
+					return actionAssembler.wannaScout(possibleFleeDirection.getValue());
 				}
 			}
 		}
@@ -84,19 +82,28 @@ public class ScoutActivity extends AbstractExecutableActivity {
 
 
 	@Override
-	public ActionResult possible() {
+	public ActionResult possible(Object target) {
+		ActionAssembler actionAssembler = playerController.getActionAssembler();
 		final RoomInfo roomInfo = actionAssembler.getFigure().getRoomInfo();
 		if (roomInfo == null) {
+			// should not happen
 			return ActionResult.UNKNOWN;
 		}
+
+		// check fight mode
 		Boolean fightRunning = roomInfo.fightRunning();
-		DoorInfo door = roomInfo.getDoor(direction);
-		if (door == null) return ActionResult.WRONG_TARGET;
-		PositionInRoomInfo scoutPosition = door.getPositionAtDoor(roomInfo, false);
 		boolean fight = fightRunning != null && fightRunning;
 		if(fight) {
 			return ActionResult.MODE;
 		}
+
+		RoomInfo targetRoom = findTargetRoom(target);
+		if (targetRoom == null) return ActionResult.WRONG_TARGET;
+
+		int scoutDir = roomInfo.getDirectionTo(targetRoom);
+		DoorInfo door = roomInfo.getDoor(scoutDir);
+		PositionInRoomInfo scoutPosition = door.getPositionAtDoor(roomInfo, false);
+
 
 		if(door.getOtherRoom(roomInfo).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			// already visible
@@ -105,10 +112,74 @@ public class ScoutActivity extends AbstractExecutableActivity {
 
 		boolean ok = (!scoutPosition.isOccupied() || actionAssembler.getFigure().equals(scoutPosition.getFigure()));
 		if(ok) {
-			return ActionResult.POSSIBLE;
+			ActivityPlan executionPlan = createExecutionPlan(false, target);
+			if(executionPlan != null && executionPlan.getLength() > 0) {
+				return ActionResult.POSSIBLE;
+			} else {
+				// should not happen
+				return ActionResult.UNKNOWN;
+			}
 		}
 		else {
 			return ActionResult.POSITION;
 		}
 	}
+
+	private RoomInfo findTargetRoom(Object highlightedEntity) {
+		// case we have a target object
+		ActionAssembler actionAssembler = playerController.getActionAssembler();
+		FigureInfo figure = actionAssembler.getFigure();
+		RoomInfo figureRoom = figure.getRoomInfo();
+		if (highlightedEntity != null) {
+			if (highlightedEntity instanceof RoomInfo) {
+				return ((RoomInfo) highlightedEntity);
+			}
+			else if (highlightedEntity instanceof DoorInfo) {
+				DoorInfo door = (DoorInfo) highlightedEntity;
+				return door.getOtherRoom(figureRoom);
+			} else if(highlightedEntity instanceof RouteInstruction.Direction) {
+				RouteInstruction.Direction direction = (RouteInstruction.Direction) highlightedEntity;
+				DoorInfo door = figure.getRoomInfo().getDoor(direction);
+				if(door == null) {
+					// no door to scout in this direction
+					return null;
+				}
+				return figureRoom.getNeighbourRoom(direction);
+			}
+		}
+		// case we have no target object
+		else {
+			PositionInRoomInfo pos = figure.getPos();
+			if(pos == null) {
+				// hero dead, game over but gui still active
+				return null;
+			}
+
+			// we wanna find out some unique scouting target
+
+			// if we stand next to a door, we scout this door
+			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
+			if (possibleFleeDirection != null) {
+				return figureRoom.getNeighbourRoom(possibleFleeDirection);
+			}
+
+			// check for some neighbour room target
+			DoorInfo[] doors = figureRoom.getDoors();
+			List<RoomInfo> potentialTargets = new ArrayList<>();
+			for (DoorInfo door : doors) {
+				if(door != null) {
+					RoomInfo otherRoom = door.getOtherRoom(figureRoom);
+					if(otherRoom != null && otherRoom.getVisibilityStatus() < RoomObservationStatus.VISIBILITY_FIGURES) {
+						potentialTargets.add(otherRoom);
+					}
+				}
+			}
+			if(potentialTargets.size() == 1) {
+				// we found a unique target
+				return potentialTargets.get(0);
+			}
+		}
+		return null;
+	}
 }
+

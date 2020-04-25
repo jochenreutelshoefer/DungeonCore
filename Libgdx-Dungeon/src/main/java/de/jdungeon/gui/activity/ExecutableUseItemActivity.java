@@ -22,12 +22,12 @@ public class ExecutableUseItemActivity extends AbstractExecutableActivity<ItemIn
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
+	public ActivityPlan createExecutionPlan(boolean doIt, Object target) {
 		return new SimpleActivityPlan(this, new UseItemAction(playerController.getFigure(), getObject()));
 	}
 
 	@Override
-	public ActionResult possible() {
+	public ActionResult possible(Object target) {
 		return ActionResult.POSSIBLE;
 	}
 

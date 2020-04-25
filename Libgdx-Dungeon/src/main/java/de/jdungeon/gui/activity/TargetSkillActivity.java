@@ -28,7 +28,7 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
+	public ActivityPlan createExecutionPlan(boolean doIt, Object target) {
 		TargetSkill.TargetSkillAction<TARGET> action = createAction(doIt);
 		// action cannot be null here, as it is guarded by the isPossible-mechanism
 		return new SimpleActivityPlan(this, action);
@@ -41,14 +41,14 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 	}
 
 	@Override
-	public ActionResult possible() {
+	public ActionResult possible(Object target) {
 		TargetSkill.TargetSkillAction<TARGET> action = createAction(false);
 		if(action == null) return ActionResult.NO_TARGET;
 		return skill.execute(action, false, -1);
 	}
 
 	private TARGET findUniqueTargetOfClass(boolean doIt) {
-		RoomInfoEntity target = findTarget(playerController.getFigure(), playerController.getGameScreen().getFocusManager(), skill.getTargetScope(), doIt);
+		RoomInfoEntity target = findTarget(playerController.getFigure(), playerController.getGameScreen().getFocusManager(), skill.getTargetScope(), doIt, null);
 		if(target != null) {
 			return (TARGET) target;
 		}
@@ -60,7 +60,7 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 		return skill;
 	}
 
-	public static RoomInfoEntity findTarget(FigureInfo figure, LibgdxFocusManager focusManager, TargetScope targetScope, boolean doIt) {
+	public static RoomInfoEntity findTarget(FigureInfo figure, LibgdxFocusManager focusManager, TargetScope targetScope, boolean doIt, Object targetObject) {
 
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 		List<? extends RoomInfoEntity> potentialTargets = targetScope.getTargetEntitiesInScope(figure, highlightedEntity);

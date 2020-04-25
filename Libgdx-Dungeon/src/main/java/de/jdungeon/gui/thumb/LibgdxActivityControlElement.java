@@ -59,15 +59,15 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 
 	@Override
 	public boolean isVisible() {
-		return activity.isCurrentlyPossible();
+		return activity.isCurrentlyPossible(null);
 	}
 
 	@Override
 	public boolean handleClickEvent(int x, int y) {
 		super.handleClickEvent(x, y);
-		if(activity.isCurrentlyPossible()) {
+		if(activity.isCurrentlyPossible(null)) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-			activity.plugToController();
+			activity.plugToController(null);
 		}
 		return true;
 	}

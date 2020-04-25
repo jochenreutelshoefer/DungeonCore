@@ -26,7 +26,7 @@ public class AttackActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
+	public ActivityPlan createExecutionPlan(boolean doIt, Object targetObject) {
 		List<Action> actions = new ArrayList<>();
 		ActionAssembler actionAssembler = playerController.getActionAssembler();
 		LibgdxFocusManager focusManager = playerController.getGameScreen().getFocusManager();
@@ -63,8 +63,7 @@ public class AttackActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActionResult possible() {
-		// todo: logics for "isCurrentlyPossible" should ne be implemented in GUI but in core (to be available for AIs as well)
+	public ActionResult possible(Object targetObject) {
 		if(playerController.getFigure() == null) return ActionResult.UNKNOWN;
 		if(getHostileFiguresList().isEmpty()) {
 			return ActionResult.NO_TARGET;

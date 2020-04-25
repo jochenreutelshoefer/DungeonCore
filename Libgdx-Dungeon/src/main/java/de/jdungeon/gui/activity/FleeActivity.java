@@ -28,7 +28,7 @@ public class FleeActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
+	public ActivityPlan createExecutionPlan(boolean doIt, Object target) {
 		List<Action> actions = new ArrayList<>();
 		ActionAssembler actionAssembler = playerController.getActionAssembler();
 		PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
@@ -45,7 +45,7 @@ public class FleeActivity extends AbstractExecutableActivity {
 	}
 
 	@Override
-	public ActionResult possible() {
+	public ActionResult possible(Object target) {
 		FigureInfo figure = playerController.getActionAssembler().getFigure();
 		RoomInfo roomInfo = figure.getRoomInfo();
 		if(roomInfo == null) return ActionResult.UNKNOWN;

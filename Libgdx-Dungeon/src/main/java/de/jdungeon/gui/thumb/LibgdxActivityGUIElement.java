@@ -37,7 +37,7 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 
 	@Override
 	protected String getBackgroundImage() {
-		if(activity.possible().equals(ActionResult.POSSIBLE)) {
+		if(activity.possible(null).equals(ActionResult.POSSIBLE)) {
 			return backGround;
 		}
 		else return bgInactiveImage;
@@ -46,8 +46,8 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 	@Override
 	public void paint(SpriteBatch batch) {
 		super.paint(batch);
-		ActionResult possibleState = activity.possible();
-		ActivityPlan executionPlan = activity.createExecutionPlan(false);
+		ActionResult possibleState = activity.possible(null);
+		ActivityPlan executionPlan = activity.createExecutionPlan(false, null);
 		if(executionPlan == null) return; // level exit problem
 
 		int tileWidth = this.getDimension().getWidth();
@@ -118,7 +118,7 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 
 	@Override
 	public boolean handleClickEvent(int x, int y) {
-		boolean possible = activity.plugToController();
+		boolean possible = activity.plugToController(null);
 		if(possible) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		}

@@ -14,12 +14,12 @@ public interface Activity<T> extends Paragraphable {
 
 	T getObject();
 
-	boolean plugToController();
+	boolean plugToController(Object target);
 
-	ActivityPlan createExecutionPlan(boolean doIt);
+	ActivityPlan createExecutionPlan(boolean doIt, Object target);
 
-	boolean isCurrentlyPossible();
+	boolean isCurrentlyPossible(Object target);
 
-	ActionResult possible();
+	ActionResult possible(Object target);
 
 }

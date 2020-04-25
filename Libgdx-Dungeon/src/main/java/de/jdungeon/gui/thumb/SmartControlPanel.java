@@ -23,7 +23,6 @@ import event.EventManager;
 import event.WorldChangedEvent;
 import figure.FigureInfo;
 import figure.action.Action;
-import figure.action.LockAction;
 import figure.action.StepAction;
 import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
@@ -36,11 +35,9 @@ import util.JDDimension;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
-import de.jdungeon.app.gui.smartcontrol.ShrineButtonClickedEvent;
-import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.gui.LibgdxDrawUtils;
 import de.jdungeon.gui.LibgdxTakeItemActivityProvider;
-import de.jdungeon.gui.activity.ScoutActivity;
+import de.jdungeon.gui.activity.DirectionScoutActivity;
 import de.jdungeon.gui.LibgdxContainerGUIElement;
 import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.world.PlayerController;
@@ -223,7 +220,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private LibgdxActivityControlElement createScoutElementNorth() {
-		ScoutActivity scoutActivity = new ScoutActivity(this.playerController, RouteInstruction.Direction.North);
+		DirectionScoutActivity scoutActivity = new DirectionScoutActivity(this.playerController, RouteInstruction.Direction.North);
 		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
 		int x = moveNorth.getPositionOnScreen().getX();
 		int y = moveNorth.getPositionOnScreen().getY() + moveNorth.getDimension().getHeight() + doorThickness;
@@ -231,7 +228,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private LibgdxActivityControlElement createScoutElementSouth() {
-		ScoutActivity scoutActivity = new ScoutActivity(this.playerController, RouteInstruction.Direction.South);
+		DirectionScoutActivity scoutActivity = new DirectionScoutActivity(this.playerController, RouteInstruction.Direction.South);
 		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
 		int x = moveSouth.getPositionOnScreen().getX();
 		int y = moveSouth.getPositionOnScreen().getY() - moveSouth.getDimension().getHeight() - doorThickness;
@@ -239,7 +236,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private LibgdxActivityControlElement createScoutElementWest() {
-		ScoutActivity scoutActivity = new ScoutActivity(this.playerController, RouteInstruction.Direction.West);
+		DirectionScoutActivity scoutActivity = new DirectionScoutActivity(this.playerController, RouteInstruction.Direction.West);
 		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
 		int x = moveWest.getPositionOnScreen().getX() + moveWest.getDimension().getWidth() + doorThickness;
 		int y = moveWest.getPositionOnScreen().getY();
@@ -247,7 +244,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	}
 
 	private LibgdxActivityControlElement createScoutElementEast() {
-		ScoutActivity scoutActivity = new ScoutActivity(this.playerController, RouteInstruction.Direction.East);
+		DirectionScoutActivity scoutActivity = new DirectionScoutActivity(this.playerController, RouteInstruction.Direction.East);
 		String skillImage = skillImageManager.getImage(scoutActivity.getObject());
 		int x = moveEast.getPositionOnScreen().getX() - moveEast.getDimension().getWidth() - doorThickness;
 		int y = moveEast.getPositionOnScreen().getY();

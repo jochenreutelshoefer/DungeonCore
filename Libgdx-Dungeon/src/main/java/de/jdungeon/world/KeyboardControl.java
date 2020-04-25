@@ -1,6 +1,8 @@
 package de.jdungeon.world;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dungeon.PositionInRoomInfo;
 import dungeon.util.RouteInstruction;
@@ -9,6 +11,7 @@ import figure.action.Action;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.gui.activity.ScoutActivity;
 
 import static com.badlogic.gdx.Gdx.input;
 import static com.badlogic.gdx.Input.Keys;
@@ -23,7 +26,6 @@ public class KeyboardControl {
 
 	private final PlayerController playerController;
 	private final CameraHelper cameraHelper;
-
 
 	public KeyboardControl(PlayerController playerController, CameraHelper cameraHelper) {
 		this.playerController = playerController;
@@ -46,8 +48,10 @@ public class KeyboardControl {
 
 		if (isFight) {
 			if (input.isKeyPressed(Keys.SPACE)) {
-				boolean possible = playerController.plugActivity(playerController.getAttackActivity());
-				if(possible) {
+				boolean possible = playerController.plugActivity(playerController.getAttackActivity(), playerController.getGameScreen()
+						.getFocusManager()
+						.getWorldFocusObject());
+				if (possible) {
 					return eventProcessed();
 				}
 				else {
@@ -93,7 +97,11 @@ public class KeyboardControl {
 		handle use item event
 		 */
 		if (input.isKeyPressed(Keys.ENTER)) {
-			playerController.getActionAssembler().wannaUseItem(playerController.getGameScreen().getGuiRenderer().getItemWheel().getSelectedInventoryItem());
+			playerController.getActionAssembler()
+					.wannaUseItem(playerController.getGameScreen()
+							.getGuiRenderer()
+							.getItemWheel()
+							.getSelectedInventoryItem());
 			return eventProcessed();
 		}
 
@@ -130,30 +138,30 @@ public class KeyboardControl {
 		return false;
 	}
 
+	private static final Map<Integer, RouteInstruction.Direction> keyDirectionMap = new HashMap<>();
 
+	static {
+		keyDirectionMap.put(Keys.RIGHT, RouteInstruction.Direction.East);
+		keyDirectionMap.put(Keys.LEFT, RouteInstruction.Direction.West);
+		keyDirectionMap.put(Keys.DOWN, RouteInstruction.Direction.South);
+		keyDirectionMap.put(Keys.UP, RouteInstruction.Direction.North);
+	}
 
 	private Boolean handleCursorEvents(boolean isFight, ActionAssembler actionAssembler) {
 		if (altPressed()) {
 			// cursor keys with alt modifier do scouting
-			if (input.isKeyPressed((Keys.RIGHT))) {
-				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-				actionAssembler.wannaScout(RouteInstruction.Direction.East.getValue());
-				return eventProcessed();
-			}
-			if (input.isKeyPressed((Keys.DOWN))) {
-				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-				actionAssembler.wannaScout(RouteInstruction.Direction.South.getValue());
-				return eventProcessed();
-			}
-			if (input.isKeyPressed((Keys.LEFT))) {
-				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-				actionAssembler.wannaScout(RouteInstruction.Direction.West.getValue());
-				return eventProcessed();
-			}
-			if (input.isKeyPressed((Keys.UP))) {
-				if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
-				actionAssembler.wannaScout(RouteInstruction.Direction.North.getValue());
-				return eventProcessed();
+			ScoutActivity scoutActivity = playerController.getScoutActivity();
+			for (Integer cursorKey : keyDirectionMap.keySet()) {
+				if (input.isKeyPressed(cursorKey)) {
+					if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
+					RouteInstruction.Direction dir = keyDirectionMap.get(cursorKey);
+					if (scoutActivity.isCurrentlyPossible(dir)) {
+						playerController.plugActivity(scoutActivity, dir);
+						return eventProcessed();
+					} else {
+						AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+					}
+				}
 			}
 		}
 		else if (shiftPressed()) {
@@ -166,38 +174,22 @@ public class KeyboardControl {
 				PositionInRoomInfo pos = actionAssembler.getFigure().getPos();
 				RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
 				if (possibleFleeDirection != null) {
-					if (possibleFleeDirection == RouteInstruction.Direction.East && input.isKeyPressed(Keys.RIGHT)) {
-						boolean possible = playerController.getFleeActivity().plugToController();
-						if(!possible) {
-							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+					for (Integer cursorKey : keyDirectionMap.keySet()) {
+						if (input.isKeyPressed(cursorKey)) {
+							RouteInstruction.Direction dir = keyDirectionMap.get(cursorKey);
+							if (possibleFleeDirection == dir) {
+								boolean possible = playerController.getFleeActivity()
+										.plugToController(RouteInstruction.Direction.East);
+								if (!possible) {
+									AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+								}
+								return eventProcessed();
+							}
 						}
-						return eventProcessed();
 					}
-					else if (possibleFleeDirection == RouteInstruction.Direction.West && input.isKeyPressed(Keys.LEFT)) {
-						boolean possible = playerController.getFleeActivity().plugToController();
-						if(!possible) {
-							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
-						}
-						return eventProcessed();
-					}
-					else if (possibleFleeDirection == RouteInstruction.Direction.North && input.isKeyPressed(Keys.UP)) {
-						boolean possible = playerController.getFleeActivity().plugToController();
-						if(!possible) {
-							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
-						}
-						return eventProcessed();
-					}
-					else if (possibleFleeDirection == RouteInstruction.Direction.South && input.isKeyPressed(Keys.DOWN)) {
-						boolean possible = playerController.getFleeActivity().plugToController();
-						if(!possible) {
-							AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
-						}
-						return eventProcessed();
-					}
-					else {
-						// cannot flee from this pos -> step further
-						return plugStepDirectionAction();
-					}
+
+					// cannot flee from this pos -> step further
+					return plugStepDirectionAction();
 				}
 				else {
 					return plugStepDirectionAction();
@@ -205,21 +197,12 @@ public class KeyboardControl {
 			}
 			else {
 				// cursor keys be default moving to next room
-				if (input.isKeyPressed(Keys.RIGHT)) {
-					actionAssembler.wannaWalk(RouteInstruction.Direction.East.getValue());
-					return eventProcessed();
-				}
-				if (input.isKeyPressed((Keys.DOWN))) {
-					actionAssembler.wannaWalk(RouteInstruction.Direction.South.getValue());
-					return eventProcessed();
-				}
-				if (input.isKeyPressed((Keys.LEFT))) {
-					actionAssembler.wannaWalk(RouteInstruction.Direction.West.getValue());
-					return eventProcessed();
-				}
-				if (input.isKeyPressed((Keys.UP))) {
-					actionAssembler.wannaWalk(RouteInstruction.Direction.North.getValue());
-					return eventProcessed();
+				for (Integer cursorKey : keyDirectionMap.keySet()) {
+					if (input.isKeyPressed(cursorKey)) {
+						RouteInstruction.Direction dir = keyDirectionMap.get(cursorKey);
+						actionAssembler.wannaWalk(dir.getValue());
+						return eventProcessed();
+					}
 				}
 			}
 		}

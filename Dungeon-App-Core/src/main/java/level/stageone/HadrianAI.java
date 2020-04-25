@@ -90,7 +90,7 @@ public class HadrianAI extends AbstractAI {
 
 
 		/*
-		Do we need a state transition ?
+		Do we need a state transition because of health state
 		 */
 		if(this.info.getHealthLevel().getValue() < HealthLevel.Injured.getValue()) {
 			currentState = flee;

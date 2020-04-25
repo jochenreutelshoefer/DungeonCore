@@ -24,12 +24,12 @@ public class ExecutableTakeItemActivity extends AbstractExecutableActivity<ItemI
 	}
 
 	@Override
-	public ActivityPlan createExecutionPlan(boolean doIt) {
+	public ActivityPlan createExecutionPlan(boolean doIt, Object target) {
 		return new SimpleActivityPlan(this, new TakeItemAction(figure, getObject()));
 	}
 
 	@Override
-	public ActionResult possible() {
+	public ActionResult possible(Object target) {
 		return ActionResult.POSSIBLE;
 	}
 
