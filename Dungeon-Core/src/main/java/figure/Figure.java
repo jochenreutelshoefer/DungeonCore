@@ -532,6 +532,9 @@ public abstract class Figure extends DungeonWorldObject
 
 		while (control != null && !this.isDead() && this.agility.getCurrentAP() > 0) {
 
+			if (control instanceof JDGUI) {
+				((JDGUI) control).onTurn();
+			}
 			Action a;
 			if (fight) {
 				a = retrieveFightActionFromControl();
@@ -1180,9 +1183,7 @@ public abstract class Figure extends DungeonWorldObject
 	public abstract boolean tryUnlockDoor(Door d, boolean doIt);
 
 	protected Action retrieveMovementActionFromControl(int round) {
-		if (control instanceof JDGUI) {
-			((JDGUI) control).onTurn();
-		}
+
 		return retrieveAction();
 	}
 

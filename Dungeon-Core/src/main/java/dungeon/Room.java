@@ -953,12 +953,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		if (moveDir != 0) {
 			figure.setLookDir(moveDir);
 		}
-		if (figure.getRoomVisibility() == null) {
-			figure.createVisibilityMap(dungeon);
-		}
-		figure.getRoomVisibility().setVisibilityStatus(getNumber(),
-				RoomObservationStatus.VISIBILITY_ITEMS);
-		figure.getRoomVisibility().addVisibilityModifier(getNumber(), figure);
+
 
 		// we 'discover' also all neighbour rooms of the entered room
 		final List<Room> neighboursWithDoor = getNeighboursWithDoor();
@@ -970,6 +965,14 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		position.figureEntersHere(figure);
 		figure.setLocation(this);
 		roomFigures.add(figure);
+
+
+		if (figure.getRoomVisibility() == null) {
+			figure.createVisibilityMap(dungeon);
+		}
+		figure.getRoomVisibility().setVisibilityStatus(getNumber(),
+				RoomObservationStatus.VISIBILITY_ITEMS);
+		figure.getRoomVisibility().addVisibilityModifier(getNumber(), figure);
 
 		this.checkFight(figure, round);
 	}
@@ -1055,6 +1058,14 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	public boolean figureLeaves(Figure m) {
 
+
+
+		final Position pos = m.getPos();
+		// might already be a new position in other room after fleeing
+		if (pos != null && pos.getRoom().equals(this)) {
+			pos.figureLeaves();
+		}
+
 		if (!getDeadFigures().contains(m)) {
 			// dead figures may retain their vis status (for GUI's sake)
 			final DungeonVisibilityMap roomVisibility = m.getRoomVisibility();
@@ -1067,11 +1078,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			}
 		}
 
-		final Position pos = m.getPos();
-		// might already be a new position in other room after fleeing
-		if (pos != null && pos.getRoom().equals(this)) {
-			pos.figureLeaves();
-		}
 		return roomFigures.remove(m);
 	}
 

@@ -56,7 +56,7 @@ public class PlayerController implements JDGUI {
 	private ActionAssembler actionAssembler;
 
 	private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
-
+	private final Set<JDPoint> roomRenderUpdateLaundry = new HashSet<>();
 	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
 	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
 	private final List<Percept> perceptQueue = new CopyOnWriteArrayList<>();
@@ -171,7 +171,13 @@ public class PlayerController implements JDGUI {
 	@Override
 	public void onTurn() {
 		JDPoint roomNumber = this.heroInfo.getRoomNumber();
-		viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
+		//viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
+
+		for (JDPoint point : roomRenderUpdateLaundry) {
+			viewModel.updateRoom(point.getX(), point.getY());
+		}
+		roomRenderUpdateLaundry.clear();
+
 	}
 
 	@Override
@@ -214,13 +220,13 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void notifyVisibilityStatusDecrease(JDPoint p) {
-		updateRoomViewModel(p);
+		roomRenderUpdateLaundry.add(p);
 		visibilityDecreasedRooms.add(p);
 	}
 
 	@Override
 	public void notifyVisibilityStatusIncrease(JDPoint p) {
-		updateRoomViewModel(p);
+		roomRenderUpdateLaundry.add(p);
 		synchronized (visibilityIncreasedRooms) {
 			visibilityIncreasedRooms.add(p);
 		}
@@ -280,7 +286,8 @@ public class PlayerController implements JDGUI {
 			interrupt(p);
 		}
 		if (number != null) {
-			updateRoomViewModel(number);
+			roomRenderUpdateLaundry.add(number);
+			//updateRoomViewModel(number);
 		}
 
 		synchronized (perceptQueue) {

@@ -125,12 +125,13 @@ public class WorldRenderer implements Disposable {
 	private void renderDungeonBackgroundObjectsForAllRooms() {
 		for (int x = 0; x < viewModel.roomViews.length; x++) {
 			for (int y = 0; y < viewModel.roomViews[0].length; y++) {
-				if (viewModel.geVisStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND) continue;
+				if (viewModel.getVisStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND) continue;
 				//ViewRoom room = viewModel.getRoom(x, y);
 
 				// fetch prepared render information
 				Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> renderInformation = viewModel.roomViews[x][y].getBackgroundObjectsForRoom();
 				if (renderInformation == null || renderInformation.isEmpty()) {
+
 					// no render information yet, we need to fetch object information about the room and update the ViewRoom with it
 					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(viewModel.roomViews[x][y]
 							.getRoomInfo(), viewModel.roomOffSetsX[x][y], viewModel.roomOffSetsY[x][y]);

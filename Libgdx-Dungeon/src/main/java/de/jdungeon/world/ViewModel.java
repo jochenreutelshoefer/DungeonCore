@@ -2,6 +2,7 @@ package de.jdungeon.world;
 
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import dungeon.RoomInfo;
 import figure.FigureInfo;
 import graphics.GraphicObject;
@@ -17,6 +18,8 @@ import graphics.GraphicObjectRenderer;
  * @created 03.01.20.
  */
 public class ViewModel {
+
+	private static final String TAG = ViewModel.class.getName();
 
 	private final FigureInfo figure;
 	public final ViewRoom [][] roomViews;
@@ -44,7 +47,14 @@ public class ViewModel {
 		}
 	}
 
-	public int geVisStatus(int x, int y) {
+	/**
+	 * Returns the visibility status of the room with the given coordinates
+	 *
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return the numerical value of the visibility state of the room at (x,y)
+	 */
+	public int getVisStatus(int x, int y) {
 		RoomInfo roomInfo = figure.getRoomInfo(x, y);
 		if(roomInfo == null) return 0;
 		return roomInfo.getVisibilityStatus();
@@ -62,7 +72,7 @@ public class ViewModel {
 	}
 
 	/**
-	 * Thread-blackboard put-method: here for a particular room of the world the render infrormation
+	 * Thread-blackboard put-method: here for a particular room of the world the render information
 	 * is updated/prepared by the world thread (the world thread now when the world changes in a way
 	 * that requires update of the render information for the UI-controlled figure.
 	 *
@@ -70,6 +80,7 @@ public class ViewModel {
 	 * @param y y coordinate of the room to be updated
 	 */
 	public void updateRoom(int x, int y) {
+		Gdx.app.log(TAG,"Updating render information of room: "+x +" - "+ y);
 		ViewRoom currentViewRoom = roomViews[x][y];
 		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
 		currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
