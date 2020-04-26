@@ -21,6 +21,7 @@ import location.LevelExit;
 import location.RevealMapShrine;
 import location.ScoutShrine;
 import location.Statue;
+import location.defender.DefenderLocation;
 
 import static dungeon.util.RouteInstruction.Direction;
 
@@ -62,7 +63,8 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		Room statueRoom = dungeon.getRoom(4, 7);
 		statueRoom.removeAllDoorsExcept(Direction.North, Direction.South);
-		statueRoom.setShrine(new Statue());
+		statueRoom.setShrine(new DefenderLocation(statueRoom));
+		//statueRoom.setShrine(new Statue());
 		filler.addAllocatedRoom(statueRoom);
 
 		Room hall44 = dungeon.getRoomNr(4, 4);

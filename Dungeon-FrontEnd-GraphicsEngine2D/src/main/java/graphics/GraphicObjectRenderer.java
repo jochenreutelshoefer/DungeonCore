@@ -14,10 +14,13 @@ import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
+import dungeon.RoomEntity;
 import dungeon.RoomInfo;
+import dungeon.util.InfoUnitUnwrapper;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
+import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.Ghul;
 import figure.monster.Monster;
@@ -54,7 +57,6 @@ import item.quest.Feather;
 import item.quest.Incense;
 import item.quest.Rune;
 import item.quest.Thing;
-import log.Log;
 import location.Angel;
 import location.Brood;
 import location.Corpse;
@@ -71,6 +73,8 @@ import location.SorcerLab;
 import location.Statue;
 import location.Trader;
 import location.Xmas;
+import location.defender.DefenderLocation;
+import log.Log;
 import util.JDColor;
 import util.JDDimension;
 
@@ -275,7 +279,8 @@ public class GraphicObjectRenderer {
 				getDoorDimension(true, roomSize).getWidth()),
 				roomBlackBackgroundDimension);
 
-		JDDimension roomBackgroundDimension = new JDDimension(roomSize, (roomSize - (this.getDoorDimension(true, roomSize).getWidth()))
+		JDDimension roomBackgroundDimension = new JDDimension(roomSize, (roomSize - (this.getDoorDimension(true, roomSize)
+				.getWidth()))
 				+ 1  // for some reason we need an additional pixel here to prevent a black gap (probably due to rounding issues somewhere)
 		);
 		roomRect = new RelativeRectangle(new JDPoint(0, 0), roomBackgroundDimension);
@@ -597,7 +602,7 @@ public class GraphicObjectRenderer {
 		}
 		else {
 			width = roomSize / 4;
-			heigth = roomSize / 8 ;
+			heigth = roomSize / 8;
 		}
 		return new JDDimension(width, heigth);
 	}
@@ -634,13 +639,12 @@ public class GraphicObjectRenderer {
 	private GraphicObject drawAMonster(MonsterInfo m, JDPoint relativeCoordinates) {
 
 		JDDimension figureInfoSize = getFigureInfoSize(m);
-		int sizeX = figureInfoSize.getWidth();
-		int sizeY = figureInfoSize.getHeight();
-		RelativeRectangle monsterDrawRect = new RelativeRectangle(relativeCoordinates.getX() - (sizeX / 2), relativeCoordinates.getY() - (sizeY / 2), sizeX, sizeY);
+		RelativeRectangle monsterDrawRect = getHeroRectangle(relativeCoordinates.getX(), relativeCoordinates
+				.getY(), figureInfoSize);
 		JDImageProxy<?> image = ImageManager.getImage(m, m.getLookDirection());
-		if(m.isDead()) {
+		if (m.isDead()) {
 			final DefaultAnimationSet dyingAnimationSet = ImageManager.getAnimationSet(m, Motion.TippingOver, m.getLookDirection());
-			if(dyingAnimationSet != null) {
+			if (dyingAnimationSet != null) {
 				image = dyingAnimationSet.getImagesNr(dyingAnimationSet.getLength() - 1);
 			}
 		}
@@ -756,6 +760,15 @@ public class GraphicObjectRenderer {
 			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
 			int xsize = ROOMSIZE_BY_3;
 			int ysize = (int) (roomSize / 2.5);
+			ob = new JDGraphicObject(new JDImageLocated(
+					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
+					shrineRect, JDColor.YELLOW);
+		}
+		else if (s.getShrineClass().equals(DefenderLocation.class)) {
+			int xpos = roomOffsetX + (17 * ROOMSIZE_BY_24);
+			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
+			int xsize = (int) (roomSize / 2.0);
+			int ysize = (int) (roomSize / 2.0);
 			ob = new JDGraphicObject(new JDImageLocated(
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
@@ -906,16 +919,18 @@ public class GraphicObjectRenderer {
 		int xpos = p.getX();
 		int ypos = p.getY();
 		JDDimension figureInfoSize = getFigureInfoSize(info);
-		int xHeroSize = figureInfoSize.getWidth();
-		int yHeroSize = figureInfoSize.getHeight();
-
-		RelativeRectangle heroRectangle = new RelativeRectangle(xpos - (xHeroSize / 2), ypos
-				- (yHeroSize / 2), xHeroSize, yHeroSize);
+		RelativeRectangle heroRectangle = getHeroRectangle(xpos, ypos, figureInfoSize);
 
 		JDImageLocated im = getImage(info, heroRectangle);
 
-		return new JDGraphicObject(im, info, heroRectangle, JDColor.WHITE,
-				getHalfSizeRect(heroRectangle));
+		return new JDGraphicObject(im, info, heroRectangle, JDColor.WHITE, getHalfSizeRect(heroRectangle));
+	}
+
+	private RelativeRectangle getHeroRectangle(int xpos, int ypos, JDDimension figureInfoSize) {
+		int xHeroSize = figureInfoSize.getWidth();
+		int yHeroSize = figureInfoSize.getHeight();
+
+		return new RelativeRectangle(xpos - (xHeroSize / 2), ypos - (yHeroSize / 2), xHeroSize, yHeroSize);
 	}
 
 	private JDImageLocated getImage(HeroInfo info, RelativeRectangle rect) {
@@ -934,8 +949,12 @@ public class GraphicObjectRenderer {
 		}
 		else {
 			Motion motion = null;
-			Boolean fightRunning = info.getRoomInfo().fightRunning();
-			if (fightRunning != null && fightRunning) {
+			RoomInfo roomInfo = info.getRoomInfo();
+			boolean fightRunning = false;
+			if (roomInfo != null) {
+				fightRunning = roomInfo.fightRunning();
+			}
+			if (fightRunning) {
 				motion = Motion.Slaying;
 			}
 			else {
@@ -944,7 +963,7 @@ public class GraphicObjectRenderer {
 			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), motion, RouteInstruction.Direction
 					.fromInteger(info.getLookDirection().getValue()));
 			if (animationSet == null) {
-				Log.warning("No image found for motion " + motion + " + "+info.toString());
+				Log.warning("No image found for motion " + motion + " + " + info.toString());
 				return null;
 			}
 			imageProxy = animationSet.getImagesNr(0);
@@ -1102,8 +1121,6 @@ public class GraphicObjectRenderer {
 					}
 				}
 			}
-
-
 		}
 		if ((status >= RoomObservationStatus.VISIBILITY_ITEMS)) {
 

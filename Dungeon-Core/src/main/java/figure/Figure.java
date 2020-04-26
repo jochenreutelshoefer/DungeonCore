@@ -1125,8 +1125,13 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
+	@Deprecated
 	public void setLookDir(int lookDir) {
 		this.lookDir = lookDir;
+	}
+
+	public void setLookDir(RouteInstruction.Direction dir) {
+		setLookDir(dir.getValue());
 	}
 
 	public Position getPos() {

@@ -58,6 +58,7 @@ import item.quest.Incense;
 import item.quest.MoonRune;
 import item.quest.Rune;
 import item.quest.Thing;
+import location.defender.DefenderLocation;
 import log.Log;
 import location.Angel;
 import location.Corpse;
@@ -1302,6 +1303,7 @@ public class ImageManager {
 		shrineMap.put(Corpse.class, ImageManager.dead_dwarfImage);
 		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, RouteInstruction.Direction.South).getImagesNr(0));
 		shrineMap.put(RuneFinder.class, ImageManager.shrine_small_yellowImage);
+		shrineMap.put(DefenderLocation.class, ImageManager.warrior_walking.get(RouteInstruction.Direction.South).getImagesNr(0));
 	}
 
 	public static JDImageProxy<?> getImage(DoorInfo s) {

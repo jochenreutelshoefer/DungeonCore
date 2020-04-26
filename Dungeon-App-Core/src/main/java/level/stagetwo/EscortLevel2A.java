@@ -8,6 +8,8 @@ import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.generate.DungeonFiller;
 import dungeon.generate.RoomPositionConstraint;
+import figure.FigureControl;
+import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.npc.DefaultNPCFactory;
 import figure.npc.RescuedNPCAI;
@@ -49,7 +51,9 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		Hero npc = DefaultNPCFactory.createDefaultNPC("Willi", Hero.HEROCODE_DRUID);
 		npc.takeItem(new Wolfknife(25, false));
 		// TODO: use setControl!
-		npc.setAI(new RescuedNPCAI());
+		npc.createVisibilityMap(dungeon);
+		FigureInfo npcInfo = FigureInfo.makeFigureInfo(npc, npc.getRoomVisibility());
+		npc.setControl(new FigureControl(npcInfo, new RescuedNPCAI()));
 		hostageRoom.figureEnters(npc, 0, -1);
 
 

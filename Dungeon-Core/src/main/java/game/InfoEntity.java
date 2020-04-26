@@ -13,7 +13,7 @@ import figure.memory.MemoryProvider;
 import gui.Paragraph;
 import gui.Paragraphable;
 
-public abstract class InfoEntity implements Paragraphable,MemoryProvider {
+public abstract class InfoEntity implements Paragraphable, MemoryProvider {
 
 	public DungeonVisibilityMap getMap() {
 		return map;

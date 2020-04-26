@@ -8,6 +8,7 @@ import java.util.List;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import game.InfoEntity;
 import game.InfoProvider;
@@ -19,7 +20,7 @@ import item.interfaces.Usable;
  * Abstrakte Oberklasse aller Schreine/Oertlichkeiten.
  * Ist von Anfang an einem Raum zugeordnet, nicht mobil.
  */
-public abstract class Location implements Usable, Turnable, InfoProvider {
+public abstract class Location implements Usable, Turnable, InfoProvider, RoomEntity {
 
 	protected Room location;
 
@@ -40,6 +41,7 @@ public abstract class Location implements Usable, Turnable, InfoProvider {
 		return -1;
 	}
 
+	@Override
 	public Collection<Position> getInteractionPositions() {
 		return Collections.singletonList(this.getRoom().getPositions()[2]);
 	}
