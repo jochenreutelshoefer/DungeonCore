@@ -3,9 +3,8 @@ package level.stageone;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.generate.DungeonFiller;
 import level.AbstractDungeonFactory;
-import shrine.LevelExit;
+import location.LevelExit;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

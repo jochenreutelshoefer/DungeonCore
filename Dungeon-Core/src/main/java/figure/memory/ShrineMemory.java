@@ -1,6 +1,6 @@
 package figure.memory;
 
-import shrine.Location;
+import location.Location;
 
 public class ShrineMemory extends MemoryObject{
 	
@@ -9,7 +9,6 @@ public class ShrineMemory extends MemoryObject{
 	private Class clazz;
 	
 	public ShrineMemory(Location s){
-		index = s.getShrineIndex();
 		index2 = s.getSecondIdentifier();
 		clazz = s.getClass();
 	}

@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
@@ -11,8 +11,6 @@ import item.Item;
 import item.ItemPool;
 import item.interfaces.Usable;
 import item.quest.Thing;
-import util.JDColor;
-
 
 /**
  * @author Duke1
@@ -83,14 +81,6 @@ public class QuestShrine extends Location {
 	   }
 
 	/**
-	 * @see Location#getColor()
-	 */
-	@Override
-	public JDColor getColor() {
-		return JDColor.black;
-	}
-
-	/**
 	 * @see Location#getStory()
 	 */
 	@Override
@@ -98,10 +88,6 @@ public class QuestShrine extends Location {
 		return null;
 	}
 	
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_QUEST;
-	}
 
 	/**
 	 * @see java.lang.Object#toString()

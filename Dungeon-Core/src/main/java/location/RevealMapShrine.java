@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import game.ControlUnit;
-import util.JDColor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -30,18 +29,8 @@ public class RevealMapShrine extends Location {
 	}
 
 	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_REVEALMAP;
-	}
-
-	@Override
 	public void turn(int round) {
 
-	}
-
-	@Override
-	public JDColor getColor() {
-		return null;
 	}
 
 	@Override

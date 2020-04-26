@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import item.interfaces.Usable;
@@ -6,7 +6,6 @@ import item.interfaces.Usable;
 import java.util.Iterator;
 import java.util.List;
 
-import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
 import figure.hero.Hero;
@@ -67,14 +66,6 @@ public void metaClick(Figure f){
 		return false;
 	}
 	
-	/**
-	 * @see Location#getColor()
-	 */
-	@Override
-	public JDColor getColor() {
-		return JDColor.DARK_GRAY;
-	}
-
 	@Override
 	public boolean needsTarget() {
 		return false;
@@ -87,11 +78,6 @@ public void metaClick(Figure f){
 		return JDEnv.getResourceBundle().getString("shrine_statue_story");
 	}
 	
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_STATUE;
-	}
-
 	/**
 	 * @see java.lang.Object#toString()
 	 */

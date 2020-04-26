@@ -21,7 +21,7 @@ import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
-import shrine.Location;
+import location.Location;
 
 public class RoomQuest_2x2_1 extends RoomQuest {
 

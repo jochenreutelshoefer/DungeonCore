@@ -1,5 +1,8 @@
-package shrine;
+package location;
 
+import java.util.List;
+
+import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
@@ -12,21 +15,12 @@ import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import item.quest.Rune;
 
-import java.util.List;
-
-import util.JDColor;
-import dungeon.Room;
-
-
 public class RuneShrine extends Location implements ItemOwner {
 
-	
 	int index;
 
-	
 	char c;
 
-	
 	Item r;
 
 	boolean solved = false;
@@ -37,7 +31,6 @@ public class RuneShrine extends Location implements ItemOwner {
 		index = i;
 		this.c = c;
 		story = JDEnv.getResourceBundle().getString("see_rune_shrine");
-
 	}
 
 	public RuneShrine(int i, char c) {
@@ -46,36 +39,34 @@ public class RuneShrine extends Location implements ItemOwner {
 		this.c = c;
 		story = JDEnv.getResourceBundle().getString("see_rune_shrine");
 	}
-	
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_RUNE;
+
+	public void metaClick(Figure f) {
+
 	}
-public void metaClick(Figure f) {
-		
-	}
+
 	@Override
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
 		ItemInfo[] it = new ItemInfo[1];
-		if(r != null) {
-			it[0] = ItemInfo.makeItemInfo(r,map);
+		if (r != null) {
+			it[0] = ItemInfo.makeItemInfo(r, map);
 			return it;
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean canBeUsedBy(Figure f) {
-		   return f instanceof Hero;
-	   }
-	
+		return f instanceof Hero;
+	}
+
 	@Override
 	public Item getItem(ItemInfo it) {
-		
-			if(ItemInfo.makeItemInfo(r,null).equals(it)) 
-				return r;
-		
-			return null;
+
+		if (ItemInfo.makeItemInfo(r, null).equals(it)) {
+			return r;
+		}
+
+		return null;
 	}
 
 	@Override
@@ -85,18 +76,18 @@ public void metaClick(Figure f) {
 
 	@Override
 	public Room getRoom() {
-			return this.location; 
-		}
-		
+		return this.location;
+	}
+
 	@Override
 	public boolean removeItem(Item i) {
-		if(i == r) {
+		if (i == r) {
 			r = null;
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean needsTarget() {
 		return false;
@@ -106,20 +97,20 @@ public void metaClick(Figure f) {
 	public String getText() {
 
 		return toString()
-			+ JDEnv.getResourceBundle().getString("shrine_rune_text_a")+" "
-			+ index
-			+ " "+JDEnv.getResourceBundle().getString("shrine_rune_text_b")
-			+ "\n"+JDEnv.getResourceBundle().getString("state")+ ": "+getStatus();
+				+ JDEnv.getResourceBundle().getString("shrine_rune_text_a") + " "
+				+ index
+				+ " " + JDEnv.getResourceBundle().getString("shrine_rune_text_b")
+				+ "\n" + JDEnv.getResourceBundle().getString("state") + ": " + getStatus();
 	}
 
 	@Override
 	public String getStory() {
 		return story;
 	}
-	
+
 	@Override
 	public boolean addItems(List<Item> l, ItemOwner o) {
-		for(int i = 0; i < l.size();i++) {
+		for (int i = 0; i < l.size(); i++) {
 			Item it = (l.get(i));
 			this.takeItem(it);
 		}
@@ -131,20 +122,12 @@ public void metaClick(Figure f) {
 		return false;
 	}
 
-	
 	public int getIndex() {
 		return index;
 	}
 
-	
 	public char getChar() {
 		return c;
-	}
-
-
-	@Override
-	public JDColor getColor() {
-		return JDColor.red;
 	}
 
 	@Override
@@ -158,24 +141,28 @@ public void metaClick(Figure f) {
 				}
 			}
 			return true;
-		} else
+		}
+		else {
 			return false;
+		}
 	}
 
-	
 	public Item getItem() {
 		solved = false;
-		if (r instanceof Rune)
+		if (r instanceof Rune) {
 			((Rune) r).setSolved(false);
-		if (r != null)
+		}
+		if (r != null) {
 			return r;
-		else
+		}
+		else {
 			return null;
+		}
 	}
-	
+
 	@Override
 	public String toString() {
-		return JDEnv.getResourceBundle().getString("shrine_rune_name")+": " + Integer.toString(index);
+		return JDEnv.getResourceBundle().getString("shrine_rune_name") + ": " + Integer.toString(index);
 	}
 
 	@Override
@@ -185,7 +172,7 @@ public void metaClick(Figure f) {
 
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		if(r != null) {
+		if (r != null) {
 			this.location.addItem(r);
 			r = null;
 		}
@@ -199,10 +186,10 @@ public void metaClick(Figure f) {
 	public void clicked(Figure f, boolean right) {
 		//shrineView v = new shrineView(f.getGame().getMain(), "Runenschrein", true,f,this); 
 		if (r != null) {
-			 //game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
-			 Percept p = new UsePercept(f,this, -1);
-			 f.getRoom().distributePercept(p);
-			
+			//game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
+			Percept p = new UsePercept(f, this, -1);
+			f.getRoom().distributePercept(p);
+
 			this.location.addItem(r);
 			r = null;
 		}
@@ -212,9 +199,9 @@ public void metaClick(Figure f) {
 	public String getStatus() {
 		if (r == null) {
 			return JDEnv.getResourceBundle().getString("empty");
-		} else {
+		}
+		else {
 			return r.toString();
 		}
-
 	}
 }

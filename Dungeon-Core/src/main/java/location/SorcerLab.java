@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import item.AttrPotion;
@@ -17,7 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import spell.AbstractSpell;
-import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
 import figure.RoomObservationStatus;
@@ -138,25 +137,10 @@ public class SorcerLab extends Location implements VisibilityModifier {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see shrine#getColor()
-	 */
-	@Override
-	public JDColor getColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean needsTarget() {
 		return false;
-	}
-
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_SORCER_LAB;
 	}
 
 	/*

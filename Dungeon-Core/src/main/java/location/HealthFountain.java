@@ -7,10 +7,9 @@
  * Window>Preferences>Java>Code Generation.
  */
 
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
-import util.JDColor;
 import figure.Figure;
 import figure.attribute.Attribute;
 import game.JDEnv;
@@ -70,16 +69,7 @@ public class HealthFountain extends Location {
 			health.setValue(health.getBasic());
 		}
 	}
-	
-	@Override
-	public JDColor getColor() {
-		return JDColor.blue;
-	}
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_HEALTH_FOUNTAIN;
-	}
-	
+
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_fountain_name");

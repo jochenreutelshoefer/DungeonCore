@@ -40,7 +40,7 @@ public class RoomMemory extends MemoryObject{
 			chest = r.getChest().getMemoryObject(info);
 		}
 		if(shrine != null) {
-			shrine = r.getShrine().getMemoryObject(info);
+			//shrine = r.getShrine().getMemoryObject(info);
 		}
 		List its = r.getItems();
 		for (Iterator iter = its.iterator(); iter.hasNext();) {

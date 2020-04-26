@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import spell.Prayer;
-import util.JDColor;
 
 public class Angel extends Location {
 	
@@ -40,21 +39,9 @@ public class Angel extends Location {
 	}
 
 	@Override
-	public int getShrineIndex() {
-		// TODO Auto-generated method stub
-		return Location.SHRINE_ANGEL;
-	}
-
-	@Override
 	public void turn(int round) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public JDColor getColor() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

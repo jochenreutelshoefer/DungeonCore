@@ -14,7 +14,7 @@ import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 import log.Log;
-import shrine.ShrineInfo;
+import location.ShrineInfo;
 import util.JDColor;
 import util.JDDimension;
 

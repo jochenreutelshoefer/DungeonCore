@@ -29,7 +29,7 @@ import figure.monster.Monster;
 import figure.monster.MonsterInfo;
 import game.ControlUnit;
 import game.Turnable;
-import shrine.Location;
+import location.Location;
 
 /**
  * Diese Klasse bildet den Dungeon, welcher aus einem 2D-Array von Raeumen

@@ -4,7 +4,7 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package shrine;
+package location;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,16 +32,7 @@ public class ShrineInfo extends RoomInfoEntity {
 		return s.getClass();
 	}
 
-	@Deprecated
-	public int getShrineIndex() {
-		JDPoint location = getLocation();
-		if (location != null
-				&& map.getDiscoveryStatus(location) >= RoomObservationStatus.VISIBILITY_SHRINE) {
-			return s.getShrineIndex();
-		}
-		return -1;
-	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)
@@ -57,9 +48,10 @@ public class ShrineInfo extends RoomInfoEntity {
 		return s.hashCode();
 	}
 
+	@Deprecated
 	@Override
 	public ShrineMemory getMemoryObject(FigureInfo info) {
-		return s.getMemoryObject(info);
+		return null;
 	}
 
 	public int getType() {

@@ -1,7 +1,7 @@
 package dungeon.generate.undo;
 
 import dungeon.Room;
-import shrine.Location;
+import location.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

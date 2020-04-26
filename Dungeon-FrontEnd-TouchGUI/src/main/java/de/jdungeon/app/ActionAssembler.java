@@ -2,7 +2,6 @@ package de.jdungeon.app;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import ai.ActionAssemblerHelper;
@@ -14,15 +13,13 @@ import event.Event;
 import event.EventListener;
 import event.EventManager;
 import figure.FigureInfo;
-import figure.RoomObservationStatus;
 import figure.action.Action;
 import figure.action.EndRoundAction;
-import figure.action.ScoutAction;
 import figure.hero.HeroInfo;
 import game.JDGUI;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
-import shrine.ShrineInfo;
+import location.ShrineInfo;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.ClickType;

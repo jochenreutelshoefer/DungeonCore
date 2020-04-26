@@ -21,7 +21,7 @@ import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
 import log.Log;
-import shrine.LevelExit;
+import location.LevelExit;
 import text.StatementManager;
 import user.DungeonSession;
 

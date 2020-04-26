@@ -36,8 +36,8 @@ import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import log.Log;
-import shrine.Location;
-import shrine.Statue;
+import location.Location;
+import location.Statue;
 import util.JDColor;
 
 public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {

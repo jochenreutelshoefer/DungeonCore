@@ -11,7 +11,7 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
-import shrine.LevelExit;
+import location.LevelExit;
 
 /**
  * A control unit controls one figure within the dungeon game. Each figure

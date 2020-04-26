@@ -22,7 +22,7 @@ import game.JDGUI;
 import level.DefaultDungeonManager;
 import level.DungeonFactory;
 import level.DungeonManager;
-import shrine.LevelExit;
+import location.LevelExit;
 import skill.HealSkill;
 import skill.LionessConjureSkill;
 import spell.Raid;

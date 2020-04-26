@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import animation.DefaultAnimationSet;
 import animation.AnimationSetDirections;
+import animation.DefaultAnimationSet;
 import animation.Motion;
 import audio.AudioEffectsManager;
 import dungeon.Dir;
@@ -59,21 +59,22 @@ import item.quest.MoonRune;
 import item.quest.Rune;
 import item.quest.Thing;
 import log.Log;
-import shrine.Angel;
-import shrine.Brood;
-import shrine.DarkMasterShrine;
-import shrine.HealthFountain;
-import shrine.LevelExit;
-import shrine.MoonRuneFinderShrine;
-import shrine.QuestShrine;
-import shrine.RevealMapShrine;
-import shrine.ScoutShrine;
-import shrine.Location;
-import shrine.ShrineInfo;
-import shrine.SorcerLab;
-import shrine.Statue;
-import shrine.Trader;
-import shrine.Xmas;
+import location.Angel;
+import location.Corpse;
+import location.DarkMasterShrine;
+import location.HealthFountain;
+import location.LevelExit;
+import location.Location;
+import location.MoonRuneFinderShrine;
+import location.QuestShrine;
+import location.RevealMapShrine;
+import location.RuneFinder;
+import location.ScoutShrine;
+import location.ShrineInfo;
+import location.SorcerLab;
+import location.Statue;
+import location.Trader;
+import location.Xmas;
 
 import de.jdungeon.game.AbstractImageLoader;
 
@@ -595,10 +596,6 @@ public class ImageManager {
 		return new AnimationSetDirections(set);
 	}
 
-
-
-
-
 	public static boolean imagesLoaded = false;
 
 	public void loadImages() {
@@ -957,9 +954,8 @@ public class ImageManager {
 			createMonsterAnimationMap(a);
 			createShrineClassMap();
 
-			Logger.getLogger(ImageManager.class.getName()).info("Completed initializing images in: "+Long.toString(System.currentTimeMillis()-startTime));
-
-
+			Logger.getLogger(ImageManager.class.getName())
+					.info("Completed initializing images in: " + Long.toString(System.currentTimeMillis() - startTime));
 		}
 
 		imagesLoaded = true;
@@ -997,9 +993,9 @@ public class ImageManager {
 	private static JDImageProxy<?>[] loadArray(AbstractImageLoader a,
 											   String path, String fileNamePrefix, int dir) {
 
-		if(!path.startsWith("animation")) {
+		if (!path.startsWith("animation")) {
 			// new loading mechanism
-			path = "animation/"+path+"/";
+			path = "animation/" + path + "/";
 		}
 
 		List<JDImageProxy<?>> imageList = new LinkedList<>();
@@ -1108,16 +1104,14 @@ public class ImageManager {
 		floorImage_darkArray[5] = floor_darkImage6;
 		floorImage_darkArray[6] = floor_darkImage7;
 		floorImage_darkArray[7] = null;
-
 	}
 
 	public static DefaultAnimationSet getAnimationSet(MonsterInfo monster, Motion motion, RouteInstruction.Direction direction) {
 		Class<? extends Monster> monsterClass = monster.getMonsterClass();
 		if (monsterAnimationMap.containsKey(monsterClass)) {
 			CharacterAnimationSet characterAnimationSet = monsterAnimationMap.get(monsterClass);
-			if(characterAnimationSet.containsMotion(motion)) {
-				return  characterAnimationSet.getAnimationSet(motion, direction);
-
+			if (characterAnimationSet.containsMotion(motion)) {
+				return characterAnimationSet.getAnimationSet(motion, direction);
 			}
 			else {
 				Log.severe("No animation set found for monster class: " + monsterClass + " and motion: " + motion);
@@ -1204,7 +1198,6 @@ public class ImageManager {
 		monsterAnimationMap.get(Lioness.class).put(Motion.Using, ImageManager.lioness_using);
 		monsterAnimationMap.get(Lioness.class).put(Motion.Slaying, ImageManager.lioness_slays);
 		monsterAnimationMap.get(Lioness.class).put(Motion.Sorcering, ImageManager.lioness_sorcering);
-
 	}
 
 	private static final Map<Hero.HeroCategory, DefaultCharacterAnimationSet> heroAnimationMap = new HashMap<>();
@@ -1250,7 +1243,6 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Using, ImageManager.mage_using);
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Slaying, ImageManager.mage_slays);
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Sorcering, ImageManager.mage_sorcering);
-
 	}
 
 	public static DefaultAnimationSet getAnimationSet(HeroInfo hero, Motion motion, RouteInstruction.Direction direction) {
@@ -1307,10 +1299,10 @@ public class ImageManager {
 		shrineMap.put(DarkMasterShrine.class, ImageManager.pentagrammImage);
 		shrineMap.put(LevelExit.class, ImageManager.falltuerImage);
 		shrineMap.put(ScoutShrine.class, ImageManager.saeuleImage);
+		shrineMap.put(Corpse.class, ImageManager.dead_dwarfImage);
 		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, RouteInstruction.Direction.South).getImagesNr(0));
+		shrineMap.put(RuneFinder.class, ImageManager.shrine_small_yellowImage);
 	}
-
-
 
 	public static JDImageProxy<?> getImage(DoorInfo s) {
 		if (s.hasLock()) {
@@ -1323,68 +1315,11 @@ public class ImageManager {
 
 	public static JDImageProxy<?> getImage(ShrineInfo s) {
 
-		int shrineIndex = s.getShrineIndex();
 		Class<? extends Location> shrineClass = s.getShrineClass();
 		if (shrineMap.containsKey(shrineClass)) {
 			return shrineMap.get(shrineClass);
 		}
-
-		JDImageProxy<?> im = null;
-		if (shrineIndex == Location.SHRINE_BROOD) {
-			if ((s).getType() == Brood.BROOD_NATURE) {
-				im = ImageManager.caveImage;
-			}
-			else if ((s).getType() == Brood.BROOD_CREATURE) {
-				im = ImageManager.falltuerImage;
-			}
-			else if ((s).getType() == Brood.BROOD_UNDEAD) {
-				im = ImageManager.graveImage;
-			}
-		}
-		else if (shrineIndex == Location.SHRINE_RUNE) {
-			if ((s).getType() == 1) {
-				im = ImageManager.shrine_yellowImage;
-			}
-			else if ((s).getType() == 2) {
-				im = ImageManager.shrine_greenImage;
-			}
-			else if (s.getType() == 3) {
-				im = ImageManager.shrine_redImage;
-			}
-
-		}
-		else if (shrineIndex == Location.SHRINE_CORPSE) {
-
-			if ((s).getType() == 0) {
-				im = ImageManager.dead_dwarfImage;
-			}
-			else if ((s).getType() == 1) {
-				im = ImageManager.dead_warriorImage;
-			}
-			else if ((s).getType() == 2) {
-				im = ImageManager.dead_thiefImage;
-
-			}
-			else if ((s).getType() == 3) {
-				im = ImageManager.dead_druidImage;
-			}
-			else if ((s).getType() == 4) {
-				im = ImageManager.dead_mageImage;
-			}
-		}
-		else if (shrineIndex == Location.SHRINE_RUNEFINDER) {
-			if ((s).getType() == 1) {
-				im = ImageManager.shrine_small_yellowImage;
-			}
-			else if ((s).getType() == 2) {
-				im = ImageManager.shrine_small_greenImage;
-			}
-			else if ((s).getType() == 3) {
-				im = ImageManager.shrine_small_redImage;
-			}
-
-		}
-		return im;
+		return null;
 	}
 
 	public static Map<Class<? extends Monster>, JDImageProxy<?>[]> figureMap = new HashMap<>();
@@ -1405,9 +1340,11 @@ public class ImageManager {
 			Class<? extends Monster> monsterClass = m.getMonsterClass();
 			if (figureMap.containsKey(monsterClass)) {
 				return figureMap.get(monsterClass)[dir.getValue() - 1];
-			} else {
-				DefaultAnimationSet animationSet = monsterAnimationMap.get(monsterClass).getAnimationSet(Motion.Walking, dir);
-				if(animationSet != null) {
+			}
+			else {
+				DefaultAnimationSet animationSet = monsterAnimationMap.get(monsterClass)
+						.getAnimationSet(Motion.Walking, dir);
+				if (animationSet != null) {
 					return animationSet.getImagesNr(0);
 				}
 			}
@@ -1535,7 +1472,7 @@ public class ImageManager {
 			for (Motion motion : motions) {
 				AnimationSetDirections set = load4Animations(loader, foldername, motionFilenameMap
 						.get(motion));
-				if(set != null) {
+				if (set != null) {
 					result.put(motion, set);
 				}
 			}
@@ -1547,7 +1484,7 @@ public class ImageManager {
 
 		private final Map<Motion, AnimationSetDirections> animations;
 
-		public DefaultCharacterAnimationSet( Map<Motion, AnimationSetDirections> animations) {
+		public DefaultCharacterAnimationSet(Map<Motion, AnimationSetDirections> animations) {
 			this.animations = animations;
 		}
 
@@ -1563,18 +1500,17 @@ public class ImageManager {
 		@Override
 		public DefaultAnimationSet getAnimationSet(Motion motion, RouteInstruction.Direction direction) {
 			AnimationSetDirections animationSetDirections = animations.get(motion);
-			if(animationSetDirections != null) {
+			if (animationSetDirections != null) {
 				return animationSetDirections.get(direction);
-			} else {
+			}
+			else {
 				return null;
 			}
-
 		}
 
 		@Override
 		public boolean containsMotion(Motion motion) {
 			return animations.containsKey(motion);
 		}
-
 	}
 }

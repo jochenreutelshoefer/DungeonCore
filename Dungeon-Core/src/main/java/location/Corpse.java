@@ -4,7 +4,7 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package shrine;
+package location;
 
 /**
  * @author Jochen
@@ -25,7 +25,6 @@ import figure.percept.TextPercept;
 import figure.percept.UsePercept;
 import game.JDEnv;
 import item.Item;
-import util.JDColor;
 
 public class Corpse extends Location {
 	private final int type;
@@ -40,11 +39,6 @@ public class Corpse extends Location {
 		this.type = type;
 	}
 
-	@Override
-	public JDColor getColor() {
-		return JDColor.DARK_GRAY;
-	}
-
 	/**
 	 * @see Location#getStory()
 	 */
@@ -56,11 +50,6 @@ public class Corpse extends Location {
 	@Override
 	public boolean needsTarget() {
 		return false;
-	}
-
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_CORPSE;
 	}
 
 	public void metaClick(Figure f) {

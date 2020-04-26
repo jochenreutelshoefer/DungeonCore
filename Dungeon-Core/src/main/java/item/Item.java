@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import shrine.Location;
-import shrine.ShrineInfo;
+import location.Location;
+import location.ShrineInfo;
 import util.JDColor;
 import dungeon.Chest;
 import dungeon.ChestInfo;

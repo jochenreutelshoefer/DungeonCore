@@ -28,7 +28,7 @@ import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
 import item.ItemInfo;
-import shrine.ShrineInfo;
+import location.ShrineInfo;
 import skill.FleeSkill;
 import util.JDDimension;
 

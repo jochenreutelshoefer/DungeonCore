@@ -29,10 +29,10 @@ import item.Key;
 import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
 import level.generation.SimpleDungeonFiller;
-import shrine.HealthFountain;
-import shrine.LevelExit;
-import shrine.RevealMapShrine;
-import shrine.Statue;
+import location.HealthFountain;
+import location.LevelExit;
+import location.RevealMapShrine;
+import location.Statue;
 import spell.KeyLocator;
 
 /**

@@ -55,12 +55,22 @@ import item.quest.Incense;
 import item.quest.Rune;
 import item.quest.Thing;
 import log.Log;
-import shrine.Angel;
-import shrine.Brood;
-import shrine.MoonRuneFinderShrine;
-import shrine.ScoutShrine;
-import shrine.Location;
-import shrine.ShrineInfo;
+import location.Angel;
+import location.Brood;
+import location.Corpse;
+import location.HealthFountain;
+import location.LevelExit;
+import location.MoonRuneFinderShrine;
+import location.QuestShrine;
+import location.RevealMapShrine;
+import location.RuneFinder;
+import location.RuneShrine;
+import location.ScoutShrine;
+import location.ShrineInfo;
+import location.SorcerLab;
+import location.Statue;
+import location.Trader;
+import location.Xmas;
 import util.JDColor;
 import util.JDDimension;
 
@@ -730,7 +740,7 @@ public class GraphicObjectRenderer {
 												   int roomOffsetY) {
 		// TODO: refactor this, we shouldn't need to create new objects here, use RelativeRectangles
 		JDGraphicObject ob = null;
-		if (s.getShrineIndex() == Location.SHRINE_HEALTH_FOUNTAIN || s.getShrineClass()
+		if (s.getShrineClass().equals(HealthFountain.class) || s.getShrineClass()
 				.equals(MoonRuneFinderShrine.class)) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
 			int ypos = roomOffsetY + (1 * ROOMSIZE_BY_16);
@@ -741,16 +751,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(fountainImage, s,
 					shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_REPAIR) {
-			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
-			int ypos = roomOffsetY + (1 * ROOMSIZE_BY_16);
-			int xsize = ROOMSIZE_BY_3;
-			int ysize = (int) (roomSize / 3.5);
-			ob = new JDGraphicObject(new JDImageLocated(
-					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
-					shrineRect, JDColor.YELLOW);
-		}
-		else if (s.getShrineIndex() == Location.SHRINE_STATUE) {
+		else if (s.getShrineClass().equals(Statue.class)) {
 			int xpos = roomOffsetX + (16 * ROOMSIZE_BY_24);
 			int ypos = roomOffsetY + (0 * ROOMSIZE_BY_36);
 			int xsize = ROOMSIZE_BY_3;
@@ -768,7 +769,7 @@ public class GraphicObjectRenderer {
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_ANGEL) {
+		else if (s.getShrineClass().equals(Angel.class)) {
 			int xpos = roomOffsetX + (16 * ROOMSIZE_BY_24);
 			int ypos = roomOffsetY - (1 * ROOMSIZE_BY_36);
 			int xsize = ROOMSIZE_BY_3;
@@ -781,7 +782,7 @@ public class GraphicObjectRenderer {
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_SORCER_LAB) {
+		else if (s.getShrineClass().equals(SorcerLab.class)) {
 			int xpos = roomOffsetX + (25 * roomSize / 60);
 			int ypos = roomOffsetY - (1 * ROOMSIZE_BY_12);
 			int xsize = (int) (roomSize / 1.65);
@@ -790,7 +791,7 @@ public class GraphicObjectRenderer {
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_EXIT) {
+		else if (s.getShrineClass().equals(LevelExit.class)) {
 			int xpos = roomOffsetX + (2 * ROOMSIZE_BY_3);
 			int ypos = roomOffsetY + (1 * ROOMSIZE_BY_6);
 			int xsize = roomSize / 4;
@@ -799,7 +800,7 @@ public class GraphicObjectRenderer {
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_BROOD) {
+		else if (s.getShrineClass().equals(Brood.class)) {
 			if ((s).getType() == Brood.BROOD_NATURE) {
 				int xpos = roomOffsetX + (7 * roomSize / 18);
 				int ypos = roomOffsetY + (1 * ROOMSIZE_BY_12);
@@ -828,7 +829,7 @@ public class GraphicObjectRenderer {
 						shrineRect, JDColor.YELLOW);
 			}
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_TRADER) {
+		else if (s.getShrineClass().equals(Trader.class)) {
 			int xpos = roomOffsetX + (19 * roomSize / 30);
 			int ypos = roomOffsetY + (1 * roomSize / 24);
 			int xsize = (int) (roomSize / 2.8);
@@ -837,7 +838,7 @@ public class GraphicObjectRenderer {
 					ImageManager.getImage(s), xpos, ypos, xsize, ysize), s,
 					shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_RUNE) {
+		else if (s.getShrineClass().equals(RuneShrine.class)) {
 			int xpos = roomOffsetX + (13 * roomSize / 20);
 			int ypos = roomOffsetY + (1 * roomSize / 36);
 			int xsize = (int) (roomSize / 2.9);
@@ -847,7 +848,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_CORPSE) {
+		else if (s.getShrineClass().equals(Corpse.class)) {
 			int xpos = roomOffsetX + (13 * roomSize / 20);
 			int ypos = roomOffsetY + (6 * roomSize / 36);
 			int xsize = (int) (roomSize / 3.2);
@@ -856,7 +857,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_QUEST) {
+		else if (s.getShrineClass().equals(QuestShrine.class)) {
 			int xpos = roomOffsetX + (13 * roomSize / 20);
 			int ypos = roomOffsetY + (1 * roomSize / 36);
 			int xsize = (int) (roomSize / 2.9);
@@ -866,7 +867,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_XMAS) {
+		else if (s.getShrineClass().equals(Xmas.class)) {
 			int xpos = roomOffsetX + (27 * roomSize / 60);
 			int ypos = roomOffsetY - (1 * ROOMSIZE_BY_10);
 			int xsize = (int) (roomSize / 1.7);
@@ -876,7 +877,7 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_RUNEFINDER) {
+		else if (s.getShrineClass().equals(RuneFinder.class)) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
 			int ypos = roomOffsetY + (1 * roomSize / 24);
 			int xsize = (int) (roomSize / 3.4);
@@ -885,20 +886,11 @@ public class GraphicObjectRenderer {
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);
 		}
-		else if (s.getShrineIndex() == Location.SHRINE_REVEALMAP) {
+		else if (s.getShrineClass().equals(RevealMapShrine.class)) {
 			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
 			int ypos = roomOffsetY + (1 * roomSize / 24);
 			int xsize = (int) (roomSize / 3.4);
 			int ysize = (int) (roomSize / 2.7);
-			JDImageProxy<?> im = ImageManager.getImage(s);
-			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
-					ysize), s, shrineRect, JDColor.YELLOW);
-		}
-		else if (s.getShrineIndex() == Location.SHRINE_DARK_MASTER) {
-			int xpos = roomOffsetX + (7 * ROOMSIZE_BY_10);
-			int ypos = roomOffsetY + (3 * ROOMSIZE_BY_16);
-			int xsize = (int) (roomSize / 3.6);
-			int ysize = (int) (roomSize / 3.7);
 			JDImageProxy<?> im = ImageManager.getImage(s);
 			ob = new JDGraphicObject(new JDImageLocated(im, xpos, ypos, xsize,
 					ysize), s, shrineRect, JDColor.YELLOW);

@@ -1,5 +1,5 @@
 //import java.util.*;
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
@@ -12,7 +12,6 @@ import figure.monster.Spider;
 import figure.monster.Wolf;
 import game.JDEnv;
 import item.Item;
-import util.JDColor;
 import dungeon.Room;
 import dungeon.util.RouteInstruction;
 
@@ -95,17 +94,6 @@ public class Brood extends Location {
 		return false;
 	}
 
-	@Override
-	public JDColor getColor() {
-		return JDColor.red;
-	}
-	
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_BROOD;
-	}
-
-	
 	@Override
 	public void turn(int round) {
 		////System.out.println(

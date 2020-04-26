@@ -1,38 +1,26 @@
 package level.stageone;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import dungeon.Chest;
-import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;
-import dungeon.generate.DeadEndPath;
-import dungeon.generate.DistanceAtLeastConstraint;
 import dungeon.generate.DistanceAtMostConstraint;
-import dungeon.quest.ReversibleRoomQuest;
-import dungeon.quest.RoomQuestWall;
 import dungeon.util.RouteInstruction;
-import figure.DungeonVisibilityMap;
 import figure.FigureInfo;
 import figure.monster.Wolf;
-import item.HealPotion;
-import item.Item;
 import item.Key;
 import item.OxygenPotion;
 import item.VisibilityCheatBall;
-import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
 import level.generation.SimpleDungeonFiller;
-import shrine.Corpse;
-import shrine.HealthFountain;
-import shrine.LevelExit;
-import shrine.RevealMapShrine;
-import shrine.ScoutShrine;
-import shrine.Statue;
-import spell.KeyLocator;
+import location.HealthFountain;
+import location.LevelExit;
+import location.RevealMapShrine;
+import location.ScoutShrine;
+import location.Statue;
 
 import static dungeon.util.RouteInstruction.Direction;
 

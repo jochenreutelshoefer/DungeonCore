@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,6 @@ import figure.hero.Hero;
 import figure.percept.TextPercept;
 import game.JDEnv;
 import item.Item;
-import util.JDColor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -46,18 +45,8 @@ public class LevelExit extends Location {
 	}
 
 	@Override
-	public int getShrineIndex() {
-		return SHRINE_EXIT;
-	}
-
-	@Override
 	public void turn(int round) {
 
-	}
-
-	@Override
-	public JDColor getColor() {
-		return null;
 	}
 
 	@Override

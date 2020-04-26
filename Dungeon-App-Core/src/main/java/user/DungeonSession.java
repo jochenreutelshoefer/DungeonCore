@@ -8,7 +8,7 @@ import game.ControlUnit;
 import game.JDGUI;
 import level.DungeonFactory;
 import level.DungeonManager;
-import shrine.LevelExit;
+import location.LevelExit;
 import spell.Spell;
 
 /**

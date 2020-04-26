@@ -23,19 +23,17 @@ import item.HealPotion;
 import item.Item;
 import item.ItemInfo;
 import item.Key;
-import item.VisibilityCheatBall;
 import item.paper.ScrollMagic;
 import item.quest.MoonRune;
 import level.AbstractDungeonFactory;
 import level.generation.SimpleDungeonFiller;
-import shrine.Corpse;
-import shrine.HealthFountain;
-import shrine.LevelExit;
-import shrine.MoonRuneFinderShrine;
-import shrine.RevealMapShrine;
-import shrine.ScoutShrine;
-import shrine.Statue;
-import spell.KeyLocator;
+import location.Corpse;
+import location.HealthFountain;
+import location.LevelExit;
+import location.MoonRuneFinderShrine;
+import location.RevealMapShrine;
+import location.ScoutShrine;
+import location.Statue;
 import spell.Steal;
 
 /**

@@ -1,7 +1,7 @@
 package event;
 
 import figure.Figure;
-import shrine.LevelExit;
+import location.LevelExit;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

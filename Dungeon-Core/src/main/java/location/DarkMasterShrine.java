@@ -1,10 +1,9 @@
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import item.Item;
 import item.ItemPool;
 import item.quest.DarkMasterKey;
-import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
 import figure.monster.DarkMaster;
@@ -155,22 +154,6 @@ public boolean needsTarget() {
 	public void turn(int round) {
 		// TODO Auto-generated method stub
 
-	}
-	
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_DARK_MASTER;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see shrine#getColor()
-	 */
-	@Override
-	public JDColor getColor() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/*

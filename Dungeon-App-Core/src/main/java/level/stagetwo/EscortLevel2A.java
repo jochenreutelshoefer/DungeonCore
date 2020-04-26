@@ -16,7 +16,7 @@ import item.VisibilityCheatBall;
 import item.equipment.weapon.Wolfknife;
 import level.AbstractDungeonFactory;
 import level.generation.SimpleDungeonFiller;
-import shrine.LevelExit;
+import location.LevelExit;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

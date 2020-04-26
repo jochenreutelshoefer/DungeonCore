@@ -10,8 +10,8 @@ import item.interfaces.Usable;
 import java.util.HashMap;
 import java.util.Map;
 
-import shrine.RuneShrine;
-import shrine.Location;
+import location.RuneShrine;
+import location.Location;
 
 
 

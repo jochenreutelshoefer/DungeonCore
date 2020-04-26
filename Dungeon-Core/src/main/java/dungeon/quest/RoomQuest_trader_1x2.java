@@ -15,7 +15,7 @@ import item.Key;
 
 import java.util.List;
 
-import shrine.Trader;
+import location.Trader;
 import dungeon.Door;
 import dungeon.JDPoint;
 import dungeon.generate.AbstractDungeonFiller;

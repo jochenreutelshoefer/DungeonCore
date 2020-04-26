@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.action.ScoutResult;
-import util.JDColor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -53,20 +52,8 @@ public class ScoutShrine extends Location {
 	}
 
 	@Override
-	public int getShrineIndex() {
-		// deprecated
-		return -1;
-	}
-
-	@Override
 	public void turn(int round) {
 		// do nothing
-	}
-
-	@Override
-	public JDColor getColor() {
-		// deprecated
-		return null;
 	}
 
 	@Override

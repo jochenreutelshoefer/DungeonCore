@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import dungeon.Door;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Path;
@@ -33,7 +32,6 @@ import item.Item;
 import item.ItemPool;
 import item.Key;
 import item.quest.Rune;
-import shrine.Statue;
 import util.Arith;
 
 public abstract class AbstractDungeonFiller implements DungeonFiller {

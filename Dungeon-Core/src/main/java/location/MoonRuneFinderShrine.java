@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import dungeon.JDPoint;
 import dungeon.RoomEntity;
@@ -6,7 +6,6 @@ import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
 import item.quest.MoonRune;
-import util.JDColor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -22,18 +21,8 @@ public class MoonRuneFinderShrine extends Location {
 	}
 
 	@Override
-	public int getShrineIndex() {
-		return 0;
-	}
-
-	@Override
 	public void turn(int round) {
 
-	}
-
-	@Override
-	public JDColor getColor() {
-		return null;
 	}
 
 	@Override

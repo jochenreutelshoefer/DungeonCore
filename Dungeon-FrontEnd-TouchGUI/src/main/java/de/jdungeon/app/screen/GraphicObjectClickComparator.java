@@ -6,11 +6,10 @@ import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.PositionInRoomInfo;
 import dungeon.RoomInfo;
-import dungeon.SpotInfo;
 import figure.FigureInfo;
 import graphics.GraphicObject;
 import item.ItemInfo;
-import shrine.ShrineInfo;
+import location.ShrineInfo;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

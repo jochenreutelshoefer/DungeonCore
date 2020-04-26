@@ -19,7 +19,7 @@ import figure.percept.Percept;
 import game.ControlUnit;
 import dungeon.Door;
 import dungeon.JDPoint;
-import shrine.LevelExit;
+import location.LevelExit;
 import skill.FleeSkill;
 
 /**

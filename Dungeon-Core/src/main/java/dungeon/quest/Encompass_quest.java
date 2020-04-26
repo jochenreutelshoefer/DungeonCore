@@ -3,7 +3,7 @@ import figure.monster.Monster;
 import game.DungeonGameLoop;
 import item.Item;
 import item.ItemPool;
-import shrine.InfoShrine;
+import location.InfoShrine;
 import dungeon.Dungeon;
 import dungeon.JDPoint;
 import dungeon.Room;

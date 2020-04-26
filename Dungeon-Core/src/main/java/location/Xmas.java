@@ -1,27 +1,26 @@
 /*
- * 
+ *
  * Created on 17.12.2004
  *
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package shrine;
+package location;
 
-import dungeon.RoomEntity;
-import item.Item;
-import item.interfaces.Usable;
-import util.JDColor;
 import dungeon.Room;
+import dungeon.RoomEntity;
 import figure.Figure;
 import figure.hero.Hero;
 import figure.percept.TextPercept;
 import game.JDEnv;
+import item.Item;
+import item.interfaces.Usable;
 
 /**
  * @author Jochen
- * 
- *         To change the template for this generated type comment go to
- *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * <p>
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Xmas extends Location {
 
@@ -34,11 +33,6 @@ public class Xmas extends Location {
 
 	public void metaClick(Figure f) {
 
-	}
-
-	@Override
-	public JDColor getColor() {
-		return JDColor.DARK_GRAY;
 	}
 
 	/**
@@ -66,11 +60,6 @@ public class Xmas extends Location {
 	}
 
 	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_XMAS;
-	}
-
-	@Override
 	public int dustCosts() {
 		return 0;
 	}
@@ -81,7 +70,8 @@ public class Xmas extends Location {
 			f.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("shrine_xmas_use"), round));
 			this.location.addItem(it);
 			it = null;
-		} else {
+		}
+		else {
 			// System.out.println("Item ist null!");
 		}
 		return true;
@@ -117,5 +107,4 @@ public class Xmas extends Location {
 	public boolean usableOnce() {
 		return false;
 	}
-
 }

@@ -6,10 +6,9 @@
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
-import util.JDColor;
 import dungeon.Room;
 import figure.Figure;
 import figure.hero.Hero;
@@ -43,10 +42,6 @@ public class InfoShrine extends Location {
 		return JDEnv.getResourceBundle().getString("shrine_info_name");
 	}
 
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_INFO;
-	}
 
 	@Override
 	public boolean needsTarget() {
@@ -77,11 +72,6 @@ public class InfoShrine extends Location {
 	@Override
 	public String getStatus() {
 		return null;
-	}
-
-	@Override
-	public JDColor getColor() {
-		return JDColor.orange;
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import figure.monster.Monster;
 import item.Item;
 import item.ItemPool;
 import item.Key;
-import shrine.Location;
+import location.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

@@ -16,8 +16,8 @@ import figure.Figure;
 import item.Item;
 import item.Key;
 import item.interfaces.ItemOwner;
-import shrine.LevelExit;
-import shrine.Location;
+import location.LevelExit;
+import location.Location;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

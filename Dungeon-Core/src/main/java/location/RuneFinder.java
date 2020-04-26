@@ -7,7 +7,7 @@
  */
 
 // import java.util.*;
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
@@ -18,7 +18,6 @@ import figure.percept.UsePercept;
 import game.JDEnv;
 import item.interfaces.ItemOwner;
 import item.quest.Rune;
-import util.JDColor;
 import dungeon.JDPoint;
 import dungeon.Room;
 
@@ -45,11 +44,7 @@ public class RuneFinder extends Location {
 		return story;
 	}
 
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_RUNEFINDER;
-	}
-	
+
 	public void metaClick(Figure f) {
 		
 	}
@@ -78,11 +73,6 @@ public class RuneFinder extends Location {
 	public String getText() {
 		return toString() + "\n"+JDEnv.getResourceBundle().getString("shrine_runeFinder_text_a")+" "
 				+ rune.toString() + JDEnv.getResourceBundle().getString("shrine_runeFinder_text_b")+" ";
-	}
-
-	@Override
-	public JDColor getColor() {
-		return JDColor.blue;
 	}
 
 	@Override

@@ -14,12 +14,10 @@ import item.Key;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
-import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
-import shrine.Statue;
+import location.Statue;
 import dungeon.util.DungeonUtils;
 
 /**

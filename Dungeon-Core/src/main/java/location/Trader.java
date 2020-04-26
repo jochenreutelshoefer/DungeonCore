@@ -1,4 +1,4 @@
-package shrine;
+package location;
 
 import dungeon.RoomEntity;
 import item.DustItem;
@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import util.Arith;
-import util.JDColor;
 import dungeon.Dungeon;
 import figure.Figure;
 import figure.hero.Hero;
@@ -107,22 +106,9 @@ public class Trader extends Location /*implements itemOwner*/{
 		return false;
 	}
 	
-	@Override
-	public int getShrineIndex() {
-		return Location.SHRINE_TRADER;
-	}
 
-	
 	private void removeItem() {
 		items.remove((int)(Math.random()*items.size()));	
-	}
-
-	/**
-	 * @see Location#getColor()
-	 */
-	@Override
-	public JDColor getColor() {
-		return JDColor.blue;
 	}
 
 	/**

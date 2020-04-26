@@ -18,7 +18,7 @@ import java.util.List;
 import dungeon.Chest;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
-import shrine.Location;
+import location.Location;
 
 public class RoomQuest_3x3_1 extends RoomQuest {
 

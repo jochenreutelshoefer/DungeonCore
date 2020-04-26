@@ -29,7 +29,7 @@ import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
-import shrine.ShrineInfo;
+import location.ShrineInfo;
 import util.JDColor;
 
 public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {

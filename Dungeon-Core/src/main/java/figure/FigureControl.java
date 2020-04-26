@@ -11,13 +11,9 @@ import figure.action.result.ActionResult;
 import figure.percept.Percept;
 import game.ControlUnit;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ai.AI;
 import dungeon.JDPoint;
-import log.Log;
-import shrine.LevelExit;
+import location.LevelExit;
 
 public class FigureControl implements ControlUnit {
 

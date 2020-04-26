@@ -28,7 +28,7 @@ import figure.monster.Orc;
 import figure.monster.Skeleton;
 import figure.monster.Spider;
 import figure.monster.Wolf;
-import shrine.Location;
+import location.Location;
 
 public abstract class RoomQuest {
 

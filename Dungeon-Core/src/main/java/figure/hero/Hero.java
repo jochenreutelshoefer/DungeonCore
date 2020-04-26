@@ -39,8 +39,7 @@ import item.Key;
 import item.equipment.Shield;
 import item.equipment.weapon.Weapon;
 import log.Log;
-import shrine.Location;
-import spell.AbstractSpell;
+import location.Location;
 
 /**
  * Der Held des Spiels. Es kann nur einen geben. Besteht hauptsaechlich aus

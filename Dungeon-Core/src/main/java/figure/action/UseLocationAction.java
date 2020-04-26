@@ -5,7 +5,7 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
-import shrine.Location;
+import location.Location;
 
 public class UseLocationAction extends AbstractExecutableAction {
 

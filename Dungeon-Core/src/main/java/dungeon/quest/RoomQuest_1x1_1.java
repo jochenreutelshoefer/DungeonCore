@@ -16,7 +16,7 @@ import item.Key;
 import java.util.LinkedList;
 import java.util.List;
 
-import shrine.Location;
+import location.Location;
 import dungeon.Chest;
 import dungeon.Door;
 import dungeon.JDPoint;

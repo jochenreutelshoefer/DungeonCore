@@ -5,7 +5,7 @@ import item.Item;
 import item.interfaces.ItemOwner;
 import item.interfaces.LocatableItem;
 import item.interfaces.Usable;
-import shrine.Location;
+import location.Location;
 import figure.Figure;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
