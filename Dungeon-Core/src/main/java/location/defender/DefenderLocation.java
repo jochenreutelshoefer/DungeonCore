@@ -13,7 +13,7 @@ import figure.hero.Hero;
 import figure.npc.DefaultNPCFactory;
 import figure.npc.RescuedNPCAI;
 import location.Location;
-
+import location.LocationState;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -21,7 +21,9 @@ import location.Location;
  */
 public class DefenderLocation extends Location {
 
-	private enum DefenderState {
+
+
+	public enum DefenderState implements LocationState {
 		Inactive,
 		Activated,
 		Fighting,
@@ -42,6 +44,11 @@ public class DefenderLocation extends Location {
 		defenderFigure.setControl(new FigureControl(defenderInfo, new RescuedNPCAI())); // todo: create DefenderAI
 		defenderFigure.setLookDir(RouteInstruction.Direction.South);
 		state = DefenderState.Inactive;
+	}
+
+	@Override
+	public DefenderState getState() {
+		return state;
 	}
 
 	public Hero getDefenderFigure() {

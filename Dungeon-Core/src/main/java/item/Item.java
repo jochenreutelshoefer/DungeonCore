@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import location.Location;
-import location.ShrineInfo;
+import location.LocationInfo;
 import util.JDColor;
 import dungeon.Chest;
 import dungeon.ChestInfo;
@@ -87,7 +87,7 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 			return FigureInfo.makeFigureInfo((Figure)o,map);
 		}
 		if(o instanceof Location) {
-			return new ShrineInfo((Location)o,map);
+			return new LocationInfo((Location)o,map);
 		}
 		if(o instanceof Chest) {
 			return new ChestInfo((Chest)o,map);

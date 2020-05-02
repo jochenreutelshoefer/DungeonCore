@@ -19,7 +19,7 @@ import figure.hero.HeroInfo;
 import game.JDGUI;
 import item.ItemInfo;
 import item.equipment.EquipmentItemInfo;
-import location.ShrineInfo;
+import location.LocationInfo;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.ClickType;
@@ -88,8 +88,8 @@ public class ActionAssembler implements EventListener {
 		else if (clickedObject instanceof FigureInfo) {
 			handleFigureInfoClick(((FigureInfo) clickedObject), doubleClick);
 		}
-		else if (clickedObject instanceof ShrineInfo) {
-			handleShrineInfoClick(((ShrineInfo) clickedObject), doubleClick);
+		else if (clickedObject instanceof LocationInfo) {
+			handleShrineInfoClick(((LocationInfo) clickedObject), doubleClick);
 		}
 		else if (clickedObject instanceof PositionInRoomInfo) {
 			handlePosInfoClick(((PositionInRoomInfo) clickedObject), doubleClick);
@@ -130,7 +130,7 @@ public class ActionAssembler implements EventListener {
 		plugActions(actions);
 	}
 
-	private void handleShrineInfoClick(ShrineInfo info, boolean doubleClick) {
+	private void handleShrineInfoClick(LocationInfo info, boolean doubleClick) {
 		List<Action> actions = actionAssembler.shrineClicked(doubleClick);
 		plugActions(actions);
 	}

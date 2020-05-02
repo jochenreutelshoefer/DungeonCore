@@ -19,11 +19,11 @@ import gui.Paragraph;
 import util.JDColor;
 import dungeon.JDPoint;
 
-public class ShrineInfo extends RoomInfoEntity {
+public class LocationInfo extends RoomInfoEntity {
 
 	private final Location s;
 
-	public ShrineInfo(Location s, DungeonVisibilityMap map) {
+	public LocationInfo(Location s, DungeonVisibilityMap map) {
 		super(map);
 		this.s = s;
 	}
@@ -32,15 +32,21 @@ public class ShrineInfo extends RoomInfoEntity {
 		return s.getClass();
 	}
 
+	public LocationState getState() {
+		if (map.getDiscoveryStatus(getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
+			return s.getState();
+		}
+		return null;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)
 			return false;
-		if (!(obj instanceof ShrineInfo))
+		if (!(obj instanceof LocationInfo))
 			return false;
 
-		return s.equals(((ShrineInfo) obj).s);
+		return s.equals(((LocationInfo) obj).s);
 	}
 
 	@Override

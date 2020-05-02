@@ -14,7 +14,7 @@ import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
 import log.Log;
-import location.ShrineInfo;
+import location.LocationInfo;
 import util.JDColor;
 import util.JDDimension;
 
@@ -171,8 +171,8 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		if (content instanceof DoorInfo) {
 			return ImageManager.getImage((DoorInfo) content).getFilenameBlank();
 		}
-		if (content instanceof ShrineInfo) {
-			return ImageManager.getImage((ShrineInfo) content).getFilenameBlank();
+		if (content instanceof LocationInfo) {
+			return ImageManager.getImage((LocationInfo) content).getFilenameBlank();
 		}
 		if (content instanceof FigureInfo) {
 			try {

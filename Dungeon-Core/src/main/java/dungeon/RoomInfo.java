@@ -29,7 +29,7 @@ import game.RoomInfoEntity;
 import gui.Paragraph;
 import item.Item;
 import item.ItemInfo;
-import location.ShrineInfo;
+import location.LocationInfo;
 import util.JDColor;
 
 public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
@@ -267,12 +267,12 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 
-	public ShrineInfo getShrine() {
+	public LocationInfo getShrine() {
 
 		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
 
 			if (r.getShrine() != null) {
-				return new ShrineInfo(r.getShrine(), map);
+				return new LocationInfo(r.getShrine(), map);
 			}
 		}
 		return null;

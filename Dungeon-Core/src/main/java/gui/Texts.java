@@ -11,7 +11,7 @@ import game.JDEnv;
 import location.Brood;
 import location.HealthFountain;
 import location.RuneShrine;
-import location.ShrineInfo;
+import location.LocationInfo;
 
 public class Texts {
 
@@ -449,7 +449,7 @@ public class Texts {
 		return name;
 	}
 
-	public static String shrine(ShrineInfo s) {
+	public static String shrine(LocationInfo s) {
 		String info = new String("");
 		if (s.getShrineClass().equals(Brood.class)) {
 			if (s.getType() == Brood.BROOD_NATURE) {

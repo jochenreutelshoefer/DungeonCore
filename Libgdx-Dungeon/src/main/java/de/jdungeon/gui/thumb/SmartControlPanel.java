@@ -28,7 +28,7 @@ import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
 import item.ItemInfo;
-import location.ShrineInfo;
+import location.LocationInfo;
 import skill.FleeSkill;
 import util.JDDimension;
 
@@ -388,7 +388,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private void updateShrineElement() {
 		shrineElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
-		ShrineInfo shrine = roomInfo.getShrine();
+		LocationInfo shrine = roomInfo.getShrine();
 
 		if (shrine != null) {
 			shrineElements.add(shrineElement);

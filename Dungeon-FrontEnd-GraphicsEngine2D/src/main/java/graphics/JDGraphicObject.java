@@ -23,8 +23,8 @@ public class JDGraphicObject extends GraphicObject {
 
 	}
 
-	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle o, JDColor c,
-						   DrawingRectangle clickRect) {
+
+	public JDGraphicObject(JDImageLocated i, Object ob, DrawingRectangle o, JDColor c, DrawingRectangle clickRect) {
 		super(ob, o, c, null, clickRect);
 		image = i;
 

@@ -22,6 +22,9 @@ import item.interfaces.Usable;
  */
 public abstract class Location implements Usable, Turnable, InfoProvider, RoomEntity {
 
+
+	public static final LocationState DEFAULT_STATE = new LocationState() {};
+
 	protected Room location;
 
 	private String name;
@@ -35,6 +38,10 @@ public abstract class Location implements Usable, Turnable, InfoProvider, RoomEn
 
 	public Location() {
 
+	}
+
+	public LocationState getState() {
+		return DEFAULT_STATE;
 	}
 
 	public int getSecondIdentifier() {
@@ -58,7 +65,7 @@ public abstract class Location implements Usable, Turnable, InfoProvider, RoomEn
 
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
-		return new ShrineInfo(this, map);
+		return new LocationInfo(this, map);
 	}
 
 	@Override

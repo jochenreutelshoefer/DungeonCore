@@ -71,7 +71,7 @@ import location.QuestShrine;
 import location.RevealMapShrine;
 import location.RuneFinder;
 import location.ScoutShrine;
-import location.ShrineInfo;
+import location.LocationInfo;
 import location.SorcerLab;
 import location.Statue;
 import location.Trader;
@@ -1315,7 +1315,11 @@ public class ImageManager {
 		}
 	}
 
-	public static JDImageProxy<?> getImage(ShrineInfo s) {
+	public static JDImageProxy<?> getImage(Class<? extends Location> s) {
+		return shrineMap.get(s);
+	}
+
+	public static JDImageProxy<?> getImage(LocationInfo s) {
 
 		Class<? extends Location> shrineClass = s.getShrineClass();
 		if (shrineMap.containsKey(shrineClass)) {

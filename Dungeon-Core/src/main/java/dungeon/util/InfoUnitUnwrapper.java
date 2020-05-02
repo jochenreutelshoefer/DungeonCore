@@ -14,14 +14,13 @@ import dungeon.PositionInRoomInfo;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import dungeon.RoomInfo;
-import figure.Figure;
 import figure.FigureInfo;
 import game.InfoEntity;
 import game.RoomInfoEntity;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import location.Location;
-import location.ShrineInfo;
+import location.LocationInfo;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -55,8 +54,8 @@ public class InfoUnitUnwrapper {
 			ItemOwner owner = (ItemOwner) unwrappObject(info);
 			return owner.getItem((ItemInfo) o);
 		}
-		if(o instanceof ShrineInfo) {
-			return getLocation(((ShrineInfo)o));
+		if(o instanceof LocationInfo) {
+			return getLocation(((LocationInfo)o));
 		}
 		if (o instanceof RoomInfo) {
 			return getRoom((RoomInfo) o);
@@ -87,7 +86,7 @@ public class InfoUnitUnwrapper {
 		return null;
 	}
 
-	private Location getLocation(ShrineInfo o) {
+	private Location getLocation(LocationInfo o) {
 		JDPoint p = o.getLocation();
 		return dungeon.getRoom(p).getShrine();
 	}

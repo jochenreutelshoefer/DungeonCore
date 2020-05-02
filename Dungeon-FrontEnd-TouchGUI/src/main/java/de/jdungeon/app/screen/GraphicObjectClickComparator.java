@@ -9,7 +9,7 @@ import dungeon.RoomInfo;
 import figure.FigureInfo;
 import graphics.GraphicObject;
 import item.ItemInfo;
-import location.ShrineInfo;
+import location.LocationInfo;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -66,7 +66,7 @@ public class GraphicObjectClickComparator implements Comparator<GraphicObject> {
 		if (o instanceof PositionInRoomInfo) {
 			return POSITION;
 		}
-		if (o instanceof ShrineInfo) {
+		if (o instanceof LocationInfo) {
 			return SHRINE;
 		}
 		if (o instanceof ChestInfo) {
