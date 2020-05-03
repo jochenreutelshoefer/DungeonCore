@@ -17,7 +17,10 @@ import dungeon.JDPoint;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
+import game.InfoEntity;
+import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
+import location.LocationInfo;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
@@ -482,5 +485,9 @@ public class GameScreen extends AbstractGameScreen {
 
 	public GraphicObjectRenderer getGraphicObjectRenderer() {
 		return this.graphicObjectRenderer;
+	}
+
+	public void invalidateEntityRenderCache(RoomInfoEntity location) {
+		worldRenderer.invalidateEntityRenderCache(location);
 	}
 }

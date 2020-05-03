@@ -23,7 +23,7 @@ public class UsePercept extends OpticalPercept {
 	}
 	
 	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(actor,viewer.getRoomVisibility());
+		return FigureInfo.makeFigureInfo(actor, viewer.getRoomVisibility());
 	}
 
 	@Override

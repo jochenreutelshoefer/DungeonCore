@@ -131,8 +131,7 @@ public class GifProcessor extends FileProcessor {
 			int width = generalImage.getWidth(null);
 			int height = generalImage.getHeight(null);
 			//start with blank image of the complete size, in case first frame isn't full size (possible?)
-			BufferedImage previousImage =
-					new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+			BufferedImage previousImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 			for (int i = 0; i < numImages; i++) {
 				IIOMetadata imageMetaData = imageReader.getImageMetadata(i);
 				String metaFormatName = imageMetaData.getNativeMetadataFormatName();

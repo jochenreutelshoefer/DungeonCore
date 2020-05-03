@@ -756,14 +756,14 @@ public class GraphicObjectRenderer {
 	private void updateLocationRenderInformationMap() {
 		healthFountainDimension = new ShrineRenderDimension( (2 * ROOMSIZE_BY_3),  (1 * ROOMSIZE_BY_16), ROOMSIZE_BY_3, (int) (roomSize / 3.5));
 		statueDimension = new ShrineRenderDimension( (16 * ROOMSIZE_BY_24),  (0 * ROOMSIZE_BY_36), ROOMSIZE_BY_3, (int) (roomSize / 2.5));
-		defenderDimension = new ShrineRenderDimension( (17 * ROOMSIZE_BY_24),  (0 * ROOMSIZE_BY_36), (int) (roomSize / 1.9), (int) (roomSize / 2.0));
+		defenderDimension = new ShrineRenderDimension( (16 * ROOMSIZE_BY_24),  (0 * ROOMSIZE_BY_36), (int) (roomSize / 1.9), (int) (roomSize / 2.0));
 		scoutShrineDimension = new ShrineRenderDimension( (16 * ROOMSIZE_BY_24),  (0 * ROOMSIZE_BY_36), ROOMSIZE_BY_3, (int) (roomSize / 2.5));
 		sorcerLabDimension = new ShrineRenderDimension( (25 * roomSize / 60),   - (1 * ROOMSIZE_BY_12), (int) (roomSize / 1.65),  (int) (roomSize / 1.65));
 		levelExitDimension = new ShrineRenderDimension( (2 * ROOMSIZE_BY_3),   (1 * ROOMSIZE_BY_6), roomSize / 4,  (ROOMSIZE_BY_6));
 		corpseDimension = new ShrineRenderDimension( (13 * roomSize / 20),   (6 * roomSize / 36), (int) (roomSize / 3.2),  (int) (roomSize / 3.8));
 		revealMapShrineDimension = new ShrineRenderDimension( (7 * ROOMSIZE_BY_10),   (1 * roomSize / 24), (int) (roomSize / 3.4),  (int) (roomSize / 2.7));
 
-		locationRenderInformationMap.put(HealthFountain.class, createDefaultLocationMap(healthFountainDimension, Statue.class));
+		locationRenderInformationMap.put(HealthFountain.class, createDefaultLocationMap(healthFountainDimension, HealthFountain.class));
 		locationRenderInformationMap.put(MoonRuneFinderShrine.class, createDefaultLocationMap(healthFountainDimension, MoonRuneFinderShrine.class));
 		locationRenderInformationMap.put(Statue.class, createDefaultLocationMap(statueDimension, MoonRuneFinderShrine.class));
 
@@ -791,7 +791,8 @@ public class GraphicObjectRenderer {
 		Class<? extends Location> locationClass = s.getShrineClass();
 		Map<LocationState, JDImageLocated> locationRenderInformationMap = GraphicObjectRenderer.locationRenderInformationMap.get(locationClass);
 		if(locationRenderInformationMap != null) {
-			return new JDGraphicObject(locationRenderInformationMap.get(s.getState()), s, shrineRect);
+			JDImageLocated imageInfo = locationRenderInformationMap.get(s.getState());
+			return new JDGraphicObject(imageInfo, s, shrineRect);
 		}
 
 
@@ -982,6 +983,10 @@ public class GraphicObjectRenderer {
 		return spotDimension;
 	}
 
+	public void invalidateCache(RoomInfoEntity entity) {
+		graphicObjectCache.remove(entity);
+	}
+
 	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, int roomOffsetX, int roomOffsetY) {
 
 		List<GraphicObject> graphObs = new ArrayList<>();
@@ -1051,7 +1056,9 @@ public class GraphicObjectRenderer {
 				ob = graphicObjectCache.get(s);
 				if (ob == null) {
 					ob = getShrineGraphicObject(s);
-					graphicObjectCache.put(s, ob);
+					if(ob != null) {
+						graphicObjectCache.put(s, ob);
+					}
 				}
 				graphObs.add(ob);
 			}

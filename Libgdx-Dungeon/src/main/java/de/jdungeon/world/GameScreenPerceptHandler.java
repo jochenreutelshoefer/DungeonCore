@@ -23,6 +23,7 @@ import figure.percept.HitPercept;
 import figure.percept.InfoPercept;
 import figure.percept.ItemDroppedPercept;
 import figure.percept.LeavesPercept;
+import figure.percept.LocationStateChangePercept;
 import figure.percept.MissPercept;
 import figure.percept.EntersPercept;
 import figure.percept.OpticalPercept;
@@ -41,6 +42,7 @@ import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
 import graphics.JDImageProxy;
+import location.Location;
 import log.Log;
 import text.Statement;
 import text.StatementManager;
@@ -70,6 +72,10 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	}
 
 	public void handlePercept(Percept p) {
+
+		if(p instanceof LocationStateChangePercept) {
+			screen.invalidateEntityRenderCache(((LocationStateChangePercept)p).getLocation(figure));
+		}
 
 		if(p instanceof InterruptPercept) {
 			// this is a special case, no world percept, but only communication between PlayerController and PerceptHandler

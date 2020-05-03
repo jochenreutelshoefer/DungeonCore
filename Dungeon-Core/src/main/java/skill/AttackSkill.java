@@ -1,5 +1,6 @@
 package skill;
 
+import com.sun.istack.internal.NotNull;
 import dungeon.Position;
 import fight.Slap;
 import fight.SlapResult;
@@ -114,7 +115,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 		private FigureInfo target;
 
-		private AttackActionBuilder(AttackSkill skill, FigureInfo attacker) {
+		private AttackActionBuilder(AttackSkill skill, @NotNull FigureInfo attacker) {
 			super(skill, attacker);
 			this.skill = skill;
 		}
@@ -138,7 +139,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 		private final Figure attacker;
 		private final Figure target;
 
-		AttackSkillAction(AttackSkill skill, FigureInfo attackerInfo, int targetID) {
+		AttackSkillAction(AttackSkill skill, @NotNull FigureInfo attackerInfo, int targetID) {
 			super(skill, attackerInfo);
 			attacker = attackerInfo.getMap().getDungeon().getFigureIndex().get(attackerInfo.getFighterID());
 			target = attackerInfo.getMap().getDungeon().getFigureIndex().get(targetID);

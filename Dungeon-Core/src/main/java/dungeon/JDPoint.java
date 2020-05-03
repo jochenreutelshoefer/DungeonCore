@@ -11,9 +11,7 @@ import dungeon.util.RouteInstruction;
  */
 public class JDPoint implements Serializable{
 
-	
 	private int x;
-
 	private int y;
 	
 
@@ -21,8 +19,6 @@ public class JDPoint implements Serializable{
     	this.x = x;
     	this.y = y;
     }
-
-
 
     public JDPoint(double x, double y){
     	this.x = (int)x;
@@ -33,12 +29,9 @@ public class JDPoint implements Serializable{
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-
 		JDPoint jdPoint = (JDPoint) o;
-
 		if (x != jdPoint.x) return false;
 		return y == jdPoint.y;
-
 	}
 
 	@Override

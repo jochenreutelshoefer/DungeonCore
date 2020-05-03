@@ -86,8 +86,12 @@ public class GraphicObjectRenderCollection {
 		if (graphicObject instanceof JDGraphicObject) {
 			JDGraphicObject object = ((JDGraphicObject) graphicObject);
 			JDImageLocated locatedImage = object.getLocatedImage();
-			atlasRegion = findAtlasRegion(locatedImage.getImage(), graphicObject);
-
+			if(locatedImage != null) {
+				JDImageProxy<?> image = locatedImage.getImage();
+				if(image != null) {
+					atlasRegion = findAtlasRegion(image, graphicObject);
+				}
+			}
 		}
 		else {
 			JDImageProxy<?> image = graphicObject.getImage();

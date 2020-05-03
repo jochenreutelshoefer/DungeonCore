@@ -16,12 +16,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
 import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
+import game.InfoEntity;
 import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
@@ -163,6 +165,9 @@ public class WorldRenderer implements Disposable {
 		}
 	}
 
+	private final double SPRITE_SIZE_RATIO = ((float)128) / 96;
+	//private final double SPRITE_SIZE_RATIO = ((float)96) / 128;
+
 	/*
 	 *	RENDER THREAD
 	 */
@@ -190,14 +195,15 @@ public class WorldRenderer implements Disposable {
 					JDImageProxy<?> image = locatedImage.getImage();
 					if (image != null) {
 						TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
+
+
 						if (atlasRegionAnimationStep != null) {
 							int imageX = locatedImage.getX(roomOffsetX);
 							int imageY = locatedImage.getY(roomOffsetY);
-							batch.draw(atlasRegionAnimationStep,
-									imageX,
-									imageY,
-									locatedImage.getWidth(),
-									locatedImage.getHeight());
+							int width = locatedImage.getWidth();
+							int height = locatedImage.getHeight();
+							drawAltasRegionAdaptSpriteSize(atlasRegionAnimationStep, imageX, imageY, width, height, locatedImage.getImage(), pair.getA());
+
 							String text = null;
 							JDPoint textOffset = null;
 							if (animationImage.getText() != null) {
@@ -217,20 +223,24 @@ public class WorldRenderer implements Disposable {
 			// no animation present for this object
 			if (pair.getA() instanceof JDGraphicObject) {
 				if (pair.getB() != null) {
-					batch.draw(pair.getB(),
+					drawAltasRegionAdaptSpriteSize(pair.getB(),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getX(roomOffsetX),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getY(roomOffsetY),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getWidth(),
-							((JDGraphicObject) pair.getA()).getLocatedImage().getHeight());
+							((JDGraphicObject) pair.getA()).getLocatedImage().getHeight(),
+							((JDGraphicObject) pair.getA()).getLocatedImage().getImage(),
+							pair.getA());
 				}
 			}
 			else {
 				if (pair.getB() != null) {
-					batch.draw(pair.getB(),
+					drawAltasRegionAdaptSpriteSize(pair.getB(),
 							pair.getA().getRectangle().getX(roomOffsetX),
 							pair.getA().getRectangle().getY(roomOffsetY),
 							pair.getA().getRectangle().getWidth(),
-							pair.getA().getRectangle().getHeight());
+							pair.getA().getRectangle().getHeight(),
+							pair.getA().getImage(),
+							pair.getA());
 				}
 			}
 			RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
@@ -238,6 +248,40 @@ public class WorldRenderer implements Disposable {
 				updateHighlightedObjectInformation(x, y, pair.getA());
 			}
 		}
+	}
+
+	private void drawAltasRegionAdaptSpriteSize(TextureAtlas.AtlasRegion atlasRegion, int x, int y, int width, int height, JDImageProxy image, GraphicObject clickObject) {
+
+		int posX = x;
+		int posY = y;
+		int drawWidth = width;
+		int drawHeight = height;
+
+		if(clickObject.getClickableObject() instanceof FigureInfo) {
+			// we have to cope with different sprites sizes unfortunately (within one figure animation set)
+			int originalSpriteWidth = atlasRegion.originalWidth;
+			if(originalSpriteWidth !=  atlasRegion.originalHeight) {
+				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank()+" orginal width: "+ originalSpriteWidth + "; height: "+atlasRegion.originalHeight);
+			}
+			if(originalSpriteWidth == 96) {
+			// is okay
+			} else if(originalSpriteWidth == 128) {
+				// adapt values for 128er sprites
+				drawWidth = (int) (width * SPRITE_SIZE_RATIO);
+				posX = x - ((drawWidth - width)/2); // shift left half size adjustment
+				drawHeight = (int) (height * SPRITE_SIZE_RATIO);
+				posY = y - ((drawHeight - height)/2); // shift up half size adjustment
+			} else {
+				Gdx.app.error(TAG, "Warning: unknown sprite size : " + image.getFilenameBlank()+" orginal width: "+ originalSpriteWidth + "; height: "+atlasRegion.originalHeight);
+			}
+		}
+
+		// finally draw
+		batch.draw(atlasRegion,
+				posX,
+				posY,
+				drawWidth,
+				drawHeight);
 	}
 
 	public void resize(int width, int height) {
@@ -336,5 +380,9 @@ public class WorldRenderer implements Disposable {
 		pixmap.setColor(Color.YELLOW);
 		pixmap.drawRectangle(0, 0, width, height);
 		return pixmap;
+	}
+
+	public void invalidateEntityRenderCache(RoomInfoEntity location) {
+		this.dungeonObjectRenderer.invalidateCache(location);
 	}
 }

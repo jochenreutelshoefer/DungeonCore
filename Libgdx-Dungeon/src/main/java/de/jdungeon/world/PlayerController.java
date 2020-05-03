@@ -266,7 +266,7 @@ public class PlayerController implements JDGUI {
 	public void tellPercept(Percept p) {
 		JDPoint number = null;
 		if (p instanceof OpticalPercept) {
-			number = ((OpticalPercept) p).getLocation();
+			number = ((OpticalPercept) p).getPoint();
 		}
 		/*
 		List<FigureInfo> involvedFigures = p.getInvolvedFigures();

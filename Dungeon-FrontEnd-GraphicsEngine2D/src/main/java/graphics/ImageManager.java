@@ -388,6 +388,22 @@ public class ImageManager {
 
 	public static AnimationSetDirections lioness_walking = null;
 
+	public static AnimationSetDirections ddwarf_been_hit;
+
+	public static AnimationSetDirections ddwarf_pause = null;
+
+	public static AnimationSetDirections ddwarf_running = null;
+
+	public static AnimationSetDirections ddwarf_slays;
+
+	public static AnimationSetDirections ddwarf_sorcering = null;
+
+	public static AnimationSetDirections ddwarf_tipping_over;
+
+	public static AnimationSetDirections ddwarf_using = null;
+
+	public static AnimationSetDirections ddwarf_walking = null;
+
 	public static JDImageProxy<?>[] ogreImage;
 	public static JDImageProxy<?>[] lionessImage;
 
@@ -738,18 +754,20 @@ public class ImageManager {
 			lioness_been_hit = load4Animations(a, "animation/" + "lioness/", "been hit");
 			lioness_been_hit.addAudioClipHalfTime(AudioEffectsManager.MONSTER_HURT);
 			lioness_been_hit.addAudioClip(AudioEffectsManager.SMASH, 1);
-
 			lioness_tipping_over = load4Animations(a, "animation/" + "lioness/", "tipping over", 60);
 			lioness_tipping_over.addAudioClip(AudioEffectsManager.WOLF_DIES, 0);
-
 			lioness_slays = load4Animations(a, "animation/" + "lioness/", "attack");
 			lioness_slays.addAudioClip(AudioEffectsManager.WOLF_ATTACKS, 0);
-
 			lioness_walking = load4Animations(a, "animation/" + "lioness/", "walking");
 			lioness_running = load4Animations(a, "animation/" + "lioness/", "running");
-			;
 			lioness_pause = load4Animations(a, "animation/" + "lioness/", "roaring");
-			;
+
+			ddwarf_been_hit = load4Animations(a, "animation/" + "darkdwarf/", "been hit");
+			ddwarf_tipping_over = load4Animations(a, "animation/" + "darkdwarf/", "tipping over", 60);
+			ddwarf_slays = load4Animations(a, "animation/" + "darkdwarf/", "attack");
+			ddwarf_walking = load4Animations(a, "animation/" + "darkdwarf/", "walking");
+			ddwarf_running = load4Animations(a, "animation/" + "darkdwarf/", "running");
+			ddwarf_pause = load4Animations(a, "animation/" + "darkdwarf/", "talking");
 
 			warriorImage = makePics(warrior_walking);
 			thiefImage = makePics(thief_walking);
@@ -951,7 +969,7 @@ public class ImageManager {
 
 			createItemClassMap(a);
 			createFigureClassMap();
-			createHeroAnimationMap();
+			createHeroAnimationMap(a);
 			createMonsterAnimationMap(a);
 			createShrineClassMap();
 
@@ -1201,12 +1219,13 @@ public class ImageManager {
 		monsterAnimationMap.get(Lioness.class).put(Motion.Sorcering, ImageManager.lioness_sorcering);
 	}
 
-	private static final Map<Hero.HeroCategory, DefaultCharacterAnimationSet> heroAnimationMap = new HashMap<>();
+	private static final Map<Hero.HeroCategory, CharacterAnimationSet> heroAnimationMap = new HashMap<>();
 
-	private static void createHeroAnimationMap() {
+	private static void createHeroAnimationMap(AbstractImageLoader<?> a) {
 		heroAnimationMap.put(Hero.HeroCategory.Warrior, new DefaultCharacterAnimationSet());
 		heroAnimationMap.put(Hero.HeroCategory.Thief, new DefaultCharacterAnimationSet());
-		heroAnimationMap.put(Hero.HeroCategory.Druid, new DefaultCharacterAnimationSet());
+		//heroAnimationMap.put(Hero.HeroCategory.Druid, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(Hero.HeroCategory.Druid, new CharacterAnimationSetBuilder("darkdwarf", a).build());
 		heroAnimationMap.put(Hero.HeroCategory.Mage, new DefaultCharacterAnimationSet());
 
 		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.BeingHit, ImageManager.warrior_been_hit);
@@ -1227,6 +1246,7 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Slaying, ImageManager.thief_slays);
 		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Sorcering, ImageManager.thief_sorcering);
 
+		/*
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.BeingHit, ImageManager.druid_been_hit);
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Pause, ImageManager.druid_pause);
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.TippingOver, ImageManager.druid_tipping_over);
@@ -1235,6 +1255,7 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Using, ImageManager.druid_using);
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Slaying, ImageManager.druid_slays);
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Sorcering, ImageManager.druid_sorcering);
+		*/
 
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.BeingHit, ImageManager.mage_been_hit);
 		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Pause, ImageManager.mage_pause);

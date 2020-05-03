@@ -28,6 +28,7 @@ public abstract class Percept {
 	public void setViewer(Figure f) {
 		perceivedBy(f);
 	}
+
 	public int getRound() {
 		return round;
 	}

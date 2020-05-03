@@ -39,6 +39,10 @@ public class LocationInfo extends RoomInfoEntity {
 		return null;
 	}
 
+	public static LocationInfo makeLocationInfo(Location location, DungeonVisibilityMap map) {
+		return new LocationInfo(location, map);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)

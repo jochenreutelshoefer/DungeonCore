@@ -32,7 +32,7 @@ public abstract class OpticalPercept extends Percept {
 		return Collections.unmodifiableCollection(locations);
 	}
 
-	public JDPoint getLocation() {
+	public JDPoint getPoint() {
 		if(locations.isEmpty()) return null;
 		return locations.iterator().next();
 	}

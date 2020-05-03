@@ -7,18 +7,13 @@ import java.util.Set;
 
 import de.jdungeon.game.AbstractAudioSet;
 
-import com.badlogic.gdx.utils.Pool;
 import dungeon.JDPoint;
 import dungeon.Position;
 import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.percept.OpticalPercept;
-import figure.percept.Percept;
 import graphics.JDImageProxy;
 import log.Log;
-
-import de.jdungeon.game.Image;
 
 public class DefaultAnimationTask implements AnimationTask {
 
@@ -47,7 +42,7 @@ public class DefaultAnimationTask implements AnimationTask {
 	private boolean urgent;
 
 	public JDPoint getRoom() {
-		return percept.getLocation();
+		return percept.getPoint();
 	}
 
 	@Override

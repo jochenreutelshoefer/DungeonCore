@@ -1,5 +1,6 @@
 package skill;
 
+import com.sun.istack.internal.NotNull;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
@@ -13,7 +14,7 @@ public abstract class SkillAction extends Action {
 	protected final Skill skill;
 	protected final FigureInfo actor;
 
-	public SkillAction(Skill skill, FigureInfo actor) {
+	public SkillAction(Skill skill, @NotNull FigureInfo actor) {
 		this.skill = skill;
 		this.actor = actor;
 	}

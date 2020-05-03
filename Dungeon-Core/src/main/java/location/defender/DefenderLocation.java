@@ -12,6 +12,7 @@ import figure.FigureInfo;
 import figure.hero.Hero;
 import figure.npc.DefaultNPCFactory;
 import figure.npc.RescuedNPCAI;
+import figure.percept.LocationStateChangePercept;
 import location.Location;
 import location.LocationState;
 
@@ -38,10 +39,13 @@ public class DefenderLocation extends Location {
 	private Figure activator;
 	public DefenderLocation(Room room) {
 		this.room = room;
-		defenderFigure = DefaultNPCFactory.createDefaultNPC("Willibad", Hero.HEROCODE_WARRIOR);
+		defenderFigure = DefaultNPCFactory.createDefaultNPC("Willibald", Hero.HEROCODE_WARRIOR);
 		defenderFigure.createVisibilityMap(room.getDungeon());
+		room.getDungeon().insertFigure(defenderFigure);
 		FigureInfo defenderInfo = FigureInfo.makeFigureInfo(defenderFigure, defenderFigure.getRoomVisibility());
-		defenderFigure.setControl(new FigureControl(defenderInfo, new RescuedNPCAI())); // todo: create DefenderAI
+		RescuedNPCAI ai = new RescuedNPCAI();
+		ai.setFigure(defenderInfo);
+		defenderFigure.setControl(new FigureControl(defenderInfo, ai)); // todo: create DefenderAI
 		defenderFigure.setLookDir(RouteInstruction.Direction.South);
 		state = DefenderState.Inactive;
 	}
@@ -62,7 +66,8 @@ public class DefenderLocation extends Location {
 			return;
 		}
 		if(defenderFigure.isDead()) {
-			state = DefenderState.Dead;
+			changeStateTo(DefenderState.Dead, round);
+
 		}
 
 		if(state == DefenderState.Dead) {
@@ -71,19 +76,25 @@ public class DefenderLocation extends Location {
 		}
 
 		if(state == DefenderState.Activated) {
-
 			boolean actionRequired = actionRequired();
 			if(actionRequired) {
 				room.figureEntersAtPosition(defenderFigure, 2, round);
-				state = DefenderState.Fighting;
+				changeStateTo(DefenderState.Fighting, round);
 			}
 		}
 
 		if(state == DefenderState.Fighting) {
 			if(!actionRequired()) {
 				room.figureLeaves(defenderFigure);
-				state = DefenderState.Activated;
+				changeStateTo(DefenderState.Activated, round);
 			}
+		}
+	}
+
+	private void changeStateTo(DefenderState newState, int round) {
+		if(state != newState) {
+			room.distributePercept(new LocationStateChangePercept(this, room, state, newState, round));
+			state = newState;
 		}
 	}
 

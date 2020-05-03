@@ -204,10 +204,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		thiefAtlas = assetManager.get(thiefAtlasPath);
 		cacheMap.put(thiefAtlas, textureCacheThief);
 
-		/*
 		darkdwarfAtlas = assetManager.get(darkdwarfAtlasPath);
 		cacheMap.put(darkdwarfAtlas, textureCacheDarkdwarf);
-		*/
 
 		wolfAtlas = assetManager.get(wolfAtlasPath);
 		cacheMap.put(wolfAtlas, textureCacheWolf);
@@ -388,8 +386,13 @@ public class Assets implements Disposable, AssetErrorListener {
 		if(Spider.class.equals(figureClass)) {
 			return getAtlasRegion(image, spiderAtlas);
 		}
+		/*
 		if(Druid.class.equals(figureClass)) {
 			return getAtlasRegion(image, druidAtlas);
+		}*/
+
+		if(Druid.class.equals(figureClass)) {
+			return getAtlasRegion(image, darkdwarfAtlas);
 		}
 		if(Mage.class.equals(figureClass)) {
 			return getAtlasRegion(image, mageAtlas);
@@ -422,7 +425,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		atlasMap.put(Spider.class, Assets.instance.spiderAtlas);
 		atlasMap.put(Wolf.class, Assets.instance.wolfAtlas);
 		atlasMap.put(Skeleton.class, Assets.instance.skelAtlas);
-		atlasMap.put(Druid.class, Assets.instance.druidAtlas);
+		//atlasMap.put(Druid.class, Assets.instance.druidAtlas);
+		atlasMap.put(Druid.class, Assets.instance.darkdwarfAtlas);
 		atlasMap.put(Mage.class, Assets.instance.mageAtlas);
 		atlasMap.put(Thief.class, Assets.instance.thiefAtlas);
 		atlasMap.put(Lioness.class, Assets.instance.lionessAtlas);
