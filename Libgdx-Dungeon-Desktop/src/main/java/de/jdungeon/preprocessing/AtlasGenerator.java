@@ -6,6 +6,7 @@ package de.jdungeon.preprocessing;
  */
 import com.badlogic.gdx.tools.FileProcessor;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
+import figure.FigurePresentation;
 import org.apache.commons.io.*;
 import org.apache.commons.io.filefilter.*;
 
@@ -19,7 +20,7 @@ public class AtlasGenerator {
 	static final String TARGET_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/packs/";
 
 	public static void main (String[] args) throws Exception {
-		String atlasName = Assets.DARKDWARF_ATLAS;
+		String atlasName = FigurePresentation.DarkDwarf.getFilepath();
 		//String atlasName = "all";
 		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/animation/"+atlasName; //animation/
 

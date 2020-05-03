@@ -2,6 +2,7 @@ package figure.monster;
 
 
 import figure.APAgility;
+import figure.FigurePresentation;
 import spell.MightyStruck;
 import dungeon.Dungeon;
 import item.equipment.Helmet;
@@ -52,6 +53,11 @@ public class Ogre extends CreatureMonster {
 		if(level >= 2) {
 			spellbook.addSpell(new MightyStruck(1));
 		}
+	}
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Troll;
 	}
 
 	@Override

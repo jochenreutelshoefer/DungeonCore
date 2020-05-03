@@ -1401,4 +1401,5 @@ public abstract class Figure extends DungeonWorldObject
 		this.ai = AI;
 	}
 
+	public abstract FigurePresentation getFigurePresentation();
 }

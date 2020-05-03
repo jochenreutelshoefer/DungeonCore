@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import figure.Figure;
+import figure.FigurePresentation;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
 import figure.hero.Inventory;
@@ -54,6 +55,11 @@ public class Orc extends CreatureMonster {
 		if (level >= 2) {
 			spellbook.addSpell(new StealOrc(1));
 		}
+	}
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Orc;
 	}
 
 	@Override

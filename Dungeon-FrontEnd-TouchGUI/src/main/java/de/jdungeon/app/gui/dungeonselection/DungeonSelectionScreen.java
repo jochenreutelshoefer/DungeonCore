@@ -12,6 +12,7 @@ import dungeon.util.RouteInstruction;
 import event.Event;
 import event.EventListener;
 import event.EventManager;
+import figure.FigurePresentation;
 import figure.hero.Hero;
 import graphics.ImageManager;
 import level.DungeonFactory;
@@ -64,8 +65,8 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 		calcScreenCoordinates();
 
-		DefaultAnimationSet animationSet = ImageManager.getAnimationSet(Hero.HeroCategory.fromValue(session.getCurrentHero()
-				.getHeroCode()), Motion.Running, RouteInstruction.Direction.North);
+		// todo: map to FigurePresentation to selected hero code
+		DefaultAnimationSet animationSet = ImageManager.getAnimationSet(FigurePresentation.Druid, Motion.Running, RouteInstruction.Direction.North);
 
 		for (int i = 0; i < dungeonManager.getNumberOfStages(); i++) {
 			addGUIElementsForStage(i, dungeonManager.getDungeonOptions(i));

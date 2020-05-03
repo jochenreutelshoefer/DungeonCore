@@ -22,6 +22,7 @@ import dungeon.JDPoint;
 import event.EventManager;
 import figure.Figure;
 import figure.FigureInfo;
+import figure.FigurePresentation;
 import figure.RoomObservationStatus;
 import game.InfoEntity;
 import game.RoomInfoEntity;
@@ -79,8 +80,6 @@ public class WorldRenderer implements Disposable {
 		batch.setProjectionMatrix(camera.combined);
 
 		camera.update();
-
-		Assets.instance.initAtlasMap();
 
 		GL20 gl = Gdx.gl20;
 		int programObject = gl.glCreateProgram();
@@ -153,7 +152,7 @@ public class WorldRenderer implements Disposable {
 	private void renderFigureObjectsForAllRooms() {
 
 		// iterate first for figure classes to have less atlas switches as each figure has a distinct atlas
-		for (Class<? extends Figure> figureClass : Assets.figureClasses) {
+		for (FigurePresentation figureClass : FigurePresentation.values()) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
 					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y].getFigureObjects(figureClass);
@@ -187,7 +186,7 @@ public class WorldRenderer implements Disposable {
 					JDImageLocated locatedImage = animationImage.getLocatedImage(roomOffsetX, roomOffsetY, dungeonObjectRenderer
 							.getFigureInfoSize(figure)
 							.getWidth(), dungeonObjectRenderer.getFigureInfoSize(figure).getHeight());
-					TextureAtlas atlas = Assets.instance.atlasMap.get(figure.getFigureClass());
+					TextureAtlas atlas = Assets.instance.atlasMap.get(figure.getFigurePresentation());
 					if (locatedImage == null) {
 						Log.warning("Located Image is null: " + figure + " - " + animationImage);
 						continue;

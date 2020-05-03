@@ -11,6 +11,7 @@ import dungeon.JDPoint;
 import dungeon.RoomInfo;
 import figure.Figure;
 import figure.FigureInfo;
+import figure.FigurePresentation;
 import graphics.GraphicObject;
 
 import de.jdungeon.app.screen.GraphicObjectClickComparator;
@@ -31,7 +32,7 @@ public class ViewRoom {
 
 	private final GraphicObjectRenderCollection backGroundObjects = new GraphicObjectRenderCollection();
 
-	public final Map<Class<? extends Figure>, GraphicObjectRenderCollection> figureObjects = new CopyOnWriteMap<>();
+	public final Map<FigurePresentation, GraphicObjectRenderCollection> figureObjects = new CopyOnWriteMap<>();
 
 	public void setRoomInfo(RoomInfo roomInfo) {
 		this.roomInfo = roomInfo;
@@ -47,7 +48,7 @@ public class ViewRoom {
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {
 			Object clickableObject = graphicObject.getClickableObject();
 			if (clickableObject instanceof FigureInfo && !((FigureInfo) clickableObject).isDead()) {
-				Class<? extends Figure> figureClass = ((FigureInfo) clickableObject).getFigureClass();
+				FigurePresentation figureClass = ((FigureInfo) clickableObject).getFigurePresentation();
 				GraphicObjectRenderCollection figureList = figureObjects.get(figureClass);
 				if (figureList == null) {
 					figureList = new GraphicObjectRenderCollection();
@@ -90,7 +91,7 @@ public class ViewRoom {
 	 * @param figureClass particular figure class that render information is demanded
 	 * @return all render information for all figures of this class
 	 */
-	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(Class<? extends Figure> figureClass) {
+	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(FigurePresentation figureClass) {
 		synchronized (figureObjects) {
 			if (!figureObjects.containsKey(figureClass)) {
 				return null;

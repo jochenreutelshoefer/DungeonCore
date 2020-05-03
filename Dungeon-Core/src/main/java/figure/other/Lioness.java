@@ -4,6 +4,7 @@ import ai.AI;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
+import figure.FigurePresentation;
 import figure.monster.MonsterInfo;
 import figure.npc.RescuedNPCAI;
 import item.Item;
@@ -35,6 +36,10 @@ public class Lioness extends ConjuredMagicFigure {
 		return new Lioness(value, d, master, ai);
 	}
 
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Lioness;
+	}
 
 
 	@Override

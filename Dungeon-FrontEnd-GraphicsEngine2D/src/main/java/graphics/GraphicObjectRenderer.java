@@ -909,8 +909,7 @@ public class GraphicObjectRenderer {
 		JDImageLocated im = null;
 		JDImageProxy imageProxy = null;
 		if (info.isDead()) {
-			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), Motion.TippingOver, RouteInstruction.Direction
-					.fromInteger(info.getLookDirection().getValue()));
+			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getFigurePresentation(), Motion.TippingOver, RouteInstruction.Direction.fromInteger(info.getLookDirection().getValue()));
 			// we take the last image from the tipping over animation
 			if (animationSet == null) {
 				Log.warning("No image found for dead " + info.toString());
@@ -931,7 +930,7 @@ public class GraphicObjectRenderer {
 			else {
 				motion = Motion.Walking;
 			}
-			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getHeroCategory(), motion, RouteInstruction.Direction
+			DefaultAnimationSet animationSet = ImageManager.getAnimationSet(info.getFigurePresentation(), motion, RouteInstruction.Direction
 					.fromInteger(info.getLookDirection().getValue()));
 			if (animationSet == null) {
 				Log.warning("No image found for motion " + motion + " + " + info.toString());

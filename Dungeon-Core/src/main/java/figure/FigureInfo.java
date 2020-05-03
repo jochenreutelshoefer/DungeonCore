@@ -152,6 +152,10 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return null;
 	}
 
+	public FigurePresentation getFigurePresentation() {
+		return this.f.getFigurePresentation();
+	}
+
 	public static FigureInfo makeFigureInfo(Figure f, DungeonVisibilityMap map) {
 		if (map == null) {
 			System.out.println("FigureInfo mit VisMap null!");

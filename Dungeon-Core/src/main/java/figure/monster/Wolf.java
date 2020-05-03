@@ -42,6 +42,11 @@ public class Wolf extends NatureMonster {
 
 	}
 
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.WolfGrey;
+	}
+
 	public Wolf(int value, AI ai) {
 		super(value, ai);
 		contrucHelpWolf(value);

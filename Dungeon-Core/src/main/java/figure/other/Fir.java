@@ -8,6 +8,7 @@ import dungeon.Room;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
+import figure.FigurePresentation;
 import figure.monster.MonsterInfo;
 
 public class Fir extends ConjuredMagicFigure {
@@ -17,15 +18,20 @@ public class Fir extends ConjuredMagicFigure {
 		construcHelp(value);
 		this.setActualDungeon(d);
 		createVisibilityMap(d);
-		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
-				this.getRoomVisibility());
+		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this, this.getRoomVisibility());
 		AbstractAI ai = new FirAI(info);
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);
 		// TODO: factor out - bilingual
 		this.name = "Fichte";
 	}
-	
+
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Fir;
+	}
+
 	@Override
 	public boolean disappearAtEndOfFight() {
 		return true;

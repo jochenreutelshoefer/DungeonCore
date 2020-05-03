@@ -2,6 +2,7 @@ package figure.monster;
 
 
 
+import figure.FigurePresentation;
 import spell.Poison;
 import dungeon.Dungeon;
 import fight.Poisoning;
@@ -15,9 +16,9 @@ public class Ghul extends UndeadMonster {
 	public static final int CHANCE_TO_HIT = 15;
 	private static final int HEALTH_DAMAGE_BALANCE = 16;
 	protected static final int SCATTER = 4;
-	
 
-	
+
+
 	protected void construcHelpGhul(int value) {
 		tumbleValue = 5;
 		this.antiTumbleValue = 70;
@@ -36,6 +37,11 @@ public class Ghul extends UndeadMonster {
 		super(value);
 		construcHelpGhul(value);
 
+	}
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Ghul;
 	}
 	
 	@Override

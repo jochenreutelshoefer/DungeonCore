@@ -7,6 +7,7 @@
 package figure.monster;
 
 import figure.Figure;
+import figure.FigurePresentation;
 import figure.action.Action;
 import figure.attribute.Attribute;
 
@@ -27,7 +28,12 @@ public class Dwarf extends Monster {
 		// TODO Auto-generated constructor stub
 		name = "Alberich";
 	}
-	
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.DarkDwarf;
+	}
+
 	@Override
 	public double getAntiFleeFactor() {
 		return 0;

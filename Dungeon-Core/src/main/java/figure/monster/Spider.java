@@ -3,6 +3,7 @@ package figure.monster;
 
 
 
+import figure.FigurePresentation;
 import spell.Cobweb;
 import dungeon.Dungeon;
 import item.equipment.Armor;
@@ -71,6 +72,11 @@ public class Spider extends NatureMonster {
 	public Spider(int value) {
 		super(value);
 		construcHelpBear(value);
+	}
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Spider;
 	}
 	
 	protected void construcHelpBear(int value) {

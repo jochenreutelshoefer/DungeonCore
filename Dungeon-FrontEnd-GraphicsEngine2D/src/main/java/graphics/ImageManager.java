@@ -21,7 +21,9 @@ import audio.AudioEffectsManager;
 import dungeon.Dir;
 import dungeon.DoorInfo;
 import dungeon.util.RouteInstruction;
+import figure.Figure;
 import figure.FigureInfo;
+import figure.FigurePresentation;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.monster.DarkMaster;
@@ -1143,108 +1145,108 @@ public class ImageManager {
 		}
 	}
 
-	private static final Map<Class<? extends Monster>, CharacterAnimationSet> monsterAnimationMap = new HashMap<>();
+	private static final Map<FigurePresentation, CharacterAnimationSet> monsterAnimationMap = new HashMap<>();
 
 	private static void createMonsterAnimationMap(AbstractImageLoader<?> a) {
-		monsterAnimationMap.put(Skeleton.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Orc.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Wolf.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Ogre.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Ghul.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Spider.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Lioness.class, new DefaultCharacterAnimationSet());
-		monsterAnimationMap.put(Dwarf.class, new CharacterAnimationSetBuilder("darkdwarf", a).build());
+		monsterAnimationMap.put(FigurePresentation.Skeleton, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.Orc, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.WolfGrey, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.Troll, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.Ghul, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.Spider, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.Lioness, new DefaultCharacterAnimationSet());
+		monsterAnimationMap.put(FigurePresentation.DarkDwarf, new CharacterAnimationSetBuilder("darkdwarf", a).build());
 
-		monsterAnimationMap.get(Skeleton.class).put(Motion.BeingHit, ImageManager.skel1_been_hit);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.Pause, ImageManager.skel1_pause);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.TippingOver, ImageManager.skel1_tipping_over);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.Walking, ImageManager.skel1_walking);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.Running, ImageManager.skel1_running);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.Using, ImageManager.skel1_using);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.Slaying, ImageManager.skel1_slays);
-		monsterAnimationMap.get(Skeleton.class).put(Motion.Sorcering, ImageManager.skel1_sorcering);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.BeingHit, ImageManager.skel1_been_hit);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.Pause, ImageManager.skel1_pause);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.TippingOver, ImageManager.skel1_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.Walking, ImageManager.skel1_walking);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.Running, ImageManager.skel1_running);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.Using, ImageManager.skel1_using);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.Slaying, ImageManager.skel1_slays);
+		monsterAnimationMap.get(FigurePresentation.Skeleton).put(Motion.Sorcering, ImageManager.skel1_sorcering);
 
-		monsterAnimationMap.get(Orc.class).put(Motion.BeingHit, ImageManager.orc1_been_hit);
-		monsterAnimationMap.get(Orc.class).put(Motion.Pause, ImageManager.orc1_pause);
-		monsterAnimationMap.get(Orc.class).put(Motion.TippingOver, ImageManager.orc1_tipping_over);
-		monsterAnimationMap.get(Orc.class).put(Motion.Walking, ImageManager.orc1_walking);
-		monsterAnimationMap.get(Orc.class).put(Motion.Running, ImageManager.orc1_running);
-		monsterAnimationMap.get(Orc.class).put(Motion.Using, ImageManager.orc1_using);
-		monsterAnimationMap.get(Orc.class).put(Motion.Slaying, ImageManager.orc1_slays);
-		monsterAnimationMap.get(Orc.class).put(Motion.Sorcering, ImageManager.orc1_sorcering);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.BeingHit, ImageManager.orc1_been_hit);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.Pause, ImageManager.orc1_pause);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.TippingOver, ImageManager.orc1_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.Walking, ImageManager.orc1_walking);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.Running, ImageManager.orc1_running);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.Using, ImageManager.orc1_using);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.Slaying, ImageManager.orc1_slays);
+		monsterAnimationMap.get(FigurePresentation.Orc).put(Motion.Sorcering, ImageManager.orc1_sorcering);
 
-		monsterAnimationMap.get(Wolf.class).put(Motion.BeingHit, ImageManager.wolf1_been_hit);
-		monsterAnimationMap.get(Wolf.class).put(Motion.Pause, ImageManager.wolf1_pause);
-		monsterAnimationMap.get(Wolf.class).put(Motion.TippingOver, ImageManager.wolf1_tipping_over);
-		monsterAnimationMap.get(Wolf.class).put(Motion.Walking, ImageManager.wolf1_walking);
-		monsterAnimationMap.get(Wolf.class).put(Motion.Running, ImageManager.wolf1_running);
-		monsterAnimationMap.get(Wolf.class).put(Motion.Using, ImageManager.wolf1_using);
-		monsterAnimationMap.get(Wolf.class).put(Motion.Slaying, ImageManager.wolf1_slays);
-		monsterAnimationMap.get(Wolf.class).put(Motion.Sorcering, ImageManager.wolf1_sorcering);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.BeingHit, ImageManager.wolf1_been_hit);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.Pause, ImageManager.wolf1_pause);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.TippingOver, ImageManager.wolf1_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.Walking, ImageManager.wolf1_walking);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.Running, ImageManager.wolf1_running);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.Using, ImageManager.wolf1_using);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.Slaying, ImageManager.wolf1_slays);
+		monsterAnimationMap.get(FigurePresentation.WolfGrey).put(Motion.Sorcering, ImageManager.wolf1_sorcering);
 
-		monsterAnimationMap.get(Ogre.class).put(Motion.BeingHit, ImageManager.ogre1_been_hit);
-		monsterAnimationMap.get(Ogre.class).put(Motion.Pause, ImageManager.ogre1_pause);
-		monsterAnimationMap.get(Ogre.class).put(Motion.TippingOver, ImageManager.ogre1_tipping_over);
-		monsterAnimationMap.get(Ogre.class).put(Motion.Walking, ImageManager.ogre1_walking);
-		monsterAnimationMap.get(Ogre.class).put(Motion.Running, ImageManager.ogre1_running);
-		monsterAnimationMap.get(Ogre.class).put(Motion.Using, ImageManager.ogre1_using);
-		monsterAnimationMap.get(Ogre.class).put(Motion.Slaying, ImageManager.ogre1_slays);
-		monsterAnimationMap.get(Ogre.class).put(Motion.Sorcering, ImageManager.ogre1_sorcering);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.BeingHit, ImageManager.ogre1_been_hit);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.Pause, ImageManager.ogre1_pause);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.TippingOver, ImageManager.ogre1_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.Walking, ImageManager.ogre1_walking);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.Running, ImageManager.ogre1_running);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.Using, ImageManager.ogre1_using);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.Slaying, ImageManager.ogre1_slays);
+		monsterAnimationMap.get(FigurePresentation.Troll).put(Motion.Sorcering, ImageManager.ogre1_sorcering);
 
-		monsterAnimationMap.get(Ghul.class).put(Motion.BeingHit, ImageManager.ghul1_been_hit);
-		monsterAnimationMap.get(Ghul.class).put(Motion.Pause, ImageManager.ghul1_pause);
-		monsterAnimationMap.get(Ghul.class).put(Motion.TippingOver, ImageManager.ghul1_tipping_over);
-		monsterAnimationMap.get(Ghul.class).put(Motion.Walking, ImageManager.ghul1_walking);
-		monsterAnimationMap.get(Ghul.class).put(Motion.Running, ImageManager.ghul1_running);
-		monsterAnimationMap.get(Ghul.class).put(Motion.Using, ImageManager.ghul1_using);
-		monsterAnimationMap.get(Ghul.class).put(Motion.Slaying, ImageManager.ghul1_slays);
-		monsterAnimationMap.get(Ghul.class).put(Motion.Sorcering, ImageManager.ghul1_sorcering);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.BeingHit, ImageManager.ghul1_been_hit);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.Pause, ImageManager.ghul1_pause);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.TippingOver, ImageManager.ghul1_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.Walking, ImageManager.ghul1_walking);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.Running, ImageManager.ghul1_running);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.Using, ImageManager.ghul1_using);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.Slaying, ImageManager.ghul1_slays);
+		monsterAnimationMap.get(FigurePresentation.Ghul).put(Motion.Sorcering, ImageManager.ghul1_sorcering);
 
-		monsterAnimationMap.get(Spider.class).put(Motion.BeingHit, ImageManager.spider1_been_hit);
-		monsterAnimationMap.get(Spider.class).put(Motion.Pause, ImageManager.spider1_pause);
-		monsterAnimationMap.get(Spider.class).put(Motion.TippingOver, ImageManager.spider1_tipping_over);
-		monsterAnimationMap.get(Spider.class).put(Motion.Walking, ImageManager.spider1_walking);
-		monsterAnimationMap.get(Spider.class).put(Motion.Running, ImageManager.spider1_running);
-		monsterAnimationMap.get(Spider.class).put(Motion.Using, ImageManager.spider1_using);
-		monsterAnimationMap.get(Spider.class).put(Motion.Slaying, ImageManager.spider1_slays);
-		monsterAnimationMap.get(Spider.class).put(Motion.Sorcering, ImageManager.spider1_sorcering);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.BeingHit, ImageManager.spider1_been_hit);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.Pause, ImageManager.spider1_pause);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.TippingOver, ImageManager.spider1_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.Walking, ImageManager.spider1_walking);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.Running, ImageManager.spider1_running);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.Using, ImageManager.spider1_using);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.Slaying, ImageManager.spider1_slays);
+		monsterAnimationMap.get(FigurePresentation.Spider).put(Motion.Sorcering, ImageManager.spider1_sorcering);
 
-		monsterAnimationMap.get(Lioness.class).put(Motion.BeingHit, ImageManager.lioness_been_hit);
-		monsterAnimationMap.get(Lioness.class).put(Motion.Pause, ImageManager.lioness_pause);
-		monsterAnimationMap.get(Lioness.class).put(Motion.TippingOver, ImageManager.lioness_tipping_over);
-		monsterAnimationMap.get(Lioness.class).put(Motion.Walking, ImageManager.lioness_walking);
-		monsterAnimationMap.get(Lioness.class).put(Motion.Running, ImageManager.lioness_running);
-		monsterAnimationMap.get(Lioness.class).put(Motion.Using, ImageManager.lioness_using);
-		monsterAnimationMap.get(Lioness.class).put(Motion.Slaying, ImageManager.lioness_slays);
-		monsterAnimationMap.get(Lioness.class).put(Motion.Sorcering, ImageManager.lioness_sorcering);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.BeingHit, ImageManager.lioness_been_hit);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.Pause, ImageManager.lioness_pause);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.TippingOver, ImageManager.lioness_tipping_over);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.Walking, ImageManager.lioness_walking);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.Running, ImageManager.lioness_running);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.Using, ImageManager.lioness_using);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.Slaying, ImageManager.lioness_slays);
+		monsterAnimationMap.get(FigurePresentation.Lioness).put(Motion.Sorcering, ImageManager.lioness_sorcering);
 	}
 
-	private static final Map<Hero.HeroCategory, CharacterAnimationSet> heroAnimationMap = new HashMap<>();
+	private static final Map<FigurePresentation, CharacterAnimationSet> heroAnimationMap = new HashMap<>();
 
 	private static void createHeroAnimationMap(AbstractImageLoader<?> a) {
-		heroAnimationMap.put(Hero.HeroCategory.Warrior, new DefaultCharacterAnimationSet());
-		heroAnimationMap.put(Hero.HeroCategory.Thief, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(FigurePresentation.Warrior, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(FigurePresentation.Sailor, new DefaultCharacterAnimationSet());
 		//heroAnimationMap.put(Hero.HeroCategory.Druid, new DefaultCharacterAnimationSet());
-		heroAnimationMap.put(Hero.HeroCategory.Druid, new CharacterAnimationSetBuilder("darkdwarf", a).build());
-		heroAnimationMap.put(Hero.HeroCategory.Mage, new DefaultCharacterAnimationSet());
+		heroAnimationMap.put(FigurePresentation.Druid, new CharacterAnimationSetBuilder("darkdwarf", a).build());
+		heroAnimationMap.put(FigurePresentation.Mage, new DefaultCharacterAnimationSet());
 
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.BeingHit, ImageManager.warrior_been_hit);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Pause, ImageManager.warrior_pause);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.TippingOver, ImageManager.warrior_tipping_over);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Walking, ImageManager.warrior_walking);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Running, ImageManager.warrior_running);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Using, ImageManager.warrior_using);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Slaying, ImageManager.warrior_slays);
-		heroAnimationMap.get(Hero.HeroCategory.Warrior).put(Motion.Sorcering, ImageManager.warrior_sorcering);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.BeingHit, ImageManager.warrior_been_hit);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.Pause, ImageManager.warrior_pause);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.TippingOver, ImageManager.warrior_tipping_over);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.Walking, ImageManager.warrior_walking);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.Running, ImageManager.warrior_running);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.Using, ImageManager.warrior_using);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.Slaying, ImageManager.warrior_slays);
+		heroAnimationMap.get(FigurePresentation.Warrior).put(Motion.Sorcering, ImageManager.warrior_sorcering);
 
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.BeingHit, ImageManager.thief_been_hit);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Pause, ImageManager.thief_pause);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.TippingOver, ImageManager.thief_tipping_over);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Walking, ImageManager.thief_walking);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Running, ImageManager.thief_running);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Using, ImageManager.thief_using);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Slaying, ImageManager.thief_slays);
-		heroAnimationMap.get(Hero.HeroCategory.Thief).put(Motion.Sorcering, ImageManager.thief_sorcering);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.BeingHit, ImageManager.thief_been_hit);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.Pause, ImageManager.thief_pause);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.TippingOver, ImageManager.thief_tipping_over);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.Walking, ImageManager.thief_walking);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.Running, ImageManager.thief_running);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.Using, ImageManager.thief_using);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.Slaying, ImageManager.thief_slays);
+		heroAnimationMap.get(FigurePresentation.Sailor).put(Motion.Sorcering, ImageManager.thief_sorcering);
 
 		/*
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.BeingHit, ImageManager.druid_been_hit);
@@ -1257,16 +1259,17 @@ public class ImageManager {
 		heroAnimationMap.get(Hero.HeroCategory.Druid).put(Motion.Sorcering, ImageManager.druid_sorcering);
 		*/
 
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.BeingHit, ImageManager.mage_been_hit);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Pause, ImageManager.mage_pause);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.TippingOver, ImageManager.mage_tipping_over);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Walking, ImageManager.mage_walking);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Running, ImageManager.mage_running);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Using, ImageManager.mage_using);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Slaying, ImageManager.mage_slays);
-		heroAnimationMap.get(Hero.HeroCategory.Mage).put(Motion.Sorcering, ImageManager.mage_sorcering);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.BeingHit, ImageManager.mage_been_hit);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.Pause, ImageManager.mage_pause);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.TippingOver, ImageManager.mage_tipping_over);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.Walking, ImageManager.mage_walking);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.Running, ImageManager.mage_running);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.Using, ImageManager.mage_using);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.Slaying, ImageManager.mage_slays);
+		heroAnimationMap.get(FigurePresentation.Mage).put(Motion.Sorcering, ImageManager.mage_sorcering);
 	}
 
+	/*
 	public static DefaultAnimationSet getAnimationSet(HeroInfo hero, Motion motion, RouteInstruction.Direction direction) {
 		Hero.HeroCategory heroClass = ((HeroInfo) hero).getHeroCategory();
 
@@ -1285,27 +1288,43 @@ public class ImageManager {
 		Log.severe("Invalid hero category: " + heroClass);
 		return null;
 	}
-
+*/
 	public static DefaultAnimationSet getAnimationSet(FigureInfo info, Motion motion, RouteInstruction.Direction direction) {
+		FigurePresentation figurePresentation = info.getFigurePresentation();
+		if(figurePresentation == null) {
+			Log.severe("Unknown FigureInfo for AnimationSet: " + info);
+			return null;
+		}
+		return ImageManager.getAnimationSet(figurePresentation, motion, direction);
+		/*
 		if (info instanceof MonsterInfo) {
 			return ImageManager.getAnimationSet((MonsterInfo) info, motion, direction);
 		}
 		if (info instanceof HeroInfo) {
 			return ImageManager.getAnimationSet(((HeroInfo) info), motion, direction);
 		}
-		Log.severe("Unknown FigureInfo for AnimationSet: " + info);
-		return null;
+		*/
+
 	}
 
-	public static DefaultAnimationSet getAnimationSet(Hero.HeroCategory heroCategory, Motion motion, RouteInstruction.Direction direction) {
-		if (heroAnimationMap.containsKey(heroCategory)) {
-			CharacterAnimationSet motionAnimationSetDirectionsMap = heroAnimationMap.get(heroCategory);
+	public static DefaultAnimationSet getAnimationSet(FigurePresentation figurePresentation, Motion motion, RouteInstruction.Direction direction) {
+		if(monsterAnimationMap.containsKey(figurePresentation)) {
+			CharacterAnimationSet motionAnimationSetDirectionsMap = monsterAnimationMap.get(figurePresentation);
+			if (motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsMotion(motion)) {
+				return motionAnimationSetDirectionsMap.getAnimationSet(motion, direction);
+			}
+		}
+		// todo: unite maps
+		if(heroAnimationMap.containsKey(figurePresentation)) {
+			CharacterAnimationSet motionAnimationSetDirectionsMap = heroAnimationMap.get(figurePresentation);
 			if (motionAnimationSetDirectionsMap != null && motionAnimationSetDirectionsMap.containsMotion(motion)) {
 				return motionAnimationSetDirectionsMap.getAnimationSet(motion, direction);
 			}
 		}
 		return null;
 	}
+
+
 
 	public static Map<Class<? extends Location>, JDImageProxy<?>> shrineMap = new HashMap<>();
 
@@ -1322,7 +1341,7 @@ public class ImageManager {
 		shrineMap.put(LevelExit.class, ImageManager.falltuerImage);
 		shrineMap.put(ScoutShrine.class, ImageManager.saeuleImage);
 		shrineMap.put(Corpse.class, ImageManager.dead_dwarfImage);
-		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(Hero.HeroCategory.Druid, Motion.Walking, RouteInstruction.Direction.South).getImagesNr(0));
+		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(FigurePresentation.Druid, Motion.Walking, RouteInstruction.Direction.South).getImagesNr(0));
 		shrineMap.put(RuneFinder.class, ImageManager.shrine_small_yellowImage);
 		shrineMap.put(DefenderLocation.class, ImageManager.warrior_walking.get(RouteInstruction.Direction.South).getImagesNr(0));
 	}
@@ -1349,27 +1368,28 @@ public class ImageManager {
 		return null;
 	}
 
-	public static Map<Class<? extends Monster>, JDImageProxy<?>[]> figureMap = new HashMap<>();
+	public static Map<FigurePresentation, JDImageProxy<?>[]> figureMap = new HashMap<>();
 
 	private void createFigureClassMap() {
-		figureMap.put(Wolf.class, ImageManager.wolfImage);
-		figureMap.put(Orc.class, ImageManager.orcImage);
-		figureMap.put(Skeleton.class, ImageManager.skelImage);
-		figureMap.put(Ghul.class, ImageManager.ghulImage);
-		figureMap.put(Ogre.class, ImageManager.ogreImage);
-		figureMap.put(Spider.class, ImageManager.bearImage);
-		figureMap.put(Lioness.class, ImageManager.lionessImage);
+		figureMap.put(FigurePresentation.WolfGrey, ImageManager.wolfImage);
+		figureMap.put(FigurePresentation.Orc, ImageManager.orcImage);
+		figureMap.put(FigurePresentation.Skeleton, ImageManager.skelImage);
+		figureMap.put(FigurePresentation.Ghul, ImageManager.ghulImage);
+		figureMap.put(FigurePresentation.Troll, ImageManager.ogreImage);
+		figureMap.put(FigurePresentation.Spider, ImageManager.bearImage);
+		figureMap.put(FigurePresentation.Lioness, ImageManager.lionessImage);
+		// todo: what about Fir and Darkdwarf?
 	}
 
 	public static JDImageProxy<?> getImage(FigureInfo figure, RouteInstruction.Direction dir) {
 		if (figure instanceof MonsterInfo) {
 			MonsterInfo m = (MonsterInfo) figure;
-			Class<? extends Monster> monsterClass = m.getMonsterClass();
-			if (figureMap.containsKey(monsterClass)) {
-				return figureMap.get(monsterClass)[dir.getValue() - 1];
+			FigurePresentation figurePresentation = figure.getFigurePresentation();
+			if (figureMap.containsKey(figurePresentation)) {
+				return figureMap.get(figurePresentation)[dir.getValue() - 1];
 			}
 			else {
-				DefaultAnimationSet animationSet = monsterAnimationMap.get(monsterClass)
+				DefaultAnimationSet animationSet = monsterAnimationMap.get(figurePresentation)
 						.getAnimationSet(Motion.Walking, dir);
 				if (animationSet != null) {
 					return animationSet.getImagesNr(0);
@@ -1377,21 +1397,10 @@ public class ImageManager {
 			}
 
 			// todo: create animations
-			if (monsterClass == DarkMaster.class) {
-				return ImageManager.darkMasterImage;
-			}
-			else if (monsterClass == Dwarf.class) {
-				return ImageManager.dark_dwarfImage;
-			}
-			else if (monsterClass == Fir.class) {
+			if (figurePresentation == FigurePresentation.Fir) {
 				return ImageManager.finImage;
 			}
-			else if (monsterClass == Lioness.class) {
-				DefaultAnimationSet animationSet = ImageManager.lioness_walking.get(dir.getValue() - 1);
-				if (animationSet != null) {
-					return animationSet.getImagesNr(0);
-				}
-			}
+			// fallback to show
 			return ImageManager.engelImage;
 		}
 		return null;

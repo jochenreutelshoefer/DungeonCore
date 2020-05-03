@@ -2,6 +2,7 @@ package figure.monster;
 
 import ai.AI;
 import figure.Figure;
+import figure.FigurePresentation;
 import figure.attribute.Attribute;
 import game.JDEnv;
 import gui.Texts;
@@ -33,6 +34,11 @@ public class Skeleton extends UndeadMonster {
 		construcHelpSkeleton(value);
 		//construcHelp(value);
 
+	}
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.Skeleton;
 	}
 
 	protected void construcHelpSkeleton(int value) {

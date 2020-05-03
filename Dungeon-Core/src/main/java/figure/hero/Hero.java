@@ -17,6 +17,7 @@ import fight.SlapResult;
 import figure.APAgility;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
+import figure.FigurePresentation;
 import figure.RoomObservationStatus;
 import figure.Spellbook;
 import figure.action.ScoutAction;
@@ -119,7 +120,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private final JDPoint oldLocation = new JDPoint(0, 0);
 
-	private final int HeroCode;
+	private final HeroCategory heroCategory;
 
 	private final Zodiac sign;
 
@@ -146,7 +147,24 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	public int getWorth() {
 		return 1000 + (500 * level);
 	}
-	
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		if(this.heroCategory == HeroCategory.Warrior) {
+			return FigurePresentation.Warrior;
+		}
+		if(this.heroCategory == HeroCategory.Druid) {
+			return FigurePresentation.Mage;
+		}
+		if(this.heroCategory == HeroCategory.Thief) {
+			return FigurePresentation.Sailor;
+		}
+		if(this.heroCategory == HeroCategory.Mage) {
+			return FigurePresentation.Mage;
+		}
+		return null;
+	}
+
 	@Override
 	protected boolean getBlock(int dmg) {
 		Shield shield = this.inv.getShield1();
@@ -202,7 +220,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			int creature, int undead, int scout, int dust, double dustReg,
 			int ch) {
 		super();
-		this.HeroCode = heroCode;
+		this.heroCategory = HeroCategory.fromValue(heroCode);
 		this.reflexReactionUnit = new DefaultHeroReflexBehavior(this);
 		this.sign = sign;
 		int brave = 0;
@@ -229,7 +247,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	public Hero(int heroCode, Zodiac sign, Character character) {
 		super();
-		this.HeroCode = heroCode;
+		this.heroCategory = HeroCategory.fromValue(heroCode);
 		this.reflexReactionUnit = new DefaultHeroReflexBehavior(this);
 		this.sign = sign;
 		int brave = 0;
@@ -294,7 +312,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	public int getHeroCode() {
-		return HeroCode;
+		return this.heroCategory.getCode();
 	}
 
 	@Override

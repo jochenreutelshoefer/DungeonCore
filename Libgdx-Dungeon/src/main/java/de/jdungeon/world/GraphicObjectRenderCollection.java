@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import figure.Figure;
 import figure.FigureInfo;
+import figure.FigurePresentation;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.hero.Warrior;
@@ -109,11 +110,9 @@ public class GraphicObjectRenderCollection {
 		Object clickableObject = graphicObject.getClickableObject();
 		Class<? extends Figure> figureClass = null;
 		if (clickableObject instanceof FigureInfo) {
-			figureClass = ((FigureInfo) clickableObject).getFigureClass();
+				return Assets.instance.getFigureTexture(((FigureInfo) clickableObject).getFigurePresentation(), image);
 		}
-		if(figureClass != null) {
-			return Assets.instance.getFigureTexture(figureClass, image);
-		}
+
 
 		// else look into default atlas
 		return Assets.instance.getDungeonTexture(image);

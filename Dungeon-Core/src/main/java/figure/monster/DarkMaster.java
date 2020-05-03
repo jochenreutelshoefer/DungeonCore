@@ -7,6 +7,7 @@ import dungeon.Room;
 import dungeon.util.RouteInstruction;
 import fight.Slap;
 import figure.Figure;
+import figure.FigurePresentation;
 import figure.action.Action;
 import figure.attribute.Attribute;
 
@@ -58,6 +59,11 @@ public class DarkMaster extends Monster {
 	public int hunting() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public FigurePresentation getFigurePresentation() {
+		return FigurePresentation.DarkDwarf;
 	}
 
 	@Override

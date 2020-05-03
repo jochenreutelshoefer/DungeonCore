@@ -11,7 +11,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import figure.Figure;
+import figure.FigurePresentation;
 import figure.hero.Druid;
 import figure.hero.Mage;
 import figure.hero.Thief;
@@ -40,31 +42,8 @@ import de.jdungeon.game.AudioLoader;
 public class Assets implements Disposable, AssetErrorListener {
 
 	private static final String TAG = Assets.class.getName();
-	public static String ATLAS_FILE_EXTENSION = ".atlas";
-	public static String DUNGEON_ATLAS = "dungeon";
-	public static String WARRIOR_ATLAS = "warrior";
-	public static String LIONESS_ATLAS = "lioness";
-	public static String WOLF_ATLAS = "wolf";
-	public static String ORC_ATLAS = "orc";
-	public static String DRUID_ATLAS = "druid";
-	public static String MAGE_ATLAS = "mage";
-	public static String THIEF_ATLAS = "thief";
-	public static String DARKDWARF_ATLAS = "darkdwarf";
-	public static String SKEL_ATLAS = "skel";
-	public static String OGRE_ATLAS = "ogre";
-	public static String GHUL_ATLAS = "ghul";
-	public static String SPIDER_ATLAS = "spider";
-	public static String GUI_ATLAS = "gui";
-
 	/*
-	Figure classes that we can draw with the assets provided
-	 */
-	public static Class[] figureClasses = new Class[] { Warrior.class, Orc.class, Wolf.class, Skeleton.class, Lioness.class, Ogre.class, Ghul.class, Spider.class, Druid.class, Mage.class, Thief.class /*TODO: DarkDwarf.class*/ };
-
-
-
-	/*
-	 * Why are all figure classes treated here distinctly instead of in a generic way?
+	 * Why are all figure classes treated here distinctly in different atlases instead of in a generic way?
 	 * The reason lies in the optimization of the open gl rendering process.
 	 * For performance optimization purposes it is necessary to have a low number of texture sheet (atlas)
 	 * changes during the rendering of a frame. Therefore, it is clever to render all figures of same class
@@ -73,38 +52,19 @@ public class Assets implements Disposable, AssetErrorListener {
 	 * distinctly to be able to change the texture sheet (atlas) for each class.
 	 */
 
+	public static String ATLAS_FILE_EXTENSION = ".atlas";
+	public static String DUNGEON_ATLAS = "dungeon";
+	public static String GUI_ATLAS = "gui";
 
 	public static final Assets instance = new Assets();
 	private AssetManager assetManager;
+	public Map<FigurePresentation, TextureAtlas> atlasMap = new HashMap<>();
 
 	private TextureAtlas dungeonAtlas;
-
-	private TextureAtlas warriorAtlas;
-
-	private TextureAtlas orcAtlas;
-
-	private TextureAtlas ogreAtlas;
-	private TextureAtlas ghulAtlas;
-	private TextureAtlas spiderAtlas;
-	private TextureAtlas druidAtlas;
-	private TextureAtlas mageAtlas;
-	private TextureAtlas thiefAtlas;
-	private TextureAtlas darkdwarfAtlas;
-
-	private TextureAtlas wolfAtlas;
-
-	private TextureAtlas skelAtlas;
-
-	private TextureAtlas lionessAtlas;
-
 	private TextureAtlas guiAtlas;
 
 	public TextureAtlas getGuiAtlas() {
 		return guiAtlas;
-	}
-
-	public TextureAtlas getDungeonAtlas() {
-		return dungeonAtlas;
 	}
 
 	public AssetFonts fonts;
@@ -129,98 +89,34 @@ public class Assets implements Disposable, AssetErrorListener {
 		String guiAtlasPath = PACKS + GUI_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(guiAtlasPath, TextureAtlas.class);
 
-		// warrior
-		String warriorAtlasPath = PACKS + WARRIOR_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(warriorAtlasPath, TextureAtlas.class);
-
-		// orc
-		String orcAtlasPath = PACKS + ORC_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(orcAtlasPath, TextureAtlas.class);
-
-		// ogre
-		String ogreAtlasPath = PACKS + OGRE_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(ogreAtlasPath, TextureAtlas.class);
-
-		// ghul
-		String ghulAtlasPath = PACKS + GHUL_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(ghulAtlasPath, TextureAtlas.class);
-
-		// spider
-		String spiderAtlasPath = PACKS + SPIDER_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(spiderAtlasPath, TextureAtlas.class);
-
-
-		// druid
-		String druidAtlasPath = PACKS + DRUID_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(druidAtlasPath, TextureAtlas.class);
-
-		// mage
-		String mageAtlasPath = PACKS + MAGE_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(mageAtlasPath, TextureAtlas.class);
-
-		// thief
-		String thiefAtlasPath = PACKS + THIEF_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(thiefAtlasPath, TextureAtlas.class);
-
-		// darkdwarf
-		String darkdwarfAtlasPath = PACKS + DARKDWARF_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(darkdwarfAtlasPath, TextureAtlas.class);
-
-		// wolf
-		String wolfAtlasPath = PACKS + WOLF_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(wolfAtlasPath, TextureAtlas.class);
-
-		// skel
-		String skelAtlasPath = PACKS + SKEL_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(skelAtlasPath, TextureAtlas.class);
-
-		// lioness
-		String lionessAtlasPath = PACKS + LIONESS_ATLAS + ATLAS_FILE_EXTENSION;
-		assetManager.load(lionessAtlasPath, TextureAtlas.class);
-
+		FigurePresentation[] figurePresentations = FigurePresentation.values();
+		for (FigurePresentation figurePresentation : figurePresentations) {
+			String figureAtlasPath = PACKS + figurePresentation.getFilepath() + ATLAS_FILE_EXTENSION;
+			assetManager.load(figureAtlasPath, TextureAtlas.class);
+		}
 		assetManager.finishLoading();
+
+		for (FigurePresentation figurePresentation : figurePresentations) {
+			String figureAtlasPath = PACKS + figurePresentation.getFilepath() + ATLAS_FILE_EXTENSION;
+			TextureAtlas figureAtlas = null;
+			try {
+				figureAtlas = assetManager.get(figureAtlasPath);
+				Map<String, TextureAtlas.AtlasRegion> figureAtlasRegionCache = new HashMap<>();
+				atlasMap.put(figurePresentation, figureAtlas);
+				figuresCacheMap.put(figureAtlas, figureAtlasRegionCache);
+			} catch (GdxRuntimeException exception) {
+				Gdx.app.error(TAG, "Couldn't find atlas for figure: " + figurePresentation);
+				exception.printStackTrace();
+			}
+
+		}
+
+
 		dungeonAtlas = assetManager.get(dungeonAtlasPath);
-		cacheMap.put(dungeonAtlas, textureCacheDungeon);
-
-		orcAtlas = assetManager.get(orcAtlasPath);
-		cacheMap.put(orcAtlas, textureCacheOrc);
-
-		ogreAtlas = assetManager.get(ogreAtlasPath);
-		cacheMap.put(ogreAtlas, textureCacheOgre);
-
-
-		ghulAtlas = assetManager.get(ghulAtlasPath);
-		cacheMap.put(ghulAtlas, textureCacheGhul);
-
-		spiderAtlas = assetManager.get(spiderAtlasPath);
-		cacheMap.put(spiderAtlas, textureCacheSpider);
-
-		druidAtlas = assetManager.get(druidAtlasPath);
-		cacheMap.put(druidAtlas, textureCacheDruid);
-
-		mageAtlas = assetManager.get(mageAtlasPath);
-		cacheMap.put(mageAtlas, textureCacheMage);
-
-		thiefAtlas = assetManager.get(thiefAtlasPath);
-		cacheMap.put(thiefAtlas, textureCacheThief);
-
-		darkdwarfAtlas = assetManager.get(darkdwarfAtlasPath);
-		cacheMap.put(darkdwarfAtlas, textureCacheDarkdwarf);
-
-		wolfAtlas = assetManager.get(wolfAtlasPath);
-		cacheMap.put(wolfAtlas, textureCacheWolf);
-
-		warriorAtlas = assetManager.get(warriorAtlasPath);
-		cacheMap.put(warriorAtlas, textureCacheWarrior);
-
-		lionessAtlas = assetManager.get(lionessAtlasPath);
-		cacheMap.put(lionessAtlas, textureCacheLioness);
-
-		skelAtlas = assetManager.get(skelAtlasPath);
-		cacheMap.put(skelAtlas, textureCacheSkeleton);
+		figuresCacheMap.put(dungeonAtlas, textureCacheDungeon);
 
 		guiAtlas = assetManager.get(guiAtlasPath);
-		cacheMap.put(guiAtlas, textureCacheGUI);
+		figuresCacheMap.put(guiAtlas, textureCacheGUI);
 
 		Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
 		for (String a : assetManager.getAssetNames()) {
@@ -255,21 +151,8 @@ public class Assets implements Disposable, AssetErrorListener {
 	}
 
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDungeon = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWarrior = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOrc = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheOgre = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSpider = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDruid = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheMage = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheThief = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDarkdwarf = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGhul = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheWolf = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheSkeleton = new HashMap<>();
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGUI = new HashMap<>();
-	private final Map<String, TextureAtlas.AtlasRegion> textureCacheLioness = new HashMap<>();
-
-	private final Map<TextureAtlas, Map<String, TextureAtlas.AtlasRegion>> cacheMap = new HashMap<>();
+	private final Map<TextureAtlas, Map<String, TextureAtlas.AtlasRegion>> figuresCacheMap = new HashMap<>();
 
 	/*
 	 * We also maintain an overall cache map from filename to AtlasRegion.
@@ -290,10 +173,10 @@ public class Assets implements Disposable, AssetErrorListener {
 		if(overallRegionCacheMap.containsKey(filename)) {
 			return overallRegionCacheMap.get(filename);
 		}
-		for (TextureAtlas textureAtlas : cacheMap.keySet()) {
+		for (TextureAtlas textureAtlas : figuresCacheMap.keySet()) {
 			TextureAtlas.AtlasRegion region = textureAtlas.findRegion(filename);
 			if(region != null) {
-				cacheMap.get(textureAtlas).put(filename, region);
+				figuresCacheMap.get(textureAtlas).put(filename, region);
 				overallRegionCacheMap.put(filename, region);
 				return region;
 			}
@@ -304,9 +187,6 @@ public class Assets implements Disposable, AssetErrorListener {
 		return null;
 	}
 
-	public TextureAtlas.AtlasRegion getWarriorTexture(JDImageProxy<?> image) {
-		return getAtlasRegion(image, warriorAtlas);
-	}
 
 	/*
 	 *	RENDER THREAD
@@ -340,12 +220,12 @@ public class Assets implements Disposable, AssetErrorListener {
 			blankFilename = blankFilename.substring(filename.lastIndexOf(pathSeparator) + 1);
 		}
 
-		if (cacheMap.get(atlas).containsKey(blankFilename)) {
+		if (figuresCacheMap.get(atlas).containsKey(blankFilename)) {
 			// if texture already loaded, retrieve from cache
-			return cacheMap.get(atlas).get(blankFilename);
+			return figuresCacheMap.get(atlas).get(blankFilename);
 		}
 		else {
-			Map<String, TextureAtlas.AtlasRegion> textureCache = cacheMap.get(atlas);
+			Map<String, TextureAtlas.AtlasRegion> textureCache = figuresCacheMap.get(atlas);
 			// called first time, hence load texture from atlas
 			TextureAtlas.AtlasRegion region = atlas.findRegion(blankFilename);
 			if (region != null) {
@@ -367,70 +247,17 @@ public class Assets implements Disposable, AssetErrorListener {
 	/*
 	 *	RENDER THREAD
 	 */
-	public TextureAtlas.AtlasRegion getFigureTexture(Class<? extends Figure> figureClass, JDImageProxy<?> image) {
-		if(Wolf.class.equals(figureClass)) {
-			return getAtlasRegion(image, wolfAtlas);
-		}
-		if(Skeleton.class.equals(figureClass)) {
-			return getAtlasRegion(image, skelAtlas);
-		}
-		if(Orc.class.equals(figureClass)) {
-			return getAtlasRegion(image, orcAtlas);
-		}
-		if(Ogre.class.equals(figureClass)) {
-			return getAtlasRegion(image, ogreAtlas);
-		}
-		if(Ghul.class.equals(figureClass)) {
-			return getAtlasRegion(image, ghulAtlas);
-		}
-		if(Spider.class.equals(figureClass)) {
-			return getAtlasRegion(image, spiderAtlas);
-		}
-		/*
-		if(Druid.class.equals(figureClass)) {
-			return getAtlasRegion(image, druidAtlas);
-		}*/
-
-		if(Druid.class.equals(figureClass)) {
-			return getAtlasRegion(image, darkdwarfAtlas);
-		}
-		if(Mage.class.equals(figureClass)) {
-			return getAtlasRegion(image, mageAtlas);
-		}
-		if(Thief.class.equals(figureClass)) {
-			return getAtlasRegion(image, thiefAtlas);
-		}
-		if(Lioness.class.equals(figureClass)) {
-			return getAtlasRegion(image, lionessAtlas);
-		}
-		/* TODO
-		if(DarkDwarf.class.equals(figureClass)) {
-			return getAtlasRegion(image, darkdwarfAtlas);
-		}
-		*/
-		if(Warrior.class.equals(figureClass)) {
-			return getAtlasRegion(image, warriorAtlas);
+	public TextureAtlas.AtlasRegion getFigureTexture(FigurePresentation figureClass, JDImageProxy<?> image) {
+		TextureAtlas textureAtlas = this.atlasMap.get(figureClass);
+		if(textureAtlas != null) {
+			return getAtlasRegion(image, textureAtlas);
+		} else {
+			Gdx.app.error(TAG, "No atlas texture found for figure presentation: " + figureClass);
 		}
 		return null;
 	}
 
-	public Map<Class<? extends Figure>, TextureAtlas> atlasMap;
 
-	public void initAtlasMap() {
-		atlasMap = new HashMap<>();
-		atlasMap.put(Warrior.class, Assets.instance.warriorAtlas);
-		atlasMap.put(Orc.class, Assets.instance.orcAtlas);
-		atlasMap.put(Ogre.class, Assets.instance.ogreAtlas);
-		atlasMap.put(Ghul.class, Assets.instance.ghulAtlas);
-		atlasMap.put(Spider.class, Assets.instance.spiderAtlas);
-		atlasMap.put(Wolf.class, Assets.instance.wolfAtlas);
-		atlasMap.put(Skeleton.class, Assets.instance.skelAtlas);
-		//atlasMap.put(Druid.class, Assets.instance.druidAtlas);
-		atlasMap.put(Druid.class, Assets.instance.darkdwarfAtlas);
-		atlasMap.put(Mage.class, Assets.instance.mageAtlas);
-		atlasMap.put(Thief.class, Assets.instance.thiefAtlas);
-		atlasMap.put(Lioness.class, Assets.instance.lionessAtlas);
-		// atlasMap.put(DarkDwarf.class, Assets.instance.druidAtlas); TODO
-	}
+
 
 }
