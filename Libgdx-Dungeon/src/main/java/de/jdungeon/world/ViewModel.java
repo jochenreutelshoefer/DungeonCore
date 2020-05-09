@@ -80,7 +80,7 @@ public class ViewModel {
 	 * @param y y coordinate of the room to be updated
 	 */
 	public void updateRoom(int x, int y) {
-		Gdx.app.log(TAG,"Updating render information of room: "+x +" - "+ y);
+		//Gdx.app.log(TAG,"Updating render information of room: "+x +" - "+ y);
 		ViewRoom currentViewRoom = roomViews[x][y];
 		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
 		currentViewRoom.setGraphicObjects(graphicObjectsForRoom);

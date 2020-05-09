@@ -154,7 +154,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 			return FigurePresentation.Warrior;
 		}
 		if(this.heroCategory == HeroCategory.Druid) {
-			return FigurePresentation.Mage;
+			return FigurePresentation.Druid;
 		}
 		if(this.heroCategory == HeroCategory.Thief) {
 			return FigurePresentation.Sailor;

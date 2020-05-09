@@ -161,7 +161,8 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void gameOver() {
-
+		JDPoint roomNumber = this.heroInfo.getRoomNumber();
+		viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
 	}
 
 	public ActionAssembler getActionAssembler() {
@@ -172,7 +173,6 @@ public class PlayerController implements JDGUI {
 	public void onTurn() {
 		JDPoint roomNumber = this.heroInfo.getRoomNumber();
 		//viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
-
 		for (JDPoint point : roomRenderUpdateLaundry) {
 			viewModel.updateRoom(point.getX(), point.getY());
 		}
@@ -238,12 +238,6 @@ public class PlayerController implements JDGUI {
 		dungeonSession.notifyExit(exit, f);
 	}
 
-	private void updateRoomViewModel(JDPoint p) {
-		// might be null during GUI initialization
-		if (viewModel != null) {
-			this.viewModel.updateRoom(p.getX(), p.getY());
-		}
-	}
 
 	@Override
 	public Action getAction() {

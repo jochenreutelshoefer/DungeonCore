@@ -70,8 +70,6 @@ import log.Log;
 import util.JDColor;
 import util.JDDimension;
 
-import de.jdungeon.util.Pair;
-
 public class GraphicObjectRenderer {
 
 	private final boolean memory = false;
@@ -640,14 +638,15 @@ public class GraphicObjectRenderer {
 		return null;
 	}
 
-	private GraphicObject drawAMonster(MonsterInfo m, JDPoint relativeCoordinates) {
+	private GraphicObject drawAFigure(FigureInfo m, JDPoint relativeCoordinates) {
 
 		JDDimension figureInfoSize = getFigureInfoSize(m);
 		RelativeRectangle monsterDrawRect = getHeroRectangle(relativeCoordinates.getX(), relativeCoordinates
 				.getY(), figureInfoSize);
 		JDImageProxy<?> image = ImageManager.getImage(m, m.getLookDirection());
 		if (m.isDead()) {
-			final DefaultAnimationSet dyingAnimationSet = ImageManager.getAnimationSet(m, Motion.TippingOver, m.getLookDirection());
+			final DefaultAnimationSet dyingAnimationSet = ImageManager.getAnimationSet((FigureInfo)m, Motion.TippingOver, m.getLookDirection());
+
 			if (dyingAnimationSet != null) {
 				image = dyingAnimationSet.getImagesNr(dyingAnimationSet.getLength() - 1);
 			}
@@ -690,7 +689,7 @@ public class GraphicObjectRenderer {
 		return monsterSizeS;
 	}
 
-	private GraphicObject[] drawMonster(List<MonsterInfo> monsterList) {
+	private GraphicObject[] drawFigures(List<FigureInfo> monsterList) {
 		if (monsterList == null) {
 			return new GraphicObject[] {};
 		}
@@ -701,10 +700,10 @@ public class GraphicObjectRenderer {
 		}
 		for (int i = 0; i < monsterList.size(); i++) {
 
-			MonsterInfo m = (monsterList.get(i));
+			FigureInfo m = (monsterList.get(i));
 			int position = m.getPositionInRoomIndex();
 
-			GraphicObject gr = drawAMonster(m, getPositionCoordModified(position));
+			GraphicObject gr = drawAFigure(m, getPositionCoordModified(position));
 			if (i >= 8) {
 				break;
 			}
@@ -724,13 +723,7 @@ public class GraphicObjectRenderer {
 
 			FigureInfo m = (figures.get(i));
 			int position = m.getPositionInRoomIndex();
-			GraphicObject gr;
-			if (m instanceof MonsterInfo) {
-				gr = drawAMonster((MonsterInfo) m, getPositionCoordModified(position));
-			}
-			else {
-				gr = drawHero((HeroInfo) m);
-			}
+			GraphicObject gr = drawAFigure(m, getPositionCoordModified(position));
 			obs[i] = gr;
 		}
 
@@ -900,7 +893,6 @@ public class GraphicObjectRenderer {
 	private RelativeRectangle getHeroRectangle(int xpos, int ypos, JDDimension figureInfoSize) {
 		int xHeroSize = figureInfoSize.getWidth();
 		int yHeroSize = figureInfoSize.getHeight();
-
 		return new RelativeRectangle(xpos - (xHeroSize / 2), ypos - (yHeroSize / 2), xHeroSize, yHeroSize);
 	}
 
@@ -978,9 +970,6 @@ public class GraphicObjectRenderer {
 		return null;
 	}
 
-	private JDDimension getSpotDimension() {
-		return spotDimension;
-	}
 
 	public void invalidateCache(RoomInfoEntity entity) {
 		graphicObjectCache.remove(entity);
@@ -1077,7 +1066,7 @@ public class GraphicObjectRenderer {
 				graphObs.add(chestOb);
 			}
 		}
-		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
+ 		if ((status >= RoomObservationStatus.VISIBILITY_FIGURES)) {
 
 			// draw dead figures first, as they lay down on the floor
 			final List<FigureInfo> deadFigures = r.getDeadFigureInfos();
@@ -1087,9 +1076,9 @@ public class GraphicObjectRenderer {
 			}
 
 			// draw alive figures second to be displayed in foreground
-			final List<MonsterInfo> monsterInfos = r.getMonsterInfos();
-			if (monsterInfos != null && !monsterInfos.isEmpty()) {
-				GraphicObject[] monsterObs = drawMonster(monsterInfos);
+			List<FigureInfo> figureInfos = r.getFigureInfos();
+			if (figureInfos != null && !figureInfos.isEmpty()) {
+				GraphicObject[] monsterObs = drawFigures(figureInfos);
 				for (int i = 0; i < monsterObs.length; i++) {
 					if (monsterObs[i] != null) {
 						graphObs.add(monsterObs[i]);
@@ -1108,22 +1097,8 @@ public class GraphicObjectRenderer {
 			}
 		}
 
-		List<HeroInfo> heroInfos = r.getHeroInfos();
-		if (!heroInfos.isEmpty()) {
-			for (HeroInfo heroInfo : heroInfos) {
-				GraphicObject heroObject = drawHero(heroInfo);
-				if (heroObject != null) {
-					graphObs.add(heroObject);
-				}
-			}
-		}
+
 		return graphObs;
 	}
 
-	private GraphicObject drawHero(HeroInfo info) {
-		if (info == null) {
-			return null;
-		}
-		return this.getHeroGraphicObject(info);
-	}
 }
