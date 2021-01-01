@@ -48,6 +48,7 @@ import de.jdungeon.world.PlayerController;
  */
 public class SmartControlPanel extends LibgdxContainerGUIElement implements EventListener {
 
+
 	private final List<LibgdxGUIElement> allGuiElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> positionElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> doorElements = new ArrayList<>();
@@ -447,6 +448,10 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				}
 			}
 			else {
+				if(Position.getMinDistanceFromTo(figure.getPositionInRoomIndex(), i) == 1) {
+					ActionResult actionResult = figure.checkAction(action);
+					Gdx.app.log(this.getClass().getName(), "Cannot step to neighbour position: "+i+ " action possible: "+ actionResult);
+				}
 				positionElements.add(
 						dotPositionElements[i]);
 			}
@@ -460,7 +465,10 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 
 	@Override
 	public void update(float time) {
-		updateAllElementsIfNecessary();
+		//if(!this.playerController.isDungeonTransactionLocked()) {
+			updateAllElementsIfNecessary();
+		//}
+
 		// TODO: do we need to clear and reinsert all elements for every update ??
 		allGuiElements.clear();
 		//allGuiElements.add(outerFrame);

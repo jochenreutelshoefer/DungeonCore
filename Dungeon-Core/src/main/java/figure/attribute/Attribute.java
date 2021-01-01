@@ -21,7 +21,7 @@ public class Attribute implements Serializable {
 		HealthReg(5),
 		Dust(6),
 		DustReg(7),
-		Foutain(8),
+		Fountain(8),
 		Oxygen(9),
 		@Deprecated
 		OtherDeprecatedAttributeType(666);

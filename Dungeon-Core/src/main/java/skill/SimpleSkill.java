@@ -23,6 +23,11 @@ public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
 	}
 
 	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
+
+	@Override
 	public SimpleActionBuilder newActionFor(FigureInfo actor) {
 		return new SimpleActionBuilder(this, actor, SimpleSkillAction.class);
 	}
@@ -31,6 +36,11 @@ public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
 
 		public SimpleSkillAction(SimpleSkill skill, FigureInfo info) {
 			super(skill, info);
+		}
+
+		@Override
+		public String toString() {
+			return this.getClass().getSimpleName()+" "+skill.toString();
 		}
 	}
 

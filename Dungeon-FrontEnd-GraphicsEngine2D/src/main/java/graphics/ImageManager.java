@@ -15,6 +15,7 @@ import animation.AnimationSetDirections;
 import animation.DefaultAnimationSet;
 import animation.Motion;
 import audio.AudioEffectsManager;
+import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
@@ -153,8 +154,11 @@ public class ImageManager {
 	public static JDImageProxy<?> door_east_none;
 
 	public static JDImageProxy<?> door_north;
+	public static JDImageProxy<?> door_north_solo;
 
 	public static JDImageProxy<?> door_north_lock;
+
+	public static JDImageProxy<?> door_north_lock_solo;
 
 	public static JDImageProxy<?> door_north_none;
 
@@ -806,6 +810,7 @@ public class ImageManager {
 			wall_southImage = new JDImageProxy<>(a, "wall_south.gif");
 
 			door_north = new JDImageProxy<>(a, "tuer_nord.gif");
+			door_north_solo = new JDImageProxy<>(a, "tuer_nord_solo.gif");
 
 			door_north_none = new JDImageProxy<>(a, "tuer_nord_keine.gif");
 
@@ -861,6 +866,7 @@ public class ImageManager {
 			statueImage = new JDImageProxy<>(a, "statue.gif");
 			chest_lockImage = new JDImageProxy<>(a, "chest_schloss.gif");
 			door_north_lock = new JDImageProxy<>(a, "tuer_nord_schloss.gif");
+			door_north_lock_solo = new JDImageProxy<>(a, "tuer_nord_schloss_solo.gif");
 			door_east_lock = new JDImageProxy<>(a, "tuer_ost_schloss.gif");
 			door_west_lock = new JDImageProxy<>(a, "tuer_west_schloss.gif");
 			graveImage = new JDImageProxy<>(a, "grave.gif");
@@ -1207,10 +1213,19 @@ public class ImageManager {
 
 	public static JDImageProxy<?> getImage(DoorInfo s) {
 		if (s.hasLock()) {
-			return ImageManager.door_north_lock;
+			return ImageManager.door_north_lock_solo;
 		}
 		else {
-			return ImageManager.door_north;
+			return ImageManager.door_north_solo;
+		}
+	}
+
+	public static JDImageProxy<?> getImage(ChestInfo s) {
+		if (s.hasLock()) {
+			return ImageManager.chest_lockImage;
+		}
+		else {
+			return ImageManager.chestImage;
 		}
 	}
 

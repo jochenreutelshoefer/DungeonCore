@@ -26,7 +26,7 @@ public class Thing extends Item implements Usable, LocatableItem {
 
 	public Thing(String name, Object sup) {
 		super(150, false);
-		Type = "Gegenstand";
+		typeVerbalization = "Gegenstand";
 		this.name = name;
 		this.sup = sup;
 	}
@@ -80,7 +80,7 @@ public class Thing extends Item implements Usable, LocatableItem {
 	}
 
 	public String toString() {
-		return Type + ": " + getName();
+		return typeVerbalization + ": " + getName();
 	}
 
 	@Override

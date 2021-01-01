@@ -29,6 +29,9 @@ public class DefaultAudioLoader implements AudioLoader {
 
 	@Override
 	public AbstractAudioSet createAudioSet(String[] files) {
+		if (files.length == 0) {
+			Logger.getLogger(this.getClass()).warn( "Empty list of sound files on audio set initialization!");
+		}
 		AudioSet set = new AudioSet();
 		for (String file : files) {
 			String fullFilename = "sounds/" + file;
@@ -40,6 +43,8 @@ public class DefaultAudioLoader implements AudioLoader {
 					Logger.getLogger(this.getClass()).warn( "Sound could not be created: "+file);
 				}
 
+			} else {
+				Logger.getLogger(this.getClass()).warn( "Sound file not found: "+fullFilename);
 			}
 		}
 		return set;

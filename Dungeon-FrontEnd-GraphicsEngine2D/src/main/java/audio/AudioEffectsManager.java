@@ -79,41 +79,37 @@ public class AudioEffectsManager {
 		if (!initialized) {
 			initialized = true;
 			HERO_HURT = create(a, "getroffen.wav",
-					"getroffen2.wav" );
+					"getroffen2.wav");
 
-			TAKE_ITEM = a.createAudioSet(new String [] {"qubodupItemHandling1.wav", "qubodupItemHandling2.wav", "qubodupItemHandling3.wav", "qubodupItemHandling4.wav", "qubodupItemHandling5.wav",});
-			SMASH = create(a, "smash.wav", "punch.mp3" );
-			HIT = create(a, "dang.mp3" );
+			TAKE_ITEM = a.createAudioSet(new String[] { "qubodupItemHandling1.wav", "qubodupItemHandling2.wav", "qubodupItemHandling3.wav", "qubodupItemHandling4.wav", "qubodupItemHandling5.wav", });
+			SMASH = create(a, "smash.wav", "punch.mp3");
+			HIT = create(a, "dang.mp3");
 
-			FOOTSTEPS_QUICK = create(a, "footsteps-running-1.mp3", "footsteps-running-2.mp3", "footsteps-running-3.mp3" );
-			FOOTSTEPS_QUICK_FADING = create(a, "footsteps-running-away-fading-short.mp3" );
+			FOOTSTEPS_QUICK = create(a, "footsteps-running-1.mp3", "footsteps-running-2.mp3", "footsteps-running-3.mp3");
+			FOOTSTEPS_QUICK_FADING = create(a, "footsteps-running-away-fading-short.mp3");
 
-			DOOR_CLOSE = create(a, "door-closed.wav", "door-closed-2.mp3", "door-closed-3.mp3" );
-			DOOR_ENTERS = create(a, "door-squeak-enters-1a.mp3", "door-squeak-enters-2c.mp3" );
-			DOOR_LOCK = create(a,  "door-lock.wav" );
+			DOOR_CLOSE = create(a, "door-closed.wav", "door-closed-2.mp3", "door-closed-3.mp3");
+			DOOR_ENTERS = create(a, "door-squeak-enters-1a.mp3", "door-squeak-enters-2c.mp3");
+			DOOR_LOCK = create(a, "door-lock.wav");
 			DOOR_SOUND = create(a, "door-front-opening-a.mp3", "door-knock.mp3", "door-violently-closing-wooden.mp3");
-			DOOR_SMASH = create(a,  "punch_or_whack_-Vladimir-403040765.mp3", "Sharp Punch-SoundBible.com-1947392621.mp3", "Strong_Punch-Mike_Koenig-574430706.mp3" );
-			CHEST_OPEN = create(a,  "Opening Casket-SoundBible.mp3", "Cracking Chest Open-SoundBible" );
+			DOOR_SMASH = create(a, "punch_or_whack_-Vladimir-403040765.mp3", "Sharp Punch-SoundBible.com-1947392621.mp3", "Strong_Punch-Mike_Koenig-574430706.mp3");
+			CHEST_OPEN = create(a, "Opening Casket-SoundBible.mp3", "Cracking Chest Open-SoundBible");
 			MONSTER_HURT = create(a, "monster-pain1.wav",
-					"monster-pain5.wav" );
+					"monster-pain5.wav");
 			WOLF_ATTACKS = create(a, "bark1.wav",
-					"bark2.wav" );
+					"bark2.wav");
 
-			MAGIC_SOUND = create(a,  "woow-anything.wav" );
-			MAGIC_FIREBALL = create(a,   "magic-fireball.wav"); // "fire-ball2.wav" wav files need to have 16 bits
-			MAGIC_BLING = create(a, "magic-bling1.wav" );
-
+			MAGIC_SOUND = create(a, "woow-anything.wav");
+			MAGIC_FIREBALL = create(a, "magic-fireball.wav"); // "fire-ball2.wav" wav files need to have 16 bits
+			MAGIC_BLING = create(a, "magic-bling1.wav");
 
 			//SKEL_HURT = create(a, new String[] {});
 
-			SPIDER_DIES = create(a,  "spider-dies.wav" );
+			SPIDER_DIES = create(a, "spider-dies.wav");
 			SPIDER_ATTACKS = create(a, "hiss1.wav",
-					"hiss2.wav" );
+					"hiss2.wav");
 
-
-			WOLF_DIES = a.createAudioSet(new String[] { "wolf-dies.wav" });
-
-
+			WOLF_DIES = create(a, "wolf-dies.wav");
 		}
 	}
 
@@ -128,5 +124,4 @@ public class AudioEffectsManager {
 			set.playRandomSound();
 		}
 	}
-
 }

@@ -53,7 +53,9 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		// TODO: use setControl!
 		npc.createVisibilityMap(dungeon);
 		FigureInfo npcInfo = FigureInfo.makeFigureInfo(npc, npc.getRoomVisibility());
-		npc.setControl(new FigureControl(npcInfo, new RescuedNPCAI()));
+		RescuedNPCAI ai = new RescuedNPCAI();
+		ai.setFigure(npcInfo);
+		npc.setControl(new FigureControl(npcInfo, ai));
 		hostageRoom.figureEnters(npc, 0, -1);
 
 

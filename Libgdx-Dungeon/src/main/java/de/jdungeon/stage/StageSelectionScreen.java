@@ -9,13 +9,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.Graphics;
+import de.jdungeon.game.Music;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.libgdx.LibgdxInput;
 import de.jdungeon.libgdx.MyInputProcessor;
+import de.jdungeon.world.GameScreen;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -111,6 +114,9 @@ public class StageSelectionScreen extends AbstractGameScreen {
 	@Override
 	public void show() {
 		selectionScreen.resume();
+		//MusicManager.getInstance().stopCurrentMusic();
+		//Music music = getGame().getAudio().createMusic("music/" + "For_the_Fallen.mp3");
+		//MusicManager.getInstance().playMusic(music);
 	}
 
 	@Override

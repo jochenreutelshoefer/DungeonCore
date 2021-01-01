@@ -1,6 +1,6 @@
 package skill;
 
-import com.sun.istack.internal.NotNull;
+import org.jetbrains.annotations.NotNull;
 import dungeon.Position;
 import fight.Slap;
 import fight.SlapResult;

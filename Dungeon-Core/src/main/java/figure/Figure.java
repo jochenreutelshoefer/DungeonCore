@@ -549,7 +549,7 @@ public abstract class Figure extends DungeonWorldObject
 				break;
 			}
 
-			ActionResult res = processAction(a, round);
+			ActionResult res = executeAction(a, round);
 			if (res.equals(ActionResult.DONE)) {
 				EventManager.getInstance().fireEvent(new WorldChangedEvent());
 			}
@@ -655,9 +655,6 @@ public abstract class Figure extends DungeonWorldObject
 		return skillSet.get(clazz);
 	}
 
-	protected ActionResult processAction(Action a, int round) {
-		return processAction(a, true, round);
-	}
 
 	private boolean doorSmashes(Door d, Figure other, int round, int strengthDiff) {
 
@@ -713,6 +710,31 @@ public abstract class Figure extends DungeonWorldObject
 
 	public ActionResult checkAction(Action a) {
 		return processAction(a, false, -1);
+	}
+
+	private ActionResult executeAction(Action a, int round) {
+
+		/*
+		Set change world transaction lock (thread safety for render loop thread)
+		 */
+		this.getActualDungeon().setTransactionLock();
+
+
+		/*
+		Do actual action (and change the world accordingly)
+		 */
+		ActionResult actionResult = processAction(a, true, round);
+
+
+		/*
+		Release change world transaction lock
+		 */
+		Dungeon actualDungeon = this.getActualDungeon();
+		// elvis might have just left the building
+		if(actualDungeon != null) {
+			actualDungeon.releaseTransactionLock();
+		}
+		return actionResult;
 	}
 
 	public abstract boolean canTakeItem(Item i);
@@ -1222,9 +1244,9 @@ public abstract class Figure extends DungeonWorldObject
 					Logger.getLogger(this.getClass()).error("Waiting for Action was interrupted: ", e);
 					e.printStackTrace();
 				}
-				if (this.getRoom() == null || this.getActualDungeon() == null || this.getRoom()
-						.getDungeon()
-						.isGameOver()) {
+				if (this.getRoom() == null
+						|| this.getActualDungeon() == null
+						|| this.getRoom().getDungeon().isGameOver()) {
 					// game ended or figure has left dungeon
 					break;
 				}

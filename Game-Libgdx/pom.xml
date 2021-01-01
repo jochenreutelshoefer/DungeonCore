@@ -21,13 +21,13 @@
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx</artifactId>
-			<version>1.9.10</version>
+			<version>1.9.12</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-platform -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-platform</artifactId>
-			<version>1.9.10</version>
+			<version>1.9.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

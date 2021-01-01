@@ -48,6 +48,9 @@ public class LibgdxFileIO implements FileIO {
 			classPathLocation = file;
 		} else if(Gdx.app.getType().equals(Application.ApplicationType.Desktop)) {
 			classPathLocation = this.getClass().getClassLoader().getResource(file).getFile();
+			if(classPathLocation.contains("%20")) {
+				classPathLocation = classPathLocation.replaceAll("%20", " ");
+			}
 		}
 		FileHandle fileHandleFolder = Gdx.files.getFileHandle(classPathLocation, Files.FileType.Internal);
 		FileHandle[] fileHandles = fileHandleFolder.list();

@@ -28,4 +28,10 @@ public class MusicManager {
 		current = music;
 	}
 
+	public void stopCurrentMusic() {
+		current.stop();
+		current.dispose();
+
+	}
+
 }

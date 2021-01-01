@@ -49,7 +49,7 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 	
 	protected int worth;
 
-	protected String Type;
+	protected String typeVerbalization;
 
 	protected ItemOwner owner;
 	

@@ -16,6 +16,11 @@ import level.DungeonFactory;
 import level.DungeonManager;
 
 /**
+ * This tests checks for all listed dungeon factories that the generated dungeon is consistent.
+ * That is:
+ * - all doors are set consistently (consistent properties from each side)
+ * - all room that are part of the level can be reached from the starting point
+ *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.12.19.
  */

@@ -1,9 +1,12 @@
 package de.jdungeon.gui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
+import dungeon.ChestInfo;
 import dungeon.DoorInfo;
 import dungeon.JDPoint;
 import dungeon.util.RouteInstruction;
@@ -13,8 +16,8 @@ import graphics.JDImageProxy;
 import gui.Paragraph;
 import gui.Paragraphable;
 import item.ItemInfo;
-import log.Log;
 import location.LocationInfo;
+import log.Log;
 import util.JDColor;
 import util.JDDimension;
 
@@ -26,6 +29,7 @@ import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Color;
 import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.util.PaintBuilder;
+import de.jdungeon.util.Pair;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -39,6 +43,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 	private final SkillImageManager skillImageManager;
 	private final GUIImageManager guiImageManager;
 	private final TextureAtlas.AtlasRegion bubble;
+	private final GlyphLayout layout;
 
 	public LibgdxInfoPanel(JDPoint position, JDDimension dimension, GUIImageManager guiImageManager) {
 		super(position, dimension, new JDPoint(position.getX()
@@ -46,6 +51,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		inventoryImageManager = new InventoryImageManager(guiImageManager);
 		skillImageManager = new SkillImageManager(guiImageManager);
 		this.guiImageManager = guiImageManager;
+		layout = new GlyphLayout();
 
 		// init border
 		bubble = Assets.instance.getAtlasRegion(WINDOW_BUBBLE, Assets.instance.getGuiAtlas());
@@ -53,12 +59,12 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 
 	private Paragraphable content;
 
-
 	public void setContent(Paragraphable entity) {
 		this.content = entity;
-		if(content == null) {
+		if (content == null) {
 			slideOut();
-		} else {
+		}
+		else {
 			slideIn();
 		}
 	}
@@ -77,23 +83,6 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		// noting to do here
 	}
 
-	/*
-	@Override
-	public boolean handlePanEvent(float x, float y, float dx, float dy) {
-		if (dx < 0) {
-			timer = 0;
-			return true;
-		}
-		return false;
-	}
-	/*
-
-	/*
-	@Override
-	public boolean handleClickEvent(int x, int y) {
-		return false;
-	}
-*/
 	@Override
 	public void paint(SpriteBatch batch) {
 
@@ -103,20 +92,27 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 		int x = getCurrentX();
 		this.drawBackground(batch, x, position.getY());
 
-		String im = getImage();
+		Pair<String, RenderInfo> im = getImage();
 		if (im != null) {
 			int bubbleSizeX = (int) (this.getDimension().getWidth() / 1.5);
 			int bubbleSizeY = (int) (this.getDimension().getHeight() / 2);
 			int bubblePosX = this.getCurrentX() + this.getDimension().getWidth() / 2 - bubbleSizeX / 2;
 			int bubblePosY = this.position.getY() - bubbleSizeY / 4;
-			batch.draw(bubble,  bubblePosX, bubblePosY, 0 , 0 , bubbleSizeX, bubbleSizeY, 1f , 1f, 0);
+			batch.draw(bubble, bubblePosX, bubblePosY, 0, 0, bubbleSizeX, bubbleSizeY, 1f, 1f, 0);
 
-			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.findTexture(im);
-			if(atlasRegion != null) {
-				int imageSize = (int) (bubbleSizeX / 2.5);
-				int imagePosX = this.getCurrentX()  + this.getDimension().getWidth() / 2 - imageSize / 2;
+			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.findTexture(im.getA());
+			if (atlasRegion != null) {
+				RenderInfo renderInfo = im.getB();
+				int imageSize = (int) ((bubbleSizeX / 2.5) * renderInfo.getScaleFactor());
+				int imagePosX = this.getCurrentX() + this.getDimension().getWidth() / 2 - imageSize / 2;
 				int imagePosY = this.position.getY() - imageSize / 2 + bubbleSizeY / 10;
-				batch.draw(atlasRegion, imagePosX, imagePosY, imageSize, imageSize);
+				//batch.draw(atlasRegion, imagePosX, imagePosY, imageSize, imageSize);
+				float scaleY = 1.0f;
+				if(renderInfo.isFlipY()) {
+					scaleY = -1.0f;
+					imagePosY += imageSize;
+				}
+				batch.draw(atlasRegion, imagePosX, imagePosY, 0, 0, imageSize, imageSize, 1f, scaleY, 0);
 			}
 		}
 
@@ -127,14 +123,10 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 			Paragraph[] paragraphs = this.content.getParagraphs();
 			if (paragraphs != null) {
 				int posCounterY = 35;
-				boolean first = true;
+				int lineIndex = 0;
 				for (Paragraph paragraph : paragraphs) {
 					// TODO: refactor Paragraph thing...
-					JDColor color = paragraph.getColor();
-					if (first) {
-						first = false;
-						color = JDColor.WHITE;
-					}
+					JDColor color = color = JDColor.WHITE;
 
 					PaintBuilder paintBuilder = new PaintBuilder();
 					paintBuilder.setColor(ColorConverter.getColor(color));
@@ -145,79 +137,94 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 						text = "null";
 					}
 
-					BitmapFont defaultSmallFlipped = Assets.instance.fonts.defaultSmallFlipped;
-					com.badlogic.gdx.graphics.Color oldColor = defaultSmallFlipped.getColor();
+					BitmapFont font = Assets.instance.fonts.defaultSmallFlipped;
+					com.badlogic.gdx.graphics.Color oldColor = font.getColor();
 					Color paintBuilderColor = paintBuilder.getColor();
 					com.badlogic.gdx.graphics.Color gdxColor = LibgdxGraphics.colorMap.get(paintBuilderColor);
 					if (gdxColor != null) {
-						defaultSmallFlipped.setColor(gdxColor);
+						font.setColor(gdxColor);
 					}
-					//fpsFont.setColor(textpaint.getFont().getColor());
-					defaultSmallFlipped.draw(batch, text, x + (this.dimension.getWidth() / 3),
-							position.getY() + posCounterY);
+
+					if(lineIndex == 0) {
+						// this is the headline
+						font = Assets.instance.fonts.defaultTitle;
+					}
+					layout.setText(font, text, com.badlogic.gdx.graphics.Color.WHITE, this.dimension.getWidth()*0.8f, Align.center, true);
+					font.draw(batch, layout, x + this.dimension.getWidth() * 0.1f , position.getY() + (this.dimension.getHeight() / 6) + posCounterY);
+
 					if (gdxColor != null) {
-						defaultSmallFlipped.setColor(oldColor);
+						font.setColor(oldColor);
 					}
-					posCounterY += 30;
+					posCounterY += 20;
+					if(lineIndex == 1) {
+						// more space after headline
+						posCounterY += 10;
+					}
+					lineIndex++;
 				}
 			}
 		}
 	}
 
-	private String getImage() {
+	static class RenderInfo {
+		float scaleFactor;
+
+		boolean flipY = false;
+		public RenderInfo(float scaleFactor) {
+			this.scaleFactor = scaleFactor;
+		}
+
+		public RenderInfo(float scaleFactor, boolean flipY) {
+			this.scaleFactor = scaleFactor;
+			this.flipY = flipY;
+		}
+
+		public float getScaleFactor() {
+			return scaleFactor;
+		}
+
+		public boolean isFlipY() {
+			return flipY;
+		}
+	}
+
+	private Pair<String, RenderInfo> getImage() {
 		if (content == null) {
 			return null;
 		}
+		// wtf, I have no idea why some entities need to be flippedY to be shown correctly and others not...
 		if (content instanceof DoorInfo) {
-			return ImageManager.getImage((DoorInfo) content).getFilenameBlank();
+			return new Pair<>(ImageManager.getImage((DoorInfo) content).getFilenameBlank(), new RenderInfo(1.0f, true));
 		}
 		if (content instanceof LocationInfo) {
-			return ImageManager.getImage((LocationInfo) content).getFilenameBlank();
+			return new Pair<>(ImageManager.getImage((LocationInfo) content).getFilenameBlank(), new RenderInfo(1.0f));
+		}
+		if (content instanceof ChestInfo) {
+			return new Pair<>(ImageManager.getImage((ChestInfo) content).getFilenameBlank(), new RenderInfo(1.0f, true));
 		}
 		if (content instanceof FigureInfo) {
 			try {
 				if (((FigureInfo) content).isDead()) {
-					return ImageManager.deathImage.getFilenameBlank();
+					return new Pair<>(ImageManager.deathImage.getFilenameBlank(), new RenderInfo(1.5f, true));
 				}
 			}
 			catch (NullPointerException e) {
 				return null;
 			}
 			JDImageProxy<?> image = ImageManager.getImage((FigureInfo) content, RouteInstruction.Direction.South);
-			if(image == null) {
-				Log.severe("Image was null for figure: "+ content + " dir: "+ RouteInstruction.Direction.South.name());
+			if (image == null) {
+				Log.severe("Image was null for figure: " + content + " dir: " + RouteInstruction.Direction.South.name());
 				return null;
 			}
-			return image.getFilenameBlank();
+			return new Pair<>(image.getFilenameBlank(), new RenderInfo(1.5f, true));
 		}
 		if (content instanceof ItemInfo) {
 			String image = inventoryImageManager.getJDImage((ItemInfo) content).getFilenameBlank();
 			if (image.equals(guiImageManager.getJDImage(GUIImageManager.NO_IMAGE).getFilenameBlank())) {
 				image = ImageManager.getImage((ItemInfo) content).getFilenameBlank();
 			}
-			return image;
+			return new Pair<>(image, new RenderInfo(1.0f));
 		}
 		return null;
 	}
-
-	/*
-	@Override
-	public void update(float time) {
-		timer -= time;
-		if (timer < 0 && visible) {
-
-			if (this.slideStepCounter == -1) {
-				this.slideStepCounter = SLIDING_STEPS;
-			}
-
-			if (slideStepCounter > 0) {
-				slideStepCounter -= 1;
-			}
-			else {
-				//this.visible = false;
-				this.slideStepCounter = -1;
-			}
-		}
-	}
-	*/
 }

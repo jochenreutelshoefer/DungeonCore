@@ -212,6 +212,9 @@ public class WorldRenderer implements Disposable {
 								font.draw(batch, text, imageX + textOffset.getX(), imageY + textOffset.getY());
 							}
 						}
+						else {
+							int foo = 0;
+						}
 					}
 
 					// we had an animation so we finish off this object
@@ -222,11 +225,13 @@ public class WorldRenderer implements Disposable {
 			// no animation present for this object
 			if (pair.getA() instanceof JDGraphicObject) {
 				if (pair.getB() != null) {
+					int width = ((JDGraphicObject) pair.getA()).getLocatedImage().getWidth();
+					int height = ((JDGraphicObject) pair.getA()).getLocatedImage().getHeight();
 					drawAltasRegionAdaptSpriteSize(pair.getB(),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getX(roomOffsetX),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getY(roomOffsetY),
-							((JDGraphicObject) pair.getA()).getLocatedImage().getWidth(),
-							((JDGraphicObject) pair.getA()).getLocatedImage().getHeight(),
+							width,
+							height,
 							((JDGraphicObject) pair.getA()).getLocatedImage().getImage(),
 							pair.getA());
 				}

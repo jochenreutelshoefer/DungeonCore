@@ -328,4 +328,8 @@ public class PlayerController implements JDGUI {
 	public void setViewModel(ViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
+
+	public boolean isDungeonTransactionLocked() {
+		return this.dungeonSession.getCurrentDungeon().isTransactionLocked();
+	}
 }

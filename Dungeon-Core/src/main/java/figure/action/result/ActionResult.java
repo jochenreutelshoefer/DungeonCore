@@ -69,8 +69,12 @@ public class ActionResult {
 	public Situation getSituation() {
 		return key1;
 	}
-	
-	
 
-
+	@Override
+	public String toString() {
+		return "ActionResult{" +
+				"possible=" + key1 +
+				", reason=" + key2 +
+				'}';
+	}
 }

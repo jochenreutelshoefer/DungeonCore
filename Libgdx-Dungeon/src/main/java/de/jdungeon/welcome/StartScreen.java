@@ -16,9 +16,11 @@ import event.EventManager;
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.DefaultGuiInputController;
 import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
+import de.jdungeon.game.Music;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.world.GameScreen;
 
@@ -97,6 +99,8 @@ public class StartScreen extends AbstractGameScreen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		rebuildStage();
+		Music music = getGame().getAudio().createMusic("music/" + "Exciting_Trailer.mp3");
+		MusicManager.getInstance().playMusic(music);
 	}
 
 	@Override

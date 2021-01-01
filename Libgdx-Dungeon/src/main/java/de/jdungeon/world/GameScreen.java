@@ -27,11 +27,13 @@ import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
+import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
 import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
 import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
+import de.jdungeon.game.Music;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.gui.LibgdxGUIElement;
@@ -81,6 +83,10 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	public void show() {
 
+		MusicManager.getInstance().stopCurrentMusic();
+		Music music = getGame().getAudio().createMusic("music/" + "Eyes_Gone_Wrong_edited.mp3");
+		MusicManager.getInstance().playMusic(music);
+
 		//if (OPENGL_PROFILING_ON) {
 		glProfiler = new GLProfiler(Gdx.graphics);
 		glProfiler.enable();
@@ -121,7 +127,9 @@ public class GameScreen extends AbstractGameScreen {
 		graphicObjectRenderer = new GraphicObjectRenderer(ROOM_SIZE, playerController);
 		worldRenderer = new WorldRenderer(graphicObjectRenderer, viewModel, camera, cameraHelper, focusManager, animationManager);
 
-		scrollToScale(figure.getRoomNumber(), 1.4f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
+		scrollToScale(figure.getRoomNumber(), 2f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
+
+
 	}
 
 	public LibgdxFocusManager getFocusManager() {

@@ -342,7 +342,9 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void update(float deltaTime) {
-		updateGUIElements(deltaTime);
+		if(!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
+			updateGUIElements(deltaTime);
+		}
 
 		if (getMessage() != null) {
 			EventManager.getInstance().fireEvent(new InfoMessagePopupEvent(getMessage()));

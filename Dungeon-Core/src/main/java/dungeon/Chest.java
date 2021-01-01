@@ -145,14 +145,6 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 		return false;
 	}
 
-	/*
-	if (items != null) {
-			this.location.addItems(items, null);
-			f.getRoom().distributePercept(p);
-			items = null;
-		}
-	 */
-
 	public void clicked(Figure f, boolean right) {
 		if (items != null) {
 			List<Item> droppedItems = new ArrayList<>(this.items);
@@ -186,7 +178,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 				s2 += JDEnv.getString("door_open");
 			}
 		} else {
-			s2 = new String();
+			s2 = new String("Unverschlossen");
 		}
 		p[1] = new Paragraph(s2);
 		p[1].setSize(14);
@@ -205,7 +197,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 		p[2].setSize(12);
 
 		String s = "";
-		if (items.size() > 0) {
+		if (!items.isEmpty()) {
 			int itemPointer = 0;
 			s = JDEnv.getString("take") + ": "
 					+ items.get(itemPointer).toString();

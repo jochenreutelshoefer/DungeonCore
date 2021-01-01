@@ -12,9 +12,9 @@ import gui.Texts;
 
 public class Wolf extends NatureMonster {
 
-	public static final int CHANCE_TO_HIT = 30;
+	public static final int CHANCE_TO_HIT = 40;
 	protected static final int  HEALTH_DAMAGE_BALANCE = 15;
-	protected static final int SCATTER = 5;
+	protected static final int SCATTER = 3;
 	
 
 	/**

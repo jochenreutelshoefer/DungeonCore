@@ -37,7 +37,9 @@ import location.Location;
  */
 public class Dungeon implements Turnable, EventListener {
 
-	public Room[][] theDungeon;
+	private boolean transactionLocked = false;
+
+	private final Room[][] theDungeon;
 
 	private final JDPoint[][] points;
 
@@ -316,6 +318,18 @@ public class Dungeon implements Turnable, EventListener {
 			}
 		}
 		return result;
+	}
+
+	public boolean isTransactionLocked() {
+		return this.transactionLocked;
+	}
+
+	public void setTransactionLock() {
+		this.transactionLocked = true;
+	}
+
+	public void releaseTransactionLock() {
+		this.transactionLocked = false;
 	}
 }
 

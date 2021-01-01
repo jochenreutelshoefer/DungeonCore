@@ -6,7 +6,7 @@
  */
 package figure.action;
 
-import com.sun.istack.internal.NotNull;
+import org.jetbrains.annotations.NotNull;
 import dungeon.Position;
 import dungeon.Room;
 import figure.Figure;

@@ -21,7 +21,7 @@ public class Shield extends EquipmentItem {
 
 		chanceToBlock = value / 5;
 
-		Type = getType(value);
+		typeVerbalization = getType(value);
 	}
 
 	private String getType(int value) {
@@ -67,7 +67,7 @@ public class Shield extends EquipmentItem {
 		super(value, magic);
 
 		chanceToBlock = value / 5;
-		Type = getType(value);
+		typeVerbalization = getType(value);
 	}
 
 	public void madeBlock(int dmg) {
@@ -110,13 +110,13 @@ public class Shield extends EquipmentItem {
 		if (unique) {
 			return name;
 		}
-		return Type;
+		return typeVerbalization;
 	}
 
 	public Shield(int value, LinkedList mods) {
 		super(value, true);
 		chanceToBlock = value / 5;
-		Type = getType(value);
+		typeVerbalization = getType(value);
 
 		modifications = mods;
 	}
@@ -174,7 +174,7 @@ public class Shield extends EquipmentItem {
 			s += name;
 		}
 		else {
-			s += (Type);
+			s += (typeVerbalization);
 		}
 		s += ": " + chanceToBlock;
 		if (isMagic()) {

@@ -15,17 +15,17 @@ public class Helmet extends ArmorItem {
 	public Helmet(int value, boolean magic) {
 
 		super(value / 10, value, magic, 2 * value / 3);
-		Type = getType(value);
+		typeVerbalization = getType(value);
 	}
 
 	public Helmet(int value) {
 		super(value / 10, value, false, 2 * value / 3);
-		Type = getType(value);
+		typeVerbalization = getType(value);
 	}
 
 	public Helmet(int value, LinkedList mods) {
 		super(value / 10, value, true, 2 * value / 3);
-		Type = getType(value);
+		typeVerbalization = getType(value);
 
 		modifications = mods;
 	}
@@ -87,7 +87,7 @@ public class Helmet extends ArmorItem {
 		if (unique) {
 			return name;
 		}
-		return Type;
+		return typeVerbalization;
 
 	}
 
@@ -119,7 +119,7 @@ public class Helmet extends ArmorItem {
 		if (unique) {
 			return name;
 		}
-		s += (Type + ": " + Integer.toString(this.armorValue));
+		s += (typeVerbalization + ": " + Integer.toString(this.armorValue));
 		if (isMagic()) {
 			s += "(m)";
 		}

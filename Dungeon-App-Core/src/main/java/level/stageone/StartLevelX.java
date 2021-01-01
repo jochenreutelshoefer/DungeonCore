@@ -58,7 +58,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 		filler.addAllocatedRoom(entryRoom);
 		entryRoom.removeAllDoorsExcept(Direction.North);
 		entryRoom.setShrine(new RevealMapShrine(exitRoom));
-		entryRoom.addItem(new VisibilityCheatBall());
+		//entryRoom.addItem(new VisibilityCheatBall());
 
 
 		Room statueRoom = dungeon.getRoom(4, 7);
@@ -137,7 +137,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		Room wolfRoom = dungeon.getRoom(4 ,5 );
 		HadrianAI ai = new HadrianAI();
-		Wolf hadrian = new Wolf( 1100, ai, "Hadrian" );
+		Wolf hadrian = new Wolf( 1000, ai, "Hadrian" );
 		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getRoomVisibility()));
 		filler.setAllFound(hadrian.getRoomVisibility());

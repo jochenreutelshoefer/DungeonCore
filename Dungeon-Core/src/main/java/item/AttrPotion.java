@@ -22,7 +22,7 @@ public class AttrPotion extends Item implements Usable {
 	public AttrPotion(Attribute.Type attribute, int value) {
 		super(value, false);
 		a = attribute;
-		Type = setType();
+		typeVerbalization = setType();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class AttrPotion extends Item implements Usable {
 
 	@Override
 	public String toString() {
-		return Type;
+		return typeVerbalization;
 	}
 
 	@Override

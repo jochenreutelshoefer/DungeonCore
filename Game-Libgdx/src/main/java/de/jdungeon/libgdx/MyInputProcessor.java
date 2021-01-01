@@ -64,7 +64,7 @@ public class MyInputProcessor implements InputProcessor {
 	}
 
 	@Override
-	public boolean scrolled(int i) {
+	public boolean scrolled(float i, float j) {
 		return false;
 	}
 }
