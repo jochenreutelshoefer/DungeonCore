@@ -118,7 +118,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 
 			Chest keyChest = new Chest(exitKey);
 			keyRoom.setChest(keyChest);
-			Orc orcGuard = new Orc(1000);
+			Orc orcGuard = new Orc(1000  * 10);
 			orcGuard.setAI(new ChaserAI());
 			keyRoom.figureEnters(orcGuard, 1, -1);
 			filler.addAllocatedRoom(keyRoom);
@@ -153,7 +153,6 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			setupRoomQuests(dungeon, filler, entryRoom, entryPoint, roomQuests);
 
 
-			filler.getUnallocatedRandomRoom().setShrine(new HealthFountain(30, 1));
 
 			filler.removeDoors(3, entryPoint);
 

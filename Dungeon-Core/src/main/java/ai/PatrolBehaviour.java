@@ -67,7 +67,7 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 	public Action chooseMovementAction() {
 
 		// take a break
-		if(Math.random() < 0.2) {
+		if(Math.random() < 0.4) {
 			return EndRoundAction.instance;
 		}
 

@@ -12,19 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import figure.Figure;
 import figure.FigurePresentation;
-import figure.hero.Druid;
-import figure.hero.Mage;
-import figure.hero.Thief;
-import figure.hero.Warrior;
-import figure.monster.Ghul;
-import figure.monster.Ogre;
-import figure.monster.Orc;
-import figure.monster.Skeleton;
-import figure.monster.Spider;
-import figure.monster.Wolf;
-import figure.other.Lioness;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
 
@@ -104,13 +92,12 @@ public class Assets implements Disposable, AssetErrorListener {
 				Map<String, TextureAtlas.AtlasRegion> figureAtlasRegionCache = new HashMap<>();
 				atlasMap.put(figurePresentation, figureAtlas);
 				figuresCacheMap.put(figureAtlas, figureAtlasRegionCache);
-			} catch (GdxRuntimeException exception) {
+			}
+			catch (GdxRuntimeException exception) {
 				Gdx.app.error(TAG, "Couldn't find atlas for figure: " + figurePresentation);
 				exception.printStackTrace();
 			}
-
 		}
-
 
 		dungeonAtlas = assetManager.get(dungeonAtlasPath);
 		figuresCacheMap.put(dungeonAtlas, textureCacheDungeon);
@@ -125,7 +112,6 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		fonts = new AssetFonts();
 
-
 		// init audio effects (need to be initialized before ImageManager loads
 		// because the sounds will then be needed to setup the animations
 		Audio audio = game.getAudio();
@@ -134,10 +120,8 @@ public class Assets implements Disposable, AssetErrorListener {
 		AudioEffectsManager.init(androidLoader);
 		AudioManagerTouchGUI.init(androidLoader);
 
-
 		// Initialize all game images
 		ImageManager.getInstance(game.getFileIO().getImageLoader()).loadImages();
-
 	}
 
 	@Override
@@ -170,12 +154,12 @@ public class Assets implements Disposable, AssetErrorListener {
 	 * @return the AtlasRegion for this filename
 	 */
 	public TextureAtlas.AtlasRegion findTexture(String filename) {
-		if(overallRegionCacheMap.containsKey(filename)) {
+		if (overallRegionCacheMap.containsKey(filename)) {
 			return overallRegionCacheMap.get(filename);
 		}
 		for (TextureAtlas textureAtlas : figuresCacheMap.keySet()) {
 			TextureAtlas.AtlasRegion region = textureAtlas.findRegion(filename);
-			if(region != null) {
+			if (region != null) {
 				figuresCacheMap.get(textureAtlas).put(filename, region);
 				overallRegionCacheMap.put(filename, region);
 				return region;
@@ -186,7 +170,6 @@ public class Assets implements Disposable, AssetErrorListener {
 		Gdx.app.error(TAG, "Couldn't find texture in any atlas: " + filename);
 		return null;
 	}
-
 
 	/*
 	 *	RENDER THREAD
@@ -199,17 +182,18 @@ public class Assets implements Disposable, AssetErrorListener {
 	 *	RENDER THREAD
 	 */
 	public TextureAtlas.AtlasRegion getAtlasRegion(JDImageProxy<?> image, TextureAtlas atlas) {
-		if(atlas == null) return null;
-		if(image == null) return null;
+		if (atlas == null) return null;
+		if (image == null) return null;
 
 		return getAtlasRegion(image.getFilenameBlank(), atlas);
 	}
 
 	String pathSeparator = "/"; // todo: does this work on all platforms???
+
 	public TextureAtlas.AtlasRegion getAtlasRegion(String filename, TextureAtlas atlas) {
 
-		if(atlas == null) return null;
-		if(filename == null) return null;
+		if (atlas == null) return null;
+		if (filename == null) return null;
 
 		String blankFilename = filename;
 		if (filename.toLowerCase().endsWith(".gif") || filename.toLowerCase().endsWith(".png")) {
@@ -249,15 +233,12 @@ public class Assets implements Disposable, AssetErrorListener {
 	 */
 	public TextureAtlas.AtlasRegion getFigureTexture(FigurePresentation figureClass, JDImageProxy<?> image) {
 		TextureAtlas textureAtlas = this.atlasMap.get(figureClass);
-		if(textureAtlas != null) {
+		if (textureAtlas != null) {
 			return getAtlasRegion(image, textureAtlas);
-		} else {
+		}
+		else {
 			Gdx.app.error(TAG, "No atlas texture found for figure presentation: " + figureClass);
 		}
 		return null;
 	}
-
-
-
-
 }

@@ -16,16 +16,13 @@ public class Slap {
 	public static final int MIXED = 4;
 	public static final int POISON = 5;
 
-	
 	private Figure actor = null;
 
 	private final Figure target = null;
 
 	private final float precision;
 
-
 	private int type;
-
 
 	private int valueStandard = 0;
 
@@ -37,31 +34,28 @@ public class Slap {
 
 	private int valuePoison = 0;
 
-	private int valueTumble = 0;
 
 	
 	public String toString() {
 		String s = "";
 		s+= "Attacker: "+actor.toString()+"\n";
 		s+= "Wert: "+valueStandard +"\n";
-		s+= "Tumble: "+valueTumble+"\n";
 		s+= "Precision: "+precision+"\n";
 		s+= "Fire: "+valueFire+"\n";
 		s+= "---\n";
 		return s;
 	}
 	
-	public Slap(Figure attacker, int value, int tumble, float precision) {
+	public Slap(Figure attacker, int value, float precision) {
 		this.actor = attacker;
 		this.valueStandard = value;
-		this.valueTumble = tumble;
 		this.precision = precision;
 	}
 	
-	public Slap(Figure attacker, int type, int value, int tumble, int precision) {
+	public Slap(Figure attacker, int type, int value, int precision) {
 		this.actor = attacker;
-		this.valueTumble = tumble;
 		this.precision = precision;
+		this.type = type;
 		if(type == Slap.FIRE) {
 			valueFire = value;
 		}
@@ -82,8 +76,7 @@ public class Slap {
 	 * 
 	 */
 	public boolean isMagic() {
-		boolean magic = false;
-		return magic;
+		return false;
 	}
 
 	/**
@@ -123,7 +116,7 @@ public class Slap {
 		if(actor != null && target != null) {
 			dist = actor.getPos().getDistanceTo(target.getPos());
 		}
-		
+
 		if(dist == Position.DIST_FAR) {
 			return ((valueStandard * 40) /100);
 		}
@@ -166,9 +159,6 @@ public class Slap {
 	 * @return
 	 * 
  */
-	public int getValue_tumble() {
-		return valueTumble;
-	}
 
 	public float getPrecision() {
 		return precision;
@@ -194,8 +184,5 @@ public class Slap {
 		this.valueStandard = valueStandard;
 	}
 
-	public void setValueTumble(int valueTumble) {
-		this.valueTumble = valueTumble;
-	}
 
 }

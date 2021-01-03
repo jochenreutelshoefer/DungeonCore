@@ -14,6 +14,8 @@ import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
 import graphics.ImageManager;
+import log.Log;
+import org.apache.log4j.Logger;
 import text.Statement;
 import util.JDDimension;
 
@@ -343,6 +345,8 @@ public class GUIRenderer implements Disposable {
 
 	public void update(float deltaTime) {
 		if(!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
+			// the transaction lock is not yet optimally timed with respect to AP refill
+			// might still happen that lock is release before AP is refilled in Room#tickFigures() -> TODO
 			updateGUIElements(deltaTime);
 		}
 

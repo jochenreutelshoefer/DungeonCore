@@ -40,17 +40,17 @@ public class Dwarf extends Monster {
 	}
 	
 	@Override
-	protected int getHEALTH_DAMAGE_BALANCE() {
+	protected int getHealthDamageBalance() {
 		return HEALTH_DAMAGE_BALANCE;
 	}
 
 	@Override
-	public int getCHANCE_TO_HIT() {
+	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
 	}
 	
 	@Override
-	protected int getSCATTER() {
+	protected int getDamageVariance() {
 		return SCATTER;
 	}
 	

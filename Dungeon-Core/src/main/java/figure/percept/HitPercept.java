@@ -63,9 +63,6 @@ public class HitPercept extends OpticalPercept {
     public int getPoisonDamage() {
     	return res.getSlap().getValue_poison();
     }
-    public int getTumbleValue() {
-    	return res.getSlap().getValue_tumble();
-    }
 
 	public boolean isIndirect() {
 		return indirect;

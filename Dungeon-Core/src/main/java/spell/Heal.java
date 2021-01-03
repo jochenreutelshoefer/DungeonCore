@@ -64,7 +64,7 @@ public class Heal extends NoTargetSpell {
 
 	@Override
 	public void sorcer(Figure mage, int round) {
-				mage.heal(strength);
+				mage.heal(strength, round);
 				mage.healPoisonings();
 				String str = JDEnv.getResourceBundle().getString("spell_heal_cast");
 				mage.tellPercept(new TextPercept(str, round));

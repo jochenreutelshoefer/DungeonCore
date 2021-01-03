@@ -92,7 +92,7 @@ public class HadrianAI extends AbstractAI {
 		/*
 		Do we need a state transition because of health state
 		 */
-		if(this.info.getHealthLevel().getValue() < HealthLevel.Injured.getValue()) {
+		if(this.info.getHealthLevel().getValue() < HealthLevel.Good.getValue()) {
 			currentState = flee;
 		}
 
@@ -117,7 +117,7 @@ public class HadrianAI extends AbstractAI {
 		heroLog.processPercepts();
 
 		// at first stay alive
-		if(this.info.getHealthLevel().getValue() < HealthLevel.Injured.getValue()) {
+		if(this.info.getHealthLevel().getValue() < HealthLevel.Good.getValue()) {
 			currentState = flee;
 		}
 

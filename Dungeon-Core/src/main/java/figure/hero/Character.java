@@ -68,20 +68,11 @@ public class Character implements Serializable {
 
 	public Character(String name, double [] values, Figure f) {
 
-		this(name, (int) values[0],
+		this(name,
+				(int) values[0],
 		(int) values[1],
 		(int) values[2],
 		(int) values[3],
-		(int) values[4],
-		(int) values[5],
-		(int) values[6],
-		(int) values[7],
-		(int) values[8],
-		(int) values[9],
-		(int) values[10],
-		(int) values[11],
-		(int) values[12],
-				0,
 		(int) values[13],
 		 values[14], f);
 		if(values.length != 15) {
@@ -91,9 +82,7 @@ public class Character implements Serializable {
 
 
 	public Character(String name, int HealthVal, int StrengthVal,
-			int DexterityVal, int PsychoVal, int axe, int lance, int sword,
-			int club, int wolfknife, int nature, int creature, int undead,
-			int scout, int braveI, int dust, double dustReg, Figure f) {
+			int DexterityVal, int PsychoVal, int dust, double dustReg, Figure f) {
 
 		this.name = name;
 		owner = f;
@@ -105,7 +94,7 @@ public class Character implements Serializable {
 		this.strength = new Attribute((Attribute.Type.Strength), StrengthVal);
 		attributes.put(Attribute.Type.Strength,strength);
 		
-		this.healthReg = new DerivedAttribute(Attribute.Type.HealthReg, strength, DerivedAttribute.FORMULAR_KEY_8TH);
+		this.healthReg = new DerivedAttribute(Attribute.Type.HealthReg, strength, DerivedAttribute.FORMULAR_KEY_32TH);
 		attributes.put(Attribute.Type.HealthReg,healthReg);
 
 		this.dexterity = new Attribute(Attribute.Type.Dexterity, DexterityVal);

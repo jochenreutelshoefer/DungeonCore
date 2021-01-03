@@ -15,7 +15,7 @@ import item.interfaces.Usable;
 public class OxygenPotion extends AttrPotion implements Usable {
 
 	public OxygenPotion(){
-		super(Attribute.Type.Oxygen , 1);
+		super(Attribute.Type.Oxygen , 10);
 	}
 
 	@Override

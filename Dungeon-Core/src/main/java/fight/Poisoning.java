@@ -33,7 +33,7 @@ public class Poisoning implements Serializable {
 	public void sufferRound(Figure f, int round) {
 		if (time > 0) {
 
-			Slap s = new Slap(actor, Slap.POISON,strength, 0, 150);
+			Slap s = new Slap(actor, Slap.POISON,strength, 150);
 			
 
 			SlapResult res = f.getSlap(s, round);

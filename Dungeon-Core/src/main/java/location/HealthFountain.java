@@ -21,14 +21,14 @@ Further, the user's oxygen attribute will be refilled (always completely).
  */
 public class HealthFountain extends Location {
 
-	private final Attribute health;
+	private final Attribute healthReserve;
 
-	private final int rate;
+	private final double rate;
 
-	public HealthFountain(int max, int rate) {
+	public HealthFountain(int max, double rate) {
 
 		super();
-		health = new Attribute(Attribute.Type.Fountain, max);
+		healthReserve = new Attribute(Attribute.Type.Fountain, max);
 		this.rate = rate;
 		story = JDEnv.getResourceBundle().getString("see_health_fountain");
 	}
@@ -46,7 +46,7 @@ public class HealthFountain extends Location {
 
 	@Override
 	public String getText() {
-		return toString() + " " + health.getValue() + " / " + health.getBasic();
+		return toString() + " " + healthReserve.getValue() + " / " + healthReserve.getBasic();
 	}
 
 	@Override
@@ -66,11 +66,11 @@ public class HealthFountain extends Location {
 
 	@Override
 	public void turn(int round) {
-		if ((health.getBasic() - health.getValue()) > rate) {
-			health.modValue(rate);
+		if ((healthReserve.getBasic() - healthReserve.getValue()) > rate) {
+			healthReserve.modValue(rate);
 		}
-		else if (health.getBasic() > health.getValue()) {
-			health.setValue(health.getBasic());
+		else if (healthReserve.getBasic() > healthReserve.getValue()) {
+			healthReserve.setValue(healthReserve.getBasic());
 		}
 	}
 
@@ -89,25 +89,31 @@ public class HealthFountain extends Location {
 		Attribute h = f.getHealth();
 		double act = h.getValue();
 		double max = h.getBasic();
-		int rest = (int) (max - act);
-		if (health.getValue() >= rest) {
-			health.modValue((-1) * rest);
-			f.heal(rest);
+		int missingFigureHealth = (int) (max - act);
+		double healingAmount = 0;
+		if (healthReserve.getValue() >= missingFigureHealth) {
+			healthReserve.modValue((-1) * missingFigureHealth);
+			f.heal(missingFigureHealth, round);
+			healingAmount = missingFigureHealth;
 		}
 		else {
-			f.heal((int) health.getValue());
-			health.setValue(0);
+			healingAmount = healthReserve.getValue();
+			f.heal((int) healingAmount, round);
+			healthReserve.setValue(0);
 		}
 
-		// we also fill up user's oxygen
+		double percentageHealed = healingAmount / max;
+
+		// we also fill up user's oxygen, relatively in same amount as healing
 		Attribute oxygenAttribute = f.getAttribute(Attribute.Type.Oxygen);
-		oxygenAttribute.setValue(oxygenAttribute.getBasic());
+		double oxygenMax = oxygenAttribute.getBasic();
+		oxygenAttribute.addToMax(percentageHealed * oxygenMax);
 
 		return true;
 	}
 
 	@Override
 	public String getStatus() {
-		return toString() + "\n" + health.toString();
+		return toString() + "\n" + healthReserve.toString();
 	}
 }

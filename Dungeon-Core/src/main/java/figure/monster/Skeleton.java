@@ -45,7 +45,6 @@ public class Skeleton extends UndeadMonster {
 		String[] lvl_names = { JDEnv.getString("skel1"), JDEnv.getString("skel2"), JDEnv.getString("skel3"),
 				JDEnv.getString("skel4"), JDEnv.getString("skel5"), JDEnv.getString("skel6") };
 		this.lvl_names = lvl_names;
-		this.antiTumbleValue = 20;
 		this.strength = new Attribute(Attribute.Type.Strength,7);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity,9);
 		tumbleValue = 0;
@@ -53,7 +52,7 @@ public class Skeleton extends UndeadMonster {
 	}
 
 	@Override
-	protected int getSCATTER() {
+	protected int getDamageVariance() {
 		return this.SCATTER;
 	}
 
@@ -90,12 +89,12 @@ public class Skeleton extends UndeadMonster {
 	}
 
 	@Override
-	public int getCHANCE_TO_HIT() {
+	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
 	}
 
 	@Override
-	protected int getHEALTH_DAMAGE_BALANCE() {
+	protected int getHealthDamageBalance() {
 		return HEALTH_DAMAGE_BALANCE;
 	}
 

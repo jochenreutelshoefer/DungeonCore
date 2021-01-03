@@ -205,9 +205,9 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		exitRoom.setFloorIndex(FLOOR_INDEX_EXIT);
 		List<Monster> gateKeepers = new ArrayList<Monster>();
 
-		gateKeepers.add(new Orc(1000));
-		gateKeepers.add(new Wolf(1000));
-		gateKeepers.add(new Skeleton(1000));
+		gateKeepers.add(new Orc(10000));
+		gateKeepers.add(new Wolf(10000));
+		gateKeepers.add(new Skeleton(10000));
 
 
 		Iterator<RouteInstruction.Direction> directionsIterator = doorDirections.iterator();

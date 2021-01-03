@@ -33,7 +33,11 @@ public class Lioness extends ConjuredMagicFigure {
 
 	public static Lioness createLioness(int value, Dungeon d, FigureInfo master) {
 		AI ai = new RescuedNPCAI();
-		return new Lioness(value, d, master, ai);
+		Lioness lioness = new Lioness(value, d, master, ai);
+		FigureInfo figureInfo = FigureInfo.makeFigureInfo(lioness, lioness.getRoomVisibility());
+		ai.setFigure(figureInfo);
+		d.insertFigure(lioness);
+		return lioness;
 	}
 
 	@Override
@@ -53,17 +57,17 @@ public class Lioness extends ConjuredMagicFigure {
 	}
 
 	@Override
-	protected int getCHANCE_TO_HIT() {
+	protected int getChangeToHit() {
 		return 30;
 	}
 
 	@Override
-	protected int getSCATTER() {
+	protected int getDamageVariance() {
 		return 3;
 	}
 
 	@Override
-	protected int getHEALTH_DAMAGE_BALANCE() {
+	protected int getHealthDamageBalance() {
 		return 1;
 	}
 

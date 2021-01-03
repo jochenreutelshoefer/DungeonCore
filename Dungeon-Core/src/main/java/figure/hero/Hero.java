@@ -235,8 +235,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		}
 
 		c = new Character(name, HealthVal, StrengthVal, DexterityVal,
-				PsychoVal, Axe, Lance, Sword, Club, Wolfknife, nature,
-				creature, undead, scout, brave, dust, dustReg, this);
+				PsychoVal,  dust, dustReg, this);
 		
 		inv = new Inventory(3, 3, 3, 3, this);
 		bund.setOwner(this);
@@ -378,10 +377,10 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public void recover() {
-		double healing = getActionPoints()
-				* getCharacter().getAttribute(Attribute.Type.HealthReg).getValue();
-		heal(healing);
+	public void recover(int round) {
+		double healing = (getActionPoints() + 1)
+ 				* getCharacter().getAttribute(Attribute.Type.HealthReg).getValue();
+		heal(healing, round);
 
 		recDust(getCharacter().getDustReg().getValue());
 
@@ -394,34 +393,11 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public void heal(int k) {
-		heal((double) k);
-	}
-
-	@Override
-	public int getAntiTumbleValue() {
-		int str = c.getStrength_Value();
-		return (str - 2) * 8;
-
-	}
-
-	@Override
 	public boolean layDown(Item it) {
 		inv.layDown(it);
 		return true;
 	}
 
-	@Override
-	public void heal(double value) {
-		Attribute healthAttr = c.getHealth();
-
-		if (healthAttr.getValue() + value <= healthAttr.getBasic()) {
-
-			healthAttr.modValue(value);
-		} else {
-			healthAttr.setValue((healthAttr.getBasic()));
-		}
-	}
 
 	@Override
 	public boolean takeItem(Item i) {
@@ -433,40 +409,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		return getInventory().hasItem(i);
 	}
 
-	@Override
-	public int getTumbleValue(Figure f) {
-		if (f instanceof Monster) {
-			int i = c.getKnowledgeBalance(((Monster) f));
-			Weapon weap1 = inv.getWeapon1();
-			double str = c.getStrength().getValue() - 5;
-			int wv = 0;
-			double strMod = 0.7 + (str / 10);
-			if (weap1 != null) {
-				wv = weap1.getTumbleBasic();
-			}
-			if (i < -1) {
-				return 0;
-			}
-			if (i == -1) {
-				return (int) ((wv / 3) * strMod);
-			}
-			if (i == 0) {
-				return (int) (wv * 1.5 * strMod);
-			}
-			if (i == 1) {
-				return (int) (wv * 1.5 * strMod);
-
-			}
-			if (i >= 2) {
-				return (int) (wv * 2 * strMod);
-			} else {
-				return 0;
-			}
-
-		} else {
-			return 0;
-		}
-	}
 
 	@Override
 	public void recDust(double value) {
@@ -540,21 +482,16 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				weapon_blank = (getInventory().getWeapon1().getDamage(0));
 			}
 		}
-		String s = "Schlagstaerke: Waffe: " + weapon_blank;
 
 		float Strength_Weapon_Type_Modifier = 1 + ((float) (2
 				* getCharacter().getStrength().getValue()
 				+ (10 * getCharacter().giveType_skill(m)) + (10 * getCharacter()
 				.giveWeapon_skill())) / 100);
-		s += " - Staerke-Koennen-Wissen-Faktor: "
-				+ Strength_Weapon_Type_Modifier;
 		float Weapon_on_Type_Modifier = getInventory()
 				.give_Weapon_on_Type_Modifier(m);
-		s += " - Waffe-Faktor:" + Weapon_on_Type_Modifier;
 		float faktor = Strength_Weapon_Type_Modifier * Weapon_on_Type_Modifier;
-		s += " - Gesamtfaktor: " + faktor;
+
 		int x = (int) (weapon_blank * faktor);
-		s += " - Erfahrungspunkte geben: " + x;
 
 		return x;
 	}

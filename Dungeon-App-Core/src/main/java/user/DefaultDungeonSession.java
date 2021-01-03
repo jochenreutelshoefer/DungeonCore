@@ -75,7 +75,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getCurrentStage() {
 
-		/*
+
 		if(completedDungeons.isEmpty()) {
 			DungeonFactory level0 = getDungeonManager().getDungeonOptions(0).get(0);
 			DungeonFactory level1 = getDungeonManager().getDungeonOptions(1).get(0);
@@ -85,7 +85,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			this.completedDungeons.put(level1, 2);
 			return 2;
 		}
-		*/
+
 
 
 		return completedDungeons.size();
@@ -125,9 +125,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			currentHero = HeroUtil.getBasicHero(heroType, "Gisbert", Zodiac.Aquarius,
 					Profession.Lumberjack);
 			// todo: testing only
-			currentHero.getSkillSet().put(HealSkill.class, new HealSkill());
-			currentHero.getSkillSet().put(LionessConjureSkill.class, new LionessConjureSkill());
-			currentHero.getSpellbook().addSpell(new Raid());
+			//currentHero.getSkillSet().put(HealSkill.class, new HealSkill());
+			//currentHero.getSkillSet().put(LionessConjureSkill.class, new LionessConjureSkill());
+			//currentHero.getSpellbook().addSpell(new Raid());
 		}
 		return currentHero;
 	}

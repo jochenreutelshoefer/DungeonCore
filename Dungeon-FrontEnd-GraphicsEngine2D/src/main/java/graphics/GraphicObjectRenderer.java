@@ -757,12 +757,14 @@ public class GraphicObjectRenderer {
 		revealMapShrineDimension = new ShrineRenderDimension( (7 * ROOMSIZE_BY_10),   (1 * roomSize / 24), (int) (roomSize / 3.4),  (int) (roomSize / 2.7));
 
 		locationRenderInformationMap.put(HealthFountain.class, createDefaultLocationMap(healthFountainDimension, HealthFountain.class));
-		locationRenderInformationMap.put(MoonRuneFinderShrine.class, createDefaultLocationMap(healthFountainDimension, MoonRuneFinderShrine.class));
+		locationRenderInformationMap.put(MoonRuneFinderShrine.class, createDefaultLocationMap(defenderDimension, MoonRuneFinderShrine.class));
 		locationRenderInformationMap.put(Statue.class, createDefaultLocationMap(statueDimension, MoonRuneFinderShrine.class));
 
-		Map<LocationState, JDImageLocated> defenderMap = createDefaultLocationMap(defenderDimension, MoonRuneFinderShrine.class);
-		defenderMap.put(DefenderLocation.DefenderState.Activated, new JDImageLocated(ImageManager.getImage(DefenderLocation.class), defenderDimension));
-		defenderMap.put(DefenderLocation.DefenderState.Inactive, new JDImageLocated(ImageManager.getImage(DefenderLocation.class), defenderDimension));
+		Map<LocationState, JDImageLocated> defenderMap = new HashMap<>();;
+		defenderMap.put(DefenderLocation.DefenderState.Activated, new JDImageLocated(ImageManager.defenderLocation_active, defenderDimension));
+		defenderMap.put(DefenderLocation.DefenderState.Inactive, new JDImageLocated(ImageManager.defenderLocation_inactive, defenderDimension));
+		defenderMap.put(DefenderLocation.DefenderState.Dead, null);
+		defenderMap.put(DefenderLocation.DefenderState.Fighting, null);
 		locationRenderInformationMap.put(DefenderLocation.class, defenderMap);
 
 		locationRenderInformationMap.put(ScoutShrine.class, createDefaultLocationMap(scoutShrineDimension, ScoutShrine.class));
@@ -784,6 +786,7 @@ public class GraphicObjectRenderer {
 		Class<? extends Location> locationClass = s.getShrineClass();
 		Map<LocationState, JDImageLocated> locationRenderInformationMap = GraphicObjectRenderer.locationRenderInformationMap.get(locationClass);
 		if(locationRenderInformationMap != null) {
+
 			JDImageLocated imageInfo = locationRenderInformationMap.get(s.getState());
 			return new JDGraphicObject(imageInfo, s, shrineRect);
 		}
@@ -888,6 +891,7 @@ public class GraphicObjectRenderer {
 
 
 	public void invalidateCache(RoomInfoEntity entity) {
+		Log.info("Invalidating GraphicObject cache for RoomInfoEntity:" + entity);
 		graphicObjectCache.remove(entity);
 	}
 

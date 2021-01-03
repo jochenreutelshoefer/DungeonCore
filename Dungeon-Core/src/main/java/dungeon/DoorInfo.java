@@ -137,7 +137,7 @@ public class DoorInfo extends RoomInfoEntity {
 		p[1].setBold();
 		String s2 = new String();
 		if (door.getLock() != null) {
-			s2 += JDEnv.getString("door_lock")+": " + door.getLock() + "  Status: ";
+			s2 += door.getLock() + "  Status: ";
 			if (door.getLocked()) {
 				s2 += JDEnv.getString("door_locked");
 			} else {

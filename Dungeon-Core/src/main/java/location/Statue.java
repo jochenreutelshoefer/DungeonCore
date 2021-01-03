@@ -49,7 +49,7 @@ public void metaClick(Figure f){
 		for (Iterator<Figure> iter = l.iterator(); iter.hasNext();) {
 			Figure element = iter.next();
 			if(element instanceof Hero) {
-				element.heal(3);
+				element.heal(3, round);
 			}
 			
 		}

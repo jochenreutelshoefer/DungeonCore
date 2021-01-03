@@ -197,10 +197,10 @@ public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
 			return new Pair<>(ImageManager.getImage((DoorInfo) content).getFilenameBlank(), new RenderInfo(1.0f, true));
 		}
 		if (content instanceof LocationInfo) {
-			return new Pair<>(ImageManager.getImage((LocationInfo) content).getFilenameBlank(), new RenderInfo(1.0f));
+			return new Pair<>(ImageManager.getImage(((LocationInfo) content).getShrineClass()).getFilenameBlank(), new RenderInfo(1.0f));
 		}
 		if (content instanceof ChestInfo) {
-			return new Pair<>(ImageManager.getImage((ChestInfo) content).getFilenameBlank(), new RenderInfo(1.0f, true));
+			return new Pair<>(ImageManager.getImage((ChestInfo) content).getFilenameBlank(), new RenderInfo(1.0f, false));
 		}
 		if (content instanceof FigureInfo) {
 			try {

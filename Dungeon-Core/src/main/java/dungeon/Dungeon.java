@@ -30,6 +30,8 @@ import figure.monster.MonsterInfo;
 import game.ControlUnit;
 import game.Turnable;
 import location.Location;
+import log.Log;
+import org.apache.log4j.Logger;
 
 /**
  * Diese Klasse bildet den Dungeon, welcher aus einem 2D-Array von Raeumen
@@ -164,6 +166,7 @@ public class Dungeon implements Turnable, EventListener {
 
 	@Override
 	public void turn(int round) {
+
 		shrinesTurn(round);
 		roomsTurn(round);
 	}
@@ -325,10 +328,12 @@ public class Dungeon implements Turnable, EventListener {
 	}
 
 	public void setTransactionLock() {
+		//Log.info("setting transaction lock");
 		this.transactionLocked = true;
 	}
 
 	public void releaseTransactionLock() {
+		//Log.info("releasing transaction lock");
 		this.transactionLocked = false;
 	}
 }

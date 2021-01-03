@@ -581,6 +581,9 @@ public class ImageManager {
 	public static JDImageProxy<?> inventory_axe1;
 	public static JDImageProxy<?> inventory_club1;
 	public static JDImageProxy<?> inventory_helmet1;
+	public static JDImageProxy<?> defenderLocation_active;
+	public static JDImageProxy<?> defenderLocation_inactive;
+	public static JDImageProxy<?> runeFinderLocation;
 
 	public static JDImageProxy<?> lebenskugel;
 
@@ -956,6 +959,10 @@ public class ImageManager {
 
 			button1 = new JDImageProxy<>(a, "button1.gif");
 
+			defenderLocation_active = new JDImageProxy<>(a, "DefenderLocationActive.gif");
+			defenderLocation_inactive = new JDImageProxy<>(a, "DefenderLocationInactive.gif");
+			runeFinderLocation = new JDImageProxy<>(a, "RuneFinderLocation.gif");
+
 			createItemClassMap(a);
 			createHeroAnimationMap(a);
 			createMonsterAnimationMap(a);
@@ -1204,11 +1211,9 @@ public class ImageManager {
 		shrineMap.put(LevelExit.class, ImageManager.falltuerImage);
 		shrineMap.put(ScoutShrine.class, ImageManager.saeuleImage);
 		shrineMap.put(Corpse.class, ImageManager.dead_dwarfImage);
-		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.getAnimationSet(FigurePresentation.Druid, Motion.Walking, RouteInstruction.Direction.South)
-				.getImagesNr(0));
+		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.runeFinderLocation);
 		shrineMap.put(RuneFinder.class, ImageManager.shrine_small_yellowImage);
-		shrineMap.put(DefenderLocation.class, ImageManager.warrior_walking.get(RouteInstruction.Direction.South)
-				.getImagesNr(0));
+		shrineMap.put(DefenderLocation.class, ImageManager.defenderLocation_inactive);
 	}
 
 	public static JDImageProxy<?> getImage(DoorInfo s) {
@@ -1231,15 +1236,6 @@ public class ImageManager {
 
 	public static JDImageProxy<?> getImage(Class<? extends Location> s) {
 		return shrineMap.get(s);
-	}
-
-	public static JDImageProxy<?> getImage(LocationInfo s) {
-
-		Class<? extends Location> shrineClass = s.getShrineClass();
-		if (shrineMap.containsKey(shrineClass)) {
-			return shrineMap.get(shrineClass);
-		}
-		return null;
 	}
 
 	public static Map<FigurePresentation, JDImageProxy<?>[]> figureMap = new HashMap<>();

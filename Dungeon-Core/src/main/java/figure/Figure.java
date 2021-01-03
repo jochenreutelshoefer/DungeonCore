@@ -47,7 +47,6 @@ import figure.percept.MissPercept;
 import figure.percept.Percept;
 import figure.percept.ShieldBlockPercept;
 import figure.percept.StepPercept;
-import figure.percept.TumblingPercept;
 import figure.percept.WaitPercept;
 import game.ControlUnit;
 import game.JDEnv;
@@ -172,8 +171,6 @@ public abstract class Figure extends DungeonWorldObject
 		return result;
 	}
 
-	;
-
 	protected boolean wayPassable(Door d, Room toGo) {
 
 		if ((d != null) && (d.isPassable(this)) && (toGo != null)) {
@@ -235,10 +232,6 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-
-
-
-
 	public void healPoisonings() {
 		poisonings = new LinkedList<>();
 	}
@@ -294,18 +287,21 @@ public abstract class Figure extends DungeonWorldObject
 		return payDust((double) val);
 	}
 
-	public void heal(double value) {
+	public void heal(double value, int round) {
 		Attribute healthAttr = getHealth();
+		double before = healthAttr.getValue();
 		if (healthAttr.getValue() + value <= healthAttr.getBasic()) {
 			healthAttr.modValue(value);
 		}
 		else {
 			healthAttr.setValue((healthAttr.getBasic()));
 		}
+		double after = healthAttr.getValue();
+		Log.info(this.getName()+ " recovers from " +before +" to "+ after+ " (max: "+healthAttr.getBasic()+")"+ " [Round: "+round+"]");
 	}
 
-	public void heal(int value) {
-		heal((double) value);
+	public void heal(int value, int round) {
+		heal((double) value, round);
 	}
 
 	public int getFigureID() {
@@ -323,8 +319,6 @@ public abstract class Figure extends DungeonWorldObject
 	public abstract double getLightningResistRate();
 
 	public abstract double getPoisonResistRate();
-
-	public abstract int getAntiTumbleValue();
 
 	public abstract boolean isAbleToTakeItem(Item it);
 
@@ -344,7 +338,7 @@ public abstract class Figure extends DungeonWorldObject
 		if (lastTurn < round) {
 			fireModifications();
 
-			recover();
+			recover(round);
 
 			if (cobwebbed > 0) {
 				if (cobwebbed > 10) {
@@ -364,31 +358,12 @@ public abstract class Figure extends DungeonWorldObject
 	@Override
 	public void turn(int round) {
 
-		/*
-		// TODO: check is this really required?
-		if (lastTurn >= round) {
-			return;
-		}
-		else {
-			lastTurn = round;
-		}
-
-		final DungeonVisibilityMap roomVisibility = this.getRoomVisibility();
-		if (roomVisibility != null) {
-			roomVisibility.resetTemporalVisibilities();
-		}
-
-		setActionPoints(1, round);
-
-		if (this.getActionPoints() > 0 && !isDead()) {
-			doActions(round, false);
-		}
-		*/
 	}
 
 	protected abstract void sanction(int i);
 
 	public boolean hurt(int value) {
+		Log.info(this.getName()+" receives damage: "+value);
 		Attribute h = this.getHealth();
 		h.modValue(value * (-1));
 		this.setStatus(this.getHealthLevel().getValue()); // TODO: refactor
@@ -397,21 +372,12 @@ public abstract class Figure extends DungeonWorldObject
 
 	protected abstract int getAllArmor(Slap s);
 
-	protected abstract void recover();
-
-	protected int tumblings = 0;
-
-	protected void incTumblings(int k) {
-		tumblings += k;
-	}
+	protected abstract void recover(int round);
 
 	public abstract Attribute getDexterity();
 
 	public int calcEludeValue() {
 		double dex = this.getDexterity().getValue();
-		if (this.tumblings > 0) {
-			dex *= 0.2;
-		}
 		if (this.blinded > 0) {
 			dex *= 0.6;
 		}
@@ -455,14 +421,6 @@ public abstract class Figure extends DungeonWorldObject
 		int lightningDmg = (int) (slap_lightning * getLightningResistRate());
 		int poisonDmg = (int) (slap_poison * getPoisonResistRate());
 		int magicDmg = (int) (slap_magic * getMagicResistRate());
-
-		int tumbles = getTumbling(s.getValue_tumble(),
-				this.getAntiTumbleValue());
-		if (tumbles > 0) {
-			incTumblings(tumbles);
-			getRoom().distributePercept(new TumblingPercept(this, round));
-			// this.decFightAP(tumbles);
-		}
 
 		return slapDmg + fireDmg + lightningDmg + poisonDmg + magicDmg;
 	}
@@ -694,11 +652,12 @@ public abstract class Figure extends DungeonWorldObject
 	private void getDoorSmash(Door d, Figure other, boolean bigSmash, int round, int strengthDiff) {
 		int healthBasic = (int) this.getHealth().getBasic();
 		int value;
+		int strengthDiffValue = (int) (((double) strengthDiff) / 2.5);
 		if (bigSmash) {
-			value = (healthBasic / 4) + strengthDiff/2;
+			value = (healthBasic / 10) + strengthDiffValue;
 		}
 		else {
-			value = (healthBasic / 8) + strengthDiff/2;
+			value = (healthBasic / 20) + strengthDiffValue;
 		}
 		if(value <= 0) value = 1;
 
@@ -897,64 +856,17 @@ public abstract class Figure extends DungeonWorldObject
 		return visibilities;
 	}
 
-	public abstract int getTumbleValue(Figure f);
-
 	public abstract Attribute getDust();
 
 	public abstract float getActualChanceToHit(Figure m);
 
 	public abstract int getActualRangeCapability(int range);
 
-	public float rangeFilter(float c, int dist) {
 
-		if (dist == 1) {
-			c = ((c * 100) / 100);
-		}
-		if (dist == 2) {
-			c = ((c * 75) / 100);
-		}
-		if (dist == 3) {
-			c = ((c * 50) / 100);
-		}
-		if (dist == 4) {
-			c = 0;
-		}
-		return c;
-	}
-
-	public int getTumbling(int tumbleValue, int antiTumbleValue) {
-		int erg = 0;
-		if (tumbleValue >= 1.5 * antiTumbleValue) {
-			if (Math.random() < 0.05) {
-				return 2;
-			}
-			if (Math.random() < 0.8) {
-				return 1;
-			}
-		}
-		else if (tumbleValue >= 1 * (double) antiTumbleValue) {
-			if (Math.random() < 0.5) {
-				return 1;
-			}
-		}
-		else if (tumbleValue >= 0.7 * antiTumbleValue) {
-			if (Math.random() < 0.3) {
-				return 1;
-			}
-		}
-		else if (tumbleValue >= 0.4 * antiTumbleValue) {
-			if (Math.random() < 0.2) {
-				return 1;
-			}
-		}
-		return erg;
-	}
 
 	public RoomObservationStatus getRoomObservationStatus(JDPoint p) {
 		return getRoomVisibility().getStatusObject(p);
 	}
-
-
 
 	public abstract int getSlapStrength(Figure m);
 
@@ -1048,8 +960,6 @@ public abstract class Figure extends DungeonWorldObject
 
 		return p;
 	}
-
-
 
 	public abstract String getMclass();
 

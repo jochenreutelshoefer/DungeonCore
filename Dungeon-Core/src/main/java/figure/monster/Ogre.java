@@ -1,56 +1,43 @@
 package figure.monster;
 
-
 import figure.APAgility;
-import figure.FigurePresentation;
-import spell.MightyStruck;
-import dungeon.Dungeon;
-import item.equipment.Helmet;
 import figure.Figure;
-
-
+import figure.FigurePresentation;
 import figure.attribute.Attribute;
-import figure.hero.Hero;
-import figure.hero.Inventory;
-import figure.percept.SpecialAttackPercept;
-
 import game.JDEnv;
 import gui.Texts;
+import spell.MightyStruck;
 
 public class Ogre extends CreatureMonster {
 
-	public static final int CHANCE_TO_HIT = 12;
+	private static final int CHANCE_TO_HIT = 12;
 	private static final int HEALTH_DAMAGE_BALANCE = 20;
-	protected static final int SCATTER = 5;
+	private static final int OGRE_DAMAGE_VARIANCE = 5;
 
 	public Ogre(int value) {
 
 		super(value);
-		construcHelpOgre(value);
-
+		construcHelpOgre();
 	}
-	
 
-	protected void construcHelpOgre(int value) {
-		
+	protected void construcHelpOgre() {
 		tumbleValue = 30;
-		this.antiTumbleValue = 80;
-		this.strength = new Attribute(Attribute.Type.Strength,12);
-		this.dexterity = new Attribute(Attribute.Type.Dexterity,6);
+		this.strength = new Attribute(Attribute.Type.Strength, 12);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity, 6);
 		String[] lvl_names =
-			{
-				JDEnv.getString("ogre1"),
-				JDEnv.getString("ogre2"),
-				JDEnv.getString("ogre3"),
-				JDEnv.getString("ogre4"),
-				JDEnv.getString("ogre5"),
-				JDEnv.getString("ogre6") };
-		
+				{
+						JDEnv.getString("ogre1"),
+						JDEnv.getString("ogre2"),
+						JDEnv.getString("ogre3"),
+						JDEnv.getString("ogre4"),
+						JDEnv.getString("ogre5"),
+						JDEnv.getString("ogre6") };
+
 		this.lvl_names = lvl_names;
 
 		name = (Texts.getName("ogre"));
-		
-		if(level >= 2) {
+
+		if (level >= 2) {
 			spellbook.addSpell(new MightyStruck(1));
 		}
 	}
@@ -64,10 +51,10 @@ public class Ogre extends CreatureMonster {
 	protected APAgility createAgility() {
 		return new APAgility(8, 0.7);
 	}
-	
+
 	@Override
-	protected int getSCATTER() {
-		return this.SCATTER;
+	protected int getDamageVariance() {
+		return OGRE_DAMAGE_VARIANCE;
 	}
 
 	@Override
@@ -98,14 +85,15 @@ public class Ogre extends CreatureMonster {
 		*/
 		return false;
 	}
-	
+
 	@Override
-	public int getCHANCE_TO_HIT() {
+	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
 	}
-	
-	protected int getHEALTH_DAMAGE_BALANCE() {
-		return this.HEALTH_DAMAGE_BALANCE;
+
+	@Override
+	protected int getHealthDamageBalance() {
+		return HEALTH_DAMAGE_BALANCE;
 	}
 
 	@Override
@@ -117,5 +105,4 @@ public class Ogre extends CreatureMonster {
 	public int hunting() {
 		return Monster.OGRE_HUNTING;
 	}
-
 }

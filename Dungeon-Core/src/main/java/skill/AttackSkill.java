@@ -1,6 +1,5 @@
 package skill;
 
-import org.jetbrains.annotations.NotNull;
 import dungeon.Position;
 import fight.Slap;
 import fight.SlapResult;
@@ -10,6 +9,8 @@ import figure.action.result.ActionResult;
 import figure.percept.AttackPercept;
 import figure.percept.TextPercept;
 import game.JDEnv;
+import log.Log;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -73,24 +74,21 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 	private Slap slay(Figure actor, Figure m, int round) {
 
-		double tumbleFactor = 1;
-
 		assert m != null;
 		int dist = Position.getMinDistanceFromTo(actor.getPositionInRoom(),
 				m.getPositionInRoom());
 
 		float weaponBaseChance = actor.getActualChanceToHit(m);
-		float rangedPrecision = actor.rangeFilter(weaponBaseChance, dist);
+		float rangedPrecision = precisionReductionByRange(weaponBaseChance, dist);
 		float precision = (float) (rangedPrecision * (((double) actor.getActualRangeCapability(dist)) / 100));
 
-		int value = actor.getSlapStrength(m);
+		int value = damageReductionByRange(actor.getSlapStrength(m), dist);
 
 		if (actor.raiding) {
 			actor.raiding = false;
 			actor.half_bonus = true;
 			value += 4;
 			precision *= 2;
-			tumbleFactor = 4;
 			actor.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("raiding_attack"), round));
 		}
 
@@ -103,7 +101,42 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 			value *= 2;
 		}
 
-		return new Slap(actor, value, (int) (tumbleFactor * actor.getTumbleValue(m)), precision);
+		return new Slap(actor, value, precision);
+	}
+
+	public float precisionReductionByRange(float c, int dist) {
+
+		if (dist == 1) {
+			c = ((c * 100) / 100);
+		}
+		if (dist == 2) {
+			c = ((c * 75) / 100);
+		}
+		if (dist == 3) {
+			c = ((c * 50) / 100);
+		}
+		if (dist == 4) {
+			c = 0;
+		}
+		return c;
+	}
+
+	public int damageReductionByRange(int rawDamage, int dist) {
+
+		if (dist == 1) {
+			return rawDamage;
+		}
+		if (dist == 2) {
+			return (int) ((float) rawDamage * 0.8);
+		}
+		if (dist == 3) {
+			return (int) ((float) rawDamage * 0.6);
+		}
+		if (dist == 4) {
+			return (int) ((float) rawDamage * 0.4);
+		}
+		Log.warning("Invalid position distance for slap: " + dist);
+		return rawDamage;
 	}
 
 	@Override
@@ -121,7 +154,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 		}
 
 		public AttackActionBuilder target(FigureInfo target) {
-			if(target == null) {
+			if (target == null) {
 				throw new IllegalArgumentException("target my not be null");
 			}
 			this.target = target;

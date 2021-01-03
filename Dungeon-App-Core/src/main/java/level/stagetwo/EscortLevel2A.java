@@ -67,9 +67,9 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		});
 		exitRoom.setShrine(new LevelExit(npc));
 
-		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0, -1);
-		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0, -1);
-		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(800),0, -1);
+		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(8000),0, -1);
+		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(8000),0, -1);
+		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(8000),0, -1);
 
 
 		return dungeon;

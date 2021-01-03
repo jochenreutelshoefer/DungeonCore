@@ -6,6 +6,8 @@ package figure.attribute;
 public class DerivedAttribute extends Attribute {
 
 	public static final int FORMULAR_KEY_8TH = 1;
+	public static final int FORMULAR_KEY_16TH = 2;
+	public static final int FORMULAR_KEY_32TH = 3;
 
 	private double base = 0;
 
@@ -33,10 +35,16 @@ public class DerivedAttribute extends Attribute {
 		double res = 0;
 		if (this.formularKey == FORMULAR_KEY_8TH) {
 			double d = master.getValue();
-
 			res = base + (d / 8);
 		}
-
+		if (this.formularKey == FORMULAR_KEY_16TH) {
+			double d = master.getValue();
+			res = base + (d / 16);
+		}
+		if (this.formularKey == FORMULAR_KEY_32TH) {
+			double d = master.getValue();
+			res = base + (d / 32);
+		}
 		return res;
 	}
 

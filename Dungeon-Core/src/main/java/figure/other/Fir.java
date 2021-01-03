@@ -38,17 +38,17 @@ public class Fir extends ConjuredMagicFigure {
 	}
 
 	@Override
-	protected int getCHANCE_TO_HIT() {
+	protected int getChangeToHit() {
 		return 30;
 	}
 
 	@Override
-	protected int getSCATTER() {
+	protected int getDamageVariance() {
 		return 0;
 	}
 
 	@Override
-	protected int getHEALTH_DAMAGE_BALANCE() {
+	protected int getHealthDamageBalance() {
 		return 2;
 	}
 

@@ -171,13 +171,10 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void onTurn() {
-		JDPoint roomNumber = this.heroInfo.getRoomNumber();
-		//viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
 		for (JDPoint point : roomRenderUpdateLaundry) {
 			viewModel.updateRoom(point.getX(), point.getY());
 		}
 		roomRenderUpdateLaundry.clear();
-
 	}
 
 	@Override

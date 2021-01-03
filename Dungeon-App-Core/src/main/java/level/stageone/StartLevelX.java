@@ -11,6 +11,9 @@ import dungeon.generate.DistanceAtMostConstraint;
 import dungeon.util.RouteInstruction;
 import figure.FigureInfo;
 import figure.monster.Wolf;
+import item.DustItem;
+import item.HealPotion;
+import item.Item;
 import item.Key;
 import item.OxygenPotion;
 import item.VisibilityCheatBall;
@@ -98,14 +101,21 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		// we set a health fountain
 		Room fountainRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
-		fountainRoom.setShrine(new HealthFountain(30, 1));
+		fountainRoom.setShrine(new HealthFountain(30, 0.3));
 		filler.isAllocated(fountainRoom);
 
-		// we set a gimmick chest room
-		Room gimmickRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
-		Chest gimmickChest = new Chest(new OxygenPotion());
-		gimmickRoom.setChest(gimmickChest);
-		filler.isAllocated(gimmickRoom);
+		List<Item> gimmicks = new ArrayList<>();
+		gimmicks.add(new OxygenPotion());
+		gimmicks.add(new HealPotion(25));
+		gimmicks.add(new DustItem(8));
+
+		for (Item gimmick : gimmicks) {
+			// we set a gimmick chest room
+			Room gimmickRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
+			Chest gimmickChest = new Chest(gimmick);
+			gimmickRoom.setChest(gimmickChest);
+			filler.isAllocated(gimmickRoom);
+		}
 
 		if(Math.random() > 0.5) {
 			// key to be found on the right
@@ -137,7 +147,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		Room wolfRoom = dungeon.getRoom(4 ,5 );
 		HadrianAI ai = new HadrianAI();
-		Wolf hadrian = new Wolf( 1000, ai, "Hadrian" );
+		Wolf hadrian = new Wolf( 14000, ai, "Hadrian" );
 		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getRoomVisibility()));
 		filler.setAllFound(hadrian.getRoomVisibility());

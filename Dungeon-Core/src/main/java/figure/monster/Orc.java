@@ -18,26 +18,24 @@ import spell.StealOrc;
 
 public class Orc extends CreatureMonster {
 
-	public static final int CHANCE_TO_HIT = 25;
+	private static final int CHANCE_TO_HIT = 25;
 	private static final int HEALTH_DAMAGE_BALANCE = 12;
-	protected static final int SCATTER = 2;
+	private static final int SCATTER = 2;
 
 	public Orc(int value) {
 
 		super(value);
-		construcHelpOrc(value);
-
+		construcHelpOrc();
 	}
 
 	public Orc(int value, boolean special_attack) {
 
 		super(value);
 		this.specialAttacking = special_attack;
-		construcHelpOrc(value);
-
+		construcHelpOrc();
 	}
 
-	protected void construcHelpOrc(int value) {
+	protected void construcHelpOrc() {
 		this.strength = new Attribute(Attribute.Type.Strength, 7);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity, 8);
 		this.lvl_names = new String[] {
@@ -50,7 +48,6 @@ public class Orc extends CreatureMonster {
 
 		name = (Texts.getName("orc"));
 		tumbleValue = 2;
-		this.antiTumbleValue = 30;
 
 		if (level >= 2) {
 			spellbook.addSpell(new StealOrc(1));
@@ -63,17 +60,17 @@ public class Orc extends CreatureMonster {
 	}
 
 	@Override
-	protected int getSCATTER() {
+	protected int getDamageVariance() {
 		return Orc.SCATTER;
 	}
 
 	@Override
-	public int getCHANCE_TO_HIT() {
+	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
 	}
 
 	@Override
-	protected int getHEALTH_DAMAGE_BALANCE() {
+	protected int getHealthDamageBalance() {
 		return HEALTH_DAMAGE_BALANCE;
 	}
 
@@ -93,15 +90,12 @@ public class Orc extends CreatureMonster {
 				stolen.add(toGive);
 				op.tellPercept(new TextPercept(toGive.toString(), -1));
 				sachen.giveAwayItem(toGive, this);
-
 			}
 			op.tellPercept(new TextPercept(getName() + " beklaut Dich und verschwindet durch die Tür.. ", -1));
-
 		}
 		flee(getFleeDirection(), -1);
 		this.specialAttackCounter = 50;
 		return true;
-
 	}
 
 	public boolean isAbleToTakeItemInFight() {

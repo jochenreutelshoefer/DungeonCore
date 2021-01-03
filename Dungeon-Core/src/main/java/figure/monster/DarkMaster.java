@@ -134,12 +134,12 @@ public class DarkMaster extends Monster {
 	}
 	
 	@Override
-	protected int getHEALTH_DAMAGE_BALANCE() {
+	protected int getHealthDamageBalance() {
 		return this.HEALTH_DAMAGE_BALANCE;
 	}
 	
 	@Override
-	protected int getSCATTER() {
+	protected int getDamageVariance() {
 		return this.SCATTER;
 	}
 
@@ -150,7 +150,7 @@ public class DarkMaster extends Monster {
 	}
 	
 	@Override
-	public int getCHANCE_TO_HIT() {
+	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
 	}
 

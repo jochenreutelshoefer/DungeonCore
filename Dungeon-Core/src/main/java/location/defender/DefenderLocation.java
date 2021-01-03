@@ -5,7 +5,6 @@ import java.util.List;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import dungeon.util.RouteInstruction;
-import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
@@ -15,6 +14,7 @@ import figure.npc.RescuedNPCAI;
 import figure.percept.LocationStateChangePercept;
 import location.Location;
 import location.LocationState;
+import log.Log;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -25,10 +25,21 @@ public class DefenderLocation extends Location {
 
 
 	public enum DefenderState implements LocationState {
-		Inactive,
-		Activated,
-		Fighting,
-		Dead;
+		Inactive("Inaktiv"),
+		Activated("Aktiv"),
+		Fighting("Kämpfend"),
+		Dead("Tot");
+
+		String verbalization;
+
+		DefenderState(String verbalization) {
+			this.verbalization = verbalization;
+		}
+
+		@Override
+		public String toString() {
+			return verbalization;
+		}
 	}
 
 	private final Room room;
@@ -129,7 +140,7 @@ public class DefenderLocation extends Location {
 
 	@Override
 	public String getStatus() {
-		return state.name();
+		return state.verbalization;
 	}
 
 	@Override
@@ -140,7 +151,11 @@ public class DefenderLocation extends Location {
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		this.activator = f;
-		this.state = DefenderState.Activated;
+		DefenderState oldState = this.state;
+		DefenderState newState = DefenderState.Activated;
+		this.state = newState;
+		Log.info("Activating Defender");
+		room.distributePercept(new LocationStateChangePercept(this, room, oldState, newState, round));
 		return true;
 	}
 
