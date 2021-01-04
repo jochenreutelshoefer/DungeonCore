@@ -47,7 +47,6 @@ public class Skeleton extends UndeadMonster {
 		this.lvl_names = lvl_names;
 		this.strength = new Attribute(Attribute.Type.Strength,7);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity,9);
-		tumbleValue = 0;
 		name = (Texts.getName("skeleton"));
 	}
 

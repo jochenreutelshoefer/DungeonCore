@@ -83,9 +83,6 @@ public class MoveAction extends AbstractExecutableAction {
 		if (figure.getPos().getIndex() != Figure.getDirPos(dir)) {
 			return ActionResult.POSITION;
 		}
-		if (figure.isPinnedToGround()) {
-			return ActionResult.OTHER;
-		}
 		if (figure.wayPassable(dir)) {
 			if (doIt) {
 				figure.walk(getDirection(), round);

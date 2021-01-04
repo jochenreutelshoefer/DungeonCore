@@ -22,7 +22,6 @@ public class Dwarf extends Monster {
 	
 	public Dwarf() {
 		super(7000);
-		tumbleValue = 0;
 		this.strength = new Attribute(Attribute.Type.Strength,12);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity,5);
 		// TODO Auto-generated constructor stub

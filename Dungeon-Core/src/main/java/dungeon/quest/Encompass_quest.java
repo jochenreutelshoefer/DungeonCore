@@ -14,6 +14,7 @@ import dungeon.generate.AbstractDungeonFiller;
  * die besetzt wird, wenn der Held den Schatz nimmt.
  *
  */
+@Deprecated
 public class Encompass_quest extends Quest {
 	
 	public static int size = 5;
@@ -43,7 +44,7 @@ public class Encompass_quest extends Quest {
 			for(int j = 0; j < 5; j++) {
 				int c = a[i][j];
 				Room raum = d.getRoomNr(p.getX() + i, p.getY() +j);
-				r.addQuest(this);
+				//r.addQuest(this);
 				if(c == 0) {
 					Monster m = AbstractDungeonFiller.getBigMonster(12000,game);
 					AbstractDungeonFiller.equipAMonster(m);

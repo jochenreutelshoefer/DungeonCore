@@ -15,6 +15,7 @@ import figure.attribute.Attribute;
  * Endgegner von Sektor 1. Wird herbeigerufen von verletzten Monstern. Ist allwissend.
  * Soll nur einmal vorkommen.
  */
+@Deprecated
 public class DarkMaster extends Monster {
 
 	
@@ -29,7 +30,6 @@ public class DarkMaster extends Monster {
 	public DarkMaster(Room baseRoom) {
 
 		super(3000);
-		tumbleValue = 0;
 		// TODO Auto-generated constructor stub
 		name = "Dunkler Meister";
 		int value = 2500;
@@ -95,7 +95,7 @@ public class DarkMaster extends Monster {
 
 	@Override
 	public void turn(int round) {
-
+		super.turn(round);
 		int i = 0;
 		if (routing.empty()) {
 			getHeroRouteInstruction();

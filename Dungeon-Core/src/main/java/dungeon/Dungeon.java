@@ -177,6 +177,12 @@ public class Dungeon implements Turnable, EventListener {
 		}
 	}
 
+	public void removeShrine(Location s) {
+		if (s != null) {
+			shrines.remove(s);
+		}
+	}
+
 	public JDPoint getRandomPoint() {
 		int x = (int) (Math.random() * size.getX());
 		int y = (int) (Math.random() * size.getY());

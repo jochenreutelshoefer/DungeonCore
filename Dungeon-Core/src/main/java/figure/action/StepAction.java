@@ -44,11 +44,6 @@ public class StepAction extends AbstractExecutableAction {
 		}
 		if (room.fightRunning()) {
 			if (figure.canPayActionPoints(1)) {
-
-				if (figure.isPinnedToGround()) {
-					return ActionResult.OTHER;
-				}
-
 				Position newPos = figure.getRoom().getPositions()[targetIndex];
 				Figure neighbour;
 

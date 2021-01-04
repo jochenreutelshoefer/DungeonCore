@@ -335,17 +335,7 @@ public abstract class Figure extends DungeonWorldObject
 
 		if (lastTurn < round) {
 			fireModifications();
-
 			recover(round);
-
-			if (cobwebbed > 0) {
-				if (cobwebbed > 10) {
-					cobwebbed -= 10;
-				}
-				else {
-					cobwebbed = 0;
-				}
-			}
 			this.sufferPoisonings(round);
 		}
 
@@ -355,7 +345,22 @@ public abstract class Figure extends DungeonWorldObject
 
 	@Override
 	public void turn(int round) {
+		timeTick(round);
+		final DungeonVisibilityMap roomVisibility = getRoomVisibility();
+		if (roomVisibility != null) {
+			roomVisibility.resetTemporalVisibilities();
+		}
 
+		this.lastTurn = round;
+
+		if (getActionPoints() > 0 && !isDead()) {
+			doActions(round, this.getRoom().fightRunning());
+
+			// might be that after an action the fight is resolved
+			if (this.getRoom().fightRunning() && !this.getRoom().checkFightOn()) {
+				this.getRoom().endFight();
+			}
+		}
 	}
 
 	protected abstract void sanction(int i);
@@ -451,17 +456,17 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			else {
 				allDmg = hit(s, round);
-				int healthBefore = getHealthLevel().getValue();
+				int healthLevelBefore = getHealthLevel().getValue();
 				if (allDmg < 0) {
 					allDmg = 0;
 				}
 
 				dies = hurt(allDmg);
 
-				int healthAfter = getHealthLevel().getValue();
+				int healthLevelAfter = getHealthLevel().getValue();
 
-				if (healthBefore != healthAfter) {
-					sanction(healthBefore - healthAfter);
+				if (healthLevelBefore != healthLevelAfter) {
+					sanction(healthLevelBefore - healthLevelAfter);
 				}
 				if (dies) {
 					getKilled(allDmg);
@@ -574,16 +579,6 @@ public abstract class Figure extends DungeonWorldObject
 			((JDGUI) control).gameOver();
 		}
 	}
-
-	public void setCobwebbed(int k) {
-		cobwebbed += k;
-	}
-
-	public boolean isPinnedToGround() {
-		return cobwebbed > 0;
-	}
-
-	protected abstract void setMakingSpecialAttack(boolean b);
 
 	public boolean fightEnded(List<Figure> figures, int round) {
 		if (this instanceof ConjuredMagicFigure) {

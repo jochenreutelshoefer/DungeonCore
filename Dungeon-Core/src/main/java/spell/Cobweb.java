@@ -6,6 +6,7 @@ import figure.FigureInfo;
 import game.JDEnv;
 import game.RoomInfoEntity;
 
+@Deprecated
 public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
 	public static int[][] values = { { 1, 1, 10, 30,1 }, { 15, 13, 12, 25,1 } };
@@ -27,9 +28,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 		isPossibleInFight = true;
 
 	}
-	
-	
-	
+
 	@Override
 	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
@@ -48,7 +47,7 @@ public class Cobweb extends AbstractTargetSpell implements TargetSpell{
 	
 	@Override
 	public void sorcer(Figure f, RoomEntity target, int round) {
-		((Figure)target).setCobwebbed(this.level * this.getStrength());
+		//((Figure)target).setCobwebbed(this.level * this.getStrength());
 	}
 	
 	@Override

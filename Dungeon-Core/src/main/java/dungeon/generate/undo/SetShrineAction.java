@@ -32,7 +32,7 @@ public class SetShrineAction implements DungeonChangeAction {
 	@Override
 	public void undo() {
 		if(possible) {
-			room.setShrine(null);
+			room.resetShrine(shrine);
 		}
 	}
 }

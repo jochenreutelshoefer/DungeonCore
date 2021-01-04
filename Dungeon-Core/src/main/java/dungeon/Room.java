@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import dungeon.quest.Quest;
 import dungeon.quest.RoomQuest;
 import dungeon.util.RouteInstruction;
 import figure.DungeonVisibilityMap;
@@ -35,20 +34,15 @@ import item.DustItem;
 import item.Item;
 import item.ItemInfo;
 import item.interfaces.ItemOwner;
-import log.Log;
 import location.Location;
 import location.Statue;
+import log.Log;
+import org.jetbrains.annotations.NotNull;
 import util.JDColor;
 
 public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
-	public static final int NO = 0;
-
-	public static final int LITTLE = 1;
-
-	public static final int ALL = 2;
-
-	boolean isWall = false;
+	private boolean isWall = false;
 
 	// TODO: is this the right place to store every figure that can observe this room?
 	private final Map<Figure, Integer> observer = new ConcurrentHashMap<>();
@@ -61,15 +55,25 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	private final Dungeon dungeon;
 
-	private final List<Quest> quests = new LinkedList<Quest>();
-
-	private List<Figure> roomFigures;
+	private final List<Figure> roomFigures;
 
 	private final Map<Position, Set<Figure>> deadFigures = new HashMap<>();
 
-	private List<Item> items;
+	private final List<Item> items;
 
 	private final JDPoint number;
+
+
+	private int floorIndex;
+
+	private RoomQuest rquest;
+
+	private Door[] doors = new Door[4];
+
+	private final Item[] itemArray = new Item[4];
+
+	private boolean fightRunning = false;
+
 
 	public void checkFight(Figure movedIn, int round) {
 		boolean fight = false;
@@ -102,7 +106,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	private void startFight(int round) {
 		this.fightRunning = true;
-		//this.fight = new Fight(this,round );
 	}
 
 	@Override
@@ -144,17 +147,9 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return new RoomMemory(this, info);
 	}
 
-	private final Item[] itemArray = new Item[4];
-
 	public void setFloorIndex(int floorIndex) {
 		this.floorIndex = floorIndex;
 	}
-
-	private int floorIndex;
-
-	private RoomQuest rquest;
-
-	private Door[] doors = new Door[4];
 
 	public Room(int x, int y, Dungeon dungeon) {
 		this.dungeon = dungeon;
@@ -178,38 +173,13 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return fightRunning;
 	}
 
-	private boolean fightRunning = false;
-
 	public void turn(int round) {
-		for (Figure roomFigure1 : roomFigures) {
-			roomFigure1.timeTick(round);
-			final DungeonVisibilityMap roomVisibility = roomFigure1.getRoomVisibility();
-			if (roomVisibility != null) {
-				roomVisibility.resetTemporalVisibilities();
-			}
-		}
-
-		// todo: refactor this out of this class into Dungeon or DungeonGameLoop
 		for (Figure roomFigure : roomFigures) {
-			if (this.dungeon.isGameOver()) {
-				break;
-			}
-
-			// todo: refactor
-			roomFigure.lastTurn = round;
-
-			if (roomFigure.getActionPoints() > 0 && !roomFigure.isDead()) {
-				roomFigure.doActions(round, fightRunning);
-
-				// might be that after an action the fight is resolved
-				if (fightRunning && !checkFightOn()) {
-					endFight();
-				}
-			}
+			roomFigure.turn(round);
 		}
 	}
 
-	private boolean checkFightOn() {
+	public boolean checkFightOn() {
 
 		if (getRoomFigures().size() <= 1) {
 			return false;
@@ -223,7 +193,8 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			}
 			for (Figure element2 : getRoomFigures()) {
 				if (element != element2) {
-					boolean hostileTo = element.getControl().isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
+					boolean hostileTo = element.getControl()
+							.isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
 					if (hostileTo) {
 						fightOn = true;
 						break;
@@ -237,15 +208,24 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return fightOn;
 	}
 
-	public void setShrine(Location s) {
+	public void resetShrine(Location shrine) {
+		if (this.s != shrine) {
+			Log.warning("Trying to reset a location that was not set in before! Weird!");
+			return;
+		}
+		this.getDungeon().removeShrine(s);
+		setShrine(null, false);
+	}
+
+	public void setShrine(@NotNull Location newShrine) {
 		if (this.s != null) {
 			throw new IllegalStateException("check for shrine before setting one!");
 		}
-		if(s.getRoom() != null && !s.getRoom().equals(this)) {
+		if (newShrine.getRoom() != null && !newShrine.getRoom().equals(this)) {
 			throw new IllegalStateException("location room not matching");
 		}
-		this.getDungeon().addShrine(s);
-		setShrine(s, true);
+		this.getDungeon().addShrine(newShrine);
+		setShrine(newShrine, true);
 	}
 
 	public void setShrine(Location s, boolean setShrineLocation) {
@@ -369,7 +349,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	public RoomQuest getRoomQuest() {
 		return rquest;
 	}
-
 
 	@Override
 	public boolean addItems(List<Item> l, ItemOwner o) {
@@ -677,7 +656,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return doors;
 	}
 
-
 	public boolean removeDoor(Door d, boolean otherRoom) {
 		if (d == null) {
 			return false;
@@ -893,12 +871,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return roomFigures;
 	}
 
-
-	public void addQuest(Quest q) {
-		quests.add(q);
-	}
-
-
 	public int figureEnters(Figure figure, int moveDir, int round) {
 
 		int inRoomIndex = -1;
@@ -950,7 +922,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			figure.setLookDir(moveDir);
 		}
 
-
 		// we 'discover' also all neighbour rooms of the entered room
 		final List<Room> neighboursWithDoor = getNeighboursWithDoor();
 		for (Room neighbourRoom : neighboursWithDoor) {
@@ -961,7 +932,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		position.figureEntersHere(figure);
 		figure.setLocation(this);
 		roomFigures.add(figure);
-
 
 		if (figure.getRoomVisibility() == null) {
 			figure.createVisibilityMap(dungeon);
@@ -1054,8 +1024,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	public boolean figureLeaves(Figure m) {
 
-
-
 		final Position pos = m.getPos();
 		// might already be a new position in other room after fleeing
 		if (pos != null && pos.getRoom().equals(this)) {
@@ -1085,7 +1053,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			}
 		}
 	}
-
 
 	public JDPoint getNumber() {
 		return number;
@@ -1186,7 +1153,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		}
 		return s;
 	}
-
 
 	@Deprecated
 	public boolean isClaimed() {

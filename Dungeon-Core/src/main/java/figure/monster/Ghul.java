@@ -14,7 +14,6 @@ public class Ghul extends UndeadMonster {
 	private static final int SCATTER = 4;
 
 	protected void construcHelpGhul() {
-		tumbleValue = 5;
 		this.strength = new Attribute(Attribute.Type.Strength, 12);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity, 6);
 

@@ -188,10 +188,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public void setMakingSpecialAttack(boolean b) {
-	}
-
-	@Override
 	public int getKnowledgeBalance(Figure f) {
 		if (f instanceof Monster) {
 			return c.getKnowledgeBalance((Monster) f);

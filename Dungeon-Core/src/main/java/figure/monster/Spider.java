@@ -19,7 +19,7 @@ public class Spider extends NatureMonster {
 
 	public Spider(int value) {
 		super(value);
-		construcHelpBear(value);
+		construcHelpBear();
 	}
 
 	@Override
@@ -27,8 +27,7 @@ public class Spider extends NatureMonster {
 		return FigurePresentation.Spider;
 	}
 
-	protected void construcHelpBear(int value) {
-		tumbleValue = 10;
+	protected void construcHelpBear() {
 		this.strength = new Attribute(Attribute.Type.Strength, 12);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity, 9);
 

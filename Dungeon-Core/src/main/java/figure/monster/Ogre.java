@@ -21,7 +21,6 @@ public class Ogre extends CreatureMonster {
 	}
 
 	protected void construcHelpOgre() {
-		tumbleValue = 30;
 		this.strength = new Attribute(Attribute.Type.Strength, 12);
 		this.dexterity = new Attribute(Attribute.Type.Dexterity, 6);
 		String[] lvl_names =

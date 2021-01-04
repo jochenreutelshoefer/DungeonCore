@@ -33,11 +33,6 @@ public class FleeSkill extends SimpleSkill {
 
 			Room oldRoom = actor.getRoom();
 			if (actor.canPayActionPoints(1)) {
-
-				if (actor.isPinnedToGround()) {
-					return ActionResult.OTHER;
-				}
-
 				boolean flees;
 				RouteInstruction.Direction dir = actor.getPos().getPossibleFleeDirection();
 				if (dir != null && actor.getRoom().getDoor(dir) != null

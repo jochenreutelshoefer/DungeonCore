@@ -163,10 +163,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected Stack<RouteInstruction> routing = new Stack<RouteInstruction>();
 
-	protected boolean makingSpecialAttack = false;
-
-	protected int tumbleValue;
-
 	protected double fireResistRate = 1.0;
 
 	protected double lightningResistRate = 1.0;
@@ -440,12 +436,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 			erg = erg * base;
 		}
 		return erg;
-	}
-
-	@Override
-	public void setMakingSpecialAttack(boolean b) {
-
-		this.makingSpecialAttack = b;
 	}
 
 	@Override

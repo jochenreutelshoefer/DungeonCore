@@ -47,7 +47,6 @@ public class Orc extends CreatureMonster {
 				JDEnv.getString("orc6") };
 
 		name = (Texts.getName("orc"));
-		tumbleValue = 2;
 
 		if (level >= 2) {
 			spellbook.addSpell(new StealOrc(1));
