@@ -44,7 +44,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 			int leftDist = Position.getDistanceFromTo(info.getPositionInRoomIndex(), pos.getIndex(),
 					false);
 			if (rightDist > leftDist) {
-				int lastIndex = info.getPos().getLastIndex();
+				int lastIndex = info.getPos().getPreviousIndex();
 				FigureInfo otherFigure = info.getRoomInfo().getPositionInRoom(lastIndex).getFigure();
 				if(otherFigure != null) {
 					// someone in the way
@@ -63,7 +63,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 					if(otherFigure.isHostile(this.info)) {
 						return attack(otherFigure);
 					} else {
-						return new StepAction(info, info.getPos().getLastIndex());
+						return new StepAction(info, info.getPos().getPreviousIndex());
 					}
 				}
 				return new StepAction(info, nextIndex);

@@ -70,7 +70,6 @@ import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
 
-
 public abstract class Figure extends DungeonWorldObject
 		implements ItemOwner, Turnable, VisibilityModifier, Paragraphable, Serializable, RoomEntity {
 
@@ -165,7 +164,7 @@ public abstract class Figure extends DungeonWorldObject
 		Collection<Position> result = new HashSet<>();
 		Position currentPos = this.getPos();
 		result.add(currentPos.getNext());
-		result.add(currentPos.getLast());
+		result.add(currentPos.getPrevious());
 		// add current pos also, to allow a figure to interact with its own items
 		result.add(currentPos);
 		return result;
@@ -269,7 +268,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	protected void dieAndLeave() {
-		Logger.getLogger(this.getClass()).info("Figure dies:  "+ this);
+		Logger.getLogger(this.getClass()).info("Figure dies:  " + this);
 		dead = true;
 		this.getRoom().figureDies(this);
 		getActualDungeon().removeFigureFromIndex(this);
@@ -297,7 +296,7 @@ public abstract class Figure extends DungeonWorldObject
 			healthAttr.setValue((healthAttr.getBasic()));
 		}
 		double after = healthAttr.getValue();
-		Log.info(this.getName()+ " recovers from " +before +" to "+ after+ " (max: "+healthAttr.getBasic()+")"+ " [Round: "+round+"]");
+		//Log.info(this.getName()+ " recovers from " +before +" to "+ after+ " (max: "+healthAttr.getBasic()+")"+ " [Round: "+round+"]");
 	}
 
 	public void heal(int value, int round) {
@@ -310,7 +309,6 @@ public abstract class Figure extends DungeonWorldObject
 		}
 		return this.figureID;
 	}
-
 
 	public abstract double getFireResistRate();
 
@@ -363,7 +361,7 @@ public abstract class Figure extends DungeonWorldObject
 	protected abstract void sanction(int i);
 
 	public boolean hurt(int value) {
-		Log.info(this.getName()+" receives damage: "+value);
+		Log.info(this.getName() + " receives damage: " + value);
 		Attribute h = this.getHealth();
 		h.modValue(value * (-1));
 		this.setStatus(this.getHealthLevel().getValue()); // TODO: refactor
@@ -536,8 +534,6 @@ public abstract class Figure extends DungeonWorldObject
 		}
 	}
 
-
-
 	public abstract int getKnowledgeBalance(Figure f);
 
 	public abstract boolean flee(RouteInstruction.Direction dir, int round);
@@ -571,7 +567,6 @@ public abstract class Figure extends DungeonWorldObject
 		return null;
 	}
 
-
 	public abstract boolean layDown(Item it);
 
 	protected void gameOver() {
@@ -579,7 +574,6 @@ public abstract class Figure extends DungeonWorldObject
 			((JDGUI) control).gameOver();
 		}
 	}
-
 
 	public void setCobwebbed(int k) {
 		cobwebbed += k;
@@ -589,12 +583,14 @@ public abstract class Figure extends DungeonWorldObject
 		return cobwebbed > 0;
 	}
 
-
 	protected abstract void setMakingSpecialAttack(boolean b);
 
 	public boolean fightEnded(List<Figure> figures, int round) {
 		if (this instanceof ConjuredMagicFigure) {
-			((ConjuredMagicFigure) this).disappear(round);
+			ConjuredMagicFigure conjuredMagicFigure = (ConjuredMagicFigure) this;
+			if (conjuredMagicFigure.disappearAtEndOfFight()) {
+				conjuredMagicFigure.disappear(round);
+			}
 			return true;
 		}
 		if (getControl() != null) {
@@ -613,11 +609,10 @@ public abstract class Figure extends DungeonWorldObject
 		return skillSet.get(clazz);
 	}
 
-
 	private boolean doorSmashes(Door d, Figure other, int round, int strengthDiff) {
 
 		Position pos = this.getPos();
-		Position posN1 = pos.getLast();
+		Position posN1 = pos.getPrevious();
 		Position posN2 = pos.getNext();
 		if (posN1.getFigure() == null && posN2.getFigure() == null) {
 			if (Math.random() > 0.5) {
@@ -659,7 +654,7 @@ public abstract class Figure extends DungeonWorldObject
 		else {
 			value = (healthBasic / 20) + strengthDiffValue;
 		}
-		if(value <= 0) value = 1;
+		if (value <= 0) value = 1;
 
 		Percept p = new DoorSmashPercept(this, other, value, round);
 		d.getRooms()[0].distributePercept(p);
@@ -690,7 +685,7 @@ public abstract class Figure extends DungeonWorldObject
 		 */
 		Dungeon actualDungeon = this.getActualDungeon();
 		// elvis might have just left the building
-		if(actualDungeon != null) {
+		if (actualDungeon != null) {
 			actualDungeon.releaseTransactionLock();
 		}
 		return actionResult;
@@ -710,16 +705,16 @@ public abstract class Figure extends DungeonWorldObject
 		}
 
 		// todo: continue refactoring towards skills
-		if(a instanceof AbstractExecutableAction) {
+		if (a instanceof AbstractExecutableAction) {
 			ActionResult actionResult = ((AbstractExecutableAction) a).handle(doIt, round);
-			if(doIt && actionResult.getSituation() == ActionResult.Situation.done) {
+			if (doIt && actionResult.getSituation() == ActionResult.Situation.done) {
 				this.payActionPoint(a, round);
 			}
 			return actionResult;
 		}
 
-		if(a instanceof SkillAction) {
-			return ((SkillAction)a).getSkill().execute(((SkillAction)a), doIt, round);
+		if (a instanceof SkillAction) {
+			return ((SkillAction) a).getSkill().execute(((SkillAction) a), doIt, round);
 		}
 
 		if (a instanceof EndRoundAction) {
@@ -737,12 +732,9 @@ public abstract class Figure extends DungeonWorldObject
 		return ActionResult.UNKNOWN;
 	}
 
-
-
 	public abstract boolean isAbleToUseShrine();
 
 	public abstract boolean isAbleToUseChest();
-
 
 	public void doStepTo(int targetFieldindex, int oldPosIndex, int round) {
 		Position newPos = getRoom().getPositions()[targetFieldindex];
@@ -862,8 +854,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	public abstract int getActualRangeCapability(int range);
 
-
-
 	public RoomObservationStatus getRoomObservationStatus(JDPoint p) {
 		return getRoomVisibility().getStatusObject(p);
 	}
@@ -956,7 +946,6 @@ public abstract class Figure extends DungeonWorldObject
 		p[2].setSize(14);
 		p[2].setCentered();
 		p[2].setColor(JDColor.black);
-
 
 		return p;
 	}
@@ -1232,7 +1221,8 @@ public abstract class Figure extends DungeonWorldObject
 			}
 			else {
 				if (standing.getControl().isHostileTo(FigureInfo.makeFigureInfo(this, standing.getRoomVisibility()))
-						|| this.getControl().isHostileTo(FigureInfo.makeFigureInfo(standing, this.getRoomVisibility()))) {
+						|| this.getControl()
+						.isHostileTo(FigureInfo.makeFigureInfo(standing, this.getRoomVisibility()))) {
 
 					// some visibility information for non-active figure during door smashing
 					ScoutResult scoutThis = new ScoutResult(standing, RoomObservationStatus.VISIBILITY_FIGURES);
@@ -1246,7 +1236,8 @@ public abstract class Figure extends DungeonWorldObject
 					double otherRan = Math.random() * otherStr;
 					if (thisRan > otherRan || raid) {
 						// locale figure gets smashed
-						boolean moves = standing.doorSmashes(this.getRoom().getDoor(dir), standing, round, strengthDiff);
+						boolean moves = standing.doorSmashes(this.getRoom()
+								.getDoor(dir), standing, round, strengthDiff);
 						if (moves) {
 							goThroughDoor(oldRoom, toGo, round);
 							return true;
@@ -1257,7 +1248,7 @@ public abstract class Figure extends DungeonWorldObject
 					}
 					else {
 						// intruder gets smashed and does not enter
-						this.doorSmashesBack(this.getRoom().getDoor(dir), standing, round, -1*strengthDiff);
+						this.doorSmashesBack(this.getRoom().getDoor(dir), standing, round, -1 * strengthDiff);
 						return false;
 					}
 				}
@@ -1325,7 +1316,6 @@ public abstract class Figure extends DungeonWorldObject
 	public AbstractReflexBehavior getReflexReactionUnit() {
 		return reflexReactionUnit;
 	}
-
 
 	public abstract int getWorth();
 

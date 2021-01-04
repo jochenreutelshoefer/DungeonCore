@@ -27,7 +27,7 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 
 	private Position next;
 
-	private Position last;
+	private Position previous;
 
 	public Position(Room r, int index) {
 		this.room = r;
@@ -106,7 +106,7 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 		}
 		else {
 			if (Math.random() < 0.5) {
-				last.figureEntersHere(fig);
+				previous.figureEntersHere(fig);
 			}
 			else {
 				next.figureEntersHere(fig);
@@ -168,12 +168,7 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 		if (p.getRoom() != room) {
 			return -1;
 		}
-
-
-
-
 		return getDistance(p.index);
-
 	}
 
 	public int getDistance(int otherIndex) {
@@ -198,7 +193,6 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 			counter++;
 
 		}
-
 		return -1;
 	}
 
@@ -211,7 +205,6 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 		else {
 			return left;
 		}
-
 	}
 
 	public static int getDistanceFromTo(int from, int to, boolean right) {
@@ -307,10 +300,10 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 	}
 
 	/**
-	 * @return Returns the last.
+	 * @return Returns the previous.
 	 */
-	public Position getLast() {
-		return last;
+	public Position getPrevious() {
+		return previous;
 	}
 
 	/**
@@ -320,8 +313,8 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 		return next;
 	}
 
-	public void setLast(Position l) {
-		last = l;
+	public void setPrevious(Position l) {
+		previous = l;
 	}
 
 	public void setNext(Position n) {

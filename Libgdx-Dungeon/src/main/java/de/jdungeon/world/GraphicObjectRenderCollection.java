@@ -13,6 +13,7 @@ import figure.FigurePresentation;
 import figure.hero.Hero;
 import figure.hero.HeroInfo;
 import figure.hero.Warrior;
+import figure.other.Fir;
 import graphics.GraphicObject;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
@@ -110,7 +111,13 @@ public class GraphicObjectRenderCollection {
 		Object clickableObject = graphicObject.getClickableObject();
 		Class<? extends Figure> figureClass = null;
 		if (clickableObject instanceof FigureInfo) {
+			if(((FigureInfo)clickableObject).getFigureClass().equals(Fir.class)) {
+				// we need an exception for the Fir as it does not have animations
+				return Assets.instance.getDungeonTexture(image);
+			} else {
 				return Assets.instance.getFigureTexture(((FigureInfo) clickableObject).getFigurePresentation(), image);
+
+			}
 		}
 
 

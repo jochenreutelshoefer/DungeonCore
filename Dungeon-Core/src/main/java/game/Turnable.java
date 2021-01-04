@@ -6,5 +6,6 @@ package game;
  *
  */
 public interface Turnable {
-	public void turn(int round);
+
+	void turn(int round);
 }

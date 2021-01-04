@@ -10,6 +10,7 @@ import figure.FigureInfo;
 import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import gui.Paragraphable;
+import log.Log;
 
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
@@ -28,10 +29,12 @@ public class LibgdxFocusManager implements EventListener {
 	private LibgdxInfoPanel infoPanel;
 
 	private final FigureInfo figure;
+
 	public LibgdxFocusManager(FigureInfo figure) {
 		this.figure = figure;
 		EventManager.getInstance().registerListener(this);
 	}
+
 	public void setGuiFocusObject(Paragraphable object) {
 		if (object == null) {
 			this.infoPanel.setContent(null);
@@ -49,7 +52,7 @@ public class LibgdxFocusManager implements EventListener {
 	}
 
 	public RoomInfoEntity getWorldFocusObject() {
-		if(infoPanel.getContent() == null && worldFocusObject != null) {
+		if (infoPanel.getContent() == null && worldFocusObject != null) {
 			infoPanel.setContent(worldFocusObject);
 		}
 		return worldFocusObject;
@@ -61,6 +64,9 @@ public class LibgdxFocusManager implements EventListener {
 			this.guiFocusObject = null;
 		}
 		else {
+			if (FigureInfo.class.isAssignableFrom(object.getClass())) {
+				Log.info("FocusManager: Setting world focus object: " + object);
+			}
 			this.guiFocusObject = object;
 			this.infoPanel.setContent(object);
 		}
@@ -68,7 +74,8 @@ public class LibgdxFocusManager implements EventListener {
 	}
 
 	public void setWorldFocusObject(GraphicObject object) {
-		setWorldFocusObject((RoomInfoEntity)object.getClickableObject());
+
+		setWorldFocusObject((RoomInfoEntity) object.getClickableObject());
 	}
 
 	@Override

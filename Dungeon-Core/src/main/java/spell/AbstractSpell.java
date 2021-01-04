@@ -335,8 +335,8 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		int c = calcCost();
 		mage.getDust().modValue(c * (-1));
 		Percept p = new SpellPercept(mage, this, round);
-		mage.getRoom().distributePercept(p);
 		sorcer(mage, target, round);
+		mage.getRoom().distributePercept(p);
 		stepCnt = 0;
 	}
 

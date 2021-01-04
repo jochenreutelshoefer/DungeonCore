@@ -169,7 +169,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 			if (i == 0) {
 				last = 7;
 			}
-			positions[last].setLast(positions[i]);
+			positions[last].setPrevious(positions[i]);
 			positions[(i + 1) % 8].setNext(positions[i]);
 		}
 	}
@@ -178,20 +178,16 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return fightRunning;
 	}
 
-	private void tickFigures(int round) {
-		for (Figure roomFigure : roomFigures) {
-			roomFigure.timeTick(round);
-			final DungeonVisibilityMap roomVisibility = roomFigure.getRoomVisibility();
+	private boolean fightRunning = false;
+
+	public void turn(int round) {
+		for (Figure roomFigure1 : roomFigures) {
+			roomFigure1.timeTick(round);
+			final DungeonVisibilityMap roomVisibility = roomFigure1.getRoomVisibility();
 			if (roomVisibility != null) {
 				roomVisibility.resetTemporalVisibilities();
 			}
 		}
-	}
-
-	private boolean fightRunning = false;
-
-	public void turn(int round) {
-		tickFigures(round);
 
 		// todo: refactor this out of this class into Dungeon or DungeonGameLoop
 		for (Figure roomFigure : roomFigures) {

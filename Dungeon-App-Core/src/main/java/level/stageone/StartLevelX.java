@@ -14,9 +14,12 @@ import figure.monster.Wolf;
 import item.DustItem;
 import item.HealPotion;
 import item.Item;
+import item.Items;
 import item.Key;
 import item.OxygenPotion;
 import item.VisibilityCheatBall;
+import item.map.AncientMapFragmentUtils;
+import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
 import level.generation.SimpleDungeonFiller;
 import location.HealthFountain;
@@ -25,6 +28,8 @@ import location.RevealMapShrine;
 import location.ScoutShrine;
 import location.Statue;
 import location.defender.DefenderLocation;
+import spell.conjuration.FirConjuration;
+import spell.conjuration.LionessConjuration;
 
 import static dungeon.util.RouteInstruction.Direction;
 
@@ -104,19 +109,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 		fountainRoom.setShrine(new HealthFountain(30, 0.3));
 		filler.isAllocated(fountainRoom);
 
-		List<Item> gimmicks = new ArrayList<>();
-		gimmicks.add(new OxygenPotion());
-		gimmicks.add(new HealPotion(25));
-		gimmicks.add(new DustItem(8));
-
-		for (Item gimmick : gimmicks) {
-			// we set a gimmick chest room
-			Room gimmickRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
-			Chest gimmickChest = new Chest(gimmick);
-			gimmickRoom.setChest(gimmickChest);
-			filler.isAllocated(gimmickRoom);
-		}
-
+		Room keyRoom = null;
 		if(Math.random() > 0.5) {
 			// key to be found on the right
 			dungeon.getRoomNr(3,5).removeDoors(Direction.West); // on the left goes nothing...
@@ -124,7 +117,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 			dungeon.getRoom(6,5).removeAllDoorsExcept(Direction.West, Direction.East);
 			dungeon.getRoom(7,5).removeAllDoorsExcept(Direction.West, Direction.East);
 
-			Room keyRoom = dungeon.getRoom(8, 5);
+			keyRoom = dungeon.getRoom(8, 5);
 			keyRoom.removeAllDoorsExcept(Direction.West);
 			Chest keyChest = new Chest(exitKey);
 			keyRoom.setChest(keyChest);
@@ -136,11 +129,30 @@ public class StartLevelX extends AbstractDungeonFactory {
 			dungeon.getRoom(2,5).removeAllDoorsExcept(Direction.West, Direction.East);
 			dungeon.getRoom(1,5).removeAllDoorsExcept(Direction.West, Direction.East);
 
-			Room keyRoom = dungeon.getRoom(0, 5);
+			keyRoom = dungeon.getRoom(0, 5);
 			keyRoom.removeAllDoorsExcept(Direction.East);
 			Chest keyChest = new Chest(exitKey);
 			keyRoom.setChest(keyChest);
 		}
+
+
+		List<Item> gimmickPool = new ArrayList<>();
+		gimmickPool.add(new OxygenPotion());
+		gimmickPool.add(new HealPotion(25));
+		gimmickPool.add(new ScrollMagic(new LionessConjuration(1)));
+		gimmickPool.add(new ScrollMagic(new FirConjuration(1)));
+		gimmickPool.add(AncientMapFragmentUtils.createMap(dungeon, keyRoom.getPoint(), 7));
+		List<Item> selectedGimmicks = Items.selectRandomN(gimmickPool, 3);
+
+		for (Item gimmick : selectedGimmicks) {
+			// we set a gimmick chest room
+			Room gimmickRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
+			Chest gimmickChest = new Chest(gimmick);
+			gimmickRoom.setChest(gimmickChest);
+			filler.isAllocated(gimmickRoom);
+		}
+
+
 
 		filler.setToWallUnreachableRoom(getHeroEntryPoint());
 

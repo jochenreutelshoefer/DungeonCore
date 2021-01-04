@@ -48,7 +48,6 @@ import location.DarkMasterShrine;
 import location.HealthFountain;
 import location.LevelExit;
 import location.Location;
-import location.LocationInfo;
 import location.MoonRuneFinderShrine;
 import location.QuestShrine;
 import location.RevealMapShrine;
@@ -129,7 +128,7 @@ public class ImageManager {
 
 	public static JDImageProxy<?> dark_dwarfImage;
 
-	public static JDImageProxy<?> finImage;
+	public static JDImageProxy<?> firImage;
 
 	public static JDImageProxy<?> darkMasterImage;
 
@@ -904,7 +903,7 @@ public class ImageManager {
 			questionmark = new JDImageProxy<>(a, "fragezeichen.gif");
 			xmasImage = new JDImageProxy<>(a, "xmas.gif");
 			dark_dwarfImage = new JDImageProxy<>(a, "dark_dwarf.gif");
-			finImage = new JDImageProxy<>(a, "growing n0007c.gif");
+			firImage = new JDImageProxy<>(a, "growing_n0007b.gif");
 			luzia_ball_greyImage = new JDImageProxy<>(a, "kugel_grau.gif");
 
 			luzia_ball_redImage = new JDImageProxy<>(a, "kugel_rot.gif");
@@ -1238,19 +1237,23 @@ public class ImageManager {
 		return shrineMap.get(s);
 	}
 
-	public static Map<FigurePresentation, JDImageProxy<?>[]> figureMap = new HashMap<>();
-
 	public static JDImageProxy<?> getImage(FigureInfo figure, RouteInstruction.Direction dir) {
+		if(figure == null) {
+			throw new IllegalArgumentException("figure may not be null;");
+		}
 		FigurePresentation figurePresentation = figure.getFigurePresentation();
-		DefaultAnimationSet animationSet = figureAnimationMap.get(figurePresentation)
-				.getAnimationSet(Motion.Walking, dir);
-		if (animationSet != null) {
-			return animationSet.getImagesNr(0);
+		CharacterAnimationSet characterAnimationSet = figureAnimationMap.get(figurePresentation);
+		if(characterAnimationSet != null) {
+			DefaultAnimationSet animationSet = characterAnimationSet
+					.getAnimationSet(Motion.Walking, dir);
+			if (animationSet != null) {
+				return animationSet.getImagesNr(0);
+			}
 		}
 
-		// todo: create animations
+		// todo: create animations?
 		if (figurePresentation == FigurePresentation.Fir) {
-			return ImageManager.finImage;
+			return ImageManager.firImage;
 		}
 		// fallback to show
 		return ImageManager.engelImage;

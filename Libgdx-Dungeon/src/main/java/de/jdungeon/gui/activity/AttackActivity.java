@@ -41,7 +41,9 @@ public class AttackActivity extends AbstractExecutableActivity {
 		} else if (hostileFigures.size() == 1) {
 			FigureInfo target = hostileFigures.get(0);
 			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaAttack(target));
-			focusManager.setWorldFocusObject(target);
+			if(doIt) {
+				focusManager.setWorldFocusObject(target);
+			}
 		} else {
 			this.playerController.getGameScreen().getGuiRenderer().setMessage(UIFeedback.SelectEnemy.getMessage());
 		}

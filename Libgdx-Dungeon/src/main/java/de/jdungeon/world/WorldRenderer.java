@@ -16,15 +16,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import dungeon.ChestInfo;
 import dungeon.JDPoint;
 import event.EventManager;
-import figure.Figure;
 import figure.FigureInfo;
 import figure.FigurePresentation;
 import figure.RoomObservationStatus;
-import game.InfoEntity;
 import game.RoomInfoEntity;
 import graphics.GraphicObject;
 import graphics.GraphicObjectRenderer;
@@ -83,7 +80,7 @@ public class WorldRenderer implements Disposable {
 
 		GL20 gl = Gdx.gl20;
 		int programObject = gl.glCreateProgram();
-		System.out.println("position location: " + gl.glGetAttribLocation(programObject, "position"));
+		Log.info("position location: " + gl.glGetAttribLocation(programObject, "position"));
 	}
 
 	/*
@@ -164,8 +161,9 @@ public class WorldRenderer implements Disposable {
 		}
 	}
 
-	private final double SPRITE_SIZE_RATIO = ((float)128) / 96;
-	//private final double SPRITE_SIZE_RATIO = ((float)96) / 128;
+	private final double SPRITE_SIZE_RATIO_128_TO_96 = ((float)128) / 96;
+	private final double SPRITE_SIZE_RATIO_192_TO_96 = ((float)192) / 96;
+	//private final double SPRITE_SIZE_RATIO_128_TO_96 = ((float)96) / 128;
 
 	/*
 	 *	RENDER THREAD
@@ -265,18 +263,24 @@ public class WorldRenderer implements Disposable {
 			// we have to cope with different sprites sizes unfortunately (within one figure animation set)
 			int originalSpriteWidth = atlasRegion.originalWidth;
 			if(originalSpriteWidth !=  atlasRegion.originalHeight) {
-				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank()+" orginal width: "+ originalSpriteWidth + "; height: "+atlasRegion.originalHeight);
+				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank()+" original width: " + originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
 			}
 			if(originalSpriteWidth == 96) {
 			// is okay
 			} else if(originalSpriteWidth == 128) {
 				// adapt values for 128er sprites
-				drawWidth = (int) (width * SPRITE_SIZE_RATIO);
-				posX = x - ((drawWidth - width)/2); // shift left half size adjustment
-				drawHeight = (int) (height * SPRITE_SIZE_RATIO);
-				posY = y - ((drawHeight - height)/2); // shift up half size adjustment
+				drawWidth = (int) (width * SPRITE_SIZE_RATIO_128_TO_96);
+				posX = x - ((drawWidth - width) / 2); // shift left half size adjustment
+				drawHeight = (int) (height * SPRITE_SIZE_RATIO_128_TO_96);
+				posY = y - ((drawHeight - height) / 2); // shift up half size adjustment
+			} else if(originalSpriteWidth == 192) {
+				// adapt values for 128er sprites
+				drawWidth = (int) (width * SPRITE_SIZE_RATIO_192_TO_96);
+				posX = x - ((drawWidth - width) / 2); // shift left half size adjustment
+				drawHeight = (int) (height * SPRITE_SIZE_RATIO_192_TO_96);
+				posY = y - ((drawHeight - height) / 2); // shift up half size adjustment
 			} else {
-				Gdx.app.error(TAG, "Warning: unknown sprite size : " + image.getFilenameBlank()+" orginal width: "+ originalSpriteWidth + "; height: "+atlasRegion.originalHeight);
+				Gdx.app.error(TAG, "Warning: unknown sprite size : " + image.getFilenameBlank()+" original width: "+ originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
 			}
 		}
 
@@ -380,7 +384,6 @@ public class WorldRenderer implements Disposable {
 
 	private Pixmap createHighlightBoxPixMap(int width, int height) {
 		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-
 		pixmap.setColor(Color.YELLOW);
 		pixmap.drawRectangle(0, 0, width, height);
 		return pixmap;

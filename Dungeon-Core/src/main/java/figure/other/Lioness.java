@@ -1,6 +1,9 @@
 package figure.other;
 
+import java.util.List;
+
 import ai.AI;
+import dungeon.Dungeon;
 import figure.Figure;
 import figure.FigureControl;
 import figure.FigureInfo;
@@ -10,13 +13,9 @@ import figure.npc.RescuedNPCAI;
 import item.Item;
 import item.interfaces.ItemOwner;
 
-import java.util.List;
-
-import dungeon.Dungeon;
-
 public class Lioness extends ConjuredMagicFigure {
 
-	private Lioness(int value, Dungeon d, FigureInfo master, AI ai) {
+	private Lioness(int value, Dungeon d, AI ai) {
 		super(value, 100, ai);
 		this.setActualDungeon(d);
 		createVisibilityMap(d);
@@ -29,11 +28,9 @@ public class Lioness extends ConjuredMagicFigure {
 		this.name = "Löwin";
 	}
 
-
-
 	public static Lioness createLioness(int value, Dungeon d, FigureInfo master) {
 		AI ai = new RescuedNPCAI();
-		Lioness lioness = new Lioness(value, d, master, ai);
+		Lioness lioness = new Lioness(value, d, ai);
 		FigureInfo figureInfo = FigureInfo.makeFigureInfo(lioness, lioness.getRoomVisibility());
 		ai.setFigure(figureInfo);
 		d.insertFigure(lioness);
@@ -44,7 +41,6 @@ public class Lioness extends ConjuredMagicFigure {
 	public FigurePresentation getFigurePresentation() {
 		return FigurePresentation.Lioness;
 	}
-
 
 	@Override
 	public boolean addItems(List<Item> l, ItemOwner donator) {
@@ -85,5 +81,4 @@ public class Lioness extends ConjuredMagicFigure {
 	protected boolean makeSpecialAttack(Figure target) {
 		return false;
 	}
-
 }

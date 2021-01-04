@@ -161,7 +161,8 @@ public class ActionAssemblerHelper {
 	public List<Action> wannaUseItem(ItemInfo it, RoomInfoEntity target, boolean meta) {
 		List<Action> actions = new ArrayList<>();
 		if (target == null && it.needsTarget()) {
-			throw new IllegalStateException("should not happen -> todo");
+			log.Log.warning("Wanna use item without target but target required; should not happen!");
+			return Collections.emptyList();
 		}
 
 		Action a = new UseItemAction(this.figure, it, target, meta);

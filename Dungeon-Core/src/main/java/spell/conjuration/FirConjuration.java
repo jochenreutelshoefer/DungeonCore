@@ -47,7 +47,7 @@ public class FirConjuration extends AbstractTargetSpell {
 
 	@Override
 	public boolean isPossibleNormal() {
-		return false;
+		return true;
 	}
 
 	@Override

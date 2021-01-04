@@ -79,12 +79,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		FigurePresentation[] figurePresentations = FigurePresentation.values();
 		for (FigurePresentation figurePresentation : figurePresentations) {
+			if(figurePresentation == FigurePresentation.Fir) continue; // exception as Fir does not have animations
 			String figureAtlasPath = PACKS + figurePresentation.getFilepath() + ATLAS_FILE_EXTENSION;
 			assetManager.load(figureAtlasPath, TextureAtlas.class);
 		}
 		assetManager.finishLoading();
 
 		for (FigurePresentation figurePresentation : figurePresentations) {
+			if(figurePresentation == FigurePresentation.Fir) continue; // exception as Fir does not have animations
 			String figureAtlasPath = PACKS + figurePresentation.getFilepath() + ATLAS_FILE_EXTENSION;
 			TextureAtlas figureAtlas = null;
 			try {

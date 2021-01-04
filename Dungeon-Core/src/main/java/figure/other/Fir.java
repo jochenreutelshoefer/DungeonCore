@@ -34,7 +34,7 @@ public class Fir extends ConjuredMagicFigure {
 
 	@Override
 	public boolean disappearAtEndOfFight() {
-		return true;
+		return false;
 	}
 
 	@Override

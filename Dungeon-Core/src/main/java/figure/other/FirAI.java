@@ -33,7 +33,7 @@ public class FirAI extends AbstractAI {
 	public Action chooseFightAction() {
 		RoomInfo roomInfo = info.getRoomInfo();
 		PositionInRoomInfo pos = info.getPos();
-		int lastIndex = pos.getLastIndex();
+		int lastIndex = pos.getPreviousIndex();
 		int nextIndex = pos.getNextIndex();
 		FigureInfo lastFigure = roomInfo.getPositionInRoom(lastIndex).getFigure();
 		FigureInfo nextFigure = roomInfo.getPositionInRoom(nextIndex).getFigure();
