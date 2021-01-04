@@ -42,7 +42,7 @@ public class PositionInRoomInfo extends RoomInfoEntity {
 	}
 
 	public JDPoint getLocation() {
-		return pos.getLocation();
+		return pos.getRoomNumber();
 	}
 
 	public int getNextIndex() {
@@ -74,7 +74,7 @@ public class PositionInRoomInfo extends RoomInfoEntity {
 		p[0].setCentered();
 		p[0].setColor(JDColor.orange);
 
-		p[1] = new Paragraph("Pos " + pos.getIndex() + " in Raum " + pos.getRoom().getLocation());
+		p[1] = new Paragraph("Pos " + pos.getIndex() + " in Raum " + pos.getRoom().getRoomNumber());
 		p[1].setSize(14);
 		p[1].setCentered();
 

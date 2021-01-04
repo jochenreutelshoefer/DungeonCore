@@ -47,7 +47,7 @@ public class ReachabilityChecker {
 	public boolean checkIgnoreRooms(Collection<Room> ignoredRooms) {
 		Set<JDPoint> points = new HashSet<>();
 		for (Room room : ignoredRooms) {
-			points.add(room.getLocation());
+			points.add(room.getRoomNumber());
 		}
 		return check(points);
 	}
@@ -134,7 +134,7 @@ public class ReachabilityChecker {
 		for (Room[] row : rooms) {
 			for (Room room : row) {
 				if(!room.isWall()) {
-					allRooms.add(room.getLocation());
+					allRooms.add(room.getRoomNumber());
 				}
 			}
 		}
@@ -172,7 +172,7 @@ public class ReachabilityChecker {
 
 			//if(!allowThroughExit) {
 				// everything should be reachable without going 'over'/'through' exit
-				Location shrine = dungeon.getRoom(point).getShrine();
+				Location shrine = dungeon.getRoom(point).getLocation();
 				if(shrine instanceof LevelExit) {
 					// we do not expand the exit room
 					return result;
@@ -189,7 +189,7 @@ public class ReachabilityChecker {
 					}
 				}
 				if(canPass) {
-					Node expandedNode = new Node(door.getOtherRoom(current).getLocation());
+					Node expandedNode = new Node(door.getOtherRoom(current).getRoomNumber());
 					boolean keyFound = expandedNode.collectKeys(dungeon, keys);
 					if(keyFound) {
 						result.setKeyFound(true);

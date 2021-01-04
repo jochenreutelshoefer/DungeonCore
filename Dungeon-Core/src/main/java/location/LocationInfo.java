@@ -119,7 +119,7 @@ public class LocationInfo extends RoomInfoEntity {
 	}
 
 	public JDPoint getLocation() {
-			return s.getLocation();
+			return s.getRoomNumber();
 	}
 
 	@Override

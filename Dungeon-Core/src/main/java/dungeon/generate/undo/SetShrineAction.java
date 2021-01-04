@@ -20,7 +20,7 @@ public class SetShrineAction implements DungeonChangeAction {
 
 	@Override
 	public boolean doAction() {
-		if(room.getShrine() != null) {
+		if(room.getLocation() != null) {
 			possible = false;
 		} else {
 			room.setShrine(shrine);

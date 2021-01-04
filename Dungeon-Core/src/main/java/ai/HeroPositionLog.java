@@ -21,7 +21,6 @@ import figure.percept.EntersPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
 import figure.percept.StepPercept;
-import log.Log;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -90,7 +89,7 @@ public class HeroPositionLog {
 			}
 			if (element instanceof LeavesPercept) {
 				if (((LeavesPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
-					setLastHeroLocationInfoRound(element.getRound(), ((LeavesPercept) element).getTo().getLocation(), element);
+					setLastHeroLocationInfoRound(element.getRound(), ((LeavesPercept) element).getTo().getRoomNumber(), element);
 				}
 			}
 			if (element instanceof FleePercept) {

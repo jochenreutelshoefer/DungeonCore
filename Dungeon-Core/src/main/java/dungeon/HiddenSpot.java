@@ -188,12 +188,12 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider, RoomEnt
 
 
 	
-//	public room getLocation() {
+//	public room getRoomNumber() {
 //		return location;
 //	}
 	
 	@Override
-	public JDPoint getLocation() {
+	public JDPoint getRoomNumber() {
 		return location.getPoint();
 	}
 

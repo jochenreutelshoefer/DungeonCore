@@ -22,7 +22,7 @@ public class DistanceAtMostConstraint implements RoomPositionConstraint{
 
 	@Override
 	public boolean isValid(Room candidateRoom) {
-		JDPoint candidatePosition = candidateRoom.getLocation();
+		JDPoint candidatePosition = candidateRoom.getRoomNumber();
 		int diffX = Math.abs(candidatePosition.getX() - point.getX());
 		int diffY = Math.abs(candidatePosition.getY() - point.getY());
 		return diffX + diffY <= maxDistance;

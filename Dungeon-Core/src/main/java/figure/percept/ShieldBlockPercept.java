@@ -9,7 +9,6 @@ package figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
-import fight.Slap;
 import figure.Figure;
 import figure.FigureInfo;
 
@@ -18,7 +17,7 @@ public class ShieldBlockPercept extends OpticalPercept {
 	private Figure f;
 
 	public ShieldBlockPercept(Figure f, int round) {
-		super(f.getLocation(), round);
+		super(f.getRoomNumber(), round);
 		this.f = f;
 	}
 	

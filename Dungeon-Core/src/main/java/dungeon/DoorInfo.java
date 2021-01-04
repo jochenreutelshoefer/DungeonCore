@@ -33,8 +33,8 @@ public class DoorInfo extends RoomInfoEntity {
 	}
 
 	private boolean getShrineVisibility() {
-		return map.getVisibilityStatus(getRooms()[0].getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE
-				|| map.getVisibilityStatus(getRooms()[1].getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE;
+		return map.getVisibilityStatus(getRooms()[0].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_SHRINE
+				|| map.getVisibilityStatus(getRooms()[1].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_SHRINE;
 	}
 
 
@@ -63,8 +63,8 @@ public class DoorInfo extends RoomInfoEntity {
 	}
 
 	private boolean getFoundDiscovery() {
-		return map.getVisibilityStatus(getRooms()[0].getLocation()) >= RoomObservationStatus.VISIBILITY_FOUND
-				|| map.getVisibilityStatus(getRooms()[1].getLocation()) >= RoomObservationStatus.VISIBILITY_FOUND;
+		return map.getVisibilityStatus(getRooms()[0].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FOUND
+				|| map.getVisibilityStatus(getRooms()[1].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FOUND;
 	}
 	
 	public Boolean isLocked() {

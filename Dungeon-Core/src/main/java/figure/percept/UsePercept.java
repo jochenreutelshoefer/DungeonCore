@@ -18,7 +18,7 @@ public class UsePercept extends OpticalPercept {
 	private final Figure actor;
 
 	public UsePercept(Figure actor, Usable o, int round) {
-		super(actor.getLocation(), round);
+		super(actor.getRoomNumber(), round);
 		this.actor = actor;
 	}
 	

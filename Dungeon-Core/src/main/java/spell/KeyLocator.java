@@ -86,7 +86,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 		}
 		else if (target instanceof Lock) {
 			((Lock) target).setKeyLocatable(mage);
-			tellDirection(((Lock) target).getKey().getOwner().getLocation(), mage, round);
+			tellDirection(((Lock) target).getKey().getOwner().getRoomNumber(), mage, round);
 		}
 		else {
 			mage.tellPercept(new TextPercept(JDEnv.getResourceBundle().getString("spell_keyLocator_cast_nothing"), round));
@@ -95,7 +95,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 
 	public static void tellKeyLocation(Figure mage, Door d, int round) {
 		ItemOwner owner = d.getKey().getOwner();
-		JDPoint location = owner.getLocation();
+		JDPoint location = owner.getRoomNumber();
 		tellDirection(location, mage, round);
 	}
 

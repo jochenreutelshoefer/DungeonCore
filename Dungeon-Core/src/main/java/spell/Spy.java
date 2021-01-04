@@ -12,7 +12,6 @@ package spell;
 import java.util.List;
 
 import dungeon.Room;
-import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.percept.TextPercept;
@@ -65,7 +64,7 @@ public class Spy extends NoTargetSpell {
 
 		for (int i = 0; i < rooms.size(); i++) {
 			Room toView = rooms.get(i);
-			mage.getRoomObservationStatus(toView.getLocation())
+			mage.getRoomObservationStatus(toView.getRoomNumber())
 					.setVisibilityStatus(RoomObservationStatus.VISIBILITY_FIGURES);
 		}
 

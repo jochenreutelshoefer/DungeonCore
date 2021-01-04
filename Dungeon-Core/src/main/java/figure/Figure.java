@@ -326,7 +326,7 @@ public abstract class Figure extends DungeonWorldObject
 	public abstract List<Item> getItems();
 
 	public Room getRoomInfo() {
-		return getRoom().getDungeon().getRoom(getLocation());
+		return getRoom().getDungeon().getRoom(getRoomNumber());
 	}
 
 	public int lastTurn = -1;
@@ -354,11 +354,12 @@ public abstract class Figure extends DungeonWorldObject
 		this.lastTurn = round;
 
 		if (getActionPoints() > 0 && !isDead()) {
-			doActions(round, this.getRoom().fightRunning());
+			Room room = this.getRoom();
+			doActions(round, room.fightRunning());
 
 			// might be that after an action the fight is resolved
-			if (this.getRoom().fightRunning() && !this.getRoom().checkFightOn()) {
-				this.getRoom().endFight();
+			if (room.fightRunning() && !room.checkFightOn()) {
+				room.endFight();
 			}
 		}
 	}
@@ -1079,7 +1080,7 @@ public abstract class Figure extends DungeonWorldObject
 			room = null;
 			return;
 		}
-		this.location = r.getLocation();
+		this.location = r.getRoomNumber();
 		if (location == null) {
 			room = null;
 		}
@@ -1089,7 +1090,7 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	@Override
-	public JDPoint getLocation() {
+	public JDPoint getRoomNumber() {
 		return location;
 	}
 
@@ -1159,10 +1160,10 @@ public abstract class Figure extends DungeonWorldObject
 
 	public boolean wayPassable(int dir) {
 		Room toGo = getRoom().getDungeon().getRoomAt(
-				getRoom().getDungeon().getRoom(getLocation()),
+				getRoom().getDungeon().getRoom(getRoomNumber()),
 				RouteInstruction.direction(dir));
 
-		Door d = getRoom().getDungeon().getRoom(getLocation())
+		Door d = getRoom().getDungeon().getRoom(getRoomNumber())
 				.getConnectionTo(toGo);
 
 		return wayPassable(d, toGo);
@@ -1200,7 +1201,7 @@ public abstract class Figure extends DungeonWorldObject
 		boolean passable = wayPassable(dir.getValue());
 
 		Room oldRoom = getRoom();
-		Room toGo = getRoom().getDungeon().getRoomAt(getRoom().getDungeon().getRoom(getLocation()), dir);
+		Room toGo = getRoom().getDungeon().getRoomAt(getRoom().getDungeon().getRoom(getRoomNumber()), dir);
 
 		this.setLookDir(dir.getValue());
 
@@ -1221,7 +1222,7 @@ public abstract class Figure extends DungeonWorldObject
 
 					// some visibility information for non-active figure during door smashing
 					ScoutResult scoutThis = new ScoutResult(standing, RoomObservationStatus.VISIBILITY_FIGURES);
-					standing.getRoomVisibility().addVisibilityModifier(this.getLocation(), scoutThis);
+					standing.getRoomVisibility().addVisibilityModifier(this.getRoomNumber(), scoutThis);
 
 					boolean raid = this.isRaiding();
 					int thisStr = (int) this.getStrength().getValue();

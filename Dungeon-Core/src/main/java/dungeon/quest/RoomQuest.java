@@ -245,7 +245,7 @@ public abstract class RoomQuest {
 
 	private Room getRoomForShrine() {
 		Room r = this.getRandomRoom();
-		if (r.getShrine() == null) {
+		if (r.getLocation() == null) {
 			return r;
 		}
 		else {

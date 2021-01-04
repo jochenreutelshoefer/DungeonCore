@@ -47,7 +47,7 @@ public class RescuedNPCAI implements AI {
 			List<FigureInfo> involvedFigures = p.getInvolvedFigures();
 			for (FigureInfo involvedFigure : involvedFigures) {
 				if (involvedFigure instanceof HeroInfo && involvedFigure.getFighterID() != this.info.getFighterID()) {
-					if (involvedFigure.getRoomInfo().getLocation().equals(this.info.getRoomNumber())) {
+					if (involvedFigure.getRoomInfo().getRoomNumber().equals(this.info.getRoomNumber())) {
 						currentState = State.following;
 						leader = (HeroInfo) involvedFigure;
 						lastKnownLeaderPosition = info.getRoomNumber();
@@ -197,7 +197,7 @@ public class RescuedNPCAI implements AI {
 	}
 
 	private Action followLeader() {
-		if (!this.info.getRoomInfo().getLocation().equals(lastKnownLeaderPosition)) {
+		if (!this.info.getRoomInfo().getRoomNumber().equals(lastKnownLeaderPosition)) {
 			Path shortestWayFromTo = info.getShortestWayFromTo(info.getRoomInfo().getNumber(), lastKnownLeaderPosition);
 			RoomInfo nextRoomToGo = shortestWayFromTo.get(1);
 			JDPoint firstMove = nextRoomToGo.getNumber();

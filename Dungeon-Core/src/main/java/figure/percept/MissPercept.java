@@ -9,7 +9,6 @@ package figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
-import fight.Slap;
 import figure.Figure;
 import figure.FigureInfo;
 
@@ -19,7 +18,7 @@ public class MissPercept extends OpticalPercept {
 	private final Figure victim;
 	
 	public MissPercept(Figure a, Figure b, int round) {
-		super(b.getLocation(), round);
+		super(b.getRoomNumber(), round);
 		attacker = a;
 		victim = b;
 	}

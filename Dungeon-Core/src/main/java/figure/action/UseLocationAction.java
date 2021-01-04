@@ -21,7 +21,7 @@ public class UseLocationAction extends AbstractExecutableAction {
 
 	@Override
 	public ActionResult handle(boolean doIt, int round) {
-		Location s = figure.getRoom().getShrine();
+		Location s = figure.getRoom().getLocation();
 		if (s != null && figure.isAbleToUseShrine()) {
 			if (!(figure.getPos().getIndex() == Position.Pos.NE.getValue())) {
 				return ActionResult.POSITION;

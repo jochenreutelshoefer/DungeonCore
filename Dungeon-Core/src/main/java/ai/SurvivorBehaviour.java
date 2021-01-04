@@ -58,7 +58,7 @@ public class SurvivorBehaviour extends AbstractAI {
 		heroLog.processPercepts();
 
 		if (figure.getHealthLevel().getValue() < HealthLevel.Good.getValue()) {
-			JDPoint location = this.figure.getRoomInfo().getLocation();
+			JDPoint location = this.figure.getRoomInfo().getRoomNumber();
 			JDPoint lastHeroPosition = heroLog.getLastHeroPosition();
 			int diffX = location.getX() - lastHeroPosition.getX();
 			int diffY = location.getY() - lastHeroPosition.getY();

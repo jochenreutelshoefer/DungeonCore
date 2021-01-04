@@ -48,7 +48,7 @@ public class ChestInfo extends RoomInfoEntity {
 	}
 	
 	public JDPoint getLocation() {
-		return chest.getLocation();
+		return chest.getRoomNumber();
 	}
 	
 	@Override

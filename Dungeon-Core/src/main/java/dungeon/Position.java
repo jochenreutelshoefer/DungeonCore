@@ -326,8 +326,8 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 		return null;
 	}
 
-	public JDPoint getLocation() {
-		return room.getLocation();
+	public JDPoint getRoomNumber() {
+		return room.getRoomNumber();
 	}
 
 	public PositionMemory getMemoryObject(FigureInfo info) {

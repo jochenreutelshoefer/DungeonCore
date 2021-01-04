@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import dungeon.DoorInfo;
 import dungeon.ItemInfoOwner;
@@ -94,11 +93,11 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public RouteInstruction.Direction getLookDirection() {
-		if (f.getLocation() == null) {
+		if (f.getRoomNumber() == null) {
 			// should not happen
 			return RouteInstruction.Direction.South;
 		}
-		int visStat = map.getVisibilityStatus(f.getLocation());
+		int visStat = map.getVisibilityStatus(f.getRoomNumber());
 
 		if (visStat >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return f.getLookDirection();
@@ -117,7 +116,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public PositionInRoomInfo getPos() {
-		int vis = map.getVisibilityStatus(f.getLocation());
+		int vis = map.getVisibilityStatus(f.getRoomNumber());
 		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return new PositionInRoomInfo(f.getPos(), map);
 		}
@@ -129,7 +128,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 
 	public int getPositionInRoomIndex() {
 
-		int vis = map.getVisibilityStatus(f.getLocation());
+		int vis = map.getVisibilityStatus(f.getRoomNumber());
 
 		if (vis >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return f.getPositionInRoom();

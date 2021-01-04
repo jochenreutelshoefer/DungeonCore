@@ -611,7 +611,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public JDPoint getLocation() {
+	public JDPoint getRoomNumber() {
 		return location;
 	}
 
@@ -690,13 +690,13 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	@Override
 	protected void lookInRoom(int round) {
-		if (this.getRoom().getDungeon().getRoom(getLocation()).getShrine() != null) {
-			Location s = this.getRoom().getDungeon().getRoom(getLocation()).getShrine();
+		if (this.getRoom().getDungeon().getRoom(this.getRoomNumber()).getLocation() != null) {
+			Location s = this.getRoom().getDungeon().getRoom(this.getRoomNumber()).getLocation();
 			this.tellPercept(new TextPercept(s.getStory(), round));
 
 		}
-		if (!this.getRoom().getDungeon().getRoomNr(getLocation().getX(),
-				getLocation().getY()).getItems().isEmpty()) {
+		if (!this.getRoom().getDungeon().getRoomNr(this.getRoomNumber().getX(),
+				this.getRoomNumber().getY()).getItems().isEmpty()) {
 			this.tellPercept(new InfoPercept(InfoPercept.FOUND_ITEM, round));
 		}
 	}
@@ -709,7 +709,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	@Override
 	public boolean flee(RouteInstruction.Direction fleeDirection, int round) {
 		Room toGo = this.getRoom().getDungeon().getRoomAt(getRoom(), fleeDirection);
-		Door d = this.getRoom().getDungeon().getRoom(getLocation()).getConnectionTo(toGo);
+		Door d = this.getRoom().getDungeon().getRoom(this.getRoomNumber()).getConnectionTo(toGo);
 
 		if ((toGo == null) || (d == null) || (!d.isPassable(this))) {
 
@@ -719,7 +719,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		if (true) {
 
 			double diff = getRoom().calcFleeDiff();
-			RouteInstruction.Direction back = getLocation().relativeTo(getOldLocation());
+			RouteInstruction.Direction back = this.getRoomNumber().relativeTo(getOldLocation());
 			List<RouteInstruction.Direction> axeX = new LinkedList<>();
 			axeX.add(RouteInstruction.Direction.East);
 			axeX.add(RouteInstruction.Direction.West);

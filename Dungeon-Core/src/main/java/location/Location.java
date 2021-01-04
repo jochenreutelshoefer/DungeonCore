@@ -90,7 +90,7 @@ public abstract class Location implements Usable, Turnable, InfoProvider, RoomEn
 	}
 
 	@Override
-	public JDPoint getLocation() {
+	public JDPoint getRoomNumber() {
 		return location.getNumber();
 	}
 

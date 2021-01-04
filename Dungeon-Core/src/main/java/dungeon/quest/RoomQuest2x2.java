@@ -142,7 +142,7 @@ public class RoomQuest2x2 extends ReversibleRoomQuest {
 		//rooms[1][0].figureEnters(smallMonster,0);
 		actions.add(new InsertFigure(smallMonster, room10));
 
-		if(shrine != null && room10.getShrine() != null) {
+		if(shrine != null && room10.getLocation() != null) {
 			// TODO: find method to handle situation, that there is already a shrine!
 			//rooms[1][0].setShrine(shrine);
 			actions.add(new SetShrineAction(shrine, room10));

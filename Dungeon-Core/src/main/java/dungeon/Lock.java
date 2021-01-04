@@ -6,7 +6,6 @@ import java.util.Set;
 
 import figure.Figure;
 import item.Key;
-import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
 
 /**
@@ -48,8 +47,8 @@ public class Lock<T extends RoomEntity> implements Locatable, RoomEntity {
 	}
 
 	@Override
-	public JDPoint getLocation() {
-		return object.getLocation();
+	public JDPoint getRoomNumber() {
+		return object.getRoomNumber();
 	}
 
 

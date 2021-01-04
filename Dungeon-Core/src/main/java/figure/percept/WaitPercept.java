@@ -12,7 +12,7 @@ public class WaitPercept extends OpticalPercept {
 	private final Figure f;
 	
 	public WaitPercept(Figure f, int round) {
-		super(f.getLocation(), round);
+		super(f.getRoomNumber(), round);
 		this.f = f;
 	}
 	

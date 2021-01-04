@@ -79,10 +79,10 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 	
 	public int getDir(JDPoint p) {
 		int dir = rooms[0].getConnectionDirectionTo(rooms[1]);
-		if (rooms[0].getLocation().equals(p)) {
+		if (rooms[0].getRoomNumber().equals(p)) {
 			return dir;
 		} else {
-			if (rooms[1].getLocation().equals(p)) {
+			if (rooms[1].getRoomNumber().equals(p)) {
 				return Dir.getOppositDir(dir);
 			} else {
 				return -1;
@@ -99,8 +99,8 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 	}
 
 	@Override
-	public JDPoint getLocation() {
-		return rooms[0].getLocation();
+	public JDPoint getRoomNumber() {
+		return rooms[0].getRoomNumber();
 	}
 
 	public void setHidden(boolean isHidden) {
@@ -272,8 +272,8 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 	public boolean isPassable(Figure f) {
 		statueBlocks = false;
 			for (int i = 0; i < 2; i++) {
-				if (rooms[i].getShrine() != null
-						&& rooms[i].getShrine() instanceof Statue & f instanceof Monster) {
+				if (rooms[i].getLocation() != null
+						&& rooms[i].getLocation() instanceof Statue & f instanceof Monster) {
 					statueBlocks = true;
 				}
 			}

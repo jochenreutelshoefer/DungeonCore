@@ -10,10 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.Position;
-import dungeon.PositionInRoomInfo;
 import fight.Slap;
-import fight.SlapResult;
-import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
 
@@ -24,7 +21,7 @@ public class AttackPercept extends OpticalPercept {
 	private final Slap slap;
 	
 	public AttackPercept(Figure a, Figure b, Slap s, int round) {
-		super(b.getLocation(), round);
+		super(b.getRoomNumber(), round);
 		attacker = a;
 		victim = b;
 		slap = s;

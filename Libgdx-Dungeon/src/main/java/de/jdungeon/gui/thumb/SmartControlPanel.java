@@ -54,10 +54,10 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private final Collection<LibgdxGUIElement> doorElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> moveElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> scoutElements = new ArrayList<>();
-	//private final Collection<LibgdxGUIElement> takeItemElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> chestElements = new ArrayList<>();
 	private final Collection<LibgdxGUIElement> shrineElements = new ArrayList<>();
 	private final LibgdxGUIElement outerFrame;
+	private final LibgdxGUIElement innerFrame;
 	private final FigureInfo figure;
 	private final PlayerController playerController;
 	private final int doorOuterBorderWidth;
@@ -88,7 +88,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private final JDPoint[] positionElementPositions = new JDPoint[8];
 	private final JDDimension positionDimension;
 	private final LibgdxSubGUIElementAnimated shrineElement;
-	private final LibgdxGUIElement innerFrame;
+
 	private final LibgdxFloorItemPresenter floorItemPresenter;
 
 	private static final JDPoint[] positionCoord = new JDPoint[8];
@@ -185,6 +185,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				super.handleClickEvent(x, y);
 				// todo: refactor using Activities
 				SmartControlPanel.this.playerController.plugActions(SmartControlPanel.this.playerController.getActionAssembler().getActionAssemblerHelper(). wannaUseShrine(null, false));
+				SmartControlPanel.this.playerController.getGameScreen().getFocusManager().setWorldFocusObject(SmartControlPanel.this.figure.getRoomInfo().getLocation());
 				return true;
 			}
 		};
@@ -389,7 +390,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	private void updateShrineElement() {
 		shrineElements.clear();
 		RoomInfo roomInfo = figure.getRoomInfo();
-		LocationInfo shrine = roomInfo.getShrine();
+		LocationInfo shrine = roomInfo.getLocation();
 
 		if (shrine != null) {
 			shrineElements.add(shrineElement);

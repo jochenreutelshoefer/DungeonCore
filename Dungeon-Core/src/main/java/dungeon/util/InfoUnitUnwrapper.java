@@ -88,11 +88,11 @@ public class InfoUnitUnwrapper {
 
 	private Location getLocation(LocationInfo o) {
 		JDPoint p = o.getLocation();
-		return dungeon.getRoom(p).getShrine();
+		return dungeon.getRoom(p).getLocation();
 	}
 
 	public Room getRoom(RoomInfo r) {
-		JDPoint p = r.getLocation();
+		JDPoint p = r.getRoomNumber();
 		return dungeon.getRoom(p);
 	}
 

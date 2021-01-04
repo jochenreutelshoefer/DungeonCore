@@ -23,7 +23,7 @@ public class ItemDroppedPercept extends OpticalPercept {
 	private final ItemOwner f;
 	
 	public ItemDroppedPercept(List<Item> items, ItemOwner f, int round) {
-		super(f.getLocation(), round);
+		super(f.getRoomNumber(), round);
 		this.items = items;
 		this.f = f;
 	}

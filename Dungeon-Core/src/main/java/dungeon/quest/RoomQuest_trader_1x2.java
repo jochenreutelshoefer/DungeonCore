@@ -46,7 +46,7 @@ public class RoomQuest_trader_1x2 extends RoomQuest {
 			return false;
 		}
 		
-		if(rooms[0][1].getShrine() != null) {
+		if(rooms[0][1].getLocation() != null) {
 			return false;
 		}
 		

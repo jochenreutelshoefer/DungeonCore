@@ -105,7 +105,30 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	private void startFight(int round) {
+		Log.info("START FIGHT");
 		this.fightRunning = true;
+	}
+
+	public void endFight() {
+		Log.info("END FIGHT");
+		fightRunning = false;
+
+		// remove magic conjured creature that disappear at the end of a fight
+		Collection<Figure> removeTMP = new HashSet<>();
+		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
+			Figure element = iter.next();
+			boolean disappears = element.fightEnded(roomFigures, -1);
+			if (disappears) {
+				// prevent concurrent modification
+
+				element.getRoomVisibility().getStatusObject(getNumber()).removeVisibilityModifier(element);
+				element.getRoomVisibility().resetVisibilityStatus(this.number);
+
+				element.getPos().figureLeaves();
+				removeTMP.add(element);
+			}
+		}
+		roomFigures.removeAll(removeTMP);
 	}
 
 	@Override
@@ -333,7 +356,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	@Override
-	public JDPoint getLocation() {
+	public JDPoint getRoomNumber() {
 		return number;
 	}
 
@@ -360,7 +383,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	public String getDirectionString(Room other) {
-		JDPoint b = other.getLocation();
+		JDPoint b = other.getRoomNumber();
 		JDPoint a = number;
 		int dx = a.getX() - b.getX();
 		int dy = a.getY() - b.getY();
@@ -859,7 +882,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return d;
 	}
 
-	public Location getShrine() {
+	public Location getLocation() {
 		return s;
 	}
 
@@ -1096,8 +1119,8 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 		String shrine = new String();
 		if (status.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_SHRINE) {
-			if (getShrine() != null) {
-				shrine = getShrine().toString();
+			if (getLocation() != null) {
+				shrine = getLocation().toString();
 			}
 		}
 		p[1] = new Paragraph(shrine);
@@ -1148,8 +1171,8 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		if (getChest() != null) {
 			s += " truhe: ja  ";
 		}
-		if (getShrine() != null) {
-			s += " Schrein:  " + getShrine();
+		if (getLocation() != null) {
+			s += " Schrein:  " + getLocation();
 		}
 		return s;
 	}
@@ -1167,24 +1190,5 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return positions;
 	}
 
-	public void endFight() {
-		fightRunning = false;
 
-		// remove magic conjured creature that disappear at the end of a fight
-		Collection<Figure> removeTMP = new HashSet<>();
-		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
-			Figure element = iter.next();
-			boolean disappears = element.fightEnded(roomFigures, -1);
-			if (disappears) {
-				// prevent concurrent modification
-
-				element.getRoomVisibility().getStatusObject(getNumber()).removeVisibilityModifier(element);
-				element.getRoomVisibility().resetVisibilityStatus(this.number);
-
-				element.getPos().figureLeaves();
-				removeTMP.add(element);
-			}
-		}
-		roomFigures.removeAll(removeTMP);
-	}
 }

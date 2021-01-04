@@ -98,8 +98,8 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 	}
 	
 	@Override
-	public JDPoint getLocation () {
-		return owner.getLocation();
+	public JDPoint getRoomNumber() {
+		return owner.getRoomNumber();
 	}
 	
 	@Override

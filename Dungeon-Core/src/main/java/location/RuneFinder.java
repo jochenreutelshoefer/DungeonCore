@@ -110,7 +110,7 @@ public class RuneFinder extends Location {
 		f.getRoom().distributePercept(p);
 		// game.getGui().figureUsingAnimation(FigureInfo.makeFigureInfo(f,game.getGui().getFigure().getVisMap()));
 		ItemOwner o = rune.getOwner();
-		JDPoint point = o.getLocation();
+		JDPoint point = o.getRoomNumber();
 		
 		String s = "Die Rune befindet sich im Moment in Raum: " + point.toString();
 		 f.tellPercept(new TextPercept(s, round));

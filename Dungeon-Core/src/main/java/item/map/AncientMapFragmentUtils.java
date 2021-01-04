@@ -54,7 +54,7 @@ public class AncientMapFragmentUtils {
 	private static boolean checkShrine(AncientMapFragment result, Dungeon dungeon) {
 		Collection<JDPoint> rooms = result.getRooms();
 		for (JDPoint point : rooms) {
-			if(dungeon.getRoom(point).getShrine() != null) {
+			if(dungeon.getRoom(point).getLocation() != null) {
 				return true;
 			}
 		}
@@ -63,14 +63,14 @@ public class AncientMapFragmentUtils {
 
 	private static AncientMapFragment createRandomMap(Room room, int numberOfRooms, Dungeon dungeon) {
 		List<JDPoint> rooms = new ArrayList<>();
-		rooms.add(room.getLocation());
+		rooms.add(room.getRoomNumber());
 		int limit = 1000;
 		int counter = 0;
 		while(rooms.size() < numberOfRooms) {
 			Room randomRoomAlreadyIncluded = dungeon.getRoom(rooms.get((int) (Math.random() * rooms.size())));
 			Room newRoom = hasNeighbourToAdd(randomRoomAlreadyIncluded, rooms, dungeon);
 			if(newRoom != null) {
-				rooms.add(newRoom.getLocation());
+				rooms.add(newRoom.getRoomNumber());
 			}
 
 			// a breaking condition, just to be on the safe side (should not be necessary)
@@ -89,7 +89,7 @@ public class AncientMapFragmentUtils {
 		Collections.shuffle(directions);
 		for (RouteInstruction.Direction direction : directions) {
 			Room neighbourRoom = room.getNeighbourRoom(direction);
-			if(neighbourRoom != null && !rooms.contains(neighbourRoom.getLocation())) {
+			if(neighbourRoom != null && !rooms.contains(neighbourRoom.getRoomNumber())) {
 				return neighbourRoom;
 			}
 		}
@@ -121,7 +121,7 @@ public class AncientMapFragmentUtils {
 		List<Room> result = new ArrayList<>();
 		for (Path way : distances) {
 			// this is the destination room
-			result.add(dungeon.getRoom(way.getDestinationRoomInfo().getLocation()));
+			result.add(dungeon.getRoom(way.getDestinationRoomInfo().getRoomNumber()));
 		}
 		return result;
 	}

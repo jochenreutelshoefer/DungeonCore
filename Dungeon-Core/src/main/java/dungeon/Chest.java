@@ -228,7 +228,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 	}
 
 	@Override
-	public JDPoint getLocation() {
+	public JDPoint getRoomNumber() {
 		return location;
 	}
 

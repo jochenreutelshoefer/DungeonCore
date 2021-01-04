@@ -96,7 +96,7 @@ public class Thing extends Item implements Usable, LocatableItem {
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		if (f instanceof Hero) {
-			if (f.getRoom().getShrine() == this.sup) {
+			if (f.getRoom().getLocation() == this.sup) {
 				((Location) sup).use(f, this, meta, round);
 				return true;
 			}

@@ -15,6 +15,6 @@ public interface InfoProvider {
 	
 	InfoEntity makeInfoObject(DungeonVisibilityMap map);
 
-	JDPoint getLocation();
+	JDPoint getRoomNumber();
 
 }

@@ -139,7 +139,7 @@ public class Inventory implements Serializable {
 	}
 
 	public JDPoint getLocation() {
-		return owner.getLocation();
+		return owner.getRoomNumber();
 	}
 
 	public Item getItem(ItemInfo it) {

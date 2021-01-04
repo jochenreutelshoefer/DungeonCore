@@ -1,7 +1,6 @@
 package dungeon.generate.undo;
 
 import dungeon.Chest;
-import dungeon.Dungeon;
 import dungeon.Room;
 
 /**
@@ -22,7 +21,7 @@ public class SetChestAction implements DungeonChangeAction {
 
 	@Override
 	public boolean doAction() {
-		if(room.getShrine() != null) {
+		if(room.getLocation() != null) {
 			possible = false;
 		} else {
 			room.setChest(chest);

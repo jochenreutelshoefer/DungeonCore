@@ -102,7 +102,7 @@ public class Rune extends Item implements Usable, Locatable {
 
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round){
-		Location s = ((Hero)f).getRoom().getShrine();
+		Location s = ((Hero)f).getRoom().getLocation();
 		if(s instanceof RuneShrine){
 			if (((RuneShrine) s).takeItem(this)) {
 	    	 ((Hero)f).getInventory().removeItem(this);

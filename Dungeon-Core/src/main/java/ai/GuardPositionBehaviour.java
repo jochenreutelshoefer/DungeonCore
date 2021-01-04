@@ -81,7 +81,7 @@ public class GuardPositionBehaviour extends AbstractMonsterBehaviour {
 
 	@Override
 	public Action chooseMovementAction() {
-		if(info.getRoomNumber().equals(pos.getLocation())) {
+		if(info.getRoomNumber().equals(pos.getRoomNumber())) {
 			if(info.getPositionInRoomIndex() == pos.getIndex()) {
 				// we are in position, hence nothing to do
 				return new EndRoundAction();

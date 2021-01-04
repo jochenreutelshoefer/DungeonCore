@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import fight.SlapResult;
-import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
 
@@ -22,14 +21,14 @@ public class HitPercept extends OpticalPercept {
 	private boolean indirect = false;
 
 	public HitPercept(Figure a, Figure b, SlapResult res, int round) {
-		super(b.getLocation(), round);
+		super(b.getRoomNumber(), round);
 		attacker = a;
 		victim = b;
 		this.res = res;
 	}
 	
 	public HitPercept(Figure a, Figure b, SlapResult res, boolean indirect, int round) {
-		super(b.getLocation(), round);
+		super(b.getRoomNumber(), round);
 		attacker = a;
 		victim = b;
 		this.res = res;

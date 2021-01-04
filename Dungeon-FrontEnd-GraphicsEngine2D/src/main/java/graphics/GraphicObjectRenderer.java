@@ -959,8 +959,8 @@ public class GraphicObjectRenderer {
 			graphObs.add(wallSides);
 
 			GraphicObject ob = null;
-			if (r.getShrine() != null) {
-				LocationInfo s = r.getShrine();
+			if (r.getLocation() != null) {
+				LocationInfo s = r.getLocation();
 				ob = graphicObjectCache.get(s);
 				if (ob == null) {
 					ob = getShrineGraphicObject(s);

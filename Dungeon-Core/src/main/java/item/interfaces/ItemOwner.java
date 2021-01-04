@@ -35,7 +35,7 @@ public interface ItemOwner {
 	
 	boolean hasItem(Item i);
 
-	JDPoint getLocation();
+	JDPoint getRoomNumber();
 
 	Collection<Position> getInteractionPositions();
 

@@ -9,7 +9,6 @@ import figure.memory.MemoryObject;
 import game.RoomInfoEntity;
 import gui.Paragraph;
 import gui.Paragraphable;
-import item.interfaces.ItemOwner;
 import item.interfaces.Locatable;
 
 /**
@@ -43,8 +42,8 @@ public class LockInfo extends RoomInfoEntity implements Paragraphable, Locatable
 	}
 
 	@Override
-	public JDPoint getLocation() {
-		return lock.getLocation();
+	public JDPoint getRoomNumber() {
+		return lock.getRoomNumber();
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class LockInfo extends RoomInfoEntity implements Paragraphable, Locatable
 			result.add(new PositionInRoomInfo(door.getPositionAtDoor(rooms[1], true),m));
 		}
 		if(lockableObject instanceof Chest) {
-			JDPoint location = ((Chest) lockableObject).getLocation();
+			JDPoint location = ((Chest) lockableObject).getRoomNumber();
 			Position position = m.getDungeon().getRoom(location).getPositions()[Position.Pos.NW.getValue()];
 			result.add(new PositionInRoomInfo(position, m));
 		}

@@ -75,14 +75,14 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	@Deprecated
 	public Boolean hasHero() {
 
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return Boolean.valueOf(r.hasHero());
 		}
 		return null;
 	}
 
 	public Boolean hasConnectionTo(RoomInfo r1) {
-		return r.hasConnectionTo(r1.getLocation());
+		return r.hasConnectionTo(r1.getRoomNumber());
 	}
 
 	public int getConnectionDirectionTo(RoomInfo r1) {
@@ -123,7 +123,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	public Paragraph[] getParagraphs() {
 
 		String room = new String();
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FOUND) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FOUND) {
 
 			room = JDEnv.getResourceBundle().getString("room") + ": "
 					+ getNumber().toString();
@@ -136,9 +136,9 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		p[0].setBold();
 
 		String shrine = new String();
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
-			if (getShrine() != null) {
-				shrine = getShrine().toString();
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
+			if (getLocation() != null) {
+				shrine = getLocation().toString();
 			}
 		}
 		p[1] = new Paragraph(shrine);
@@ -148,7 +148,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		p[1].setBold();
 
 		String monster = new String();
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			monster = JDEnv.getResourceBundle().getString("figures") + ": "
 					+ getFigureInfos().size();
@@ -159,7 +159,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		p[2].setColor(JDColor.black);
 
 		String itemS = new String();
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 
 			itemS = JDEnv.getResourceBundle().getString("items") + ": "
 					+ cntEntrys(getItemArray());
@@ -186,7 +186,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 	public Boolean fightRunning() {
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return Boolean.valueOf(r.fightRunning());
 		}
 		return null;
@@ -194,7 +194,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public List<MonsterInfo> getMonsterInfos() {
 
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			List<Figure> l = r.getRoomFigures();
 			List<MonsterInfo> res = new LinkedList<MonsterInfo>();
@@ -215,7 +215,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public List<FigureInfo> getFigureInfos() {
 
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			List<FigureInfo> res = new LinkedList<FigureInfo>();
 			for (int i = 0; i < 8; i++) {
@@ -236,7 +236,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 	public List<FigureInfo> getDeadFigureInfos() {
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			final Collection<Figure> deadFigures = r.getDeadFigures();
 			List<FigureInfo> res = new LinkedList<FigureInfo>();
 			for (Figure f : deadFigures) {
@@ -259,7 +259,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public int getVisibilityStatus() {
 
-		return map.getVisibilityStatus(r.getLocation());
+		return map.getVisibilityStatus(r.getRoomNumber());
 	}
 
 	public int getFloorIndex() {
@@ -267,12 +267,12 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	}
 
 
-	public LocationInfo getShrine() {
+	public LocationInfo getLocation() {
 
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_SHRINE) {
 
-			if (r.getShrine() != null) {
-				return new LocationInfo(r.getShrine(), map);
+			if (r.getLocation() != null) {
+				return new LocationInfo(r.getLocation(), map);
 			}
 		}
 		return null;
@@ -282,7 +282,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	@Override
 	public ItemInfo[] getItemArray() {
 
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 
 			Item[] itArray = r.getItemArray();
 			ItemInfo[] wrappedIts = new ItemInfo[itArray.length];
@@ -299,7 +299,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	@Override
 	public List<ItemInfo> getItems() {
 		List<ItemInfo> result = null;
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_ITEMS) {
 			result = new ArrayList<>();
 			List<Item> items = r.getItems();
 			for (Item item : items) {
@@ -309,14 +309,14 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		return result;
 	}
 
-	public JDPoint getLocation() {
-		return r.getLocation();
+	public JDPoint getRoomNumber() {
+		return r.getRoomNumber();
 	}
 
 	@Deprecated // try to treat all figures similarly
 	public HeroInfo getHeroInfo() {
 
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			Collection figures = getFigureInfos();
 			for (Iterator iter = figures.iterator(); iter.hasNext(); ) {
@@ -331,7 +331,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	@Deprecated // all figures should be treated similarly
 	public List<HeroInfo> getHeroInfos() {
-		if (map.getVisibilityStatus(r.getLocation()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
 
 			Collection figures = getFigureInfos();
 			List<HeroInfo> result = new ArrayList<>();
@@ -348,7 +348,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public ChestInfo getChest() {
 
-		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_SHRINE) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) < RoomObservationStatus.VISIBILITY_SHRINE) {
 			return null;
 		}
 		if (r.getChest() == null) {
@@ -361,7 +361,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public DoorInfo[] getDoors() {
 
-		if (map.getVisibilityStatus(r.getLocation()) < RoomObservationStatus.VISIBILITY_FOUND) {
+		if (map.getVisibilityStatus(r.getRoomNumber()) < RoomObservationStatus.VISIBILITY_FOUND) {
 			return null;
 		}
 		Door[] doors = r.getDoors();

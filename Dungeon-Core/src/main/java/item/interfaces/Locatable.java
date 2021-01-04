@@ -4,6 +4,6 @@ import dungeon.JDPoint;
 
 public interface Locatable {
 
-	JDPoint getLocation();
+	JDPoint getRoomNumber();
 
 }

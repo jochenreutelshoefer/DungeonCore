@@ -19,7 +19,7 @@ public class Memory {
 	public void storeRoom(RoomInfo r, int round,FigureInfo info) {
 		// TODO Nullpointer r is null!!!
 		if(r == null) return;
-		JDPoint p = r.getLocation();
+		JDPoint p = r.getRoomNumber();
 		RoomMemory mem = r.getMemoryObject(info);
 		mem.setRound(round);
 		rooms[p.getX()][p.getY()] = mem;

@@ -109,9 +109,9 @@ public class SorcerLab extends Location implements VisibilityModifier {
 			for (int i = 0; i < rooms.size(); i++) {
 				Room toView = rooms.get(i);
 
-				owner.getRoomObservationStatus(toView.getLocation())
+				owner.getRoomObservationStatus(toView.getRoomNumber())
 						.removeVisibilityModifier(this);
-				owner.getRoomObservationStatus(toView.getLocation()).resetVisibilityStatus();
+				owner.getRoomObservationStatus(toView.getRoomNumber()).resetVisibilityStatus();
 
 		
 			}
@@ -199,7 +199,7 @@ public class SorcerLab extends Location implements VisibilityModifier {
 		for (int i = 0; i < rooms.size(); i++) {
 			Room toView = rooms.get(i);
 			// TODO: maybe better do this scouting as done at scout shrine, via ScoutResult objects?
-			f.getRoomVisibility().addVisibilityModifier(toView.getLocation(), this);
+			f.getRoomVisibility().addVisibilityModifier(toView.getRoomNumber(), this);
 
 		}
 		String s = JDEnv.getResourceBundle().getString("sorcLab_setup");

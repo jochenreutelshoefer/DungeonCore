@@ -20,12 +20,12 @@ public class DoorSmashPercept extends OpticalPercept {
 	private final int value;
 
 	public DoorSmashPercept(Figure f, Figure opponent, int value, int round) {
-		super(f.getLocation(), round);
+		super(f.getRoomNumber(), round);
 		this.opponent = opponent;
 		this.value = value;
 		this.victim = f;
-		opponentPosition = opponent.getLocation();
-		victimPosition = f.getLocation();
+		opponentPosition = opponent.getRoomNumber();
+		victimPosition = f.getRoomNumber();
 	}
 
 	public int getValue() {

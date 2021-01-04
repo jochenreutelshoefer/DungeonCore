@@ -56,7 +56,7 @@ public class MoonRuneFinderShrine extends Location {
 
 		f.payDust(COST);
 
-		JDPoint location = rune.getLocation();
+		JDPoint location = rune.getRoomNumber();
 		tellDirection(location, f, round);
 
 		return true;

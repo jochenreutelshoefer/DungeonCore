@@ -27,7 +27,7 @@ public class LockAction extends AbstractExecutableAction {
 	@Override
 	public ActionResult handle(boolean doIt, int round) {
 		DoorInfo info = getDoor();
-		RouteInstruction.Direction direction = info.getDirection(figure.getRoom().getLocation());
+		RouteInstruction.Direction direction = info.getDirection(figure.getRoom().getRoomNumber());
 		if (direction == null) {
 			return ActionResult.WRONG_TARGET;
 		}
