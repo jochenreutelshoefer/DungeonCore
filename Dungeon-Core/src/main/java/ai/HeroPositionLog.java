@@ -124,7 +124,10 @@ public class HeroPositionLog {
 			if (element instanceof StepPercept) {
 				if (((StepPercept) element).getFigure() instanceof HeroInfo && !(element.getRound() < lastHeroLocationInfoRound)) {
 					RoomInfo r = ((StepPercept) element).getFigure().getRoomInfo();
-					setLastHeroLocationInfoRound(element.getRound(), r.getNumber(), element);
+					// exit used, level ends -> r might be null;
+					if(r != null) {
+						setLastHeroLocationInfoRound(element.getRound(), r.getNumber(), element);
+					}
 				}
 			}
 			if (element instanceof ScoutPercept) {

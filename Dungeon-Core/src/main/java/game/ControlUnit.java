@@ -38,13 +38,12 @@ public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	 * Provides feedback about an executed action. In particular, if an invalid
 	 * action had been specified a corresponding ActionResult is provided.
 	 * (ActionResult)
-	 * 
-	 * @param a
+	 *  @param a
 	 *            The action that was (tried to be) executed by this figure
 	 * @param res
-	 *            The result of the execution of Action a
+	 * @param round
 	 */
-	void actionProcessed(Action a, ActionResult res);
+	void actionProcessed(Action a, ActionResult res, int round);
 	
 	/**
 	 * 

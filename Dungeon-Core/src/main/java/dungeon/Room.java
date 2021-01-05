@@ -109,7 +109,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		this.fightRunning = true;
 	}
 
-	public void endFight() {
+	public void endFight(int round) {
 		Log.info("END FIGHT");
 		fightRunning = false;
 
@@ -117,7 +117,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		Collection<Figure> removeTMP = new HashSet<>();
 		for (Iterator<Figure> iter = roomFigures.iterator(); iter.hasNext(); ) {
 			Figure element = iter.next();
-			boolean disappears = element.fightEnded(roomFigures, -1);
+			boolean disappears = element.fightEnded(roomFigures, round);
 			if (disappears) {
 				// prevent concurrent modification
 

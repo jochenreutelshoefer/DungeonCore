@@ -188,9 +188,9 @@ public class PlayerController implements JDGUI {
 	}
 
 	@Override
-	public void actionProcessed(Action a, ActionResult res) {
+	public void actionProcessed(Action a, ActionResult res, int round) {
 		if (res.getSituation() == ActionResult.Situation.impossible) {
-			perceptQueue.add(new TextPercept(StatementManager.getStatement(res).getText(), -1));
+			perceptQueue.add(new TextPercept(StatementManager.getStatement(res, round).getText(), round));
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 		}
 	}

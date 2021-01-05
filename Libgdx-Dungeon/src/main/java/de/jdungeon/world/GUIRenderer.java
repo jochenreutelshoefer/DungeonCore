@@ -14,15 +14,12 @@ import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
 import graphics.ImageManager;
-import log.Log;
-import org.apache.log4j.Logger;
 import text.Statement;
 import util.JDDimension;
 
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
-import de.jdungeon.app.gui.TextPerceptView;
 import de.jdungeon.app.screen.InfoMessagePopupEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.gui.ImageLibgdxGUIElement;
@@ -33,12 +30,12 @@ import de.jdungeon.gui.LibgdxHealthBar;
 import de.jdungeon.gui.LibgdxHourGlassTimer;
 import de.jdungeon.gui.LibgdxInfoPanel;
 import de.jdungeon.gui.LibgdxSkillActivityProvider;
+import de.jdungeon.gui.LibgdxTextPerceptView;
 import de.jdungeon.gui.LibgdxUseItemActivityProvider;
 import de.jdungeon.gui.LibgdxUseSkillPresenter;
 import de.jdungeon.gui.ZoomButton;
 import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
-
 
 /**
  * Renders the GUI (aka head up display) above the game world.
@@ -47,7 +44,6 @@ import de.jdungeon.gui.thumb.SmartControlPanel;
  * @created 31.12.19.
  */
 public class GUIRenderer implements Disposable {
-
 
 	private final static String TAG = GUIRenderer.class.getName();
 
@@ -59,8 +55,7 @@ public class GUIRenderer implements Disposable {
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private SmartControlPanel smartControl;
 	private LibgdxInfoPanel infoPanel;
-	private TextPerceptView textView;
-
+	private LibgdxTextPerceptView textView;
 
 	private final LibgdxFocusManager focusManager;
 
@@ -96,8 +91,6 @@ public class GUIRenderer implements Disposable {
 		batch = new SpriteBatch();
 		shapeRenderer.setAutoShapeType(true); // TODO: research and refactor w.r.t. ShapeTypes
 
-
-
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
 
@@ -109,17 +102,16 @@ public class GUIRenderer implements Disposable {
 		int screenHeightBy8 = screenHeight / 8;
 		int screenHeightBy10 = screenHeight / 10;
 		int screenHeightBy20 = screenHeight / 20;
-		int screenHeightBy25= screenHeight / 25;
+		int screenHeightBy25 = screenHeight / 25;
 
-		Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: "+screenWidth +" x "+screenHeight);
+		Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: " + screenWidth + " x " + screenHeight);
 
 		/*
 		 * init text messages panel
 		 */
-		/*
-		textView = new TextPerceptView(this.game);
-		this.guiElements.add(textView);
-		*/
+		textView = new LibgdxTextPerceptView();
+		this.libgdxGuiElements.add(textView);
+
 
 		/*
 		 * init info panel
@@ -147,8 +139,7 @@ public class GUIRenderer implements Disposable {
 		LibgdxHealthBar oxygenView = new LibgdxHealthBar(secondBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.oxygen);
 		this.libgdxGuiElements.add(oxygenView);
 
-
-		JDPoint thirdBarPosition = new JDPoint(posX, 2* barHeight + 11);
+		JDPoint thirdBarPosition = new JDPoint(posX, 2 * barHeight + 11);
 		LibgdxHealthBar dustView = new LibgdxHealthBar(thirdBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
 		this.libgdxGuiElements.add(dustView);
 
@@ -161,7 +152,8 @@ public class GUIRenderer implements Disposable {
 		int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromRightBorder;
 		int hourGlassHeight = (int) (hourGlassWidth * 1.6);
 		int hourglassYPos = thirdBarPosition.getY() + screenHeightBy25;
-		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager, game.getSession());
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager, game
+				.getSession());
 		this.libgdxGuiElements.add(hourglass);
 
 
@@ -176,7 +168,7 @@ public class GUIRenderer implements Disposable {
 		int magnifierHeight = screenWidth / 12;
 		int yPaddingZoomButtons = 0; //screenHeight / 50;
 		int magnifierY = plusYPos + zoombuttonSize + yPaddingZoomButtons;
-		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(screenWidth - magnifierWidth - offsetFromRightBorder, magnifierY), new JDDimension(magnifierHeight *  44/70, magnifierHeight), GUIImageManager.LUPE2) {
+		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(screenWidth - magnifierWidth - offsetFromRightBorder, magnifierY), new JDDimension(magnifierHeight * 44 / 70, magnifierHeight), GUIImageManager.LUPE2) {
 
 			@Override
 			public boolean handleClickEvent(int x, int y) {
@@ -194,9 +186,11 @@ public class GUIRenderer implements Disposable {
 		int itemPresenterHeight = screenHeightBy5;
 		int SMART_CONTROL_SIZE = screenWidth / 3;
 		JDPoint smartControlRoomPanelPosition = new JDPoint(screenWidth - SMART_CONTROL_SIZE, screenHeight - SMART_CONTROL_SIZE - itemPresenterHeight / 2);
-		Gdx.app.log(TAG, "Initializing Smart Control Panel at: "+smartControlRoomPanelPosition.getX() +" / "+smartControlRoomPanelPosition.getY());
+		Gdx.app.log(TAG, "Initializing Smart Control Panel at: " + smartControlRoomPanelPosition.getX() + " / " + smartControlRoomPanelPosition
+				.getY());
 		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
-		smartControl = new SmartControlPanel( smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController.getPlayerController());
+		smartControl = new SmartControlPanel(smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController
+				.getPlayerController());
 		this.libgdxGuiElements.add(smartControl);
 
 
@@ -208,7 +202,8 @@ public class GUIRenderer implements Disposable {
 		int wheelSize = 350;
 		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
 		double wheelCenterY = screenHeight + wheelSize / 2 + 120;
-		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController.getPlayerController(), focusManager);
+		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController
+				.getPlayerController(), focusManager);
 		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(50, wheelCenterY),
 				itemWheelSize,
 				figure,
@@ -230,7 +225,7 @@ public class GUIRenderer implements Disposable {
 		LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(inputController.getPlayerController());
 		int skillPresenterWidth = itemPresenterHeight * 5;
 		LibgdxUseSkillPresenter skillPresenter = new LibgdxUseSkillPresenter(
-				new JDPoint(screenWidth  - skillPresenterWidth, screenHeight - itemPresenterHeight - screenHeightBy20),
+				new JDPoint(screenWidth - skillPresenterWidth, screenHeight - itemPresenterHeight - screenHeightBy20),
 				new JDDimension(skillPresenterWidth, itemPresenterHeight),
 				skillActivityProvider,
 				ImageManager.inventory_box_normal.getFilenameBlank(),
@@ -251,8 +246,6 @@ public class GUIRenderer implements Disposable {
 				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
 				2 * heightFifth));
 		this.libgdxGuiElements.add(gameOverView);
-
-
 	}
 
 	public void render() {
@@ -267,7 +260,6 @@ public class GUIRenderer implements Disposable {
 			}
 		}
 	}
-
 
 	public LibgdxGameOverView getGameOverView() {
 		return gameOverView;
@@ -308,8 +300,8 @@ public class GUIRenderer implements Disposable {
 	}
 
 	private void renderFPSCounter() {
-		float x = cameraGUI.viewportWidth /2;
-		float y = 15;
+		float x = 1;
+		float y = 1;
 		int fps = Gdx.graphics.getFramesPerSecond();
 		BitmapFont fpsFont = AssetFonts.instance.defaultNormalFlipped;
 		if (fps >= 45) {
@@ -325,7 +317,7 @@ public class GUIRenderer implements Disposable {
 		fpsFont.setColor(1, 1, 1, 1); //white
 
 		if (glProfiler != null) {
-			fpsFont.draw(batch, "GL draw calls:" + glProfiler.getDrawCalls(), cameraGUI.viewportWidth/2 - 200, y);
+			fpsFont.draw(batch, "GL draw calls:" + glProfiler.getDrawCalls(), 60, y );
 		}
 	}
 
@@ -344,7 +336,7 @@ public class GUIRenderer implements Disposable {
 	}
 
 	public void update(float deltaTime) {
-		if(!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
+		if (!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
 			// the transaction lock is not yet optimally timed with respect to AP refill
 			// might still happen that lock is release before AP is refilled in Room#tickFigures() -> TODO
 			updateGUIElements(deltaTime);
@@ -358,33 +350,30 @@ public class GUIRenderer implements Disposable {
 		}
 	}
 
+	@Deprecated
 	public String getMessage() {
 		return message;
 	}
 
+	@Deprecated
 	private void clearMessage() {
 		message = null;
 	}
 
+	@Deprecated
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
 	public void newStatement(Statement s) {
-		if (textView != null) {
-			this.textView.addTextPercept(s);
-		}
+		this.textView.addTextPercept(s);
 	}
 
 	public void setGLProfiler(GLProfiler glProfiler) {
 		this.glProfiler = glProfiler;
 	}
 
-
-
 	public LibgdxItemWheel getItemWheel() {
 		return this.itemWheelHeroItems;
 	}
-
-
 }

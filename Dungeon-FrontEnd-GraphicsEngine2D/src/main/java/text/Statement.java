@@ -7,13 +7,19 @@
 package text;
 
 public class Statement {
-	
-	private String text;
-	private int format;
-	
-	public Statement(String t, int i) {
+
+	private final String text;
+	private final int format;
+	private final int round;
+
+	public Statement(String t, int i, int round) {
 		text = t;
 		format = i;
+		this.round = round;
+	}
+
+	public int getRound() {
+		return round;
 	}
 
 	/**
@@ -29,6 +35,4 @@ public class Statement {
 	public String getText() {
 		return text;
 	}
-	
-
 }

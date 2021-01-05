@@ -29,33 +29,34 @@ import figure.percept.TakePercept;
 import figure.percept.TumblingPercept;
 import game.JDEnv;
 import gui.Texts;
+import org.jetbrains.annotations.NotNull;
 
 public class StatementManager {
 
-	public static Statement getStatement(ActionResult res) {
-		Statement s = new Statement("ActionResStatement", 0);
+	public static Statement getStatement(ActionResult res, int round) {
+		Statement s = new Statement("ActionResStatement", 0, round);
 		if (res.getSituation() == ActionResult.Situation.impossible) {
 			ActionResult.Reason k = res.getReason();
 			if (k == ActionResult.Reason.noActionPoints) {
-				s = new Statement(Texts.noAP(), 0);
+				s = new Statement(Texts.noAP(), 0, round);
 			} else if (k == ActionResult.Reason.noDust) {
-				s = new Statement(Texts.noDust(), 0);
+				s = new Statement(Texts.noDust(), 0, round);
 			} else if (k == ActionResult.Reason.noItem) {
-				s = new Statement(Texts.notWithThat(), 0);
+				s = new Statement(Texts.notWithThat(), 0, round);
 			} else if (k == ActionResult.Reason.noKnowledge) {
-				s = new Statement(Texts.noKnowledge(), 0);
+				s = new Statement(Texts.noKnowledge(), 0, round);
 			} else if (k == ActionResult.Reason.wrongPosition) {
-				s = new Statement(Texts.wrongPosition(), 0);
+				s = new Statement(Texts.wrongPosition(), 0, round);
 			} else if (k == ActionResult.Reason.wrongTarget) {
-				s = new Statement(Texts.wrongTarget(), 0);
+				s = new Statement(Texts.wrongTarget(), 0, round);
 			} else if (k == ActionResult.Reason.noTarget) {
-				s = new Statement(Texts.noTarget(), 0);
+				s = new Statement(Texts.noTarget(), 0, round);
 			} else if (k == ActionResult.Reason.wrongDistance) {
-				s = new Statement(JDEnv.getString("wrong_distance"), 0);
+				s = new Statement(JDEnv.getString("wrong_distance"), 0, round);
 			} else if (res == ActionResult.WRONG_TARGET) {
-				s = new Statement("Kein Platz da!", 0);
+				s = new Statement("Kein Platz da!", 0, round);
 			} else {
-				s = new Statement(Texts.doesNotWork(), 0);
+				s = new Statement(Texts.doesNotWork(), 0, round);
 			}
 		}
 		return s;
@@ -64,47 +65,52 @@ public class StatementManager {
 	public static Statement getStatement(DoorSmashPercept p, FigureInfo to) {
 		if (p.getVictim().equals(to)) {
 			return new Statement(JDEnv.getResourceBundle().getString(
-					"player_doorSmash"), 0);
+					"player_doorSmash") + appendDamageValue(p), 0, p.getRound());
 		} else {
 			String otherName = JDEnv.getResourceBundle().getString("somebody");
 			if (p.getVictim().getName() != null) {
 				otherName = p.getVictim().getName();
 			}
 			return new Statement(insertName(otherName, JDEnv
-					.getResourceBundle().getString("other_doorSmash")), 0);
+					.getResourceBundle().getString("other_doorSmash")+ appendDamageValue(p)), 0, p.getRound());
 		}
 	}
-	
+
+	@NotNull
+	private static String appendDamageValue(DoorSmashPercept p) {
+		return " (" + p.getValue() + ")";
+	}
+
 	public static Statement getStatement(DisappearPercept p, FigureInfo to) {
 		Statement s = null;
 		FigureInfo f = p.getFigure();
-			s = new Statement(insertName(f.getName(), Texts.disappears()), 1);
+			s = new Statement(insertName(f.getName(), Texts.disappears()), 1, p.getRound());
 		return s;
 	}
 
 	public static Statement getStatement(ShieldBlockPercept p, FigureInfo to) {
 		if (p.getFigure().equals(to)) {
-			return new Statement(Texts.playerShieldBlock(), 0);
+			return new Statement(Texts.playerShieldBlock(), 0, p.getRound());
 		} else {
 			String otherName = JDEnv.getResourceBundle().getString("somebody");
 			if (p.getFigure().getName() != null) {
 				otherName = p.getFigure().getName();
 			}
 			return new Statement(insertName(otherName, JDEnv
-					.getResourceBundle().getString("other_shield_block")), 0);
+					.getResourceBundle().getString("other_shield_block")), 0, p.getRound());
 		}
 	}
 
 	public static Statement getStatement(BreakSpellPercept p, FigureInfo to) {
 		if (p.getFigure().equals(to)) {
-			return new Statement(JDEnv.getString("player_spell_break"), 0);
+			return new Statement(JDEnv.getString("player_spell_break"), 0, p.getRound());
 		} else {
 			String otherName = JDEnv.getResourceBundle().getString("somebody");
 			if (p.getFigure().getName() != null) {
 				otherName = p.getFigure().getName();
 			}
 			return new Statement(insertName(otherName, JDEnv
-					.getResourceBundle().getString("other_spell_break")), 0);
+					.getResourceBundle().getString("other_spell_break")), 0, p.getRound());
 		}
 	}
 
@@ -113,14 +119,14 @@ public class StatementManager {
 		if (p.getFigure().equals(to)) {
 			return new Statement(JDEnv.getResourceBundle().getString(
 					"player_takes")
-					+ ": " + itemString, 0);
+					+ ": " + itemString, 0, p.getRound());
 		} else {
 
 			String otherName = p.getFigure().getName();
 
 			return new Statement(insertName(otherName, JDEnv
 					.getResourceBundle().getString("other_takes"))
-					+ ": " + itemString, 0);
+					+ ": " + itemString, 0, p.getRound());
 		}
 	}
 
@@ -154,7 +160,7 @@ public class StatementManager {
 	}
 
 	public static Statement getStatement(ItemDroppedPercept p) {
-		return new Statement(Texts.otherDroppedItem(), 0);
+		return new Statement(Texts.otherDroppedItem(), 0, p.getRound());
 	}
 
 	public static Statement getStatement(FleePercept p, FigureInfo to) {
@@ -162,17 +168,17 @@ public class StatementManager {
 		boolean success = p.isSuccess();
 		if (success) {
 			if (p.getFigure().equals(to)) {
-				s = new Statement(Texts.playerFlees(), 2);
+				s = new Statement(Texts.playerFlees(), 2, p.getRound());
 			} else {
 				s = new Statement(insertName(p.getFigure().getName(), Texts
-						.otherFlees()), 1);
+						.otherFlees()), 1, p.getRound());
 			}
 		} else {
 			if (p.getFigure().equals(to)) {
-				s = new Statement(Texts.playerFleesNot(), 2);
+				s = new Statement(Texts.playerFleesNot(), 2, p.getRound());
 			} else {
 				s = new Statement(insertName(p.getFigure().getName(), Texts
-						.otherFleesNot()), 1);
+						.otherFleesNot()), 1, p.getRound());
 			}
 		}
 		return s;
@@ -181,10 +187,10 @@ public class StatementManager {
 	public static Statement getStatement(TumblingPercept p, FigureInfo to) {
 		Statement s = null;
 		if (p.getFigure().equals(to)) {
-			s = new Statement(Texts.playerTumbles, 2);
+			s = new Statement(Texts.playerTumbles, 2, p.getRound());
 		} else {
 			s = new Statement(insertName(p.getFigure().getName(),
-					Texts.otherTumbles), 1);
+					Texts.otherTumbles), 1, p.getRound());
 		}
 		return s;
 	}
@@ -192,10 +198,10 @@ public class StatementManager {
 	public static Statement getStatement(EntersPercept p, FigureInfo to) {
 		Statement s = null;
 		if (p.getFigure().equals(to)) {
-			s = new Statement("entering room", 2);
+			s = new Statement("entering room", 2, p.getRound());
 		} else {
 			s = new Statement(insertName(p.getFigure().getName(), JDEnv
-					.getResourceBundle().getString("other_moves_in")), 1);
+					.getResourceBundle().getString("other_moves_in")), 1, p.getRound());
 		}
 		return s;
 	}
@@ -205,21 +211,21 @@ public class StatementManager {
 		if (p.isBegins()) {
 			if (p.getFigure().equals(to)) {
 				s = new Statement(JDEnv.getString("player_starts_spell")
-						+ p.getSpell().getName(), 2);
+						+ p.getSpell().getName(), 2, p.getRound());
 			} else {
 				s = new Statement(insertName(p.getFigure().getName(), JDEnv
 						.getResourceBundle().getString("other_starts_spell")+ p.getSpell().getName()),
-						1);
+						1, p.getRound());
 			}
 			return s;
 		} else {
 			if (p.getFigure().equals(to)) {
 				s = new Statement(JDEnv.getString("player_spells")
-						+ p.getSpell().getName(), 2);
+						+ p.getSpell().getName(), 2, p.getRound());
 			} else {
 				s = new Statement(insertName(p.getFigure().getName(), JDEnv
 						.getResourceBundle().getString("other_spells"))
-						+ p.getSpell().getName(), 1);
+						+ p.getSpell().getName(), 1, p.getRound());
 			}
 			return s;
 		}
@@ -229,14 +235,14 @@ public class StatementManager {
 		Statement s = null;
 		FigureInfo f = p.getAttacker();
 		if (f.equals(to)) {
-			s = new Statement(Texts.playerMisses(), 2);
+			s = new Statement(Texts.playerMisses(), 2, p.getRound());
 		} else {
 			if (p.getVictim().equals(to)) {
 				s = new Statement(insertName(f.getName(), Texts
-						.otherMissesPlayer()), 1);
+						.otherMissesPlayer()), 1, p.getRound());
 			} else {
 				s = new Statement(insertNames(f.getName(), p.getVictim()
-						.getName(), Texts.otherMissesOther), 1);
+						.getName(), Texts.otherMissesOther), 1, p.getRound());
 			}
 		}
 		return s;
@@ -266,19 +272,19 @@ public class StatementManager {
 		Statement s = null;
 		FigureInfo f = p.getFigure();
 		if (f.equals(to)) {
-			s = new Statement(Texts.playerDies(), 2);
+			s = new Statement(Texts.playerDies(), 2, p.getRound());
 		} else {
-			s = new Statement(insertName(f.getName(), Texts.otherDies()), 1);
+			s = new Statement(insertName(f.getName(), Texts.otherDies()), 1, p.getRound());
 		}
 		return s;
 	}
 
 	public static Statement getStatement(FightBeginsPercept p) {
-		return new Statement(Texts.fightBegins(), 2);
+		return new Statement(Texts.fightBegins(), 2, p.getRound());
 	}
 
 	public static Statement getStatement(FightEndedPercept p) {
-		return new Statement(Texts.fightEnded(), 2);
+		return new Statement(Texts.fightEnded(), 2, p.getRound());
 	}
 
 	public static List<Statement> getStatements(HitPercept p, FigureInfo to) {
@@ -292,18 +298,18 @@ public class StatementManager {
 				if (attacker != null) {
 					s = new Statement(insertName(attacker.getName(), Texts
 							.otherHitsPlayer())
-							+ "(" + p.getDamage() + ")", 1);
+							+ "(" + p.getDamage() + ")", 1, p.getRound());
 
 				}
 
 			} else if (attacker.equals(to)) {
 				s = new Statement(insertName(victim.getName(), Texts
 						.playerHits())
-						+ "! (" + p.getDamage() + ")", 2);
+						+ "! (" + p.getDamage() + ")", 2, p.getRound());
 			} else {
 				s = new Statement(insertNames(attacker.getName(), victim
 						.getName(), Texts.otherHitsOther + "(" + p.getDamage()
-						+ ")"), 1);
+						+ ")"), 1, p.getRound());
 			}
 			l.add(s);
 		}
@@ -313,11 +319,11 @@ public class StatementManager {
 			if (victim.equals(to)) {
 				lightningStatement = new Statement(JDEnv
 						.getString("player_suffers_lightning")
-						+ "(" + p.getLightningDamage() + ")", 1);
+						+ "(" + p.getLightningDamage() + ")", 1, p.getRound());
 			} else {
 				lightningStatement = new Statement(insertName(victim.getName(),
 						JDEnv.getString("other_suffers_lightning") + "("
-								+ p.getLightningDamage() + ")"), 2);
+								+ p.getLightningDamage() + ")"), 2, p.getRound());
 			}
 			l.add(lightningStatement);
 		}
@@ -326,11 +332,11 @@ public class StatementManager {
 			if (victim.equals(to)) {
 				FireStatement = new Statement(JDEnv
 						.getString("player_suffers_fire")
-						+ "(" + p.getFireDamage() + ")", 1);
+						+ "(" + p.getFireDamage() + ")", 1, p.getRound());
 			} else {
 				FireStatement = new Statement(insertName(victim.getName(),
 						JDEnv.getString("other_suffers_fire") + "("
-								+ p.getFireDamage() + ")"), 2);
+								+ p.getFireDamage() + ")"), 2, p.getRound());
 			}
 			l.add(FireStatement);
 		}
@@ -339,11 +345,11 @@ public class StatementManager {
 			if (victim.equals(to)) {
 				MagicStatement = new Statement(JDEnv
 						.getString("player_suffers_magic")
-						+ "(" + p.getMagicDamage() + ")", 1);
+						+ "(" + p.getMagicDamage() + ")", 1, p.getRound());
 			} else {
 				MagicStatement = new Statement(insertName(victim.getName(),
 						JDEnv.getString("other_suffers_magic") + "("
-								+ p.getMagicDamage() + ")"), 2);
+								+ p.getMagicDamage() + ")"), 2, p.getRound());
 			}
 			l.add(MagicStatement);
 		}
@@ -352,11 +358,11 @@ public class StatementManager {
 			if (victim.equals(to)) {
 				PoisonStatement = new Statement(JDEnv
 						.getString("player_suffers_poison")
-						+ "(" + p.getPoisonDamage() + ")", 1);
+						+ "(" + p.getPoisonDamage() + ")", 1, p.getRound());
 			} else {
 				PoisonStatement = new Statement(insertName(victim.getName(),
 						JDEnv.getString("other_suffers_poison") + "("
-								+ p.getPoisonDamage() + ")"), 2);
+								+ p.getPoisonDamage() + ")"), 2, p.getRound());
 			}
 			l.add(PoisonStatement);
 		}

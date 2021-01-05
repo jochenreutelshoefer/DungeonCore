@@ -79,7 +79,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 		if(p instanceof InterruptPercept) {
 			// this is a special case, no world percept, but only communication between PlayerController and PerceptHandler
-			// to visualize a interrupt in the players action plan
+			// to visualize an interrupt in the players action plan
 			handleInterruptPercept((InterruptPercept)p);
 		}
 
@@ -158,10 +158,10 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			 * write text messages
 			 */
 			String s = StatementManager.getStatement((InfoPercept) p);
-			newStatement(new Statement(s, 2));
+			newStatement(new Statement(s, 2, p.getRound()));
 		}
 		if (p instanceof TextPercept) {
-			newStatement(new Statement(((TextPercept) p).getText(), 2));
+			newStatement(new Statement(((TextPercept) p).getText(), 2, p.getRound()));
 		}
 		if (p instanceof DisappearPercept) {
 			newStatement(StatementManager.getStatement(((DisappearPercept) p),

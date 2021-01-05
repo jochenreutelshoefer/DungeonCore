@@ -7,7 +7,7 @@ import util.JDDimension;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 10.02.20.
  */
-public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
+public abstract class LibgdxSlidingInOutGUIElement extends AbstractLibgdxGUIElement {
 
 	private int totalSlidingRange;
 
@@ -27,8 +27,8 @@ public abstract class LibgdxSlidingGUIElement extends AbstractLibgdxGUIElement {
 
 	private SlideState currentState;
 
-	public LibgdxSlidingGUIElement(JDPoint position, JDDimension dimension,
-								   JDPoint targetPos) {
+	public LibgdxSlidingInOutGUIElement(JDPoint position, JDDimension dimension,
+										JDPoint targetPos) {
 		super(position, dimension);
 		this.targetOutPos = targetPos;
 		this.targetInPos = position;

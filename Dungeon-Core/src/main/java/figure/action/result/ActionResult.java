@@ -56,6 +56,7 @@ public class ActionResult {
 	private ActionResult(Situation key) {
 		this.key1 = key;
 	}
+
 	private ActionResult(Reason key2) {
 		this.key1 = Situation.impossible;
 		this.key2 = key2;

@@ -83,7 +83,7 @@ public class FigureControl implements ControlUnit {
 	}
 
 	@Override
-	public void actionProcessed(Action a, ActionResult res) {
+	public void actionProcessed(Action a, ActionResult res, int round) {
 
 	}
 

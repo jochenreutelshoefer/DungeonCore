@@ -359,7 +359,7 @@ public abstract class Figure extends DungeonWorldObject
 
 			// might be that after an action the fight is resolved
 			if (room.fightRunning() && !room.checkFightOn()) {
-				room.endFight();
+				room.endFight(round);
 			}
 		}
 	}
@@ -519,7 +519,7 @@ public abstract class Figure extends DungeonWorldObject
 			if (control == null) {
 				break;
 			}
-			control.actionProcessed(a, res);
+			control.actionProcessed(a, res, round);
 
 			if (isDead() || room.getDungeon().isGameOver()) {
 				break;

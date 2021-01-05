@@ -87,8 +87,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		}
 		*/
 
-
-
 		return completedDungeons.size();
 	}
 

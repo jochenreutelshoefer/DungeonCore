@@ -35,7 +35,7 @@ import de.jdungeon.util.Pair;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 10.02.20.
  */
-public class LibgdxInfoPanel extends LibgdxSlidingGUIElement {
+public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
 
 	private static final String WINDOW_BUBBLE = "win-bubble";
 
