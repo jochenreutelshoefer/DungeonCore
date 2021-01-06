@@ -24,7 +24,7 @@ import de.jdungeon.asset.Assets;
 
 public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 
-	// TODO: make relative to screen size!
+	// TODO: make relative to screen size!?
 	private static final int WIDTH_MAX = 400;
 	private static final int HEIGHT_MAX = 400;
 
@@ -37,18 +37,14 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	private final BitmapFont font = Assets.instance.fonts.defaultSmallFlipped;
 
 	private Texture offlineTextTexture;
-	private final FrameBuffer frameBuffer; // = new FrameBuffer(Pixmap.Format.RGBA8888, HEIGHT_MAX * Gdx.graphics.getWidth() / Gdx.graphics.getHeight(), HEIGHT_MAX, false);
+	private final FrameBuffer frameBuffer;
 	private final Batch spriteBatch = new SpriteBatch();
 
-	private static final JDPoint outPosition = new JDPoint(200, -1 * (HEIGHT_MAX - 40));
-
 	public LibgdxTextPerceptView() {
-		super(outPosition, new JDDimension(WIDTH_MAX, HEIGHT_MAX));
-
+		super(new JDPoint(Gdx.app.getGraphics().getWidth()/2 - WIDTH_MAX/2, -1 * (HEIGHT_MAX - 40)), new JDDimension(WIDTH_MAX, HEIGHT_MAX));
 		lineHeight = (int) font.getLineHeight() + 4;
 
-		int framebufferWidth = HEIGHT_MAX * (Gdx.graphics.getWidth() / Gdx.graphics
-				.getHeight());
+		int framebufferWidth = HEIGHT_MAX * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight());
 		int frameBufferHeight = HEIGHT_MAX;
 		frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, framebufferWidth, frameBufferHeight, false);
 
@@ -146,8 +142,8 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 				HEIGHT_MAX,
 				0,
 				0,
-				offlineTextTexture.getWidth(),
-				offlineTextTexture.getHeight(),
+				WIDTH_MAX,
+				HEIGHT_MAX,
 				false,
 				true);
 	}
