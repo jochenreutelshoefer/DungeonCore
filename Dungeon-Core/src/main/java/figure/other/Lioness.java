@@ -77,8 +77,4 @@ public class Lioness extends ConjuredMagicFigure {
 		return 0;
 	}
 
-	@Override
-	protected boolean makeSpecialAttack(Figure target) {
-		return false;
-	}
 }

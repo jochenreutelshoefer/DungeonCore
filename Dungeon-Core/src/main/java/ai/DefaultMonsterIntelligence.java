@@ -77,31 +77,28 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	private int getRandomWalkFactor() {
-		Class<? extends Monster> monsterClass = monster.getMonsterClass();
+		Class<? extends Figure> monsterClass = monster.getFigureClass();
 		int factor = 0;
-		if (monsterClass == Orc.class) {
+		if (Orc.class.isAssignableFrom(monsterClass)) {
 			factor = 25;
 		}
-		if (monsterClass == Ogre.class) {
+		if (Ogre.class.isAssignableFrom(monsterClass)) {
 			factor = 3;
 		}
-		if (monsterClass == Wolf.class) {
+		if (Wolf.class.isAssignableFrom(monsterClass)) {
 			factor = 40;
 		}
-		if (monsterClass == Spider.class) {
+		if (Spider.class.isAssignableFrom(monsterClass)) {
 			factor = 5;
 		}
-		if (monsterClass == Ghul.class) {
+		if (Ghul.class.isAssignableFrom(monsterClass)) {
 			factor = 3;
 		}
-		if (monsterClass == Skeleton.class) {
+		if (Skeleton.class.isAssignableFrom(monsterClass)) {
 			factor = 30;
 		}
-		if (monsterClass == Dwarf.class) {
+		if (Dwarf.class.isAssignableFrom(monsterClass)) {
 			factor = 0;
-		}
-		if (monsterClass == DarkMaster.class) {
-			factor = 30;
 		}
 
 		return factor;

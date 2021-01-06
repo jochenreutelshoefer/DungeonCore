@@ -34,12 +34,6 @@ public class Thing extends Item implements Usable, LocatableItem {
 	@Override
 	public void setOwner(ItemOwner o) {
 		owner = o;
-		if (name.equalsIgnoreCase("Luzia�s Amulett")) {
-			if (owner instanceof Monster) {
-
-				((Monster) owner).setLuzia(true);
-			}
-		}
 	}
 
 	@Override
@@ -53,10 +47,6 @@ public class Thing extends Item implements Usable, LocatableItem {
 
 	@Override
 	public void getsRemoved() {
-		if (owner instanceof Monster) {
-
-			((Monster) owner).setLuzia(true);
-		}
 	}
 
 	/**

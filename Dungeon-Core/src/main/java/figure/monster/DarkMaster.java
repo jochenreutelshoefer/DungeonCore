@@ -71,21 +71,6 @@ public class DarkMaster extends Monster {
 		return 0.5;
 	}
 
-	public void printRoomList(LinkedList l) {
-		//System.out.println("WEG DES MEISTERS!");
-		for (int i = 0; i < l.size(); i++) {
-			//System.out.println(
-			//	"Raum: " + ((room) l.get(i)).getNumber().toString());
-		}
-
-	}
-
-	@Override
-	protected boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
-		return false;
-	}
-
 	private void getHeroRouteInstruction() {
 //		System.out.println("Meister Routing neu push hole HeroRoom!");
 //		routing = new Stack();

@@ -6,17 +6,8 @@
  */
 package location;
 
-/**
- * @author Jochen
- * <p>
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
-
 import java.util.List;
 
-import dungeon.Dungeon;
-import dungeon.JDPoint;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.Figure;
@@ -39,9 +30,6 @@ public class Corpse extends Location {
 		this.type = type;
 	}
 
-	/**
-	 * @see Location#getStory()
-	 */
 	@Override
 	public String getStory() {
 		return JDEnv.getResourceBundle().getString("shrine_corpse_story");
@@ -61,55 +49,11 @@ public class Corpse extends Location {
 		return true;
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_corpse_name");
 	}
 
-	public static String makeAufzeichnungen(Dungeon d, JDPoint startRoom, Room xroom, Room paxTreasure) {
-
-		String str = JDEnv.getResourceBundle().getString("shrine_corpse_note_begin") + " ";
-
-		int dist = JDPoint.getAbsDist(startRoom, xroom.getNumber());
-		if (dist <= 2) {
-			str += JDEnv.getResourceBundle().getString("shrine_corpse_note_near") + " ";
-		}
-		else {
-			if (dist <= 5) {
-				str += JDEnv.getResourceBundle().getString("shrine_corpse_note_mid") + " ";
-			}
-			else {
-				str += JDEnv.getResourceBundle().getString("shrine_corpse_note_far") + " ";
-			}
-			str += d.getRoom(startRoom).getDirectionString(xroom);
-		}
-
-		str += JDEnv.getResourceBundle().getString("shrine_corpse_note_middlepart") + " ";
-
-		int dist2 = JDPoint.getAbsDist(startRoom, paxTreasure.getNumber());
-		if (dist2 <= 2) {
-			str += JDEnv.getResourceBundle().getString("shrine_corpse_note_near") + " ";
-		}
-		else {
-			if (dist2 <= 5) {
-				str += JDEnv.getResourceBundle().getString("shrine_corpse_note_mid") + " ";
-			}
-			else {
-				str += JDEnv.getResourceBundle().getString("shrine_corpse_note_far") + " ";
-			}
-			str += d.getRoom(startRoom).getDirectionString(paxTreasure);
-		}
-
-		str += JDEnv.getResourceBundle().getString("shrine_corpse_note_end") + " ";
-		return str;
-	}
-
-	/**
-	 * @see Location#getText()
-	 */
 	@Override
 	public String getText() {
 		String s = "";
@@ -166,6 +110,4 @@ public class Corpse extends Location {
 	public boolean usableOnce() {
 		return false;
 	}
-
-
 }

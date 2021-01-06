@@ -57,35 +57,6 @@ public class Ogre extends CreatureMonster {
 	}
 
 	@Override
-	protected boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
-
-		// TODO: re-implement as a skill using oxygen reduction
-
-		/*
-		this.half_bonus = true;
-		this.makesgoldenHit = true;
-		System.out.println("Ogre.makeSpecialAttack!");
-		op.decActionPoints(1, -1);
-		if (op instanceof Hero) {
-			this.getRoom().distributePercept(new SpecialAttackPercept(op,this, -1));
-			Inventory sachen = ((Hero) op).getInventory();
-			Helmet helm = sachen.getHelmet1();
-			if (helm != null) {
-				helm.takeRelDamage(0.3);
-			}
-		}
-		attack(op, -1);
-		
-
-		this.specialAttackCounter = 50;
-		return false;
-
-		*/
-		return false;
-	}
-
-	@Override
 	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
 	}

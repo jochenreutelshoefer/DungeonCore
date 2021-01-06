@@ -38,14 +38,6 @@ public class MonsterInfo extends FigureInfo {
 		return DungeonUtils.findShortestPath( p1, p2, this.map, false);
 	}
 	
-	public int getLastMove() {
-		if(map.getFigure().equals(monster)) {
-		return monster.getLastMove();
-		}
-		return -1;
-	}
-	
-
 	@Deprecated //use FigureInfo#getFigureClass()
 	public Class<? extends Monster> getMonsterClass() {
 		return this.monster.getClass();

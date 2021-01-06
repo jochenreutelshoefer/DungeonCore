@@ -44,16 +44,6 @@ public class Ghul extends UndeadMonster {
 	}
 
 	@Override
-	protected boolean makeSpecialAttack(Figure op) {
-		Poisoning p = new Poisoning(this, 4, 8);
-
-		getRoom().distributePercept(new SpecialAttackPercept(op, this, -1));
-		op.poison(p);
-		this.specialAttackCounter = 50;
-		return false;
-	}
-
-	@Override
 	protected int getHealthDamageBalance() {
 		return HEALTH_DAMAGE_BALANCE;
 	}

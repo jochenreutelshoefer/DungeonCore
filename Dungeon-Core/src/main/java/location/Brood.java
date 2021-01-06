@@ -14,7 +14,7 @@ import game.JDEnv;
 import item.Item;
 import dungeon.Room;
 import dungeon.util.RouteInstruction;
-
+@Deprecated
 public class Brood extends Location {
 
 	private final int type;
@@ -112,7 +112,6 @@ public class Brood extends Location {
 				if ((((int) (Math.random() * 100)) < 10) && (points > 2200)) {
 					////System.out.println(Type + "spitting monster");
 					Monster m = spitMonster(points);
-					m.setSpitted(true);
 					addItem(m);
 					addWay(m);
 					location.figureEnters(m,0, -1);

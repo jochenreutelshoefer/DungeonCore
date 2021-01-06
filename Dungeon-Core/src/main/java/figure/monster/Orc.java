@@ -31,7 +31,6 @@ public class Orc extends CreatureMonster {
 	public Orc(int value, boolean special_attack) {
 
 		super(value);
-		this.specialAttacking = special_attack;
 		construcHelpOrc();
 	}
 
@@ -71,34 +70,6 @@ public class Orc extends CreatureMonster {
 	@Override
 	protected int getHealthDamageBalance() {
 		return HEALTH_DAMAGE_BALANCE;
-	}
-
-	@Override
-	protected boolean makeSpecialAttack(Figure op) {
-		if (op instanceof Hero) {
-			Inventory sachen = ((Hero) op).getInventory();
-			List<Item> heroItems = sachen.getUnusedItems();
-			Collections.sort(heroItems, new ItemValueComparator());
-			List<Item> stolen = new LinkedList<Item>();
-			op.tellPercept(new TextPercept(getName() + " klaut Dir: ", -1));
-			while (Item.calcValueSum(stolen) < 30) {
-				if (heroItems.isEmpty()) {
-					break;
-				}
-				Item toGive = (heroItems.remove(0));
-				stolen.add(toGive);
-				op.tellPercept(new TextPercept(toGive.toString(), -1));
-				sachen.giveAwayItem(toGive, this);
-			}
-			op.tellPercept(new TextPercept(getName() + " beklaut Dich und verschwindet durch die Tür.. ", -1));
-		}
-		flee(getFleeDirection(), -1);
-		this.specialAttackCounter = 50;
-		return true;
-	}
-
-	public boolean isAbleToTakeItemInFight() {
-		return true;
 	}
 
 	@Override

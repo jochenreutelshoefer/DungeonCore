@@ -53,14 +53,6 @@ public class Dwarf extends Monster {
 		return SCATTER;
 	}
 	
-	
-	@Override
-	public boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
-
-		return false;
-	}
-	
 	@Override
 	public int hunting() {
 		return 0;

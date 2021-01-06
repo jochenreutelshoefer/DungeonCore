@@ -62,9 +62,4 @@ public class Fir extends ConjuredMagicFigure {
 		return 0;
 	}
 
-	@Override
-	protected boolean makeSpecialAttack(Figure target) {
-		return false;
-	}
-
 }

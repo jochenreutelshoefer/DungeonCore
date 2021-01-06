@@ -61,7 +61,6 @@ public class Wolf extends NatureMonster {
 
 	public Wolf(int value, boolean special_attack) {
 		super(value);
-		this.specialAttacking = special_attack;
 		contrucHelpWolf();
 	}
 
@@ -77,11 +76,6 @@ public class Wolf extends NatureMonster {
 	@Override
 	protected int getDamageVariance() {
 		return DAMAGE_VARIANCE;
-	}
-
-	@Override
-	protected boolean makeSpecialAttack(Figure op) {
-		return false;
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class Spider extends NatureMonster {
 			this.spellbook.addSpell(new Cobweb(1));
 		}
 
-		name = Texts.getName("bear");
+		name = Texts.getName("Spinne");
 	}
 
 	@Override
@@ -51,27 +51,6 @@ public class Spider extends NatureMonster {
 	@Override
 	public int getChangeToHit() {
 		return CHANCE_TO_HIT;
-	}
-
-	@Override
-	protected boolean makeSpecialAttack(Figure op) {
-		//Fighter op = getTarget();
-		if (op instanceof Hero) {
-			Inventory sachen = ((Hero) op).getInventory();
-			Helmet helm = sachen.getHelmet1();
-			if (helm != null) {
-				helm.takeRelDamage(0.5);
-				sachen.layDown(helm);
-			}
-			Armor ruestung = sachen.getArmor1();
-			if (ruestung != null) {
-				ruestung.takeRelDamage(0.3);
-			}
-
-			getRoom().distributePercept(new SpecialAttackPercept(op, this, -1));
-		}
-		this.specialAttackCounter = 50;
-		return false;
 	}
 
 	@Override

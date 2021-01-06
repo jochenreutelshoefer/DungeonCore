@@ -37,8 +37,7 @@ import item.interfaces.ItemOwner;
  * Implementiert bis auf Monstertypspezifische Sachen alle abstrakten Methoden
  * von Fighter. Wird gesteuert von einem MonsterControl-Objekt.
  */
-public abstract class Monster extends Figure implements Paragraphable,
-		InfoProvider {
+public abstract class Monster extends Figure implements Paragraphable, InfoProvider {
 
 	@Deprecated
 	public final static int GHUL = 2;
@@ -79,9 +78,9 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	public final static int GHUL_HUNTING = 0;
 
-	protected int specialAttackCounter = 0;
-
 	protected String[] lvl_names;
+
+	protected double healthRecover = 0.35;
 
 	@Override
 	public boolean tryUnlockDoor(Door d, boolean doIt) {
@@ -148,7 +147,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 		chanceToHit = new Attribute(Attribute.Type.OtherDeprecatedAttributeType, chance_to_hit);
 	}
 
-	protected double healthRecover = 0.35;
+
 
 	@Override
 	public Item getItem(ItemInfo it) {
@@ -171,10 +170,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected double poisonResistRate = 1.0;
 
-	protected boolean spitted = false;
-
-	public boolean luzia;
-
 	protected String name;
 
 	protected Attribute health;
@@ -189,11 +184,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	protected abstract int getHealthDamageBalance();
 
-	boolean makesgoldenHit = false;
-
 	protected List<Item> items = new LinkedList<Item>();
-
-	protected boolean specialAttacking = true;
 
 	public void addRouteInstruction(RouteInstruction r) {
 		routing.push(r);
@@ -278,7 +269,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 			return 0;
 		}
 		else {
-
 			int healthLevel = getHealthLevel().getValue();
 			double erg = 6 * healthLevel * getAntiFleeFactor();
 			int k = 1;
@@ -372,13 +362,7 @@ public abstract class Monster extends Figure implements Paragraphable,
 
 	@Override
 	public float getActualChanceToHit(Figure m) {
-
-		if (this.makesgoldenHit) {
-			makesgoldenHit = false;
-			return 100;
-		}
-		float c = (float) chanceToHit.getValue();
-		return c;
+		return (float) chanceToHit.getValue();
 	}
 
 	@Override
@@ -530,8 +514,6 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return 0;
 	}
 
-	protected abstract boolean makeSpecialAttack(Figure target);
-
 	@Override
 	public boolean isAbleToTakeItem(Item it) {
 		return true;
@@ -671,24 +653,4 @@ public abstract class Monster extends Figure implements Paragraphable,
 		return false;
 	}
 
-	/**
-	 * @param b
-	 */
-	public void setSpitted(boolean b) {
-		spitted = b;
-	}
-
-	/**
-	 * @param b
-	 */
-	public void setLuzia(boolean b) {
-		luzia = b;
-	}
-
-	/**
-	 * @return Returns the lastMove.
-	 */
-	public int getLastMove() {
-		return lastMove;
-	}
 }
