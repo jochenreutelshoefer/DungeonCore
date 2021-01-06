@@ -8,6 +8,7 @@ import figure.FigureInfo;
 import figure.action.result.ActionResult;
 import game.InfoEntity;
 import game.RoomInfoEntity;
+import org.jetbrains.annotations.NotNull;
 import skill.TargetSkill;
 import spell.TargetScope;
 
@@ -61,7 +62,7 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 	}
 
 	public static RoomInfoEntity findTarget(FigureInfo figure, LibgdxFocusManager focusManager, TargetScope targetScope, boolean doIt, Object targetObject) {
-
+		if(targetScope == null) return null; // is a no-target spell
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 		List<? extends RoomInfoEntity> potentialTargets = targetScope.getTargetEntitiesInScope(figure, highlightedEntity);
 

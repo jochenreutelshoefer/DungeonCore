@@ -27,12 +27,12 @@ public class MoonRuneFinderShrine extends Location {
 
 	@Override
 	public String getStory() {
-		return "Ein alter Druide.";
+		return "Vielleicht kann man von ihm etwas erfahren.";
 	}
 
 	@Override
 	public String toString() {
-		return "Alter Druide";
+		return getText();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class MoonRuneFinderShrine extends Location {
 
 	@Override
 	public String getStatus() {
-		return "Status Druide";
+		return "";
 	}
 
 	@Override

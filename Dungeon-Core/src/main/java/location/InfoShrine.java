@@ -13,7 +13,7 @@ import dungeon.Room;
 import figure.Figure;
 import figure.hero.Hero;
 import game.JDEnv;
-
+@Deprecated
 public class InfoShrine extends Location {
 
 	String info;

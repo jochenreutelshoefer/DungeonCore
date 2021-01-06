@@ -29,6 +29,7 @@ import figure.percept.UsePercept;
 import game.JDEnv;
 import gui.Texts;
 
+@Deprecated
 public class SorcerLab extends Location implements VisibilityModifier {
 
 	boolean firstTime = true;

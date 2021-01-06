@@ -15,6 +15,7 @@ import item.ItemInfo;
 import item.interfaces.ItemOwner;
 import item.quest.Rune;
 
+@Deprecated
 public class RuneShrine extends Location implements ItemOwner {
 
 	int index;

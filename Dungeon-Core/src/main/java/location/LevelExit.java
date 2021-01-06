@@ -34,7 +34,6 @@ public class LevelExit extends Location {
 		requiredItems = Arrays.asList(items);
 	}
 
-
 	/**
 	 * Constructor to create exits that required presence of escorted NPCs
 	 *
@@ -51,18 +50,18 @@ public class LevelExit extends Location {
 
 	@Override
 	public String getStory() {
-		return "";
+		String basicStory = JDEnv.getResourceBundle().getString("shrine_exit_text");
+		return (!this.requiredFigures.isEmpty() || !this.requiredItems.isEmpty()) ? basicStory + "Unter bestimmten Bedigungen..." : "";
 	}
 
 	@Override
 	public String toString() {
-		return JDEnv.getResourceBundle().getString("shrine_exit_name");
-
+		return getText();
 	}
 
 	@Override
 	public String getText() {
-		return toString() + "\n"+JDEnv.getResourceBundle().getString("shrine_exit_text");
+		return JDEnv.getResourceBundle().getString("shrine_exit_name");
 	}
 
 	@Override
@@ -78,17 +77,20 @@ public class LevelExit extends Location {
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		// TODO: factor out text
-		if(requiredFigureMissing()) {
+		if (requiredFigureMissing()) {
 			// some figure to be escorted to exit is not here -> refuse
-			f.getRoomInfo().distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: "+requiredItems.toString(), round));
+			f.getRoomInfo()
+					.distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: " + requiredItems
+							.toString(), round));
 			return false;
 		}
 
-		if(requiredItemMissing(f)) {
+		if (requiredItemMissing(f)) {
 			// some item to be found to exit is not here -> refuse
 			Room roomInfo = f.getRoomInfo();
-			if(roomInfo != null) {
-				roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: "+requiredItems.toString(), round));
+			if (roomInfo != null) {
+				roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: " + requiredItems
+						.toString(), round));
 			}
 			return false;
 		}
@@ -103,7 +105,7 @@ public class LevelExit extends Location {
 
 	private boolean requiredFigureMissing() {
 		for (Figure requiredFigure : requiredFigures) {
-			if(!this.getRoom().getRoomFigures().contains(requiredFigure)) {
+			if (!this.getRoom().getRoomFigures().contains(requiredFigure)) {
 				return true;
 			}
 		}
@@ -112,7 +114,7 @@ public class LevelExit extends Location {
 
 	private boolean requiredItemMissing(Figure figure) {
 		for (Item item : requiredItems) {
-			if(!figure.getItems().contains(item)) {
+			if (!figure.getItems().contains(item)) {
 				return true;
 			}
 		}

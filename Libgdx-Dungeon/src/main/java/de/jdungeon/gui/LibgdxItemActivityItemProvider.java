@@ -24,6 +24,7 @@ public abstract class LibgdxItemActivityItemProvider implements LibgdxActivityPr
 	private final ItemInfoOwner info;
 	private final Map<Class, String> imageCache = new HashMap<>();
 	private final InventoryImageManager inventoryImageManager;
+
 	private final PlayerController guiControl;
 
 	public LibgdxItemActivityItemProvider(ItemInfoOwner info, InventoryImageManager inventoryImageManager, PlayerController guiControl) {
@@ -31,6 +32,13 @@ public abstract class LibgdxItemActivityItemProvider implements LibgdxActivityPr
 		this.inventoryImageManager = inventoryImageManager;
 		this.guiControl = guiControl;
 	}
+
+
+	@Override
+	public PlayerController getPlayerController() {
+		return guiControl;
+	}
+
 
 	@Override
 	public List<Activity> getActivities() {

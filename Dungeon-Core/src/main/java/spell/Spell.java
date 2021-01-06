@@ -15,25 +15,22 @@ import gui.Paragraph;
  */
 public interface Spell {
 
+	ActionResult fire(Figure figure, RoomEntity target, boolean doIt, int round);
 
-	abstract ActionResult fire(Figure figure, RoomEntity target, boolean doIt, int round);
+	String getName();
 
-	abstract String getName();
+	int getLevel();
 
-	abstract int getLevel();
+	int getType();
 
-	abstract int getType();
+	boolean isPossibleFight();
 
-	abstract boolean isPossibleFight();
+	boolean isPossibleNormal();
 
-	abstract boolean isPossibleNormal();
+	String getText();
 
-	abstract String getText();
+	int getCost();
 
-	abstract int getDifficulty();
-
-	abstract int getCost();
-
-	abstract Paragraph[] getParagraphs();
+	Paragraph[] getParagraphs();
 
 }

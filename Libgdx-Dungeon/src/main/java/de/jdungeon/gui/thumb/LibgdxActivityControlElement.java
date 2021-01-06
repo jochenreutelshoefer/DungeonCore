@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dungeon.JDPoint;
+import figure.action.result.ActionResult;
 import util.JDDimension;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -59,13 +60,13 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 
 	@Override
 	public boolean isVisible() {
-		return activity.isCurrentlyPossible(null);
+		return activity.isCurrentlyPossible(null).getSituation() == ActionResult.Situation.possible;
 	}
 
 	@Override
 	public boolean handleClickEvent(int x, int y) {
 		super.handleClickEvent(x, y);
-		if(activity.isCurrentlyPossible(null)) {
+		if(activity.isCurrentlyPossible(null).getSituation() == ActionResult.Situation.possible) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 			activity.plugToController(null);
 		}

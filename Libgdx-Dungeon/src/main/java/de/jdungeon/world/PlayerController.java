@@ -12,6 +12,7 @@ import figure.Figure;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
+import figure.action.result.ActionResultWithGameRound;
 import figure.hero.HeroInfo;
 import figure.other.Fir;
 import figure.other.Lioness;
@@ -20,8 +21,8 @@ import figure.percept.OpticalPercept;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import game.JDGUI;
-import log.Log;
 import location.LevelExit;
+import log.Log;
 import text.StatementManager;
 import user.DungeonSession;
 
@@ -79,19 +80,26 @@ public class PlayerController implements JDGUI {
 		scoutActivity = new ScoutActivity(this);
 	}
 
+	/**
+	 * The number of rounds played in this dungeon.
+	 *
+	 * @return game round
+	 */
+	public int getRound() {
+		return this.dungeonSession.getDungeonRound();
+	}
+
 	public void plugActivityPlan(ActivityPlan currentActivityPlan) {
 		// todo: is this okay to just silently override any plan if a new one comes along?
 		this.currentActivityPlan = currentActivityPlan;
 	}
 
-	public boolean plugActivity(Activity activity, Object target) {
-		if (activity.isCurrentlyPossible(target)) {
+	public ActionResult plugActivity(Activity activity, Object target) {
+		ActionResult result = activity.isCurrentlyPossible(target);
+		if (result.getSituation() == ActionResult.Situation.possible) {
 			plugActivityPlan(activity.createExecutionPlan(true, target));
-			return true;
 		}
-		else {
-			return false;
-		}
+		return result;
 	}
 
 	public ScoutActivity getScoutActivity() {
@@ -235,7 +243,6 @@ public class PlayerController implements JDGUI {
 		dungeonSession.notifyExit(exit, f);
 	}
 
-
 	@Override
 	public Action getAction() {
 		synchronized (actionQueue) {
@@ -259,19 +266,8 @@ public class PlayerController implements JDGUI {
 		if (p instanceof OpticalPercept) {
 			number = ((OpticalPercept) p).getPoint();
 		}
-		/*
-		List<FigureInfo> involvedFigures = p.getInvolvedFigures();
-		for (FigureInfo involvedFigure : involvedFigures) {
-			JDPoint pos = involvedFigure.getRoomInfo().getNumber();
-			if(pos != null) {
-				number = pos;
-				break;
-			}
-
-		}
-		*/
 		if (p instanceof EntersPercept  // someone enters
-			&&(((EntersPercept) p).getTo().equals(this.getFigure().getRoomInfo())) // into the room of this figure
+				&& (((EntersPercept) p).getTo().equals(this.getFigure().getRoomInfo())) // into the room of this figure
 				&& (!((EntersPercept) p).getFigure().equals(this.getFigure()))) { // who is not this figure
 			// we interrupt the current plan to allow the player to react
 			interrupt(p);
@@ -293,7 +289,7 @@ public class PlayerController implements JDGUI {
 	}
 
 	private void interrupt(Percept p) {
-		if(!this.actionQueue.isEmpty()) {
+		if (!this.actionQueue.isEmpty()) {
 			// we interrupt the current sequence of actions
 			this.actionQueue.clear();
 			this.perceptQueue.add(new InterruptPercept(this.getFigure(), p.getRound()));

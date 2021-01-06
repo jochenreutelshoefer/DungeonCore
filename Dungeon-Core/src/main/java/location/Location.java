@@ -27,8 +27,6 @@ public abstract class Location implements Usable, Turnable, InfoProvider, RoomEn
 
 	protected Room location;
 
-	private String name;
-
 	protected String story;
 	protected String text;
 
@@ -94,8 +92,5 @@ public abstract class Location implements Usable, Turnable, InfoProvider, RoomEn
 		return location.getNumber();
 	}
 
-	public String getName() {
-		return name;
-	}
 }
 

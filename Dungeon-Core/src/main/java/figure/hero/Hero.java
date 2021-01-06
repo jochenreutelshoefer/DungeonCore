@@ -692,7 +692,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	protected void lookInRoom(int round) {
 		if (this.getRoom().getDungeon().getRoom(this.getRoomNumber()).getLocation() != null) {
 			Location s = this.getRoom().getDungeon().getRoom(this.getRoomNumber()).getLocation();
-			this.tellPercept(new TextPercept(s.getStory(), round));
+			this.tellPercept(new TextPercept("Örtlichkeit "+s.getText()+": "+ s.getStory(), round));
 
 		}
 		if (!this.getRoom().getDungeon().getRoomNr(this.getRoomNumber().getX(),

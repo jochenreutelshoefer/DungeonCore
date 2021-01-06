@@ -118,8 +118,6 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		positionCorrection = true;
 	}
 
-	long lastEvent = 0;
-
 	@Override
 	public boolean handlePanEvent(float x, float y, float dx, float dy) {
 

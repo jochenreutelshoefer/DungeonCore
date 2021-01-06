@@ -8,6 +8,7 @@ import dungeon.RoomInfo;
 import figure.FigureInfo;
 import figure.action.Action;
 import figure.action.result.ActionResult;
+import figure.action.result.ActionResultWithGameRound;
 import game.RoomInfoEntity;
 
 import de.jdungeon.app.ActionAssembler;

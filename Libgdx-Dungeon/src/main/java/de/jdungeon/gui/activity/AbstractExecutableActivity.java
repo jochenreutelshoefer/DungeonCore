@@ -1,7 +1,7 @@
 package de.jdungeon.gui.activity;
 
-import figure.FigureInfo;
 import figure.action.result.ActionResult;
+import figure.action.result.ActionResultWithGameRound;
 import gui.Paragraph;
 import gui.Paragraphable;
 
@@ -20,7 +20,7 @@ public abstract class AbstractExecutableActivity<T> implements Activity<T> {
 	}
 
 	@Override
-	public boolean plugToController(Object target) {
+	public ActionResult plugToController(Object target) {
 		return playerController.plugActivity(this, target);
 	}
 
@@ -38,7 +38,12 @@ public abstract class AbstractExecutableActivity<T> implements Activity<T> {
 
 
 	@Override
-	public boolean isCurrentlyPossible(Object target) {
-		return possible(target).getSituation() == ActionResult.Situation.possible;
+	public ActionResult isCurrentlyPossible(Object target) {
+		return possible(target);
+	}
+
+	@Override
+	public PlayerController getPlayerController() {
+		return playerController;
 	}
 }

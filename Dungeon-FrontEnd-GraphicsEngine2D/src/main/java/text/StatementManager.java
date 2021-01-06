@@ -11,6 +11,7 @@ import java.util.List;
 
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
+import figure.action.result.ActionResultWithGameRound;
 import figure.percept.BreakSpellPercept;
 import figure.percept.DiePercept;
 import figure.percept.DisappearPercept;
@@ -32,6 +33,10 @@ import gui.Texts;
 import org.jetbrains.annotations.NotNull;
 
 public class StatementManager {
+
+	public static Statement getStatement(ActionResultWithGameRound actionResultWithGameRound) {
+		return getStatement(actionResultWithGameRound.getResult(), actionResultWithGameRound.getRound());
+	}
 
 	public static Statement getStatement(ActionResult res, int round) {
 		Statement s = new Statement("ActionResStatement", 0, round);
@@ -369,4 +374,6 @@ public class StatementManager {
 
 		return l;
 	}
+
+
 }

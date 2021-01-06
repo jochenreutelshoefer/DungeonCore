@@ -83,7 +83,6 @@ public class ScoutShrine extends Location {
 
 	@Override
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-
 		ScoutResult result = new ScoutResult(f, RoomObservationStatus.VISIBILITY_ITEMS);
 		for (Room room : roomsList) {
 			f.getRoomVisibility().addVisibilityModifier(room.getNumber(), result);

@@ -758,7 +758,7 @@ public class GraphicObjectRenderer {
 
 		locationRenderInformationMap.put(HealthFountain.class, createDefaultLocationMap(healthFountainDimension, HealthFountain.class));
 		locationRenderInformationMap.put(MoonRuneFinderShrine.class, createDefaultLocationMap(defenderDimension, MoonRuneFinderShrine.class));
-		locationRenderInformationMap.put(Statue.class, createDefaultLocationMap(statueDimension, MoonRuneFinderShrine.class));
+		locationRenderInformationMap.put(Statue.class, createDefaultLocationMap(statueDimension, Statue.class));
 
 		Map<LocationState, JDImageLocated> defenderMap = new HashMap<>();;
 		defenderMap.put(DefenderLocation.DefenderState.Activated, new JDImageLocated(ImageManager.defenderLocation_active, defenderDimension));

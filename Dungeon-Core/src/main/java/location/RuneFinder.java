@@ -21,6 +21,7 @@ import item.quest.Rune;
 import dungeon.JDPoint;
 import dungeon.Room;
 
+@Deprecated
 public class RuneFinder extends Location {
 
 	private final Rune rune;

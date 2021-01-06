@@ -1,63 +1,56 @@
 package location;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import dungeon.Dungeon;
 import dungeon.RoomEntity;
+import figure.Figure;
+import figure.hero.Hero;
+import game.JDEnv;
 import item.DustItem;
 import item.Item;
 import item.ItemPool;
 import item.interfaces.Usable;
+import util.Arith;
 
 /**
  * @author Duke1
- *
+ * <p>
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-import java.util.LinkedList;
-import java.util.List;
 
-import util.Arith;
-import dungeon.Dungeon;
-import figure.Figure;
-import figure.hero.Hero;
-import game.JDEnv;
+@Deprecated
+public class Trader extends Location /*implements itemOwner*/ {
 
-
-public class Trader extends Location /*implements itemOwner*/{
-	
 	double rate = 1.6;
 	int rounds_to_change = 10;
 	int itemsCnt = 5;
 
-	
 	List<Item> items = new LinkedList<Item>();
 
 	int AvWorth;
 
-	
 	int rounds = 0;
 
-	
 	boolean ok = false;
 
-	
 	Dungeon d;
 
-	
-	
-	
 	public Trader(int AvWorth, Dungeon d) {
 		super();
 		this.AvWorth = AvWorth;
 		this.d = d;
-		for(int i = 0;	i < itemsCnt; i++) {
-			addNewItem();	
+		for (int i = 0; i < itemsCnt; i++) {
+			addNewItem();
 		}
 	}
-	
+
 	public void metaClick(Figure f) {
-		
+
 	}
 
 	@Override
@@ -69,22 +62,21 @@ public class Trader extends Location /*implements itemOwner*/{
 	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
 		return false;
 	}
-	
-	
+
 	private void addNewItem() {
-		int value = (int)Arith.gauss(10 + (int)(Math.random() * AvWorth), 2);	
-		Item i = ItemPool.getRandomItem(value, 0.8+Math.random());
-		while((i instanceof DustItem)) {
-			i = ItemPool.getRandomItem(value, 0.8+Math.random());
-			
+		int value = (int) Arith.gauss(10 + (int) (Math.random() * AvWorth), 2);
+		Item i = ItemPool.getRandomItem(value, 0.8 + Math.random());
+		while ((i instanceof DustItem)) {
+			i = ItemPool.getRandomItem(value, 0.8 + Math.random());
 		}
 		items.add(i);
 	}
 
 	@Override
 	public boolean canBeUsedBy(Figure f) {
-		   return f instanceof Hero;
-	   }
+		return f instanceof Hero;
+	}
+
 	@Override
 	public void turn(int round) {
 		rounds++;
@@ -100,15 +92,14 @@ public class Trader extends Location /*implements itemOwner*/{
 	public boolean getOk() {
 		return ok;
 	}
-	
+
 	@Override
 	public boolean needsTarget() {
 		return false;
 	}
-	
 
 	private void removeItem() {
-		items.remove((int)(Math.random()*items.size()));	
+		items.remove((int) (Math.random() * items.size()));
 	}
 
 	/**
@@ -134,67 +125,65 @@ public class Trader extends Location /*implements itemOwner*/{
 	public String getText() {
 		return JDEnv.getResourceBundle().getString("shrine_trader_text");
 	}
-	
+
 	public String getBeginText() {
-		return JDEnv.getResourceBundle().getString("shrine_trader_begin");	
+		return JDEnv.getResourceBundle().getString("shrine_trader_begin");
 	}
-	
+
 	public String getWhatText() {
 		return JDEnv.getResourceBundle().getString("shrine_trader_want");
 	}
-	
+
 	public String getWantText() {
 		return JDEnv.getResourceBundle().getString("shrine_trader_offer");
-	}	
-	
-	public String getEmptyText() {
-		return JDEnv.getResourceBundle().getString("shrine_trader_trade");	
 	}
-	
-	
+
+	public String getEmptyText() {
+		return JDEnv.getResourceBundle().getString("shrine_trader_trade");
+	}
+
 	public String setTrade(List<Item> heroItems, List<Item> traderItems) {
 		int heroGives = summItems(heroItems);
 		//System.out.println(heroItems.size()+ " biete : "+heroGives);
-		
+
 		int heroWants = summItems(traderItems);
 		//System.out.println(traderItems.size()+"m�chte : "+heroWants);
-		
-		if(heroGives < heroWants * rate) {
+
+		if (heroGives < heroWants * rate) {
 			ok = false;
-		return JDEnv.getResourceBundle().getString("shrine_trader_no");	
+			return JDEnv.getResourceBundle().getString("shrine_trader_no");
 		}
 		else {
 			ok = true;
-			return  JDEnv.getResourceBundle().getString("shrine_trader_yes");
+			return JDEnv.getResourceBundle().getString("shrine_trader_yes");
 		}
 	}
-	
+
 	public void makeTrade(List<Item> heroItems, List<Item> traderItems) {
-		for(int i = 0; i< heroItems.size(); i++) {
+		for (int i = 0; i < heroItems.size(); i++) {
 			Item it = heroItems.get(i);
 			//[TODO] Gegenst�nde wegnehmen 
 			//System.out.println("held gibt ab; "+it.toString());
 			//boolean b = game.getHero().removeItem(it);	
 			//System.out.println(b);
 		}
-		for(int i = 0; i< traderItems.size(); i++) {
+		for (int i = 0; i < traderItems.size(); i++) {
 //			[TODO] Gegenst�nde geben
 			//game.getHero().addItem((Item)traderItems.get(i),location);	
 			items.remove(traderItems.get(i));
 		}
-			
 	}
-	
+
 //	public boolean addItem(item it,itemOwner o) {
 //		location.addItem(it);
 //		return true;	
 //	}
-	
+
 	private int summItems(List<Item> l) {
 		int sum = 0;
-		for(int i = 0; i < l.size(); i++) {
-			sum += l.get(i).getWorth();	
-		}	
+		for (int i = 0; i < l.size(); i++) {
+			sum += l.get(i).getWorth();
+		}
 		return sum;
 	}
 
@@ -211,8 +200,6 @@ public class Trader extends Location /*implements itemOwner*/{
 		return null;
 	}
 
-
-
 	/**
 	 * @see Usable#usableOnce()
 	 */
@@ -220,5 +207,4 @@ public class Trader extends Location /*implements itemOwner*/{
 	public boolean usableOnce() {
 		return false;
 	}
-
 }

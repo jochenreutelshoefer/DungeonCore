@@ -7,6 +7,10 @@ import java.util.Map;
 import dungeon.PositionInRoomInfo;
 import dungeon.util.RouteInstruction;
 import figure.action.Action;
+import figure.action.result.ActionResult;
+import figure.percept.TextPercept;
+import text.Statement;
+import text.StatementManager;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.app.ActionAssembler;
@@ -48,13 +52,16 @@ public class KeyboardControl {
 
 		if (isFight) {
 			if (input.isKeyPressed(Keys.SPACE)) {
-				boolean possible = playerController.plugActivity(playerController.getAttackActivity(), playerController.getGameScreen()
+				ActionResult actionResult = playerController.plugActivity(playerController.getAttackActivity(), playerController
+						.getGameScreen()
 						.getFocusManager()
 						.getWorldFocusObject());
-				if (possible) {
+				if (actionResult.getSituation() == ActionResult.Situation.possible) {
 					return eventProcessed();
 				}
 				else {
+					Statement statement = StatementManager.getStatement(actionResult, playerController.getRound());
+					this.playerController.tellPercept(new TextPercept(statement.getText(), playerController.getRound()));
 					AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 				}
 			}
@@ -155,11 +162,13 @@ public class KeyboardControl {
 				if (input.isKeyPressed(cursorKey)) {
 					if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
 					RouteInstruction.Direction dir = keyDirectionMap.get(cursorKey);
-					if (scoutActivity.isCurrentlyPossible(dir)) {
+					ActionResult actionResult = scoutActivity.isCurrentlyPossible(dir);
+					if (actionResult.getSituation() == ActionResult.Situation.possible) {
 						playerController.plugActivity(scoutActivity, dir);
 						return eventProcessed();
-					} else {
-						AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+					}
+					else {
+						tellUserEventFail(actionResult);
 					}
 				}
 			}
@@ -178,10 +187,10 @@ public class KeyboardControl {
 						if (input.isKeyPressed(cursorKey)) {
 							RouteInstruction.Direction dir = keyDirectionMap.get(cursorKey);
 							if (possibleFleeDirection == dir) {
-								boolean possible = playerController.getFleeActivity()
+								ActionResult actionResult = playerController.getFleeActivity()
 										.plugToController(RouteInstruction.Direction.East);
-								if (!possible) {
-									AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+								if (!(actionResult.getSituation() == ActionResult.Situation.possible)) {
+									tellUserEventFail(actionResult);
 								}
 								return eventProcessed();
 							}
@@ -207,6 +216,12 @@ public class KeyboardControl {
 			}
 		}
 		return null;
+	}
+
+	private void tellUserEventFail(ActionResult actionResult) {
+		Statement statement = StatementManager.getStatement(actionResult, playerController.getRound());
+		playerController.tellPercept(new TextPercept(statement.getText(), playerController.getRound()));
+		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
 	}
 
 	private boolean eventProcessed() {

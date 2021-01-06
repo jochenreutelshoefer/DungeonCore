@@ -35,7 +35,7 @@ public class RevealMapShrine extends Location {
 
 	@Override
 	public String getStory() {
-		return "Zeigt verborgenes";
+		return "Zeigt Dir verborgene Bereiche.";
 	}
 
 	@Override

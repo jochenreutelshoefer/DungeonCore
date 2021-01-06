@@ -20,6 +20,8 @@ public class TextPercept extends Percept {
 		super(round);
 		text = s;
 	}
+
+
 	/**
 	 * @return Returns the text.
 	 */

@@ -1,17 +1,9 @@
 package spell;
-import dungeon.RoomEntity;
+
 import figure.Figure;
 import figure.percept.TextPercept;
 import game.JDEnv;
 
-/**
- * @author Duke1
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- */
 
 
 public class Heal extends NoTargetSpell {
@@ -53,7 +45,7 @@ public class Heal extends NoTargetSpell {
 		return JDEnv.getResourceBundle().getString("spell_heal_text");
 	}
 	
-	public Heal(int level, int diffMin, int diff, int cost,int strength, int lerncost) {
+	public Heal(int level, int diffMin, int diff, int cost, int strength, int lerncost) {
 		super(level,diffMin, diff, cost,strength, lerncost);
 	}
 	

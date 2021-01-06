@@ -97,7 +97,7 @@ public class DefenderLocation extends Location {
 		if(state == DefenderState.Fighting) {
 			if(!actionRequired()) {
 				room.figureLeaves(defenderFigure);
-				changeStateTo(DefenderState.Activated, round);
+				changeStateTo(DefenderState.Inactive, round);
 			}
 		}
 	}
@@ -125,17 +125,17 @@ public class DefenderLocation extends Location {
 
 	@Override
 	public String getStory() {
-		return toString();
+		return "Kann Dich in diesem Raum beschützen wenn aktiviert.";
 	}
 
 	@Override
 	public String toString() {
-		return  "Beschützer";
+		return getText();
 	}
 
 	@Override
 	public String getText() {
-		return toString();
+		return "Beschützer" ;
 	}
 
 	@Override
@@ -154,7 +154,6 @@ public class DefenderLocation extends Location {
 		DefenderState oldState = this.state;
 		DefenderState newState = DefenderState.Activated;
 		this.state = newState;
-		Log.info("Activating Defender");
 		room.distributePercept(new LocationStateChangePercept(this, room, oldState, newState, round));
 		return true;
 	}

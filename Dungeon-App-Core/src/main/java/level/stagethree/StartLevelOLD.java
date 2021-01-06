@@ -66,17 +66,17 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 	@Override
 	public String getName() {
-		return "Level 1";
+		return "Todo: Name";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Einstiegslevel";
+		return "Todo: Description";
 	}
 
 	@Override
 	public int getRoundScoringBaseValue() {
-		return 250;
+		return 400;
 	}
 
 	private Dungeon createStartDungeon() {
@@ -116,9 +116,6 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 			entryRoom.setShrine(new RevealMapShrine(exitRoom));
 			filler.addAllocatedRoom(entryRoom);
 
-
-
-
 			// CHEST TEST
 			List<Item> itemsL = new ArrayList<Item>();
 			Item it1 = ItemPool.getRandomItem(25, 1);
@@ -154,11 +151,6 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		final Room fountainRoom = filler.getUnallocatedRandomRoom();
 		fountainRoom.setShrine(new HealthFountain(30, 1));
 		filler.addAllocatedRoom(fountainRoom);
-
-		List<Item> items = new ArrayList<Item>();
-		for (int i = 0; i < 5; i++) {
-			items.add(ItemPool.getRandomItem((int) (20 + (Math.random() * 50)), Math.random() * 2));
-		}
 
 		// flush remaining items
 		List<Item> itemList = new ArrayList<Item>();
@@ -205,9 +197,9 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		exitRoom.setFloorIndex(FLOOR_INDEX_EXIT);
 		List<Monster> gateKeepers = new ArrayList<Monster>();
 
-		gateKeepers.add(new Orc(10000));
-		gateKeepers.add(new Wolf(10000));
-		gateKeepers.add(new Skeleton(10000));
+		gateKeepers.add(new Orc(15000));
+		gateKeepers.add(new Wolf(15000));
+		gateKeepers.add(new Skeleton(15000));
 
 
 		Iterator<RouteInstruction.Direction> directionsIterator = doorDirections.iterator();
@@ -243,7 +235,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 			if (preGuardRoom == null) return false;
 			filler.addAllocatedRoom(preGuardRoom);
 			preGuardRoom.setFloorIndex(FLOOR_INDEX_EXIT);
-			Monster preGuardMonster = filler.getSmallMonster(800);
+			Monster preGuardMonster = filler.getSmallMonster(10000);
 			// TODO: use setControl!
 			preGuardMonster.setAI(new PreGuardBehaviour(preGuardRoom));
 

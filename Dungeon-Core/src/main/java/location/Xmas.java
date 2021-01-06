@@ -16,12 +16,7 @@ import game.JDEnv;
 import item.Item;
 import item.interfaces.Usable;
 
-/**
- * @author Jochen
- * <p>
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
+@Deprecated
 public class Xmas extends Location {
 
 	Item it;
@@ -35,25 +30,16 @@ public class Xmas extends Location {
 
 	}
 
-	/**
-	 * @see Location#getStory()
-	 */
 	@Override
 	public String getStory() {
 		return JDEnv.getResourceBundle().getString("shrine_xmas_story");
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_xmas_name");
 	}
 
-	/**
-	 * @see Location#getText()
-	 */
 	@Override
 	public String getText() {
 		return toString();
@@ -71,9 +57,6 @@ public class Xmas extends Location {
 			this.location.addItem(it);
 			it = null;
 		}
-		else {
-			// System.out.println("Item ist null!");
-		}
 		return true;
 	}
 
@@ -87,9 +70,6 @@ public class Xmas extends Location {
 		return f instanceof Hero;
 	}
 
-	/**
-	 * @see Location#getStatus()
-	 */
 	@Override
 	public String getStatus() {
 		return null;
@@ -100,9 +80,6 @@ public class Xmas extends Location {
 
 	}
 
-	/**
-	 * @see Usable#usableOnce()
-	 */
 	@Override
 	public boolean usableOnce() {
 		return false;

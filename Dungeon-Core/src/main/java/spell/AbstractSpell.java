@@ -77,10 +77,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	protected int level = 1;
 
-	protected int diff;
-
-	protected int diffMin;
-
 	protected int worth;
 
 	protected int strength;
@@ -107,8 +103,6 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	public AbstractSpell(int level, int diffMin, int diff, int cost, int strength, int learnCost) {
 		this.level = level;
-		this.diffMin = diffMin;
-		this.diff = diff;
 		this.cost = cost;
 		this.strength = strength;
 		valueSet[0] = diffMin;
@@ -120,13 +114,12 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	public AbstractSpell(int level, int[] values) {
 		this.level = level;
-		this.diffMin = values[0];
-		this.diff = values[1];
 		this.cost = values[2];
 		this.strength = values[3];
 		valueSet = values;
 	}
 
+	@Deprecated
 	public static AbstractSpell getSpell(String s) {
 		if (s.equals("heal")) {
 			return new Heal(1);
@@ -257,7 +250,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 		return c;
 	}
 
-	public static boolean distanceMax(Figure mage, Object target, int max) {
+	static boolean distanceMax(Figure mage, Object target, int max) {
 		if (target instanceof Figure) {
 			Figure victim = ((Figure) target);
 			if (mage.getRoom() == victim.getRoom()) {
@@ -291,12 +284,11 @@ public abstract class AbstractSpell implements Spell, Serializable {
 			}
 		}
 
-		int d = (int) mage.getDust().getValue();
-		int c = calcCost();
+		int availableMagicDust = (int) mage.getDust().getValue();
+		int costsOfMagicDust = calcCost();
 
 		if (rightModus(mage)) {
-			if (d >= c) {
-
+			if (availableMagicDust >= costsOfMagicDust) {
 				if (doIt) {
 					sorcerStep(mage, target, round);
 					return ActionResult.DONE;
@@ -304,15 +296,19 @@ public abstract class AbstractSpell implements Spell, Serializable {
 				return ActionResult.POSSIBLE;
 			}
 			else {
-
-				String str = Texts.noDust();
-				mage.tellPercept(new TextPercept(str, round));
+				// not enough magic dust...
+				if (doIt) {
+					String str = Texts.noDust();
+					mage.tellPercept(new TextPercept(str, round));
+				}
 				return ActionResult.DUST;
 			}
 		}
 		else {
-			String str = Texts.notNow();
-			mage.tellPercept(new TextPercept(str, round));
+			if (doIt) {
+				String str = Texts.notNow();
+				mage.tellPercept(new TextPercept(str, round));
+			}
 			return ActionResult.MODE;
 		}
 	}
@@ -341,10 +337,4 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	}
 
 	protected abstract void sorcer(Figure mage, RoomEntity target, int round);
-
-	@Override
-	public int getDifficulty() {
-		return this.diff;
-	}
-
 }

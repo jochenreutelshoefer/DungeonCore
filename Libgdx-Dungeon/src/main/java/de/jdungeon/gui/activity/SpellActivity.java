@@ -2,10 +2,11 @@ package de.jdungeon.gui.activity;
 
 import figure.action.result.ActionResult;
 import game.RoomInfoEntity;
+import log.Log;
 import spell.SpellInfo;
+import spell.TargetScope;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.world.PlayerController;
 
@@ -28,14 +29,18 @@ public class SpellActivity extends AbstractExecutableActivity<SpellInfo> {
 
 	@Override
 	public ActivityPlan createExecutionPlan(boolean doIt, Object targetObject) {
-		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), doIt, targetObject);
+		TargetScope targetScope = spell.getTargetScope();
+		RoomInfoEntity target = null;
+		if (targetScope != null) {
+			target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, targetScope, doIt, targetObject);
+		}
 		return new SimpleActivityPlan(this, actionAssembler.getActionAssemblerHelper().wannaSpell(spell, target));
 	}
 
-
 	@Override
 	public ActionResult possible(Object targetObject) {
-		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, spell.getTargetScope(), false, targetObject);
+		TargetScope targetScope = spell.getTargetScope();
+		RoomInfoEntity target = TargetSkillActivity.findTarget(playerController.getFigure(), focusManager, targetScope, false, targetObject);
 		return spell.isCurrentlyPossible(actionAssembler.getFigure(), target);
 	}
 

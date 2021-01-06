@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import figure.action.result.ActionResult;
 import figure.hero.HeroInfo;
+import figure.percept.TextPercept;
 import skill.FleeSkill;
 import skill.HealSkill;
 import skill.LionessConjureSkill;
@@ -16,6 +18,8 @@ import skill.Skill;
 import skill.TargetSkill;
 import spell.AbstractSpell;
 import spell.SpellInfo;
+import text.Statement;
+import text.StatementManager;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -51,6 +55,11 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		this.info = controller.getHeroInfo();
 		this.controller = controller;
 		updateActivityList();
+	}
+
+	@Override
+	public PlayerController getPlayerController() {
+		return controller;
 	}
 
 	@Override
@@ -119,12 +128,15 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 		if (activity == null) {
 			return;
 		}
-		boolean possible = activity.plugToController(null);
-		if(possible) {
+		ActionResult result = activity.plugToController(null);
+		if (result.getSituation() == ActionResult.Situation.possible) {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		}
 		else {
 			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+			int round = activity.getPlayerController().getRound();
+			Statement statement = StatementManager.getStatement(result, round);
+			getPlayerController().tellPercept(new TextPercept(statement.getText(), round));
 		}
 	}
 }

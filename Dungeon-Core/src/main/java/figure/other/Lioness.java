@@ -16,7 +16,7 @@ import item.interfaces.ItemOwner;
 public class Lioness extends ConjuredMagicFigure {
 
 	private Lioness(int value, Dungeon d, AI ai) {
-		super(value, 100, ai);
+		super(value, 200, ai);
 		this.setActualDungeon(d);
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,

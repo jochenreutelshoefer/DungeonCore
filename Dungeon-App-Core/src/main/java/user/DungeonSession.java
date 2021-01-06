@@ -41,5 +41,11 @@ public interface DungeonSession {
 
 	void learnSkill(Spell spell);
 
+	/**
+	 * Returns the game round, i. e. the number of the current round,
+	 * that is how many turns have been played in the current dungeon.
+	 *
+	 * @return current round number
+	 */
 	int getDungeonRound();
 }

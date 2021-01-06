@@ -71,7 +71,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		handlePercept(p);
 	}
 
-	public void handlePercept(Percept p) {
+	private void handlePercept(Percept p) {
 
 		if(p instanceof LocationStateChangePercept) {
 			screen.invalidateEntityRenderCache(((LocationStateChangePercept)p).getLocation(figure));

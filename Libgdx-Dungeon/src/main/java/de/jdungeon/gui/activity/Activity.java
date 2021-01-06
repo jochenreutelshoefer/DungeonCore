@@ -1,7 +1,10 @@
 package de.jdungeon.gui.activity;
 
 import figure.action.result.ActionResult;
+import figure.action.result.ActionResultWithGameRound;
 import gui.Paragraphable;
+
+import de.jdungeon.world.PlayerController;
 
 /**
  * An activity is something the player can trigger on the UI to make
@@ -14,12 +17,14 @@ public interface Activity<T> extends Paragraphable {
 
 	T getObject();
 
-	boolean plugToController(Object target);
+	ActionResult plugToController(Object target);
 
 	ActivityPlan createExecutionPlan(boolean doIt, Object target);
 
-	boolean isCurrentlyPossible(Object target);
+	ActionResult isCurrentlyPossible(Object target);
 
 	ActionResult possible(Object target);
+
+	PlayerController getPlayerController();
 
 }

@@ -21,6 +21,9 @@ import de.jdungeon.world.PlayerController;
 public abstract class LigbgdxItemActivityProvider implements LibgdxActivityProvider {
 
 	private final ItemInfoOwner info;
+
+
+
 	private final PlayerController guiControl;
 	private final Map<Class, String> imageCache = new HashMap<>();
 	private final InventoryImageManager inventoryImageManager;
@@ -29,6 +32,11 @@ public abstract class LigbgdxItemActivityProvider implements LibgdxActivityProvi
 		this.info = info;
 		this.guiControl = guiControl;
 		this.inventoryImageManager = inventoryImageManager;
+	}
+
+	@Override
+	public PlayerController getPlayerController() {
+		return guiControl;
 	}
 
 	@Override
