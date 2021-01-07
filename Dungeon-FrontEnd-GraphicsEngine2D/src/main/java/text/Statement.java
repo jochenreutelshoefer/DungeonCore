@@ -6,14 +6,16 @@
  */
 package text;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Statement {
 
 	private final String text;
 	private final int format;
 	private final int round;
 
-	public Statement(String t, int i, int round) {
-		text = t;
+	public Statement(@NotNull String t, int i, int round) {
+		text = t.trim();
 		format = i;
 		this.round = round;
 	}

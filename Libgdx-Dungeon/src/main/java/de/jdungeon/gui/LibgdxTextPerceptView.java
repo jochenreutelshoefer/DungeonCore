@@ -27,6 +27,8 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	// TODO: make relative to screen size!?
 	private static final int WIDTH_MAX = 400;
 	private static final int HEIGHT_MAX = 400;
+	private static final int LINE_PADDING_SINGLE = 5;
+	private static final int LINE_PADDING_DOUBLE = 2 * LINE_PADDING_SINGLE;
 
 	private final List<Statement> cache = new ArrayList<>();
 	private List<Statement> all = new ArrayList<>();
@@ -39,9 +41,12 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	private Texture offlineTextTexture;
 	private final FrameBuffer frameBuffer;
 	private final Batch spriteBatch = new SpriteBatch();
+	private final GlyphLayout glyphLayoutRoundNumber = new GlyphLayout();
+	private final GlyphLayout glyphLayoutStatementText = new GlyphLayout();
 
 	public LibgdxTextPerceptView() {
-		super(new JDPoint(Gdx.app.getGraphics().getWidth()/2 - WIDTH_MAX/2, -1 * (HEIGHT_MAX - 40)), new JDDimension(WIDTH_MAX, HEIGHT_MAX));
+		super(new JDPoint(Gdx.app.getGraphics()
+				.getWidth() / 2 - WIDTH_MAX / 2, -1 * (HEIGHT_MAX - 40)), new JDDimension(WIDTH_MAX, HEIGHT_MAX));
 		lineHeight = (int) font.getLineHeight() + 4;
 
 		int framebufferWidth = HEIGHT_MAX * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight());
@@ -83,7 +88,7 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 
 		shapeRenderer.set(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(Color.GRAY);
-		shapeRenderer.rect(x, y, width+1, height);
+		shapeRenderer.rect(x, y, width + 1, height);
 	}
 
 	private Texture updateOfflineMessageTexture() {
@@ -96,36 +101,32 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 		spriteBatch.begin();
 		ListIterator<Statement> listIterator = all.listIterator(all.size());
 
-		GlyphLayout layout2 = new GlyphLayout();
-
-		Statement textPercept = null;
+		int yOffsetUpwards = 0;
 		if (listIterator.hasPrevious()) {
-			textPercept = listIterator.previous();
+			yOffsetUpwards += fetchPrepareAndDrawPreviousStatement(listIterator, yOffsetUpwards, LINE_PADDING_SINGLE);
 		}
-		int yOffsetUpwards = lineHeight * getNumberOfLines(textPercept) - 2 ;
-		while (yOffsetUpwards < frameBuffer.getHeight() && textPercept != null) {
-			int yCoord = frameBuffer.getHeight() - yOffsetUpwards;
-
-			layout2.setText(font, toThreeDigitsString(textPercept.getRound()), Color.GRAY, frameBuffer.getWidth() * 0.05f, Align.left, true);
-			font.draw(spriteBatch, layout2, 4, yCoord);
-
-			layout2.setText(font, textPercept.getText(), com.badlogic.gdx.graphics.Color.WHITE, frameBuffer.getWidth() * 0.9f, Align.left, true);
-			font.draw(spriteBatch, layout2, frameBuffer.getWidth() * 0.07f, yCoord);
-
-			if (listIterator.hasPrevious()) {
-				textPercept = listIterator.previous();
-			}
-			else {
-				textPercept = null;
-			}
-
-			yOffsetUpwards += lineHeight * getNumberOfLines(textPercept);
+		while (listIterator.hasPrevious() && yOffsetUpwards < frameBuffer.getHeight()) {
+			yOffsetUpwards += fetchPrepareAndDrawPreviousStatement(listIterator, yOffsetUpwards, LINE_PADDING_DOUBLE);
 		}
 
 		spriteBatch.end();
 		frameBuffer.unbind();
 
 		return frameBuffer.getColorBufferTexture();
+	}
+
+	private int fetchPrepareAndDrawPreviousStatement(ListIterator<Statement> listIterator, int yOffsetUpwardsOverall, int linePadding) {
+		Statement textPercept = listIterator.previous();
+		glyphLayoutRoundNumber.setText(font, toThreeDigitsString(textPercept.getRound()), Color.GRAY, frameBuffer.getWidth() * 0.05f, Align.left, true);
+		glyphLayoutStatementText.setText(font, textPercept.getText(), Color.WHITE, frameBuffer.getWidth() * 0.9f, Align.left, true);
+
+		int yOffsetUpwardsStatementIncrement = (int) glyphLayoutStatementText.height + linePadding;
+		yOffsetUpwardsOverall += yOffsetUpwardsStatementIncrement;
+		int yCoord = frameBuffer.getHeight() - yOffsetUpwardsOverall;
+
+		font.draw(spriteBatch, glyphLayoutRoundNumber, 4, yCoord);
+		font.draw(spriteBatch, glyphLayoutStatementText, frameBuffer.getWidth() * 0.07f, yCoord);
+		return yOffsetUpwardsStatementIncrement;
 	}
 
 	@Override
