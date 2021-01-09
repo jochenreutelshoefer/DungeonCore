@@ -303,7 +303,9 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 			result = new ArrayList<>();
 			List<Item> items = r.getItems();
 			for (Item item : items) {
-				result.add((ItemInfo) item.makeInfoObject(this.map));
+				if(item != null) {
+					result.add((ItemInfo) item.makeInfoObject(this.map));
+				}
 			}
 		}
 		return result;

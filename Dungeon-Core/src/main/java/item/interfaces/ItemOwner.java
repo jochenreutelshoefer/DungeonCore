@@ -31,7 +31,7 @@ public interface ItemOwner {
 	
 	ItemInfo[] getItemInfos(DungeonVisibilityMap map);
 		
-	Item getItem(ItemInfo it);
+	Item unwrapItem(ItemInfo it);
 	
 	boolean hasItem(Item i);
 

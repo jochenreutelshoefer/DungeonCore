@@ -35,7 +35,7 @@ public class TakeItemAction extends AbstractExecutableAction {
 		if (fight) {
 			if (figure.canPayActionPoints(1)) {
 				ItemInfo info = getItem();
-				Item item = figure.getRoom().getItem(info);
+				Item item = figure.getRoom().unwrapItem(info);
 				if (figure.isAbleToTakeItemInFight(item)) {
 					if (figure.getRoom().hasItem(item)) {
 						if (figure.canTakeItem(item)) {
@@ -59,7 +59,7 @@ public class TakeItemAction extends AbstractExecutableAction {
 		}
 		else {
 			ItemInfo info = getItem();
-			Item item = figure.getRoom().getItem(info);
+			Item item = figure.getRoom().unwrapItem(info);
 			if (figure.isAbleToTakeItem(item)) {
 				if (figure.getRoom().hasItem(item)) {
 					if (figure.canTakeItem(item)) {

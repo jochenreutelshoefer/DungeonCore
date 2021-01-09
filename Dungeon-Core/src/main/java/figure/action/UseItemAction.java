@@ -64,7 +64,7 @@ public class UseItemAction extends AbstractExecutableAction {
 		// TODO check auf use moeglich
 		if (figure.canPayActionPoints(1)) {
 			ItemInfo info = getItem();
-			Item it = figure.getItem(info);
+			Item it = figure.unwrapItem(info);
 			if (it instanceof Usable) {
 				Usable usable = (Usable) it;
 				RoomInfoEntity target = getTarget();

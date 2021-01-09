@@ -61,7 +61,7 @@ public class RuneShrine extends Location implements ItemOwner {
 	}
 
 	@Override
-	public Item getItem(ItemInfo it) {
+	public Item unwrapItem(ItemInfo it) {
 
 		if (ItemInfo.makeItemInfo(r, null).equals(it)) {
 			return r;

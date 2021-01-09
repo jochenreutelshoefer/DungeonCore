@@ -33,6 +33,8 @@ import item.HealPotion;
 import item.Item;
 import item.ItemPool;
 import item.Key;
+import item.interfaces.ItemOwner;
+import log.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.Arith;
 
@@ -44,7 +46,6 @@ public class SimpleDungeonFiller implements DungeonFiller {
 
 	private final Dungeon dungeon;
 	private final List<Key> allKeys;
-	private int keyIndex = 0;
 	private final Collection<Item> itemsToBeDistributed = new HashSet<Item>();
 
 	private final List<Room> allocatedRooms = new ArrayList<Room>();
@@ -69,8 +70,8 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		int lastRow = size.getY() - 1;
 		for (int x = 0; x < size.getX(); x++) {
 			for (int y = 0; y < size.getY(); y++) {
-				if(x == firstCol || x == lastCol || y == firstRow || y == lastRow ) {
-					if(!cornerAllowed && ((x == firstCol && (y == 0 || y == lastRow))|| (x == lastCol && (y == 0 || y == lastRow)))){
+				if (x == firstCol || x == lastCol || y == firstRow || y == lastRow) {
+					if (!cornerAllowed && ((x == firstCol && (y == 0 || y == lastRow)) || (x == lastCol && (y == 0 || y == lastRow)))) {
 						continue;
 					}
 					candidates.add(dungeon.getRoomNr(x, y));
@@ -78,43 +79,47 @@ public class SimpleDungeonFiller implements DungeonFiller {
 			}
 		}
 
-		return candidates.get((int)(Math.random()* candidates.size()));
+		return candidates.get((int) (Math.random() * candidates.size()));
 	}
-
 
 	@Override
 	public void setToWallUnreachableRoom(JDPoint heroEntryPoint) {
 		for (int x = 0; x < dungeon.getSize().getX(); x++) {
 			for (int y = 0; y < dungeon.getSize().getY(); y++) {
 				Path path = DungeonUtils.findShortestPath(heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap.getAllVisMap(dungeon), true);
-				if(path == null) {
+				if (path == null) {
 					dungeon.getRoom(x, y).setIsWall(true);
 				}
 			}
 		}
-
 	}
 
 	@Override
 	public Monster getSmallMonster(int value) {
 		int k = (int) (Math.random() * 3);
-		if (k == 0)
+		if (k == 0) {
 			return new Wolf(value);
-		if (k == 1)
+		}
+		if (k == 1) {
 			return new Orc(value);
-		else
+		}
+		else {
 			return new Skeleton(value);
+		}
 	}
 
 	@Override
 	public Monster getBigMonster(int value) {
 		int k = (int) (Math.random() * 3);
-		if (k == 0)
+		if (k == 0) {
 			return new Spider(value);
-		if (k == 1)
+		}
+		if (k == 1) {
 			return new Ogre(value);
-		else
+		}
+		else {
 			return new Ghul(value);
+		}
 	}
 
 	@Override
@@ -146,13 +151,12 @@ public class SimpleDungeonFiller implements DungeonFiller {
 
 	@Override
 	public Room getUnallocatedRandomRoom(RoomPositionConstraint... constraints) {
-		RectArea unallocatedSpaceRandom = getUnallocatedSpaceRandom(1, 1,  constraints);
-		if(unallocatedSpaceRandom != null) {
+		RectArea unallocatedSpaceRandom = getUnallocatedSpaceRandom(1, 1, constraints);
+		if (unallocatedSpaceRandom != null) {
 			return dungeon.getRoom(unallocatedSpaceRandom.getPosition());
 		}
 		return null;
 	}
-
 
 	@Override
 	public Room getUnallocatedRandomRoom(JDPoint near) {
@@ -160,12 +164,12 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		int limit = 100;
 		int x = near.getX();
 		int y = near.getY();
-		while(count < limit) {
-			int xNew = x - 3 + ((int)(Math.random() * 6));
-			int yNew = y - 3 + ((int)(Math.random() * 6));
+		while (count < limit) {
+			int xNew = x - 3 + ((int) (Math.random() * 6));
+			int yNew = y - 3 + ((int) (Math.random() * 6));
 			Room foundRoom = dungeon.getRoom(new JDPoint(xNew, yNew));
-			if(foundRoom != null) {
-				if(!isAllocated(foundRoom)) {
+			if (foundRoom != null) {
+				if (!isAllocated(foundRoom)) {
 					return foundRoom;
 				}
 			}
@@ -184,14 +188,36 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		this.allocatedRooms.addAll(rooms);
 	}
 
+	@Deprecated // use getOtherKey()
 	@Override
 	public Key getNextKey() {
-		if(allKeys.size() <= keyIndex) {
-			return null;
+
+		Collection<Room> allRooms = this.dungeon.getAllRooms();
+		Collection<Key> allUsedKeys = new HashSet<>();
+		for (Room room : allRooms) {
+			Collection<ItemOwner> roomItemOwners = room.getAllItemOwners();
+			for (ItemOwner itemOwner : roomItemOwners) {
+				List<Item> items = itemOwner.getItems();
+				for (Item item : items) {
+					if (item instanceof Key) {
+						allUsedKeys.add((Key) item);
+					}
+				}
+			}
 		}
-		Key key = allKeys.get(keyIndex);
-		keyIndex++;
-		return key;
+
+		return getOtherKey(allUsedKeys);
+	}
+
+	@Override
+	public Key getOtherKey(Collection<Key> usedKeys) {
+		for (Key key : allKeys) {
+			if (!usedKeys.contains(key)) {
+				return key;
+			}
+		}
+		Log.severe("Level generation demands more distinct keys than exist!");
+		return null;
 	}
 
 	@Override
@@ -200,15 +226,14 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		Collection<Room> allRooms = dungeon.getAllRooms();
 		for (Room room : allRooms) {
 			List<Door> openDoors = getDoorList(room, true);
-			if(openDoors.size() == 1) {
+			if (openDoors.size() == 1) {
 				// we found a dead end room
-				if(this.isAllocated(room)) {
+				if (this.isAllocated(room)) {
 					// don't count this one as it is special already
 					continue;
 				}
 				List<Room> deadEndPathRooms = collectDeadEndRoad(room, openDoors.get(0));
 				result.add(new DeadEndPath(room, deadEndPathRooms));
-
 			}
 		}
 		return result;
@@ -219,7 +244,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		path.add(room);
 		Room next = door.getOtherRoom(room);
 		List<Door> openDoorList = getOpenDoorList(next);
-		while(openDoorList.size() == 2) {
+		while (openDoorList.size() == 2) {
 			path.add(next);
 			door = getOtherDoor(openDoorList, door);
 			next = door.getOtherRoom(next);
@@ -229,12 +254,13 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	}
 
 	private Door getOtherDoor(List<Door> openDoorList, Door door) {
-		if((! openDoorList.contains(door)) || (!(openDoorList.size() == 2))) {
+		if ((!openDoorList.contains(door)) || (!(openDoorList.size() == 2))) {
 			throw new IllegalStateException("unexpected input!");
 		}
-		if(openDoorList.get(0).equals(door)) {
+		if (openDoorList.get(0).equals(door)) {
 			return openDoorList.get(1);
-		} else {
+		}
+		else {
 			return openDoorList.get(0);
 		}
 	}
@@ -257,13 +283,13 @@ public class SimpleDungeonFiller implements DungeonFiller {
 			for (int x = pointToCheck.getX(); x < pointToCheck.getX() + sizeX; x++) {
 				for (int y = pointToCheck.getY(); y < pointToCheck.getY() + sizeY; y++) {
 					Room room = getDungeon().getRoom(new JDPoint(x, y));
-					if (room == null || allocatedRooms.contains(room)  || !constraintsOk(room, constraints)) {
+					if (room == null || allocatedRooms.contains(room) || !constraintsOk(room, constraints)) {
 						isOk = false;
 						break;
 					}
 				}
 			}
-			if(isOk) {
+			if (isOk) {
 				result = pointToCheck;
 			}
 			trial++;
@@ -273,7 +299,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 
 	private boolean constraintsOk(Room room, RoomPositionConstraint[] constraints) {
 		for (RoomPositionConstraint constraint : constraints) {
-			if(!constraint.isValid(room)) {
+			if (!constraint.isValid(room)) {
 				return false;
 			}
 		}
@@ -283,7 +309,6 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	public JDPoint getRandomPoint() {
 		return new JDPoint(Math.random() * getDungeon().getSize().getX(),
 				Math.random() * getDungeon().getSize().getY());
-
 	}
 
 	public Room getUnallocatedRoomNearCenter() {
@@ -291,12 +316,12 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		int centerY = getDungeon().getSize().getY() / 2;
 		JDPoint centerPoint = new JDPoint(centerX, centerY);
 		final Room centerRoom = getDungeon().getRoom(centerPoint);
-		if(centerRoom != null && !centerRoom.isWall() && !isAllocated(centerRoom)) {
+		if (centerRoom != null && !centerRoom.isWall() && !isAllocated(centerRoom)) {
 			return centerRoom;
-		} else {
+		}
+		else {
 			return getUnallocatedRandomRoom(centerPoint);
 		}
-
 	}
 
 	@Override
@@ -311,14 +336,14 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		Collection<Room> wallRooms = dungeon.getWallRooms();
 		ignoredRooms.addAll(wallRooms);
 
-		boolean valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, ignoredRooms );
-		while(!valid) {
+		boolean valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, ignoredRooms);
+		while (!valid) {
 			unallocatedSpace = getUnallocatedSpaceRandom(sizeX, sizeY);
 			ignoredRooms = new HashSet<>();
 			ignoredRooms.addAll(unallocatedSpace.getRooms());
 			ignoredRooms.addAll(wallRooms);
 			valid = DungeonFillUtils.validateNet(dungeon.getAllRooms(), entryRoom, ignoredRooms);
-			if(trial > maxTrials) {
+			if (trial > maxTrials) {
 				break;
 			}
 			trial++;
@@ -340,7 +365,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 
 	@Override
 	public Item getItemForDistribution() {
-		if(itemsToBeDistributed.isEmpty()) return null;
+		if (itemsToBeDistributed.isEmpty()) return null;
 		Iterator<Item> iterator = itemsToBeDistributed.iterator();
 		Item item = iterator.next();
 		iterator.remove();
@@ -353,30 +378,29 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		int counterTries = 0;
 		int counterDoors = 0;
 		int max = 200;
-		while(counterDoors < number) {
+		while (counterDoors < number) {
 			counterTries++;
 			JDPoint randomPoint = getRandomPoint();
 			Room room = dungeon.getRoom(randomPoint);
-			if(room == null) continue;
+			if (room == null) continue;
 			List<Door> doors = getOpenDoorList(room);
-			if(doors.isEmpty()) continue;
+			if (doors.isEmpty()) continue;
 			int doorIndex = (int) (Math.random() * doors.size());
 			Door door = doors.get(doorIndex);
 			int direction = door.getDir(room.getPoint());
 			room.removeDoor(door, true);
 			boolean allRoomsStillReachable = checker.check();
 			if (allRoomsStillReachable) {
-				counterDoors ++;
+				counterDoors++;
 			}
 			else {
 				// we re-insert the door as it is required
 				room.addDoor(door, direction, true);
 			}
 
-			if(counterTries > max) {
+			if (counterTries > max) {
 				break;
 			}
-
 		}
 		return counterDoors;
 	}
@@ -387,19 +411,19 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		RouteInstruction.Direction[] values = RouteInstruction.Direction.values();
 		for (RouteInstruction.Direction direction : values) {
 			Room neighbourRoom = exitRoom.getNeighbourRoom(direction);
-			if(neighbourRoom != null && !isAllocated(neighbourRoom)) {
+			if (neighbourRoom != null && !isAllocated(neighbourRoom)) {
 				candidates.add(direction);
 			}
 		}
-		if(candidates.isEmpty()) return null;
-		return candidates.get((int)(Math.random() * candidates.size()));
+		if (candidates.isEmpty()) return null;
+		return candidates.get((int) (Math.random() * candidates.size()));
 	}
 
 	private List<Door> getDoorList(Room room, boolean includeLocked) {
 		List<Door> result = new ArrayList<>();
-		for(int i = 0; i < room.getDoors().length; i++) {
+		for (int i = 0; i < room.getDoors().length; i++) {
 			Door door = room.getDoors()[i];
-			if(door != null && (!door.hasLock() || includeLocked)) {
+			if (door != null && (!door.hasLock() || includeLocked)) {
 				result.add(door);
 			}
 		}

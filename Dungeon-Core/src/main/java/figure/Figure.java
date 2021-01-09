@@ -835,11 +835,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	public DungeonVisibilityMap createVisibilityMap(Dungeon d) {
 		if (visibilities == null) {
-			visibilities = new DungeonVisibilityMap(d);
-			visibilities.setFigure(this);
-			RoomObservationStatus[][] stats = d
-					.getNewRoomVisibilityMap(visibilities);
-			visibilities.setMap(stats);
+			visibilities = new DungeonVisibilityMap(this, d);
 		}
 		return visibilities;
 	}

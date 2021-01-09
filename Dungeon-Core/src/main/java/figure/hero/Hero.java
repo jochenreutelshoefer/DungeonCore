@@ -647,7 +647,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 	}
 
 	@Override
-	public Item getItem(ItemInfo it) {
+	public Item unwrapItem(ItemInfo it) {
 		return inv.getItem(it);
 	}
 

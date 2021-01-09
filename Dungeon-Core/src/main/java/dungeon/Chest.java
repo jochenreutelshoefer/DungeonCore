@@ -87,7 +87,7 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 	}
 
 	@Override
-	public Item getItem(ItemInfo it) {
+	public Item unwrapItem(ItemInfo it) {
 		for (Iterator<Item> iter = items.iterator(); iter.hasNext();) {
 			Item element = iter.next();
 			if (ItemInfo.makeItemInfo(element, null).equals(it)) {

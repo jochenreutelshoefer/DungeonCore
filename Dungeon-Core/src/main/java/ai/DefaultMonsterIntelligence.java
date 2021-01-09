@@ -498,10 +498,15 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	}
 
 	private Action attack() {
-		return this.info.getSkill(AttackSkill.class)
-				.newActionFor(monster)
-				.target(getHero())
-				.get();
+		HeroInfo hero = getHero();
+		if(hero != null) {
+
+			return this.info.getSkill(AttackSkill.class)
+					.newActionFor(monster)
+					.target(hero)
+					.get();
+		}
+		return null;
 	}
 }
 

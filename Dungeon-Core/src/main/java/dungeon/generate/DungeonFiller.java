@@ -34,6 +34,8 @@ public interface DungeonFiller {
 
 	Key getNextKey();
 
+	Key getOtherKey(Collection<Key> usedKeys);
+
 	Collection<DeadEndPath> getDeadEndsUnallocated();
 
 	/**

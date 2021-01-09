@@ -25,7 +25,7 @@ public class Items {
 		}
 		Set<Integer> selectedIndices = new HashSet<>();
 		while(selectedIndices.size() < n) {
-			int newIndex = (int) (Math.random() * n);
+			int newIndex = (int) (Math.random() * pool.size());
 			selectedIndices.add(newIndex);
 		}
 		List<Item> result = new ArrayList<>();

@@ -57,7 +57,7 @@ public class HiddenSpot implements ItemOwner,Paragraphable,InfoProvider, RoomEnt
 			
 	}
 	@Override
-	public Item getItem(ItemInfo it) {
+	public Item unwrapItem(ItemInfo it) {
 		for (Iterator iter = items.iterator(); iter.hasNext();) {
 			Item element = (Item) iter.next();
 			if(ItemInfo.makeItemInfo(element,null).equals(it)) {

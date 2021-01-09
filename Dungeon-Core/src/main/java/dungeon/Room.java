@@ -63,7 +63,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	private final JDPoint number;
 
-
 	private int floorIndex;
 
 	private RoomQuest rquest;
@@ -73,7 +72,6 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	private final Item[] itemArray = new Item[4];
 
 	private boolean fightRunning = false;
-
 
 	public void checkFight(Figure movedIn, int round) {
 		boolean fight = false;
@@ -172,6 +170,17 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
 	public void setFloorIndex(int floorIndex) {
 		this.floorIndex = floorIndex;
+	}
+
+	public Collection<ItemOwner> getAllItemOwners() {
+		Collection<ItemOwner> result = new HashSet<>();
+		result.addAll(getRoomFigures());
+		result.add(this);
+		if(this.chest != null) {
+			result.add(chest);
+		}
+		return result;
+
 	}
 
 	public Room(int x, int y, Dungeon dungeon) {
@@ -293,13 +302,11 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	@Override
-	public Item getItem(ItemInfo wrapped) {
-		Item[] items = getItemArray();
-		for (int i = 0; i < items.length; i++) {
-			if (items[i] != null) {
-				if (ItemInfo.makeItemInfo(items[i], null).equals(wrapped)) {
-					return items[i];
-				}
+	public Item unwrapItem(ItemInfo wrapped) {
+		List<Item> items = getItems();
+		for (Item item : items) {
+			if (ItemInfo.makeItemInfo(item, null).equals(wrapped)) {
+				return item;
 			}
 		}
 		return null;
@@ -996,7 +1003,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	}
 
 	@Override
-	public boolean takeItem(Item i) {
+	public boolean takeItem(@NotNull Item i) {
 
 		if (i instanceof DustItem) {
 			boolean foundOther = false;
@@ -1189,6 +1196,4 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 	public Position[] getPositions() {
 		return positions;
 	}
-
-
 }

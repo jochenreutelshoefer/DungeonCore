@@ -37,7 +37,7 @@ import static dungeon.util.RouteInstruction.Direction;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 15.03.20.
  */
-public class StartLevelX extends AbstractDungeonFactory {
+public class HadrianLevel extends AbstractDungeonFactory {
 
 	public static final int DUNGEON_SIZE_Y = 9;
 	public static final int DUNGEON_SIZE_X = 9;
@@ -138,7 +138,7 @@ public class StartLevelX extends AbstractDungeonFactory {
 
 		List<Item> gimmickPool = new ArrayList<>();
 		gimmickPool.add(new OxygenPotion());
-		gimmickPool.add(new HealPotion(25));
+		gimmickPool.add(new HealPotion(35));
 		gimmickPool.add(new ScrollMagic(new LionessConjuration(1)));
 		gimmickPool.add(new ScrollMagic(new FirConjuration(1)));
 		gimmickPool.add(AncientMapFragmentUtils.createMap(dungeon, keyRoom.getPoint(), 7));

@@ -52,7 +52,7 @@ public class InfoUnitUnwrapper {
 		if (o instanceof ItemInfo) {
 			InfoEntity info = ((ItemInfo) o).getOwner();
 			ItemOwner owner = (ItemOwner) unwrappObject(info);
-			return owner.getItem((ItemInfo) o);
+			return owner.unwrapItem((ItemInfo) o);
 		}
 		if(o instanceof LocationInfo) {
 			return getLocation(((LocationInfo)o));

@@ -26,6 +26,7 @@ import figure.monster.Wolf;
 import item.Item;
 import item.ItemPool;
 import item.Key;
+import item.map.AncientMapFragment;
 import item.map.AncientMapFragmentUtils;
 import item.paper.ScrollMagic;
 import level.AbstractDungeonFactory;
@@ -84,8 +85,8 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		Dungeon dungeon = null;
 
 		List<Key> allKeys = Key.generateKeylist();
-		Key exitKey = allKeys.get(0);
-		List<Key> remainingKeys = new ArrayList<>();
+		Key exitKey = allKeys.remove(0);
+		List<Key> remainingKeys = new ArrayList<>(allKeys);
 
 		SimpleDungeonFiller filler = null;
 
@@ -168,7 +169,10 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		entryRoom.addItem(new ScrollMagic(new LionessConjuration(1)));
 		entryRoom.addItem(new ScrollMagic(new FirConjuration(1)));
 		// TODO: remove
-		entryRoom.addItem(AncientMapFragmentUtils.createMap(dungeon, entryPoint, 7));
+		AncientMapFragment map = AncientMapFragmentUtils.createMap(dungeon, entryPoint, 7);
+		if(map != null) {
+			entryRoom.addItem(map);
+		}
 
 		List<ReversibleRoomQuest> roomQuests = new ArrayList<>();
 

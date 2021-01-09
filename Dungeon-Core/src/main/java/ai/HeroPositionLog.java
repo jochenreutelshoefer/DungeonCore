@@ -81,6 +81,10 @@ public class HeroPositionLog {
 
 				// log self movement
 				FigureInfo perceptFighter = ((EntersPercept) element).getFigure();
+				if(perceptFighter == null) {
+					// happens when players leaves the level
+					return;
+				}
 				int ownerID = owner.getFighterID();
 				if(perceptFighter.getFighterID() == ownerID) {
 					lastVisits.put(((EntersPercept) element).getTo().getPoint(), element.getRound());

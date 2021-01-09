@@ -37,7 +37,7 @@ public class DungeonVisibilityMap {
 	public static DungeonVisibilityMap getAllVisMap(Dungeon d) {
 		if (allVis == null) {
 			allVis = new DungeonVisibilityMap(d);
-			RoomObservationStatus[][] stats = d.getNewRoomVisibilityMap(allVis);
+			RoomObservationStatus[][] stats = allVis.getNewRoomVisibilityMap();
 			for (RoomObservationStatus[] stat : stats) {
 				for (RoomObservationStatus roomObservationStatus : stat) {
 					roomObservationStatus.setVisibilityStatus(RoomObservationStatus.VISIBILITY_SHRINE);
@@ -56,14 +56,27 @@ public class DungeonVisibilityMap {
 		return f;
 	}
 
+
 	public DungeonVisibilityMap(Dungeon d) {
+		this(null, d);
+	}
+
+	public RoomObservationStatus[][] getNewRoomVisibilityMap() {
+		RoomObservationStatus[][] stats = new RoomObservationStatus[dungeon.getSize().getX()][dungeon.getSize().getY()];
+		for (int i = 0; i < stats.length; i++) {
+			for (int j = 0; j < stats[0].length; j++) {
+				stats[i][j] = new RoomObservationStatus(getFigure(), dungeon.getPoint(i, j));
+			}
+		}
+		return stats;
+	}
+
+	public DungeonVisibilityMap(Figure figure, Dungeon d) {
 		dungeon = d;
+		setFigure(figure);
+		RoomObservationStatus[][] stats = getNewRoomVisibilityMap();
+		setMap(stats);
 	}
-
-	public DungeonVisibilityMap() {
-
-	}
-
 
 	public void setMap(RoomObservationStatus[][] r) {
 		this.rooms = r;
@@ -152,8 +165,8 @@ public class DungeonVisibilityMap {
 	}
 
 	public int getVisibilityStatus(int x, int y) {
-		if(x >= rooms.length || y >= rooms[0].length) {
-			Log.warning("invalid room coordinates for getVisibilityStatus: x: " + x+ " y: "+y);
+		if (x >= rooms.length || y >= rooms[0].length) {
+			Log.warning("invalid room coordinates for getVisibilityStatus: x: " + x + " y: " + y);
 			return -1;
 		}
 		if (rooms[x][y] != null) {
@@ -218,8 +231,6 @@ public class DungeonVisibilityMap {
 	public RoomObservationStatus[][] getRooms() {
 		return rooms;
 	}
-
-
 
 	public void removeScoutedVisibility(Position position) {
 		final Set<JDPoint> scoutedRoomsFromThisPosition = scoutCache.get(position);
