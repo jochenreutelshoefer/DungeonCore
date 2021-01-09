@@ -74,7 +74,6 @@ public class LibgdxFocusManager implements EventListener {
 	}
 
 	public void setWorldFocusObject(GraphicObject object) {
-
 		setWorldFocusObject((RoomInfoEntity) object.getClickableObject());
 	}
 

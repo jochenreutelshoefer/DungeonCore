@@ -94,6 +94,7 @@ public class GameScreen extends AbstractGameScreen {
 
 		inputController = new GameScreenInputProcessor(game, playerController, this);
 		Gdx.input.setInputProcessor(inputController);
+		Gdx.gl.glClearColor(0, 0, 0, 0xff / 255.0f);
 
 		AnimationManager animationManager = new AnimationManager();
 
@@ -149,7 +150,7 @@ public class GameScreen extends AbstractGameScreen {
 			// update gui and everything
 			update(deltaTime);
 
-			Gdx.gl.glClearColor(0, 0, 0, 0xff / 255.0f);
+
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 			worldRenderer.render();

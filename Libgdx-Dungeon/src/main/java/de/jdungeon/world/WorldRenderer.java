@@ -1,6 +1,9 @@
 package de.jdungeon.world;
 
+import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import animation.AnimationFrame;
 import animation.AnimationManager;
@@ -96,43 +99,10 @@ public class WorldRenderer implements Disposable {
 	 *	RENDER THREAD
 	 */
 	public void update(float deltaTime) {
-		RoomInfoEntity worldFocusObject = this.focusManager.getWorldFocusObject();
-		if(worldFocusObject == null) {
-			highlightedObject = null;
-			highlightingBoxUpdateNeeded = false;
-		}
-		else if(! worldFocusObject.equals(highlightedObject)) {
-			highlightingBoxUpdateNeeded = true;
-		}
+		// nothing yet
 	}
 
-	private boolean highlightingBoxUpdateNeeded = false;
-
-	private void updateHighlightingBoxInformation(int newX, int newY, GraphicObject clickedGraphicObject) {
-		highlightingBoxUpdateNeeded = false;
-		DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
-		highlightBoxX = newX;
-		highlightBoxY = newY;
-		highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
-		highlightTexture = new Texture(highlightBox);
-		highlightedObject = clickedGraphicObject.getClickableObject();
-
-	}
-
-
-
-	private int highlightBoxX;
-	private int highlightBoxY;
-	private Pixmap highlightBox;
-	private Texture highlightTexture;
-	private Object highlightedObject;
-
-	private Pixmap createHighlightBoxPixMap(int width, int height) {
-		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-		pixmap.setColor(Color.YELLOW);
-		pixmap.drawRectangle(0, 0, width, height);
-		return pixmap;
-	}
+	long lastCall;
 
 	/*
 	 *	RENDER THREAD
@@ -142,10 +112,6 @@ public class WorldRenderer implements Disposable {
 
 		renderDungeonBackgroundObjectsForAllRooms();
 		renderFigureObjectsForAllRooms();
-
-		if (highlightedObject != null) {
-			batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightBox.getWidth(), highlightBox.getHeight());
-		}
 
 		batch.end();
 	}
@@ -225,15 +191,12 @@ public class WorldRenderer implements Disposable {
 					JDImageProxy<?> image = locatedImage.getImage();
 					if (image != null) {
 						TextureAtlas.AtlasRegion atlasRegionAnimationStep = Assets.instance.getAtlasRegion(image, atlas);
-
-
 						if (atlasRegionAnimationStep != null) {
 							int imageX = locatedImage.getX(roomOffsetX);
 							int imageY = locatedImage.getY(roomOffsetY);
 							int width = locatedImage.getWidth();
 							int height = locatedImage.getHeight();
 							drawAltasRegionAdaptSpriteSize(atlasRegionAnimationStep, imageX, imageY, width, height, locatedImage.getImage(), pair.getA());
-
 							String text = null;
 							JDPoint textOffset = null;
 							if (animationImage.getText() != null) {
@@ -277,21 +240,10 @@ public class WorldRenderer implements Disposable {
 							pair.getA().getImage(),
 							pair.getA());
 				}
+
+
 			}
-			RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
-			if(worldFocusObject != null && worldFocusObject.equals(clickableObject)) {
-				if(highlightingBoxUpdateNeeded  || ! worldFocusObject.equals(highlightedObject)) {
-					updateHighlightingBoxInformation(x, y, pair.getA());
-				} else {
-					// it is still the same object, but maybe position has changed
-					int highlightBoxXNew = pair.getA().getRectangle().getX(x * ROOM_SIZE);
-					int highlightBoxYNew = pair.getA().getRectangle().getY(y * ROOM_SIZE);
-					if(highlightBoxXNew != this.highlightBoxX
-							|| highlightBoxYNew != this.highlightBoxY) {
-						updateHighlightingBoxInformation(highlightBoxXNew, highlightBoxYNew, pair.getA());
-					}
-				}
-			}
+
 		}
 	}
 
@@ -309,7 +261,7 @@ public class WorldRenderer implements Disposable {
 				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank()+" original width: " + originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
 			}
 			if(originalSpriteWidth == 96) {
-			// is okay
+				// is okay
 			} else if(originalSpriteWidth == 128) {
 				// adapt values for 128er sprites
 				drawWidth = (int) (width * SPRITE_SIZE_RATIO_128_TO_96);
@@ -333,6 +285,11 @@ public class WorldRenderer implements Disposable {
 				posY,
 				drawWidth,
 				drawHeight);
+
+		RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
+		if(worldFocusObject != null && worldFocusObject.equals(clickObject.getClickableObject())) {
+			setHighlightBox(x, y, width, height);
+		}
 	}
 
 	public void resize(int width, int height) {
@@ -362,7 +319,6 @@ public class WorldRenderer implements Disposable {
 
 		// reset highlight object information
 		highlightedObject = null;
-		highlightBox = null;
 
 		Vector3 worldPosUnprojected = camera.unproject(new Vector3(screenX, screenY, 0));
 		int worldXunprojected = Math.round(worldPosUnprojected.x);
@@ -396,9 +352,7 @@ public class WorldRenderer implements Disposable {
 				}
 				else {
 					// remember some data for rendering of highlight box
-
 					focusManager.setWorldFocusObject((clickedGraphicObject));
-					this.highlightingBoxUpdateNeeded = true;
 				}
 
 				return true;
@@ -410,9 +364,48 @@ public class WorldRenderer implements Disposable {
 		return false;
 	}
 
+	private void setHighlightBox(int x, int y, int width, int height) {
+		highlightBoxX = x;
+		highlightBoxY = y;
+		highlightTexture = highlightingBoxTextureCache.getTexture(width, height);
+		batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightTexture.getWidth(), highlightTexture.getHeight());
+	}
 
+	private int highlightBoxX;
+	private int highlightBoxY;
+	private Texture highlightTexture;
+	private Object highlightedObject;
+
+	private Pixmap createHighlightBoxPixMap(int width, int height) {
+		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+		pixmap.setColor(Color.YELLOW);
+		pixmap.drawRectangle(0, 0, width, height);
+		return pixmap;
+	}
 
 	public void invalidateEntityRenderCache(RoomInfoEntity location) {
 		this.dungeonObjectRenderer.invalidateCache(location);
+	}
+
+	private final HighlightingBoxTextureCache highlightingBoxTextureCache = new HighlightingBoxTextureCache();
+
+	static class HighlightingBoxTextureCache {
+
+		private final Map<Dimension, Texture> cache = new HashMap<>();
+
+		Texture getTexture(int width, int height) {
+			Dimension requestDimension = new Dimension(width, height);
+			if (cache.containsKey(requestDimension)) {
+				return cache.get(requestDimension);
+			}
+			else {
+				Pixmap pixmap = new Pixmap((int) requestDimension.getWidth(), (int) requestDimension.getHeight(), Pixmap.Format.RGBA8888);
+				pixmap.setColor(Color.YELLOW);
+				pixmap.drawRectangle(0, 0, (int) requestDimension.getWidth(), requestDimension.height);
+				Texture texture = new Texture(pixmap);
+				cache.put(requestDimension, texture);
+				return texture;
+			}
+		}
 	}
 }
