@@ -96,10 +96,43 @@ public class WorldRenderer implements Disposable {
 	 *	RENDER THREAD
 	 */
 	public void update(float deltaTime) {
-		// nothing yet
+		RoomInfoEntity worldFocusObject = this.focusManager.getWorldFocusObject();
+		if(worldFocusObject == null) {
+			highlightedObject = null;
+			highlightingBoxUpdateNeeded = false;
+		}
+		else if(! worldFocusObject.equals(highlightedObject)) {
+			highlightingBoxUpdateNeeded = true;
+		}
 	}
 
-	long lastCall;
+	private boolean highlightingBoxUpdateNeeded = false;
+
+	private void updateHighlightingBoxInformation(int newX, int newY, GraphicObject clickedGraphicObject) {
+		highlightingBoxUpdateNeeded = false;
+		DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
+		highlightBoxX = newX;
+		highlightBoxY = newY;
+		highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
+		highlightTexture = new Texture(highlightBox);
+		highlightedObject = clickedGraphicObject.getClickableObject();
+
+	}
+
+
+
+	private int highlightBoxX;
+	private int highlightBoxY;
+	private Pixmap highlightBox;
+	private Texture highlightTexture;
+	private Object highlightedObject;
+
+	private Pixmap createHighlightBoxPixMap(int width, int height) {
+		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+		pixmap.setColor(Color.YELLOW);
+		pixmap.drawRectangle(0, 0, width, height);
+		return pixmap;
+	}
 
 	/*
 	 *	RENDER THREAD
@@ -247,7 +280,17 @@ public class WorldRenderer implements Disposable {
 			}
 			RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
 			if(worldFocusObject != null && worldFocusObject.equals(clickableObject)) {
-				updateHighlightedObjectInformation(x, y, pair.getA());
+				if(highlightingBoxUpdateNeeded  || ! worldFocusObject.equals(highlightedObject)) {
+					updateHighlightingBoxInformation(x, y, pair.getA());
+				} else {
+					// it is still the same object, but maybe position has changed
+					int highlightBoxXNew = pair.getA().getRectangle().getX(x * ROOM_SIZE);
+					int highlightBoxYNew = pair.getA().getRectangle().getY(y * ROOM_SIZE);
+					if(highlightBoxXNew != this.highlightBoxX
+							|| highlightBoxYNew != this.highlightBoxY) {
+						updateHighlightingBoxInformation(highlightBoxXNew, highlightBoxYNew, pair.getA());
+					}
+				}
 			}
 		}
 	}
@@ -355,7 +398,7 @@ public class WorldRenderer implements Disposable {
 					// remember some data for rendering of highlight box
 
 					focusManager.setWorldFocusObject((clickedGraphicObject));
-					updateHighlightedObjectInformation(roomX, roomY, clickedGraphicObject);
+					this.highlightingBoxUpdateNeeded = true;
 				}
 
 				return true;
@@ -367,27 +410,7 @@ public class WorldRenderer implements Disposable {
 		return false;
 	}
 
-	private void updateHighlightedObjectInformation(int roomX, int roomY, GraphicObject clickedGraphicObject) {
-		DrawingRectangle rectangle = clickedGraphicObject.getRectangle();
-		highlightBoxX = rectangle.getX(roomX * ROOM_SIZE);
-		highlightBoxY = rectangle.getY(roomY * ROOM_SIZE);
-		highlightBox = createHighlightBoxPixMap(rectangle.getWidth(), rectangle.getHeight());
-		highlightTexture = new Texture(highlightBox);
-		highlightedObject = clickedGraphicObject.getClickableObject();
-	}
 
-	private int highlightBoxX;
-	private int highlightBoxY;
-	private Pixmap highlightBox;
-	private Texture highlightTexture;
-	private Object highlightedObject;
-
-	private Pixmap createHighlightBoxPixMap(int width, int height) {
-		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-		pixmap.setColor(Color.YELLOW);
-		pixmap.drawRectangle(0, 0, width, height);
-		return pixmap;
-	}
 
 	public void invalidateEntityRenderCache(RoomInfoEntity location) {
 		this.dungeonObjectRenderer.invalidateCache(location);

@@ -29,7 +29,6 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 		this.backGround = bg;
 	}
 
-
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
 		// do nothing
@@ -57,19 +56,19 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 
 		// draw foreground
 		TextureAtlas.AtlasRegion imageRegion = Assets.instance.getAtlasRegion(filename, Assets.instance.getGuiAtlas());
-		batch.draw(imageRegion,  x, y, width, height);
-
-
+		if (imageRegion != null) {
+			batch.draw(imageRegion, x, y, width, height);
+		}
 	}
 
 	private void drawBackground(SpriteBatch batch, int x, int y, int width, int height) {
 		// draw background
 		TextureAtlas.AtlasRegion backGroundRegion = null;
-		if(backGround != null) {
+		if (backGround != null) {
 			backGroundRegion = Assets.instance.getAtlasRegion(getBackgroundImage(), Assets.instance.getGuiAtlas());
 		}
 
-		if(backGroundRegion != null) {
+		if (backGroundRegion != null) {
 			batch.draw(backGroundRegion, x, y, width, height);
 		}
 	}
@@ -77,5 +76,4 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 	protected String getBackgroundImage() {
 		return backGround;
 	}
-
 }

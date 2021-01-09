@@ -94,11 +94,11 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	private Texture updateOfflineMessageTexture() {
 
 		frameBuffer.bind();
-
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		spriteBatch.begin();
+
+
 		ListIterator<Statement> listIterator = all.listIterator(all.size());
 
 		int yOffsetUpwards = 0;
