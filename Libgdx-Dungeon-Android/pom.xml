@@ -20,7 +20,7 @@
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
 		<dependency>
-			<groupId>Libgdx-Test</groupId>
+			<groupId>de.reutelshoefer.dungeon</groupId>
 			<artifactId>Libgdx-Dungeon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
