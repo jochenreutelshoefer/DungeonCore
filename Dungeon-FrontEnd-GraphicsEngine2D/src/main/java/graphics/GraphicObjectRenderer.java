@@ -895,7 +895,7 @@ public class GraphicObjectRenderer {
 		graphicObjectCache.remove(entity);
 	}
 
-	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r, int roomOffsetX, int roomOffsetY) {
+	public List<GraphicObject> createGraphicObjectsForRoom(RoomInfo r) {
 
 		List<GraphicObject> graphObs = new ArrayList<>();
 		if (r == null) {

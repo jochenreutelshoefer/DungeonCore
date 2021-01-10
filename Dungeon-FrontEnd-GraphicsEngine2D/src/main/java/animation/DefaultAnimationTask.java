@@ -24,14 +24,6 @@ public class DefaultAnimationTask implements AnimationTask {
 	boolean wasStarted = false;
 	private final Position.Pos from;
 
-
-
-
-	public OpticalPercept getPercept() {
-		return percept;
-	}
-
-
 	private final OpticalPercept percept;
 
 	public void setUrgent(boolean urgent) {

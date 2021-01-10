@@ -23,14 +23,7 @@ public class GraphicObject {
 		return image;
 	}
 
-	@Override
-	public String toString() {
-		if (clickedObject == null) {
-			return image.toString();
-		} else {
-			return this.getClass().getName()+" " +clickedObject.toString();
-		}
-	}
+
 
 	protected DrawingRectangle rect;
 	protected DrawingRectangle clickRect;
@@ -67,6 +60,28 @@ public class GraphicObject {
 		image = i;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		GraphicObject that = (GraphicObject) o;
+
+		if (!rect.equals(that.rect)) return false;
+		if (clickRect != null ? !clickRect.equals(that.clickRect) : that.clickRect != null) return false;
+		if (!clickedObject.equals(that.clickedObject)) return false;
+		return image.equals(that.image);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = rect.hashCode();
+		result = 31 * result + (clickRect != null ? clickRect.hashCode() : 0);
+		result = 31 * result + clickedObject.hashCode();
+		result = 31 * result + image.hashCode();
+		return result;
+	}
+
 	public Object getClickableObject() {
 		return clickedObject;
 	}
@@ -82,6 +97,14 @@ public class GraphicObject {
 		}
 	}
 
+	@Override
+	public String toString() {
+		if (clickedObject == null) {
+			return image.toString();
+		} else {
+			return this.getClass().getName()+" " +clickedObject.toString();
+		}
+	}
 
 
 }
