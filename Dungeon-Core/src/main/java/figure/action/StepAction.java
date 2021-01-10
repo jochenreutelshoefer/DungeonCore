@@ -6,6 +6,7 @@
  */
 package figure.action;
 
+import dungeon.util.RouteInstruction;
 import org.jetbrains.annotations.NotNull;
 import dungeon.Position;
 import dungeon.Room;
@@ -81,5 +82,10 @@ public class StepAction extends AbstractExecutableAction {
 			}
 			return ActionResult.POSSIBLE;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return (this.getClass()+"in Room" + figure.getRoom().getPoint()+" :" + this.figure.getPositionInRoom() +" -> "+ targetIndex);
 	}
 }
