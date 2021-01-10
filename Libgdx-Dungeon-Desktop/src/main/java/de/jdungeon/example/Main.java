@@ -13,11 +13,7 @@ import de.jdungeon.LibgdxDungeonMain;
  */
 public class Main {
 
-	public static final boolean rebuildAtlas = false;
-	public static final boolean drawDebugOutline = true;
-
 	public static void main(String[] args) {
-
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Libgdx Game";
 		cfg.useGL30 = false;

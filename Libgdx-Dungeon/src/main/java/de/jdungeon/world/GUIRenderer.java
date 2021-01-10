@@ -14,6 +14,7 @@ import dungeon.JDPoint;
 import event.EventManager;
 import figure.hero.HeroInfo;
 import graphics.ImageManager;
+import log.Log;
 import text.Statement;
 import util.JDDimension;
 
@@ -317,9 +318,16 @@ public class GUIRenderer implements Disposable {
 		fpsFont.setColor(1, 1, 1, 1); //white
 
 		if (glProfiler != null) {
-			fpsFont.draw(batch, "GL draw calls:" + glProfiler.getDrawCalls(), 60, y );
+			int drawCalls = glProfiler.getDrawCalls();
+			fpsFont.draw(batch, "GL draw calls:" + drawCalls, 60, y );
+			if(drawCalls > maxGLDrawCalls) {
+				maxGLDrawCalls = drawCalls;
+				Log.info("Max GL draw calls: "+maxGLDrawCalls);
+			}
 		}
 	}
+
+	private int maxGLDrawCalls = 0;
 
 	public void resize(int width, int height) {
 		reinit();

@@ -179,8 +179,12 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void onTurn() {
+		boolean backgroundDrawingUpdateRequired = !roomRenderUpdateLaundry.isEmpty();
 		for (JDPoint point : roomRenderUpdateLaundry) {
 			viewModel.updateRoom(point.getX(), point.getY());
+		}
+		if(backgroundDrawingUpdateRequired) {
+			viewModel.setBackgroundUpdateRequired();
 		}
 		roomRenderUpdateLaundry.clear();
 	}

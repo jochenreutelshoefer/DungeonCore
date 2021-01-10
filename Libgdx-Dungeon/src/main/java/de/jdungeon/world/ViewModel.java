@@ -27,12 +27,24 @@ public class ViewModel {
 	public final int [][] roomOffSetsY;
 	private GraphicObjectRenderer renderer;
 
+	private boolean backgroundChanged = false;
+
 	public ViewModel(FigureInfo figure, int sizeX, int sizeY) {
 		this.figure = figure;
 		roomViews = new ViewRoom[sizeX][sizeY];
 		roomOffSetsX = new int[sizeX][sizeY] ;
 		roomOffSetsY = new int[sizeX][sizeY] ;
 		init();
+	}
+
+	public void setBackgroundUpdateRequired() {
+		backgroundChanged = true;
+	}
+
+	public boolean getResetBackgroundUpdateRequired() {
+		boolean result = this.backgroundChanged;
+		this.backgroundChanged = false;
+		return result;
 	}
 
 	private void init() {
@@ -65,7 +77,7 @@ public class ViewModel {
 		for (int x = 0; x < roomViews.length; x++) {
 			for (int y = 0; y < roomViews[0].length; y++) {
 				ViewRoom currentViewRoom = roomViews[x][y];
-				List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
+				List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo());
 				currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 			}
 		}
@@ -82,7 +94,7 @@ public class ViewModel {
 	public void updateRoom(int x, int y) {
 		//Gdx.app.log(TAG,"Updating render information of room: "+x +" - "+ y);
 		ViewRoom currentViewRoom = roomViews[x][y];
-		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo(), x * WorldRenderer.ROOM_SIZE, y * WorldRenderer.ROOM_SIZE);
+		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo());
 		currentViewRoom.setGraphicObjects(graphicObjectsForRoom);
 	}
 

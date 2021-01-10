@@ -94,6 +94,12 @@ public class GameScreen extends AbstractGameScreen {
 
 		inputController = new GameScreenInputProcessor(game, playerController, this);
 		Gdx.input.setInputProcessor(inputController);
+
+		// does not seem to do anything
+		//Gdx.gl.glEnable(GL20.GL_BLEND);
+		//Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+
 		Gdx.gl.glClearColor(0, 0, 0, 0xff / 255.0f);
 
 		AnimationManager animationManager = new AnimationManager();

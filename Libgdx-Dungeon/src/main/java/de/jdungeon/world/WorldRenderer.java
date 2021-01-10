@@ -1,6 +1,5 @@
 package de.jdungeon.world;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -31,8 +32,8 @@ import graphics.GraphicObjectRenderer;
 import graphics.JDGraphicObject;
 import graphics.JDImageLocated;
 import graphics.JDImageProxy;
-import graphics.util.DrawingRectangle;
 import log.Log;
+import util.JDDimension;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
@@ -58,8 +59,16 @@ public class WorldRenderer implements Disposable {
 	private final AnimationManager animationManager;
 	private final GraphicObjectRenderer dungeonObjectRenderer;
 	private final CameraHelper cameraHelper;
-	private SpriteBatch batch;
+	private SpriteBatch worldSpritebatch;
 	public static final int ROOM_SIZE = 80;
+
+	// for offscreen background image generation
+	private final static boolean USE_OFFSCREEN_FRAMEBUFFER_FOR_BACKGROUND = true;
+	private FrameBuffer offscreenBackgroundFramebuffer;
+	private final SpriteBatch offscreenSpritebatch = new SpriteBatch();
+	private Texture backgroundTexture;
+
+	private static final float FRAMEBUFFER_SCALER = 1.0f;
 
 	public WorldRenderer(GraphicObjectRenderer graphicObjectRenderer, ViewModel viewModel, OrthographicCamera camera, CameraHelper cameraHelper, LibgdxFocusManager focusManager, AnimationManager animationManager) {
 		this.dungeonObjectRenderer = graphicObjectRenderer;
@@ -68,18 +77,38 @@ public class WorldRenderer implements Disposable {
 		this.camera = camera;
 		this.focusManager = focusManager;
 		this.animationManager = animationManager;
+
 		init();
 	}
 
 	private void init() {
-		batch = new SpriteBatch();
+		worldSpritebatch = new SpriteBatch();
+
 		viewModel.initGraphicObjects(dungeonObjectRenderer);
 
 		cameraHelper.setZoom(1f);
 
-		batch.setProjectionMatrix(camera.combined);
+		worldSpritebatch.setProjectionMatrix(camera.combined);
 
 		camera.update();
+
+		// create new framebuffer of required size (large enough to draw entire dungeon)
+		if (USE_OFFSCREEN_FRAMEBUFFER_FOR_BACKGROUND) {
+			float screenRatio = ((float)Gdx.app.getGraphics().getWidth()) / Gdx.app.getGraphics().getHeight();
+			int worldRenderSizeX = this.viewModel.roomViews.length * ROOM_SIZE;
+			int worldRenderSizeY = this.viewModel.roomViews[0].length * ROOM_SIZE;
+			int framebufferWidth = (int) (worldRenderSizeX * FRAMEBUFFER_SCALER);
+			int frameBufferHeight = (int) (worldRenderSizeY * FRAMEBUFFER_SCALER);
+			offscreenBackgroundFramebuffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) (framebufferWidth * 1), frameBufferHeight, false);
+
+
+
+			Matrix4 matrix = new Matrix4();
+			//matrix.setToOrtho2D(0, 0, framebufferWidth  , framebufferWidth ); // here is the actual size you want
+			//offscreenSpritebatch.setProjectionMatrix(matrix);
+			//batch.setProjectionMatrix(cam.combined);
+
+		}
 
 		GL20 gl = Gdx.gl20;
 		int programObject = gl.glCreateProgram();
@@ -91,7 +120,7 @@ public class WorldRenderer implements Disposable {
 	 */
 	public void render() {
 		cameraHelper.applyTo(camera);
-		batch.setProjectionMatrix(camera.combined);
+		worldSpritebatch.setProjectionMatrix(camera.combined);
 		renderDungeon();
 	}
 
@@ -102,24 +131,84 @@ public class WorldRenderer implements Disposable {
 		// nothing yet
 	}
 
-	long lastCall;
-
 	/*
 	 *	RENDER THREAD
 	 */
 	private void renderDungeon() {
-		batch.begin();
 
-		renderDungeonBackgroundObjectsForAllRooms();
+		if (USE_OFFSCREEN_FRAMEBUFFER_FOR_BACKGROUND) {
+			// offscreen framebuffer mode - check first whether update of background texture is necessary
+			if (backgroundTexture == null || viewModel.getResetBackgroundUpdateRequired()) {
+				this.backgroundTexture = updateBackgroundTexture();
+			}
+
+			//int worldRenderSizeX = this.viewModel.roomViews.length * ROOM_SIZE;
+			//int worldRenderSizeY = this.viewModel.roomViews[0].length * ROOM_SIZE;
+
+			float screenRatio = ((float)Gdx.app.getGraphics().getWidth()) / Gdx.app.getGraphics().getHeight();
+
+			// draw background texture
+			worldSpritebatch.begin();
+			worldSpritebatch.draw(backgroundTexture,
+					0,
+					0,
+					this.viewModel.roomViews.length * ROOM_SIZE,
+					this.viewModel.roomViews[0].length * ROOM_SIZE,
+					0,
+					0,
+					(int) (offscreenBackgroundFramebuffer.getWidth()),
+					(int) (offscreenBackgroundFramebuffer.getHeight()),
+					false,
+					true);
+
+			/*
+						worldSpritebatch.draw(backgroundTexture,
+					0,
+					0,
+					offscreenBackgroundFramebuffer.getWidth() / FRAMEBUFFER_SCALER,
+					offscreenBackgroundFramebuffer.getHeight() / FRAMEBUFFER_SCALER,
+					0,
+					0,
+					(int) (offscreenBackgroundFramebuffer.getWidth()),
+					(int) (offscreenBackgroundFramebuffer.getHeight()),
+					false,
+					true);
+			 */
+		}
+		else {
+			worldSpritebatch.begin();
+			renderDungeonBackgroundObjectsForAllRooms(worldSpritebatch, 1);
+		}
 		renderFigureObjectsForAllRooms();
 
-		batch.end();
+		worldSpritebatch.end();
+	}
+
+	private Texture updateBackgroundTexture() {
+		// prepare and activate offscreen framebuffer
+		this.offscreenBackgroundFramebuffer.bind();
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		this.offscreenSpritebatch.begin();
+
+		// draw actual content
+		//..
+		renderDungeonBackgroundObjectsForAllRooms(offscreenSpritebatch, FRAMEBUFFER_SCALER);
+
+		// close and unbind SpriteBatch and Framebuffer
+		this.offscreenSpritebatch.end();
+		this.offscreenBackgroundFramebuffer.unbind();
+
+		Texture newBackgroundTexture = this.offscreenBackgroundFramebuffer.getColorBufferTexture();
+		// does not seem to help...
+		//newBackgroundTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.MipMap);
+		return newBackgroundTexture;
 	}
 
 	/*
 	 *	RENDER THREAD
 	 */
-	private void renderDungeonBackgroundObjectsForAllRooms() {
+	private void renderDungeonBackgroundObjectsForAllRooms(SpriteBatch batch, float scale) {
 		for (int x = 0; x < viewModel.roomViews.length; x++) {
 			for (int y = 0; y < viewModel.roomViews[0].length; y++) {
 				if (viewModel.getVisStatus(x, y) < RoomObservationStatus.VISIBILITY_FOUND) continue;
@@ -130,14 +219,13 @@ public class WorldRenderer implements Disposable {
 				if (renderInformation == null || renderInformation.isEmpty()) {
 
 					// no render information yet, we need to fetch object information about the room and update the ViewRoom with it
-					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(viewModel.roomViews[x][y]
-							.getRoomInfo(), viewModel.roomOffSetsX[x][y], viewModel.roomOffSetsY[x][y]);
+					List<GraphicObject> graphicObjectsForRoom = dungeonObjectRenderer.createGraphicObjectsForRoom(viewModel.roomViews[x][y].getRoomInfo());
 					viewModel.roomViews[x][y].setGraphicObjects(graphicObjectsForRoom);
 					renderInformation = viewModel.roomViews[x][y].getBackgroundObjectsForRoom();
 				}
 
 				// actual drawing call
-				drawGraphicObjectsToSpritebatch(renderInformation, x, y);
+				drawGraphicObjectsToSpritebatch(renderInformation, x, y, batch, scale);
 			}
 		}
 	}
@@ -151,23 +239,24 @@ public class WorldRenderer implements Disposable {
 		for (FigurePresentation figureClass : FigurePresentation.values()) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
-					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y].getFigureObjects(figureClass);
+					Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom = viewModel.roomViews[x][y]
+							.getFigureObjects(figureClass);
 					if (graphicObjectsForRoom != null) {
-						drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y);
+						drawGraphicObjectsToSpritebatch(graphicObjectsForRoom, x, y, worldSpritebatch, 1);
 					}
 				}
 			}
 		}
 	}
 
-	private final double SPRITE_SIZE_RATIO_128_TO_96 = ((float)128) / 96;
-	private final double SPRITE_SIZE_RATIO_192_TO_96 = ((float)192) / 96;
+	private final double SPRITE_SIZE_RATIO_128_TO_96 = ((float) 128) / 96;
+	private final double SPRITE_SIZE_RATIO_192_TO_96 = ((float) 192) / 96;
 	//private final double SPRITE_SIZE_RATIO_128_TO_96 = ((float)96) / 128;
 
 	/*
 	 *	RENDER THREAD
 	 */
-	private void drawGraphicObjectsToSpritebatch(Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y) {
+	private void drawGraphicObjectsToSpritebatch(Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> graphicObjectsForRoom, int x, int y, SpriteBatch batch, float scale) {
 		int roomOffsetX = viewModel.roomOffSetsX[x][y];
 		int roomOffsetY = viewModel.roomOffSetsY[x][y];
 
@@ -196,7 +285,8 @@ public class WorldRenderer implements Disposable {
 							int imageY = locatedImage.getY(roomOffsetY);
 							int width = locatedImage.getWidth();
 							int height = locatedImage.getHeight();
-							drawAltasRegionAdaptSpriteSize(atlasRegionAnimationStep, imageX, imageY, width, height, locatedImage.getImage(), pair.getA());
+							drawAltasRegionAdaptSpriteSize(batch, atlasRegionAnimationStep, imageX, imageY, width, height, locatedImage
+									.getImage(), pair.getA(), scale);
 							String text = null;
 							JDPoint textOffset = null;
 							if (animationImage.getText() != null) {
@@ -205,9 +295,6 @@ public class WorldRenderer implements Disposable {
 								BitmapFont font = AssetFonts.instance.hit;
 								font.draw(batch, text, imageX + textOffset.getX(), imageY + textOffset.getY());
 							}
-						}
-						else {
-							int foo = 0;
 						}
 					}
 
@@ -221,61 +308,67 @@ public class WorldRenderer implements Disposable {
 				if (pair.getB() != null) {
 					int width = ((JDGraphicObject) pair.getA()).getLocatedImage().getWidth();
 					int height = ((JDGraphicObject) pair.getA()).getLocatedImage().getHeight();
-					drawAltasRegionAdaptSpriteSize(pair.getB(),
+					drawAltasRegionAdaptSpriteSize(batch, pair.getB(),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getX(roomOffsetX),
 							((JDGraphicObject) pair.getA()).getLocatedImage().getY(roomOffsetY),
 							width,
 							height,
 							((JDGraphicObject) pair.getA()).getLocatedImage().getImage(),
-							pair.getA());
+							pair.getA(),
+							scale);
 				}
 			}
 			else {
 				if (pair.getB() != null) {
-					drawAltasRegionAdaptSpriteSize(pair.getB(),
+					drawAltasRegionAdaptSpriteSize(batch, pair.getB(),
 							pair.getA().getRectangle().getX(roomOffsetX),
 							pair.getA().getRectangle().getY(roomOffsetY),
 							pair.getA().getRectangle().getWidth(),
 							pair.getA().getRectangle().getHeight(),
 							pair.getA().getImage(),
-							pair.getA());
+							pair.getA(),
+							scale);
 				}
-
-
 			}
-
 		}
 	}
 
-	private void drawAltasRegionAdaptSpriteSize(TextureAtlas.AtlasRegion atlasRegion, int x, int y, int width, int height, JDImageProxy image, GraphicObject clickObject) {
+	private void drawAltasRegionAdaptSpriteSize(SpriteBatch batch, TextureAtlas.AtlasRegion atlasRegion, int x, int y, int width, int height, JDImageProxy image, GraphicObject clickObject, float scale) {
+		x *= scale;
+		y *= scale;
+		width *= scale;
+		height *= scale;
 
 		int posX = x;
 		int posY = y;
 		int drawWidth = width;
 		int drawHeight = height;
 
-		if(clickObject.getClickableObject() instanceof FigureInfo) {
+		if (clickObject.getClickableObject() instanceof FigureInfo) {
 			// we have to cope with different sprites sizes unfortunately (within one figure animation set)
 			int originalSpriteWidth = atlasRegion.originalWidth;
-			if(originalSpriteWidth !=  atlasRegion.originalHeight) {
-				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank()+" original width: " + originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
+			if (originalSpriteWidth != atlasRegion.originalHeight) {
+				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank() + " original width: " + originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
 			}
-			if(originalSpriteWidth == 96) {
+			if (originalSpriteWidth == 96) {
 				// is okay
-			} else if(originalSpriteWidth == 128) {
+			}
+			else if (originalSpriteWidth == 128) {
 				// adapt values for 128er sprites
 				drawWidth = (int) (width * SPRITE_SIZE_RATIO_128_TO_96);
 				posX = x - ((drawWidth - width) / 2); // shift left half size adjustment
 				drawHeight = (int) (height * SPRITE_SIZE_RATIO_128_TO_96);
 				posY = y - ((drawHeight - height) / 2); // shift up half size adjustment
-			} else if(originalSpriteWidth == 192) {
+			}
+			else if (originalSpriteWidth == 192) {
 				// adapt values for 128er sprites
 				drawWidth = (int) (width * SPRITE_SIZE_RATIO_192_TO_96);
 				posX = x - ((drawWidth - width) / 2); // shift left half size adjustment
 				drawHeight = (int) (height * SPRITE_SIZE_RATIO_192_TO_96);
 				posY = y - ((drawHeight - height) / 2); // shift up half size adjustment
-			} else {
-				Gdx.app.error(TAG, "Warning: unknown sprite size : " + image.getFilenameBlank()+" original width: "+ originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
+			}
+			else {
+				Gdx.app.error(TAG, "Warning: unknown sprite size : " + image.getFilenameBlank() + " original width: " + originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
 			}
 		}
 
@@ -287,8 +380,8 @@ public class WorldRenderer implements Disposable {
 				drawHeight);
 
 		RoomInfoEntity worldFocusObject = focusManager.getWorldFocusObject();
-		if(worldFocusObject != null && worldFocusObject.equals(clickObject.getClickableObject())) {
-			setHighlightBox(x, y, width, height);
+		if (worldFocusObject != null && worldFocusObject.equals(clickObject.getClickableObject())) {
+			setHighlightBox(x, y, width, height, batch);
 		}
 	}
 
@@ -299,7 +392,7 @@ public class WorldRenderer implements Disposable {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
+		worldSpritebatch.dispose();
 	}
 
 	/**
@@ -357,18 +450,20 @@ public class WorldRenderer implements Disposable {
 
 				return true;
 			}
-		} else {
+		}
+		else {
 			// 'nothing' has been clicked by the user, hence we de-select the selected object
-			focusManager.setWorldFocusObject((RoomInfoEntity)null);
+			focusManager.setWorldFocusObject((RoomInfoEntity) null);
 		}
 		return false;
 	}
 
-	private void setHighlightBox(int x, int y, int width, int height) {
+	private void setHighlightBox(int x, int y, int width, int height, SpriteBatch batch) {
 		highlightBoxX = x;
 		highlightBoxY = y;
 		highlightTexture = highlightingBoxTextureCache.getTexture(width, height);
-		batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightTexture.getWidth(), highlightTexture.getHeight());
+		batch.draw(highlightTexture, highlightBoxX, highlightBoxY, highlightTexture.getWidth(), highlightTexture
+				.getHeight());
 	}
 
 	private int highlightBoxX;
@@ -391,17 +486,17 @@ public class WorldRenderer implements Disposable {
 
 	static class HighlightingBoxTextureCache {
 
-		private final Map<Dimension, Texture> cache = new HashMap<>();
+		private final Map<JDDimension, Texture> cache = new HashMap<>();
 
 		Texture getTexture(int width, int height) {
-			Dimension requestDimension = new Dimension(width, height);
+			JDDimension requestDimension = new JDDimension(width, height);
 			if (cache.containsKey(requestDimension)) {
 				return cache.get(requestDimension);
 			}
 			else {
 				Pixmap pixmap = new Pixmap((int) requestDimension.getWidth(), (int) requestDimension.getHeight(), Pixmap.Format.RGBA8888);
 				pixmap.setColor(Color.YELLOW);
-				pixmap.drawRectangle(0, 0, (int) requestDimension.getWidth(), requestDimension.height);
+				pixmap.drawRectangle(0, 0, (int) requestDimension.getWidth(), requestDimension.getHeight());
 				Texture texture = new Texture(pixmap);
 				cache.put(requestDimension, texture);
 				return texture;

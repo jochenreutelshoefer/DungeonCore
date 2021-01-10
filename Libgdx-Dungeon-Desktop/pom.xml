@@ -3,20 +3,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>Libgdx-Test</groupId>
+	<groupId>de.reutelshoefer.dungeon</groupId>
 	<artifactId>Libgdx-Dungeon-Desktop</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<gdxversion>1.9.12</gdxversion>
 	</properties>
 
-
-
-
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
 		<dependency>
-			<groupId>Libgdx-Test</groupId>
+			<groupId>de.reutelshoefer.dungeon</groupId>
 			<artifactId>Libgdx-Dungeon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
@@ -24,15 +21,28 @@
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-backend-lwjgl</artifactId>
-			<version>${gdxversion}</version>
+			<version>1.9.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-backend-lwjgl</artifactId>
-			<version>${gdxversion}</version>
-			<scope>compile</scope>
+			<version>1.9.12</version>
+			<!--scope>compile</scope-->
 		</dependency>
+
+		<!--dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-lwjgl3</artifactId>
+			<version>1.9.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-lwjgl3</artifactId>
+			<version>1.9.12</version>
+		</dependency-->
+
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-tools -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
@@ -40,13 +50,13 @@
 			<version>${gdxversion}</version>
 		</dependency>
 		<dependency>
-			<groupId>Libgdx-Test</groupId>
+			<groupId>de.reutelshoefer.dungeon</groupId>
 			<artifactId>Libgdx-Dungeon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>Libgdx-Test</groupId>
+			<groupId>de.reutelshoefer.dungeon</groupId>
 			<artifactId>Libgdx-Dungeon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
