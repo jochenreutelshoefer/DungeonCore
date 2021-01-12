@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import dungeon.JDPoint;
+import log.Log;
 import text.Statement;
 import util.JDDimension;
 
@@ -24,9 +25,8 @@ import de.jdungeon.asset.Assets;
 
 public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 
-	// TODO: make relative to screen size!?
-	private static final int WIDTH_MAX = 400;
-	private static final int HEIGHT_MAX = 400;
+	private final int width;
+	private final int height;
 	private static final int LINE_PADDING_SINGLE = 5;
 	private static final int LINE_PADDING_DOUBLE = 2 * LINE_PADDING_SINGLE;
 
@@ -44,16 +44,35 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	private final GlyphLayout glyphLayoutRoundNumber = new GlyphLayout();
 	private final GlyphLayout glyphLayoutStatementText = new GlyphLayout();
 
+	private static JDPoint position() {
+		return new JDPoint(Gdx.app.getGraphics()
+				.getWidth() / 2 - Gdx.app.getGraphics()
+				.getWidth() / 4, -1 * (Gdx.app.getGraphics()
+				.getWidth() / 2 - 40));
+	}
+
+	private static JDDimension dimension() {
+		return new JDDimension(Gdx.app.getGraphics()
+				.getWidth() / 2, Gdx.app.getGraphics()
+				.getWidth() / 2);
+	}
+
 	public LibgdxTextPerceptView() {
-		super(new JDPoint(Gdx.app.getGraphics()
-				.getWidth() / 2 - WIDTH_MAX / 2, -1 * (HEIGHT_MAX - 40)), new JDDimension(WIDTH_MAX, HEIGHT_MAX));
+		super(position(), dimension());
 		lineHeight = (int) font.getLineHeight() + 4;
 
-		int framebufferWidth = HEIGHT_MAX * (Gdx.graphics.getWidth() / Gdx.graphics.getHeight());
-		int frameBufferHeight = HEIGHT_MAX;
-		frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, framebufferWidth, frameBufferHeight, false);
+		width = Gdx.app.getGraphics()
+				.getWidth() / 2;
+		height = Gdx.app.getGraphics()
+				.getWidth() / 2;
 
+		int framebufferWidth = (int) (height * (((float) Gdx.graphics.getWidth()) / Gdx.graphics.getHeight()));
+		int frameBufferHeight = height;
+		Log.info("Initialising world offscreen FrameBuffer of size: " + framebufferWidth + " / " + frameBufferHeight);
+		frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, framebufferWidth, frameBufferHeight, false);
 		offlineTextTexture = updateOfflineMessageTexture();
+
+		// TODO: fix resize issue!
 	}
 
 	public void addTextPercept(Statement p) {
@@ -99,7 +118,6 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
 
-
 		// draw actual content
 		ListIterator<Statement> listIterator = all.listIterator(all.size());
 		int yOffsetUpwards = 0;
@@ -119,9 +137,11 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 
 	private int fetchPrepareAndDrawPreviousStatement(ListIterator<Statement> listIterator, int yOffsetUpwardsOverall, int linePadding) {
 		Statement textPercept = listIterator.previous();
+		// TODO: use constant width for three-digit round number (to have always enough space without wrap!)
 		glyphLayoutRoundNumber.setText(font, toThreeDigitsString(textPercept.getRound()), Color.GRAY, frameBuffer.getWidth() * 0.05f, Align.left, true);
 		glyphLayoutStatementText.setText(font, textPercept.getText(), Color.WHITE, frameBuffer.getWidth() * 0.9f, Align.left, true);
 
+		// TODO: use all the rest of the width which is not used be the three-digit round number.
 		int yOffsetUpwardsStatementIncrement = (int) glyphLayoutStatementText.height + linePadding;
 		yOffsetUpwardsOverall += yOffsetUpwardsStatementIncrement;
 		int yCoord = frameBuffer.getHeight() - yOffsetUpwardsOverall;
@@ -141,12 +161,12 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 		batch.draw(offlineTextTexture,
 				getPositionOnScreen().getX(),
 				this.position.getY() - timeOffset - 1,
-				WIDTH_MAX,
-				HEIGHT_MAX,
+				width,
+				height,
 				0,
 				0,
-				WIDTH_MAX,
-				HEIGHT_MAX,
+				width,
+				height,
 				false,
 				true);
 	}

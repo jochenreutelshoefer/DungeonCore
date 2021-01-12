@@ -17,10 +17,8 @@ import dungeon.JDPoint;
 import figure.FigureInfo;
 import figure.hero.HeroInfo;
 import figure.percept.Percept;
-import game.InfoEntity;
 import game.RoomInfoEntity;
 import graphics.GraphicObjectRenderer;
-import location.LocationInfo;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
@@ -51,25 +49,25 @@ public class GameScreen extends AbstractGameScreen {
 	private static final boolean OPENGL_PROFILING_ON = false;
 
 	private final PlayerController playerController;
-
 	private GameScreenInputProcessor inputController;
-	private ViewModel viewModel;
-	private WorldRenderer worldRenderer;
-	private GUIRenderer guiRenderer;
-	private LibgdxCameraFlightSequenceManager movieSequenceManager;
+	private GameScreenPerceptHandler perceptHandler;
 
+	private GraphicObjectRenderer graphicObjectRenderer;
+	private ViewModel worldViewModel;
+	private WorldRenderer worldRenderer;
+	private LibgdxCameraFlightSequenceManager movieSequenceManager;
 	private OrthographicCamera camera;
-	private OrthographicCamera cameraGUI;
 	private final CameraHelper cameraHelper = new CameraHelper();
 
-	private GameScreenPerceptHandler perceptHandler;
+	private GUIRenderer guiRenderer;
+	private OrthographicCamera cameraGUI;
+	private LibgdxFocusManager focusManager;
+
 	private FigureInfo figure;
 	private final int dungeonSizeX;
-
 	private final int dungeonSizeY;
+
 	private GLProfiler glProfiler;
-	private LibgdxFocusManager focusManager;
-	private GraphicObjectRenderer graphicObjectRenderer;
 
 	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
@@ -106,8 +104,8 @@ public class GameScreen extends AbstractGameScreen {
 
 		figure = playerController.getFigure();
 		perceptHandler = new GameScreenPerceptHandler(this, figure, animationManager);
-		viewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
-		playerController.setViewModel(viewModel);
+		worldViewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
+		playerController.setViewModel(worldViewModel);
 		movieSequenceManager = new LibgdxCameraFlightSequenceManager(cameraHelper); // todo: access should not be static
 
 		// init world camera and world renderer
@@ -116,7 +114,6 @@ public class GameScreen extends AbstractGameScreen {
 		JDPoint number = figure.getRoomInfo().getNumber();
 		camera.position.set(number.getX() * ROOM_SIZE, number.getY() * ROOM_SIZE, 0);
 		camera.update();
-
 
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
@@ -132,7 +129,7 @@ public class GameScreen extends AbstractGameScreen {
 		guiRenderer = new GUIRenderer(inputController, cameraGUI, this.game, (HeroInfo) figure, focusManager);
 		guiRenderer.setGLProfiler(glProfiler);
 		graphicObjectRenderer = new GraphicObjectRenderer(ROOM_SIZE, playerController);
-		worldRenderer = new WorldRenderer(graphicObjectRenderer, viewModel, camera, cameraHelper, focusManager, animationManager);
+		worldRenderer = new WorldRenderer(graphicObjectRenderer, worldViewModel, camera, cameraHelper, focusManager, animationManager);
 
 		scrollToScale(figure.getRoomNumber(), 2f, 0.6f, CAMERA_FLIGHT_TAG_SCROLL_TO_PLAYER);
 

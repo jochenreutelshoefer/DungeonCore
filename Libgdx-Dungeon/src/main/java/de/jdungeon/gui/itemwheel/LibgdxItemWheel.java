@@ -13,10 +13,10 @@ import item.ItemInfo;
 import util.JDDimension;
 
 import de.jdungeon.app.event.FocusEvent;
-import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 import de.jdungeon.gui.LibgdxActivityProvider;
 import de.jdungeon.gui.LibgdxGUIElement;
+import de.jdungeon.gui.activity.Activity;
 
 public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
@@ -37,7 +37,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	private final int radius;
 	private boolean justRotated = true;
 
-	private static final int defaultImageWidth = 50;
+	// re-init on window resize event!
+	private static int defaultImageWidth = setDefaultImageWidth();
 
 	private int screenPlusDefaultImageWidth;
 	private int screenPlusDefaultImageHeight;
@@ -76,6 +77,11 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		currentRotationState = (float) TWO_PI - rotationOffset;
 	}
 
+	private static int setDefaultImageWidth() {
+		defaultImageWidth = Gdx.app.getGraphics().getHeight() / 10;
+		return defaultImageWidth;
+	}
+
 	public LibgdxItemWheel(JDPoint wheelCenterPosition,
 						   JDDimension dim,
 						   HeroInfo info,
@@ -88,7 +94,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 						   int radius,
 						   int itemPositions,
 						   int reoccurrenceCycleSize) {
-		super(wheelCenterPosition, dim, provider, itemBackground, defaultImageWidth);
+		super(wheelCenterPosition, dim, provider, itemBackground, setDefaultImageWidth());
 
 		PI_EIGHTEENTH = Math.PI / 18;
 		PI_THIRTHYSIXTH = Math.PI / 36;
@@ -203,19 +209,17 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		return -1;
 	}
 
-
 	public void shiftInventoryItemSelection() {
 		int markedPointIndex = getMarkedPointIndex();
 		setMarkedIndex(markedPointIndex + 1);
-		changeRotationState(-1 * (float)PI_EIGHTEENTH, false);
+		changeRotationState(-1 * (float) PI_EIGHTEENTH, false);
 
 		// we want to skip empty slots
-		if(this.getActivityForIndex(getMarkedPointIndex()) == null) {
-			if(this.binding.getNumberOfObjects() >= 0) {
+		if (this.getActivityForIndex(getMarkedPointIndex()) == null) {
+			if (this.binding.getNumberOfObjects() >= 0) {
 				shiftInventoryItemSelection();
 			}
 		}
-
 	}
 
 	private Activity getActivityForIndex(int index) {
@@ -239,8 +243,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	public ItemInfo getSelectedInventoryItem() {
 		Activity selected = this.getActivityForIndex(getMarkedPointIndex());
-		if(selected != null) {
-			if(selected.getObject() instanceof ItemInfo) {
+		if (selected != null) {
+			if (selected.getObject() instanceof ItemInfo) {
 				return (ItemInfo) selected.getObject();
 			}
 		}
@@ -263,7 +267,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	@Override
 	public void centerOnIndex(Activity activity) {
-		if(activity == null) return;
+		if (activity == null) return;
 
 		int activityIndex = getActivityIndex(activity);
 		setMarkedIndex(activityIndex);
@@ -399,7 +403,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	public void paint(SpriteBatch batch) {
 
 		for (int i = 0; i < points.length; i++) {
-			int toDraw = (markedPointIndex + i + 1)  % points.length;
+			int toDraw = (markedPointIndex + i + 1) % points.length;
 			if (toDraw >= 0) {
 
 				int x = points[toDraw].getX();

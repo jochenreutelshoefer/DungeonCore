@@ -200,12 +200,12 @@ public class GUIRenderer implements Disposable {
 		 * init hero item wheel
 		 */
 		int selectedIndexItem = 17;
-		int wheelSize = 350;
+		int wheelSize = screenWidth /2;
 		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
-		double wheelCenterY = screenHeight + wheelSize / 2 + 120;
+		double wheelCenterY = screenHeight * 5 / 4 + wheelSize / 2 ;
 		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController
 				.getPlayerController(), focusManager);
-		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(50, wheelCenterY),
+		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(screenWidth / 10, wheelCenterY),
 				itemWheelSize,
 				figure,
 				useItemActivityProvider,
