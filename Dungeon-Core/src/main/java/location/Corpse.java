@@ -11,6 +11,7 @@ import java.util.List;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.percept.Percept;
 import figure.percept.TextPercept;
 import figure.percept.UsePercept;
@@ -89,16 +90,20 @@ public class Corpse extends Location {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		if (items != null) {
-			String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
-			f.tellPercept(new TextPercept(s, round));
-			Percept p = new UsePercept(f, this, round);
-			this.location.addItems(items, null);
-			f.getRoom().distributePercept(p);
-			items = null;
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
+		if(doIt) {
+			if (items != null) {
+				String s = JDEnv.getResourceBundle().getString("shrine_corpse_find");
+				f.tellPercept(new TextPercept(s, round));
+				Percept p = new UsePercept(f, this, round);
+				this.location.addItems(items, null);
+				f.getRoom().distributePercept(p);
+				items = null;
+			}
+			return ActionResult.DONE;
+		} else {
+			return ActionResult.POSSIBLE;
 		}
-		return true;
 	}
 
 	@Override

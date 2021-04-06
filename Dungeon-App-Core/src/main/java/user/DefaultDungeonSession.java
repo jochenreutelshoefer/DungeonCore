@@ -75,17 +75,17 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getCurrentStage() {
 
-
+		/*
 		if(completedDungeons.isEmpty()) {
 			DungeonFactory level0 = getDungeonManager().getDungeonOptions(0).get(0);
-			DungeonFactory level1 = getDungeonManager().getDungeonOptions(1).get(0);
-			lastCompletedDungeonFactory = level1;
-			lastSelectedDungeonFactory = level1;
+			//DungeonFactory level1 = getDungeonManager().getDungeonOptions(1).get(0);
+			lastCompletedDungeonFactory = level0;
+			lastSelectedDungeonFactory = level0;
 			this.completedDungeons.put(level0, 1);
-			this.completedDungeons.put(level1, 2);
-			return 2;
+			//this.completedDungeons.put(level1, 2);
+			return 1;
 		}
-
+		*/
 
 		return completedDungeons.size();
 	}

@@ -19,6 +19,7 @@ import java.util.List;
 import item.interfaces.Locatable;
 import location.Statue;
 import dungeon.util.DungeonUtils;
+import log.Log;
 
 /**
  * Eine Tuer stellt die Verbindung zwischen zwei Raeumen dar. Tueren koennen
@@ -245,18 +246,16 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		return lock != null;
 	}
 
-	public boolean matches(Key k) {
+	public boolean lockMatches(Key k) {
 		return k.getType().equals(lock.getKey().getType());
 	}
 
-	public boolean lock(Key k, boolean doIt) {
-		if (matches(k)) {
-			if (doIt) {
+	public void toggleLock(Key k) {
+		if (lockMatches(k)) {
 				locked = !locked;
-			}
-			return true;
+		} else {
+			Log.severe("Should not happen, as Lock matching was already to be checked before..");
 		}
-		return false;
 	}
 
 	public Room[] getRooms() {

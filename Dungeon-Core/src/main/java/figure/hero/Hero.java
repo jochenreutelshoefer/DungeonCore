@@ -116,7 +116,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 
 	private final Inventory inv;
 
-	private final Bunch bund = new Bunch();
+	//private final Bunch bund = new Bunch();
 
 	private final JDPoint oldLocation = new JDPoint(0, 0);
 
@@ -234,8 +234,8 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 				PsychoVal,  dust, dustReg, this);
 		
 		inv = new Inventory(3, 3, 3, 3, this);
-		bund.setOwner(this);
-		inv.addItem(bund);
+		//bund.setOwner(this);
+		//inv.addItem(bund);
 
 
 	}
@@ -257,7 +257,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		}
 		c = character;
 		inv = new Inventory(3, 3, 3, 3, this);
-		inv.addItem(bund);
+		//inv.addItem(bund);
 	}
 
 	@Override
@@ -651,25 +651,7 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 		return inv.getItem(it);
 	}
 
-	@Override
-	public boolean tryUnlockDoor(Door d, boolean doIt) {
-		List<Item> items = this.getItems();
-		boolean b = false;
-		for (int i = 0; i < items.size(); i++) {
-			Item a = (items.get(i));
-			if (a instanceof Bunch) {
-				b = ((Bunch) a).tryUnlockDoor(d, doIt);
-			}
-			if (a instanceof Key) {
-				b = d.lock((Key) a, doIt);
 
-			}
-			if (b) {
-				break;
-			}
-		}
-		return b;
-	}
 
 	@Override
 	public boolean hasKey(String k) {
@@ -681,9 +663,11 @@ public class Hero extends Figure implements InfoProvider, Serializable {
 					return true;
 				}
 			}
+			/*
 			if (it instanceof Bunch) {
 				return ((Bunch) it).hasKey(k);
 			}
+			 */
 		}
 		return false;
 	}

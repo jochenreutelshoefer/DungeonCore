@@ -63,7 +63,7 @@ public class WorldRenderer implements Disposable {
 	public static final int ROOM_SIZE = 80;
 
 	// for offscreen background image generation
-	private final static boolean USE_OFFSCREEN_FRAMEBUFFER_FOR_BACKGROUND = true;
+	private final static boolean USE_OFFSCREEN_FRAMEBUFFER_FOR_BACKGROUND = false;
 	private FrameBuffer offscreenBackgroundFramebuffer;
 	private final SpriteBatch offscreenSpritebatch = new SpriteBatch();
 	private Texture backgroundTexture;

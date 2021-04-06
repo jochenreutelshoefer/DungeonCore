@@ -11,6 +11,7 @@ package location;
 import dungeon.RoomEntity;
 import dungeon.Room;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.hero.Hero;
 import game.JDEnv;
 @Deprecated
@@ -80,8 +81,9 @@ public class InfoShrine extends Location {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		return true;
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
+		// todo: reimplement entirely: what should happen on use?
+		return ActionResult.DONE;
 	}
 
 	@Override

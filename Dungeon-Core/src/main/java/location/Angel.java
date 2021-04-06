@@ -2,6 +2,7 @@ package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.hero.Hero;
 import figure.percept.TextPercept;
 import game.JDEnv;
@@ -77,19 +78,19 @@ public class Angel extends Location {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
 		if(target instanceof Feather) {
 			ownedItems.add((Feather) target);
 			f.removeItem((Item)target);
 			f.tellPercept(new TextPercept(JDEnv.getString("thanks"), round));
 			checkCompleted();
-			return true;
+			return ActionResult.DONE;
 		}else {
 			if(target == null) {
 				
 			}
 		}
-		return false;
+		return ActionResult.OTHER;
 	}
 	
 	

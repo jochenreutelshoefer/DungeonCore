@@ -11,6 +11,7 @@ package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.attribute.Attribute;
 import game.JDEnv;
 
@@ -21,99 +22,102 @@ Further, the user's oxygen attribute will be refilled (always completely).
  */
 public class HealthFountain extends Location {
 
-	private final Attribute healthReserve;
+    private final Attribute healthReserve;
 
-	private final double rate;
+    private final double rate;
 
-	public HealthFountain(int max, double rate) {
+    public HealthFountain(int max, double rate) {
 
-		super();
-		healthReserve = new Attribute(Attribute.Type.Fountain, max);
-		this.rate = rate;
-		story = JDEnv.getResourceBundle().getString("see_health_fountain");
-	}
+        super();
+        healthReserve = new Attribute(Attribute.Type.Fountain, max);
+        this.rate = rate;
+        story = JDEnv.getResourceBundle().getString("see_health_fountain");
+    }
 
-	@Override
-	public boolean needsTarget() {
-		return false;
-	}
+    @Override
+    public boolean needsTarget() {
+        return false;
+    }
 
-	@Override
-	public int getSecondIdentifier() {
-		// TODO: WTF?
-		return -1;
-	}
+    @Override
+    public int getSecondIdentifier() {
+        // TODO: WTF?
+        return -1;
+    }
 
-	@Override
-	public String getText() {
-		return toString() + " " + healthReserve.getValue() + " / " + healthReserve.getBasic();
-	}
+    @Override
+    public String getText() {
+        return toString() + " " + healthReserve.getValue() + " / " + healthReserve.getBasic();
+    }
 
-	@Override
-	public String getStory() {
-		return story;
-	}
+    @Override
+    public String getStory() {
+        return story;
+    }
 
-	@Override
-	public boolean usableOnce() {
-		return false;
-	}
+    @Override
+    public boolean usableOnce() {
+        return false;
+    }
 
-	@Override
-	public boolean canBeUsedBy(Figure f) {
-		return true;
-	}
+    @Override
+    public boolean canBeUsedBy(Figure f) {
+        return true;
+    }
 
-	@Override
-	public void turn(int round) {
-		if ((healthReserve.getBasic() - healthReserve.getValue()) > rate) {
-			healthReserve.modValue(rate);
-		}
-		else if (healthReserve.getBasic() > healthReserve.getValue()) {
-			healthReserve.setValue(healthReserve.getBasic());
-		}
-	}
+    @Override
+    public void turn(int round) {
+        if ((healthReserve.getBasic() - healthReserve.getValue()) > rate) {
+            healthReserve.modValue(rate);
+        } else if (healthReserve.getBasic() > healthReserve.getValue()) {
+            healthReserve.setValue(healthReserve.getBasic());
+        }
+    }
 
-	@Override
-	public String toString() {
-		return JDEnv.getResourceBundle().getString("shrine_fountain_name");
-	}
+    @Override
+    public String toString() {
+        return JDEnv.getResourceBundle().getString("shrine_fountain_name");
+    }
 
-	@Override
-	public int dustCosts() {
-		return 0;
-	}
+    @Override
+    public int dustCosts() {
+        return 0;
+    }
 
-	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		Attribute h = f.getHealth();
-		double act = h.getValue();
-		double max = h.getBasic();
-		int missingFigureHealth = (int) (max - act);
-		double healingAmount = 0;
-		if (healthReserve.getValue() >= missingFigureHealth) {
-			healthReserve.modValue((-1) * missingFigureHealth);
-			f.heal(missingFigureHealth, round);
-			healingAmount = missingFigureHealth;
-		}
-		else {
-			healingAmount = healthReserve.getValue();
-			f.heal((int) healingAmount, round);
-			healthReserve.setValue(0);
-		}
+    @Override
+    public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
+        if (doIt) {
 
-		double percentageHealed = healingAmount / max;
+            Attribute h = f.getHealth();
+            double act = h.getValue();
+            double max = h.getBasic();
+            int missingFigureHealth = (int) (max - act);
+            double healingAmount = 0;
+            if (healthReserve.getValue() >= missingFigureHealth) {
+                healthReserve.modValue((-1) * missingFigureHealth);
+                f.heal(missingFigureHealth, round);
+                healingAmount = missingFigureHealth;
+            } else {
+                healingAmount = healthReserve.getValue();
+                f.heal((int) healingAmount, round);
+                healthReserve.setValue(0);
+            }
 
-		// we also fill up user's oxygen, relatively in same amount as healing
-		Attribute oxygenAttribute = f.getAttribute(Attribute.Type.Oxygen);
-		double oxygenMax = oxygenAttribute.getBasic();
-		oxygenAttribute.addToMax(percentageHealed * oxygenMax);
+            double percentageHealed = healingAmount / max;
 
-		return true;
-	}
+            // we also fill up user's oxygen, relatively in same amount as healing
+            Attribute oxygenAttribute = f.getAttribute(Attribute.Type.Oxygen);
+            double oxygenMax = oxygenAttribute.getBasic();
+            oxygenAttribute.addToMax(percentageHealed * oxygenMax);
 
-	@Override
-	public String getStatus() {
-		return toString() + "\n" + healthReserve.toString();
-	}
+            return ActionResult.DONE;
+        } else {
+            return ActionResult.POSSIBLE;
+        }
+    }
+
+    @Override
+    public String getStatus() {
+        return toString() + "\n" + healthReserve.toString();
+    }
 }

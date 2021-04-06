@@ -54,6 +54,12 @@
 			<classifier>natives-armeabi</classifier>
 
 		</dependency>
+		<dependency>
+			<groupId>de.reutelshoefer.dungeon</groupId>
+			<artifactId>Game-Android</artifactId>
+			<version>0.1.0</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -93,7 +99,7 @@
 				<configuration>
 					<sdk>
 						<platform>26</platform>
-						<path>/Users/jochenreutelshofer/Library/Android/sdk</path>
+						<path>/Users/jochenreutelshoefer/Library/Android/sdk</path>
 					</sdk>
 					<extractDuplicates>true</extractDuplicates>
 					<!--deleteConflictingFiles>true</deleteConflictingFiles-->

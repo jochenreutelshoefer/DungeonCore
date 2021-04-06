@@ -81,22 +81,16 @@ public class UseItemAction extends AbstractExecutableAction {
 				}
 				if (usable.canBeUsedBy(figure)) {
 					if (doIt) {
-						boolean used = ((Usable) it).use(figure, figure.getActualDungeon()
+						ActionResult result = ((Usable) it).use(figure, figure.getActualDungeon()
 								.getUnwrapper()
-								.unwrappObject(target), this.isMeta(), round);
+								.unwrappObject(target), this.isMeta(), round, doIt);
 						Percept p = new UsePercept(figure, (Usable) it, round);
 						figure.getRoom().distributePercept(p);
 
-						if (used && (((Usable) it).usableOnce())) {
+						if (result == ActionResult.DONE && (((Usable) it).usableOnce())) {
 							figure.removeItem(it);
 						}
-						if (used) {
-
-							return ActionResult.DONE;
-						}
-						else {
-							return ActionResult.FAILED;
-						}
+						return result;
 					}
 					return ActionResult.POSSIBLE;
 				}

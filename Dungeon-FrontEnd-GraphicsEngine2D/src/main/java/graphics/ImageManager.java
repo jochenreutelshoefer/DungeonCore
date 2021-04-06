@@ -44,19 +44,15 @@ import item.quest.Rune;
 import item.quest.Thing;
 import location.Angel;
 import location.Corpse;
-import location.DarkMasterShrine;
 import location.HealthFountain;
 import location.LevelExit;
 import location.Location;
 import location.MoonRuneFinderShrine;
-import location.QuestShrine;
 import location.RevealMapShrine;
-import location.RuneFinder;
 import location.ScoutShrine;
 import location.SorcerLab;
 import location.Statue;
 import location.Trader;
-import location.Xmas;
 import location.defender.DefenderLocation;
 import log.Log;
 
@@ -1203,15 +1199,15 @@ public class ImageManager {
 		shrineMap.put(Angel.class, ImageManager.engelImage);
 		shrineMap.put(SorcerLab.class, ImageManager.sorcLabImage);
 		shrineMap.put(Trader.class, ImageManager.traderImage);
-		shrineMap.put(QuestShrine.class, ImageManager.shrine_blackImage);
+		//shrineMap.put(QuestShrine.class, ImageManager.shrine_blackImage);
 		shrineMap.put(RevealMapShrine.class, ImageManager.shrine_blackImage);
-		shrineMap.put(Xmas.class, ImageManager.xmasImage);
-		shrineMap.put(DarkMasterShrine.class, ImageManager.pentagrammImage);
+		//shrineMap.put(Xmas.class, ImageManager.xmasImage);
+		//shrineMap.put(DarkMasterShrine.class, ImageManager.pentagrammImage);
 		shrineMap.put(LevelExit.class, ImageManager.falltuerImage);
 		shrineMap.put(ScoutShrine.class, ImageManager.saeuleImage);
 		shrineMap.put(Corpse.class, ImageManager.dead_dwarfImage);
 		shrineMap.put(MoonRuneFinderShrine.class, ImageManager.runeFinderLocation);
-		shrineMap.put(RuneFinder.class, ImageManager.shrine_small_yellowImage);
+		//shrineMap.put(RuneFinder.class, ImageManager.shrine_small_yellowImage);
 		shrineMap.put(DefenderLocation.class, ImageManager.defenderLocation_inactive);
 	}
 

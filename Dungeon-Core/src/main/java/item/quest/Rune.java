@@ -1,6 +1,7 @@
 package item.quest;
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.attribute.Attribute;
 import figure.hero.Hero;
 import item.Item;
@@ -9,10 +10,6 @@ import item.interfaces.Usable;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import location.RuneShrine;
-import location.Location;
-
 
 
 public class Rune extends Item implements Usable, Locatable {
@@ -101,14 +98,9 @@ public class Rune extends Item implements Usable, Locatable {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round){
-		Location s = ((Hero)f).getRoom().getLocation();
-		if(s instanceof RuneShrine){
-			if (((RuneShrine) s).takeItem(this)) {
-	    	 ((Hero)f).getInventory().removeItem(this);
-	    	}
-		}
-		return true;
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt){
+		// todo: re-implement entirely
+		return ActionResult.DONE;
     }
 	    
 	

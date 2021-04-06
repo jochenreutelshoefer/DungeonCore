@@ -10,7 +10,6 @@ import figure.attribute.Attribute;
 import game.JDEnv;
 import location.Brood;
 import location.HealthFountain;
-import location.RuneShrine;
 import location.LocationInfo;
 
 public class Texts {
@@ -463,9 +462,6 @@ public class Texts {
 			}
 		}
 
-		if (s.getShrineClass().equals(RuneShrine.class)) {
-			info = (bundle.getString("see_rune_shrine"));
-		}
 		if (s.getShrineClass().equals(HealthFountain.class)) {
 			info = (bundle.getString("see_health_fountain"));
 		}

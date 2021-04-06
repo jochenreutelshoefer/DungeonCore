@@ -433,6 +433,7 @@ public class Inventory implements Serializable {
 		} else {
 
 			Item.notifyItem(ding, this.owner);
+			/*
 			if (ding instanceof Key) {
 
 				Bunch b = getBunch();
@@ -444,15 +445,18 @@ public class Inventory implements Serializable {
 				if (o != null)
 					o.removeItem(ding);
 			} else {
+
+			 */
 				items.add(ding);
 
 				if (o != null)
 					o.removeItem(ding);
-			}
+			//}
 			return true;
 		}
 	}
 
+	/*
 	private Bunch getBunch() {
 		for (int i = 0; i < items.size(); i++) {
 			Item it = items.get(i);
@@ -463,6 +467,8 @@ public class Inventory implements Serializable {
 		return null;
 
 	}
+	*/
+
 
 	public boolean removeItem(Item i) {
 		return items.remove(i);
@@ -907,7 +913,12 @@ public class Inventory implements Serializable {
 	}
 
 	public void clearKeys() {
-		this.getBunch().clear();
-
+		Iterator<Item> itemIterator = items.iterator();
+		while(itemIterator.hasNext()) {
+			Item next = itemIterator.next();
+			if(next instanceof Key) {
+				itemIterator.remove();
+			}
+		}
 	}
 }

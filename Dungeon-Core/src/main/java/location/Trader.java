@@ -6,6 +6,7 @@ import java.util.List;
 import dungeon.Dungeon;
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.hero.Hero;
 import game.JDEnv;
 import item.DustItem;
@@ -59,8 +60,9 @@ public class Trader extends Location /*implements itemOwner*/ {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		return false;
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
+		// todo: re-implement entirely
+		return ActionResult.OTHER;
 	}
 
 	private void addNewItem() {

@@ -6,6 +6,7 @@ import java.util.List;
 import dungeon.Room;
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.hero.Hero;
 import game.JDEnv;
 import item.interfaces.Usable;
@@ -54,8 +55,8 @@ public class Statue extends Location {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
-		return false;
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
+		return ActionResult.OTHER;
 	}
 
 	@Override

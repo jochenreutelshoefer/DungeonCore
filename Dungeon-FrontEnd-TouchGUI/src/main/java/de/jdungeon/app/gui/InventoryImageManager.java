@@ -7,7 +7,7 @@ import java.util.Set;
 import graphics.ImageManager;
 import graphics.JDImageProxy;
 import item.AttrPotion;
-import item.Bunch;
+//import item.Bunch;
 import item.DustItem;
 import item.HealPotion;
 import item.Item;
@@ -49,7 +49,7 @@ public class InventoryImageManager {
 		itemClassImageMap.put(Book.class,  guiImageManager.getJDImageProxy(GUIImageManager.BOOK));
 		itemClassImageMap.put(InfoScroll.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
 		itemClassImageMap.put(AncientMapFragment.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
-		itemClassImageMap.put(Bunch.class,  guiImageManager.getJDImageProxy(GUIImageManager.BUNCH));
+		//itemClassImageMap.put(Bunch.class,  guiImageManager.getJDImageProxy(GUIImageManager.BUNCH));
 		itemClassImageMap.put(Thing.class,  guiImageManager.getJDImageProxy(GUIImageManager.MANA_BATTERY));
 		itemClassImageMap.put(Key.class,  guiImageManager.getJDImageProxy("guiItems/key.gif"));
 		itemClassImageMap.put(MoonRune.class,  guiImageManager.getJDImageProxy("guiItems/mondrune.png"));

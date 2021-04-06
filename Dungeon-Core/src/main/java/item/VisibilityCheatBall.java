@@ -7,6 +7,7 @@ import dungeon.RoomEntity;
 import figure.Figure;
 import figure.RoomObservationStatus;
 import figure.VisibilityModifier;
+import figure.action.result.ActionResult;
 import item.interfaces.Usable;
 import item.quest.Thing;
 
@@ -29,7 +30,7 @@ public class VisibilityCheatBall extends Thing implements Usable, VisibilityModi
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
 		Dungeon dungeon = f.getActualDungeon();
 		user = f;
 		for (int x = 0; x < dungeon.getSize().getX(); x++) {
@@ -42,7 +43,7 @@ public class VisibilityCheatBall extends Thing implements Usable, VisibilityModi
 				}
 			}
 		}
-		return true;
+		return ActionResult.DONE;
 	}
 
 	@Override

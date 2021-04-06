@@ -1,6 +1,7 @@
 package location;
 
 import dungeon.RoomEntity;
+import figure.action.result.ActionResult;
 import item.AttrPotion;
 import item.DustItem;
 import item.HealPotion;
@@ -179,6 +180,7 @@ public class SorcerLab extends Location implements VisibilityModifier {
 	
 
 	public void metaClick(Figure f, Object target) {
+		/*
 		// AKTION MACHEN
 		if (activated) {
 			Percept p = new UsePercept(f, this, -1);
@@ -188,6 +190,8 @@ public class SorcerLab extends Location implements VisibilityModifier {
 		} else {
 			use(f, null, false, -1);
 		}
+		*/
+
 	}
 
 	private void activate(Figure f) {
@@ -213,7 +217,7 @@ public class SorcerLab extends Location implements VisibilityModifier {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
 
 		if (!activated) {
 			Attribute dust = ((Hero) f).getDust();
@@ -254,8 +258,8 @@ public class SorcerLab extends Location implements VisibilityModifier {
 			}
 
 		}
-
-		return true;
+		// todo: re-implement entirely
+		return ActionResult.OTHER;
 	}
 
 	private void testHeroLevel(Hero h) {

@@ -3,6 +3,7 @@ package location;
 
 import dungeon.RoomEntity;
 import figure.Figure;
+import figure.action.result.ActionResult;
 import figure.monster.Ghul;
 import figure.monster.Monster;
 import figure.monster.Ogre;
@@ -127,9 +128,9 @@ public class Brood extends Location {
 	}
 
 	@Override
-	public boolean use(Figure f, RoomEntity target, boolean meta, int round) {
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
 		//
-		return true;
+		return ActionResult.OTHER;
 	}
 
 	private void addWay(Monster m) {

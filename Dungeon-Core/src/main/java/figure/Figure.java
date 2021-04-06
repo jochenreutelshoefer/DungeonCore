@@ -548,10 +548,6 @@ public abstract class Figure extends DungeonWorldObject
 		return agility.canPayActionpoints(k);
 	}
 
-	public boolean isAbleToLockDoor() {
-		return true;
-	}
-
 	public double getAntiFleeValue() {
 		return 0;
 	}
@@ -1097,8 +1093,7 @@ public abstract class Figure extends DungeonWorldObject
 		return control;
 	}
 
-	@Deprecated // todo: unifiy across different figure types
-	public abstract boolean tryUnlockDoor(Door d, boolean doIt);
+
 
 	protected Action retrieveMovementActionFromControl(int round) {
 

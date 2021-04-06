@@ -82,11 +82,6 @@ public abstract class Monster extends Figure implements Paragraphable, InfoProvi
 
 	protected double healthRecover = 0.35;
 
-	@Override
-	public boolean tryUnlockDoor(Door d, boolean doIt) {
-		return false;
-	}
-
 	protected List<TimedAttributeModification> modifications = new LinkedList<>();
 
 	protected Attribute strength;
