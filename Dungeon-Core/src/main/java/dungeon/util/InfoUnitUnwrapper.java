@@ -73,7 +73,7 @@ public class InfoUnitUnwrapper {
 			}
 		}
 		if (o instanceof FigureInfo) {
-			return dungeon.getFigureIndex().get(((FigureInfo) o).getFighterID());
+			return dungeon.getFigureIndex().get(((FigureInfo) o).getFigureID());
 		}
 		if (o instanceof PositionInRoomInfo) {
 			int index = ((PositionInRoomInfo)o).getIndex();

@@ -163,7 +163,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 		@Override
 		public AttackSkillAction get() {
-			return new AttackSkillAction(skill, actor, target.getFighterID());
+			return new AttackSkillAction(skill, actor, target.getFigureID());
 		}
 	}
 
@@ -174,7 +174,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 		AttackSkillAction(AttackSkill skill, @NotNull FigureInfo attackerInfo, int targetID) {
 			super(skill, attackerInfo);
-			attacker = attackerInfo.getMap().getDungeon().getFigureIndex().get(attackerInfo.getFighterID());
+			attacker = attackerInfo.getMap().getDungeon().getFigureIndex().get(attackerInfo.getFigureID());
 			target = attackerInfo.getMap().getDungeon().getFigureIndex().get(targetID);
 		}
 	}

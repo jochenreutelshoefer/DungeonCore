@@ -1,11 +1,7 @@
 package figure;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import ai.AI;
 import ai.AbstractReflexBehavior;
@@ -219,7 +215,20 @@ public abstract class Figure extends DungeonWorldObject
 		return true;
 	}
 
-	public void sufferPoisonings(int round) {
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Figure figure = (Figure) o;
+		return figureID == figure.figureID;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(figureID);
+	}
+
+	private void sufferPoisonings(int round) {
 		for (int i = 0; i < poisonings.size(); i++) {
 			Poisoning p = (poisonings.get(i));
 			if (p.getTime() == 0) {
@@ -329,9 +338,9 @@ public abstract class Figure extends DungeonWorldObject
 		return getRoom().getDungeon().getRoom(getRoomNumber());
 	}
 
-	public int lastTurn = -1;
+	private int lastTurn = -1;
 
-	public void timeTick(int round) {
+	private void timeTick(int round) {
 
 		if (lastTurn < round) {
 			fireModifications();
@@ -355,6 +364,8 @@ public abstract class Figure extends DungeonWorldObject
 
 		if (getActionPoints() > 0 && !isDead()) {
 			Room room = this.getRoom();
+			if(room == null) return; // some level exit concurrency issue...
+
 			doActions(round, room.fightRunning());
 
 			// might be that after an action the fight is resolved
@@ -366,7 +377,7 @@ public abstract class Figure extends DungeonWorldObject
 
 	protected abstract void sanction(int i);
 
-	public boolean hurt(int value) {
+	private boolean hurt(int value) {
 		Log.info(this.getName() + " receives damage: " + value);
 		Attribute h = this.getHealth();
 		h.modValue(value * (-1));

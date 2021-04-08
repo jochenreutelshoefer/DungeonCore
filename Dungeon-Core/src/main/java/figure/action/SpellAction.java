@@ -14,7 +14,7 @@ public class SpellAction extends AbstractExecutableAction {
 	private final Figure figure;
 
 	public SpellAction(FigureInfo info, SpellInfo spell, RoomInfoEntity target) {
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
 		this.spell = spell;
 		this.target = target;
 		

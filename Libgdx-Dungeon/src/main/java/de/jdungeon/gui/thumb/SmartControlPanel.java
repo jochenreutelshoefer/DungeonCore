@@ -445,7 +445,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 									positionElementPositions[i],
 									positionDimension,
 									this,
-									null, color, otherFigure, playerController.getActionAssembler()));
+									otherFigure, color, otherFigure, playerController.getActionAssembler()));
 				}
 			}
 			else {

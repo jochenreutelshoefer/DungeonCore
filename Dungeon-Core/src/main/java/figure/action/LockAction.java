@@ -7,10 +7,8 @@ import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.action.result.ActionResult;
-import figure.percept.InfoPercept;
 import item.Item;
 import item.Key;
-import spell.KeyLocator;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class LockAction extends AbstractExecutableAction {
     private final Figure figure;
 
     public LockAction(FigureInfo info, DoorInfo door) {
-        figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+        figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
         this.door = door;
     }
 

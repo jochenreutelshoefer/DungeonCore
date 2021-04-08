@@ -6,12 +6,6 @@
  */
 package figure.action;
 
-import figure.action.result.ActionResult;
-
-/**
- * Abstrakte Superklasse fuer alle Aktionen
- * 
- */
 public abstract class Action {
 
 	@Override

@@ -19,7 +19,7 @@ public class TakeItemAction extends AbstractExecutableAction {
 	public TakeItemAction(FigureInfo info, ItemInfo it) {
 		super();
 		this.item = it;
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
 	}
 
 	/**

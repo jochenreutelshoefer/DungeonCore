@@ -85,8 +85,8 @@ public class HeroPositionLog {
 					// happens when players leaves the level
 					return;
 				}
-				int ownerID = owner.getFighterID();
-				if(perceptFighter.getFighterID() == ownerID) {
+				int ownerID = owner.getFigureID();
+				if(perceptFighter.getFigureID() == ownerID) {
 					lastVisits.put(((EntersPercept) element).getTo().getPoint(), element.getRound());
 				}
 

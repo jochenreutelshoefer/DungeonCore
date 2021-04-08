@@ -274,7 +274,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		return f.getActionPoints();
 	}
 
-	public int getFighterID() {
+	public int getFigureID() {
 		return f.getFigureID();
 	}
 

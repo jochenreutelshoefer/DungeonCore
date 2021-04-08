@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dungeon.util.RouteInstruction;
+import switchPos.SwitchPositionRequestManager;
 import figure.DungeonVisibilityMap;
 import figure.Figure;
 import figure.FigureInfo;
@@ -72,14 +73,6 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		return null;
 	}
 
-	@Deprecated
-	public Boolean hasHero() {
-
-		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return Boolean.valueOf(r.hasHero());
-		}
-		return null;
-	}
 
 	public Boolean hasConnectionTo(RoomInfo r1) {
 		return r.hasConnectionTo(r1.getRoomNumber());
@@ -87,6 +80,14 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 
 	public int getConnectionDirectionTo(RoomInfo r1) {
 		return r.getConnectionDirectionTo(r1);
+	}
+
+	public Collection<SwitchPositionRequestManager.SwitchPosRequest> getSwitchPosRequests(FigureInfo requestedFigure) {
+		Figure figure = getRoom().getDungeon().getFigureIndex().get(requestedFigure.getFigureID());
+		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
+			return SwitchPositionRequestManager.getInstance().getSwitchPosRequests(figure);
+		}
+		return null;
 	}
 
 	@Override

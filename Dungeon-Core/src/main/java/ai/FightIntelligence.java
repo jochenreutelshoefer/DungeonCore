@@ -22,9 +22,8 @@ public interface FightIntelligence {
 	 * zurueckgeben
 	 * 
 	 * @see Action
-	 * @see ActionFactory
 	 * @return auszufuehrende Aktion
 	 */
-	public Action chooseFightAction();
+	Action chooseFightAction();
 
 }

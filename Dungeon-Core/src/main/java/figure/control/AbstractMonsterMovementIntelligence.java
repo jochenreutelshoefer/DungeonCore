@@ -29,7 +29,7 @@ public abstract class AbstractMonsterMovementIntelligence extends AbstractMoveme
 		
 	public AbstractMonsterMovementIntelligence(MonsterInfo m) {
 		monster = m;
-		this.fighterID = m.getFighterID();
+		this.fighterID = m.getFigureID();
 	}
 	
 	/* (non-Javadoc)

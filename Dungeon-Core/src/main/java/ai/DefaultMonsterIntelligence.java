@@ -6,10 +6,8 @@
  */
 package ai;
 
-import figure.monster.DarkMaster;
 import figure.monster.Dwarf;
 import figure.monster.Ghul;
-import figure.monster.Monster;
 import figure.monster.Ogre;
 import figure.monster.Orc;
 import figure.monster.Skeleton;
@@ -162,7 +160,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 
 	}
 
-	protected int getRandomPassableDir() {
+	private int getRandomPassableDir() {
 		int doors[] = monster.getRoomDoors();
 		boolean poss[] = new boolean[4];
 		boolean dirExisting = false;
@@ -189,7 +187,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return k + 1;
 	}
 
-	public static Action getStepAwayAction(FigureInfo monster, FigureInfo enemy) {
+	static Action getStepAwayAction(FigureInfo monster, FigureInfo enemy) {
 		int otherPosIndex = enemy.getPositionInRoomIndex();
 		int posIndex = monster.getPositionInRoomIndex();
 		int rightDist = Position.getDistanceFromTo(posIndex, otherPosIndex,
@@ -215,7 +213,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		return null;
 	}
 
-	public static Action getFleeAction(FigureInfo monster) {
+	static Action getFleeAction(FigureInfo monster) {
 		Action a = monster.getSkill(FleeSkill.class).newActionFor(monster).get();
 		ActionResult res = monster.checkAction(a);
 		if (res.getSituation() == ActionResult.Situation.possible) {
@@ -401,7 +399,7 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 		int heroIndex = -1;
 		for (int i = 0; i < infos.size(); i++) {
 			if (infos.get(i) instanceof HeroInfo) {
-				heroIndex = ((HeroInfo) infos.get(i)).getFighterID();
+				heroIndex = ((HeroInfo) infos.get(i)).getFigureID();
 			}
 		}
 		return heroIndex;

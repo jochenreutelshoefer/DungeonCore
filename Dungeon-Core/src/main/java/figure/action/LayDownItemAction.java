@@ -27,13 +27,13 @@ public class LayDownItemAction extends AbstractExecutableAction {
 
 	@Deprecated
 	public LayDownItemAction(FigureInfo info, boolean equip, int index) {
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
 		this.equipment = equip;
 		this.index = index;
 	}
 
 	public LayDownItemAction(FigureInfo info, ItemInfo item) {
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
 		this.item = item;
 	}
 

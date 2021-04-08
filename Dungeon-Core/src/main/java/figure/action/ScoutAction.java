@@ -6,20 +6,14 @@
  */
 package figure.action;
 
-import dungeon.Door;
-import dungeon.DoorInfo;
 import dungeon.Position;
-import dungeon.PositionInRoomInfo;
 import dungeon.Room;
-import dungeon.util.RouteInstruction;
 import figure.Figure;
 import figure.FigureInfo;
 import figure.RoomObservationStatus;
 import figure.action.result.ActionResult;
-import figure.percept.InfoPercept;
 import figure.percept.Percept;
 import figure.percept.ScoutPercept;
-import spell.KeyLocator;
 
 public class ScoutAction extends AbstractExecutableAction{
 
@@ -29,7 +23,7 @@ public class ScoutAction extends AbstractExecutableAction{
 	public ScoutAction(FigureInfo figureInfo, int dir) {
 		super();
 		this.dir = dir;
-		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFighterID());
+		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFigureID());
 
 	}
 	

@@ -6,7 +6,6 @@
  */
 package figure.action;
 
-import dungeon.util.RouteInstruction;
 import org.jetbrains.annotations.NotNull;
 import dungeon.Position;
 import dungeon.Room;
@@ -25,7 +24,7 @@ public class StepAction extends AbstractExecutableAction {
 			throw new IllegalArgumentException("figureInfo may not be null for "+this.getClass().getSimpleName());
 		}
  		targetIndex = index;
-		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFighterID());
+		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFigureID());
 
 	}
 

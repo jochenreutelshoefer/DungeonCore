@@ -12,7 +12,7 @@ public class UseChestAction extends AbstractExecutableAction {
 	private final Figure figure;
 
 	public UseChestAction(FigureInfo info, boolean meta) {
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFighterID());
+		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
 		this.meta = meta;
 	}
 

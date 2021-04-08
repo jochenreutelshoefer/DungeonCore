@@ -29,13 +29,10 @@ public abstract class AbstractAI implements AI {
 		this.info = info;
 	}
 
-	private JDGUI gui;
-	protected boolean wait = false;
 	protected FigureInfo info;
 
-	public void plugSpectatorGui(JDGUI gui) {
-		this.gui = gui;
-	}
+	private JDGUI gui;
+	protected boolean wait = false;
 
 	@Override
 	public final void tellPercept(Percept p) {
@@ -50,9 +47,5 @@ public abstract class AbstractAI implements AI {
 	}
 
 	protected abstract void processPercept(Percept p);
-
-	public void setWait(boolean wait) {
-		this.wait = wait;
-	}
 
 }

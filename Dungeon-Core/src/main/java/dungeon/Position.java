@@ -19,320 +19,319 @@ import log.Log;
 
 public class Position extends DungeonWorldObject implements RoomEntity {
 
-	private final Room room;
+    private final Room room;
 
-	private Figure figure;
+    private Figure figure;
 
-	private final int index;
+    private final int index;
 
-	private Position next;
+    private Position next;
 
-	private Position previous;
+    private Position previous;
 
-	public Position(Room r, int index) {
-		this.room = r;
-		this.index = index;
-	}
+    public Position(Room r, int index) {
+        this.room = r;
+        this.index = index;
+    }
 
-	@Override
-	public Collection<Position> getInteractionPositions() {
-		return Collections.singletonList(this);
-	}
+    @Override
+    public Collection<Position> getInteractionPositions() {
+        return Collections.singletonList(this);
+    }
 
-	public enum Pos {
-		NW(0),
-		N(1),
-		NE(2),
-		E(3),
-		SE(4),
-		S(5),
-		SW(6),
-		W(7);
+    public enum Pos {
+        NW(0), // north west
+        N(1),  // north
+        NE(2), // north east
+        E(3), // east
+        SE(4), // south east
+        S(5), // south
+        SW(6), // south west
+        W(7); // west
 
-		Pos(int value) {
-			this.value = value;
-		}
+        Pos(int value) {
+            this.value = value;
+        }
 
-		private final int value;
+        private final int value;
 
-		public int getValue() {
-			return value;
-		}
+        public int getValue() {
+            return value;
+        }
 
-		public static Pos fromValue(int value) {
-			for (Pos pos : Pos.values()) {
-				if (pos.getValue() == value) {
-					return pos;
-				}
-			}
-			return null;
-		}
-	}
+        public static Pos fromValue(int value) {
+            for (Pos pos : Pos.values()) {
+                if (pos.getValue() == value) {
+                    return pos;
+                }
+            }
+            return null;
+        }
+    }
 
-	/**
-	 * @return Returns the f.
-	 */
-	public Figure getFigure() {
-		return figure;
-	}
+    /**
+     * @return Returns the f.
+     */
+    public Figure getFigure() {
+        return figure;
+    }
 
-	public void setFigure(Figure info) {
-		checkFigureAlreadyOnAPosition(info);
-		figure = info;
-	}
+    public void setFigure(Figure info) {
+        if (info != null) {
+            checkFigureAlreadyOnAPosition(info);
+        }
+        figure = info;
+    }
 
-	private void checkFigureAlreadyOnAPosition(Figure info) {
-		final Position[] positions = room.getPositions();
-		for (Position position : positions) {
-			if(info.equals(position.getFigure())) {
-				Log.severe("Figure is already in Room!!");
-			}
-		}
-	}
+    private void checkFigureAlreadyOnAPosition(Figure info) {
+        final Position[] positions = room.getPositions();
+        for (Position position : positions) {
+            if (info.equals(position.getFigure())) {
+                Log.severe("Figure is already in Room!!");
+            }
+        }
+    }
 
-	/**
-	 * @return Returns the index.
-	 */
-	public int getIndex() {
-		return index;
-	}
+    /**
+     * @return Returns the index.
+     */
+    public int getIndex() {
+        return index;
+    }
 
-	public void figureEntersHere(Figure fig) {
-		checkFigureAlreadyOnAPosition(fig);
-		if (figure == null) {
-			figure = fig;
-			fig.setPos(this);
+    public void figureEntersHere(Figure fig) {
 
-		}
-		else {
-			if (Math.random() < 0.5) {
-				previous.figureEntersHere(fig);
-			}
-			else {
-				next.figureEntersHere(fig);
-			}
-		}
-	}
+        // consistency check only
+        checkFigureAlreadyOnAPosition(fig);
 
-	public static int getNextIndex(int index, boolean right) {
-		if (right) {
-			if (index == 7) {
-				return 0;
-			}
-			else {
-				return index + 1;
-			}
-		}
-		else {
-			if (index == 0) {
-				return 7;
+        // if this is free, then we enter here
+        if (figure == null) {
+            figure = fig;
+            fig.setPos(this);
 
-			}
-			else {
-				return index - 1;
-			}
-		}
-	}
+        } else {
+            // otherwise, we look for a nearby free position
+            if (Math.random() < 0.5) {
+                previous.figureEntersHere(fig);
+            } else {
+                next.figureEntersHere(fig);
+            }
+        }
+    }
 
-	public Room getRoom() {
-		return room;
-	}
+    public static int getNextIndex(int index, boolean right) {
+        if (right) {
+            if (index == 7) {
+                return 0;
+            } else {
+                return index + 1;
+            }
+        } else {
+            if (index == 0) {
+                return 7;
 
-	public static final int DIST_NEAR = 1;
+            } else {
+                return index - 1;
+            }
+        }
+    }
 
-	public static final int DIST_MID = 2;
+    public Room getRoom() {
+        return room;
+    }
 
-	public static final int DIST_FAR = 3;
+    public static final int DIST_NEAR = 1;
 
-	public static final int DIST_FAREST = 4;
+    public static final int DIST_MID = 2;
 
-	private static final int[][] distMatrix = {
-			{ 0, DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID,
-					DIST_NEAR },
-			{ DIST_NEAR, 0, DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR,
-					DIST_MID },
-			{ DIST_MID, DIST_NEAR, 0, DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR,
-					DIST_FAR },
-			{ DIST_FAR, DIST_MID, DIST_NEAR, 0, DIST_NEAR, DIST_MID, DIST_FAR,
-					DIST_FAR },
-			{ DIST_FAR, DIST_FAR, DIST_MID, DIST_NEAR, 0, DIST_NEAR, DIST_MID,
-					DIST_FAR },
-			{ DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID, DIST_NEAR, 0, DIST_NEAR,
-					DIST_MID },
-			{ DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID, DIST_NEAR, 0,
-					DIST_NEAR },
-			{ DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID,
-					DIST_NEAR, 0 } };
+    public static final int DIST_FAR = 3;
 
-	public int getDistanceTo(Position p) {
-		if (p.getRoom() != room) {
-			return -1;
-		}
-		return getDistance(p.index);
-	}
+    public static final int DIST_FAREST = 4;
 
-	public int getDistance(int otherIndex) {
-		return distMatrix[index][otherIndex];
-	}
+    private static final int[][] distMatrix = {
+            {0, DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID,
+                    DIST_NEAR},
+            {DIST_NEAR, 0, DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR,
+                    DIST_MID},
+            {DIST_MID, DIST_NEAR, 0, DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR,
+                    DIST_FAR},
+            {DIST_FAR, DIST_MID, DIST_NEAR, 0, DIST_NEAR, DIST_MID, DIST_FAR,
+                    DIST_FAR},
+            {DIST_FAR, DIST_FAR, DIST_MID, DIST_NEAR, 0, DIST_NEAR, DIST_MID,
+                    DIST_FAR},
+            {DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID, DIST_NEAR, 0, DIST_NEAR,
+                    DIST_MID},
+            {DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID, DIST_NEAR, 0,
+                    DIST_NEAR},
+            {DIST_NEAR, DIST_MID, DIST_FAR, DIST_FAR, DIST_FAR, DIST_MID,
+                    DIST_NEAR, 0}};
 
-	public static int getFreePositionNear(Room room, int positionIndex) {
-		if (room.getPositions()[positionIndex].getFigure() == null) {
-			return positionIndex;
-		}
-		int counter = 0;
-		while (counter < 5) {
-			int nextIndexRight = Position.getNextIndex(positionIndex + counter, true);
-			if (room.getPositions()[nextIndexRight].getFigure() == null) {
-				return nextIndexRight;
-			}
-			int nextIndexLeft = Position.getNextIndex(positionIndex - counter, false);
+    public int getDistanceTo(Position p) {
+        if (p.getRoom() != room) {
+            return -1;
+        }
+        return getDistance(p.index);
+    }
 
-			if (room.getPositions()[nextIndexLeft].getFigure() == null) {
-				return nextIndexLeft;
-			}
-			counter++;
+    public int getDistance(int otherIndex) {
+        return distMatrix[index][otherIndex];
+    }
 
-		}
-		return -1;
-	}
+    public static int getFreePositionNear(Room room, int positionIndex) {
+        if (room.getPositions()[positionIndex].getFigure() == null) {
+            return positionIndex;
+        }
+        int counter = 0;
+        while (counter < 5) {
+            int nextIndexRight = Position.getNextIndex(positionIndex + counter, true);
+            if (room.getPositions()[nextIndexRight].getFigure() == null) {
+                return nextIndexRight;
+            }
+            int nextIndexLeft = Position.getNextIndex(positionIndex - counter, false);
 
-	public static int getMinDistanceFromTo(int from, int to) {
-		int right = getDistanceFromTo(from, to, true);
-		int left = getDistanceFromTo(from, to, false);
-		if (right < left) {
-			return right;
-		}
-		else {
-			return left;
-		}
-	}
+            if (room.getPositions()[nextIndexLeft].getFigure() == null) {
+                return nextIndexLeft;
+            }
+            counter++;
 
-	public static int getDistanceFromTo(int from, int to, boolean right) {
-		int k = from;
-		int dist = 0;
-		while (k != to) {
-			dist++;
-			if (right) {
-				k = incIndex(k);
-			}
-			else {
-				k = decIndex(k);
-			}
-		}
-		return dist;
+        }
+        return -1;
+    }
 
-	}
+    public static int getMinDistanceFromTo(int from, int to) {
+        int right = getDistanceFromTo(from, to, true);
+        int left = getDistanceFromTo(from, to, false);
+        if (right < left) {
+            return right;
+        } else {
+            return left;
+        }
+    }
 
-	public static int decIndex(int k) {
-		if (k == 0) {
-			return 7;
-		}
-		else {
-			return k - 1;
-		}
-	}
+    public static int getDistanceFromTo(int from, int to, boolean right) {
+        int k = from;
+        int dist = 0;
+        while (k != to) {
+            dist++;
+            if (right) {
+                k = incIndex(k);
+            } else {
+                k = decIndex(k);
+            }
+        }
+        return dist;
 
-	public static int incIndex(int k) {
-		if (k < 7) {
-			return k + 1;
-		}
-		if (k == 7) {
-			return 0;
-		}
-		return -1;
-	}
+    }
 
-	public RouteInstruction.Direction getPossibleFleeDirection() {
-		if (index == 1) {
-			return RouteInstruction.Direction.North;
-		}
-		if (index == 3) {
-			return RouteInstruction.Direction.East;
-		}
-		if (index == 5) {
-			return RouteInstruction.Direction.South;
-		}
-		if (index == 7) {
-			return RouteInstruction.Direction.West;
-		}
-		return null;
+    public static int decIndex(int k) {
+        if (k == 0) {
+            return 7;
+        } else {
+            return k - 1;
+        }
+    }
 
-	}
+    public static int incIndex(int k) {
+        if (k < 7) {
+            return k + 1;
+        }
+        if (k == 7) {
+            return 0;
+        }
+        return -1;
+    }
 
-	private static int[][] dirMatrix = {
-			{ 0, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST, Dir.SOUTH, Dir.SOUTH,
-					Dir.SOUTH },
-			{ Dir.WEST, 0, Dir.EAST, Dir.EAST, Dir.SOUTH, Dir.SOUTH, Dir.SOUTH,
-					Dir.WEST },
-			{ Dir.WEST, Dir.WEST, 0, Dir.SOUTH, Dir.SOUTH, Dir.SOUTH, Dir.WEST,
-					Dir.WEST },
-			{ Dir.WEST, Dir.WEST, Dir.NORTH, 0, Dir.SOUTH, Dir.WEST, Dir.WEST,
-					Dir.WEST },
-			{ Dir.WEST, Dir.NORTH, Dir.NORTH, Dir.NORTH, 0, Dir.WEST, Dir.WEST,
-					Dir.WEST },
-			{ Dir.NORTH, Dir.NORTH, Dir.NORTH, Dir.EAST, Dir.EAST, 0, Dir.WEST,
-					Dir.WEST },
-			{ Dir.NORTH, Dir.NORTH, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST, 0,
-					Dir.NORTH },
-			{ Dir.NORTH, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST,
-					Dir.SOUTH, 0 } };
+    public RouteInstruction.Direction getPossibleFleeDirection() {
+        if (index == 1) {
+            return RouteInstruction.Direction.North;
+        }
+        if (index == 3) {
+            return RouteInstruction.Direction.East;
+        }
+        if (index == 5) {
+            return RouteInstruction.Direction.South;
+        }
+        if (index == 7) {
+            return RouteInstruction.Direction.West;
+        }
+        return null;
 
-	public static int getDirFromTo(int from, int to) {
-		return dirMatrix[from][to];
-	}
+    }
 
-	public void figureLeaves() {
-		if (figure != null) {
-			DungeonVisibilityMap roomVisibility = figure.getRoomVisibility();
-			if (roomVisibility != null) {
-				roomVisibility.removeScoutedVisibility(this);
-			}
-		}
-		figure = null;
-	}
+    private static int[][] dirMatrix = {
+            {0, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST, Dir.SOUTH, Dir.SOUTH,
+                    Dir.SOUTH},
+            {Dir.WEST, 0, Dir.EAST, Dir.EAST, Dir.SOUTH, Dir.SOUTH, Dir.SOUTH,
+                    Dir.WEST},
+            {Dir.WEST, Dir.WEST, 0, Dir.SOUTH, Dir.SOUTH, Dir.SOUTH, Dir.WEST,
+                    Dir.WEST},
+            {Dir.WEST, Dir.WEST, Dir.NORTH, 0, Dir.SOUTH, Dir.WEST, Dir.WEST,
+                    Dir.WEST},
+            {Dir.WEST, Dir.NORTH, Dir.NORTH, Dir.NORTH, 0, Dir.WEST, Dir.WEST,
+                    Dir.WEST},
+            {Dir.NORTH, Dir.NORTH, Dir.NORTH, Dir.EAST, Dir.EAST, 0, Dir.WEST,
+                    Dir.WEST},
+            {Dir.NORTH, Dir.NORTH, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST, 0,
+                    Dir.NORTH},
+            {Dir.NORTH, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST, Dir.EAST,
+                    Dir.SOUTH, 0}};
 
-	public String toString() {
-		String figureString = "null";
-		if (figure != null) {
-			figureString = figure.getName();
-		}
-		return "PositionInRoom: index:  " + index + " figure: " + figureString;
-	}
+    public static int getDirFromTo(int from, int to) {
+        return dirMatrix[from][to];
+    }
 
-	/**
-	 * @return Returns the previous.
-	 */
-	public Position getPrevious() {
-		return previous;
-	}
+    public void figureLeaves() {
+        if (figure != null) {
+            DungeonVisibilityMap roomVisibility = figure.getRoomVisibility();
+            if (roomVisibility != null) {
+                roomVisibility.removeScoutedVisibility(this);
+            }
+        }
+        figure = null;
+    }
 
-	/**
-	 * @return Returns the next.
-	 */
-	public Position getNext() {
-		return next;
-	}
+    public String toString() {
+        String figureString = "null";
+        if (figure != null) {
+            figureString = figure.getName();
+        }
+        return "PositionInRoom: index:  " + index + " figure: " + figureString;
+    }
 
-	public void setPrevious(Position l) {
-		previous = l;
-	}
+    /**
+     * @return Returns the previous.
+     */
+    public Position getPrevious() {
+        return previous;
+    }
 
-	public void setNext(Position n) {
-		next = n;
-	}
+    /**
+     * @return Returns the next.
+     */
+    public Position getNext() {
+        return next;
+    }
 
-	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setPrevious(Position l) {
+        previous = l;
+    }
 
-	public JDPoint getRoomNumber() {
-		return room.getRoomNumber();
-	}
+    public void setNext(Position n) {
+        next = n;
+    }
 
-	public PositionMemory getMemoryObject(FigureInfo info) {
+    public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		return new PositionMemory(this, info);
-	}
+    public JDPoint getRoomNumber() {
+        return room.getRoomNumber();
+    }
+
+    public PositionMemory getMemoryObject(FigureInfo info) {
+
+        return new PositionMemory(this, info);
+    }
 
 }

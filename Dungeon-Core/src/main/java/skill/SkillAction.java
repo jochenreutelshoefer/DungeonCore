@@ -24,7 +24,7 @@ public abstract class SkillAction extends Action {
 	}
 
 	public Figure getActor() {
-		return actor.getMap().getDungeon().getFigureIndex().get(actor.getFighterID());
+		return actor.getMap().getDungeon().getFigureIndex().get(actor.getFigureID());
 	}
 
 	public Skill getSkill() {
