@@ -2,6 +2,7 @@ package figure;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Logger;
 
 import ai.AI;
 import ai.AbstractReflexBehavior;
@@ -55,13 +56,7 @@ import item.ItemInfo;
 import item.Key;
 import item.interfaces.ItemOwner;
 import log.Log;
-import org.apache.log4j.Logger;
-import skill.AttackSkill;
-import skill.FleeSkill;
-import skill.ScoutSkill;
-import skill.Skill;
-import skill.SkillAction;
-import skill.SkillMap;
+import skill.*;
 import spell.Spell;
 import spell.SpellInfo;
 import util.JDColor;
@@ -277,13 +272,13 @@ public abstract class Figure extends DungeonWorldObject
 	}
 
 	protected void dieAndLeave() {
-		Logger.getLogger(this.getClass()).info("Figure dies:  " + this);
+		Log.info("Figure dies:  " + this);
 		dead = true;
 		this.getRoom().figureDies(this);
 		getActualDungeon().removeFigureFromIndex(this);
 	}
 
-	public boolean payDust(double value) {
+	private boolean payDust(double value) {
 		if (this.getDust().getValue() >= value) {
 			this.getDust().modValue((-1) * value);
 			return true;
@@ -812,6 +807,7 @@ public abstract class Figure extends DungeonWorldObject
 		this.skillSet.put(AttackSkill.class, new AttackSkill());
 		this.skillSet.put(FleeSkill.class, new FleeSkill());
 		this.skillSet.put(ScoutSkill.class, new ScoutSkill());
+		this.skillSet.put(EagleOwlSkill.class, new EagleOwlSkill());
 
 		this.figureID = figureID_counter;
 		figureID_counter++;
@@ -1138,7 +1134,7 @@ public abstract class Figure extends DungeonWorldObject
 				}
 				catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					Logger.getLogger(this.getClass()).error("Waiting for Action was interrupted: ", e);
+					Log.error("Waiting for Action was interrupted: ", e);
 					e.printStackTrace();
 				}
 				if (this.getRoom() == null

@@ -45,6 +45,10 @@ public class SpellInfo extends InfoEntity {
 		return spell.getType();
 	}
 
+	public Class<? extends Spell> getSpellClass(){
+		return this.spell.getClass();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

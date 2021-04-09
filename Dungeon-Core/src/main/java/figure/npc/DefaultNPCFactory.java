@@ -5,7 +5,7 @@ import figure.hero.Hero;
 import figure.hero.HeroUtil;
 import figure.hero.Profession;
 import figure.hero.Zodiac;
-import org.apache.log4j.Logger;
+import log.Log;
 
 import static figure.hero.Hero.*;
 
@@ -31,7 +31,7 @@ public class DefaultNPCFactory {
 		}
 		if(values == null) {
 			String message = "hero category not found";
-			Logger.getLogger(DefaultNPCFactory.class.getSimpleName()).warn(message);
+			Log.warning(message);
 			throw new IllegalArgumentException(message);
 		}
 		Hero npc = HeroUtil.getBasicHero(heroCode, name, Zodiac.Twin, Profession.Hunter);

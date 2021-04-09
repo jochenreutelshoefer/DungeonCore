@@ -37,7 +37,7 @@ public class DungeonWorldTest extends TestCase {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
 			for (DungeonFactory dungeonFactory : dungeonFactories) {
 				Dungeon dungeon = dungeonFactory.createDungeon();
-				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert", Zodiac.Aquarius,
+				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert2", Zodiac.Aquarius,
 						Profession.Lumberjack);
 
 				DungeonGameLoop dungeonGame = new DungeonGameLoop(dungeon);

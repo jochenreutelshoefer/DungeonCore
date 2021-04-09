@@ -19,13 +19,14 @@
  */
 package event;
 
+import log.Log;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.apache.log4j.Logger;
 
 /**
  * A very simple EventManager. Events are represented by Classes
@@ -114,7 +115,7 @@ public class EventManager {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				Logger.getLogger(EventManager.class).error("Catched exception in EventListener: ", e);
+				Log.error("Catched exception in EventListener: ", e);
 			}
 		}
 

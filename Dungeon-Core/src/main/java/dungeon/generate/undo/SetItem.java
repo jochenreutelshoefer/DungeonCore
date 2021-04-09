@@ -2,7 +2,6 @@ package dungeon.generate.undo;
 
 import item.Item;
 import item.interfaces.ItemOwner;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -14,7 +13,7 @@ public class SetItem implements DungeonChangeAction {
 	private final Item item;
 	private boolean possible;
 
-	public SetItem(ItemOwner owner, @NotNull Item item) {
+	public SetItem(ItemOwner owner, Item item) {
 		itemOwner = owner;
 		this.item = item;
 	}

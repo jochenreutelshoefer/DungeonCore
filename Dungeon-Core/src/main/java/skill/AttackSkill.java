@@ -10,7 +10,6 @@ import figure.percept.AttackPercept;
 import figure.percept.TextPercept;
 import game.JDEnv;
 import log.Log;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -148,7 +147,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 		private FigureInfo target;
 
-		private AttackActionBuilder(AttackSkill skill, @NotNull FigureInfo attacker) {
+		private AttackActionBuilder(AttackSkill skill, FigureInfo attacker) {
 			super(skill, attacker);
 			this.skill = skill;
 		}
@@ -172,7 +171,7 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 		private final Figure attacker;
 		private final Figure target;
 
-		AttackSkillAction(AttackSkill skill, @NotNull FigureInfo attackerInfo, int targetID) {
+		AttackSkillAction(AttackSkill skill, FigureInfo attackerInfo, int targetID) {
 			super(skill, attackerInfo);
 			attacker = attackerInfo.getMap().getDungeon().getFigureIndex().get(attackerInfo.getFigureID());
 			target = attackerInfo.getMap().getDungeon().getFigureIndex().get(targetID);

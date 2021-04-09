@@ -29,7 +29,6 @@ import item.interfaces.ItemOwner;
 import location.Location;
 import location.Statue;
 import log.Log;
-import org.jetbrains.annotations.NotNull;
 import util.JDColor;
 
 public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
@@ -234,7 +233,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         setShrine(null, false);
     }
 
-    public void setShrine(@NotNull Location newShrine) {
+    public void setShrine(Location newShrine) {
         if (this.s != null) {
             throw new IllegalStateException("check for shrine before setting one!");
         }
@@ -965,7 +964,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
     }
 
     @Override
-    public boolean takeItem(@NotNull Item i) {
+    public boolean takeItem(Item i) {
 
         if (i instanceof DustItem) {
             boolean foundOther = false;

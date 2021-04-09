@@ -11,7 +11,6 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.androidapp.io.AndroidResourceBundleLoader;
 import de.jdungeon.io.ResourceBundleLoader;
 
 public class AndroidLauncher extends AndroidApplication {

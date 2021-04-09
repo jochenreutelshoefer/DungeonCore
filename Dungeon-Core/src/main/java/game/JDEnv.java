@@ -3,7 +3,7 @@ package game;
 import java.util.ResourceBundle;
 
 import gui.Texts;
-import org.apache.log4j.Logger;
+import log.Log;
 
 /**
  * Klasse die eine Referenz auf das Game-Objekt und die newStatement()-Methode
@@ -27,7 +27,7 @@ public class JDEnv {
 	public static void init(ResourceBundle bundle) {
 		res = bundle;
 		if (res == null) {
-			Logger.getLogger(JDEnv.class).error("Texts ResourceBundle ist null");
+			Log.error("Texts ResourceBundle ist null");
 		}
 		Texts.init();
 	}

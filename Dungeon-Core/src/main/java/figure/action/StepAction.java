@@ -6,7 +6,6 @@
  */
 package figure.action;
 
-import org.jetbrains.annotations.NotNull;
 import dungeon.Position;
 import dungeon.Room;
 import figure.Figure;
@@ -18,7 +17,7 @@ public class StepAction extends AbstractExecutableAction {
 	private int targetIndex = -1;
 	private final Figure figure;
 
-	public StepAction(@NotNull FigureInfo figureInfo, int index) {
+	public StepAction(FigureInfo figureInfo, int index) {
 		super();
 		if(figureInfo == null) {
 			throw new IllegalArgumentException("figureInfo may not be null for "+this.getClass().getSimpleName());

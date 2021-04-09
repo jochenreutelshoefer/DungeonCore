@@ -20,6 +20,10 @@ public class Log {
 		log(message, MessageType.ERROR);
 	}
 
+	public static void error(String message, Exception e) {
+		log(message +" :" + e.getStackTrace(), MessageType.ERROR);
+	}
+
 	public static void severe(String message) {
 		log(message, MessageType.SEVERE);
 	}

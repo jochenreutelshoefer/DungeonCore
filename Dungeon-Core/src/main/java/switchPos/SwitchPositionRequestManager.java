@@ -119,11 +119,11 @@ public final class SwitchPositionRequestManager implements EventListener {
             this.requestedFigure = requestedFigure;
         }
 
-        public Figure getRequestingFigure() {
+        Figure getRequestingFigure() {
             return requestingFigure;
         }
 
-        public Figure getRequestedFigure() {
+        Figure getRequestedFigure() {
             return requestedFigure;
         }
 
