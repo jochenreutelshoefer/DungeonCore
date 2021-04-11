@@ -1,11 +1,11 @@
 package de.jdungeon.gui.activity;
 
-import skill.Skill;
+import de.jdungeon.skill.Skill;
 
 import de.jdungeon.world.PlayerController;
 
 /**
- * An activity to trigger a skill
+ * An activity to trigger a de.jdungeon.skill
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 12.04.20.

@@ -7,9 +7,9 @@ package de.jdungeon.user;
 public interface Session {
 
 	/**
-	 * Returns the user object of this session
+	 * Returns the de.jdungeon.user object of this session
 	 *
-	 * @return the user of this session
+	 * @return the de.jdungeon.user of this session
 	 */
 	User getUser();
 

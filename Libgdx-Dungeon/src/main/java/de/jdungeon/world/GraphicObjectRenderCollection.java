@@ -1,23 +1,17 @@
 package de.jdungeon.world;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import figure.Figure;
-import figure.FigureInfo;
-import figure.FigurePresentation;
-import figure.hero.Hero;
-import figure.hero.HeroInfo;
-import figure.hero.Warrior;
-import figure.other.Fir;
-import graphics.GraphicObject;
-import graphics.JDGraphicObject;
-import graphics.JDImageLocated;
-import graphics.JDImageProxy;
+import de.jdungeon.figure.Figure;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.other.Fir;
+import de.jdungeon.graphics.GraphicObject;
+import de.jdungeon.graphics.JDGraphicObject;
+import de.jdungeon.graphics.JDImageLocated;
+import de.jdungeon.graphics.JDImageProxy;
 
 import de.jdungeon.asset.Assets;
 import de.jdungeon.util.Pair;
@@ -25,7 +19,7 @@ import de.jdungeon.util.Pair;
 /**
  * This is a utility class containing render information (list of object render information).
  *
- *  Each pair in the prepared list holds 1) a GraphicObject holding information about the game object and view information like position and size
+ *  Each pair in the prepared list holds 1) a GraphicObject holding information about the de.jdungeon.game object and view information like position and size
  *  and 2) a AtlasRegion obtain from the Asset management, providing the rendering engine the texture to be drawn.
  *
  *

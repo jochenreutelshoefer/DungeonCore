@@ -1,0 +1,66 @@
+de/jdungeon/animation/AnimationSetDirections.java
+ de.jdungeon.animation.AnimationSetDirections
+de/jdungeon/event/ActionEvent.java
+ de.jdungeon.event.ActionEvent
+de/jdungeon/event/WannaTakeItemEvent.java
+ de.jdungeon.event.WannaTakeItemEvent
+de/jdungeon/animation/DelayImageTask.java
+ de.jdungeon.animation.DelayImageTask
+de/jdungeon/graphics/ImageConverter.java
+ de.jdungeon.graphics.ImageConverter
+ de.jdungeon.graphics.ImageConverter$1
+de/jdungeon/graphics/JDImageLocated.java
+ de.jdungeon.graphics.JDImageLocated
+de/jdungeon/graphics/util/RoomSize.java
+ de.jdungeon.graphics.util.RoomSize
+de/jdungeon/animation/AnimationSet.java
+ de.jdungeon.animation.AnimationSet
+de/jdungeon/audio/AudioEffectsManager.java
+ de.jdungeon.audio.AudioEffectsManager
+de/jdungeon/graphics/JDGraphicObject.java
+ de.jdungeon.graphics.JDGraphicObject
+de/jdungeon/animation/Motion.java
+ de.jdungeon.animation.Motion
+de/jdungeon/text/StatementManager.java
+ de.jdungeon.text.StatementManager
+de/jdungeon/graphics/util/RectangleFactory.java
+ de.jdungeon.graphics.util.RectangleFactory
+de/jdungeon/graphics/util/RelativeRectangle.java
+ de.jdungeon.graphics.util.RelativeRectangle
+de/jdungeon/graphics/JDImageProxy.java
+ de.jdungeon.graphics.JDImageProxy
+de/jdungeon/animation/AnimationManager.java
+ de.jdungeon.animation.AnimationManager
+ de.jdungeon.animation.AnimationManager$AnimationObjectPool
+de/jdungeon/animation/DefaultAnimationSet.java
+ de.jdungeon.animation.DefaultAnimationSet
+de/jdungeon/animation/DelayAnimationTask.java
+ de.jdungeon.animation.DelayAnimationTask
+de/jdungeon/animation/DefaultAnimationTask.java
+ de.jdungeon.animation.DefaultAnimationTask
+de/jdungeon/graphics/util/JDRectangle.java
+ de.jdungeon.graphics.util.JDRectangle
+de/jdungeon/graphics/ImageManagerUtils.java
+ de.jdungeon.graphics.ImageManagerUtils
+de/jdungeon/graphics/util/RelativeCorrectionRectangleFactory.java
+ de.jdungeon.graphics.util.RelativeCorrectionRectangleFactory
+de/jdungeon/animation/AnimationFrame.java
+ de.jdungeon.animation.AnimationFrame
+de/jdungeon/graphics/util/DrawingRectangle.java
+ de.jdungeon.graphics.util.DrawingRectangle
+de/jdungeon/graphics/GraphicObject.java
+ de.jdungeon.graphics.GraphicObject
+de/jdungeon/animation/AnimationTask.java
+ de.jdungeon.animation.AnimationTask
+de/jdungeon/text/Statement.java
+ de.jdungeon.text.Statement
+de/jdungeon/animation/AnimationUtils.java
+ de.jdungeon.animation.AnimationUtils
+de/jdungeon/graphics/ImageManager.java
+ de.jdungeon.graphics.ImageManager
+ de.jdungeon.graphics.ImageManager$CharacterAnimationSet
+ de.jdungeon.graphics.ImageManager$CharacterAnimationSetBuilder
+ de.jdungeon.graphics.ImageManager$DefaultCharacterAnimationSet
+de/jdungeon/graphics/GraphicObjectRenderer.java
+ de.jdungeon.graphics.GraphicObjectRenderer
+ de.jdungeon.graphics.GraphicObjectRenderer$ShrineRenderDimension

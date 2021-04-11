@@ -3,11 +3,10 @@ package de.jdungeon.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import dungeon.ItemInfoOwner;
-import figure.action.Action;
-import item.ItemInfo;
+import de.jdungeon.dungeon.ItemInfoOwner;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.item.ItemInfo;
 
-import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.gui.activity.Activity;

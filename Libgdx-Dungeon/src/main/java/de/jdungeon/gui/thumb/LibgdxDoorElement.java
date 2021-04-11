@@ -3,11 +3,10 @@ package de.jdungeon.gui.thumb;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import event.EventManager;
-import figure.action.Action;
-import util.JDDimension;
+import de.jdungeon.dungeon.DoorInfo;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
@@ -32,7 +31,7 @@ public class LibgdxDoorElement extends LibgdxAnimatedSmartControlElement {
 		this.clickableObject = clickableObject;
 		this.guiControl = guiControl;
 
-		// prepare highlight animation drawables
+		// prepare highlight de.jdungeon.animation drawables
 		for (int i = 0; i < animationShapes.length; i++) {
 			final int finalI = i;
 			animationShapes[i] = new LibgdxDrawable() {

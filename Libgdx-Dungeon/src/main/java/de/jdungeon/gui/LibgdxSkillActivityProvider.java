@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import figure.action.result.ActionResult;
-import figure.hero.HeroInfo;
-import figure.percept.TextPercept;
-import skill.*;
-import spell.AbstractSpell;
-import spell.SpellInfo;
-import text.Statement;
-import text.StatementManager;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.skill.*;
+import de.jdungeon.spell.AbstractSpell;
+import de.jdungeon.spell.SpellInfo;
+import de.jdungeon.text.Statement;
+import de.jdungeon.text.StatementManager;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -71,7 +71,7 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
         activityCache.add(controller.getAttackActivity());
         //  activityCache.add(controller.getFleeActivity()); // flee is already refactored to be a Skill
 
-        // add simple skills (fetched from the figure)
+        // add simple skills (fetched from the de.jdungeon.figure)
         Collection<Skill> skills = info.getSkills();
         for (Skill skill : skills) {
             if (skill instanceof ScoutSkill || skill instanceof FleeSkill) {
@@ -87,7 +87,7 @@ public class LibgdxSkillActivityProvider implements LibgdxActivityProvider {
 
         // todo: what about the non-simple skills ???
 
-        // todo: shouldn't these spell activities somehow also obtained from the controller?
+        // todo: shouldn't these de.jdungeon.spell activities somehow also obtained from the controller?
         List<SpellInfo> spells = info.getSpells();
         for (SpellInfo spell : spells) {
             activityCache.add(new SpellActivity(spell, controller));

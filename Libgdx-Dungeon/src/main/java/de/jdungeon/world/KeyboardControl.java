@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dungeon.PositionInRoomInfo;
-import dungeon.util.RouteInstruction;
-import figure.action.Action;
-import figure.action.result.ActionResult;
-import figure.percept.TextPercept;
-import text.Statement;
-import text.StatementManager;
+import de.jdungeon.dungeon.PositionInRoomInfo;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.text.Statement;
+import de.jdungeon.text.StatementManager;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.app.ActionAssembler;
@@ -21,7 +21,7 @@ import static com.badlogic.gdx.Gdx.input;
 import static com.badlogic.gdx.Input.Keys;
 
 /**
- * Implements keyboard control for the game (relevant for desktop version only).
+ * Implements keyboard control for the de.jdungeon.game (relevant for desktop version only).
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 29.02.20.
@@ -42,7 +42,7 @@ public class KeyboardControl {
 		if (lastEvent < 200) {
 			// we do not process move input events faster than any 200 msec
 			// as there are coming many events with every key press
-			//Log.info("Ignoring key event because last was "+lastEvent +"ago");
+			//Log.info("Ignoring key de.jdungeon.event because last was "+lastEvent +"ago");
 			return false;
 		}
 
@@ -69,7 +69,7 @@ public class KeyboardControl {
 
 
 		/*
-		handle chest event
+		handle chest de.jdungeon.event
 		 */
 		if (input.isKeyPressed(Keys.C)) {
 			playerController.getActionAssembler().wannaUseChest();
@@ -77,7 +77,7 @@ public class KeyboardControl {
 		}
 
 		/*
-		handle use location event
+		handle use de.jdungeon.location de.jdungeon.event
 		 */
 		if (input.isKeyPressed(Keys.L)) {
 			playerController.getActionAssembler().wannaUseLocation();
@@ -85,7 +85,7 @@ public class KeyboardControl {
 		}
 
 		/*
-		handle take item event
+		handle take de.jdungeon.item de.jdungeon.event
 		 */
 		if (input.isKeyPressed(Keys.I)) {
 			playerController.getActionAssembler().wannaTakeItem();
@@ -93,7 +93,7 @@ public class KeyboardControl {
 		}
 
 		/*
-		handle door lock/unlock event
+		handle door lock/unlock de.jdungeon.event
 		 */
 		if (input.isKeyPressed(Keys.D)) {
 			playerController.getActionAssembler().wannaLockUnlockDoor();
@@ -101,7 +101,7 @@ public class KeyboardControl {
 		}
 
 		/*
-		handle use item event
+		handle use de.jdungeon.item de.jdungeon.event
 		 */
 		if (input.isKeyPressed(Keys.ENTER)) {
 			playerController.getActionAssembler()
@@ -113,7 +113,7 @@ public class KeyboardControl {
 		}
 
 		/*
-		shift selected inventory item
+		shift selected inventory de.jdungeon.item
 		 */
 		if (input.isKeyPressed((Keys.TAB))) {
 			playerController.getGameScreen().getGuiRenderer().getItemWheel().shiftInventoryItemSelection();
@@ -160,7 +160,7 @@ public class KeyboardControl {
 			ScoutActivity scoutActivity = playerController.getScoutActivity();
 			for (Integer cursorKey : keyDirectionMap.keySet()) {
 				if (input.isKeyPressed(cursorKey)) {
-					if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in fight
+					if (isFight) AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM); // no use for shift in de.jdungeon.fight
 					RouteInstruction.Direction dir = keyDirectionMap.get(cursorKey);
 					ActionResult actionResult = scoutActivity.isCurrentlyPossible(dir);
 					if (actionResult.getSituation() == ActionResult.Situation.possible) {
@@ -225,8 +225,8 @@ public class KeyboardControl {
 	}
 
 	private boolean eventProcessed() {
-		//Log.info("Reseting last key event timer");
-		// we log a time stamp to be able to filter duplicate processing
+		//Log.info("Reseting last key de.jdungeon.event timer");
+		// we de.jdungeon.log a time stamp to be able to filter duplicate processing
 		last_key_pressed_event = System.currentTimeMillis();
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		return true;

@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import dungeon.JDPoint;
-import figure.action.result.ActionResult;
-import figure.percept.TextPercept;
-import text.Statement;
-import text.StatementManager;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.text.Statement;
+import de.jdungeon.text.StatementManager;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -51,7 +51,7 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 		super.paint(batch);
 		ActionResult possibleState = activity.possible(null);
 		ActivityPlan executionPlan = activity.createExecutionPlan(false, null);
-		if (executionPlan == null) return; // level exit problem
+		if (executionPlan == null) return; // de.jdungeon.level exit problem
 
 		int tileWidth = this.getDimension().getWidth();
 		int tileHeight = this.getDimension().getHeight();

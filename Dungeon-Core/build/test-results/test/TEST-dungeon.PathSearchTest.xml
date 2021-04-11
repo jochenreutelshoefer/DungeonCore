@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dungeon.PathSearchTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2021-04-10T16:37:49" hostname="Jochens-MBP" time="0.038">
+  <properties/>
+  <testcase name="testNonExistingPathToOtherAreaBlocked" classname="dungeon.PathSearchTest" time="0.018"/>
+  <testcase name="testPathStraightDown" classname="dungeon.PathSearchTest" time="0.002"/>
+  <testcase name="testPathStraightDownInverse" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="testPathDownOneOffsetLeft" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="testPathDownOneOffsetLeftInverse" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="test3" classname="dungeon.PathSearchTest" time="0.0"/>
+  <testcase name="test3Inverse" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="test4" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="test4Inverse" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="test5" classname="dungeon.PathSearchTest" time="0.002"/>
+  <testcase name="test5Inverse" classname="dungeon.PathSearchTest" time="0.001"/>
+  <testcase name="testNonExistingPathToOtherArea" classname="dungeon.PathSearchTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

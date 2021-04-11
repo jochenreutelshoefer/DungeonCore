@@ -1,10 +1,8 @@
 package de.jdungeon.gui;
 
-import dungeon.JDPoint;
-import event.PlayerDiedEvent;
-import util.JDDimension;
-
-import de.jdungeon.game.Game;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.PlayerDiedEvent;
+import de.jdungeon.util.JDDimension;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

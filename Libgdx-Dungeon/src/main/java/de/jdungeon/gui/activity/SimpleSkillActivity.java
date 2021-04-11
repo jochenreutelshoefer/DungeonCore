@@ -1,9 +1,8 @@
 package de.jdungeon.gui.activity;
 
-import figure.action.result.ActionResult;
-import skill.SimpleSkill;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.skill.SimpleSkill;
 
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.world.PlayerController;
 
 /**

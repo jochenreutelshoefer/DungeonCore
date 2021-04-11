@@ -8,10 +8,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import dungeon.JDPoint;
-import spell.Spell;
-import user.DefaultDungeonSession;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.spell.Spell;
+import de.jdungeon.user.DefaultDungeonSession;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
@@ -46,7 +46,7 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 		camera.setToOrtho(true, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
 
 
-		// init gui camera and gui renderer
+		// init de.jdungeon.gui camera and de.jdungeon.gui renderer
 		cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
@@ -68,13 +68,13 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 	public boolean clicked(int screenX, int screenY, int pointer, int button) {
 		// TODO : refactor towards a generic abstract Screen that will do this kind of stuff
 		/*
-		Check for gui element click
+		Check for de.jdungeon.gui element click
 		 */
 		ListIterator<LibgdxGUIElement> listIterator = guiElements.listIterator(guiElements.size());
 		while (listIterator.hasPrevious()) {
 			LibgdxGUIElement guiElement = listIterator.previous();
 			if (guiElement.hasPoint(new JDPoint(screenX, screenY)) && guiElement.isVisible()) {
-				//Log.i("touch event fired", this.getClass().getSimpleName()+": touch event fired");
+				//Log.i("touch de.jdungeon.event fired", this.getClass().getSimpleName()+": touch de.jdungeon.event fired");
 				Input.TouchEvent touchEvent = new Input.TouchEvent();
 				touchEvent.x = screenX;
 				touchEvent.y = screenY;

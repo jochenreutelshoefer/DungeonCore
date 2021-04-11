@@ -3,27 +3,14 @@ package de.jdungeon;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import org.apache.log4j.Logger;
-
 import de.jdungeon.asset.Assets;
 import de.jdungeon.asset.LibgdxAssetImageLoader;
-import de.jdungeon.game.Audio;
-import de.jdungeon.game.Configuration;
-import de.jdungeon.game.FileIO;
-import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Input;
-import de.jdungeon.game.Screen;
-import de.jdungeon.game.ScreenContext;
+import de.jdungeon.game.*;
 import de.jdungeon.libgdx.LibgdxAudio;
 import de.jdungeon.libgdx.LibgdxConfiguration;
 import de.jdungeon.libgdx.LibgdxFileIO;
 import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.libgdx.LibgdxInput;
-import de.jdungeon.libgdx.LibgdxScreenContext;
-import de.jdungeon.libgdx.MyInputProcessor;
 import de.jdungeon.user.Session;
 
 /**
@@ -43,6 +30,7 @@ public class GameAdapter implements Game {
 
 	public GameAdapter(LibgdxDungeonMain game) {
 		this.game = game;
+		GameEnv.getInstance().setGame(this);
 	}
 
 	@Override
@@ -104,5 +92,10 @@ public class GameAdapter implements Game {
 	@Override
 	public Session getSession() {
 		return null;
+	}
+
+	@Override
+	public Logger getLogger() {
+		return game.getLogger();
 	}
 }

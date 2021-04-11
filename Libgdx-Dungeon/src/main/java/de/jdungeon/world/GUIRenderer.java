@@ -10,13 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Disposable;
-import dungeon.JDPoint;
-import event.EventManager;
-import figure.hero.HeroInfo;
-import graphics.ImageManager;
-import log.Log;
-import text.Statement;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.graphics.ImageManager;
+import de.jdungeon.log.Log;
+import de.jdungeon.text.Statement;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -39,7 +39,7 @@ import de.jdungeon.gui.itemwheel.LibgdxItemWheel;
 import de.jdungeon.gui.thumb.SmartControlPanel;
 
 /**
- * Renders the GUI (aka head up display) above the game world.
+ * Renders the GUI (aka head up display) above the de.jdungeon.game world.
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 31.12.19.
@@ -108,7 +108,7 @@ public class GUIRenderer implements Disposable {
 		Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: " + screenWidth + " x " + screenHeight);
 
 		/*
-		 * init text messages panel
+		 * init de.jdungeon.text messages panel
 		 */
 		textView = new LibgdxTextPerceptView();
 		this.libgdxGuiElements.add(textView);
@@ -197,7 +197,7 @@ public class GUIRenderer implements Disposable {
 
 
 		/*
-		 * init hero item wheel
+		 * init hero de.jdungeon.item wheel
 		 */
 		int selectedIndexItem = 17;
 		int wheelSize = screenWidth /2;
@@ -218,7 +218,7 @@ public class GUIRenderer implements Disposable {
 
 
 		/*
-		 * Init use skill panel below smart control
+		 * Init use de.jdungeon.skill panel below smart control
 		 */
 
 		int screenWidthBy2 = (int) (screenWidth / 2.07);
@@ -236,7 +236,7 @@ public class GUIRenderer implements Disposable {
 
 
 		/*
-		 * init game over view
+		 * init de.jdungeon.game over view
 		 */
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
@@ -335,7 +335,7 @@ public class GUIRenderer implements Disposable {
 		cameraGUI.viewportWidth = width;
 		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
 		cameraGUI.update();
-		//Gdx.app.log(TAG, "camerGUI viewport width: "+width +" ; height: "+height);
+		//Gdx.app.de.jdungeon.log(TAG, "camerGUI viewport width: "+width +" ; height: "+height);
 	}
 
 	@Override

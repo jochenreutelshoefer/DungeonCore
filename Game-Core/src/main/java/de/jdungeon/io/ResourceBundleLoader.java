@@ -1,12 +1,14 @@
 package de.jdungeon.io;
 
+import de.jdungeon.game.MyResourceBundle;
+
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * Loader API
  */
 public interface ResourceBundleLoader {
-	ResourceBundle getBundle(String path);
-	ResourceBundle getBundle(String baseName, Locale locale, ClassLoader loader);
+
+	MyResourceBundle getBundle(String path);
+	MyResourceBundle getBundle(String baseName, Locale locale, Object game);
 }

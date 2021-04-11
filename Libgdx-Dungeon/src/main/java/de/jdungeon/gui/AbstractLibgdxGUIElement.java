@@ -1,13 +1,11 @@
 package de.jdungeon.gui;
 
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Affine2;
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.asset.Assets;
 
@@ -116,7 +114,7 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
 		bgPixmap.setColor(Color.WHITE);
 		bgPixmap.fill();
-		bgPixmap.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+		bgPixmap.setColor(com.badlogic.gdx.de.jdungeon.graphics.Color.WHITE);
 		bgPixmap.drawRectangle(0, 0, width, height);
 		this.bgTexture = new Texture(bgPixmap);
 		*/

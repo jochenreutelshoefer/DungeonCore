@@ -1,0 +1,706 @@
+de/jdungeon/figure/Figure.java
+ de.jdungeon.figure.Figure
+de/jdungeon/dungeon/generate/undo/RemoveDoor.java
+ de.jdungeon.dungeon.generate.undo.RemoveDoor
+de/jdungeon/ai/FleeBehaviour.java
+ de.jdungeon.ai.FleeBehaviour
+de/jdungeon/figure/action/MoveAction.java
+ de.jdungeon.figure.action.MoveAction
+de/jdungeon/dungeon/quest/RoomQuest_1x1_1.java
+ de.jdungeon.dungeon.quest.RoomQuest_1x1_1
+de/jdungeon/spell/StealOrc.java
+ de.jdungeon.spell.StealOrc
+de/jdungeon/dungeon/util/MapData.java
+ de.jdungeon.dungeon.util.MapData
+de/jdungeon/spell/TargetSpell.java
+ de.jdungeon.spell.TargetSpell
+de/jdungeon/item/equipment/Shield.java
+ de.jdungeon.item.equipment.Shield
+de/jdungeon/figure/percept/WaitPercept.java
+ de.jdungeon.figure.percept.WaitPercept
+de/jdungeon/dungeon/generate/DungeonGameFactory.java
+ de.jdungeon.dungeon.generate.DungeonGameFactory
+de/jdungeon/figure/memory/DoorMemory.java
+ de.jdungeon.figure.memory.DoorMemory
+de/jdungeon/figure/hero/Mage.java
+ de.jdungeon.figure.hero.Mage
+de/jdungeon/skill/AttackSkill.java
+ de.jdungeon.skill.AttackSkill
+ de.jdungeon.skill.AttackSkill$1
+ de.jdungeon.skill.AttackSkill$AttackActionBuilder
+ de.jdungeon.skill.AttackSkill$AttackSkillAction
+de/jdungeon/figure/percept/TumblingPercept.java
+ de.jdungeon.figure.percept.TumblingPercept
+de/jdungeon/dungeon/DungeonWorldObject.java
+ de.jdungeon.dungeon.DungeonWorldObject
+de/jdungeon/dungeon/generate/DungeonFiller.java
+ de.jdungeon.dungeon.generate.DungeonFiller
+de/jdungeon/item/Bunch.java
+ de.jdungeon.item.Bunch
+de/jdungeon/dungeon/JDPoint.java
+ de.jdungeon.dungeon.JDPoint
+de/jdungeon/figure/hero/Druid.java
+ de.jdungeon.figure.hero.Druid
+de/jdungeon/event/EventManager.java
+ de.jdungeon.event.EventManager
+de/jdungeon/item/interfaces/itemReceiver.java
+ de.jdungeon.item.interfaces.itemReceiver
+de/jdungeon/figure/hero/HeroUtil.java
+ de.jdungeon.figure.hero.HeroUtil
+de/jdungeon/ai/AttitudeMonsterDefault.java
+ de.jdungeon.ai.AttitudeMonsterDefault
+de/jdungeon/figure/attribute/TimedAttributeModification.java
+ de.jdungeon.figure.attribute.TimedAttributeModification
+de/jdungeon/spell/Light.java
+ de.jdungeon.spell.Light
+de/jdungeon/figure/other/LionessAI.java
+ de.jdungeon.figure.other.LionessAI
+de/jdungeon/dungeon/generate/undo/SetShrineAction.java
+ de.jdungeon.dungeon.generate.undo.SetShrineAction
+de/jdungeon/log/Log.java
+ de.jdungeon.log.Log
+ de.jdungeon.log.Log$MessageType
+de/jdungeon/gui/Paragraph.java
+ de.jdungeon.gui.Paragraph
+de/jdungeon/dungeon/DoorCountRoomComparator.java
+ de.jdungeon.dungeon.DoorCountRoomComparator
+de/jdungeon/figure/hero/Profession.java
+ de.jdungeon.figure.hero.Profession
+de/jdungeon/dungeon/generate/ReachabilityChecker.java
+ de.jdungeon.dungeon.generate.ReachabilityChecker
+ de.jdungeon.dungeon.generate.ReachabilityChecker$Node
+ de.jdungeon.dungeon.generate.ReachabilityChecker$Node$ExpansionResult
+de/jdungeon/spell/Cobweb.java
+ de.jdungeon.spell.Cobweb
+de/jdungeon/location/Angel.java
+ de.jdungeon.location.Angel
+de/jdungeon/figure/memory/ChestMemory.java
+ de.jdungeon.figure.memory.ChestMemory
+de/jdungeon/dungeon/RoomInfo.java
+ de.jdungeon.dungeon.RoomInfo
+de/jdungeon/figure/action/EndRoundAction.java
+ de.jdungeon.figure.action.EndRoundAction
+de/jdungeon/figure/percept/ShieldBlockPercept.java
+ de.jdungeon.figure.percept.ShieldBlockPercept
+de/jdungeon/location/LevelExit.java
+ de.jdungeon.location.LevelExit
+de/jdungeon/item/DustItem.java
+ de.jdungeon.item.DustItem
+de/jdungeon/spell/Isolation.java
+ de.jdungeon.spell.Isolation
+de/jdungeon/dungeon/Dir.java
+ de.jdungeon.dungeon.Dir
+de/jdungeon/figure/action/UseItemAction.java
+ de.jdungeon.figure.action.UseItemAction
+de/jdungeon/item/VisibilityCheatBall.java
+ de.jdungeon.item.VisibilityCheatBall
+de/jdungeon/dungeon/ChestInfo.java
+ de.jdungeon.dungeon.ChestInfo
+de/jdungeon/figure/percept/FleePercept.java
+ de.jdungeon.figure.percept.FleePercept
+de/jdungeon/figure/percept/LocationStateChangePercept.java
+ de.jdungeon.figure.percept.LocationStateChangePercept
+de/jdungeon/figure/percept/SpecialAttackPercept.java
+ de.jdungeon.figure.percept.SpecialAttackPercept
+de/jdungeon/game/DungeonGameLoop.java
+ de.jdungeon.game.DungeonGameLoop
+ de.jdungeon.game.DungeonGameLoop$1
+ de.jdungeon.game.DungeonGameLoop$Loop
+de/jdungeon/game/ActionSpecifier.java
+ de.jdungeon.game.ActionSpecifier
+de/jdungeon/event/ExitUsedEvent.java
+ de.jdungeon.event.ExitUsedEvent
+de/jdungeon/item/equipment/EquipmentItem.java
+ de.jdungeon.item.equipment.EquipmentItem
+de/jdungeon/item/interfaces/ItemOwner.java
+ de.jdungeon.item.interfaces.ItemOwner
+de/jdungeon/spell/EscapeRoute.java
+ de.jdungeon.spell.EscapeRoute
+de/jdungeon/spell/Steal.java
+ de.jdungeon.spell.Steal
+de/jdungeon/figure/memory/MemoryObject.java
+ de.jdungeon.figure.memory.MemoryObject
+de/jdungeon/figure/other/Fir.java
+ de.jdungeon.figure.other.Fir
+de/jdungeon/item/quest/DarkMasterKey.java
+ de.jdungeon.item.quest.DarkMasterKey
+de/jdungeon/figure/action/StepAction.java
+ de.jdungeon.figure.action.StepAction
+de/jdungeon/figure/HeroControlWithSpectator.java
+ de.jdungeon.figure.HeroControlWithSpectator
+de/jdungeon/util/JDDimension.java
+ de.jdungeon.util.JDDimension
+de/jdungeon/spell/Poison.java
+ de.jdungeon.spell.Poison
+de/jdungeon/figure/percept/MissPercept.java
+ de.jdungeon.figure.percept.MissPercept
+de/jdungeon/figure/monster/MonsterInfo.java
+ de.jdungeon.figure.monster.MonsterInfo
+de/jdungeon/dungeon/LockInfo.java
+ de.jdungeon.dungeon.LockInfo
+de/jdungeon/figure/npc/DefaultNPCFactory.java
+ de.jdungeon.figure.npc.DefaultNPCFactory
+de/jdungeon/item/equipment/weapon/Sword.java
+ de.jdungeon.item.equipment.weapon.Sword
+de/jdungeon/ai/DefaultMonsterIntelligence.java
+ de.jdungeon.ai.DefaultMonsterIntelligence
+ de.jdungeon.ai.DoorStep
+de/jdungeon/location/Statue.java
+ de.jdungeon.location.Statue
+de/jdungeon/game/InfoProvider.java
+ de.jdungeon.game.InfoProvider
+de/jdungeon/item/quest/Thing.java
+ de.jdungeon.item.quest.Thing
+de/jdungeon/game/InfoEntity.java
+ de.jdungeon.game.InfoEntity
+de/jdungeon/ai/ActionAssemblerHelper.java
+ de.jdungeon.ai.ActionAssemblerHelper
+de/jdungeon/game/ControlUnit.java
+ de.jdungeon.game.ControlUnit
+de/jdungeon/figure/attribute/Attribute.java
+ de.jdungeon.figure.attribute.Attribute
+ de.jdungeon.figure.attribute.Attribute$Type
+de/jdungeon/figure/memory/PositionMemory.java
+ de.jdungeon.figure.memory.PositionMemory
+de/jdungeon/spell/conjuration/LionessConjuration.java
+ de.jdungeon.spell.conjuration.LionessConjuration
+de/jdungeon/dungeon/SpotInfo.java
+ de.jdungeon.dungeon.SpotInfo
+de/jdungeon/fight/Poisoning.java
+ de.jdungeon.fight.Poisoning
+de/jdungeon/switchPos/CoopSwitchPosBehaviour.java
+ de.jdungeon.switchPos.CoopSwitchPosBehaviour
+de/jdungeon/figure/monster/NatureMonster.java
+ de.jdungeon.figure.monster.NatureMonster
+de/jdungeon/figure/action/TakeItemAction.java
+ de.jdungeon.figure.action.TakeItemAction
+de/jdungeon/figure/monster/Ogre.java
+ de.jdungeon.figure.monster.Ogre
+de/jdungeon/location/defender/DefenderLocation.java
+ de.jdungeon.location.defender.DefenderLocation
+ de.jdungeon.location.defender.DefenderLocation$DefenderState
+de/jdungeon/location/LocationState.java
+ de.jdungeon.location.LocationState
+de/jdungeon/ai/AbstractAI.java
+ de.jdungeon.ai.AbstractAI
+de/jdungeon/spell/TargetScope.java
+ de.jdungeon.spell.TargetScope
+de/jdungeon/location/SorcerLab.java
+ de.jdungeon.location.SorcerLab
+ de.jdungeon.location.SorcerLabAction
+de/jdungeon/event/EventListener.java
+ de.jdungeon.event.EventListener
+de/jdungeon/location/Corpse.java
+ de.jdungeon.location.Corpse
+de/jdungeon/item/equipment/weapon/Wolfknife.java
+ de.jdungeon.item.equipment.weapon.Wolfknife
+de/jdungeon/figure/attribute/ModifierI.java
+ de.jdungeon.figure.attribute.ModifierI
+de/jdungeon/figure/other/FirInfo.java
+ de.jdungeon.figure.other.FirInfo
+de/jdungeon/figure/action/result/ActionResultWithGameRound.java
+ de.jdungeon.figure.action.result.ActionResultWithGameRound
+de/jdungeon/figure/monster/Orc.java
+ de.jdungeon.figure.monster.Orc
+de/jdungeon/figure/percept/ItemDroppedPercept.java
+ de.jdungeon.figure.percept.ItemDroppedPercept
+de/jdungeon/dungeon/generate/undo/InsertFigure.java
+ de.jdungeon.dungeon.generate.undo.InsertFigure
+de/jdungeon/spell/AbstractTargetSpell.java
+ de.jdungeon.spell.AbstractTargetSpell
+de/jdungeon/figure/monster/Dwarf.java
+ de.jdungeon.figure.monster.Dwarf
+de/jdungeon/ai/SimpleHeroBehavior.java
+ de.jdungeon.ai.SimpleHeroBehavior
+de/jdungeon/figure/action/AbstractExecutableAction.java
+ de.jdungeon.figure.action.AbstractExecutableAction
+de/jdungeon/figure/percept/OpticalPercept.java
+ de.jdungeon.figure.percept.OpticalPercept
+de/jdungeon/ai/AbstractMonsterBehaviour.java
+ de.jdungeon.ai.AbstractMonsterBehaviour
+de/jdungeon/item/HealPotion.java
+ de.jdungeon.item.HealPotion
+de/jdungeon/skill/EagleOwl.java
+ de.jdungeon.skill.EagleOwl
+de/jdungeon/dungeon/generate/undo/DungeonChangeAction.java
+ de.jdungeon.dungeon.generate.undo.DungeonChangeAction
+de/jdungeon/item/interfaces/UsableWithTarget.java
+ de.jdungeon.item.interfaces.UsableWithTarget
+de/jdungeon/figure/memory/ItemMemory.java
+ de.jdungeon.figure.memory.ItemMemory
+de/jdungeon/location/RevealMapShrine.java
+ de.jdungeon.location.RevealMapShrine
+de/jdungeon/figure/action/ActionFactory.java
+ de.jdungeon.figure.action.ActionFactory
+de/jdungeon/item/paper/Book.java
+ de.jdungeon.item.paper.Book
+de/jdungeon/item/map/AncientMapFragment.java
+ de.jdungeon.item.map.AncientMapFragment
+de/jdungeon/switchPos/AcceptSwitchPositionAction.java
+ de.jdungeon.switchPos.AcceptSwitchPositionAction
+de/jdungeon/ai/PreGuardBehaviour.java
+ de.jdungeon.ai.PreGuardBehaviour
+de/jdungeon/spell/TimedSpellInstance.java
+ de.jdungeon.spell.TimedSpellInstance
+de/jdungeon/event/WorldChangedEvent.java
+ de.jdungeon.event.WorldChangedEvent
+de/jdungeon/item/PotionMod.java
+ de.jdungeon.item.PotionMod
+de/jdungeon/dungeon/quest/RoomQuest_XxY.java
+ de.jdungeon.dungeon.quest.RoomQuest_XxY
+de/jdungeon/item/quest/Feather.java
+ de.jdungeon.item.quest.Feather
+de/jdungeon/dungeon/util/InfoUnitUnwrapper.java
+ de.jdungeon.dungeon.util.InfoUnitUnwrapper
+de/jdungeon/figure/hero/Warrior.java
+ de.jdungeon.figure.hero.Warrior
+de/jdungeon/item/OxygenPotion.java
+ de.jdungeon.item.OxygenPotion
+de/jdungeon/dungeon/generate/DistanceAtLeastConstraint.java
+ de.jdungeon.dungeon.generate.DistanceAtLeastConstraint
+de/jdungeon/dungeon/generate/Hall.java
+ de.jdungeon.dungeon.generate.Hall
+de/jdungeon/item/equipment/ArmorItem.java
+ de.jdungeon.item.equipment.ArmorItem
+de/jdungeon/ai/AbstractReflexBehavior.java
+ de.jdungeon.ai.AbstractReflexBehavior
+de/jdungeon/item/Item.java
+ de.jdungeon.item.Item
+de/jdungeon/figure/percept/FightEndedPercept.java
+ de.jdungeon.figure.percept.FightEndedPercept
+de/jdungeon/ai/Tracker.java
+ de.jdungeon.ai.Tracker
+de/jdungeon/gui/AbstractStartWindow.java
+ de.jdungeon.gui.AbstractStartWindow
+de/jdungeon/dungeon/quest/RoomQuest1x1.java
+ de.jdungeon.dungeon.quest.RoomQuest1x1
+de/jdungeon/item/paper/ScrollMagic.java
+ de.jdungeon.item.paper.ScrollMagic
+de/jdungeon/item/interfaces/Locatable.java
+ de.jdungeon.item.interfaces.Locatable
+de/jdungeon/figure/monster/UndeadMonster.java
+ de.jdungeon.figure.monster.UndeadMonster
+de/jdungeon/item/interfaces/LocatableItem.java
+ de.jdungeon.item.interfaces.LocatableItem
+de/jdungeon/spell/IsolationInstance.java
+ de.jdungeon.spell.IsolationInstance
+de/jdungeon/figure/control/AbstractMonsterMovementIntelligence.java
+ de.jdungeon.figure.control.AbstractMonsterMovementIntelligence
+de/jdungeon/util/Arith.java
+ de.jdungeon.util.Arith
+de/jdungeon/figure/action/LayDownItemAction.java
+ de.jdungeon.figure.action.LayDownItemAction
+de/jdungeon/figure/hero/Zodiac.java
+ de.jdungeon.figure.hero.Zodiac
+de/jdungeon/ai/DefaultMonsterReflexBehavior.java
+ de.jdungeon.ai.DefaultMonsterReflexBehavior
+de/jdungeon/location/Brood.java
+ de.jdungeon.location.Brood
+de/jdungeon/dungeon/generate/RoomPositionConstraint.java
+ de.jdungeon.dungeon.generate.RoomPositionConstraint
+de/jdungeon/spell/DefaultTargetScope.java
+ de.jdungeon.spell.DefaultTargetScope
+de/jdungeon/figure/monster/DarkMaster.java
+ de.jdungeon.figure.monster.DarkMaster
+de/jdungeon/figure/percept/InfoPercept.java
+ de.jdungeon.figure.percept.InfoPercept
+de/jdungeon/figure/control/AbstractHeroFightIntelligence.java
+ de.jdungeon.figure.control.AbstractHeroFightIntelligence
+de/jdungeon/ai/FightIntelligence.java
+ de.jdungeon.ai.FightIntelligence
+de/jdungeon/figure/other/Lioness.java
+ de.jdungeon.figure.other.Lioness
+de/jdungeon/figure/percept/SpellPercept.java
+ de.jdungeon.figure.percept.SpellPercept
+de/jdungeon/item/quest/Incense.java
+ de.jdungeon.item.quest.Incense
+de/jdungeon/item/ItemValueComparator.java
+ de.jdungeon.item.ItemValueComparator
+de/jdungeon/dungeon/generate/DeadEndPath.java
+ de.jdungeon.dungeon.generate.DeadEndPath
+ de.jdungeon.dungeon.generate.DeadEndPath$1
+ de.jdungeon.dungeon.generate.DeadEndPath$2
+ de.jdungeon.dungeon.generate.DeadEndPath$3
+ de.jdungeon.dungeon.generate.DeadEndPath$4
+de/jdungeon/figure/memory/RoomMemory.java
+ de.jdungeon.figure.memory.RoomMemory
+de/jdungeon/location/Trader.java
+ de.jdungeon.location.Trader
+de/jdungeon/figure/hero/Inventory.java
+ de.jdungeon.figure.hero.Inventory
+de/jdungeon/spell/Bonebreaker.java
+ de.jdungeon.spell.Bonebreaker
+de/jdungeon/spell/Escape.java
+ de.jdungeon.spell.Escape
+de/jdungeon/item/paper/InfoScroll.java
+ de.jdungeon.item.paper.InfoScroll
+de/jdungeon/ai/PatrolBehaviour.java
+ de.jdungeon.ai.PatrolBehaviour
+de/jdungeon/spell/AbstractSpell.java
+ de.jdungeon.spell.AbstractSpell
+de/jdungeon/figure/monster/Skeleton.java
+ de.jdungeon.figure.monster.Skeleton
+de/jdungeon/figure/percept/UsePercept.java
+ de.jdungeon.figure.percept.UsePercept
+de/jdungeon/figure/npc/RescuedNPCAI.java
+ de.jdungeon.figure.npc.RescuedNPCAI
+ de.jdungeon.figure.npc.RescuedNPCAI$State
+de/jdungeon/item/equipment/weapon/Axe.java
+ de.jdungeon.item.equipment.weapon.Axe
+de/jdungeon/figure/action/SpellAction.java
+ de.jdungeon.figure.action.SpellAction
+de/jdungeon/figure/percept/DoorSmashPercept.java
+ de.jdungeon.figure.percept.DoorSmashPercept
+de/jdungeon/ai/SteppingBehaviour.java
+ de.jdungeon.ai.SteppingBehaviour
+de/jdungeon/figure/hero/Thief.java
+ de.jdungeon.figure.hero.Thief
+de/jdungeon/figure/percept/ScoutPercept.java
+ de.jdungeon.figure.percept.ScoutPercept
+de/jdungeon/figure/action/UseChestAction.java
+ de.jdungeon.figure.action.UseChestAction
+de/jdungeon/figure/DungeonVisibilityMap.java
+ de.jdungeon.figure.DungeonVisibilityMap
+de/jdungeon/fight/FightEndedEvent.java
+ de.jdungeon.fight.FightEndedEvent
+de/jdungeon/skill/SkillMap.java
+ de.jdungeon.skill.SkillMap
+de/jdungeon/item/map/AncientMapFragmentUtils.java
+ de.jdungeon.item.map.AncientMapFragmentUtils
+ de.jdungeon.item.map.AncientMapFragmentUtils$1
+de/jdungeon/figure/memory/SpotMemory.java
+ de.jdungeon.figure.memory.SpotMemory
+de/jdungeon/switchPos/SwitchPositionRequestManager.java
+ de.jdungeon.switchPos.SwitchPositionRequestManager
+ de.jdungeon.switchPos.SwitchPositionRequestManager$SwitchPosRequest
+ de.jdungeon.switchPos.SwitchPositionRequestManager$SwitchPosRequestMap
+de/jdungeon/item/paper/Scroll.java
+ de.jdungeon.item.paper.Scroll
+de/jdungeon/dungeon/Dungeon.java
+ de.jdungeon.dungeon.Dungeon
+de/jdungeon/spell/Convince.java
+ de.jdungeon.spell.Convince
+de/jdungeon/dungeon/util/DungeonUtils.java
+ de.jdungeon.dungeon.util.DungeonUtils
+ de.jdungeon.dungeon.util.DungeonUtils$SearchNode
+de/jdungeon/dungeon/util/RouteInstruction.java
+ de.jdungeon.dungeon.util.RouteInstruction
+ de.jdungeon.dungeon.util.RouteInstruction$Direction
+de/jdungeon/figure/hero/Character.java
+ de.jdungeon.figure.hero.Character
+de/jdungeon/ai/DefaultHeroReflexBehavior.java
+ de.jdungeon.ai.DefaultHeroReflexBehavior
+de/jdungeon/item/equipment/weapon/Club.java
+ de.jdungeon.item.equipment.weapon.Club
+de/jdungeon/figure/memory/FigureMemory.java
+ de.jdungeon.figure.memory.FigureMemory
+de/jdungeon/figure/percept/TextPercept.java
+ de.jdungeon.figure.percept.TextPercept
+de/jdungeon/dungeon/generate/RectArea.java
+ de.jdungeon.dungeon.generate.RectArea
+de/jdungeon/figure/hero/HeroInfo.java
+ de.jdungeon.figure.hero.HeroInfo
+de/jdungeon/game/JDGUI.java
+ de.jdungeon.game.JDGUI
+de/jdungeon/ai/AI.java
+ de.jdungeon.ai.AI
+de/jdungeon/game/JDEnv.java
+ de.jdungeon.game.JDEnv
+de/jdungeon/item/ItemInfo.java
+ de.jdungeon.item.ItemInfo
+de/jdungeon/figure/attribute/DerivedAttribute.java
+ de.jdungeon.figure.attribute.DerivedAttribute
+de/jdungeon/ai/ChaserAI.java
+ de.jdungeon.ai.ChaserAI
+de/jdungeon/dungeon/PositionInRoomInfo.java
+ de.jdungeon.dungeon.PositionInRoomInfo
+de/jdungeon/dungeon/RoomEntity.java
+ de.jdungeon.dungeon.RoomEntity
+de/jdungeon/figure/monster/Ghul.java
+ de.jdungeon.figure.monster.Ghul
+de/jdungeon/spell/Raid.java
+ de.jdungeon.spell.Raid
+ de.jdungeon.spell.Raid$1
+de/jdungeon/figure/percept/FightBeginsPercept.java
+ de.jdungeon.figure.percept.FightBeginsPercept
+de/jdungeon/game/MonsterTest.java
+ de.jdungeon.game.MonsterTest
+de/jdungeon/skill/ScoutSkill.java
+ de.jdungeon.skill.ScoutSkill
+de/jdungeon/item/equipment/EquipmentItemInfo.java
+ de.jdungeon.item.equipment.EquipmentItemInfo
+de/jdungeon/dungeon/generate/DistanceAtMostConstraint.java
+ de.jdungeon.dungeon.generate.DistanceAtMostConstraint
+de/jdungeon/dungeon/generate/AbstractDungeonFiller.java
+ de.jdungeon.dungeon.generate.AbstractDungeonFiller
+de/jdungeon/dungeon/generate/AbstractHall.java
+ de.jdungeon.dungeon.generate.AbstractHall
+de/jdungeon/spell/Search.java
+ de.jdungeon.spell.Search
+de/jdungeon/skill/EagleOwlSkill.java
+ de.jdungeon.skill.EagleOwlSkill
+de/jdungeon/figure/percept/StepPercept.java
+ de.jdungeon.figure.percept.StepPercept
+de/jdungeon/dungeon/quest/Encompass_quest.java
+ de.jdungeon.dungeon.quest.Encompass_quest
+de/jdungeon/ai/AttitudeDefaultHero.java
+ de.jdungeon.ai.AttitudeDefaultHero
+de/jdungeon/figure/monster/Spider.java
+ de.jdungeon.figure.monster.Spider
+de/jdungeon/dungeon/quest/Quest.java
+ de.jdungeon.dungeon.quest.Quest
+de/jdungeon/spell/SpellInfo.java
+ de.jdungeon.spell.SpellInfo
+de/jdungeon/location/Location.java
+ de.jdungeon.location.Location
+ de.jdungeon.location.Location$1
+de/jdungeon/figure/memory/MemoryProvider.java
+ de.jdungeon.figure.memory.MemoryProvider
+de/jdungeon/figure/HealthLevel.java
+ de.jdungeon.figure.HealthLevel
+de/jdungeon/figure/action/result/ActionResult.java
+ de.jdungeon.figure.action.result.ActionResult
+ de.jdungeon.figure.action.result.ActionResult$Reason
+ de.jdungeon.figure.action.result.ActionResult$Situation
+de/jdungeon/figure/control/AbstractFightIntelligence.java
+ de.jdungeon.figure.control.AbstractFightIntelligence
+de/jdungeon/skill/ActionBuilder.java
+ de.jdungeon.skill.ActionBuilder
+de/jdungeon/item/quest/Rune.java
+ de.jdungeon.item.quest.Rune
+de/jdungeon/figure/action/SuicideAction.java
+ de.jdungeon.figure.action.SuicideAction
+de/jdungeon/ai/HeroPositionLog.java
+ de.jdungeon.ai.HeroPositionLog
+ de.jdungeon.ai.HeroPositionLog$PerceptComparator
+de/jdungeon/spell/AbstractTargetScope.java
+ de.jdungeon.spell.AbstractTargetScope
+de/jdungeon/item/Key.java
+ de.jdungeon.item.Key
+de/jdungeon/spell/MightyStruck.java
+ de.jdungeon.spell.MightyStruck
+de/jdungeon/fight/Slap.java
+ de.jdungeon.fight.Slap
+de/jdungeon/skill/FleeSkill.java
+ de.jdungeon.skill.FleeSkill
+de/jdungeon/gui/Paragraphable.java
+ de.jdungeon.gui.Paragraphable
+de/jdungeon/game/MyResourceBundle.java
+ de.jdungeon.game.MyResourceBundle
+de/jdungeon/ai/TrackingInfo.java
+ de.jdungeon.ai.TrackingInfo
+de/jdungeon/location/ScoutShrine.java
+ de.jdungeon.location.ScoutShrine
+de/jdungeon/figure/percept/Percept.java
+ de.jdungeon.figure.percept.Percept
+de/jdungeon/game/Turnable.java
+ de.jdungeon.game.Turnable
+de/jdungeon/figure/monster/Wolf.java
+ de.jdungeon.figure.monster.Wolf
+de/jdungeon/figure/percept/TakePercept.java
+ de.jdungeon.figure.percept.TakePercept
+de/jdungeon/dungeon/generate/Area.java
+ de.jdungeon.dungeon.generate.Area
+de/jdungeon/item/equipment/Armor.java
+ de.jdungeon.item.equipment.Armor
+de/jdungeon/figure/APAgility.java
+ de.jdungeon.figure.APAgility
+de/jdungeon/item/equipment/weapon/Weapon.java
+ de.jdungeon.item.equipment.weapon.Weapon
+de/jdungeon/skill/HealSkill.java
+ de.jdungeon.skill.HealSkill
+de/jdungeon/figure/other/ConjuredMagicFigure.java
+ de.jdungeon.figure.other.ConjuredMagicFigure
+de/jdungeon/dungeon/HiddenSpot.java
+ de.jdungeon.dungeon.HiddenSpot
+de/jdungeon/item/equipment/weapon/Lance.java
+ de.jdungeon.item.equipment.weapon.Lance
+de/jdungeon/location/HealthFountain.java
+ de.jdungeon.location.HealthFountain
+de/jdungeon/dungeon/generate/undo/SetChestAction.java
+ de.jdungeon.dungeon.generate.undo.SetChestAction
+de/jdungeon/util/JDColor.java
+ de.jdungeon.util.JDColor
+ de.jdungeon.util.JDColor$color
+de/jdungeon/spell/TimedSpell.java
+ de.jdungeon.spell.TimedSpell
+de/jdungeon/figure/action/EquipmentChangeAction.java
+ de.jdungeon.figure.action.EquipmentChangeAction
+de/jdungeon/figure/APCounter.java
+ de.jdungeon.figure.APCounter
+de/jdungeon/item/interfaces/Usable.java
+ de.jdungeon.item.interfaces.Usable
+de/jdungeon/event/Event.java
+ de.jdungeon.event.Event
+de/jdungeon/dungeon/Door.java
+ de.jdungeon.dungeon.Door
+de/jdungeon/figure/memory/Memory.java
+ de.jdungeon.figure.memory.Memory
+de/jdungeon/fight/SlapResult.java
+ de.jdungeon.fight.SlapResult
+de/jdungeon/figure/memory/ShrineMemory.java
+ de.jdungeon.figure.memory.ShrineMemory
+de/jdungeon/figure/other/FirAI.java
+ de.jdungeon.figure.other.FirAI
+de/jdungeon/figure/percept/DisappearPercept.java
+ de.jdungeon.figure.percept.DisappearPercept
+de/jdungeon/dungeon/generate/undo/SetItem.java
+ de.jdungeon.dungeon.generate.undo.SetItem
+de/jdungeon/skill/SimpleSkill.java
+ de.jdungeon.skill.SimpleSkill
+ de.jdungeon.skill.SimpleSkill$SimpleActionBuilder
+ de.jdungeon.skill.SimpleSkill$SimpleSkillAction
+de/jdungeon/figure/percept/DiePercept.java
+ de.jdungeon.figure.percept.DiePercept
+de/jdungeon/log/Logger.java
+ de.jdungeon.log.Logger
+de/jdungeon/fight/Frightening.java
+ de.jdungeon.fight.Frightening
+de/jdungeon/spell/Spy.java
+ de.jdungeon.spell.Spy
+de/jdungeon/dungeon/quest/RoomQuest_trader_1x2.java
+ de.jdungeon.dungeon.quest.RoomQuest_trader_1x2
+de/jdungeon/dungeon/generate/DungeonFillUtils.java
+ de.jdungeon.dungeon.generate.DungeonFillUtils
+de/jdungeon/figure/percept/AttackPercept.java
+ de.jdungeon.figure.percept.AttackPercept
+de/jdungeon/dungeon/ItemInfoOwner.java
+ de.jdungeon.dungeon.ItemInfoOwner
+de/jdungeon/dungeon/quest/RoomQuest.java
+ de.jdungeon.dungeon.quest.RoomQuest
+de/jdungeon/figure/RoomObservationStatus.java
+ de.jdungeon.figure.RoomObservationStatus
+de/jdungeon/figure/VisibilityModifier.java
+ de.jdungeon.figure.VisibilityModifier
+de/jdungeon/game/PerceptHandler.java
+ de.jdungeon.game.PerceptHandler
+de/jdungeon/location/MoonRuneFinderShrine.java
+ de.jdungeon.location.MoonRuneFinderShrine
+de/jdungeon/figure/action/UseLocationAction.java
+ de.jdungeon.figure.action.UseLocationAction
+de/jdungeon/item/ItemPool.java
+ de.jdungeon.item.ItemPool
+de/jdungeon/game/RoomInfoEntity.java
+ de.jdungeon.game.RoomInfoEntity
+de/jdungeon/figure/attribute/ItemModification.java
+ de.jdungeon.figure.attribute.ItemModification
+de/jdungeon/spell/Spell.java
+ de.jdungeon.spell.Spell
+de/jdungeon/spell/Fireball.java
+ de.jdungeon.spell.Fireball
+de/jdungeon/figure/hero/Hero.java
+ de.jdungeon.figure.hero.Hero
+ de.jdungeon.figure.hero.Hero$HeroCategory
+de/jdungeon/skill/TargetSkill.java
+ de.jdungeon.skill.TargetSkill
+ de.jdungeon.skill.TargetSkill$TargetSkillAction
+ de.jdungeon.skill.TargetSkill$TargetSkillActionBuilder
+de/jdungeon/figure/control/AbstractHeroMovementIntelligence.java
+ de.jdungeon.figure.control.AbstractHeroMovementIntelligence
+de/jdungeon/dungeon/Chest.java
+ de.jdungeon.dungeon.Chest
+de/jdungeon/item/quest/MoonRune.java
+ de.jdungeon.item.quest.MoonRune
+de/jdungeon/dungeon/quest/RoomQuestWall.java
+ de.jdungeon.dungeon.quest.RoomQuestWall
+de/jdungeon/switchPos/ProposeSwitchPositionAction.java
+ de.jdungeon.switchPos.ProposeSwitchPositionAction
+de/jdungeon/figure/FigureControlWithSpectator.java
+ de.jdungeon.figure.FigureControlWithSpectator
+de/jdungeon/dungeon/Lock.java
+ de.jdungeon.dungeon.Lock
+de/jdungeon/figure/action/LockAction.java
+ de.jdungeon.figure.action.LockAction
+de/jdungeon/spell/Prayer.java
+ de.jdungeon.spell.Prayer
+de/jdungeon/spell/conjuration/FirConjuration.java
+ de.jdungeon.spell.conjuration.FirConjuration
+de/jdungeon/dungeon/Path.java
+ de.jdungeon.dungeon.Path
+de/jdungeon/figure/percept/HitPercept.java
+ de.jdungeon.figure.percept.HitPercept
+de/jdungeon/dungeon/Position.java
+ de.jdungeon.dungeon.Position
+ de.jdungeon.dungeon.Position$Pos
+de/jdungeon/figure/FigureInfo.java
+ de.jdungeon.figure.FigureInfo
+de/jdungeon/skill/LionessConjureSkill.java
+ de.jdungeon.skill.LionessConjureSkill
+de/jdungeon/figure/monster/CreatureMonster.java
+ de.jdungeon.figure.monster.CreatureMonster
+de/jdungeon/dungeon/quest/RoomQuest_2x2_1.java
+ de.jdungeon.dungeon.quest.RoomQuest_2x2_1
+de/jdungeon/ai/SurvivorBehaviour.java
+ de.jdungeon.ai.SurvivorBehaviour
+de/jdungeon/dungeon/generate/DungeonGenerationFailedException.java
+ de.jdungeon.dungeon.generate.DungeonGenerationFailedException
+de/jdungeon/figure/action/ScoutResult.java
+ de.jdungeon.figure.action.ScoutResult
+de/jdungeon/skill/SkillAction.java
+ de.jdungeon.skill.SkillAction
+de/jdungeon/figure/control/AbstractMovementIntelligence.java
+ de.jdungeon.figure.control.AbstractMovementIntelligence
+de/jdungeon/item/AttrPotion.java
+ de.jdungeon.item.AttrPotion
+de/jdungeon/location/LocationInfo.java
+ de.jdungeon.location.LocationInfo
+de/jdungeon/item/equipment/Helmet.java
+ de.jdungeon.item.equipment.Helmet
+de/jdungeon/ai/Attitude.java
+ de.jdungeon.ai.Attitude
+de/jdungeon/figure/action/ScoutAction.java
+ de.jdungeon.figure.action.ScoutAction
+de/jdungeon/figure/percept/LeavesPercept.java
+ de.jdungeon.figure.percept.LeavesPercept
+de/jdungeon/figure/percept/EntersPercept.java
+ de.jdungeon.figure.percept.EntersPercept
+de/jdungeon/spell/NoTargetSpell.java
+ de.jdungeon.spell.NoTargetSpell
+de/jdungeon/dungeon/quest/RoomQuest2x2.java
+ de.jdungeon.dungeon.quest.RoomQuest2x2
+de/jdungeon/item/Items.java
+ de.jdungeon.item.Items
+de/jdungeon/figure/action/Action.java
+ de.jdungeon.figure.action.Action
+de/jdungeon/event/PlayerDiedEvent.java
+ de.jdungeon.event.PlayerDiedEvent
+de/jdungeon/skill/Skill.java
+ de.jdungeon.skill.Skill
+de/jdungeon/figure/monster/Monster.java
+ de.jdungeon.figure.monster.Monster
+de/jdungeon/dungeon/quest/RoomQuest_3x3_1.java
+ de.jdungeon.dungeon.quest.RoomQuest_3x3_1
+de/jdungeon/dungeon/Room.java
+ de.jdungeon.dungeon.Room
+de/jdungeon/dungeon/DoorInfo.java
+ de.jdungeon.dungeon.DoorInfo
+de/jdungeon/spell/KeyLocator.java
+ de.jdungeon.spell.KeyLocator
+de/jdungeon/figure/FigurePresentation.java
+ de.jdungeon.figure.FigurePresentation
+de/jdungeon/spell/EscapeRouteInstance.java
+ de.jdungeon.spell.EscapeRouteInstance
+de/jdungeon/dungeon/quest/ReversibleRoomQuest.java
+ de.jdungeon.dungeon.quest.ReversibleRoomQuest
+de/jdungeon/ai/GuardPositionBehaviour.java
+ de.jdungeon.ai.GuardPositionBehaviour
+de/jdungeon/figure/Spellbook.java
+ de.jdungeon.figure.Spellbook
+de/jdungeon/spell/Heal.java
+ de.jdungeon.spell.Heal
+de/jdungeon/gui/Texts.java
+ de.jdungeon.gui.Texts
+de/jdungeon/ai/MovementIntelligence.java
+ de.jdungeon.ai.MovementIntelligence
+de/jdungeon/location/InfoShrine.java
+ de.jdungeon.location.InfoShrine
+de/jdungeon/figure/percept/BreakSpellPercept.java
+ de.jdungeon.figure.percept.BreakSpellPercept
+de/jdungeon/dungeon/generate/undo/AddDoor.java
+ de.jdungeon.dungeon.generate.undo.AddDoor
+de/jdungeon/figure/FigureControl.java
+ de.jdungeon.figure.FigureControl
+de/jdungeon/dungeon/DoorBlock.java
+ de.jdungeon.dungeon.DoorBlock
+de/jdungeon/util/Clazz.java
+ de.jdungeon.util.Clazz

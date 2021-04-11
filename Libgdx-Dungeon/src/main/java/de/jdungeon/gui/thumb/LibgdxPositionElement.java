@@ -3,12 +3,12 @@ package de.jdungeon.gui.thumb;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.JDPoint;
-import dungeon.Position;
-import event.EventManager;
-import figure.FigureInfo;
-import game.RoomInfoEntity;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.Position;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
@@ -58,7 +58,7 @@ public class LibgdxPositionElement extends LibgdxAnimatedSmartControlElement {
 
         final JDPoint positionOnScreen = getPositionOnScreen();
 
-        // prepare highlight animation drawables
+        // prepare highlight de.jdungeon.animation drawables
         if (action != null) {
             for (int i = 0; i < animationShapes.length; i++) {
                 final int finalI = i;

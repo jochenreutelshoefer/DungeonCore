@@ -3,7 +3,9 @@ package de.jdungeon.libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import log.Log;
+import de.jdungeon.game.GameEnv;
+import de.jdungeon.game.Logger;
+import de.jdungeon.log.Log;
 
 import de.jdungeon.game.Graphics;
 import de.jdungeon.game.Image;
@@ -29,7 +31,10 @@ public class LibgdxFileImage implements Image {
 	private void init() {
 		if(texture == null) {
 			FileHandle handle = Gdx.files.internal(filename);
-			Log.warning("Creating new File Texture: "+filename);
+			String message = "Creating new File Texture: " + filename;
+			Logger logger = GameEnv.getInstance().getGame().getLogger();
+			logger.warning(this.getClass().getSimpleName(), message);
+			Log.warning(message);
 			texture = new Texture(handle);
 		}
 	}

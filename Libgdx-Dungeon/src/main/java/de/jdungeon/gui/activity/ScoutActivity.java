@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import dungeon.Dir;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
-import figure.FigureInfo;
-import figure.RoomObservationStatus;
-import figure.action.Action;
-import figure.action.result.ActionResult;
-import game.RoomInfoEntity;
+import de.jdungeon.dungeon.Dir;
+import de.jdungeon.dungeon.DoorInfo;
+import de.jdungeon.dungeon.PositionInRoomInfo;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.RoomObservationStatus;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.result.ActionResult;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.gui.activity.SkillActivityProvider;
@@ -65,7 +63,7 @@ public class ScoutActivity extends AbstractExecutableActivity {
 		else {
 			PositionInRoomInfo pos = figure.getPos();
 			if(pos == null) {
-				// hero dead, game over but gui still active
+				// hero dead, de.jdungeon.game over but de.jdungeon.gui still active
 				return Collections.emptyList();
 			}
 			RouteInstruction.Direction possibleFleeDirection = pos.getPossibleFleeDirection();
@@ -90,7 +88,7 @@ public class ScoutActivity extends AbstractExecutableActivity {
 			return ActionResult.UNKNOWN;
 		}
 
-		// check fight mode
+		// check de.jdungeon.fight mode
 		Boolean fightRunning = roomInfo.fightRunning();
 		boolean fight = fightRunning != null && fightRunning;
 		if(fight) {
@@ -151,7 +149,7 @@ public class ScoutActivity extends AbstractExecutableActivity {
 		else {
 			PositionInRoomInfo pos = figure.getPos();
 			if(pos == null) {
-				// hero dead, game over but gui still active
+				// hero dead, de.jdungeon.game over but de.jdungeon.gui still active
 				return null;
 			}
 

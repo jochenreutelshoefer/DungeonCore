@@ -2,7 +2,7 @@ package de.jdungeon.asset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import graphics.JDImageProxy;
+import de.jdungeon.graphics.JDImageProxy;
 
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Image;
@@ -21,7 +21,7 @@ public class LibgdxAssetImageLoader extends LibgdxImageLoader {
 		if (!filename.startsWith(AbstractImageLoader.PREFIX)) {
 			filename = AbstractImageLoader.PREFIX + filename;
 		}
-		if (filename.contains("gui")) {
+		if (filename.contains("de/jdungeon/gui")) {
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(new JDImageProxy<>(filename, this), Assets.instance.getGuiAtlas());
 			return new LibgdxAssetImage(filename, atlasRegion);
 		}

@@ -6,15 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import dungeon.JDPoint;
-import event.Event;
-import event.EventListener;
-import event.WorldChangedEvent;
-import graphics.JDImageProxy;
-import item.ItemInfo;
-import util.JDDimension;
-
 import de.jdungeon.app.gui.InventoryImageManager;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.Event;
+import de.jdungeon.event.EventListener;
+import de.jdungeon.event.WorldChangedEvent;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.item.ItemInfo;
+import de.jdungeon.util.JDDimension;
+
 import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.LibgdxActivityPresenter;
 import de.jdungeon.gui.LibgdxActivityProvider;

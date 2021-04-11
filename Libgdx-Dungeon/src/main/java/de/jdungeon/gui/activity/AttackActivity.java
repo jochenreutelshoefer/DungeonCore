@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import dungeon.RoomInfo;
-import figure.FigureInfo;
-import figure.action.Action;
-import figure.action.result.ActionResult;
-import figure.action.result.ActionResultWithGameRound;
-import game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.result.ActionResult;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.gui.smartcontrol.UIFeedback;
@@ -33,9 +31,9 @@ public class AttackActivity extends AbstractExecutableActivity {
 		LibgdxFocusManager focusManager = playerController.getGameScreen().getFocusManager();
 		Object highlightedEntity = focusManager.getWorldFocusObject();
 		FigureInfo figure = actionAssembler.getFigure();
-		if(figure == null) return null; // level exit problem
+		if(figure == null) return null; // de.jdungeon.level exit problem
 		RoomInfo roomInfo = figure.getRoomInfo();
-		if(roomInfo == null) return null;  // level exit problem
+		if(roomInfo == null) return null;  // de.jdungeon.level exit problem
 		List<FigureInfo> hostileFigures = getHostileFiguresList();
 		if (highlightedEntity instanceof FigureInfo) {
 			actions.addAll(actionAssembler.getActionAssemblerHelper().wannaAttack((FigureInfo) highlightedEntity));
@@ -73,7 +71,7 @@ public class AttackActivity extends AbstractExecutableActivity {
 		}
 		RoomInfo roomInfo = playerController.getActionAssembler().getFigure().getRoomInfo();
 		if(roomInfo.fightRunning() == null) {
-			// todo: happens, but this is really weird, hence the figure has no visibility of its current room
+			// todo: happens, but this is really weird, hence the de.jdungeon.figure has no visibility of its current room
 			return ActionResult.UNKNOWN;
 		}
 		boolean fightRunning = roomInfo.fightRunning();

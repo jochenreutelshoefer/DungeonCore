@@ -1,7 +1,7 @@
 package de.jdungeon.gui;
 
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

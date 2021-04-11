@@ -5,12 +5,12 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import dungeon.JDPoint;
-import event.EventManager;
-import figure.hero.HeroInfo;
-import gui.Paragraphable;
-import item.ItemInfo;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.gui.Paragraphable;
+import de.jdungeon.item.ItemInfo;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.gui.LibgdxActivityPresenter;
@@ -37,7 +37,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	private final int radius;
 	private boolean justRotated = true;
 
-	// re-init on window resize event!
+	// re-init on window resize de.jdungeon.event!
 	private static int defaultImageWidth = setDefaultImageWidth();
 
 	private int screenPlusDefaultImageWidth;
@@ -169,7 +169,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	@Override
 	public void highlightEntity(Object object) {
-		// we need to update the binding set to have the new item included
+		// we need to update the binding set to have the new de.jdungeon.item included
 		binding.update(0);
 		Activity objectActivity = getObjectActivity(object);
 		if (objectActivity != null) {
@@ -253,7 +253,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 
 	@Override
 	public Object highlightFirst() {
-		// we need to update the binding set to have the new item included
+		// we need to update the binding set to have the new de.jdungeon.item included
 
 		List<Activity> activities = provider.getActivities();
 		if (!activities.isEmpty()) {
@@ -336,7 +336,7 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		timer += time;
 		if (justRotated) {
 			/*
-			 * calc user motion
+			 * calc de.jdungeon.user motion
 			 */
 			updatePointCoordinates();
 			justRotated = false;

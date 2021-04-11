@@ -1,7 +1,7 @@
 package de.jdungeon.gui.thumb;
 
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.gui.AbstractLibgdxGUIElement;
 import de.jdungeon.gui.LibgdxGUIElement;

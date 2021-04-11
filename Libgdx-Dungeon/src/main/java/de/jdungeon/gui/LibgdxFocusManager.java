@@ -3,14 +3,13 @@ package de.jdungeon.gui;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import event.Event;
-import event.EventListener;
-import event.EventManager;
-import figure.FigureInfo;
-import game.RoomInfoEntity;
-import graphics.GraphicObject;
-import gui.Paragraphable;
-import log.Log;
+import de.jdungeon.event.Event;
+import de.jdungeon.event.EventListener;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.graphics.GraphicObject;
+import de.jdungeon.log.Log;
 
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.app.event.InfoObjectClickedEvent;

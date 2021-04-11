@@ -1,28 +1,23 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
-import ai.SimpleHeroBehavior;
-import dungeon.Dungeon;
-import dungeon.Position;
-import dungeon.Room;
-import figure.DungeonVisibilityMap;
-import figure.Figure;
-import figure.hero.Hero;
-import figure.hero.HeroInfo;
-import figure.hero.HeroUtil;
-import figure.hero.Profession;
-import figure.hero.Zodiac;
-import game.DungeonGameLoop;
-import game.JDEnv;
+import de.jdungeon.ai.SimpleHeroBehavior;
+import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.dungeon.Position;
+import de.jdungeon.dungeon.Room;
+import de.jdungeon.figure.DungeonVisibilityMap;
+import de.jdungeon.figure.Figure;
+import de.jdungeon.figure.hero.Hero;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.figure.hero.HeroUtil;
+import de.jdungeon.figure.hero.Profession;
+import de.jdungeon.figure.hero.Zodiac;
+import de.jdungeon.game.DungeonGameLoop;
+import de.jdungeon.game.JDEnv;
+import de.jdungeon.game.MyResourceBundle;
 import junit.framework.TestCase;
-import level.DefaultDungeonManager;
-import level.DungeonFactory;
-import level.DungeonManager;
+import de.jdungeon.level.DefaultDungeonManager;
+import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.level.DungeonManager;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -31,7 +26,8 @@ import level.DungeonManager;
 public class DungeonWorldTest extends TestCase {
 
 	public void testDungeonWorld() {
-		JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
+		//JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
+		JDEnv.init(new MyResourceBundle(Collections.emptyMap()));
 		DungeonManager manager = new DefaultDungeonManager();
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
@@ -74,7 +70,7 @@ public class DungeonWorldTest extends TestCase {
 			// check that positions, room and figures are correctly associated
 			for (Figure roomFigure : roomFigures) {
 				Figure posFigure = roomFigure.getPos().getFigure();
-				assertEquals(factory.getName()+": Position of figure does not refer to figure: "+roomFigure.getPos(), posFigure, roomFigure);
+				assertEquals(factory.getName()+": Position of de.jdungeon.figure does not refer to de.jdungeon.figure: "+roomFigure.getPos(), posFigure, roomFigure);
 				assertEquals(roomFigure.getPos().getRoom(), roomFigure.getRoom());
 			}
 
@@ -90,10 +86,10 @@ public class DungeonWorldTest extends TestCase {
 			assertEquals(positionFigures.size(), roomFigures.size());
 			assertEquals(new HashSet<>(roomFigures), new HashSet<>(positionFigures));
 
-			// check that every figure can only be located at ONE position
+			// check that every de.jdungeon.figure can only be located at ONE position
 			for (Figure positionFigure : positionFigures) {
 
-				// if it was already in the collection, it was from another location
+				// if it was already in the collection, it was from another de.jdungeon.location
 				assertFalse(allFigures.contains(positionFigure));
 			}
 			allFigures.addAll(positionFigures);

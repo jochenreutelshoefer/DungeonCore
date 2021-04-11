@@ -1,10 +1,9 @@
 package de.jdungeon.gui.activity;
 
-import figure.action.result.ActionResult;
-import game.RoomInfoEntity;
-import log.Log;
-import spell.SpellInfo;
-import spell.TargetScope;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.spell.SpellInfo;
+import de.jdungeon.spell.TargetScope;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.gui.LibgdxFocusManager;

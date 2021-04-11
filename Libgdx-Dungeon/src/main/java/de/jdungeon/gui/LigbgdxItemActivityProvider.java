@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dungeon.ItemInfoOwner;
-import item.ItemInfo;
+import de.jdungeon.dungeon.ItemInfoOwner;
+import de.jdungeon.item.ItemInfo;
 
-import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.activity.ExecutableTakeItemActivity;

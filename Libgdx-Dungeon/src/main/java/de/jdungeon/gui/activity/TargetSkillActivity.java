@@ -4,13 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import figure.FigureInfo;
-import figure.action.result.ActionResult;
-import game.InfoEntity;
-import game.RoomInfoEntity;
-import org.jetbrains.annotations.NotNull;
-import skill.TargetSkill;
-import spell.TargetScope;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.game.InfoEntity;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.skill.TargetSkill;
+import de.jdungeon.spell.TargetScope;
 
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.world.PlayerController;
@@ -62,7 +61,7 @@ public class TargetSkillActivity<TARGET> extends SkillActivity<TargetSkill<TARGE
 	}
 
 	public static RoomInfoEntity findTarget(FigureInfo figure, LibgdxFocusManager focusManager, TargetScope targetScope, boolean doIt, Object targetObject) {
-		if(targetScope == null) return null; // is a no-target spell
+		if(targetScope == null) return null; // is a no-target de.jdungeon.spell
 		RoomInfoEntity highlightedEntity = focusManager.getWorldFocusObject();
 		List<? extends RoomInfoEntity> potentialTargets = targetScope.getTargetEntitiesInScope(figure, highlightedEntity);
 

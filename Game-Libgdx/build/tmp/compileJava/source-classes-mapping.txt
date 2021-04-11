@@ -1,0 +1,34 @@
+de/jdungeon/libgdx/LibgdxAudio.java
+ de.jdungeon.libgdx.LibgdxAudio
+de/jdungeon/libgdx/LibgdxImageLoader.java
+ de.jdungeon.libgdx.LibgdxImageLoader
+de/jdungeon/libgdx/LibgdxInput.java
+ de.jdungeon.libgdx.LibgdxInput
+de/jdungeon/libgdx/LibgdxTextpaint.java
+ de.jdungeon.libgdx.LibgdxTextpaint
+de/jdungeon/libgdx/LibgdxSound.java
+ de.jdungeon.libgdx.LibgdxSound
+de/jdungeon/libgdx/LibgdxMotionEvent.java
+ de.jdungeon.libgdx.LibgdxMotionEvent
+de/jdungeon/libgdx/MyInputProcessor.java
+ de.jdungeon.libgdx.MyInputProcessor
+de/jdungeon/libgdx/LibgdxMusic.java
+ de.jdungeon.libgdx.LibgdxMusic
+de/jdungeon/libgdx/LibgdxScreenContext.java
+ de.jdungeon.libgdx.LibgdxScreenContext
+de/jdungeon/libgdx/LibgdxFileImage.java
+ de.jdungeon.libgdx.LibgdxFileImage
+de/jdungeon/libgdx/LibgdxResourceLoader.java
+ de.jdungeon.libgdx.LibgdxResourceLoader
+de/jdungeon/libgdx/LibgdxGraphics.java
+ de.jdungeon.libgdx.LibgdxGraphics
+de/jdungeon/libgdx/LibgdxConfiguration.java
+ de.jdungeon.libgdx.LibgdxConfiguration
+de/jdungeon/libgdx/LibgdxLogger.java
+ de.jdungeon.libgdx.LibgdxLogger
+de/jdungeon/libgdx/LibgdxAssetImage.java
+ de.jdungeon.libgdx.LibgdxAssetImage
+de/jdungeon/libgdx/LibgdxColor.java
+ de.jdungeon.libgdx.LibgdxColor
+de/jdungeon/libgdx/LibgdxFileIO.java
+ de.jdungeon.libgdx.LibgdxFileIO

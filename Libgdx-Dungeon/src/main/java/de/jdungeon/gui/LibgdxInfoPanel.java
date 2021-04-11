@@ -6,20 +6,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
-import dungeon.ChestInfo;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.util.RouteInstruction;
-import figure.FigureInfo;
-import graphics.ImageManager;
-import graphics.JDImageProxy;
-import gui.Paragraph;
-import gui.Paragraphable;
-import item.ItemInfo;
-import location.LocationInfo;
-import log.Log;
-import util.JDColor;
-import util.JDDimension;
+import de.jdungeon.dungeon.ChestInfo;
+import de.jdungeon.dungeon.DoorInfo;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.graphics.ImageManager;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.item.ItemInfo;
+import de.jdungeon.location.LocationInfo;
+import de.jdungeon.log.Log;
+import de.jdungeon.util.JDColor;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.gui.ColorConverter;
 import de.jdungeon.app.gui.GUIImageManager;
@@ -213,7 +211,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
 			}
 			JDImageProxy<?> image = ImageManager.getImage((FigureInfo) content, RouteInstruction.Direction.South);
 			if (image == null) {
-				Log.severe("Image was null for figure: " + content + " dir: " + RouteInstruction.Direction.South.name());
+				Log.severe("Image was null for de.jdungeon.figure: " + content + " dir: " + RouteInstruction.Direction.South.name());
 				return null;
 			}
 			return new Pair<>(image.getFilenameBlank(), new RenderInfo(1.5f, true));

@@ -30,7 +30,7 @@ public class FrameBufferTest {
 
 	public void create() {
 
-		//cam=new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		//cam=new OrthographicCamera(Gdx.de.jdungeon.graphics.getWidth(),Gdx.de.jdungeon.graphics.getHeight());
 		//cam.setToOrtho(false);
 
 		spriteBatch=new SpriteBatch();

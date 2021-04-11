@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import dungeon.JDPoint;
-import event.Event;
-import event.EventListener;
-import event.WorldChangedEvent;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.Event;
+import de.jdungeon.event.EventListener;
+import de.jdungeon.event.WorldChangedEvent;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.thumb.LibgdxActivityGUIElement;

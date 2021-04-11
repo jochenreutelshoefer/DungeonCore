@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import animation.AnimationFrame;
-import animation.AnimationManager;
+import de.jdungeon.animation.AnimationFrame;
+import de.jdungeon.animation.AnimationManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,20 +20,20 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import dungeon.ChestInfo;
-import dungeon.JDPoint;
-import event.EventManager;
-import figure.FigureInfo;
-import figure.FigurePresentation;
-import figure.RoomObservationStatus;
-import game.RoomInfoEntity;
-import graphics.GraphicObject;
-import graphics.GraphicObjectRenderer;
-import graphics.JDGraphicObject;
-import graphics.JDImageLocated;
-import graphics.JDImageProxy;
-import log.Log;
-import util.JDDimension;
+import de.jdungeon.dungeon.ChestInfo;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.FigurePresentation;
+import de.jdungeon.figure.RoomObservationStatus;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.graphics.GraphicObject;
+import de.jdungeon.graphics.GraphicObjectRenderer;
+import de.jdungeon.graphics.JDGraphicObject;
+import de.jdungeon.graphics.JDImageLocated;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.log.Log;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
@@ -112,7 +112,7 @@ public class WorldRenderer implements Disposable {
 
 		GL20 gl = Gdx.gl20;
 		int programObject = gl.glCreateProgram();
-		Log.info("position location: " + gl.glGetAttribLocation(programObject, "position"));
+		Log.info("position de.jdungeon.location: " + gl.glGetAttribLocation(programObject, "position"));
 	}
 
 	/*
@@ -235,7 +235,7 @@ public class WorldRenderer implements Disposable {
 	 */
 	private void renderFigureObjectsForAllRooms() {
 
-		// iterate first for figure classes to have less atlas switches as each figure has a distinct atlas
+		// iterate first for de.jdungeon.figure classes to have less atlas switches as each de.jdungeon.figure has a distinct atlas
 		for (FigurePresentation figureClass : FigurePresentation.values()) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
@@ -262,7 +262,7 @@ public class WorldRenderer implements Disposable {
 
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 
-			// check for animation for this figure
+			// check for de.jdungeon.animation for this de.jdungeon.figure
 			Object clickableObject = pair.getA().getClickableObject();
 			if (clickableObject instanceof FigureInfo) {
 				FigureInfo figure = (FigureInfo) clickableObject;
@@ -298,12 +298,12 @@ public class WorldRenderer implements Disposable {
 						}
 					}
 
-					// we had an animation so we finish off this object
+					// we had an de.jdungeon.animation so we finish off this object
 					continue;
 				}
 			}
 
-			// no animation present for this object
+			// no de.jdungeon.animation present for this object
 			if (pair.getA() instanceof JDGraphicObject) {
 				if (pair.getB() != null) {
 					int width = ((JDGraphicObject) pair.getA()).getLocatedImage().getWidth();
@@ -345,7 +345,7 @@ public class WorldRenderer implements Disposable {
 		int drawHeight = height;
 
 		if (clickObject.getClickableObject() instanceof FigureInfo) {
-			// we have to cope with different sprites sizes unfortunately (within one figure animation set)
+			// we have to cope with different sprites sizes unfortunately (within one de.jdungeon.figure de.jdungeon.animation set)
 			int originalSpriteWidth = atlasRegion.originalWidth;
 			if (originalSpriteWidth != atlasRegion.originalHeight) {
 				Gdx.app.error(TAG, "Warning: not an  quadratic sprite: " + image.getFilenameBlank() + " original width: " + originalSpriteWidth + "; height: " + atlasRegion.originalHeight);
@@ -408,7 +408,7 @@ public class WorldRenderer implements Disposable {
 	 * @param pointer    todo: what is it?
 	 * @param button     button (mouse: button 0 = left click; button 1 = right click)
 	 * @param controller connection to player to delegate further action to
-	 * @return whether the click event has been processed
+	 * @return whether the click de.jdungeon.event has been processed
 	 */
 	public boolean checkWorldClick(int screenX, int screenY, int pointer, int button, PlayerController controller) {
 
@@ -454,7 +454,7 @@ public class WorldRenderer implements Disposable {
 			}
 		}
 		else {
-			// 'nothing' has been clicked by the user, hence we de-select the selected object
+			// 'nothing' has been clicked by the de.jdungeon.user, hence we de-select the selected object
 			focusManager.setWorldFocusObject((RoomInfoEntity) null);
 		}
 		return false;

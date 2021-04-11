@@ -1,11 +1,10 @@
 package de.jdungeon.gui.activity;
 
-import figure.FigureInfo;
-import figure.action.TakeItemAction;
-import figure.action.result.ActionResult;
-import item.ItemInfo;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.TakeItemAction;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.item.ItemInfo;
 
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.world.PlayerController;
 
 /**

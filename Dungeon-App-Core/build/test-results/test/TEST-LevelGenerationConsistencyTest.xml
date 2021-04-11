@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="LevelGenerationConsistencyTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-10T17:57:34" hostname="Jochens-MBP" time="0.08">
+  <properties/>
+  <testcase name="testLevels" classname="LevelGenerationConsistencyTest" time="0.08"/>
+  <system-out><![CDATA[counldn't load propertie: other_flees_not
+counldn't load propertie: player_flees_not
+counldn't load propertie: player_flees
+counldn't load propertie: fight_begins
+counldn't load propertie: fight_ended
+counldn't load propertie: player_hits
+counldn't load propertie: not_with_that
+counldn't load propertie: no_knowledge
+counldn't load propertie: no_item
+counldn't load propertie: wrong_target
+counldn't load propertie: no_target
+counldn't load propertie: wrong_position
+counldn't load propertie: level_up
+counldn't load propertie: other_dropped_item
+counldn't load propertie: no_ap
+counldn't load propertie: found_figure
+counldn't load propertie: foundItem
+counldn't load propertie: player_dies
+counldn't load propertie: other_dies
+counldn't load propertie: disappears
+counldn't load propertie: other_flees
+counldn't load propertie: other_flees_panic
+counldn't load propertie: other_fear_dies
+counldn't load propertie: other_fear_frozen
+counldn't load propertie: other_fear_frozen_light
+counldn't load propertie: other_fear_no
+counldn't load propertie: other_misses_player
+counldn't load propertie: player_misses
+counldn't load propertie: other_hits_player
+counldn't load propertie: does_not_work
+counldn't load propertie: no_dust
+counldn't load propertie: not_now
+counldn't load propertie: empty_room
+counldn't load propertie: player_shield_block
+counldn't load propertie: other_dodges
+counldn't load propertie: player_dodges
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

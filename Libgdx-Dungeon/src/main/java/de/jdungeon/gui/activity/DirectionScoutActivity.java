@@ -1,21 +1,8 @@
 package de.jdungeon.gui.activity;
 
-import java.util.Collections;
-import java.util.List;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.action.result.ActionResult;
 
-import dungeon.Dir;
-import dungeon.DoorInfo;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
-import figure.FigureInfo;
-import figure.RoomObservationStatus;
-import figure.action.Action;
-import figure.action.result.ActionResult;
-import game.RoomInfoEntity;
-
-import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.gui.activity.SkillActivityProvider;
 import de.jdungeon.world.PlayerController;
 

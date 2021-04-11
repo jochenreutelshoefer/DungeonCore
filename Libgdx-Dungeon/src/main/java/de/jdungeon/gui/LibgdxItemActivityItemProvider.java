@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dungeon.ItemInfoOwner;
-import figure.FigureInfo;
-import graphics.JDImageProxy;
-import item.ItemInfo;
-
 import de.jdungeon.app.gui.InventoryImageManager;
+import de.jdungeon.dungeon.ItemInfoOwner;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.item.ItemInfo;
+
 import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.activity.ExecutableTakeItemActivity;
 import de.jdungeon.world.PlayerController;

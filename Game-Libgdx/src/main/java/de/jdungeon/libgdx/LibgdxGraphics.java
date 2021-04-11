@@ -224,12 +224,12 @@ public class LibgdxGraphics implements Graphics {
 
 		/*
 		GlyphLayout layout = new GlyphLayout();
-		layout.setText(textpaint.getFont(), text ,textpaint.getFont().getColor(), 50, 0, false);
+		layout.setText(textpaint.getFont(), de.jdungeon.text ,textpaint.getFont().getColor(), 50, 0, false);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		textpaint.getFont().draw(batch, layout, x, y);
-		//textpaint.getFont().draw(batch, text, x, y);
+		//textpaint.getFont().draw(batch, de.jdungeon.text, x, y);
 		batch.end();
 		*/
 

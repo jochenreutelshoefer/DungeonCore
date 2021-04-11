@@ -8,12 +8,12 @@ package de.jdungeon.gui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.JDPoint;
-import figure.attribute.Attribute;
-import figure.hero.HeroInfo;
-import graphics.ImageManager;
-import graphics.JDImageProxy;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.figure.attribute.Attribute;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.graphics.ImageManager;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Image;

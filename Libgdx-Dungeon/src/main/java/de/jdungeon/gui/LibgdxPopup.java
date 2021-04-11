@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
-import dungeon.JDPoint;
-import event.Event;
-import event.EventManager;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.Event;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.asset.Assets;
 

@@ -7,12 +7,11 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import dungeon.JDPoint;
-import dungeon.RoomInfo;
-import figure.Figure;
-import figure.FigureInfo;
-import figure.FigurePresentation;
-import graphics.GraphicObject;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.FigurePresentation;
+import de.jdungeon.graphics.GraphicObject;
 
 import de.jdungeon.app.screen.GraphicObjectClickComparator;
 import de.jdungeon.util.CopyOnWriteMap;
@@ -21,7 +20,7 @@ import de.jdungeon.util.Pair;
 /**
  * A ViewRoom prepares and provides the information required to render a room on the screen.
  * It is created/updated if the world change (that is if world changes are perceived).
- * The actual rendering loop can fetch lists of prepared Pairs for each game objects.
+ * The actual rendering loop can fetch lists of prepared Pairs for each de.jdungeon.game objects.
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 03.01.20.
@@ -88,7 +87,7 @@ public class ViewRoom {
 	/**
 	 * RENDER THREAD
 	 *
-	 * @param figureClass particular figure class that render information is demanded
+	 * @param figureClass particular de.jdungeon.figure class that render information is demanded
 	 * @return all render information for all figures of this class
 	 */
 	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(FigurePresentation figureClass) {

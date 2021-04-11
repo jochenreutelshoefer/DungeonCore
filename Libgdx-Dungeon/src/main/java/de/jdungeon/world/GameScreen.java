@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import animation.AnimationManager;
+import de.jdungeon.animation.AnimationManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,12 +13,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import dungeon.JDPoint;
-import figure.FigureInfo;
-import figure.hero.HeroInfo;
-import figure.percept.Percept;
-import game.RoomInfoEntity;
-import graphics.GraphicObjectRenderer;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.figure.percept.Percept;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.graphics.GraphicObjectRenderer;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
@@ -118,7 +118,7 @@ public class GameScreen extends AbstractGameScreen {
 		int screenWidth = Gdx.app.getGraphics().getWidth();
 		int screenHeight = Gdx.app.getGraphics().getHeight();
 
-		// init gui camera and gui renderer
+		// init de.jdungeon.gui camera and de.jdungeon.gui renderer
 		cameraGUI = new OrthographicCamera(screenWidth, screenHeight);
 		cameraGUI.position.set(screenWidth/2, screenHeight/2, 0);
 		cameraGUI.setToOrtho(true);
@@ -150,7 +150,7 @@ public class GameScreen extends AbstractGameScreen {
 		this.lastCall = now;
 
 		if (!paused) {
-			// update gui and everything
+			// update de.jdungeon.gui and everything
 			update(deltaTime);
 
 
@@ -284,7 +284,7 @@ public class GameScreen extends AbstractGameScreen {
 		}
 
 		JDPoint heroRoom = figure.getRoomInfo().getPoint();
-		// entered current room, no need to do animation
+		// entered current room, no need to do de.jdungeon.animation
 		points.remove(heroRoom);
 
 		final Iterator<JDPoint> pointIterator = points.iterator();
@@ -394,7 +394,7 @@ public class GameScreen extends AbstractGameScreen {
 
 
 		/*
-		Check for gui element click
+		Check for de.jdungeon.gui element click
 		 */
 		Vector3 guiPosUnprojected = cameraGUI.unproject(new Vector3(screenX, screenY, 0));
 		int guiXunprojected = Math.round(guiPosUnprojected.x);
@@ -412,7 +412,7 @@ public class GameScreen extends AbstractGameScreen {
 		}
 
 		/*
-		If the player has died, after the next click we show the game over popup
+		If the player has died, after the next click we show the de.jdungeon.game over popup
 		 */
 		Boolean dead = figure.isDead();
 		if (dead != null && dead) {

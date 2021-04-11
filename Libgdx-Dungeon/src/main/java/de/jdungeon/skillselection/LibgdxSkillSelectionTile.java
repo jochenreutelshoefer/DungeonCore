@@ -8,25 +8,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
-import dungeon.JDPoint;
-import event.EventManager;
-import graphics.ImageManager;
-import graphics.JDImageProxy;
-import spell.Spell;
-import spell.SpellInfo;
-import util.JDColor;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.graphics.ImageManager;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.spell.Spell;
+import de.jdungeon.spell.SpellInfo;
+import de.jdungeon.util.JDColor;
+import de.jdungeon.util.JDDimension;
 
-import de.jdungeon.app.gui.AbstractGUIElement;
 import de.jdungeon.app.gui.ColorConverter;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
 import de.jdungeon.app.gui.skillselection.SkillSelectedEvent;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Game;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.Input;
 import de.jdungeon.game.Paint;
 import de.jdungeon.gui.AbstractLibgdxGUIElement;
 import de.jdungeon.util.PaintBuilder;
@@ -112,6 +108,6 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 		int textStartX = position.getX() + dimension.getWidth() / 2 - targetWidth / 2;
 		int textStartY = iconPosY+iconSize + 15;
 		descriptionFont.draw(batch, layout, textStartX, textStartY);
-		//descriptionFont.draw(batch, skill.getText(), textStartX + 5, iconPosY+iconSize + 15); // width : dimension.getWidth()*2/3
+		//descriptionFont.draw(batch, de.jdungeon.skill.getText(), textStartX + 5, iconPosY+iconSize + 15); // width : dimension.getWidth()*2/3
 	}
 }

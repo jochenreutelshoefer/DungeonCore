@@ -1,25 +1,23 @@
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
-import dungeon.Door;
-import dungeon.Dungeon;
-import dungeon.JDPoint;
-import dungeon.Room;
-import dungeon.generate.ReachabilityChecker;
-import dungeon.util.RouteInstruction;
-import game.JDEnv;
+import de.jdungeon.dungeon.Door;
+import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.generate.ReachabilityChecker;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.game.JDEnv;
+import de.jdungeon.game.MyResourceBundle;
 import junit.framework.TestCase;
-import level.DefaultDungeonManager;
-import level.DungeonFactory;
-import level.DungeonManager;
+import de.jdungeon.level.DefaultDungeonManager;
+import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.level.DungeonManager;
 
 /**
  * This tests checks for all listed dungeon factories that the generated dungeon is consistent.
  * That is:
  * - all doors are set consistently (consistent properties from each side)
- * - all room that are part of the level can be reached from the starting point
+ * - all room that are part of the de.jdungeon.level can be reached from the starting point
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.12.19.
@@ -27,7 +25,8 @@ import level.DungeonManager;
 public class LevelGenerationConsistencyTest extends TestCase {
 
 	public void testLevels() {
-		JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
+		//JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
+		JDEnv.init(new MyResourceBundle(Collections.emptyMap()));
 		DungeonManager manager = new DefaultDungeonManager();
 
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {

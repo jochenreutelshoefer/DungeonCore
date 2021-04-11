@@ -10,7 +10,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.FileIO;
@@ -42,15 +41,17 @@ public class LibgdxFileIO implements FileIO {
 	}
 
 	@Override
-	public List<String> readFileNamesOfFolder(String file) throws IOException {
+	public List<String> readFileNamesOfFolder(String file)  {
 		String classPathLocation = null;
 		if(Gdx.app.getType().equals(Application.ApplicationType.Android)) {
 			classPathLocation = file;
 		} else if(Gdx.app.getType().equals(Application.ApplicationType.Desktop)) {
+
 			classPathLocation = this.getClass().getClassLoader().getResource(file).getFile();
 			if(classPathLocation.contains("%20")) {
 				classPathLocation = classPathLocation.replaceAll("%20", " ");
 			}
+
 		}
 		FileHandle fileHandleFolder = Gdx.files.getFileHandle(classPathLocation, Files.FileType.Internal);
 		FileHandle[] fileHandles = fileHandleFolder.list();
@@ -63,7 +64,7 @@ public class LibgdxFileIO implements FileIO {
 
 	@Override
 	public OutputStream writeFile(String file) throws IOException {
-		throw new NotImplementedException();
+		return null;
 	}
 
 	@Override

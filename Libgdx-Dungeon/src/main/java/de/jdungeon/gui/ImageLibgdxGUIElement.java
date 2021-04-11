@@ -3,8 +3,8 @@ package de.jdungeon.gui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.asset.Assets;
 

@@ -1,12 +1,11 @@
 package de.jdungeon.gui.activity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import figure.action.Action;
-import figure.action.SpellAction;
-import skill.SkillAction;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.SpellAction;
+import de.jdungeon.skill.SkillAction;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

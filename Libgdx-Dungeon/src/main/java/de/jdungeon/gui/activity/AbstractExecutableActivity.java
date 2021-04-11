@@ -1,9 +1,8 @@
 package de.jdungeon.gui.activity;
 
-import figure.action.result.ActionResult;
-import figure.action.result.ActionResultWithGameRound;
-import gui.Paragraph;
-import gui.Paragraphable;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.gui.Paragraph;
+import de.jdungeon.gui.Paragraphable;
 
 import de.jdungeon.world.PlayerController;
 

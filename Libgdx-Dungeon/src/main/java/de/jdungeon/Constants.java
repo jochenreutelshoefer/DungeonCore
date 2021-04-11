@@ -6,7 +6,7 @@ package de.jdungeon;
  */
 public class Constants {
 
-	// these numbers in the current implementation of gui rendering for some reason
+	// these numbers in the current implementation of de.jdungeon.gui rendering for some reason
 	// need to match the dimension of the config setting in Main
 	//cfg.width = 800;
 	//cfg.height = 480;

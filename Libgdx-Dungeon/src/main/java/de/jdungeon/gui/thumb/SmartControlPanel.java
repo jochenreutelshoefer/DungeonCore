@@ -6,34 +6,34 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import audio.AudioEffectsManager;
+import de.jdungeon.audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.ChestInfo;
-import dungeon.DoorInfo;
-import dungeon.JDPoint;
-import dungeon.Position;
-import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
-import event.Event;
-import event.EventListener;
-import event.EventManager;
-import event.WorldChangedEvent;
-import figure.FigureInfo;
-import figure.action.Action;
-import figure.action.StepAction;
-import figure.action.result.ActionResult;
-import game.RoomInfoEntity;
-import graphics.GraphicObjectRenderer;
-import item.ItemInfo;
-import location.LocationInfo;
-import skill.FleeSkill;
-import util.JDDimension;
+import de.jdungeon.app.gui.InventoryImageManager;
+import de.jdungeon.dungeon.ChestInfo;
+import de.jdungeon.dungeon.DoorInfo;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.Position;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.event.Event;
+import de.jdungeon.event.EventListener;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.event.WorldChangedEvent;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.StepAction;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.graphics.GraphicObjectRenderer;
+import de.jdungeon.item.ItemInfo;
+import de.jdungeon.location.LocationInfo;
+import de.jdungeon.skill.FleeSkill;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.gui.GUIImageManager;
-import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
 import de.jdungeon.gui.LibgdxDrawUtils;
 import de.jdungeon.gui.LibgdxTakeItemActivityProvider;
@@ -112,7 +112,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 
 
 		/*
-		some util variables for the door coordinates
+		some de.jdungeon.util variables for the door coordinates
 		 */
 		doorThickness = (int) (DOOR_WIDTH / 2.8);
 		doorOuterBorderWidth = MOVE_ELEMENT_SIZE;
@@ -415,7 +415,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 
 		RoomInfo roomInfo = this.figure.getRoomInfo();
 		if (roomInfo == null) {
-			// we have a concurrency problem here when finished the level via exit
+			// we have a concurrency problem here when finished the de.jdungeon.level via exit
 			return;
 		}
 		for (int i = 0; i < 8; i++) {

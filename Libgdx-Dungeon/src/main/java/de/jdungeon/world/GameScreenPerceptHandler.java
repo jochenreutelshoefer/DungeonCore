@@ -2,50 +2,49 @@ package de.jdungeon.world;
 
 import java.util.List;
 
-import animation.AnimationManager;
-import animation.AnimationUtils;
-import animation.DefaultAnimationSet;
-import animation.DefaultAnimationTask;
-import audio.AudioEffectsManager;
-import dungeon.Position;
-import dungeon.RoomInfo;
-import figure.FigureInfo;
-import figure.hero.HeroInfo;
-import figure.percept.AttackPercept;
-import figure.percept.BreakSpellPercept;
-import figure.percept.DiePercept;
-import figure.percept.DisappearPercept;
-import figure.percept.DoorSmashPercept;
-import figure.percept.FightBeginsPercept;
-import figure.percept.FightEndedPercept;
-import figure.percept.FleePercept;
-import figure.percept.HitPercept;
-import figure.percept.InfoPercept;
-import figure.percept.ItemDroppedPercept;
-import figure.percept.LeavesPercept;
-import figure.percept.LocationStateChangePercept;
-import figure.percept.MissPercept;
-import figure.percept.EntersPercept;
-import figure.percept.OpticalPercept;
-import figure.percept.Percept;
-import figure.percept.ScoutPercept;
-import figure.percept.ShieldBlockPercept;
-import figure.percept.SpellPercept;
-import figure.percept.StepPercept;
-import figure.percept.TakePercept;
-import figure.percept.TextPercept;
-import figure.percept.TumblingPercept;
-import figure.percept.UsePercept;
-import figure.percept.WaitPercept;
-import game.PerceptHandler;
-import game.RoomInfoEntity;
-import graphics.GraphicObjectRenderer;
-import graphics.JDGraphicObject;
-import graphics.JDImageProxy;
-import location.Location;
-import log.Log;
-import text.Statement;
-import text.StatementManager;
+import de.jdungeon.animation.AnimationManager;
+import de.jdungeon.animation.AnimationUtils;
+import de.jdungeon.animation.DefaultAnimationSet;
+import de.jdungeon.animation.DefaultAnimationTask;
+import de.jdungeon.audio.AudioEffectsManager;
+import de.jdungeon.dungeon.Position;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.figure.percept.AttackPercept;
+import de.jdungeon.figure.percept.BreakSpellPercept;
+import de.jdungeon.figure.percept.DiePercept;
+import de.jdungeon.figure.percept.DisappearPercept;
+import de.jdungeon.figure.percept.DoorSmashPercept;
+import de.jdungeon.figure.percept.FightBeginsPercept;
+import de.jdungeon.figure.percept.FightEndedPercept;
+import de.jdungeon.figure.percept.FleePercept;
+import de.jdungeon.figure.percept.HitPercept;
+import de.jdungeon.figure.percept.InfoPercept;
+import de.jdungeon.figure.percept.ItemDroppedPercept;
+import de.jdungeon.figure.percept.LeavesPercept;
+import de.jdungeon.figure.percept.LocationStateChangePercept;
+import de.jdungeon.figure.percept.MissPercept;
+import de.jdungeon.figure.percept.EntersPercept;
+import de.jdungeon.figure.percept.OpticalPercept;
+import de.jdungeon.figure.percept.Percept;
+import de.jdungeon.figure.percept.ScoutPercept;
+import de.jdungeon.figure.percept.ShieldBlockPercept;
+import de.jdungeon.figure.percept.SpellPercept;
+import de.jdungeon.figure.percept.StepPercept;
+import de.jdungeon.figure.percept.TakePercept;
+import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.figure.percept.TumblingPercept;
+import de.jdungeon.figure.percept.UsePercept;
+import de.jdungeon.figure.percept.WaitPercept;
+import de.jdungeon.game.PerceptHandler;
+import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.graphics.GraphicObjectRenderer;
+import de.jdungeon.graphics.JDGraphicObject;
+import de.jdungeon.graphics.JDImageProxy;
+import de.jdungeon.log.Log;
+import de.jdungeon.text.Statement;
+import de.jdungeon.text.StatementManager;
 
 import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.game.Music;
@@ -155,7 +154,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			}
 
 			/*
-			 * write text messages
+			 * write de.jdungeon.text messages
 			 */
 			String s = StatementManager.getStatement((InfoPercept) p);
 			newStatement(new Statement(s, 2, p.getRound()));
@@ -179,7 +178,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		GraphicObjectRenderer objectRenderer = screen.getGraphicObjectRenderer();
 		JDGraphicObject heroGraphicObject = objectRenderer.getHeroGraphicObject((HeroInfo) this.figure);
 		JDImageProxy<?> image = heroGraphicObject.getLocatedImage().getImage();
-		// constant image, as we just want to display the exclamation mark text
+		// constant image, as we just want to display the exclamation mark de.jdungeon.text
 		JDImageProxy[] images = { image, image, image, image, };
 		int[] times = { 70, 70, 70, 70 };
 		DefaultAnimationSet ani = new DefaultAnimationSet(images, times);
@@ -231,7 +230,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 		}
 		// todo:
 		/*
-		if (fleeingFigure.equals(this.figure) && p.isSuccess()) {
+		if (fleeingFigure.equals(this.de.jdungeon.figure) && p.isSuccess()) {
 			screen.exitFightMode();
 		}
 		*/
@@ -250,7 +249,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
 		// todo:
 		/*
-		if(taker.equals(this.figure)) {
+		if(taker.equals(this.de.jdungeon.figure)) {
 			screen.focusTakenItem(p.getItem());
 		}
 		*/
@@ -273,7 +272,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 				startAnimation(set, fig, Position.Pos.fromValue(p.getFromIndex()), Position.Pos.fromValue(p.getToIndex()), "", false, true, false, p, null);
 			}
 		} else {
-			Log.severe("figure for StepPercept was null!");
+			Log.severe("de.jdungeon.figure for StepPercept was null!");
 		}
 	}
 
@@ -311,14 +310,14 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			// clear old queued animations if there are some
 			animationManager.clearFigure(fig);
 
-			// start "walk in" animation
+			// start "walk in" de.jdungeon.animation
 			startAnimation(set, fig, p);
 		}
 
 		RoomInfo roomInfo = figure.getRoomInfo();
 		Boolean fightRunning = roomInfo.fightRunning();
 		if (!fig.equals(this.figure)
-				&& // check whether a fight has just started
+				&& // check whether a de.jdungeon.fight has just started
 				 fightRunning!= null && !fightRunning) {
 			screen.scrollTo(info.getNumber(), 0.4f, "enters percept");
 		}
@@ -338,12 +337,12 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			// clear old queued animations if there are some
 			animationManager.clearFigure(fig);
 
-			// start "walk in" animation
+			// start "walk in" de.jdungeon.animation
 			startAnimation(set, fig, p);
 		}
 
 		if (!fig.equals(this.figure)
-				&& // check whether a fight has just started
+				&& // check whether a de.jdungeon.fight has just started
 				!figure.getRoomInfo().fightRunning()) {
 			screen.scrollTo(info.getNumber(), 0.4f, "leaves percept");
 		}
@@ -376,7 +375,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			Music music = screen.getGame().getAudio().createMusic("music/" + "Dark_Times.mp3");
 			MusicManager.getInstance().playMusic(music);
 		}
-		// we reset highlighted entity if a selected figure was killed
+		// we reset highlighted entity if a selected de.jdungeon.figure was killed
 		if (deadFigure.equals(this.screen.getFocusManager().getWorldFocusObject())) {
 			this.screen.getFocusManager().setWorldFocusObject((RoomInfoEntity) null);
 		}
@@ -390,7 +389,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 			if (damage != -1) {
 				text = "-" + damage;
 			}
-			// should better be delay = true to show the figure falling AFTER the hit, but the figure is rendered as dead by the default render process...not so nice though
+			// should better be delay = true to show the de.jdungeon.figure falling AFTER the hit, but the de.jdungeon.figure is rendered as dead by the default render process...not so nice though
 			startAnimation(set, deadFigure, text, false, true, false, ((OpticalPercept) p), null);
 		}
 	}

@@ -7,24 +7,23 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import dungeon.JDPoint;
-import figure.Figure;
-import figure.FigureInfo;
-import figure.action.Action;
-import figure.action.result.ActionResult;
-import figure.action.result.ActionResultWithGameRound;
-import figure.hero.HeroInfo;
-import figure.other.Fir;
-import figure.other.Lioness;
-import figure.percept.EntersPercept;
-import figure.percept.OpticalPercept;
-import figure.percept.Percept;
-import figure.percept.TextPercept;
-import game.JDGUI;
-import location.LevelExit;
-import log.Log;
-import text.StatementManager;
-import user.DungeonSession;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.figure.Figure;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.figure.other.Fir;
+import de.jdungeon.figure.other.Lioness;
+import de.jdungeon.figure.percept.EntersPercept;
+import de.jdungeon.figure.percept.OpticalPercept;
+import de.jdungeon.figure.percept.Percept;
+import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.game.JDGUI;
+import de.jdungeon.location.LevelExit;
+import de.jdungeon.log.Log;
+import de.jdungeon.text.StatementManager;
+import de.jdungeon.user.DungeonSession;
 
 import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -36,12 +35,12 @@ import de.jdungeon.gui.activity.ScoutActivity;
 
 /**
  * This class basically controls the interaction from the world (world loop)
- * and the user interface (gui actions).
+ * and the de.jdungeon.user interface (de.jdungeon.gui actions).
  * <p>
  * It is a thread dashboard, where objects are put by one thread and collected by another.
- * - game thread puts percepts, that the player perceives about the world and that need to be visualized in some way on
+ * - de.jdungeon.game thread puts percepts, that the player perceives about the world and that need to be visualized in some way on
  * the UI
- * - game thread puts visibility increase/decrease notifications, saying that the player can see parts of the world that
+ * - de.jdungeon.game thread puts visibility increase/decrease notifications, saying that the player can see parts of the world that
  * he could not before or vice versa
  * - the black board for player action handling is done within the action controller, which is part of the player
  * controller
@@ -83,7 +82,7 @@ public class PlayerController implements JDGUI {
 	/**
 	 * The number of rounds played in this dungeon.
 	 *
-	 * @return game round
+	 * @return de.jdungeon.game round
 	 */
 	public int getRound() {
 		return this.dungeonSession.getDungeonRound();
@@ -142,7 +141,7 @@ public class PlayerController implements JDGUI {
 	/**
 	 * Thread-blackboard put method (called by UI-Thread)
 	 * <p>
-	 * The gui thread plugs an action to be performed by the UI-controlled figure.
+	 * The de.jdungeon.gui thread plugs an action to be performed by the UI-controlled de.jdungeon.figure.
 	 * <p>
 	 * Adds a particular Action to the action sequence to be executed
 	 *
@@ -156,7 +155,7 @@ public class PlayerController implements JDGUI {
 	/**
 	 * Thread-blackboard put method (called by UI-Thread)
 	 * <p>
-	 * The gui thread plugs a sequence of actions to be performed by the UI-controlled figure.
+	 * The de.jdungeon.gui thread plugs a sequence of actions to be performed by the UI-controlled de.jdungeon.figure.
 	 * <p>
 	 * Adds a sequences of Actions to the characters' action sequence to be executed
 	 *
@@ -220,7 +219,7 @@ public class PlayerController implements JDGUI {
 		}
 
 		// player is hostile to those figures which are hostile to play
-		// TODO: find way to prevent infinite loop if other figure also plays like this..
+		// TODO: find way to prevent infinite loop if other de.jdungeon.figure also plays like this..
 		if (otherFigure.isHostile(heroInfo)) {
 			return true;
 		}
@@ -271,8 +270,8 @@ public class PlayerController implements JDGUI {
 			number = ((OpticalPercept) p).getPoint();
 		}
 		if (p instanceof EntersPercept  // someone enters
-				&& (((EntersPercept) p).getTo().equals(this.getFigure().getRoomInfo())) // into the room of this figure
-				&& (!((EntersPercept) p).getFigure().equals(this.getFigure()))) { // who is not this figure
+				&& (((EntersPercept) p).getTo().equals(this.getFigure().getRoomInfo())) // into the room of this de.jdungeon.figure
+				&& (!((EntersPercept) p).getFigure().equals(this.getFigure()))) { // who is not this de.jdungeon.figure
 			// we interrupt the current plan to allow the player to react
 			interrupt(p);
 		}
@@ -287,7 +286,7 @@ public class PlayerController implements JDGUI {
 				perceptQueue.add(p);
 			}
 		}
-		if (gameScreen != null) { // initialization issue at level start
+		if (gameScreen != null) { // initialization issue at de.jdungeon.level start
 			gameScreen.checkCameraPosition();
 		}
 	}

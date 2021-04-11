@@ -2,8 +2,8 @@ package de.jdungeon.gui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.gui.activity.Activity;
@@ -115,7 +115,7 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 		drawActivityBackgroundLarge(batch, posY, posX);
 
 		/*
-		 * draw actual item
+		 * draw actual de.jdungeon.item
 		 */
 		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(im, Assets.instance.getGuiAtlas());
 		batch.draw(atlasRegion, posX + doubleImageWidth / 8,
@@ -140,7 +140,7 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 		drawActivityBackground(batch, posX, posY);
 
 		/*
-		 * draw actual item
+		 * draw actual de.jdungeon.item
 		 */
 		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(im, Assets.instance.getGuiAtlas());
 		batch.draw(atlasRegion,

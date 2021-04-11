@@ -6,7 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+//import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -64,6 +64,9 @@ public class AssetFonts {
 		defaultSmall.getData().setScale(FONT_SIZE_SMALL);
 		setFilter(defaultSmall);
 
+		defaultTitle = defaultBigFlipped;
+
+		/*
 		if(Gdx.app.getType() == Application.ApplicationType.Android) {
 			defaultTitle = defaultBigFlipped;
 		} else {
@@ -76,6 +79,8 @@ public class AssetFonts {
 			setFilter(defaultTitle);
 			generator.dispose();
 		}
+
+		 */
 
 
 	}

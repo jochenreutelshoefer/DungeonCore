@@ -1,6 +1,5 @@
 package de.jdungeon.welcome;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,10 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import event.EventManager;
+import de.jdungeon.event.EventManager;
 
 import de.jdungeon.AbstractGameScreen;
-import de.jdungeon.DefaultGuiInputController;
 import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
@@ -22,7 +20,6 @@ import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
 import de.jdungeon.game.Music;
 import de.jdungeon.game.ScreenContext;
-import de.jdungeon.world.GameScreen;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -66,7 +63,7 @@ public class StartScreen extends AbstractGameScreen {
 	@Override
 	public void init() {
 		bgImageTx = new Texture(Gdx.files.internal("haunted-castle.jpg"));
-		//Gdx.input.setInputProcessor(new DefaultGuiInputController(game, this));
+		//Gdx.input.setInputProcessor(new DefaultGuiInputController(de.jdungeon.game, this));
 
 	}
 
@@ -110,7 +107,7 @@ public class StartScreen extends AbstractGameScreen {
 
 		if(Gdx.input.isTouched()) {
 			EventManager.getInstance().fireEvent(new StartNewGameEvent());
-			//game.setScreen(new GameScreen(game));
+			//de.jdungeon.game.setScreen(new GameScreen(de.jdungeon.game));
 		}
 
 		if(debugEnabled) {

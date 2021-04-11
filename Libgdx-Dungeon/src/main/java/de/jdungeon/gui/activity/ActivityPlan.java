@@ -1,6 +1,6 @@
 package de.jdungeon.gui.activity;
 
-import figure.action.Action;
+import de.jdungeon.figure.action.Action;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

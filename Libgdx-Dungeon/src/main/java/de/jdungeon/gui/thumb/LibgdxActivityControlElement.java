@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.JDPoint;
-import figure.action.result.ActionResult;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.gui.activity.Activity;
@@ -74,7 +74,7 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 	}
 
 
-	// TODO: something wrong here - should not overwrite animation render paint call
+	// TODO: something wrong here - should not overwrite de.jdungeon.animation render paint call
 	@Override
 	public void paint(SpriteBatch batch) {
 		super.paint(batch);

@@ -1,18 +1,12 @@
 package de.jdungeon.world;
 
-import java.util.List;
-
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import dungeon.util.RouteInstruction;
-import figure.action.Action;
-import log.Log;
 
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.app.ActionAssembler;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.welcome.StartScreen;
 

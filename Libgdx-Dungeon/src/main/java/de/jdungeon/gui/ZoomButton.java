@@ -1,12 +1,8 @@
 package de.jdungeon.gui;
 
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
-import de.jdungeon.app.gui.ImageGUIElement;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.Input;
-import de.jdungeon.game.MotionEvent;
 import de.jdungeon.world.GameScreenInputProcessor;
 
 /**

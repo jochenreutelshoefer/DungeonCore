@@ -84,7 +84,7 @@ public class LibgdxItemWheelBindingSetSimple implements LibgdxItemWheelBindingSe
 		int activityCounter = activities.size();
 
 		// its less than 3 items, we fill up mapping with empty entries
-		// for not rendering an item multiple times on the display
+		// for not rendering an de.jdungeon.item multiple times on the display
 		if (activities.size() > reoccurrenceCycleSize) {
 			reoccurrenceCycleSize = activities.size();
 		}

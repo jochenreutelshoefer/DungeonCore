@@ -124,9 +124,9 @@ public class StageSelectionScreen extends AbstractGameScreen {
 		if(paused) return;
 		update(deltaTime);
 		cameraHelper.applyTo(camera);
-		//((LibgdxGraphics)game.getGraphics(null)).beginSpriteBatch();
+		//((LibgdxGraphics)de.jdungeon.game.getGraphics(null)).beginSpriteBatch();
 		selectionScreen.paint(deltaTime);
-		//((LibgdxGraphics)game.getGraphics(null)).endSpriteBatch();
+		//((LibgdxGraphics)de.jdungeon.game.getGraphics(null)).endSpriteBatch();
 	}
 
 	@Override

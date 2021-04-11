@@ -3,17 +3,16 @@ package de.jdungeon.gui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.DefaultMonsterIntelligence;
-import dungeon.PositionInRoomInfo;
-import dungeon.RoomInfo;
-import dungeon.util.RouteInstruction;
-import figure.FigureInfo;
-import figure.action.Action;
-import figure.action.StepAction;
-import figure.action.result.ActionResult;
+import de.jdungeon.ai.DefaultMonsterIntelligence;
+import de.jdungeon.dungeon.PositionInRoomInfo;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.Action;
+import de.jdungeon.figure.action.StepAction;
+import de.jdungeon.figure.action.result.ActionResult;
 
 import de.jdungeon.app.ActionAssembler;
-import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.world.PlayerController;
 
 /**

@@ -3,7 +3,7 @@ package de.jdungeon.asset;
 import java.util.HashMap;
 import java.util.Map;
 
-import audio.AudioEffectsManager;
+import de.jdungeon.audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import figure.FigurePresentation;
-import graphics.ImageManager;
-import graphics.JDImageProxy;
+import de.jdungeon.figure.FigurePresentation;
+import de.jdungeon.graphics.ImageManager;
+import de.jdungeon.graphics.JDImageProxy;
 
 import de.jdungeon.Constants;
 import de.jdungeon.LibgdxDungeonMain;
@@ -31,7 +31,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	private static final String TAG = Assets.class.getName();
 	/*
-	 * Why are all figure classes treated here distinctly in different atlases instead of in a generic way?
+	 * Why are all de.jdungeon.figure classes treated here distinctly in different atlases instead of in a generic way?
 	 * The reason lies in the optimization of the open gl rendering process.
 	 * For performance optimization purposes it is necessary to have a low number of texture sheet (atlas)
 	 * changes during the rendering of a frame. Therefore, it is clever to render all figures of same class
@@ -73,7 +73,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		String dungeonAtlasPath = PACKS + DUNGEON_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(dungeonAtlasPath, TextureAtlas.class);
 
-		// gui images
+		// de.jdungeon.gui images
 		String guiAtlasPath = PACKS + GUI_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(guiAtlasPath, TextureAtlas.class);
 
@@ -96,7 +96,7 @@ public class Assets implements Disposable, AssetErrorListener {
 				figuresCacheMap.put(figureAtlas, figureAtlasRegionCache);
 			}
 			catch (GdxRuntimeException exception) {
-				Gdx.app.error(TAG, "Couldn't find atlas for figure: " + figurePresentation);
+				Gdx.app.error(TAG, "Couldn't find atlas for de.jdungeon.figure: " + figurePresentation);
 				exception.printStackTrace();
 			}
 		}
@@ -114,7 +114,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		fonts = new AssetFonts();
 
-		// init audio effects (need to be initialized before ImageManager loads
+		// init de.jdungeon.audio effects (need to be initialized before ImageManager loads
 		// because the sounds will then be needed to setup the animations
 		Audio audio = game.getAudio();
 
@@ -122,7 +122,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		AudioEffectsManager.init(androidLoader);
 		AudioManagerTouchGUI.init(androidLoader);
 
-		// Initialize all game images
+		// Initialize all de.jdungeon.game images
 		ImageManager.getInstance(game.getFileIO().getImageLoader()).loadImages();
 	}
 
@@ -219,7 +219,7 @@ public class Assets implements Disposable, AssetErrorListener {
 				region.flip(false, true);
 				textureCache.put(blankFilename, region);
 				overallRegionCacheMap.put(blankFilename, region);
-				//Gdx.app.log(TAG, "added new AtlasRegion to cache: " + blankFilename);
+				//Gdx.app.de.jdungeon.log(TAG, "added new AtlasRegion to cache: " + blankFilename);
 				return region;
 			}
 			else {
@@ -239,7 +239,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			return getAtlasRegion(image, textureAtlas);
 		}
 		else {
-			Gdx.app.error(TAG, "No atlas texture found for figure presentation: " + figureClass);
+			Gdx.app.error(TAG, "No atlas texture found for de.jdungeon.figure presentation: " + figureClass);
 		}
 		return null;
 	}

@@ -1,0 +1,14 @@
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/main/java/" ]
+
+eclipse.project.name = appName + "-Dungeon-FrontEnd-TouchGUI"
+
+dependencies {
+    api group: 'org.jetbrains', name: 'annotations', version: '16.0.1'
+    api project(":Game-Core")
+    api project(":Dungeon-Core")
+    api project(":Dungeon-App-Core")
+    api project(":Dungeon-FrontEnd-GraphicsEngine2D")
+}

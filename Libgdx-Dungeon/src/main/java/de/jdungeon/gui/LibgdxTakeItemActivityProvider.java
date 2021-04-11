@@ -3,12 +3,12 @@ package de.jdungeon.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import figure.FigureInfo;
-import figure.action.TakeItemAction;
-import item.ItemInfo;
+import de.jdungeon.app.gui.InventoryImageManager;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.action.TakeItemAction;
+import de.jdungeon.item.ItemInfo;
 
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
-import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.gui.activity.Activity;
 import de.jdungeon.gui.activity.ExecutableTakeItemActivity;
 import de.jdungeon.world.PlayerController;

@@ -2,8 +2,8 @@ package de.jdungeon.gui.thumb;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.JDPoint;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.gui.LibgdxGUIElement;
 

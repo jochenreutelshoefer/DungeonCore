@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+    </wildcardResourcePatterns>
+    <bytecodeTargetLevel>
+      <module name="Dungeon-App-Core" target="1.8" />
+      <module name="Dungeon-Core" target="1.8" />
+      <module name="Dungeon-FrontEnd-GraphicsEngine2D" target="1.8" />
+      <module name="Dungeon-FrontEnd-TouchGUI" target="1.8" />
+      <module name="Dungeon2020.Dungeon-App-Core.main" target="1.8" />
+      <module name="Dungeon2020.Dungeon-App-Core.test" target="1.8" />
+      <module name="Dungeon2020.Dungeon-Core.main" target="1.8" />
+      <module name="Dungeon2020.Dungeon-Core.test" target="1.8" />
+      <module name="Dungeon2020.Dungeon-FrontEnd-GraphicsEngine2D.main" target="1.8" />
+      <module name="Dungeon2020.Dungeon-FrontEnd-GraphicsEngine2D.test" target="1.8" />
+      <module name="Dungeon2020.Dungeon-FrontEnd-TouchGUI.main" target="1.8" />
+      <module name="Dungeon2020.Dungeon-FrontEnd-TouchGUI.test" target="1.8" />
+      <module name="Dungeon2020.Game-Core.main" target="1.8" />
+      <module name="Dungeon2020.Game-Core.test" target="1.8" />
+      <module name="Dungeon2020.Game-Libgdx.main" target="1.8" />
+      <module name="Dungeon2020.Game-Libgdx.test" target="1.8" />
+      <module name="Dungeon2020.gdx-freetype-gwt-1.9.10.1" target="1.7" />
+      <module name="Dungeon2020.html.main" target="1.8" />
+      <module name="Dungeon2020.html.test" target="1.8" />
+      <module name="Dungeon2020.Libgdx-Dungeon-Desktop.main" target="1.8" />
+      <module name="Dungeon2020.Libgdx-Dungeon-Desktop.test" target="1.8" />
+      <module name="Dungeon2020.Libgdx-Dungeon.main" target="1.8" />
+      <module name="Dungeon2020.Libgdx-Dungeon.test" target="1.8" />
+      <module name="Game-Android" target="1.8" />
+      <module name="Game-Core" target="1.5" />
+      <module name="Game-Libgdx" target="1.8" />
+      <module name="Libgdx-Dungeon" target="1.8" />
+      <module name="Libgdx-Dungeon-Android" target="1.8" />
+      <module name="Libgdx-Dungeon-Desktop" target="1.7" />
+      <module name="Libgdx-Game-Adapter" target="1.5" />
+      <module name="maven-archiver" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

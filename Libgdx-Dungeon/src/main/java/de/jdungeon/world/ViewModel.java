@@ -2,11 +2,10 @@ package de.jdungeon.world;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-import dungeon.RoomInfo;
-import figure.FigureInfo;
-import graphics.GraphicObject;
-import graphics.GraphicObjectRenderer;
+import de.jdungeon.dungeon.RoomInfo;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.graphics.GraphicObject;
+import de.jdungeon.graphics.GraphicObjectRenderer;
 
 /**
  * Thread-blackboard data structure: the render information is delivered and prepared
@@ -86,13 +85,13 @@ public class ViewModel {
 	/**
 	 * Thread-blackboard put-method: here for a particular room of the world the render information
 	 * is updated/prepared by the world thread (the world thread now when the world changes in a way
-	 * that requires update of the render information for the UI-controlled figure.
+	 * that requires update of the render information for the UI-controlled de.jdungeon.figure.
 	 *
 	 * @param x x coordinate of the room to be updated
 	 * @param y y coordinate of the room to be updated
 	 */
 	public void updateRoom(int x, int y) {
-		//Gdx.app.log(TAG,"Updating render information of room: "+x +" - "+ y);
+		//Gdx.app.de.jdungeon.log(TAG,"Updating render information of room: "+x +" - "+ y);
 		ViewRoom currentViewRoom = roomViews[x][y];
 		List<GraphicObject> graphicObjectsForRoom = renderer.createGraphicObjectsForRoom(currentViewRoom.getRoomInfo());
 		currentViewRoom.setGraphicObjects(graphicObjectsForRoom);

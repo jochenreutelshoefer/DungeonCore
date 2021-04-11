@@ -3,12 +3,11 @@ package de.jdungeon.gui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import dungeon.JDPoint;
-import event.EventManager;
-import figure.hero.HeroInfo;
-import game.DungeonGameLoop;
-import user.DefaultDungeonSession;
-import util.JDDimension;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.user.DefaultDungeonSession;
+import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.event.EndRoundEvent;
 import de.jdungeon.app.gui.GUIImageManager;

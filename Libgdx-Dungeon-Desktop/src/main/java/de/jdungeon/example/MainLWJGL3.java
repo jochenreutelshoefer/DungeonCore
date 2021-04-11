@@ -11,7 +11,7 @@ public class MainLWJGL3 {
 
 	/*
 	public static void main(String[] args) {
-		//Gdx.app.log("LOG: ", "LWJGL Version " + Version.getVersion() + " is working.");
+		//Gdx.app.de.jdungeon.log("LOG: ", "LWJGL Version " + Version.getVersion() + " is working.");
 		Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
 		cfg.setTitle("LibgdxDungeon");
 		cfg.setWindowedMode(800,480);

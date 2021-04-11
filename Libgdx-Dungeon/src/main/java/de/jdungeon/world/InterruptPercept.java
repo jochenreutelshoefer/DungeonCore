@@ -3,11 +3,11 @@ package de.jdungeon.world;
 import java.util.Collections;
 import java.util.List;
 
-import figure.FigureInfo;
-import figure.percept.OpticalPercept;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.percept.OpticalPercept;
 
 /**
- * This is a GUI-Util-Percept only - not part of the game world but only used to visualize a interruption of the
+ * This is a GUI-Util-Percept only - not part of the de.jdungeon.game world but only used to visualize a interruption of the
  * players plan.
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
