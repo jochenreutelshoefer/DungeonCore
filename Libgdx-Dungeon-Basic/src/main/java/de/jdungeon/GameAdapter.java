@@ -29,7 +29,7 @@ public class GameAdapter implements Game {
 
     Map<AbstractGameScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
 
-    GameAdapter(Game game, FilenameLister filenameLister) {
+    public GameAdapter(Game game, FilenameLister filenameLister) {
         this.game = game;
         fileIO = new LibgdxFileIO(new LibgdxAssetImageLoader(), filenameLister);
         GameEnv.getInstance().setGame(this);

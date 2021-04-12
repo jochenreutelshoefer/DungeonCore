@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import de.jdungeon.event.EventManager;
 
 import de.jdungeon.AbstractGameScreen;
-import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;

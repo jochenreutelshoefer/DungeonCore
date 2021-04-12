@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Libgdx-Dungeon-Basic.iml" filepath="$PROJECT_DIR$/.idea/modules/Libgdx-Dungeon-Basic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Libgdx-Dungeon-Simple.iml" filepath="$PROJECT_DIR$/.idea/modules/Libgdx-Dungeon-Simple.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Libgdx-Dungeon-Simple-Desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/Libgdx-Dungeon-Simple-Desktop.iml" />
     </modules>
   </component>
 </project>

@@ -16,7 +16,7 @@ import de.jdungeon.util.JDDimension;
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.DefaultGuiInputController;
-import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.LibgdxDungeonFullMain;
 import de.jdungeon.app.gui.skillselection.SkillSelectionManager;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
@@ -36,7 +36,7 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 	protected final List<LibgdxGUIElement> guiElements = new ArrayList<>();
 	private SpriteBatch batch;
 
-	public SkillSelectionScreen(LibgdxDungeonMain game) {
+	public SkillSelectionScreen(LibgdxDungeonFullMain game) {
 		super(game);
 
 		// TODO : refactor towards a generic abstract Screen that will do this kind of stuff in a generic way

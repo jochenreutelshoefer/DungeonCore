@@ -40,11 +40,11 @@ public class SkillSelectionManager {
 
 	static {
 		skillMap.put(1, new Pair<>(new Raid(), new Heal()));
-		skillMap.put(2, new Pair<Spell, Spell>(new Search(), new Fireball()));
-		skillMap.put(3, new Pair<Spell, Spell>(new Convince(), new Bonebreaker()));
-		skillMap.put(4, new Pair<Spell, Spell>(new Spy(), new KeyLocator()));
-		skillMap.put(5, new Pair<Spell, Spell>(new Spy(), new Heal()));
-		skillMap.put(6, new Pair<Spell, Spell>(new Isolation(), new Light()));
+		skillMap.put(2, new Pair<>(new Search(), new Fireball()));
+		skillMap.put(3, new Pair<>(new Convince(), new Bonebreaker()));
+		skillMap.put(4, new Pair<>(new Spy(), new KeyLocator()));
+		skillMap.put(5, new Pair<>(new Spy(), new Heal()));
+		skillMap.put(6, new Pair<>(new Isolation(), new Light()));
 	}
 
 	public Pair<Spell, Spell> getOptions(int stage) {

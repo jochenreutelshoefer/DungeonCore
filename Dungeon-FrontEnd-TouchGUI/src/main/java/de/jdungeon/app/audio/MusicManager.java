@@ -29,9 +29,10 @@ public class MusicManager {
 	}
 
 	public void stopCurrentMusic() {
-		current.stop();
-		current.dispose();
-
+		if(current != null) {
+			current.stop();
+			current.dispose();
+		}
 	}
 
 }

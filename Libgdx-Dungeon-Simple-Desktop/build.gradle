@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+
+test {
+    useJUnitPlatform()
+}
+
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/main/java" ]
+
+eclipse.project.name = appName + "-Libgdx-Dungeon-Simple-Desktop"
+
+dependencies {
+    api project(":Libgdx-Dungeon-Simple")
+    api project(":Dungeon-Core")
+    api project(":Game-Core")
+    implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    implementation "commons-io:commons-io:2.6"
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    /*
+    <groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-tools</artifactId>
+			<version>${gdxversion}</version>
+
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-lwjgl</artifactId>
+			<version>1.9.12</version>
+     */
+}
+

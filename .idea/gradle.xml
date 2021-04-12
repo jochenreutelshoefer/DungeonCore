@@ -17,8 +17,10 @@
             <option value="$PROJECT_DIR$/Game-Core" />
             <option value="$PROJECT_DIR$/Game-Libgdx" />
             <option value="$PROJECT_DIR$/Libgdx-Dungeon-Basic" />
-            <option value="$PROJECT_DIR$/Libgdx-Dungeon-Desktop" />
             <option value="$PROJECT_DIR$/Libgdx-Dungeon-Full" />
+            <option value="$PROJECT_DIR$/Libgdx-Dungeon-Full-Desktop" />
+            <option value="$PROJECT_DIR$/Libgdx-Dungeon-Simple" />
+            <option value="$PROJECT_DIR$/Libgdx-Dungeon-Simple-Desktop" />
             <option value="$PROJECT_DIR$/html" />
           </set>
         </option>

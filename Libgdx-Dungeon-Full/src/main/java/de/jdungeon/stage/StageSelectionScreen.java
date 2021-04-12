@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
-import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.LibgdxDungeonFullMain;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.ScreenContext;
@@ -24,7 +24,7 @@ public class StageSelectionScreen extends AbstractGameScreen {
 	private final CameraHelper cameraHelper;
 	private final DungeonSelectionScreen selectionScreen;
 
-	public StageSelectionScreen(LibgdxDungeonMain game) {
+	public StageSelectionScreen(LibgdxDungeonFullMain game) {
 		super(game);
 
 		// TODO: factor out path

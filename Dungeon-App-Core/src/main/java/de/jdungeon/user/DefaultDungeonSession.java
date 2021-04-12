@@ -100,9 +100,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	}
 
 	/**
-	 * Starts the de.jdungeon.game world's thread triggering the de.jdungeon.game rounds
+	 * Starts the game world's thread triggering the de.jdungeon.game rounds
 	 *
-	 * @param gui graphical de.jdungeon.user interface controlling this session
+	 * @param gui graphical user interface controlling this session
 	 */
 	public void startGame(JDGUI gui) {
 		this.gui = gui;
