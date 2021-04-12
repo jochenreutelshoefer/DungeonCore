@@ -20,7 +20,7 @@ import de.jdungeon.user.Session;
  */
 public class GameAdapter implements Game {
 
-    private final LibgdxDungeonMain game;
+    private final Game game;
     private LibgdxGraphics graphics;
     private final LibgdxAudio audio = new LibgdxAudio();
     private final LibgdxInput input = new LibgdxInput();
@@ -29,7 +29,7 @@ public class GameAdapter implements Game {
 
     Map<AbstractGameScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
 
-    GameAdapter(LibgdxDungeonMain game, FilenameLister filenameLister) {
+    GameAdapter(Game game, FilenameLister filenameLister) {
         this.game = game;
         fileIO = new LibgdxFileIO(new LibgdxAssetImageLoader(), filenameLister);
         GameEnv.getInstance().setGame(this);
@@ -63,7 +63,7 @@ public class GameAdapter implements Game {
 
     @Override
     public void setCurrentScreen(Screen screen) {
-
+        game.setCurrentScreen(screen);
     }
 
     @Override

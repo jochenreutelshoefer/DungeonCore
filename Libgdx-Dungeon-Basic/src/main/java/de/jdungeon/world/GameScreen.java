@@ -17,13 +17,13 @@ import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.percept.Percept;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
-import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
@@ -69,7 +69,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private GLProfiler glProfiler;
 
-	public GameScreen(LibgdxDungeonMain game, PlayerController playerController, JDPoint dungeonSize) {
+	public GameScreen(Game game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
 		playerController.setGameScreen(this); // todo: untangle bidirectional dependency here

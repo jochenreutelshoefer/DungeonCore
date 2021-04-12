@@ -32,16 +32,7 @@ public abstract class ImageGUIElement extends AbstractGUIElement {
 		this.backGround = backGround;
 	}
 
-	public ImageGUIElement(JDPoint position, JDDimension dimension, Image im, Image backGround, GUIElement parent) {
-		super(position, dimension, parent.getGame());
-		this.im = im;
-		this.backGround = backGround;
-	}
 
-	public ImageGUIElement(JDPoint position, JDDimension dimension, JDImageProxy jdImage, GUIElement parent) {
-		this(position, dimension, (Image) jdImage.getImage(), parent.getGame());
-		this.jdImage = jdImage;
-	}
 
 	@Override
 	public boolean isVisible() {

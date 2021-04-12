@@ -37,6 +37,4 @@ public interface GUIElement {
 	
 	StandardScreen getScreen();
 
-	Game getGame();
-
 }

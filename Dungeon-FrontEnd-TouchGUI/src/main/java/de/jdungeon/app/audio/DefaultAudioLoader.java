@@ -12,11 +12,11 @@ import de.jdungeon.game.*;
 public class DefaultAudioLoader implements AudioLoader {
 
     private final Audio audio;
-    private final Game game;
+    private FileIO fileIO;
 
-    public DefaultAudioLoader(Audio audio, Game game) {
+    public DefaultAudioLoader(Audio audio, FileIO fileIO) {
         this.audio = audio;
-        this.game = game;
+        this.fileIO = fileIO;
     }
 
     @Override
@@ -45,7 +45,6 @@ public class DefaultAudioLoader implements AudioLoader {
 
 
     private boolean fileExists(String file) {
-        FileIO fileIO = game.getFileIO();
         try {
             InputStream inputStream = fileIO.readFile(file);
             inputStream.close();

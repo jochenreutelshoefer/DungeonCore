@@ -7,6 +7,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import de.jdungeon.app.event.LevelAbortEvent;
 import de.jdungeon.game.*;
 import de.jdungeon.io.FilenameLister;
 import de.jdungeon.libgdx.LibgdxLogger;
@@ -78,7 +79,7 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 
 		adapter = new GameAdapter(this, filenameLister);
 
-		Assets.instance.init(new AssetManager(), this);
+		Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
 
 		EventManager.getInstance().registerListener(this);
 
@@ -188,6 +189,9 @@ public class LibgdxDungeonMain extends Game implements de.jdungeon.game.Game, Ev
 			// resume/start rendering of screen
 			this.getScreen().resume();
 
+		}
+		if(event instanceof LevelAbortEvent) {
+			setCurrentScreen(new StartScreen(this));
 		}
 		if(event instanceof SkillSelectedEvent) {
 			Spell spell = ((SkillSelectedEvent) event).getSpell();

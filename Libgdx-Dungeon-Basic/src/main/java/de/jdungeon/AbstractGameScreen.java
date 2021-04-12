@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.asset.Assets;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.ScreenContext;
 
 /**
@@ -12,9 +13,9 @@ import de.jdungeon.game.ScreenContext;
  */
 public abstract class AbstractGameScreen extends de.jdungeon.game.Screen implements Screen {
 
-	protected LibgdxDungeonMain game;
+	protected Game game;
 	protected boolean paused = false;
-	public AbstractGameScreen(LibgdxDungeonMain game) {
+	public AbstractGameScreen(Game game) {
 		super(game);
 		this.game = game;
 	}

@@ -94,6 +94,11 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		return user;
 	}
 
+	@Override
+	public int getGameRound() {
+		return getDungeonRound();
+	}
+
 	/**
 	 * Starts the de.jdungeon.game world's thread triggering the de.jdungeon.game rounds
 	 *

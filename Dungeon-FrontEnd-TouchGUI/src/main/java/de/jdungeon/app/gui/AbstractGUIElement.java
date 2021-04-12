@@ -100,15 +100,6 @@ public abstract class AbstractGUIElement implements GUIElement {
 		return false;
 	}
 
-	@Override
-	public Game getGame() {
-		return this.game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
 	protected void drawBackground(Graphics g) {
 		drawBackground(g, position.getX(), position.getY());
 	}

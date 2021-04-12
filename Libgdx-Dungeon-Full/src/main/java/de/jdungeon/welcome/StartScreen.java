@@ -18,6 +18,7 @@ import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
+import de.jdungeon.game.Game;
 import de.jdungeon.game.Music;
 import de.jdungeon.game.ScreenContext;
 
@@ -39,7 +40,7 @@ public class StartScreen extends AbstractGameScreen {
 	private final boolean debugEnabled = false;
 	private float debugRebuildStage;
 
-	public StartScreen(LibgdxDungeonMain game) {
+	public StartScreen(Game game) {
 		super(game);
 		init();
 	}

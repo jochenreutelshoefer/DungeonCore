@@ -13,11 +13,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.jdungeon.figure.FigurePresentation;
+import de.jdungeon.game.FileIO;
 import de.jdungeon.graphics.ImageManager;
 import de.jdungeon.graphics.JDImageProxy;
 
 import de.jdungeon.Constants;
-import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.audio.DefaultAudioLoader;
 import de.jdungeon.game.Audio;
@@ -61,7 +61,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	private Assets() {
 	}
 
-	public void init(AssetManager assetManager, LibgdxDungeonMain game) {
+	public void init(AssetManager assetManager, Audio audio, FileIO fileIO) {
 		this.assetManager = assetManager;
 
 		assetManager.setErrorListener(this);
@@ -116,14 +116,13 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		// init de.jdungeon.audio effects (need to be initialized before ImageManager loads
 		// because the sounds will then be needed to setup the animations
-		Audio audio = game.getAudio();
 
-		AudioLoader androidLoader = new DefaultAudioLoader(audio, game);
+		AudioLoader androidLoader = new DefaultAudioLoader(audio, fileIO);
 		AudioEffectsManager.init(androidLoader);
 		AudioManagerTouchGUI.init(androidLoader);
 
 		// Initialize all de.jdungeon.game images
-		ImageManager.getInstance(game.getFileIO().getImageLoader()).loadImages();
+		ImageManager.getInstance(fileIO.getImageLoader()).loadImages();
 	}
 
 	@Override

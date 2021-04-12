@@ -13,12 +13,12 @@ import com.badlogic.gdx.utils.Disposable;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.figure.hero.HeroInfo;
+import de.jdungeon.game.Game;
 import de.jdungeon.graphics.ImageManager;
 import de.jdungeon.log.Log;
 import de.jdungeon.text.Statement;
 import de.jdungeon.util.JDDimension;
 
-import de.jdungeon.LibgdxDungeonMain;
 import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.screen.InfoMessagePopupEvent;
@@ -51,7 +51,7 @@ public class GUIRenderer implements Disposable {
 	private final GameScreenInputProcessor inputController;
 	private final OrthographicCamera cameraGUI;
 	private final HeroInfo figure;
-	private final LibgdxDungeonMain game;
+	private final Game game;
 	private SpriteBatch batch;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private SmartControlPanel smartControl;
@@ -70,7 +70,7 @@ public class GUIRenderer implements Disposable {
 	private GUIImageManager guiImageManager;
 	private InventoryImageManager inventoryImageManager;
 
-	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, LibgdxDungeonMain game, HeroInfo figure, LibgdxFocusManager focusManager) {
+	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, Game game, HeroInfo figure, LibgdxFocusManager focusManager) {
 		this.inputController = inputController;
 		this.cameraGUI = cameraGUI;
 		cameraGUI.update();
@@ -153,7 +153,12 @@ public class GUIRenderer implements Disposable {
 		int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromRightBorder;
 		int hourGlassHeight = (int) (hourGlassWidth * 1.6);
 		int hourglassYPos = thirdBarPosition.getY() + screenHeightBy25;
-		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(new JDPoint(hourGlassPosX, hourglassYPos), new JDDimension(hourGlassWidth, hourGlassHeight), figure, this.guiImageManager, game
+		LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(
+				new JDPoint(hourGlassPosX, hourglassYPos),
+				new JDDimension(hourGlassWidth, hourGlassHeight),
+				figure,
+				this.guiImageManager
+				, game
 				.getSession());
 		this.libgdxGuiElements.add(hourglass);
 

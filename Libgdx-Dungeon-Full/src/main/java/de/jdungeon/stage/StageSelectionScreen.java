@@ -3,22 +3,16 @@ package de.jdungeon.stage;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.AbstractGameScreen;
 import de.jdungeon.CameraHelper;
 import de.jdungeon.LibgdxDungeonMain;
-import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Music;
 import de.jdungeon.game.ScreenContext;
-import de.jdungeon.libgdx.LibgdxGraphics;
 import de.jdungeon.libgdx.LibgdxInput;
 import de.jdungeon.libgdx.MyInputProcessor;
-import de.jdungeon.world.GameScreen;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

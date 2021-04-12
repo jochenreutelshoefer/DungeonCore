@@ -6,9 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
-import de.jdungeon.LibgdxDungeonMain;
+import de.jdungeon.app.event.LevelAbortEvent;
 import de.jdungeon.CameraHelper;
-import de.jdungeon.welcome.StartScreen;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.game.Game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -17,16 +18,15 @@ import de.jdungeon.welcome.StartScreen;
 public class GameScreenInputProcessor extends GestureDetector {
 
 	private static final String TAG = GameScreenInputProcessor.class.getName();
-	private final LibgdxDungeonMain game;
+	private final Game game;
 
 	private final PlayerController playerController;
 	private CameraHelper cameraHelper = null;
 
 	private final GameScreen gameScreen;
-	private long lastClickTime;
 	private final KeyboardControl keyboardControl;
 
-	public GameScreenInputProcessor(LibgdxDungeonMain game, PlayerController playerController, GameScreen gameScreen) {
+	public GameScreenInputProcessor(Game game, PlayerController playerController, GameScreen gameScreen) {
 		super(new MyGestureListener(gameScreen));
 		cameraHelper = gameScreen.getCameraHelper();
 		this.game = game;
@@ -41,13 +41,13 @@ public class GameScreenInputProcessor extends GestureDetector {
 		return playerController;
 	}
 
-	public LibgdxDungeonMain getGame() {
+	public Game getGame() {
 		return game;
 	}
 
 
 	private void backToMenu() {
-		game.setScreen(new StartScreen(game));
+		EventManager.getInstance().fireEvent(new LevelAbortEvent());
 	}
 
 	@Override

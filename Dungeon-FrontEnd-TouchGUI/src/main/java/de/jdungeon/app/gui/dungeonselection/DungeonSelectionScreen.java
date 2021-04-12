@@ -156,10 +156,6 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 				g.drawLine(0, dotY, game.getScreenWidth(), dotY, Colors.GRAY);
 			}
 
-			@Override
-			public Game getGame() {
-				return game;
-			}
 		});
 
 		// draw stage vertices as dots
@@ -169,10 +165,6 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 				g.fillOval(dotX - dotSize / 2, dotY - dotSize / 2, dotSize, dotSize, Colors.WHITE);
 			}
 
-			@Override
-			public Game getGame() {
-				return game;
-			}
 		});
 
 		DungeonCompletionScore achievedScore = null;
@@ -190,10 +182,6 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 					g.drawLine(x, y + DungeonSelectionTile.TILE_WIDTH * 9 / 10, dotX, dotY, Colors.WHITE);
 				}
 
-				@Override
-				public Game getGame() {
-					return game;
-				}
 			});
 
 			Image image = LevelIconImageManager.getInstance().getIcon(imageLoader, iconIndex++);

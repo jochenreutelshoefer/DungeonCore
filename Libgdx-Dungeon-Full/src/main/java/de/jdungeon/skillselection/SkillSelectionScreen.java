@@ -61,7 +61,7 @@ public class SkillSelectionScreen extends AbstractGameScreen {
 		}
 
 
-		Gdx.input.setInputProcessor(new DefaultGuiInputController(game, this));
+		Gdx.input.setInputProcessor(new DefaultGuiInputController(this));
 	}
 
 	@Override

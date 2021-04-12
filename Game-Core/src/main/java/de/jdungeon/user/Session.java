@@ -13,4 +13,5 @@ public interface Session {
 	 */
 	User getUser();
 
+	int getGameRound();
 }
