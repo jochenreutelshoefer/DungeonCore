@@ -6,7 +6,7 @@ sourceSets.main.java.srcDirs = [ "src/main/java" ]
 eclipse.project.name = appName + "-Libgdx-Dungeon-Desktop"
 
 dependencies {
-    api project(":Libgdx-Dungeon")
+    api project(":Libgdx-Dungeon-Full")
     api project(":Dungeon-Core")
     api project(":Game-Core")
     implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"

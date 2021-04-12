@@ -13,14 +13,14 @@ import de.jdungeon.LibgdxDungeonMain;
  */
 public class Main {
 
-	public static void main(String[] args) {
-		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.title = "Libgdx Game";
-		cfg.useGL30 = false;
-		cfg.width = 800;
-		cfg.height = 480;
-		cfg.allowSoftwareMode = true;
-		cfg.foregroundFPS = 70;
-		new LwjglApplication(new LibgdxDungeonMain(new DesktopResourceBundleLoader()), cfg);
-	}
+    public static void main(String[] args) {
+        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        cfg.title = "Libgdx Game";
+        cfg.useGL30 = false;
+        cfg.width = 800;
+        cfg.height = 480;
+        cfg.allowSoftwareMode = true;
+        cfg.foregroundFPS = 70;
+        new LwjglApplication(new LibgdxDungeonMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister()), cfg);
+    }
 }

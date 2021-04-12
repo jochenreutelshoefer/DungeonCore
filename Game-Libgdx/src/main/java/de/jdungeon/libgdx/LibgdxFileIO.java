@@ -13,6 +13,7 @@ import com.badlogic.gdx.files.FileHandle;
 
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.FileIO;
+import de.jdungeon.io.FilenameLister;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -20,65 +21,51 @@ import de.jdungeon.game.FileIO;
  */
 public class LibgdxFileIO implements FileIO {
 
-	AbstractImageLoader imageLoader;
+    AbstractImageLoader imageLoader;
+    FilenameLister filenameLister;
 
-	public LibgdxFileIO(AbstractImageLoader imageLoader) {
-		this.imageLoader = imageLoader;
-	}
+    public LibgdxFileIO(AbstractImageLoader imageLoader, FilenameLister filenameLister) {
+        this.imageLoader = imageLoader;
+        this.filenameLister = filenameLister;
+    }
 
-	public LibgdxFileIO() {
-		imageLoader = new LibgdxImageLoader();
-	}
+    public LibgdxFileIO() {
+        imageLoader = new LibgdxImageLoader();
+    }
 
-	@Override
-	public boolean fileExists(String file) throws IOException {
-		return Gdx.files.internal(file).exists();
-	}
+    @Override
+    public boolean fileExists(String file) throws IOException {
+        return Gdx.files.internal(file).exists();
+    }
 
-	@Override
-	public InputStream readFile(String file) throws IOException {
-		return readAsset(file);
-	}
+    @Override
+    public InputStream readFile(String file) throws IOException {
+        return readAsset(file);
+    }
 
-	@Override
-	public List<String> readFileNamesOfFolder(String file)  {
-		String classPathLocation = null;
-		if(Gdx.app.getType().equals(Application.ApplicationType.Android)) {
-			classPathLocation = file;
-		} else if(Gdx.app.getType().equals(Application.ApplicationType.Desktop)) {
+    @Override
+    public List<String> readFileNamesOfFolder(String file) {
+        return this.filenameLister.listFilenamesOfFolder(file);
+    }
 
-			classPathLocation = this.getClass().getClassLoader().getResource(file).getFile();
-			if(classPathLocation.contains("%20")) {
-				classPathLocation = classPathLocation.replaceAll("%20", " ");
-			}
 
-		}
-		FileHandle fileHandleFolder = Gdx.files.getFileHandle(classPathLocation, Files.FileType.Internal);
-		FileHandle[] fileHandles = fileHandleFolder.list();
-		List<String> filenames = new ArrayList<>();
-		for (FileHandle fileHandle : fileHandles) {
-			filenames.add(fileHandle.name());
-		}
-		return filenames;
-	}
+    @Override
+    public OutputStream writeFile(String file) throws IOException {
+        return null;
+    }
 
-	@Override
-	public OutputStream writeFile(String file) throws IOException {
-		return null;
-	}
+    @Override
+    public InputStream readAsset(String file) throws IOException {
+        FileHandle fileHandle = Gdx.files.internal(file);
+        if (!fileHandle.exists()) {
+            throw new IOException("File does not exist: " + file);
+        }
+        return fileHandle.read();
 
-	@Override
-	public InputStream readAsset(String file) throws IOException {
-		FileHandle fileHandle = Gdx.files.internal(file);
-		if(!fileHandle.exists()) {
-			throw new IOException("File does not exist: "+file);
-		}
-		return fileHandle.read();
+    }
 
-	}
-
-	@Override
-	public AbstractImageLoader<?> getImageLoader() {
-		return imageLoader ;
-	}
+    @Override
+    public AbstractImageLoader<?> getImageLoader() {
+        return imageLoader;
+    }
 }

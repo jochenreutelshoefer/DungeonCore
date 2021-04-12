@@ -516,7 +516,7 @@ public class LibgdxGraphics implements Graphics {
 			canvas.translate(x, y);
 			layout.draw(canvas);
 			canvas.restore();
-			//canvas.drawText(text, x, y, textPaint);
+			//canvas.drawText(de.jdungeon.text, x, y, textPaint);
 		}
 		else {
 
@@ -525,7 +525,7 @@ public class LibgdxGraphics implements Graphics {
 			layout.draw(tmpCanvas);
 			tmpCanvas.restore();
 
-			//tmpCanvas.drawText(text, x - tmpCanvasX, y - tmpCanvasY, textPaint);
+			//tmpCanvas.drawText(de.jdungeon.text, x - tmpCanvasX, y - tmpCanvasY, textPaint);
 		}
 	}
 

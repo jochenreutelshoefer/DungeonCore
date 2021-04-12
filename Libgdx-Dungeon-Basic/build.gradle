@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/main/java/" ]
+
+eclipse.project.name = appName + "-Libgdx-Dungeon-Basic"
+
+dependencies {
+    api project(":Dungeon-FrontEnd-GraphicsEngine2D")
+    api project(":Dungeon-FrontEnd-TouchGUI")
+    api project(":Game-Libgdx")
+    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+}
+
