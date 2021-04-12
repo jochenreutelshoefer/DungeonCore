@@ -6,8 +6,8 @@ import java.util.Set;
 
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.InfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.skill.TargetSkill;
 import de.jdungeon.spell.TargetScope;
 

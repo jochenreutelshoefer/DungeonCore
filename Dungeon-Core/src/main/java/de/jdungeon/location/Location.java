@@ -10,9 +10,9 @@ import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.DungeonVisibilityMap;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.InfoProvider;
-import de.jdungeon.game.Turnable;
+import de.jdungeon.dungeon.InfoEntity;
+import de.jdungeon.dungeon.InfoProvider;
+import de.jdungeon.game.loop.Turnable;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.interfaces.Usable;
 

@@ -26,7 +26,7 @@ import de.jdungeon.event.EventManager;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.FigurePresentation;
 import de.jdungeon.figure.RoomObservationStatus;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObject;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 import de.jdungeon.graphics.JDGraphicObject;

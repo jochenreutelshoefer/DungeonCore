@@ -17,7 +17,6 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.figure.action.ScoutResult;
-import de.jdungeon.game.ControlUnit;
 import de.jdungeon.log.Log;
 
 public class DungeonVisibilityMap {

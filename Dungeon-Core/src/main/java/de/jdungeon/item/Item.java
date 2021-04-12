@@ -30,8 +30,8 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.attribute.ItemModification;
 import de.jdungeon.figure.attribute.ModifierI;
 import de.jdungeon.figure.memory.ItemMemory;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.InfoProvider;
+import de.jdungeon.dungeon.InfoEntity;
+import de.jdungeon.dungeon.InfoProvider;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.gui.Paragraphable;
 

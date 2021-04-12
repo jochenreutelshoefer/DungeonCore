@@ -4,7 +4,7 @@ import de.jdungeon.dungeon.Position;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.location.Location;
 
 public class UseLocationAction extends AbstractExecutableAction {

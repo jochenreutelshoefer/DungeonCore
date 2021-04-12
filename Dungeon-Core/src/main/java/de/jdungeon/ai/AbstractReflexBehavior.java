@@ -5,7 +5,7 @@ import java.io.Serializable;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
-import de.jdungeon.game.ActionSpecifier;
+import de.jdungeon.figure.ActionSpecifier;
 import de.jdungeon.skill.AttackSkill;
 
 public abstract class AbstractReflexBehavior implements ActionSpecifier, Serializable {

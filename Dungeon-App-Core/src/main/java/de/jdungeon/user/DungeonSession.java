@@ -4,7 +4,7 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
-import de.jdungeon.game.ControlUnit;
+import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.JDGUI;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonManager;

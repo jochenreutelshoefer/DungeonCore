@@ -3,7 +3,7 @@ package de.jdungeon;
 import java.util.*;
 
 import de.jdungeon.io.ResourceBundleLoader;
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

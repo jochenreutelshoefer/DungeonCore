@@ -9,7 +9,6 @@ package de.jdungeon.dungeon;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.memory.ChestMemory;
-import de.jdungeon.game.RoomInfoEntity;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.ItemInfo;

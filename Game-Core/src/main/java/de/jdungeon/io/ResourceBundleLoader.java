@@ -1,6 +1,6 @@
 package de.jdungeon.io;
 
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 
 import java.util.Locale;
 

@@ -17,7 +17,7 @@ import de.jdungeon.figure.monster.MonsterInfo;
 import de.jdungeon.figure.monster.Skeleton;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 public class Bonebreaker extends AbstractTargetSpell {
 

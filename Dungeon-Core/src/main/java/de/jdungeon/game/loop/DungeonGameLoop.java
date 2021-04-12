@@ -1,4 +1,4 @@
-package de.jdungeon.game;
+package de.jdungeon.game.loop;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import java.util.Map;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
+import de.jdungeon.game.JDGUI;
 import de.jdungeon.item.ItemPool;
 import de.jdungeon.spell.AbstractSpell;
 import de.jdungeon.spell.TimedSpellInstance;
@@ -73,9 +74,7 @@ public class DungeonGameLoop {
 	}
 
 	public void worldTurn(int round) {
-		//Log.info("Starting world turn for round: "+round);
 		derDungeon.turn(round);
-		spellsTurn();
 	}
 
 	public void init(Dungeon d) {
@@ -94,6 +93,7 @@ public class DungeonGameLoop {
 			while (running) {
 				checkGuiFigures();
 				if (guiFigures.isEmpty()) {
+					// our stop criteria
 					break;
 				}
 				//Log.info(System.currentTimeMillis() + " " + round + " start round");

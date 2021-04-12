@@ -13,7 +13,6 @@ import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.memory.MemoryObject;
-import de.jdungeon.game.RoomInfoEntity;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.util.JDColor;
 

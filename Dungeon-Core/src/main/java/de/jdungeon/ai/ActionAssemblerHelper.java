@@ -34,7 +34,7 @@ import de.jdungeon.figure.action.StepAction;
 import de.jdungeon.figure.action.TakeItemAction;
 import de.jdungeon.figure.action.UseChestAction;
 import de.jdungeon.figure.action.UseItemAction;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.item.ItemInfo;
 import de.jdungeon.skill.AttackSkill;
 import de.jdungeon.skill.FleeSkill;

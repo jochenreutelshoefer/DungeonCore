@@ -7,8 +7,6 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.memory.DoorMemory;
 import de.jdungeon.figure.monster.Monster;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.InfoProvider;
 import de.jdungeon.item.Key;
 
 import java.util.ArrayList;

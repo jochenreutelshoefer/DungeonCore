@@ -16,7 +16,6 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.memory.DoorMemory;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.util.JDColor;
 

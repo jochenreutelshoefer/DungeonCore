@@ -25,6 +25,7 @@ import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.user.DungeonSession;
 import de.jdungeon.user.User;
+import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.world.GameScreen;
 import de.jdungeon.world.PlayerController;
 
@@ -69,7 +70,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
         gdxLogger = new LibgdxLogger();
 
-        MyResourceBundle textsBundle = resourceBundleLoader.getBundle(JDEnv.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
+        MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
         if (textsBundle == null) {
             Gdx.app.error(TAG, "Could not load resource bundle for texts");
         }
@@ -98,7 +99,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
         setCurrentScreen(gameScreen);
 
         // start world -> do NOT start the game loop in a distinct thread!
-        ((DefaultDungeonSession) this.dungeonSession).startGame(controller);
+        ((DefaultDungeonSession) this.dungeonSession).startGame(controller, false);
 
 
         pause = false;
@@ -235,7 +236,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
             getCurrentScreen().resume();
 
             // start world de.jdungeon.game loop
-            ((DefaultDungeonSession) this.dungeonSession).startGame(controller);
+            ((DefaultDungeonSession) this.dungeonSession).startGame(controller, false);
         }
         if (event instanceof PlayerDiedEvent) {
             this.dungeonSession.revertHero();

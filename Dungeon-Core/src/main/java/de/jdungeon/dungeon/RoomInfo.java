@@ -26,7 +26,6 @@ import de.jdungeon.figure.memory.RoomMemory;
 import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.monster.MonsterInfo;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.ItemInfo;

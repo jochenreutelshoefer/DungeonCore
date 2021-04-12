@@ -1,6 +1,6 @@
 package de.jdungeon.spell;
 
-import de.jdungeon.game.Turnable;
+import de.jdungeon.game.loop.Turnable;
 
 public abstract class TimedSpellInstance implements Turnable{
 	

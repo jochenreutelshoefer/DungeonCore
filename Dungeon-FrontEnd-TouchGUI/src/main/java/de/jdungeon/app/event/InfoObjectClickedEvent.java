@@ -1,7 +1,7 @@
 package de.jdungeon.app.event;
 
 import de.jdungeon.event.Event;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

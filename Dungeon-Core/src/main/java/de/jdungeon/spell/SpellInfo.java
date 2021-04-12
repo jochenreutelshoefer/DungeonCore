@@ -12,7 +12,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.memory.MemoryObject;
-import de.jdungeon.game.InfoEntity;
+import de.jdungeon.dungeon.InfoEntity;
 import de.jdungeon.gui.Paragraph;
 
 public class SpellInfo extends InfoEntity {

@@ -7,7 +7,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.generate.ReachabilityChecker;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 import junit.framework.TestCase;
 import de.jdungeon.level.DefaultDungeonManager;
 import de.jdungeon.level.DungeonFactory;

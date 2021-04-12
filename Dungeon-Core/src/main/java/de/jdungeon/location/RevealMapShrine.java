@@ -8,7 +8,7 @@ import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.action.result.ActionResult;
-import de.jdungeon.game.ControlUnit;
+import de.jdungeon.figure.ControlUnit;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

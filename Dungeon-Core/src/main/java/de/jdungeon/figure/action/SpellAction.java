@@ -3,7 +3,7 @@ package de.jdungeon.figure.action;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.spell.SpellInfo;
 

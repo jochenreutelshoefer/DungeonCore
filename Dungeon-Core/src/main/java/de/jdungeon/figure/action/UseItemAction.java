@@ -19,7 +19,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.UsePercept;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.ItemInfo;
 import de.jdungeon.item.interfaces.Usable;

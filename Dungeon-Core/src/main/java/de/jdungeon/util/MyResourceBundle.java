@@ -1,8 +1,11 @@
-package de.jdungeon.game;
+package de.jdungeon.util;
 
 import java.util.Map;
 
 public class MyResourceBundle {
+
+    public static final String TEXTS_BUNDLE_BASENAME = "texts";
+
 
     private Map<String, String> texts;
 

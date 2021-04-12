@@ -23,7 +23,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.monster.Dwarf;
 import de.jdungeon.figure.monster.MonsterInfo;
 import de.jdungeon.figure.monster.Orc;
-import de.jdungeon.game.ControlUnit;
+import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.Key;
 import de.jdungeon.item.paper.ScrollMagic;

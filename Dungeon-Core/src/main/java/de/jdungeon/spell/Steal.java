@@ -1,7 +1,7 @@
 package de.jdungeon.spell;
 
 import de.jdungeon.dungeon.RoomEntity;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.item.Item;
 
 import java.util.List;

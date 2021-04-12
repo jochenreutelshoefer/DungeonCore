@@ -1,4 +1,4 @@
-package de.jdungeon.game;
+package de.jdungeon.figure;
 
 import de.jdungeon.figure.action.Action;
 

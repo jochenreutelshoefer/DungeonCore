@@ -18,7 +18,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.game.Game;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 
 import de.jdungeon.AbstractGameScreen;

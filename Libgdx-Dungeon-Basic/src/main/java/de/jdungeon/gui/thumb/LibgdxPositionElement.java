@@ -7,7 +7,7 @@ import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.figure.FigureInfo;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.util.JDDimension;
 
 import de.jdungeon.app.ActionAssembler;

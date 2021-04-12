@@ -3,7 +3,7 @@ package de.jdungeon.spell;
 import java.util.List;
 
 import de.jdungeon.figure.FigureInfo;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

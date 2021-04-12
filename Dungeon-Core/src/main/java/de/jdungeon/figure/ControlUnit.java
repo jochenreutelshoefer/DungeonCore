@@ -4,11 +4,9 @@
  * To change the template for this generated file go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-package de.jdungeon.game;
+package de.jdungeon.figure;
 
 import de.jdungeon.dungeon.JDPoint;
-import de.jdungeon.figure.Figure;
-import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.location.LevelExit;

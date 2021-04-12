@@ -8,8 +8,8 @@ import de.jdungeon.dungeon.DoorInfo;
 import de.jdungeon.dungeon.LockInfo;
 import de.jdungeon.dungeon.RoomInfo;
 import de.jdungeon.figure.FigureInfo;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.InfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

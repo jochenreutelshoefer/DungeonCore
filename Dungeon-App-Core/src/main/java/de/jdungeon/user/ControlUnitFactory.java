@@ -1,7 +1,7 @@
 package de.jdungeon.user;
 
 import de.jdungeon.figure.FigureInfo;
-import de.jdungeon.game.ControlUnit;
+import de.jdungeon.figure.ControlUnit;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

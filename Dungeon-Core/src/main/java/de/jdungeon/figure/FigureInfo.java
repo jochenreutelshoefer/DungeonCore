@@ -30,7 +30,7 @@ import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.memory.FigureMemory;
 import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.monster.MonsterInfo;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.gui.Paragraphable;
 import de.jdungeon.item.ItemInfo;

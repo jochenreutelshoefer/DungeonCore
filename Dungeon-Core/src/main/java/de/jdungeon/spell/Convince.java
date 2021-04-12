@@ -14,7 +14,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 public class Convince extends AbstractTargetSpell implements TargetSpell{
 

@@ -1,4 +1,4 @@
-package de.jdungeon.game;
+package de.jdungeon.game.loop;
 
 /**
  * Interface fuer Sachen, die jede Runde getriggert werden muessen weil

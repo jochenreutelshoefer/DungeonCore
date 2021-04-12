@@ -19,7 +19,7 @@ import de.jdungeon.event.PlayerDiedEvent;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.spell.Spell;
@@ -71,7 +71,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
 		gdxLogger = new LibgdxLogger();
 
-		MyResourceBundle textsBundle = resourceBundleLoader.getBundle(JDEnv.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
+		MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
 		if(textsBundle == null) {
 			Gdx.app.error(TAG, "Could not load resource bundle for texts");
 		}
@@ -218,7 +218,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 			getCurrentScreen().resume();
 
 			// start world de.jdungeon.game loop
-			((DefaultDungeonSession)this.dungeonSession).startGame(controller);
+			((DefaultDungeonSession)this.dungeonSession).startGame(controller, true);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();

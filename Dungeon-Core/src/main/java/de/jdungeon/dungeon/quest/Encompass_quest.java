@@ -1,6 +1,6 @@
 package de.jdungeon.dungeon.quest;
 import de.jdungeon.figure.monster.Monster;
-import de.jdungeon.game.DungeonGameLoop;
+import de.jdungeon.game.loop.DungeonGameLoop;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.ItemPool;
 import de.jdungeon.location.InfoShrine;

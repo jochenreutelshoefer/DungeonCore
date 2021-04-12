@@ -1,6 +1,6 @@
 package de.jdungeon.app;
 
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.io.ResourceBundleLoader;
 
 import java.util.*;

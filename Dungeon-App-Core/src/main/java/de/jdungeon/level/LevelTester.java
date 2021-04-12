@@ -4,7 +4,7 @@ import java.util.Collections;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.level.stagethree.StartLevelOLD;
 
 /**

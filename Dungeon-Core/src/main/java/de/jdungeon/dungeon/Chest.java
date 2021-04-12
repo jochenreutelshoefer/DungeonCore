@@ -5,8 +5,6 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.memory.ChestMemory;
 import de.jdungeon.figure.percept.ItemDroppedPercept;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.InfoProvider;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.gui.Paragraphable;

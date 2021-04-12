@@ -1,7 +1,7 @@
 package de.jdungeon.gui.activity;
 
 import de.jdungeon.figure.action.result.ActionResult;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.spell.SpellInfo;
 import de.jdungeon.spell.TargetScope;
 

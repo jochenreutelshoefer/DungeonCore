@@ -9,7 +9,6 @@ package de.jdungeon.figure;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.game.ControlUnit;
 
 import de.jdungeon.ai.AI;
 import de.jdungeon.dungeon.JDPoint;

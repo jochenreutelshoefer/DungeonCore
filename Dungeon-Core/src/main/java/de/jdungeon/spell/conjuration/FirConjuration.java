@@ -1,7 +1,7 @@
 package de.jdungeon.spell.conjuration;
 
 import de.jdungeon.dungeon.RoomEntity;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.spell.AbstractTargetSpell;
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.PositionInRoomInfo;

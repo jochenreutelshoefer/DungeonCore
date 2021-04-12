@@ -10,12 +10,12 @@ import java.util.HashSet;
 
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.PositionInRoomInfo;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.item.interfaces.*;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.memory.MemoryObject;
-import de.jdungeon.game.InfoEntity;
+import de.jdungeon.dungeon.InfoEntity;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.spell.TargetScope;
 

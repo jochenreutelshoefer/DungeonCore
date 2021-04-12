@@ -13,7 +13,7 @@ import de.jdungeon.gui.Paragraph;
 
 
 
-public class SpotInfo extends de.jdungeon.game.InfoEntity {
+public class SpotInfo extends InfoEntity {
 
 	private HiddenSpot spot;
 	

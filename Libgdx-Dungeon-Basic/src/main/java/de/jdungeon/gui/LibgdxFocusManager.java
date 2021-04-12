@@ -7,7 +7,7 @@ import de.jdungeon.event.Event;
 import de.jdungeon.event.EventListener;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.figure.FigureInfo;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObject;
 import de.jdungeon.log.Log;
 

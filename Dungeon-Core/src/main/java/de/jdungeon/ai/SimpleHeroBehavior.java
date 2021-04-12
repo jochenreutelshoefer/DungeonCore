@@ -16,7 +16,7 @@ import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.monster.MonsterInfo;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.game.ControlUnit;
+import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.location.LevelExit;

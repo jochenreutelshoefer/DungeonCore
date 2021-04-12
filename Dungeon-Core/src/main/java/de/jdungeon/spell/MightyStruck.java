@@ -6,7 +6,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.item.equipment.Armor;
 import de.jdungeon.item.equipment.Helmet;
 

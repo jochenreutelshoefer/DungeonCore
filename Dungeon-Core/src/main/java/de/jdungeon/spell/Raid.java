@@ -19,7 +19,7 @@ import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 /**
  * @author Jochen

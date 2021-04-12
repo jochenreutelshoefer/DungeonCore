@@ -7,7 +7,7 @@ import java.util.List;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.attribute.Attribute;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.location.Brood;
 import de.jdungeon.location.HealthFountain;
 import de.jdungeon.location.LocationInfo;

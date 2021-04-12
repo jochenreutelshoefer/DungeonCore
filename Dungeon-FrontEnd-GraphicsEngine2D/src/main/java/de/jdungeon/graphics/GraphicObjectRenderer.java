@@ -29,7 +29,7 @@ import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.figure.monster.Wolf;
 import de.jdungeon.figure.other.Lioness;
 import de.jdungeon.game.JDGUI;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.util.DrawingRectangle;
 import de.jdungeon.graphics.util.RelativeRectangle;
 import de.jdungeon.graphics.util.RoomSize;

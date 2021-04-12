@@ -2,7 +2,7 @@ package de.jdungeon.spell;
 
 import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 public interface TargetSpell extends Spell {
 	

@@ -1,7 +1,7 @@
 package com.mygdx.game.client;
 
 import de.jdungeon.io.ResourceBundleLoader;
-import de.jdungeon.game.MyResourceBundle;
+import de.jdungeon.util.MyResourceBundle;
 
 import java.util.Collections;
 import java.util.Locale;

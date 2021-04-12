@@ -7,7 +7,6 @@
 package de.jdungeon.figure;
 
 import de.jdungeon.dungeon.Room;
-import de.jdungeon.game.ControlUnit;
 
 import java.util.Collections;
 import java.util.Iterator;

@@ -4,7 +4,7 @@ import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 @Deprecated
 public class Cobweb extends AbstractTargetSpell implements TargetSpell{

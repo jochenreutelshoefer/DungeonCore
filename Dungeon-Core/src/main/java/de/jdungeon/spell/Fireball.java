@@ -17,7 +17,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.util.Arith;
 import de.jdungeon.dungeon.Position;
 

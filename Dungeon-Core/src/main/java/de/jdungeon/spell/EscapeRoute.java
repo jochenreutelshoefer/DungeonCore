@@ -5,7 +5,7 @@ import de.jdungeon.dungeon.DoorInfo;
 import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.RoomInfoEntity;
+import de.jdungeon.dungeon.RoomInfoEntity;
 
 public class EscapeRoute extends AbstractTargetSpell {
 

@@ -5,8 +5,6 @@ import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.memory.MemoryObject;
 import de.jdungeon.figure.memory.SpotMemory;
-import de.jdungeon.game.InfoEntity;
-import de.jdungeon.game.InfoProvider;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.gui.Paragraphable;
 import de.jdungeon.item.Item;

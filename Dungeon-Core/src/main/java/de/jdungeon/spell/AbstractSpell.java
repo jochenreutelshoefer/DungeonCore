@@ -63,7 +63,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	public static final int SPELL_FIR = 27;
 	public static final int SPELL_LIONESS = 28;
 
-	public static List<TimedSpellInstance> timedSpells = new ArrayList<TimedSpellInstance>();
+	public static List<TimedSpellInstance> timedSpells = new ArrayList<>();
 
 	protected int[] valueSet = new int[5];
 

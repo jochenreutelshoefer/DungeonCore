@@ -1,8 +1,7 @@
-package de.jdungeon.game;
+package de.jdungeon.dungeon;
 
 import java.util.Collection;
 
-import de.jdungeon.dungeon.PositionInRoomInfo;
 import de.jdungeon.figure.DungeonVisibilityMap;
 
 /**
