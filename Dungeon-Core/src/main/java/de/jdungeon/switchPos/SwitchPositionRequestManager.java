@@ -4,7 +4,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.event.Event;
 import de.jdungeon.event.EventListener;
 import de.jdungeon.event.EventManager;
-import de.jdungeon.fight.FightEndedEvent;
+import de.jdungeon.event.FightEndedEvent;
 import de.jdungeon.figure.Figure;
 
 import java.util.*;

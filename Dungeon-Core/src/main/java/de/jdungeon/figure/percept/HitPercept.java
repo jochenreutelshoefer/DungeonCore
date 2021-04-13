@@ -9,7 +9,7 @@ package de.jdungeon.figure.percept;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.jdungeon.fight.SlapResult;
+import de.jdungeon.skill.attack.SlapResult;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 

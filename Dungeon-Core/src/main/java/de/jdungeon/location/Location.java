@@ -12,7 +12,8 @@ import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.dungeon.InfoEntity;
 import de.jdungeon.dungeon.InfoProvider;
-import de.jdungeon.game.loop.Turnable;
+import de.jdungeon.game.GameLoopMode;
+import de.jdungeon.game.Turnable;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.interfaces.Usable;
 
@@ -67,7 +68,7 @@ public abstract class Location implements Usable, Turnable, InfoProvider, RoomEn
 	}
 
 	@Override
-	public abstract void turn(int round);
+	public abstract void turn(int round, GameLoopMode mode);
 
 	@Deprecated
 	public int getType() {

@@ -25,7 +25,7 @@ import de.jdungeon.figure.monster.Orc;
 import de.jdungeon.figure.monster.Skeleton;
 import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.figure.monster.Wolf;
-import de.jdungeon.game.loop.DungeonGameLoop;
+import de.jdungeon.game.DungeonGameLoop;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
 import de.jdungeon.item.Item;

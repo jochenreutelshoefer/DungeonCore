@@ -8,6 +8,7 @@ package de.jdungeon.dungeon;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.DungeonVisibilityMap;
@@ -25,16 +26,23 @@ public class PositionInRoomInfo extends RoomInfoEntity {
 		pos = p;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PositionInRoomInfo that = (PositionInRoomInfo) o;
+		return pos.equals(that.pos);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(pos);
+	}
+
 	public int getIndex() {
 		return pos.getIndex();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof PositionInRoomInfo)) return false;
-		return pos.equals(((PositionInRoomInfo) obj).pos);
-	}
 
 	public RouteInstruction.Direction getPossibleFleeDirection() {
 		return pos.getPossibleFleeDirection();

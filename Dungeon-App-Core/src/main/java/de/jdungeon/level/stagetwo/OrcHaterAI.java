@@ -8,7 +8,7 @@ import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.EndRoundAction;
 import de.jdungeon.figure.action.StepAction;
 import de.jdungeon.figure.monster.Orc;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

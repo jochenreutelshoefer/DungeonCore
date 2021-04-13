@@ -8,7 +8,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.EndRoundAction;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 public class ChaserAI extends DefaultMonsterIntelligence {
 

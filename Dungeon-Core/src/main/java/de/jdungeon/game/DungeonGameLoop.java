@@ -1,4 +1,4 @@
-package de.jdungeon.game.loop;
+package de.jdungeon.game;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,7 +10,6 @@ import java.util.Map;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
-import de.jdungeon.game.JDGUI;
 import de.jdungeon.item.ItemPool;
 import de.jdungeon.spell.AbstractSpell;
 import de.jdungeon.spell.TimedSpellInstance;
@@ -66,15 +65,8 @@ public class DungeonGameLoop {
 		running = false;
 	}
 
-	private void spellsTurn() {
-		List<TimedSpellInstance> spells = AbstractSpell.timedSpells;
-		for (int i = 0; i < spells.size(); i++) {
-			((Turnable) spells.get(i)).turn(this.round);
-		}
-	}
-
 	public void worldTurn(int round) {
-		derDungeon.turn(round);
+		derDungeon.turn(round, GameLoopMode.DistinctWorldLoopThread);
 	}
 
 	public void init(Dungeon d) {

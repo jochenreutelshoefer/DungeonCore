@@ -1,4 +1,4 @@
-package de.jdungeon.game.loop;
+package de.jdungeon.game;
 
 /**
  * Interface fuer Sachen, die jede Runde getriggert werden muessen weil
@@ -7,5 +7,5 @@ package de.jdungeon.game.loop;
  */
 public interface Turnable {
 
-	void turn(int round);
+	void turn(int round, GameLoopMode mode);
 }

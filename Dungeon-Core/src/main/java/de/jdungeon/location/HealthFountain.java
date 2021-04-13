@@ -13,6 +13,7 @@ import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.attribute.Attribute;
+import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 
 /*
@@ -65,13 +66,18 @@ public class HealthFountain extends Location {
         return true;
     }
 
+    int lastCompletedRound = -1;
+
     @Override
-    public void turn(int round) {
-        if ((healthReserve.getBasic() - healthReserve.getValue()) > rate) {
-            healthReserve.modValue(rate);
-        } else if (healthReserve.getBasic() > healthReserve.getValue()) {
-            healthReserve.setValue(healthReserve.getBasic());
+    public void turn(int round, GameLoopMode mode) {
+        if (round > lastCompletedRound) {
+            if ((healthReserve.getBasic() - healthReserve.getValue()) > rate) {
+                healthReserve.modValue(rate);
+            } else if (healthReserve.getBasic() > healthReserve.getValue()) {
+                healthReserve.setValue(healthReserve.getBasic());
+            }
         }
+        lastCompletedRound = round;
     }
 
     @Override

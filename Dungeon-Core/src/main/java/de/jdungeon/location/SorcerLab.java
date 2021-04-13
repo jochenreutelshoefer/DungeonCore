@@ -2,6 +2,7 @@ package de.jdungeon.location;
 
 import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.item.AttrPotion;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
@@ -92,7 +93,7 @@ public class SorcerLab extends Location implements VisibilityModifier {
 	 * @see shrine#turn(int)
 	 */
 	@Override
-	public void turn(int round) {
+	public void turn(int round, GameLoopMode mode) {
 		int k = location.getRoomFigures().size();
 		boolean containsOwner = false;
 		if (owner != null) {

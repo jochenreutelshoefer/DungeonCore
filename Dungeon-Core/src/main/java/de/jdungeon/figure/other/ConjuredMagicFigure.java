@@ -5,6 +5,7 @@ import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.percept.DisappearPercept;
 import de.jdungeon.figure.percept.ItemDroppedPercept;
 import de.jdungeon.figure.percept.Percept;
+import de.jdungeon.game.GameLoopMode;
 
 public abstract class ConjuredMagicFigure extends Monster {
 	
@@ -33,8 +34,8 @@ public abstract class ConjuredMagicFigure extends Monster {
 	public abstract boolean disappearAtEndOfFight();
 
 	@Override
-	public void turn(int round) {
-		super.turn(round);
+	public void turn(int round, GameLoopMode mode) {
+		super.turn(round, mode);
 
 		// init birth round
 		if(birthRound == -1) {

@@ -20,6 +20,7 @@ import de.jdungeon.io.FilenameLister;
 import de.jdungeon.io.ResourceBundleLoader;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
+import de.jdungeon.libgdx.LibgdxConfiguration;
 import de.jdungeon.libgdx.LibgdxLogger;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
@@ -30,7 +31,9 @@ import de.jdungeon.world.GameScreen;
 import de.jdungeon.world.PlayerController;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * This app is a Spike. It should test out whether the dungeon
@@ -53,6 +56,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
     private GameAdapter adapter;
 
     private DungeonSession dungeonSession;
+    DungeonWorldUpdater dungeonWorldUpdater;
 
     private Logger gdxLogger;
 
@@ -75,8 +79,9 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
             Gdx.app.error(TAG, "Could not load resource bundle for texts");
         }
         JDEnv.init(textsBundle);
-
-        adapter = new GameAdapter(this, filenameLister);
+        Map<String, String> configValues = new HashMap<>();
+        configValues.put(GameLoopMode.GAME_LOOP_MODE_KEY, GameLoopMode.RenderThreadWorldUpdate.name());
+        adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration(configValues));
 
         Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
 
@@ -93,13 +98,12 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
         this.dungeonSession.initDungeon(dungeonFactory, controller);
 
+        // start world -> do NOT start the game loop in a distinct thread!
+        ((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
 
         // create and set new GameScreen
         GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize());
         setCurrentScreen(gameScreen);
-
-        // start world -> do NOT start the game loop in a distinct thread!
-        ((DefaultDungeonSession) this.dungeonSession).startGame(controller, false);
 
 
         pause = false;
@@ -200,7 +204,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
             // change screen to de.jdungeon.skill selection
             //this.dungeonSession.notifyExit(((ExitUsedEvent)de.jdungeon.event).getExit(), ((ExitUsedEvent)de.jdungeon.event).getFigure());
-           // de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
+            // de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
             //this.setCurrentScreen(screen);
 
             // resume/start rendering of screen
@@ -214,7 +218,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
         if (event instanceof SkillSelectedEvent) {
             Spell spell = ((SkillSelectedEvent) event).getSpell();
             dungeonSession.learnSkill(spell);
-           // StageSelectionScreen screen = new StageSelectionScreen(this);
+            // StageSelectionScreen screen = new StageSelectionScreen(this);
             //this.setCurrentScreen(screen);
         }
         if (event instanceof DungeonStartEvent) {
@@ -235,8 +239,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
             getCurrentScreen().resume();
 
-            // start world de.jdungeon.game loop
-            ((DefaultDungeonSession) this.dungeonSession).startGame(controller, false);
+
         }
         if (event instanceof PlayerDiedEvent) {
             this.dungeonSession.revertHero();

@@ -69,7 +69,7 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 	}
 
 	@Override
-	public void actionProcessed(Action a, ActionResult res, int round) {
+	public void actionProcessed(Action action, ActionResult res, int round) {
 
 	}
 

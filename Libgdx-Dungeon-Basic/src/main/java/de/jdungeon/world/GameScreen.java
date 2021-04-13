@@ -17,7 +17,7 @@ import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.game.Game;
+import de.jdungeon.game.*;
 import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 
@@ -31,10 +31,9 @@ import de.jdungeon.app.movieSequence.DefaultMovieSequence;
 import de.jdungeon.app.movieSequence.StraightLineScroller;
 import de.jdungeon.app.movieSequence.TrivialScaleSequence;
 import de.jdungeon.app.movieSequence.ZoomSequence;
-import de.jdungeon.game.Music;
-import de.jdungeon.game.ScreenContext;
 import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.gui.LibgdxGUIElement;
+import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.util.Pair;
 
 import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
@@ -68,14 +67,29 @@ public class GameScreen extends AbstractGameScreen {
 	private final int dungeonSizeY;
 
 	private GLProfiler glProfiler;
+	private DungeonWorldUpdater dungeonWorldUpdater;
 
 	public GameScreen(Game game, PlayerController playerController, JDPoint dungeonSize) {
 		super(game);
 		this.playerController = playerController;
 		playerController.setGameScreen(this); // todo: untangle bidirectional dependency here
 
+
+		// we need to check which world update mode we want to use
+		if(isRenderLoopWorldUpdateMode(game)) {
+			dungeonWorldUpdater = new DungeonWorldUpdater(((DefaultDungeonSession) game.getSession()).getCurrentDungeon());
+		}
+
+
 		this.dungeonSizeX = dungeonSize.getX();
 		this.dungeonSizeY = dungeonSize.getY();
+	}
+
+	private boolean isRenderLoopWorldUpdateMode(Game game) {
+		Configuration configuration = game.getConfiguration();
+		String gameLoopConfigValue = configuration.getValue(GameLoopMode.GAME_LOOP_MODE_KEY);
+		boolean weAreInRenderLoopWorldUpdateMode = gameLoopConfigValue != null && gameLoopConfigValue.equals(GameLoopMode.RenderThreadWorldUpdate.name());
+		return weAreInRenderLoopWorldUpdateMode;
 	}
 
 	@Override
@@ -144,6 +158,12 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	public void render(float deltaTime) {
+
+		// world update in render loop?
+		if(isRenderLoopWorldUpdateMode(game)) {
+			// we are in the render-loop-updates-world mode
+			dungeonWorldUpdater.update();
+		}
 
 		long now = System.currentTimeMillis();
 		//Log.info("render call gap: "+ (now - lastCall));

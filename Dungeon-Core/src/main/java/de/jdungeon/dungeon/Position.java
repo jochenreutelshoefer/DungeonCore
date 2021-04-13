@@ -8,6 +8,7 @@ package de.jdungeon.dungeon;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.DungeonVisibilityMap;
@@ -23,6 +24,19 @@ public class Position extends DungeonWorldObject implements RoomEntity {
     private Figure figure;
 
     private final int index;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return index == position.index && room.equals(position.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(room, index);
+    }
 
     private Position next;
 

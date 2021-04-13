@@ -1,7 +1,7 @@
 package de.jdungeon.spell;
 
 import de.jdungeon.dungeon.RoomEntity;
-import de.jdungeon.fight.Slap;
+import de.jdungeon.skill.attack.Slap;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.Hero;

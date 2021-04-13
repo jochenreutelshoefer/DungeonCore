@@ -17,7 +17,7 @@ import de.jdungeon.figure.hero.HeroUtil;
 import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
 import de.jdungeon.figure.ControlUnit;
-import de.jdungeon.game.loop.DungeonGameLoop;
+import de.jdungeon.game.DungeonGameLoop;
 import de.jdungeon.game.JDGUI;
 import de.jdungeon.level.DefaultDungeonManager;
 import de.jdungeon.level.DungeonFactory;
@@ -104,15 +104,18 @@ public class DefaultDungeonSession implements Session, DungeonSession {
      *
      * @param gui graphical user interface controlling this session
      */
-    public void startGame(JDGUI gui, boolean startGameLoop) {
-        this.gui = gui;
-
-        if (startGameLoop) {
+    public void startGameLoop(JDGUI gui) {
+        setGUIController(gui);
             dungeonGameLoop = new DungeonGameLoop(this.derDungeon);
             dungeonGameLoop.putGuiFigure(currentHero, gui);
             dungeonGameLoop.init(derDungeon);
-        }
     }
+
+    public void setGUIController(JDGUI gui) {
+        this.gui = gui;
+    }
+
+
 
 
     /**

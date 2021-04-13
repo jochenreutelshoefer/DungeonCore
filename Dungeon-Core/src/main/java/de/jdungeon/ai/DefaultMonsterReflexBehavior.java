@@ -10,7 +10,7 @@ import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.EndRoundAction;
 import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.monster.MonsterInfo;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 

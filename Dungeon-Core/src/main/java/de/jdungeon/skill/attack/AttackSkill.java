@@ -1,8 +1,6 @@
-package de.jdungeon.skill;
+package de.jdungeon.skill.attack;
 
 import de.jdungeon.dungeon.Position;
-import de.jdungeon.fight.Slap;
-import de.jdungeon.fight.SlapResult;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
@@ -10,6 +8,9 @@ import de.jdungeon.figure.percept.AttackPercept;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.log.Log;
+import de.jdungeon.skill.ActionBuilder;
+import de.jdungeon.skill.Skill;
+import de.jdungeon.skill.SkillAction;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

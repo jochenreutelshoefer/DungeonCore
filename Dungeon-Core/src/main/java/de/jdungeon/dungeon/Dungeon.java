@@ -27,7 +27,8 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.monster.MonsterInfo;
 import de.jdungeon.figure.ControlUnit;
-import de.jdungeon.game.loop.Turnable;
+import de.jdungeon.game.GameLoopMode;
+import de.jdungeon.game.Turnable;
 import de.jdungeon.location.Location;
 import de.jdungeon.spell.AbstractSpell;
 import de.jdungeon.spell.TimedSpellInstance;
@@ -151,17 +152,31 @@ public class Dungeon implements Turnable, EventListener {
 
 
     @Override
-    public void turn(int round) {
+    public void turn(int round, GameLoopMode mode) {
 
-        shrinesTurn(round);
-        roomsTurn(round);
-        spellsTurn(round);
+        // currently working for GameLoopMode.DistinctWorldLoopThread only
+        shrinesTurn(round, mode);
+        roomsTurn(round, mode);
+        spellsTurn(round, mode);
     }
 
-    private void spellsTurn(int round) {
+    public boolean turnRenderLoop(int round) {
+        GameLoopMode mode = GameLoopMode.RenderThreadWorldUpdate;
+        //todo: check that each round is triggered only once (for shrines and spells also!)
+        shrinesTurn(round, mode);
+        boolean roundCompleted = roomsTurn(round, mode);
+        spellsTurn(round, mode);
+        if (roundCompleted) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void spellsTurn(int round, GameLoopMode mode) {
         List<TimedSpellInstance> spells = AbstractSpell.timedSpells;
         for (int i = 0; i < spells.size(); i++) {
-            ((Turnable) spells.get(i)).turn(round);
+            ((Turnable) spells.get(i)).turn(round, mode);
         }
     }
 
@@ -183,9 +198,9 @@ public class Dungeon implements Turnable, EventListener {
         return getPoint(x, y);
     }
 
-    private void shrinesTurn(int round) {
+    private void shrinesTurn(int round, GameLoopMode mode) {
         for (Location shrine : shrines) {
-            shrine.turn(round);
+            shrine.turn(round, mode);
         }
     }
 
@@ -275,15 +290,23 @@ public class Dungeon implements Turnable, EventListener {
         return this.gameOver;
     }
 
-    private void roomsTurn(int round) {
+    private boolean roomsTurn(int round, GameLoopMode mode) {
         for (int i = 0; i < theDungeon.length; i++) {
             for (int j = 0; j < theDungeon[0].length; j++) {
                 if (this.gameOver) {
-                    return;
+                    return true;
                 }
-                theDungeon[i][j].turn(round);
+                boolean roomFiguresAllCompletedRound = theDungeon[i][j].turn(round, mode);
+
+                if (mode == GameLoopMode.RenderThreadWorldUpdate) {
+                    // if a figure in some is current idle, we break and try again on next render loop call
+                    if (!roomFiguresAllCompletedRound) {
+                        return false;
+                    }
+                }
             }
         }
+        return true;
     }
 
 

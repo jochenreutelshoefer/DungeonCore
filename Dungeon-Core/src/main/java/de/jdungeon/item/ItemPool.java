@@ -15,7 +15,7 @@ import java.util.List;
 import de.jdungeon.figure.attribute.Attribute;
 import de.jdungeon.figure.attribute.ItemModification;
 import de.jdungeon.figure.hero.Character;
-import de.jdungeon.game.loop.DungeonGameLoop;
+import de.jdungeon.game.DungeonGameLoop;
 import de.jdungeon.item.equipment.Armor;
 import de.jdungeon.item.equipment.Helmet;
 import de.jdungeon.item.equipment.Shield;

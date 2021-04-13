@@ -13,6 +13,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.hero.Hero;
+import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 @Deprecated
 public class InfoShrine extends Location {
@@ -28,16 +29,10 @@ public class InfoShrine extends Location {
 
 	}
 
-	/**
-	 * @see Location#turn(int)
-	 */
 	@Override
-	public void turn(int round) {
+	public void turn(int round, GameLoopMode mode) {
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return JDEnv.getResourceBundle().getString("shrine_info_name");

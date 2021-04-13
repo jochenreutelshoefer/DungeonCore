@@ -9,8 +9,8 @@
 package de.jdungeon.spell;
 
 import de.jdungeon.dungeon.RoomEntity;
-import de.jdungeon.fight.Slap;
-import de.jdungeon.fight.SlapResult;
+import de.jdungeon.skill.attack.Slap;
+import de.jdungeon.skill.attack.SlapResult;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.monster.MonsterInfo;

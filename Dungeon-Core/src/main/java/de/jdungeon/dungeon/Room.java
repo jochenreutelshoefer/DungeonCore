@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import de.jdungeon.dungeon.quest.RoomQuest;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.event.EventManager;
-import de.jdungeon.fight.FightEndedEvent;
+import de.jdungeon.event.FightEndedEvent;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
@@ -19,6 +19,7 @@ import de.jdungeon.figure.percept.OpticalPercept;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.figure.ControlUnit;
+import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.item.DustItem;
@@ -188,10 +189,25 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         return fightRunning;
     }
 
-    public void turn(int round) {
+    public boolean turn(int round, GameLoopMode mode) {
         for (Figure roomFigure : getRoomFigures()) {
-            roomFigure.turn(round);
+            if (roomFigure.getLastRoundTurnCompleted() < round) {
+
+                // figure does its turn
+                roomFigure.turn(round, mode);
+
+                if (mode == GameLoopMode.RenderThreadWorldUpdate) {
+                    // if a figure is current idle, we break and try again on next render loop call
+                    boolean figureCompletedRound = roomFigure.getLastRoundTurnCompleted() == round;
+                    if (!figureCompletedRound) {
+                        return false;
+                    }
+                }
+            }
+
         }
+        // all figures in this room have their round completed
+        return true;
     }
 
     public boolean checkFightOn() {

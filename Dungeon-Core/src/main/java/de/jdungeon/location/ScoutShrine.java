@@ -10,6 +10,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.action.ScoutResult;
 import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.game.GameLoopMode;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -53,7 +54,7 @@ public class ScoutShrine extends Location {
     }
 
     @Override
-    public void turn(int round) {
+    public void turn(int round, GameLoopMode mode) {
         // do nothing
     }
 

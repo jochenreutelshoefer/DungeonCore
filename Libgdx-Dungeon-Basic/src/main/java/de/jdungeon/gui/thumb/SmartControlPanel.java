@@ -41,6 +41,7 @@ import de.jdungeon.gui.activity.DirectionScoutActivity;
 import de.jdungeon.gui.LibgdxContainerGUIElement;
 import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.world.PlayerController;
+import org.graalvm.compiler.nodes.virtual.EnsureVirtualizedNode;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -217,6 +218,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 				null,
 				screenWidth / 17);
 
+		EventManager.getInstance().unregisterInstances(this.getClass()); // required to get rid of old instances (GC)
 		EventManager.getInstance().registerListener(this);
 		updateAllElementsIfNecessary();
 	}

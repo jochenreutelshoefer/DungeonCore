@@ -11,7 +11,7 @@ import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.hero.HeroUtil;
 import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
-import de.jdungeon.game.loop.DungeonGameLoop;
+import de.jdungeon.game.DungeonGameLoop;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
 import junit.framework.TestCase;

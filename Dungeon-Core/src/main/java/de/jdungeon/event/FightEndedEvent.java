@@ -1,4 +1,4 @@
-package de.jdungeon.fight;
+package de.jdungeon.event;
 
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.event.Event;

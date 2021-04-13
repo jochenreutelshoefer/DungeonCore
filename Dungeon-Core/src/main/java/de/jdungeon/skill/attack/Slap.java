@@ -1,4 +1,4 @@
-package de.jdungeon.fight;
+package de.jdungeon.skill.attack;
 
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.figure.Figure;

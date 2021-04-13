@@ -1,8 +1,10 @@
-package de.jdungeon.fight;
+package de.jdungeon.figure;
 
 import java.io.Serializable;
 
 import de.jdungeon.figure.Figure;
+import de.jdungeon.skill.attack.Slap;
+import de.jdungeon.skill.attack.SlapResult;
 
 /**
  * Vergiftung, die die betroffene Figur eine Anzahl von Runden lang schwaecht.

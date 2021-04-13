@@ -5,6 +5,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.paper.Scroll;
@@ -40,7 +41,7 @@ public class Angel extends Location {
 	}
 
 	@Override
-	public void turn(int round) {
+	public void turn(int round, GameLoopMode mode) {
 		// TODO Auto-generated method stub
 
 	}

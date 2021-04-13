@@ -7,6 +7,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.FigurePresentation;
 import de.jdungeon.figure.attribute.Attribute;
+import de.jdungeon.game.GameLoopMode;
 
 /**
  * Endgegner von Sektor 1. Wird herbeigerufen von verletzten Monstern. Ist allwissend.
@@ -76,8 +77,8 @@ public class DarkMaster extends Monster {
 	}
 
 	@Override
-	public void turn(int round) {
-		super.turn(round);
+	public void turn(int round, GameLoopMode mode) {
+		super.turn(round, mode);
 		int i = 0;
 		if (routing.empty()) {
 			getHeroRouteInstruction();

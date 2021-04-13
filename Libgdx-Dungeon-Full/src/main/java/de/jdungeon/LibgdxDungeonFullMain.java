@@ -10,6 +10,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import de.jdungeon.app.event.LevelAbortEvent;
 import de.jdungeon.game.*;
 import de.jdungeon.io.FilenameLister;
+import de.jdungeon.libgdx.LibgdxConfiguration;
 import de.jdungeon.libgdx.LibgdxLogger;
 import de.jdungeon.event.Event;
 import de.jdungeon.event.EventListener;
@@ -77,7 +78,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 		}
 		JDEnv.init(textsBundle);
 
-		adapter = new GameAdapter(this, filenameLister);
+		adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration());
 
 		Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
 
@@ -218,7 +219,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 			getCurrentScreen().resume();
 
 			// start world de.jdungeon.game loop
-			((DefaultDungeonSession)this.dungeonSession).startGame(controller, true);
+			((DefaultDungeonSession)this.dungeonSession).startGameLoop(controller);
 		}
 		if(event instanceof PlayerDiedEvent) {
 			this.dungeonSession.revertHero();

@@ -22,7 +22,7 @@ import de.jdungeon.figure.percept.EntersPercept;
 import de.jdungeon.figure.percept.FleePercept;
 import de.jdungeon.figure.percept.LeavesPercept;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

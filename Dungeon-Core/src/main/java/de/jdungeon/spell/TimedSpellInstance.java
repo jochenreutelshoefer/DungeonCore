@@ -1,6 +1,7 @@
 package de.jdungeon.spell;
 
-import de.jdungeon.game.loop.Turnable;
+import de.jdungeon.game.GameLoopMode;
+import de.jdungeon.game.Turnable;
 
 public abstract class TimedSpellInstance implements Turnable{
 	
@@ -14,7 +15,7 @@ public abstract void stopEffect();
 	}
 	
 	@Override
-	public void turn(int k) {
+	public void turn(int k, GameLoopMode mode) {
 		timer++;
 		if(timer > getDuration()) {
 			expire();

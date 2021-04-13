@@ -8,7 +8,7 @@ import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.MoveAction;
 import de.jdungeon.figure.action.StepAction;
 import de.jdungeon.figure.attribute.Attribute;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 import de.jdungeon.skill.FleeSkill;
 import de.jdungeon.skill.Skill;
 import de.jdungeon.skill.SkillAction;

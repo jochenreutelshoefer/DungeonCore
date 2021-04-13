@@ -33,7 +33,7 @@ public class StraightLineScroller implements ChangeViewportSequence {
 		if (timeCounter > duration)
 			return targetPos;
 
-		return new Pair<Float, Float>(startPos.getA()
+		return new Pair<>(startPos.getA()
 				+ CalculationUtils.getRatio(diffX, timeCounter, duration),
 				startPos.getB()
 						+ CalculationUtils.getRatio(diffY, timeCounter,

@@ -18,7 +18,7 @@ import java.util.List;
 
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
-import de.jdungeon.fight.Slap;
+import de.jdungeon.skill.attack.Slap;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.attribute.Attribute;

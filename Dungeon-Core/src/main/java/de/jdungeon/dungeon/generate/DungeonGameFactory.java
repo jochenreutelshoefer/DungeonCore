@@ -1,6 +1,6 @@
 package de.jdungeon.dungeon.generate;
 
-import de.jdungeon.game.loop.DungeonGameLoop;
+import de.jdungeon.game.DungeonGameLoop;
 
 
 public interface DungeonGameFactory {

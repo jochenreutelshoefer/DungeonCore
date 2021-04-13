@@ -11,11 +11,24 @@ import de.jdungeon.game.Configuration;
  */
 public class LibgdxConfiguration implements Configuration {
 
-	private static Map<String, String> values;
+	private static Map<String, String> staticValues;
 
 	static {
-		values = new HashMap<>();
-		values.put(Configuration.AUDIO_ON, "true");
+		staticValues = new HashMap<>();
+		staticValues.put(Configuration.AUDIO_ON, "true");
+	}
+
+	private Map<String, String> values = new HashMap<>();
+
+	public LibgdxConfiguration() {
+		this.values = new HashMap<>();
+		this.values.putAll(staticValues);
+	}
+
+	public LibgdxConfiguration(Map<String, String> values) {
+		this.values = new HashMap<>(values);
+		this.values.putAll(staticValues);
+
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 import de.jdungeon.dungeon.Dir;
 import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.JDPoint;

@@ -25,13 +25,14 @@ public class GameAdapter implements Game {
     private final LibgdxAudio audio = new LibgdxAudio();
     private final LibgdxInput input = new LibgdxInput();
     private final LibgdxFileIO fileIO;
-    private final LibgdxConfiguration configuration = new LibgdxConfiguration();
+    private final Configuration configuration;
 
     Map<AbstractGameScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
 
-    public GameAdapter(Game game, FilenameLister filenameLister) {
+    public GameAdapter(Game game, FilenameLister filenameLister, Configuration configuration) {
         this.game = game;
         fileIO = new LibgdxFileIO(new LibgdxAssetImageLoader(), filenameLister);
+        this.configuration = configuration;
         GameEnv.getInstance().setGame(this);
     }
 
@@ -88,7 +89,7 @@ public class GameAdapter implements Game {
 
     @Override
     public Configuration getConfiguration() {
-        return new LibgdxConfiguration();
+        return configuration;
     }
 
     @Override

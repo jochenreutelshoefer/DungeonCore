@@ -6,7 +6,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.ActionSpecifier;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 public abstract class AbstractReflexBehavior implements ActionSpecifier, Serializable {
 	public static final int TYPE_FLEE = 1;

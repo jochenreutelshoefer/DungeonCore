@@ -21,10 +21,7 @@ package de.jdungeon.event;
 
 import de.jdungeon.log.Log;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -86,6 +83,31 @@ public final class EventManager {
 			// unregister the listener for the de.jdungeon.event's class
 			Map<EventListener, Object> list = listenerMap.get(eventClass);
 			list.remove(listener);
+		}
+	}
+
+	/**
+	 * As we cannot use a WeakHashMap (due to GWT compatibility), we carefully need to de-register unused listeners.
+	 *
+	 * @param clazz
+	 */
+	public synchronized void unregisterInstances(Class<? extends EventListener> clazz) {
+		// Get the classes of the events
+
+		for (Class<? extends Event> eventClass : this.listenerMap.keySet()) {
+			// unregister the listener for the de.jdungeon.event's class
+			Map<EventListener, Object> map = listenerMap.get(eventClass);
+			Set<EventListener> eventListeners = map.keySet();
+			List<EventListener> toRemove = new ArrayList<>();
+			for (EventListener eventListener : eventListeners) {
+				if(eventListener.getClass().equals(clazz)) {
+					toRemove.add(eventListener);
+				}
+			}
+			for (EventListener eventListenerToRemove : toRemove) {
+				map.remove(eventListenerToRemove);
+
+			}
 		}
 	}
 

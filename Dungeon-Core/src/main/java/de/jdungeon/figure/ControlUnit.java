@@ -36,12 +36,12 @@ public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	 * Provides feedback about an executed action. In particular, if an invalid
 	 * action had been specified a corresponding ActionResult is provided.
 	 * (ActionResult)
-	 *  @param a
+	 *  @param action
 	 *            The action that was (tried to be) executed by this de.jdungeon.figure
 	 * @param res
 	 * @param round
 	 */
-	void actionProcessed(Action a, ActionResult res, int round);
+	void actionProcessed(Action action, ActionResult res, int round);
 	
 	/**
 	 * 

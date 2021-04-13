@@ -36,7 +36,7 @@ import de.jdungeon.figure.action.UseChestAction;
 import de.jdungeon.figure.action.UseItemAction;
 import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.item.ItemInfo;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 import de.jdungeon.skill.FleeSkill;
 import de.jdungeon.skill.Skill;
 import de.jdungeon.spell.SpellInfo;

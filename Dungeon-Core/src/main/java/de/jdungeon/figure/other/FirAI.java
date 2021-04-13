@@ -16,7 +16,7 @@ import de.jdungeon.figure.percept.AttackPercept;
 import de.jdungeon.figure.percept.FightEndedPercept;
 import de.jdungeon.figure.percept.FleePercept;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 public class FirAI extends AbstractAI {
 

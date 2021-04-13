@@ -43,6 +43,7 @@ public class GraphicObjectRenderCollection {
 
 	public void clear() {
 		graphicObjects.clear();
+		preparedOjects.clear();
 		initialized = false;
 	}
 

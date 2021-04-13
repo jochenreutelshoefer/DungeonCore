@@ -14,7 +14,7 @@ import de.jdungeon.figure.action.EndRoundAction;
 import de.jdungeon.figure.action.MoveAction;
 import de.jdungeon.figure.percept.EntersPercept;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.skill.AttackSkill;
+import de.jdungeon.skill.attack.AttackSkill;
 
 public class LionessAI extends AbstractAI {
 
