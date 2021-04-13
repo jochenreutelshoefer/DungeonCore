@@ -56,7 +56,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
     private GameAdapter adapter;
 
     private DungeonSession dungeonSession;
-    DungeonWorldUpdater dungeonWorldUpdater;
+    DungeonWorldUpdaterRenderLoop dungeonWorldUpdater;
 
     private Logger gdxLogger;
 
@@ -102,7 +102,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
         ((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
 
         // create and set new GameScreen
-        GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize());
+        GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize(), new RenderLoopWorldUpdateInitializer());
         setCurrentScreen(gameScreen);
 
 
@@ -234,7 +234,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
             getCurrentScreen().pause();
 
             // create and set new GameScreen
-            GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize());
+            GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize(), new RenderLoopWorldUpdateInitializer());
             setCurrentScreen(gameScreen);
 
             getCurrentScreen().resume();

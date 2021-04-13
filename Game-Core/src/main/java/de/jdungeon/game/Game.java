@@ -24,6 +24,7 @@ public interface Game {
 
 	Configuration getConfiguration();
 
+
 	/**
 	 * Returns the current session of the player.
 	 *

@@ -5,6 +5,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.ControlUnit;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.JDGUI;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
@@ -24,6 +25,8 @@ public interface DungeonSession {
 	DungeonFactory getLastCompleted();
 
 	Dungeon getCurrentDungeon();
+
+	void setDungeonWorldUpdater(DungeonWorldUpdater updater);
 
 	int getCurrentStage();
 

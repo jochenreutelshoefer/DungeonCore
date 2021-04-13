@@ -20,6 +20,6 @@ public class Main {
         cfg.height = 480;
         cfg.allowSoftwareMode = true;
         cfg.foregroundFPS = 70;
-        new LwjglApplication(new LibgdxDungeonFullMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister()), cfg);
+        new LwjglApplication(new LibgdxDungeonFullMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new DistinctWorldUpdateThreadInitializer()), cfg);
     }
 }

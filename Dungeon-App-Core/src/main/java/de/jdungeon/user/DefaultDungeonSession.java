@@ -18,6 +18,7 @@ import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.DungeonGameLoop;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.JDGUI;
 import de.jdungeon.level.DefaultDungeonManager;
 import de.jdungeon.level.DungeonFactory;
@@ -37,11 +38,12 @@ import de.jdungeon.util.DeepCopyUtil;
 public class DefaultDungeonSession implements Session, DungeonSession {
 
     private Hero currentHero;
-
     private Hero heroBackup;
     private final User user;
     private int heroType;
-    private DungeonGameLoop dungeonGameLoop;
+
+
+    private DungeonWorldUpdater dungeonGameLoop;
     private DungeonFactory lastCompletedDungeonFactory;
     private DungeonFactory lastSelectedDungeonFactory;
     private Dungeon derDungeon;
@@ -54,6 +56,12 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     public DefaultDungeonSession(User user) {
         this.user = user;
         manager = new DefaultDungeonManager();
+    }
+
+
+    @Override
+    public void setDungeonWorldUpdater(DungeonWorldUpdater dungeonGameLoop) {
+        this.dungeonGameLoop = dungeonGameLoop;
     }
 
     @Override
@@ -99,23 +107,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
         return getDungeonRound();
     }
 
-    /**
-     * Starts the game world's thread triggering the de.jdungeon.game rounds
-     *
-     * @param gui graphical user interface controlling this session
-     */
-    public void startGameLoop(JDGUI gui) {
-        setGUIController(gui);
-            dungeonGameLoop = new DungeonGameLoop(this.derDungeon);
-            dungeonGameLoop.putGuiFigure(currentHero, gui);
-            dungeonGameLoop.init(derDungeon);
-    }
-
     public void setGUIController(JDGUI gui) {
         this.gui = gui;
     }
-
-
 
 
     /**
@@ -173,7 +167,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     @Override
     public int getDungeonRound() {
         if (dungeonGameLoop != null) {
-            return dungeonGameLoop.getRound();
+            return dungeonGameLoop.getCurrentGameRound();
         }
         return -1;
     }
@@ -249,7 +243,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
         if (figure.equals(currentHero)) {
             Dungeon currentDungeon = getCurrentDungeon();
             if (!completedDungeons.containsKey(lastSelectedDungeonFactory) && currentDungeon != null) {
-                completedDungeons.put(lastSelectedDungeonFactory, dungeonGameLoop.getRound());
+                completedDungeons.put(lastSelectedDungeonFactory, dungeonGameLoop.getCurrentGameRound());
                 lastCompletedDungeonFactory = lastSelectedDungeonFactory;
             }
             makeHeroBackup();

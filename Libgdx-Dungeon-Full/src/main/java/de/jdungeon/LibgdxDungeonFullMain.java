@@ -46,185 +46,189 @@ import de.jdungeon.world.PlayerController;
  */
 public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game, EventListener {
 
-	private static final String TAG = LibgdxDungeonFullMain.class.getName();
-	private final ResourceBundleLoader resourceBundleLoader;
-	private FilenameLister filenameLister;
+    private static final String TAG = LibgdxDungeonFullMain.class.getName();
+    private final ResourceBundleLoader resourceBundleLoader;
+    private FilenameLister filenameLister;
+    private DungeonWorldUpdaterInitializer worldUpdaterInitializer;
 
-	private boolean pause;
+    private boolean pause;
 
-	private GameAdapter adapter;
+    private GameAdapter adapter;
 
-	private DungeonSession dungeonSession;
+    private DungeonSession dungeonSession;
 
-	private Logger gdxLogger;
+    private Logger gdxLogger;
 
-	public LibgdxDungeonFullMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister) {
-		this.resourceBundleLoader = resourceBundleLoader;
-		this.filenameLister = filenameLister;
-	}
+    public LibgdxDungeonFullMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister, DungeonWorldUpdaterInitializer worldUpdaterInitializer) {
+        this.resourceBundleLoader = resourceBundleLoader;
+        this.filenameLister = filenameLister;
+        this.worldUpdaterInitializer = worldUpdaterInitializer;
+    }
 
-	@Override
-	public void create() {
+    @Override
+    public void create() {
 
-		Gdx.app.log(TAG,"Creating application");
+        Gdx.app.log(TAG, "Creating application");
 
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-		gdxLogger = new LibgdxLogger();
+        gdxLogger = new LibgdxLogger();
 
-		MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
-		if(textsBundle == null) {
-			Gdx.app.error(TAG, "Could not load resource bundle for texts");
-		}
-		JDEnv.init(textsBundle);
+        MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
+        if (textsBundle == null) {
+            Gdx.app.error(TAG, "Could not load resource bundle for texts");
+        }
+        JDEnv.init(textsBundle);
 
-		adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration());
+        adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration());
 
-		Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
+        Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
 
-		EventManager.getInstance().registerListener(this);
+        EventManager.getInstance().registerListener(this);
 
-		super.setScreen(new StartScreen(this));
+        super.setScreen(new StartScreen(this));
 
-		pause = false;
+        pause = false;
 
-	}
+    }
 
-	@Override
-	public Audio getAudio() {
-		return adapter.getAudio();
-	}
+    @Override
+    public Audio getAudio() {
+        return adapter.getAudio();
+    }
 
-	@Override
-	public Input getInput() {
-		return adapter.getInput();
-	}
+    @Override
+    public Input getInput() {
+        return adapter.getInput();
+    }
 
-	@Override
-	public FileIO getFileIO() {
-		return adapter.getFileIO();
-	}
+    @Override
+    public FileIO getFileIO() {
+        return adapter.getFileIO();
+    }
 
-	@Override
-	public Graphics getGraphics(ScreenContext context) {
-		return adapter.getGraphics(context);
-	}
+    @Override
+    public Graphics getGraphics(ScreenContext context) {
+        return adapter.getGraphics(context);
+    }
 
-	@Override
-	public void setCurrentScreen(Screen screen) {
-		// this is actually the important point setting the new Screen into the Libgdx app
-		super.setScreen((AbstractGameScreen)screen);
-	}
+    @Override
+    public void setCurrentScreen(Screen screen) {
+        // this is actually the important point setting the new Screen into the Libgdx app
+        super.setScreen((AbstractGameScreen) screen);
+    }
 
-	@Override
-	@Deprecated // still in use in old compatibility mode
-	public Screen getCurrentScreen() {
-		return (AbstractGameScreen)this.getScreen();
-	}
+    @Override
+    @Deprecated // still in use in old compatibility mode
+    public Screen getCurrentScreen() {
+        return (AbstractGameScreen) this.getScreen();
+    }
 
-	@Override
-	@Deprecated // not used
-	public Screen getInitScreen() {
-		return null;
-		//return new StartScreen(this);
-	}
+    @Override
+    @Deprecated // not used
+    public Screen getInitScreen() {
+        return null;
+        //return new StartScreen(this);
+    }
 
-	@Override
-	public int getScreenWidth() {
-		return Gdx.app.getGraphics().getWidth();
-	}
+    @Override
+    public int getScreenWidth() {
+        return Gdx.app.getGraphics().getWidth();
+    }
 
-	@Override
-	public int getScreenHeight() {
-		return Gdx.app.getGraphics().getHeight();
-	}
+    @Override
+    public int getScreenHeight() {
+        return Gdx.app.getGraphics().getHeight();
+    }
 
-	@Override
-	public Configuration getConfiguration() {
-		return adapter.getConfiguration();
-	}
+    @Override
+    public Configuration getConfiguration() {
+        return adapter.getConfiguration();
+    }
 
-	@Override
-	public DefaultDungeonSession getSession() {
-		return (DefaultDungeonSession)dungeonSession;
-	}
+    @Override
+    public DefaultDungeonSession getSession() {
+        return (DefaultDungeonSession) dungeonSession;
+    }
 
-	@Override
-	public Logger getLogger() {
-		return gdxLogger;
-	}
+    @Override
+    public Logger getLogger() {
+        return gdxLogger;
+    }
 
-	@Override
-	public Collection<Class<? extends Event>> getEvents() {
-		return SessionEvents.getSessionEventClasses();
-	}
+    @Override
+    public Collection<Class<? extends Event>> getEvents() {
+        return SessionEvents.getSessionEventClasses();
+    }
 
-	@Override
-	public void notify(Event event) {
-		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
-		if(event instanceof StartNewGameEvent) {
-			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
-			((DefaultDungeonSession)dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
+    @Override
+    public void notify(Event event) {
+        AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
+        if (event instanceof StartNewGameEvent) {
+            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
+            ((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 
 			/*
 			EventManager.getInstance().fireEvent(new DungeonStartEvent(new DungeonSelectedEvent(new StartLevel())));
 			*/
 
-			StageSelectionScreen screen = new StageSelectionScreen(this);
-			this.setCurrentScreen(screen);
+            StageSelectionScreen screen = new StageSelectionScreen(this);
+            this.setCurrentScreen(screen);
 
-		}
-		if(event instanceof QuitGameEvent) {
-			this.dispose();
-		}
-		if(event instanceof ExitUsedEvent) {
+        }
+        if (event instanceof QuitGameEvent) {
+            this.dispose();
+        }
+        if (event instanceof ExitUsedEvent) {
 
-			// pause screen rendering
-			this.getScreen().pause();
+            // pause screen rendering
+            this.getScreen().pause();
 
-			// change screen to de.jdungeon.skill selection
-			//this.dungeonSession.notifyExit(((ExitUsedEvent)de.jdungeon.event).getExit(), ((ExitUsedEvent)de.jdungeon.event).getFigure());
-			de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
-			this.setCurrentScreen(screen);
+            // change screen to de.jdungeon.skill selection
+            //this.dungeonSession.notifyExit(((ExitUsedEvent)de.jdungeon.event).getExit(), ((ExitUsedEvent)de.jdungeon.event).getFigure());
 
-			// resume/start rendering of screen
-			this.getScreen().resume();
+            de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
+            this.setCurrentScreen(screen);
 
-		}
-		if(event instanceof LevelAbortEvent) {
-			setCurrentScreen(new StartScreen(this));
-		}
-		if(event instanceof SkillSelectedEvent) {
-			Spell spell = ((SkillSelectedEvent) event).getSpell();
-			dungeonSession.learnSkill(spell);
-			StageSelectionScreen screen = new StageSelectionScreen(this);
-			this.setCurrentScreen(screen);
-		}
-		if(event instanceof DungeonStartEvent) {
-			Gdx.app.log(TAG, "App: processing DungeonStartEvent");
-			// initialize new dungeon
-			DungeonFactory dungeonFactory = ((DungeonStartEvent) event).getEvent().getDungeon();
+            // resume/start rendering of screen
+            this.getScreen().resume();
 
-			// create new controller
-			PlayerController controller = new PlayerController(this.dungeonSession);
+        }
+        if (event instanceof LevelAbortEvent) {
+            setCurrentScreen(new StartScreen(this));
+        }
+        if (event instanceof SkillSelectedEvent) {
+            Spell spell = ((SkillSelectedEvent) event).getSpell();
+            dungeonSession.learnSkill(spell);
+            StageSelectionScreen screen = new StageSelectionScreen(this);
+            this.setCurrentScreen(screen);
+        }
+        if (event instanceof DungeonStartEvent) {
+            Gdx.app.log(TAG, "App: processing DungeonStartEvent");
+            // initialize new dungeon
+            DungeonFactory dungeonFactory = ((DungeonStartEvent) event).getEvent().getDungeon();
 
-			HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
+            // create new controller
+            PlayerController controller = new PlayerController(this.dungeonSession);
 
-			getCurrentScreen().pause();
+            HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
 
-			// create and set new GameScreen
-			GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize());
-			setCurrentScreen(gameScreen);
+            getCurrentScreen().pause();
 
-			getCurrentScreen().resume();
+            ((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
 
-			// start world de.jdungeon.game loop
-			((DefaultDungeonSession)this.dungeonSession).startGameLoop(controller);
-		}
-		if(event instanceof PlayerDiedEvent) {
-			this.dungeonSession.revertHero();
-			StageSelectionScreen screen = new StageSelectionScreen(this);
-			this.setCurrentScreen(screen);
-		}
-	}
+            // create and set new GameScreen
+            GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize(), worldUpdaterInitializer);
+            setCurrentScreen(gameScreen);
+
+            getCurrentScreen().resume();
+
+
+        }
+        if (event instanceof PlayerDiedEvent) {
+            this.dungeonSession.revertHero();
+            StageSelectionScreen screen = new StageSelectionScreen(this);
+            this.setCurrentScreen(screen);
+        }
+    }
 }

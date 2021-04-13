@@ -178,6 +178,7 @@ public class PlayerController implements JDGUI {
 
 	@Override
 	public void onTurn() {
+		if(viewModel == null) return; // can happen during initialisation
 		boolean backgroundDrawingUpdateRequired = !roomRenderUpdateLaundry.isEmpty();
 		for (JDPoint point : roomRenderUpdateLaundry) {
 			viewModel.updateRoom(point.getX(), point.getY());

@@ -69,7 +69,7 @@ public class DungeonGameLoop {
 		derDungeon.turn(round, GameLoopMode.DistinctWorldLoopThread);
 	}
 
-	public void init(Dungeon d) {
+	public void init() {
 		ItemPool.setGame(this);
 		this.loop = new Thread(new Loop());
 		loop.start();
