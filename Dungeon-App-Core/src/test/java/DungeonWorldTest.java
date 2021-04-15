@@ -11,7 +11,7 @@ import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.hero.HeroUtil;
 import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
-import de.jdungeon.game.DungeonGameLoop;
+import de.jdungeonx.DungeonGameLoop;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
 import junit.framework.TestCase;
@@ -26,8 +26,17 @@ import de.jdungeon.level.DungeonManager;
 public class DungeonWorldTest extends TestCase {
 
 	public void testDungeonWorld() {
-		//JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
-		JDEnv.init(new MyResourceBundle(Collections.emptyMap()));
+		JDEnv.init(new MyResourceBundle() {
+			@Override
+			public String get(String key) {
+				return null;
+			}
+
+			@Override
+			public String format(String key, String... inserts) {
+				return null;
+			}
+		});
 		DungeonManager manager = new DefaultDungeonManager();
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
@@ -36,7 +45,8 @@ public class DungeonWorldTest extends TestCase {
 				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert2", Zodiac.Aquarius,
 						Profession.Lumberjack);
 
-				DungeonGameLoop dungeonGame = new DungeonGameLoop(dungeon);
+				DungeonWorldTestUpdater updater = new DungeonWorldTestUpdater(dungeon);
+				DungeonGameLoop gameLoop = new DungeonGameLoop(dungeon, updater);
 
 
 				hero.setActualDungeon(dungeon);
@@ -51,7 +61,7 @@ public class DungeonWorldTest extends TestCase {
 				dungeon.prepare();
 
 				for (int round = 0; round < 500; round++) {
-					dungeonGame.worldTurn(round);
+					gameLoop.worldTurn(round);
 					checkConsistentState(dungeon, dungeonFactory);
 				}
 			}

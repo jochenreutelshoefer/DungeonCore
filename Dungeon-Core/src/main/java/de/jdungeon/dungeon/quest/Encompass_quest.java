@@ -1,6 +1,6 @@
 package de.jdungeon.dungeon.quest;
 import de.jdungeon.figure.monster.Monster;
-import de.jdungeon.game.DungeonGameLoop;
+import de.jdungeonx.DungeonGameLoop;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.ItemPool;
 import de.jdungeon.location.InfoShrine;
@@ -46,7 +46,7 @@ public class Encompass_quest extends Quest {
 				Room raum = d.getRoomNr(p.getX() + i, p.getY() +j);
 				//r.addQuest(this);
 				if(c == 0) {
-					Monster m = AbstractDungeonFiller.getBigMonster(12000,game);
+					Monster m = AbstractDungeonFiller.getABigMonster(12000);
 					AbstractDungeonFiller.equipAMonster(m);
 					raum.figureEnters(m,0, -1);
 				}

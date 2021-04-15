@@ -2,18 +2,16 @@ package de.jdungeon.util;
 
 import java.util.Map;
 
-public class MyResourceBundle {
+public interface MyResourceBundle {
 
     public static final String TEXTS_BUNDLE_BASENAME = "texts";
 
+    String get(String key);
 
-    private Map<String, String> texts;
-
-    public MyResourceBundle(Map<String, String> texts) {
-        this.texts = texts;
+    @Deprecated
+    default String getString(String key) {
+        return get(key);
     }
 
-    public String getString(String key) {
-        return texts.get(key);
-    }
+    String format(String key, String... inserts);
 }

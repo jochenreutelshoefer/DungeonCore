@@ -13,6 +13,7 @@ import de.jdungeon.log.Log;
 
 import de.jdungeon.app.event.FocusEvent;
 import de.jdungeon.app.event.InfoObjectClickedEvent;
+import de.jdungeon.util.Clazz;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -63,7 +64,7 @@ public class LibgdxFocusManager implements EventListener {
 			this.guiFocusObject = null;
 		}
 		else {
-			if (FigureInfo.class.isAssignableFrom(object.getClass())) {
+			if (Clazz.isAssignableFrom(FigureInfo.class, object.getClass())) {
 				Log.info("FocusManager: Setting world focus object: " + object);
 			}
 			this.guiFocusObject = object;

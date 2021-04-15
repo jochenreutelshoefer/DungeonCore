@@ -1,4 +1,4 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

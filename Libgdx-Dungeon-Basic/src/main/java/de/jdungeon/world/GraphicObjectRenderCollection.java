@@ -1,7 +1,6 @@
 package de.jdungeon.world;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
@@ -14,6 +13,8 @@ import de.jdungeon.graphics.JDImageLocated;
 import de.jdungeon.graphics.JDImageProxy;
 
 import de.jdungeon.asset.Assets;
+import de.jdungeon.log.Log;
+import de.jdungeon.util.CopyOnWriteArrayList;
 import de.jdungeon.util.Pair;
 
 /**
@@ -77,7 +78,10 @@ public class GraphicObjectRenderCollection {
 	 *	RENDER THREAD
 	 */
 	private Pair<GraphicObject, TextureAtlas.AtlasRegion> createAtlasRegionPair(GraphicObject graphicObject) {
-		if(graphicObject == null) return null;
+		if(graphicObject == null) {
+			Log.warning(GraphicObjectRenderCollection.class.getName()+": GraphicObject was null");
+			return null;
+		}
 
 		TextureAtlas.AtlasRegion atlasRegion = null;
 		if (graphicObject instanceof JDGraphicObject) {
@@ -87,7 +91,11 @@ public class GraphicObjectRenderCollection {
 				JDImageProxy<?> image = locatedImage.getImage();
 				if(image != null) {
 					atlasRegion = findAtlasRegion(image, graphicObject);
+				} else {
+					Log.warning(GraphicObjectRenderCollection.class.getName()+": JDImageProxy was null for GraphicObject: "+graphicObject.getClickableObject());
 				}
+			} else {
+				Log.warning(GraphicObjectRenderCollection.class.getName()+": LocatedImage was null for GraphicObject: "+graphicObject.getClickableObject());
 			}
 		}
 		else {
@@ -95,6 +103,9 @@ public class GraphicObjectRenderCollection {
 			atlasRegion = findAtlasRegion(image, graphicObject);
 		}
 
+		if(atlasRegion == null) {
+			Log.warning(GraphicObjectRenderCollection.class.getName()+": No AtlasRegion found for GraphicObject: "+graphicObject.getClickableObject());
+		}
 		return new Pair(graphicObject, atlasRegion);
 	}
 

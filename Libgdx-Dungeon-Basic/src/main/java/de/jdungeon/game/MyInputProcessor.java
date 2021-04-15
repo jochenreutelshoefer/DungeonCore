@@ -1,8 +1,6 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import com.badlogic.gdx.InputProcessor;
-
-import de.jdungeon.game.Input;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

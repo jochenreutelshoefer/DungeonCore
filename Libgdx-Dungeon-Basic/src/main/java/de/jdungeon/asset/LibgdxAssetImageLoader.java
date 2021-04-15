@@ -6,9 +6,9 @@ import de.jdungeon.graphics.JDImageProxy;
 
 import de.jdungeon.game.AbstractImageLoader;
 import de.jdungeon.game.Image;
-import de.jdungeon.libgdx.LibgdxAssetImage;
-import de.jdungeon.libgdx.LibgdxFileImage;
-import de.jdungeon.libgdx.LibgdxImageLoader;
+import de.jdungeon.game.LibgdxAssetImage;
+import de.jdungeon.game.LibgdxFileImage;
+import de.jdungeon.game.LibgdxImageLoader;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

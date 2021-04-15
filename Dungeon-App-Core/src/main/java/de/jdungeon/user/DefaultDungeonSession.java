@@ -17,7 +17,6 @@ import de.jdungeon.figure.hero.HeroUtil;
 import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
 import de.jdungeon.figure.ControlUnit;
-import de.jdungeon.game.DungeonGameLoop;
 import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.JDGUI;
 import de.jdungeon.level.DefaultDungeonManager;
@@ -43,7 +42,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     private int heroType;
 
 
-    private DungeonWorldUpdater dungeonGameLoop;
+    private DungeonWorldUpdater dungeonWorldUpdater;
     private DungeonFactory lastCompletedDungeonFactory;
     private DungeonFactory lastSelectedDungeonFactory;
     private Dungeon derDungeon;
@@ -61,7 +60,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
     @Override
     public void setDungeonWorldUpdater(DungeonWorldUpdater dungeonGameLoop) {
-        this.dungeonGameLoop = dungeonGameLoop;
+        this.dungeonWorldUpdater = dungeonGameLoop;
     }
 
     @Override
@@ -166,8 +165,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
     @Override
     public int getDungeonRound() {
-        if (dungeonGameLoop != null) {
-            return dungeonGameLoop.getCurrentGameRound();
+        if (dungeonWorldUpdater != null) {
+            return dungeonWorldUpdater.getCurrentGameRound();
         }
         return -1;
     }
@@ -239,22 +238,17 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
     @Override
     public void notifyExit(LevelExit exit, Figure figure) {
-        dungeonGameLoop.stopRunning();
+        dungeonWorldUpdater.stopRunning();
         if (figure.equals(currentHero)) {
             Dungeon currentDungeon = getCurrentDungeon();
             if (!completedDungeons.containsKey(lastSelectedDungeonFactory) && currentDungeon != null) {
-                completedDungeons.put(lastSelectedDungeonFactory, dungeonGameLoop.getCurrentGameRound());
+                completedDungeons.put(lastSelectedDungeonFactory, dungeonWorldUpdater.getCurrentGameRound());
                 lastCompletedDungeonFactory = lastSelectedDungeonFactory;
             }
             makeHeroBackup();
             derDungeon = null;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit));
-            }
-        }).start();
+        EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit));
     }
 
     private void makeHeroBackup() {

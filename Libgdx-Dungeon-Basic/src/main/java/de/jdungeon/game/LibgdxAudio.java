@@ -1,11 +1,6 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import com.badlogic.gdx.Gdx;
-
-import de.jdungeon.game.Audio;
-import de.jdungeon.game.FileIO;
-import de.jdungeon.game.Music;
-import de.jdungeon.game.Sound;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

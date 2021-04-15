@@ -1,4 +1,4 @@
-package de.jdungeon;
+package de.jdungeonx;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -7,11 +7,13 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import de.jdungeon.game.AbstractScreen;
+import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.event.LevelAbortEvent;
 import de.jdungeon.game.*;
 import de.jdungeon.io.FilenameLister;
-import de.jdungeon.libgdx.LibgdxConfiguration;
-import de.jdungeon.libgdx.LibgdxLogger;
+import de.jdungeon.game.LibgdxConfiguration;
+import de.jdungeon.game.LibgdxLogger;
 import de.jdungeon.event.Event;
 import de.jdungeon.event.EventListener;
 import de.jdungeon.event.EventManager;
@@ -74,15 +76,17 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
         gdxLogger = new LibgdxLogger();
 
+
+        adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration());
+
+        Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
+
         MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
         if (textsBundle == null) {
             Gdx.app.error(TAG, "Could not load resource bundle for texts");
         }
         JDEnv.init(textsBundle);
 
-        adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration());
-
-        Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
 
         EventManager.getInstance().registerListener(this);
 
@@ -115,13 +119,13 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
     @Override
     public void setCurrentScreen(Screen screen) {
         // this is actually the important point setting the new Screen into the Libgdx app
-        super.setScreen((AbstractGameScreen) screen);
+        super.setScreen((AbstractScreen) screen);
     }
 
     @Override
     @Deprecated // still in use in old compatibility mode
     public Screen getCurrentScreen() {
-        return (AbstractGameScreen) this.getScreen();
+        return (AbstractScreen) this.getScreen();
     }
 
     @Override

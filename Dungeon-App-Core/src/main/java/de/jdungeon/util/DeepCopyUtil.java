@@ -17,7 +17,11 @@ public class DeepCopyUtil {
 		 * be serialized.
 		 */
 		public static Object copy(Object orig) {
+			return null;
+			// temporarily switched off for GWT spike
+			/*
 			Object obj = null;
+
 			try {
 				// Write the object out to a byte array
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -39,6 +43,8 @@ public class DeepCopyUtil {
 				cnfe.printStackTrace();
 			}
 			return obj;
+
+			 */
 		}
 
 

@@ -17,6 +17,6 @@ public class DungeonSimpleDesktopMain {
         cfg.height = 480;
         cfg.allowSoftwareMode = true;
         cfg.foregroundFPS = 70;
-        new LwjglApplication(new LibgdxDungeonSimpleMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister()), cfg);
+        new LwjglApplication(new LibgdxDungeonSimpleMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new RenderLoopWorldUpdateInitializer()), cfg);
     }
 }

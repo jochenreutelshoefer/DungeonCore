@@ -10,9 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import de.jdungeon.asset.Assets;
 import de.jdungeon.event.EventManager;
 
-import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
@@ -25,7 +26,7 @@ import de.jdungeon.game.ScreenContext;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.19.
  */
-public class StartScreen extends AbstractGameScreen {
+public class StartScreen extends AbstractScreen {
 
 	private static final String TAG = StartScreen.class.getName();
 
@@ -125,6 +126,11 @@ public class StartScreen extends AbstractGameScreen {
 		BitmapFont fpsFont = AssetFonts.instance.defaultNormal;
 		fpsFont.setColor(1,1,1,1); //white
 		batch.begin();
+		String gameTitle = Assets.instance.getTextBundle().get("game_title");
+		float fontSizeBig = AssetFonts.FONT_SIZE_BIG;
+		BitmapFont defaultTitleFont = AssetFonts.instance.defaultBig;
+		defaultTitleFont.draw(batch, gameTitle, Gdx.app.getGraphics().getWidth()/2 - 100,Gdx.app.getGraphics().getHeight()*2/3);
+
 		fpsFont.draw(batch, "Taste drücken zum Start ", Gdx.app.getGraphics().getWidth()/2 - 100,Gdx.app.getGraphics().getHeight()/2);
 		batch.end();
 

@@ -17,7 +17,7 @@ import de.jdungeon.dungeon.util.DungeonUtils;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.event.WorldChangedEvent;
-import de.jdungeon.game.GameLoopMode;
+import de.jdungeon.game.*;
 import de.jdungeon.skill.attack.Slap;
 import de.jdungeon.skill.attack.SlapResult;
 import de.jdungeon.figure.action.AbstractExecutableAction;
@@ -44,9 +44,6 @@ import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.ShieldBlockPercept;
 import de.jdungeon.figure.percept.StepPercept;
 import de.jdungeon.figure.percept.WaitPercept;
-import de.jdungeon.game.JDEnv;
-import de.jdungeon.game.JDGUI;
-import de.jdungeon.game.Turnable;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.gui.Paragraphable;
 import de.jdungeon.item.Item;
@@ -350,7 +347,7 @@ public abstract class Figure extends DungeonWorldObject
     }
 
     @Override
-    public void turn(int round, GameLoopMode mode) {
+    public void turn(int round, DungeonWorldUpdater worldUpdater) {
         timeTick(round);
 
         if (lastTurnCompleted < round) {
@@ -366,7 +363,7 @@ public abstract class Figure extends DungeonWorldObject
             Room room = this.getRoom();
             if (room == null) return; // some de.jdungeon.level exit concurrency issue...
 
-            doActions(round, room.fightRunning(), mode);
+            doActions(round, room.fightRunning(), worldUpdater);
 
             // might be that after an action the de.jdungeon.fight is resolved
             if (room.fightRunning() && !room.checkFightOn()) {
@@ -375,7 +372,7 @@ public abstract class Figure extends DungeonWorldObject
         }
 
         // round completed?
-        if (mode == GameLoopMode.RenderThreadWorldUpdate) {
+        if (worldUpdater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate) {
             if ((getActionPoints() == 0 || isDead())) {
                 // in RenderThreadWorldUpdate mode, the round is completed if figure has no APs or dead
                 this.lastTurnCompleted = round;
@@ -508,7 +505,7 @@ public abstract class Figure extends DungeonWorldObject
         return res;
     }
 
-    public void doActions(int round, boolean fight, GameLoopMode mode) {
+    public void doActions(int round, boolean fight, DungeonWorldUpdater worldUpdater) {
 
         while (control != null && !this.isDead() && this.agility.getCurrentAP() > 0) {
 
@@ -518,14 +515,9 @@ public abstract class Figure extends DungeonWorldObject
 
 
             // retrieve action
-            Action a;
-            if (fight) {
-                a = retrieveFightActionFromControl(mode);
-            } else {
-                a = retrieveMovementActionFromControl(round, mode);
-            }
+            Action a = retrieveAction(worldUpdater);
 
-            if (mode == GameLoopMode.RenderThreadWorldUpdate && a == null) {
+            if (worldUpdater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate && a == null) {
                 // we need to quit as we are in the render thread!
                 return;
             }
@@ -1102,16 +1094,7 @@ public abstract class Figure extends DungeonWorldObject
     }
 
 
-    protected Action retrieveMovementActionFromControl(int round, GameLoopMode mode) {
-
-        return retrieveAction(mode);
-    }
-
-    protected Action retrieveFightActionFromControl(GameLoopMode mode) {
-        return retrieveAction(mode);
-    }
-
-    private Action retrieveAction(GameLoopMode mode) {
+    private Action retrieveAction(DungeonWorldUpdater updater) {
         Action a;
         /*
          * Check behavior override (e.g. by magic)
@@ -1123,7 +1106,7 @@ public abstract class Figure extends DungeonWorldObject
 
             a = control.getAction();
 
-            if (mode == GameLoopMode.RenderThreadWorldUpdate) {
+            if (updater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate) {
                 if (a == null) {
                     // we need to return as in this mode this is the render thread
                     return null;
@@ -1135,13 +1118,7 @@ public abstract class Figure extends DungeonWorldObject
                  */
                 // TODO: we need a security mechanism here:
                 while (a == null) {
-                    try {
-                        Thread.currentThread().sleep(150);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        Log.error("Waiting for Action was interrupted: ", e);
-                        e.printStackTrace();
-                    }
+                    updater.waitSomeTimeOnGuiAction(150);
                     if (this.getRoom() == null
                             || this.getActualDungeon() == null
                             || this.getRoom().getDungeon().isGameOver()) {

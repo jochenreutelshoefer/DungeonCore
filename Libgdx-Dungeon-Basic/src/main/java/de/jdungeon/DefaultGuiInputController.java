@@ -1,6 +1,7 @@
 package de.jdungeon;
 
 import com.badlogic.gdx.InputAdapter;
+import de.jdungeon.game.AbstractScreen;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -8,9 +9,9 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class DefaultGuiInputController extends InputAdapter {
 
-	private final AbstractGameScreen screen;
+	private final AbstractScreen screen;
 
-	public DefaultGuiInputController(AbstractGameScreen screen) {
+	public DefaultGuiInputController(AbstractScreen screen) {
 		this.screen = screen;
 	}
 

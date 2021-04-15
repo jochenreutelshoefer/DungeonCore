@@ -7,5 +7,5 @@ package de.jdungeon.game;
  */
 public interface Turnable {
 
-	void turn(int round, GameLoopMode mode);
+	void turn(int round, DungeonWorldUpdater mode);
 }

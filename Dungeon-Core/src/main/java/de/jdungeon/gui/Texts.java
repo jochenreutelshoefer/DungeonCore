@@ -268,8 +268,11 @@ public class Texts {
 
 		while (true) {
 
-				s = bundle.getString(pattern + "" + i);
-				if(s != null) {
+			String key = pattern + "" + i;
+			s = bundle.getString(key);
+			// if there is no value for the key, then a String "???"+key+"???" is return
+			// we use that as a stop criteria
+				if(s != null && !s.startsWith("???"+key)) {
 					l.add(s);
 				} else {
 					break;
@@ -314,26 +317,6 @@ public class Texts {
 		return otherFlees[((int) (Math.random() * otherFlees.length))];
 	}
 
-	public static String otherFleesPanic() {
-		return otherFleesPanic[((int) (Math.random() * otherFleesPanic.length))];
-	}
-
-	public static String otherFearDies() {
-		return otherFearDies[((int) (Math.random() * otherFearDies.length))];
-	}
-
-	public static String otherFearFrozen() {
-		return otherFearFrozen[((int) (Math.random() * otherFearFrozen.length))];
-	}
-
-	public static String otherFearFrozenLight() {
-		return otherFearFrozenLight[((int) (Math.random() * otherFearFrozenLight.length))];
-	}
-
-	public static String otherFearNo() {
-		return otherFearNo[((int) (Math.random() * otherFearNo.length))];
-	}
-
 	public static String otherMissesPlayer() {
 		return otherMissesPlayer[((int) (Math.random() * otherMissesPlayer.length))];
 	}
@@ -358,21 +341,10 @@ public class Texts {
 		return notNow[((int) (Math.random() * notNow.length))];
 	}
 
-	public static String emptyRoom() {
-		return emptyRoom[((int) (Math.random() * emptyRoom.length))];
-	}
-
 	public static String playerShieldBlock() {
 		return playerShieldBlock[((int) (Math.random() * playerShieldBlock.length))];
 	}
 
-	public static String otherDodges() {
-		return otherDodges[((int) (Math.random() * otherDodges.length))];
-	}
-
-	public static String playerDodges() {
-		return playerDodges[((int) (Math.random() * playerDodges.length))];
-	}
 
 	public static String toString(LinkedList l) {
 		String s = new String();

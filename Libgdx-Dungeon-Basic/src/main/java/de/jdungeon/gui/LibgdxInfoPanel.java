@@ -25,7 +25,7 @@ import de.jdungeon.app.gui.InventoryImageManager;
 import de.jdungeon.app.gui.skillselection.SkillImageManager;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.game.Color;
-import de.jdungeon.libgdx.LibgdxGraphics;
+import de.jdungeon.game.LibgdxGraphics;
 import de.jdungeon.util.PaintBuilder;
 import de.jdungeon.util.Pair;
 
@@ -98,7 +98,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
 			int bubblePosY = this.position.getY() - bubbleSizeY / 4;
 			batch.draw(bubble, bubblePosX, bubblePosY, 0, 0, bubbleSizeX, bubbleSizeY, 1f, 1f, 0);
 
-			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.findTexture(im.getA());
+			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.findTexture(im.getA(), true);
 			if (atlasRegion != null) {
 				RenderInfo renderInfo = im.getB();
 				int imageSize = (int) ((bubbleSizeX / 2.5) * renderInfo.getScaleFactor());

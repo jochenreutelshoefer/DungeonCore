@@ -37,6 +37,7 @@ import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.monster.MonsterInfo;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.skill.FleeSkill;
+import de.jdungeon.util.Clazz;
 
 public class DefaultMonsterIntelligence extends AbstractAI {
 
@@ -77,25 +78,25 @@ public class DefaultMonsterIntelligence extends AbstractAI {
 	private int getRandomWalkFactor() {
 		Class<? extends Figure> monsterClass = monster.getFigureClass();
 		int factor = 0;
-		if (Orc.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Orc.class, monsterClass)) {
 			factor = 25;
 		}
-		if (Ogre.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Ogre.class, monsterClass)) {
 			factor = 3;
 		}
-		if (Wolf.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Wolf.class, monsterClass)) {
 			factor = 40;
 		}
-		if (Spider.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Spider.class, monsterClass)) {
 			factor = 5;
 		}
-		if (Ghul.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Ghul.class, monsterClass)) {
 			factor = 3;
 		}
-		if (Skeleton.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Skeleton.class, monsterClass)) {
 			factor = 30;
 		}
-		if (Dwarf.class.isAssignableFrom(monsterClass)) {
+		if (Clazz.isAssignableFrom(Dwarf.class, monsterClass)) {
 			factor = 0;
 		}
 

@@ -1,4 +1,4 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -34,6 +34,7 @@ import de.jdungeon.item.quest.*;
 import de.jdungeon.location.*;
 import de.jdungeon.location.defender.DefenderLocation;
 import de.jdungeon.log.Log;
+import de.jdungeon.util.Clazz;
 
 public class ImageManager {
 
@@ -1263,12 +1264,12 @@ public class ImageManager {
 
 		Set<Class<? extends Item>> classes = itemMap.keySet();
 		for (Class<? extends Item> aClass : classes) {
-			if (aClass.isAssignableFrom(itemClazz)) {
+			if (Clazz.isAssignableFrom(aClass, itemClazz)) {
 				return itemMap.get(aClass);
 			}
 		}
 		JDImageProxy<?> im = null;
-		if (AttrPotion.class.isAssignableFrom(item.getItemClass())) {
+		if (Clazz.isAssignableFrom(AttrPotion.class, item.getItemClass())) {
 			if (((item).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
 				im = ImageManager.potion_redImage;
 			}

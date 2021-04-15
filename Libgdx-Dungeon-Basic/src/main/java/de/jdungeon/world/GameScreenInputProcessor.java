@@ -7,7 +7,6 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
 import de.jdungeon.app.event.LevelAbortEvent;
-import de.jdungeon.CameraHelper;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.game.Game;
 
@@ -70,7 +69,8 @@ public class GameScreenInputProcessor extends GestureDetector {
 	}
 
 	private void handleControlEvents(float deltaTime) {
-		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
+		// we do not need to do anything on mobile devices
+		if (Gdx.app.getType() != Application.ApplicationType.Desktop &&  Gdx.app.getType() != Application.ApplicationType.WebGL) return;
 
 		keyboardControl.handleKeyEvents(deltaTime);
 

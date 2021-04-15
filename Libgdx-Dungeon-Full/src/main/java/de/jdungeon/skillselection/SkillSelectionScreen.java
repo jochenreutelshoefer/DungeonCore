@@ -13,22 +13,22 @@ import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.util.JDDimension;
 
-import de.jdungeon.AbstractGameScreen;
+import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.DefaultGuiInputController;
-import de.jdungeon.LibgdxDungeonFullMain;
+import de.jdungeonx.LibgdxDungeonFullMain;
 import de.jdungeon.app.gui.skillselection.SkillSelectionManager;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;
 import de.jdungeon.gui.LibgdxGUIElement;
-import de.jdungeon.libgdx.LibgdxScreenContext;
+import de.jdungeon.game.LibgdxScreenContext;
 import de.jdungeon.util.Pair;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 12.01.20.
  */
-public class SkillSelectionScreen extends AbstractGameScreen {
+public class SkillSelectionScreen extends AbstractScreen {
 
 
 	private final OrthographicCamera camera;

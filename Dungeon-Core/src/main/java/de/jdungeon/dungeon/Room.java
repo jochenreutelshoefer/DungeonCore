@@ -2,7 +2,6 @@ package de.jdungeon.dungeon;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.jdungeon.dungeon.quest.RoomQuest;
 import de.jdungeon.dungeon.util.RouteInstruction;
@@ -19,6 +18,7 @@ import de.jdungeon.figure.percept.OpticalPercept;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.figure.ControlUnit;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.gui.Paragraph;
@@ -29,6 +29,7 @@ import de.jdungeon.item.interfaces.ItemOwner;
 import de.jdungeon.location.Location;
 import de.jdungeon.location.Statue;
 import de.jdungeon.log.Log;
+import de.jdungeon.util.CopyOnWriteArrayList;
 import de.jdungeon.util.JDColor;
 
 public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
@@ -189,14 +190,14 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         return fightRunning;
     }
 
-    public boolean turn(int round, GameLoopMode mode) {
+    public boolean turn(int round, DungeonWorldUpdater worldUpdater) {
         for (Figure roomFigure : getRoomFigures()) {
             if (roomFigure.getLastRoundTurnCompleted() < round) {
 
                 // figure does its turn
-                roomFigure.turn(round, mode);
+                roomFigure.turn(round, worldUpdater);
 
-                if (mode == GameLoopMode.RenderThreadWorldUpdate) {
+                if (worldUpdater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate) {
                     // if a figure is current idle, we break and try again on next render loop call
                     boolean figureCompletedRound = roomFigure.getLastRoundTurnCompleted() == round;
                     if (!figureCompletedRound) {

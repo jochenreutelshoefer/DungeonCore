@@ -67,6 +67,7 @@ import de.jdungeon.location.SorcerLab;
 import de.jdungeon.location.Statue;
 import de.jdungeon.location.defender.DefenderLocation;
 import de.jdungeon.log.Log;
+import de.jdungeon.util.Clazz;
 import de.jdungeon.util.JDColor;
 import de.jdungeon.util.JDDimension;
 
@@ -369,8 +370,7 @@ public class GraphicObjectRenderer {
 
 				int roomSize_15_100 = 15 * ROOMSIZE_BY_100;
 				int roomSize_12_100 = 12 * ROOMSIZE_BY_100;
-				if (AttrPotion.class.isAssignableFrom(itemArray[i]
-						.getItemClass())) {
+				if (Clazz.isAssignableFrom(AttrPotion.class, itemArray[i].getItemClass())) {
 
 					if (((itemArray[i]).getItemKey() == Item.ITEM_KEY_HEALPOTION)) {
 						itemObs[i] = new GraphicObject(itemArray[i],
@@ -454,9 +454,7 @@ public class GraphicObjectRenderer {
 							new RelativeRectangle(itemPointRelative, sizeX, sizeY),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
-				else if (Scroll.class.isAssignableFrom(itemArray[i]
-						.getItemClass())) {
-
+				else if (Clazz.isAssignableFrom(Scroll.class, itemArray[i].getItemClass())) {
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
@@ -506,8 +504,7 @@ public class GraphicObjectRenderer {
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
-				else if (Thing.class.isAssignableFrom(itemArray[i]
-						.getItemClass())) {
+				else if (Clazz.isAssignableFrom(Thing.class, itemArray[i].getItemClass())) {
 
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, roomSize_12_100, roomSize_12_100),

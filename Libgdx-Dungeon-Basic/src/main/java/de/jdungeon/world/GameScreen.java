@@ -21,8 +21,7 @@ import de.jdungeon.game.*;
 import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 
-import de.jdungeon.AbstractGameScreen;
-import de.jdungeon.CameraHelper;
+import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.audio.MusicManager;
@@ -43,7 +42,7 @@ import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.19.
  */
-public class GameScreen extends AbstractGameScreen {
+public class GameScreen extends AbstractScreen {
 
     private final static String TAG = GameScreen.class.getName();
     private static final boolean OPENGL_PROFILING_ON = false;
@@ -109,6 +108,7 @@ public class GameScreen extends AbstractGameScreen {
         //if (OPENGL_PROFILING_ON) {
         glProfiler = new GLProfiler(Gdx.graphics);
         glProfiler.enable();
+        //glProfiler.setListener(error -> Log.warning("GL Error: "+error));
         //}
 
         inputController = new GameScreenInputProcessor(game, playerController, this);
@@ -139,7 +139,7 @@ public class GameScreen extends AbstractGameScreen {
         int screenWidth = Gdx.app.getGraphics().getWidth();
         int screenHeight = Gdx.app.getGraphics().getHeight();
 
-        // init de.jdungeon.gui camera and de.jdungeon.gui renderer
+        // init gui camera and gui renderer
         cameraGUI = new OrthographicCamera(screenWidth, screenHeight);
         cameraGUI.position.set(screenWidth / 2, screenHeight / 2, 0);
         cameraGUI.setToOrtho(true);
@@ -244,13 +244,6 @@ public class GameScreen extends AbstractGameScreen {
         }
     }
 
-    private void checkCamPosition(float deltaTime) {
-        if (movieSequenceManager.getCurrentSequence(deltaTime) == null) {
-            // currently no movie running
-
-        }
-    }
-
 	/*
 	Creates a movie sequence that zooms in/out
  	*/
@@ -300,18 +293,13 @@ public class GameScreen extends AbstractGameScreen {
                 (float) point.getY() * ROOM_SIZE + ROOM_SIZE / 2);
     }
 
-    private Pair<Float, Float> floatPair(JDPoint point) {
-        return new Pair<>(
-                (float) point.getX(), (float) point.getY());
-    }
-
     public void showVisibilityIncrease(Set<JDPoint> points) {
         if (points.isEmpty()) {
             return;
         }
 
         JDPoint heroRoom = figure.getRoomInfo().getPoint();
-        // entered current room, no need to do de.jdungeon.animation
+        // entered current room, no need to do animation
         points.remove(heroRoom);
 
         final Iterator<JDPoint> pointIterator = points.iterator();
@@ -421,7 +409,7 @@ public class GameScreen extends AbstractGameScreen {
 
 
 		/*
-		Check for de.jdungeon.gui element click
+		Check for gui element click
 		 */
         Vector3 guiPosUnprojected = cameraGUI.unproject(new Vector3(screenX, screenY, 0));
         int guiXunprojected = Math.round(guiPosUnprojected.x);

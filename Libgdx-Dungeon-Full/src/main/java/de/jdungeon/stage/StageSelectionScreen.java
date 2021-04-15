@@ -5,20 +5,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import de.jdungeon.AbstractGameScreen;
-import de.jdungeon.CameraHelper;
-import de.jdungeon.LibgdxDungeonFullMain;
+import de.jdungeon.game.AbstractScreen;
+import de.jdungeon.world.CameraHelper;
+import de.jdungeonx.LibgdxDungeonFullMain;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.ScreenContext;
-import de.jdungeon.libgdx.LibgdxInput;
-import de.jdungeon.libgdx.MyInputProcessor;
+import de.jdungeon.game.LibgdxInput;
+import de.jdungeon.game.MyInputProcessor;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 31.12.19.
  */
-public class StageSelectionScreen extends AbstractGameScreen {
+public class StageSelectionScreen extends AbstractScreen {
 
 	private final OrthographicCamera camera;
 	private final CameraHelper cameraHelper;

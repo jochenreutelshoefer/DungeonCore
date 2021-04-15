@@ -36,7 +36,7 @@ public class JDEnv {
 	}
 
 	public static String getString(String key) {
-		return res.getString(key);
+		return res.get(key);
 	}
 
 }

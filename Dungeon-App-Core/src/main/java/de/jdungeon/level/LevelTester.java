@@ -16,7 +16,17 @@ public class LevelTester {
 	private  static final int RUNS = 50;
 
 	public static void main(String[] args) {
-		JDEnv.init(new MyResourceBundle(Collections.emptyMap()));
+		JDEnv.init(new MyResourceBundle() {
+			@Override
+			public String get(String key) {
+				return null;
+			}
+
+			@Override
+			public String format(String key, String... inserts) {
+				return null;
+			}
+		});
 		StartLevelOLD startLevelFactory = new StartLevelOLD();
 
 		for(int i = 0; i < RUNS; i++) {

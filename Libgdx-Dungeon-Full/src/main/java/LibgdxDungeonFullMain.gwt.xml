@@ -7,9 +7,11 @@
 	<source path="de/jdungeon/dungeon" />
 	<source path="de/jdungeon/dungeon/generate" />
 	<source path="de/jdungeon/figure" />
+	<source path="de/jdungeon/figure/memory" />
 	<source path="de/jdungeon/figure/hero" />
 	<source path="de/jdungeon/skill" />
 	<source path="de/jdungeon/item" />
+	<source path="de/jdungeon/item/interfaces" />
 	<source path="de/jdungeon/item/equipment" />
 	<source path="de/jdungeon/util" />
 	<source path="de/jdungeon/spell" />

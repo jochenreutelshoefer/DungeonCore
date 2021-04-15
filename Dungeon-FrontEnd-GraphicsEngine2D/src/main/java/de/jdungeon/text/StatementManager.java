@@ -253,21 +253,23 @@ public class StatementManager {
 		return s;
 	}
 
+	@Deprecated // use Libgdx ResourceBundle formatting properly
 	private static String insertName(String name, String statement) {
 		if (name != null) {
-			statement = statement.replaceAll("[$][n][a][m][e]", name);
+			statement = statement.replace("{0}", name);
 		}
 
 		return statement;
 	}
 
+	@Deprecated // use Libgdx ResourceBundle formatting properly
 	private static String insertNames(String name1, String name2,
 			String statement) {
 		if (name1 != null) {
-			statement = statement.replaceAll("[$][n][a][m][e][1]", name1);
+			statement = statement.replace("{0}", name1);
 		}
 		if (name2 != null) {
-			statement = statement.replaceAll("[$][n][a][m][e][2]", name2);
+			statement = statement.replace("{1}", name2);
 		}
 
 		return statement;

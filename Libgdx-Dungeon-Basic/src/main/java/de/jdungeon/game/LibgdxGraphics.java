@@ -1,24 +1,15 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import de.jdungeon.log.Log;
 
-import de.jdungeon.game.Color;
-import de.jdungeon.game.Colors;
-import de.jdungeon.game.Graphics;
-import de.jdungeon.game.Image;
-import de.jdungeon.game.TextPaint;
 import de.jdungeon.util.PaintBuilder;
-
-import static de.jdungeon.libgdx.LibgdxImageLoader.TAG;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -254,16 +245,20 @@ public class LibgdxGraphics implements Graphics {
 
 	@Override
 	public void setTempCanvas(int x, int y, int widhth, int height) {
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
+		Log.severe("Method not implemented!");
 	}
 
 	@Override
 	public void flushAndResetTempCanvas() {
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
+		Log.severe("Method not implemented!");
 	}
 
 	@Override
 	public Image getTempImage() {
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
+		Log.severe("Method not implemented!");
+		return null;
 	}
 }

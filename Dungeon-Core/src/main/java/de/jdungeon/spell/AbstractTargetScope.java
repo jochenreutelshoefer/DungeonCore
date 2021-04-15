@@ -10,6 +10,7 @@ import de.jdungeon.dungeon.RoomInfo;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.dungeon.InfoEntity;
 import de.jdungeon.dungeon.RoomInfoEntity;
+import de.jdungeon.util.Clazz;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -21,7 +22,7 @@ public abstract class AbstractTargetScope<TARGET> implements TargetScope<TARGET>
 	@Override
 	public List<TARGET> getTargetEntitiesInScope(FigureInfo actor, RoomInfoEntity highlightedEntity) {
 
-		if(highlightedEntity != null && getTargetClass().isAssignableFrom(highlightedEntity.getClass())) {
+		if(highlightedEntity != null && Clazz.isAssignableFrom(getTargetClass(), highlightedEntity.getClass())) {
 			// the target is actually marked
 			return Collections.singletonList((TARGET)highlightedEntity);
 		}

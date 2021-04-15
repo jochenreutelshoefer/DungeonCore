@@ -13,6 +13,7 @@ import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.npc.DefaultNPCFactory;
 import de.jdungeon.figure.npc.RescuedNPCAI;
 import de.jdungeon.figure.percept.LocationStateChangePercept;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.location.Location;
 import de.jdungeon.location.LocationState;
@@ -72,7 +73,7 @@ public class DefenderLocation extends Location {
     }
 
     @Override
-    public void turn(int round, GameLoopMode mode) {
+    public void turn(int round, DungeonWorldUpdater mode) {
         if (state == DefenderState.Inactive) {
             // we do nothing
             return;

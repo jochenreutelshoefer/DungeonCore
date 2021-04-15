@@ -15,7 +15,6 @@ import java.util.List;
 import de.jdungeon.figure.attribute.Attribute;
 import de.jdungeon.figure.attribute.ItemModification;
 import de.jdungeon.figure.hero.Character;
-import de.jdungeon.game.DungeonGameLoop;
 import de.jdungeon.item.equipment.Armor;
 import de.jdungeon.item.equipment.Helmet;
 import de.jdungeon.item.equipment.Shield;
@@ -249,12 +248,6 @@ public class ItemPool {
 		}
 
 		return i;
-	}
-
-	public static DungeonGameLoop game = null;
-
-	public static void setGame(DungeonGameLoop game) {
-		ItemPool.game = game;
 	}
 
 	/**

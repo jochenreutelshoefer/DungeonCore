@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.figure.Figure;
@@ -32,6 +31,7 @@ import de.jdungeon.gui.activity.ActivityPlan;
 import de.jdungeon.gui.activity.AttackActivity;
 import de.jdungeon.gui.activity.FleeActivity;
 import de.jdungeon.gui.activity.ScoutActivity;
+import de.jdungeon.util.CopyOnWriteArrayList;
 
 /**
  * This class basically controls the interaction from the world (world loop)

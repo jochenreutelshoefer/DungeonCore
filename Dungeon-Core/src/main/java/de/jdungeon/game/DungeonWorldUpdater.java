@@ -8,4 +8,8 @@ public interface DungeonWorldUpdater {
 
     int getCurrentGameRound();
 
+    GameLoopMode getGameLoopMode();
+
+    void waitSomeTimeOnGuiAction(int milliseconds);
+
 }

@@ -1,17 +1,11 @@
-package de.jdungeon;
+package de.jdungeon.game;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import de.jdungeon.asset.Assets;
 import de.jdungeon.asset.LibgdxAssetImageLoader;
-import de.jdungeon.game.*;
 import de.jdungeon.io.FilenameLister;
-import de.jdungeon.libgdx.LibgdxAudio;
-import de.jdungeon.libgdx.LibgdxConfiguration;
-import de.jdungeon.libgdx.LibgdxFileIO;
-import de.jdungeon.libgdx.LibgdxGraphics;
-import de.jdungeon.libgdx.LibgdxInput;
 import de.jdungeon.user.Session;
 
 /**
@@ -27,7 +21,7 @@ public class GameAdapter implements Game {
     private final LibgdxFileIO fileIO;
     private final Configuration configuration;
 
-    Map<AbstractGameScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
+    Map<AbstractScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
 
     public GameAdapter(Game game, FilenameLister filenameLister, Configuration configuration) {
         this.game = game;
@@ -56,8 +50,8 @@ public class GameAdapter implements Game {
         Screen currentScreen = getCurrentScreen();
         LibgdxGraphics graphics = graphicsMap.get(currentScreen);
         if (graphics == null) {
-            graphics = new LibgdxGraphics(((AbstractGameScreen) currentScreen).getCamera(context), Assets.instance.fonts.defaultSmallFlipped);
-            graphicsMap.put((AbstractGameScreen) currentScreen, graphics);
+            graphics = new LibgdxGraphics(((AbstractScreen) currentScreen).getCamera(context), Assets.instance.fonts.defaultSmallFlipped);
+            graphicsMap.put((AbstractScreen) currentScreen, graphics);
         }
         return graphics;
     }

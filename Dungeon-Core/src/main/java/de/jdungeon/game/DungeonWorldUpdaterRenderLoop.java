@@ -1,6 +1,7 @@
 package de.jdungeon.game;
 
 import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.log.Log;
 
 public class DungeonWorldUpdaterRenderLoop implements DungeonWorldUpdater {
 
@@ -12,7 +13,7 @@ public class DungeonWorldUpdaterRenderLoop implements DungeonWorldUpdater {
     }
 
     public void update() {
-        boolean roundCompleted = dungeon.turnRenderLoop(round);
+        boolean roundCompleted = dungeon.turnRenderLoop(round, this);
         if (roundCompleted) {
             round++;
         }
@@ -26,6 +27,17 @@ public class DungeonWorldUpdaterRenderLoop implements DungeonWorldUpdater {
     @Override
     public int getCurrentGameRound() {
         return round;
+    }
+
+    @Override
+    public GameLoopMode getGameLoopMode() {
+        return GameLoopMode.RenderThreadWorldUpdate;
+    }
+
+    @Override
+    public void waitSomeTimeOnGuiAction(int milliseconds) {
+        // will not be called in this mode
+        Log.severe("Should never happen in this mode: "+getGameLoopMode());
     }
 
 

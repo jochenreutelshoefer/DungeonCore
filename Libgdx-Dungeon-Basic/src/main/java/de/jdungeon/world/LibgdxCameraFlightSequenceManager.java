@@ -1,6 +1,5 @@
 package de.jdungeon.world;
 
-import de.jdungeon.CameraHelper;
 import de.jdungeon.app.movieSequence.CameraFlightSequence;
 import de.jdungeon.app.movieSequence.CameraFlightSequenceManager;
 import de.jdungeon.util.Pair;

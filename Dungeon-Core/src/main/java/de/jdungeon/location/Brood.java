@@ -11,6 +11,7 @@ import de.jdungeon.figure.monster.Orc;
 import de.jdungeon.figure.monster.Skeleton;
 import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.figure.monster.Wolf;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.item.Item;
@@ -97,7 +98,7 @@ public class Brood extends Location {
 	}
 
 	@Override
-	public void turn(int round, GameLoopMode mode) {
+	public void turn(int round, DungeonWorldUpdater mode) {
 		////System.out.println(
 		//	"brood: " + Type + " Raum: " + raum.getNumber().toString());
 		if (delay > 0) {

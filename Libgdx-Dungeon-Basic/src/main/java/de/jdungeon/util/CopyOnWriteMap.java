@@ -20,6 +20,8 @@ package de.jdungeon.util;
  *
  */
 
+import de.jdungeon.log.Log;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +39,7 @@ import java.util.Set;
  * @author The Apache MINA Project (dev@mina.apache.org)
  * @version $Rev$, $Date$
  */
-public class CopyOnWriteMap<K, V> implements Map<K, V>, Cloneable {
+public class CopyOnWriteMap<K, V> implements Map<K, V>/*, Cloneable*/ {
 	private volatile Map<K, V> internalMap;
 
 	/**
@@ -209,12 +211,17 @@ public class CopyOnWriteMap<K, V> implements Map<K, V>, Cloneable {
 		return internalMap.entrySet();
 	}
 
-	@Override
+	//@Override
 	public Object clone() {
+		/*
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError();
 		}
+		 */
+		Log.severe("Clone not implemented!");
+		return null;
+
 	}
 }

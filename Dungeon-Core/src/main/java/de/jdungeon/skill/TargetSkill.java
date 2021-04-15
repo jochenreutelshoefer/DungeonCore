@@ -3,6 +3,8 @@ package de.jdungeon.skill;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.spell.TargetScope;
 
@@ -41,7 +43,16 @@ public abstract class TargetSkill<TARGET> extends Skill<TargetSkill.TargetSkillA
 			if(target == null) {
 				throw new IllegalStateException("no target defined in target action builder " +clazz.getSimpleName()+ " de.jdungeon.skill: " +  this.skill);
 			}
+
 			try {
+				com.badlogic.gdx.utils.reflect.Constructor constructor = ClassReflection.getConstructor(clazz, TargetSkill.class, FigureInfo.class, Object.class);
+				return (ACTION)constructor.newInstance(this.skill, actor, target);
+			} catch (ReflectionException e) {
+				e.printStackTrace();
+			}
+			/*
+			try {
+
 				Constructor<?>[] constructors = clazz.getConstructors();
 				Constructor constructor = clazz.getConstructor(new Class[]{TargetSkill.class, FigureInfo.class, Object.class});
 				return (ACTION)constructor.newInstance(this.skill, actor, target);
@@ -58,6 +69,8 @@ public abstract class TargetSkill<TARGET> extends Skill<TargetSkill.TargetSkillA
 			catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
+
+			 */
 			return null;
 		}
 	}

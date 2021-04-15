@@ -199,10 +199,8 @@ public class GUIRenderer implements Disposable {
 				.getPlayerController());
 		this.libgdxGuiElements.add(smartControl);
 
-
-
 		/*
-		 * init hero de.jdungeon.item wheel
+		 * init hero item wheel
 		 */
 		int selectedIndexItem = 17;
 		int wheelSize = screenWidth /2;
@@ -221,9 +219,8 @@ public class GUIRenderer implements Disposable {
 		this.libgdxGuiElements.add(itemWheelHeroItems);
 
 
-
 		/*
-		 * Init use de.jdungeon.skill panel below smart control
+		 * Init use skill panel below smart control
 		 */
 
 		int screenWidthBy2 = (int) (screenWidth / 2.07);

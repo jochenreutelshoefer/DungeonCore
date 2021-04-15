@@ -11,10 +11,7 @@ import de.jdungeon.item.equipment.weapon.Weapon;
 import de.jdungeon.item.interfaces.ItemOwner;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
@@ -103,7 +100,7 @@ public class Inventory implements Serializable {
 	}
 
 	public ItemInfo[] getItemInfos(DungeonVisibilityMap map) {
-		List<Item> syncList = Collections.synchronizedList(items);
+		List<Item> syncList = new ArrayList<>(items);
 		ItemInfo[] array = new ItemInfo[syncList.size()];
 		for (int i = 0; i < syncList.size(); i++) {
 			array[i] = ItemInfo.makeItemInfo(syncList.get(i),map);

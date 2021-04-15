@@ -1,4 +1,4 @@
-package de.jdungeon.game;
+package de.jdungeonx;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,9 +10,10 @@ import java.util.Map;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
+import de.jdungeon.game.DungeonWorldUpdater;
+import de.jdungeon.game.GameLoopMode;
+import de.jdungeon.game.JDGUI;
 import de.jdungeon.item.ItemPool;
-import de.jdungeon.spell.AbstractSpell;
-import de.jdungeon.spell.TimedSpellInstance;
 
 
 public class DungeonGameLoop {
@@ -20,15 +21,17 @@ public class DungeonGameLoop {
 	private int round = 0;
 
 	private final Dungeon derDungeon;
+	private DungeonWorldUpdater delegateUpdater;
 
-	private final Map<Figure, JDGUI> guiFigures = new HashMap<Figure, JDGUI>();
+	private final Map<Figure, JDGUI> guiFigures = new HashMap<>();
 
 	private boolean running = true;
 
 	private Thread loop;
 
-	public DungeonGameLoop(Dungeon derDungeon) {
+	public DungeonGameLoop(Dungeon derDungeon, DungeonWorldUpdater updater) {
 		this.derDungeon = derDungeon;
+		this.delegateUpdater = updater;
 	}
 
 	public int getRound() {
@@ -38,15 +41,13 @@ public class DungeonGameLoop {
 	private void checkGuiFigures() {
 		Collection<Figure> l = guiFigures.keySet();
 		List<Figure> toDelete = new LinkedList<Figure>();
-		for (Iterator<Figure> iter = l.iterator(); iter.hasNext(); ) {
-			Figure element = iter.next();
+		for (Figure element : l) {
 			if (element.isDead()) {
 				toDelete.add(element);
 			}
 		}
 
-		for (Iterator<Figure> iter = toDelete.iterator(); iter.hasNext(); ) {
-			Object element = iter.next();
+		for (Object element : toDelete) {
 			guiFigures.remove(element);
 		}
 	}
@@ -54,8 +55,7 @@ public class DungeonGameLoop {
 	private void tickGuis(int round) {
 		Collection<Figure> l = guiFigures.keySet();
 
-		for (Iterator<Figure> iter = l.iterator(); iter.hasNext(); ) {
-			Figure element = iter.next();
+		for (Figure element : l) {
 			JDGUI gui = guiFigures.get(element);
 			gui.gameRoundEnded();
 		}
@@ -66,11 +66,10 @@ public class DungeonGameLoop {
 	}
 
 	public void worldTurn(int round) {
-		derDungeon.turn(round, GameLoopMode.DistinctWorldLoopThread);
+		derDungeon.turn(round, delegateUpdater);
 	}
 
 	public void init() {
-		ItemPool.setGame(this);
 		this.loop = new Thread(new Loop());
 		loop.start();
 	}

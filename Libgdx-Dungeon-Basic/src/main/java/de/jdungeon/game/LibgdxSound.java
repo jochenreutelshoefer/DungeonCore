@@ -1,4 +1,4 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import de.jdungeon.game.Sound;
 

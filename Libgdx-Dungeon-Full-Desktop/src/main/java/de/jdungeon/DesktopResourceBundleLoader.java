@@ -2,6 +2,7 @@ package de.jdungeon;
 
 import java.util.*;
 
+import de.jdungeon.asset.LibgdxTextResourceBundle;
 import de.jdungeon.io.ResourceBundleLoader;
 import de.jdungeon.util.MyResourceBundle;
 
@@ -12,25 +13,12 @@ import de.jdungeon.util.MyResourceBundle;
 public class DesktopResourceBundleLoader implements ResourceBundleLoader {
     @Override
     public MyResourceBundle getBundle(String path) {
-        return convertBundle(ResourceBundle.getBundle(path));
+        return new LibgdxTextResourceBundle();
     }
 
-    private MyResourceBundle convertBundle(ResourceBundle bundle) {
-        Map<String, String> entries = new HashMap<>();
-        Set<String> keys = bundle.keySet();
-        for (String key : keys) {
-            entries.put(key, bundle.getString(key));
-        }
-        return new MyResourceBundle(entries);
-    }
-
-    public ResourceBundle getBundle(String baseName, Locale locale, ClassLoader loader) {
-        return ResourceBundle.getBundle(baseName, locale, loader, new UTF8Control());
-        //return ResourceBundle.getBundle(baseName, locale, loader);
-    }
 
     @Override
     public MyResourceBundle getBundle(String baseName, Locale locale, Object game) {
-        return convertBundle(getBundle(baseName, locale, game.getClass().getClassLoader()));
+        return new LibgdxTextResourceBundle();
     }
 }

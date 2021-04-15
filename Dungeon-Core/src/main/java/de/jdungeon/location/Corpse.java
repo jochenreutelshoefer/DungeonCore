@@ -15,6 +15,7 @@ import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.figure.percept.UsePercept;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.item.Item;
@@ -108,7 +109,7 @@ public class Corpse extends Location {
 	}
 
 	@Override
-	public void turn(int k, GameLoopMode mode) {
+	public void turn(int k, DungeonWorldUpdater mode) {
 
 	}
 

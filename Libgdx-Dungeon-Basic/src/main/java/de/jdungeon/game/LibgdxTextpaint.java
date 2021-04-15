@@ -1,4 +1,4 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 

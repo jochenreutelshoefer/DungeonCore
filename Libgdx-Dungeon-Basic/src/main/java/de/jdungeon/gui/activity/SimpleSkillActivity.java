@@ -3,6 +3,7 @@ package de.jdungeon.gui.activity;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.skill.SimpleSkill;
 
+import de.jdungeon.skill.SimpleSkillAction;
 import de.jdungeon.world.PlayerController;
 
 /**
@@ -25,7 +26,7 @@ public class SimpleSkillActivity extends SkillActivity<SimpleSkill> {
 
 	@Override
 	public ActionResult possible(Object target) {
-		SimpleSkill.SimpleSkillAction simpleSkillTestAction = skill.newActionFor(playerController.getFigure()).get();
+		SimpleSkillAction simpleSkillTestAction = skill.newActionFor(playerController.getFigure()).get();
 		return skill.execute(simpleSkillTestAction, false, -1);
 	}
 

@@ -4,8 +4,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import de.jdungeon.AbstractGameScreen;
-import de.jdungeon.GameAdapter;
+import de.jdungeon.game.AbstractScreen;
+import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.event.LevelAbortEvent;
 import de.jdungeon.app.event.QuitGameEvent;
@@ -20,8 +20,8 @@ import de.jdungeon.io.FilenameLister;
 import de.jdungeon.io.ResourceBundleLoader;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
-import de.jdungeon.libgdx.LibgdxConfiguration;
-import de.jdungeon.libgdx.LibgdxLogger;
+import de.jdungeon.game.LibgdxConfiguration;
+import de.jdungeon.game.LibgdxLogger;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.user.DungeonSession;
@@ -57,12 +57,14 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
     private DungeonSession dungeonSession;
     DungeonWorldUpdaterRenderLoop dungeonWorldUpdater;
+    DungeonWorldUpdaterInitializer worldUpdaterInitializer;
 
     private Logger gdxLogger;
 
-    public LibgdxDungeonSimpleMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister) {
+    public LibgdxDungeonSimpleMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister, DungeonWorldUpdaterInitializer renderLoopDungeonWorldUpdaterInitializer) {
         this.resourceBundleLoader = resourceBundleLoader;
         this.filenameLister = filenameLister;
+        this.worldUpdaterInitializer = renderLoopDungeonWorldUpdaterInitializer;
     }
 
     @Override
@@ -74,16 +76,18 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
         gdxLogger = new LibgdxLogger();
 
-        MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
-        if (textsBundle == null) {
-            Gdx.app.error(TAG, "Could not load resource bundle for texts");
-        }
-        JDEnv.init(textsBundle);
+
         Map<String, String> configValues = new HashMap<>();
         configValues.put(GameLoopMode.GAME_LOOP_MODE_KEY, GameLoopMode.RenderThreadWorldUpdate.name());
         adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration(configValues));
 
         Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
+
+        MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
+        if (textsBundle == null) {
+            Gdx.app.error(TAG, "Could not load resource bundle for texts");
+        }
+        JDEnv.init(textsBundle);
 
         EventManager.getInstance().registerListener(this);
 
@@ -133,13 +137,13 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
     @Override
     public void setCurrentScreen(Screen screen) {
         // this is actually the important point setting the new Screen into the Libgdx app
-        super.setScreen((AbstractGameScreen) screen);
+        super.setScreen((AbstractScreen) screen);
     }
 
     @Override
     @Deprecated // still in use in old compatibility mode
     public Screen getCurrentScreen() {
-        return (AbstractGameScreen) this.getScreen();
+        return (AbstractScreen) this.getScreen();
     }
 
     @Override

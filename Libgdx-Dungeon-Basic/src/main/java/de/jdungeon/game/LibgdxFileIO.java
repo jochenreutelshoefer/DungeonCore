@@ -1,18 +1,13 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-import de.jdungeon.game.AbstractImageLoader;
-import de.jdungeon.game.FileIO;
 import de.jdungeon.io.FilenameLister;
 
 /**

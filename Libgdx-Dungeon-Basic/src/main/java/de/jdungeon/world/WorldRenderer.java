@@ -35,7 +35,6 @@ import de.jdungeon.graphics.JDImageProxy;
 import de.jdungeon.log.Log;
 import de.jdungeon.util.JDDimension;
 
-import de.jdungeon.CameraHelper;
 import de.jdungeon.Constants;
 import de.jdungeon.app.gui.smartcontrol.ToggleChestViewEvent;
 import de.jdungeon.asset.AssetFonts;
@@ -110,9 +109,9 @@ public class WorldRenderer implements Disposable {
 
 		}
 
-		GL20 gl = Gdx.gl20;
-		int programObject = gl.glCreateProgram();
-		Log.info("position de.jdungeon.location: " + gl.glGetAttribLocation(programObject, "position"));
+		//GL20 gl = Gdx.gl20;
+		//int programObject = gl.glCreateProgram();
+		//Log.info("position de.jdungeon.location: " + gl.glGetAttribLocation(programObject, "position"));
 	}
 
 	/*
@@ -235,7 +234,7 @@ public class WorldRenderer implements Disposable {
 	 */
 	private void renderFigureObjectsForAllRooms() {
 
-		// iterate first for de.jdungeon.figure classes to have less atlas switches as each de.jdungeon.figure has a distinct atlas
+		// iterate first for figure classes to have less atlas switches as each de.jdungeon.figure has a distinct atlas
 		for (FigurePresentation figureClass : FigurePresentation.values()) {
 			for (int x = 0; x < viewModel.getDungeonWidth(); x++) {
 				for (int y = 0; y < viewModel.getDungeonHeight(); y++) {
@@ -262,7 +261,7 @@ public class WorldRenderer implements Disposable {
 
 		for (Pair<GraphicObject, TextureAtlas.AtlasRegion> pair : graphicObjectsForRoom) {
 
-			// check for de.jdungeon.animation for this de.jdungeon.figure
+			// check for animation for this de.jdungeon.figure
 			Object clickableObject = pair.getA().getClickableObject();
 			if (clickableObject instanceof FigureInfo) {
 				FigureInfo figure = (FigureInfo) clickableObject;
@@ -298,12 +297,12 @@ public class WorldRenderer implements Disposable {
 						}
 					}
 
-					// we had an de.jdungeon.animation so we finish off this object
+					// we had an animation so we finish off this object
 					continue;
 				}
 			}
 
-			// no de.jdungeon.animation present for this object
+			// no animation present for this object
 			if (pair.getA() instanceof JDGraphicObject) {
 				if (pair.getB() != null) {
 					int width = ((JDGraphicObject) pair.getA()).getLocatedImage().getWidth();

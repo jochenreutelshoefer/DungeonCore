@@ -7,6 +7,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.FigurePresentation;
 import de.jdungeon.figure.attribute.Attribute;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 
 /**
@@ -77,7 +78,7 @@ public class DarkMaster extends Monster {
 	}
 
 	@Override
-	public void turn(int round, GameLoopMode mode) {
+	public void turn(int round, DungeonWorldUpdater mode) {
 		super.turn(round, mode);
 		int i = 0;
 		if (routing.empty()) {

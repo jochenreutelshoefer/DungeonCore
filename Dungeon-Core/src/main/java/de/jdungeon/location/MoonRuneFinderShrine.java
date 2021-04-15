@@ -6,6 +6,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.percept.TextPercept;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.item.quest.MoonRune;
 
@@ -23,7 +24,7 @@ public class MoonRuneFinderShrine extends Location {
     }
 
     @Override
-    public void turn(int round, GameLoopMode mode) {
+    public void turn(int round, DungeonWorldUpdater mode) {
 
     }
 

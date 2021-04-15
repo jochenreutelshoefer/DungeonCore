@@ -29,6 +29,7 @@ import de.jdungeon.item.quest.MoonRune;
 import de.jdungeon.item.quest.Thing;
 
 import de.jdungeon.game.Image;
+import de.jdungeon.util.Clazz;
 
 public class InventoryImageManager {
 
@@ -69,7 +70,7 @@ public class InventoryImageManager {
 		// => detect most specific match in class hierarchy
 		Set<Class<? extends Item>> classes = itemClassImageMap.keySet();
 		for (Class<? extends Item> aClass : classes) {
-			if (aClass.isAssignableFrom(item.getItemClass())) {
+			if (Clazz.isAssignableFrom(aClass, item.getItemClass())) {
 				return (Image)itemClassImageMap.get(aClass).getImage();
 			}
 		}
@@ -82,7 +83,7 @@ public class InventoryImageManager {
 		// => detect most specific match in class hierarchy
 		Set<Class<? extends Item>> classes = itemClassImageMap.keySet();
 		for (Class<? extends Item> aClass : classes) {
-			if (aClass.isAssignableFrom(item.getItemClass())) {
+			if (Clazz.isAssignableFrom(aClass, item.getItemClass())) {
 				return itemClassImageMap.get(aClass);
 			}
 		}

@@ -3,6 +3,7 @@ package de.jdungeon.asset;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.utils.I18NBundle;
 import de.jdungeon.audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -31,7 +32,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	private static final String TAG = Assets.class.getName();
 	/*
-	 * Why are all de.jdungeon.figure classes treated here distinctly in different atlases instead of in a generic way?
+	 * Why are all figure classes treated here distinctly in different atlases instead of in a generic way?
 	 * The reason lies in the optimization of the open gl rendering process.
 	 * For performance optimization purposes it is necessary to have a low number of texture sheet (atlas)
 	 * changes during the rendering of a frame. Therefore, it is clever to render all figures of same class
@@ -51,12 +52,17 @@ public class Assets implements Disposable, AssetErrorListener {
 	private TextureAtlas dungeonAtlas;
 	private TextureAtlas guiAtlas;
 
-	public TextureAtlas getGuiAtlas() {
-		return guiAtlas;
+	public AssetFonts fonts;
+
+	public static final String FILE_NAME_TEXT_BUNDLE = "i18n/textBundle";
+
+	public static final String PACKS = "packs/";
+
+	public I18NBundle getTextBundle() {
+		return textBundle;
 	}
 
-	public AssetFonts fonts;
-	public static final String PACKS = "packs/";
+	private I18NBundle textBundle;
 
 	private Assets() {
 	}
@@ -66,8 +72,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		assetManager.setErrorListener(this);
 
+		assetManager.load(FILE_NAME_TEXT_BUNDLE, I18NBundle.class);
+
 		assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		assetManager.finishLoading();
+
+		textBundle = assetManager.get(FILE_NAME_TEXT_BUNDLE, I18NBundle.class);
+		I18NBundle.setSimpleFormatter(true); // to be GWT compatible
+		I18NBundle.setExceptionOnMissingKey(false);
 
 		// general dungeon images
 		String dungeonAtlasPath = PACKS + DUNGEON_ATLAS + ATLAS_FILE_EXTENSION;
@@ -136,17 +148,17 @@ public class Assets implements Disposable, AssetErrorListener {
 	}
 
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheDungeon = new HashMap<>();
+
 	private final Map<String, TextureAtlas.AtlasRegion> textureCacheGUI = new HashMap<>();
 	private final Map<TextureAtlas, Map<String, TextureAtlas.AtlasRegion>> figuresCacheMap = new HashMap<>();
-
 	/*
 	 * We also maintain an overall cache map from filename to AtlasRegion.
 	 * However it should only be used if absolutely necessary as arbitrary use
 	 * will lead to a lots of Atlas changes on the openGL rendering process
 	 * slowing down the rendering
 	 */
-	private final Map<String, TextureAtlas.AtlasRegion> overallRegionCacheMap = new HashMap<>();
 
+	private final Map<String, TextureAtlas.AtlasRegion> overallRegionCacheMap = new HashMap<>();
 	/**
 	 * Should only be used if absolutely necessary, that is if the caller code
 	 * has no chance to know in which atlas the texture is in.
@@ -154,14 +166,19 @@ public class Assets implements Disposable, AssetErrorListener {
 	 * @param filename filename of image assets (AtlasRegion)
 	 * @return the AtlasRegion for this filename
 	 */
-	public TextureAtlas.AtlasRegion findTexture(String filename) {
+	public TextureAtlas.AtlasRegion findTexture(String filename, boolean insertInFigureCache) {
 		if (overallRegionCacheMap.containsKey(filename)) {
 			return overallRegionCacheMap.get(filename);
 		}
 		for (TextureAtlas textureAtlas : figuresCacheMap.keySet()) {
 			TextureAtlas.AtlasRegion region = textureAtlas.findRegion(filename);
 			if (region != null) {
-				figuresCacheMap.get(textureAtlas).put(filename, region);
+
+				if(insertInFigureCache) {
+					// for some weird reason, if this method is called from the wrong situation
+					// then the image will we upside down if put into this cache now.... !?!?
+					figuresCacheMap.get(textureAtlas).put(filename, region);
+				}
 				overallRegionCacheMap.put(filename, region);
 				return region;
 			}
@@ -170,6 +187,10 @@ public class Assets implements Disposable, AssetErrorListener {
 		// not found after extensive search in any atlas
 		Gdx.app.error(TAG, "Couldn't find texture in any atlas: " + filename);
 		return null;
+	}
+
+	public TextureAtlas getGuiAtlas() {
+		return guiAtlas;
 	}
 
 	/*

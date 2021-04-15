@@ -8,6 +8,7 @@ import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.hero.Hero;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.item.DustItem;
@@ -81,7 +82,7 @@ public class Trader extends Location /*implements itemOwner*/ {
 	}
 
 	@Override
-	public void turn(int round, GameLoopMode mode) {
+	public void turn(int round, DungeonWorldUpdater mode) {
 		rounds++;
 		if (rounds > rounds_to_change) {
 			rounds = 0;

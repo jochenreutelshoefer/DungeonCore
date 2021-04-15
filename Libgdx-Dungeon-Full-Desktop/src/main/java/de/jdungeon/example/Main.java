@@ -4,7 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.jdungeon.DesktopResourceBundleLoader;
-import de.jdungeon.LibgdxDungeonFullMain;
+import de.jdungeonx.LibgdxDungeonFullMain;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

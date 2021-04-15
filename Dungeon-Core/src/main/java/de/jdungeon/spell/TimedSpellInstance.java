@@ -1,5 +1,6 @@
 package de.jdungeon.spell;
 
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.Turnable;
 
@@ -15,7 +16,7 @@ public abstract void stopEffect();
 	}
 	
 	@Override
-	public void turn(int k, GameLoopMode mode) {
+	public void turn(int k, DungeonWorldUpdater mode) {
 		timer++;
 		if(timer > getDuration()) {
 			expire();

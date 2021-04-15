@@ -1,8 +1,5 @@
 package de.jdungeon.skill;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import de.jdungeon.figure.FigureInfo;
 
 /**
@@ -12,7 +9,7 @@ import de.jdungeon.figure.FigureInfo;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 11.04.20.
  */
-public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
+public abstract class SimpleSkill extends Skill<SimpleSkillAction>{
 
 	public SimpleSkill(int dustCosts) {
 		super(dustCosts);
@@ -28,20 +25,8 @@ public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
 	}
 
 	@Override
-	public SimpleActionBuilder newActionFor(FigureInfo actor) {
-		return new SimpleActionBuilder(this, actor, SimpleSkillAction.class);
-	}
-
-	public static class SimpleSkillAction extends SkillAction {
-
-		public SimpleSkillAction(SimpleSkill skill, FigureInfo info) {
-			super(skill, info);
-		}
-
-		@Override
-		public String toString() {
-			return this.getClass().getSimpleName()+" "+skill.toString();
-		}
+	public SimpleSkillActionBuilder newActionFor(FigureInfo actor) {
+		return new SimpleSkillActionBuilder(this, actor, SimpleSkillAction.class);
 	}
 
 	@Override
@@ -56,38 +41,4 @@ public abstract class SimpleSkill extends Skill<SimpleSkill.SimpleSkillAction>{
 		return true;
 	}
 
-	/**
-	 * @author Jochen Reutelshoefer (denkbares GmbH)
-	 * @created 11.04.20.
-	 */
-	public static class SimpleActionBuilder<SKILL extends SimpleSkill, ACTION extends SimpleSkillAction> extends ActionBuilder<SKILL, ACTION> {
-
-		private final Class<ACTION> clazz;
-
-		public SimpleActionBuilder(SKILL skill, FigureInfo actor, Class<ACTION> clazz) {
-			super(skill, actor);
-			this.clazz = clazz;
-		}
-
-		@Override
-		public ACTION get() {
-			try {
-				Constructor constructor = clazz.getConstructor(new Class[]{SimpleSkill.class, FigureInfo.class});
-				return (ACTION)constructor.newInstance(this.skill, actor);
-			}
-			catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			catch (InstantiationException e) {
-				e.printStackTrace();
-			}
-			catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-	}
 }

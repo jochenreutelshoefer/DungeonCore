@@ -1,9 +1,8 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import com.badlogic.gdx.Gdx;
-
-import de.jdungeon.game.AbstractImageLoader;
-import de.jdungeon.game.Image;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import de.jdungeon.asset.Assets;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -32,15 +31,20 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 		if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
 			filename = AbstractImageLoader.PREFIX + filename;
 		}
-		boolean exists = true;
+
+		String atlasKeyFileName = filename.substring(filename.lastIndexOf('/') + 1, filename.lastIndexOf("."));
+		TextureAtlas.AtlasRegion texture = Assets.instance.findTexture(atlasKeyFileName, false);
+		if(texture != null) {
+			return true;
+		}
+
 		try {
 			Gdx.files.internal(filename).read().close();
-			exists = true;
+			return true;
 
 		} catch (Exception e) {
-			exists = false;
+			return false;
 		}
-		return exists;
 	}
 
 }

@@ -25,7 +25,7 @@ import de.jdungeon.figure.monster.Orc;
 import de.jdungeon.figure.monster.Skeleton;
 import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.figure.monster.Wolf;
-import de.jdungeon.game.DungeonGameLoop;
+//import de.jdungeonx.DungeonGameLoop;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
 import de.jdungeon.item.Item;
@@ -131,7 +131,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 
 	}
 
-	public static Monster getBigMonster(int value, DungeonGameLoop game) {
+	public static Monster getABigMonster(int value) {
 		int k = (int) (Math.random() * 3);
 		if (k == 0) {
 			return new Spider(value);

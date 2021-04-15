@@ -13,7 +13,7 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.skill.FleeSkill;
-import de.jdungeon.skill.SimpleSkill;
+import de.jdungeon.skill.SimpleSkillAction;
 
 public class Escape extends NoTargetSpell {
 
@@ -69,7 +69,7 @@ public class Escape extends NoTargetSpell {
 		mage.setEscape(level);
 		//mage.incActionPoints(1, - 1); // Todo: re-implement speed boost
 		FleeSkill skill = mage.getSkill(FleeSkill.class);
-		SimpleSkill.SimpleSkillAction a = skill.newActionFor(FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility())).get();
+		SimpleSkillAction a = skill.newActionFor(FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility())).get();
 		skill.doExecute(a, true, -1);
 	}
 

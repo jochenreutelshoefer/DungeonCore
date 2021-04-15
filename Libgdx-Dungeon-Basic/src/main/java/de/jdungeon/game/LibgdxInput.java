@@ -1,4 +1,4 @@
-package de.jdungeon.libgdx;
+package de.jdungeon.game;
 
 import java.util.LinkedList;
 import java.util.List;

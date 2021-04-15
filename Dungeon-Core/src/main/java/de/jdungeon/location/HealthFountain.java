@@ -13,6 +13,7 @@ import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.attribute.Attribute;
+import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.game.JDEnv;
 
@@ -69,7 +70,7 @@ public class HealthFountain extends Location {
     int lastCompletedRound = -1;
 
     @Override
-    public void turn(int round, GameLoopMode mode) {
+    public void turn(int round, DungeonWorldUpdater mode) {
         if (round > lastCompletedRound) {
             if ((healthReserve.getBasic() - healthReserve.getValue()) > rate) {
                 healthReserve.modValue(rate);
