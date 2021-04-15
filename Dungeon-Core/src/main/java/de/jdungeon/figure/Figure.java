@@ -339,23 +339,31 @@ public abstract class Figure extends DungeonWorldObject
             fireModifications();
             recover(round);
             this.sufferPoisonings(round);
-            // here the de.jdungeon.figure gets his AP (and oxygen management happens)
+            // here the figure gets his AP (and oxygen management happens)
             this.agility.turn(round);
         }
 
 
     }
 
+    int lastTimeTick = -1;
+
     @Override
     public void turn(int round, DungeonWorldUpdater worldUpdater) {
-        timeTick(round);
+        if(round <= lastTurnCompleted) {
+            // Figure is already done for that round
+            return;
+        }
+        if(lastTimeTick < round) {
+            // we need to make sure that each figure only has one time tick per game round (no matter what update thread strategy running)
+            timeTick(round);
+            lastTimeTick = round;
+        }
 
-        if (lastTurnCompleted < round) {
             final DungeonVisibilityMap roomVisibility = getRoomVisibility();
             if (roomVisibility != null) {
                 roomVisibility.resetTemporalVisibilities();
             }
-        }
 
 
         // do the actions
@@ -371,16 +379,18 @@ public abstract class Figure extends DungeonWorldObject
             }
         }
 
-        // round completed?
+        // round now completed?
         if (worldUpdater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate) {
             if ((getActionPoints() == 0 || isDead())) {
                 // in RenderThreadWorldUpdate mode, the round is completed if figure has no APs or dead
                 this.lastTurnCompleted = round;
 
+
             }
         } else {
-            // in DisinctWorldThread mode at this point the round is always completed for this figure
+            // in DistinctWorldThread mode at this point the round is always completed for this figure
             this.lastTurnCompleted = round;
+
         }
     }
 

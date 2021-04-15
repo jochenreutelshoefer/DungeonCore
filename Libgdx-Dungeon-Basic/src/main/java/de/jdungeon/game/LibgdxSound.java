@@ -18,7 +18,7 @@ public class LibgdxSound implements Sound {
 
 	@Override
 	public void play(float volume) {
-		long play = sound.play(20 * volume);
+		long play = sound.play(2 * volume);
 	}
 
 	@Override

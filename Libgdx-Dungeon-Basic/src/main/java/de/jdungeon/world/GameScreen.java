@@ -52,7 +52,6 @@ public class GameScreen extends AbstractScreen {
     private GameScreenPerceptHandler perceptHandler;
 
     private GraphicObjectRenderer graphicObjectRenderer;
-    private ViewModel worldViewModel;
     private WorldRenderer worldRenderer;
     private LibgdxCameraFlightSequenceManager movieSequenceManager;
     private OrthographicCamera camera;
@@ -125,7 +124,7 @@ public class GameScreen extends AbstractScreen {
 
         figure = playerController.getFigure();
         perceptHandler = new GameScreenPerceptHandler(this, figure, animationManager);
-        worldViewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
+        ViewModel worldViewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
         playerController.setViewModel(worldViewModel);
         movieSequenceManager = new LibgdxCameraFlightSequenceManager(cameraHelper); // todo: access should not be static
 
@@ -177,11 +176,11 @@ public class GameScreen extends AbstractScreen {
         this.lastCall = now;
 
         if (!paused) {
-            // update de.jdungeon.gui and everything
+            // update gui and everything
             update(deltaTime);
 
 
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             worldRenderer.render();
             guiRenderer.render();
