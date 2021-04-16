@@ -907,10 +907,10 @@ public class ImageManager {
 			inventory_figure_background = new JDImageProxy<>(a,
 					"figure-shadow1.gif");
 
-			inventory_box_select = new JDImageProxy<>(a, "boxSelect.gif");
-			inventory_box_hover = new JDImageProxy<>(a, "boxHover.gif");
-			inventory_box_normal = new JDImageProxy<>(a, "boxNormal.gif");
-			inventory_box_normalInactive = new JDImageProxy<>(a, "boxNormalBW.gif");
+			inventory_box_select = new JDImageProxy<>(a, "gui/boxSelect.gif");
+			inventory_box_hover = new JDImageProxy<>(a, "gui/boxHover.gif");
+			inventory_box_normal = new JDImageProxy<>(a, "gui/boxNormal.gif");
+			inventory_box_normalInactive = new JDImageProxy<>(a, "gui/boxNormalBW.gif");
 
 			inventory_empty_helmet = new JDImageProxy<>(a, "guiItems/helmet.gif");
 			inventory_empty_armor = new JDImageProxy<>(a, "guiItems/armor.gif");

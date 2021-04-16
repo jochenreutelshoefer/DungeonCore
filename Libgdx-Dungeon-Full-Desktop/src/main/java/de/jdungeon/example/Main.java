@@ -1,10 +1,14 @@
 package de.jdungeon.example;
 
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.PrefixFileHandleResolver;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.jdungeon.DesktopResourceBundleLoader;
-import de.jdungeonx.LibgdxDungeonFullMain;
+import de.jdungeon.asset.FilelistFilenameLister;
+import de.jdungeon.game.RenderLoopWorldUpdateInitializer;
+import de.jdungeon.LibgdxDungeonFullMain;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -20,6 +24,14 @@ public class Main {
         cfg.height = 480;
         cfg.allowSoftwareMode = true;
         cfg.foregroundFPS = 70;
-        new LwjglApplication(new LibgdxDungeonFullMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new DistinctWorldUpdateThreadInitializer()), cfg);
+        //new LwjglApplication(new LibgdxDungeonFullMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new DistinctWorldUpdateThreadInitializer()), cfg);
+        new LwjglApplication(
+                new LibgdxDungeonFullMain(
+                        new DesktopResourceBundleLoader(),
+                        new FilelistFilenameLister(),
+                        new RenderLoopWorldUpdateInitializer(),
+                        new PrefixFileHandleResolver(new InternalFileHandleResolver(), "assets/")
+                )
+                , cfg);
     }
 }

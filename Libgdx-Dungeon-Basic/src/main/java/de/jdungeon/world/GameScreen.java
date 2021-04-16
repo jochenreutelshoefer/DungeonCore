@@ -101,7 +101,7 @@ public class GameScreen extends AbstractScreen {
     public void show() {
 
         MusicManager.getInstance().stopCurrentMusic();
-        Music music = getGame().getAudio().createMusic("music/" + "Eyes_Gone_Wrong_edited.mp3");
+        Music music = getGame().getAudio().createMusic("Eyes_Gone_Wrong_edited.mp3");
         MusicManager.getInstance().playMusic(music);
 
         //if (OPENGL_PROFILING_ON) {
@@ -166,7 +166,7 @@ public class GameScreen extends AbstractScreen {
     public void render(float deltaTime) {
 
         // world update in render loop?
-        if (isRenderLoopWorldUpdateMode(game)) {
+        if (isRenderLoopWorldUpdateMode(game) && !this.figure.isDead()) {
             // we are in the render-loop-updates-world mode
             dungeonWorldUpdater.update();
         }
@@ -180,7 +180,7 @@ public class GameScreen extends AbstractScreen {
             update(deltaTime);
 
 
-            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             worldRenderer.render();
             guiRenderer.render();
@@ -246,7 +246,6 @@ public class GameScreen extends AbstractScreen {
 	/*
 	Creates a movie sequence that zooms in/out
  	*/
-
     private Pair<Float, Float> toPair(Vector2 position) {
         return new Pair<>(position.x, position.y);
     }

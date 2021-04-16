@@ -18,9 +18,9 @@ public class LibgdxAssetImageLoader extends LibgdxImageLoader {
 
 	@Override
 	public Image loadImage(String filename) {
-		if (!filename.startsWith(AbstractImageLoader.PREFIX)) {
-			filename = AbstractImageLoader.PREFIX + filename;
-		}
+		//if (!filename.startsWith(AbstractImageLoader.PREFIX)) {
+		//	filename = AbstractImageLoader.PREFIX + filename;
+		//}
 		if (filename.contains("gui")) {
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(new JDImageProxy<>(filename, this), Assets.instance.getGuiAtlas());
 			return new LibgdxAssetImage(filename, atlasRegion);

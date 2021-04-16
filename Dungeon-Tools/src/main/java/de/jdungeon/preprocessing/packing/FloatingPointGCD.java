@@ -1,4 +1,4 @@
-package de.jdungeon.preprocessing;
+package de.jdungeon.preprocessing.packing;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package de.jdungeon.preprocessing;
+package de.jdungeon.preprocessing.packing;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -20,9 +20,9 @@ public class AtlasGenerator {
 
 	public static void main (String[] args) throws Exception {
 		//String atlasName = FigurePresentation.DarkDwarf.getFilepath();
-		String atlasName = "de/jdungeon/gui";
+		String atlasName = "gui";
 		//String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/de.jdungeon.animation/"+atlasName; //de.jdungeon.animation/
-		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/"+atlasName; //de.jdungeon.animation/
+		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/"+atlasName; //animation/
 
 		//Delete old pack
 		File oldPackFile = new File(TARGET_DIR + "/" + atlasName + Assets.ATLAS_FILE_EXTENSION);

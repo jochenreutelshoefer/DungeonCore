@@ -1,5 +1,6 @@
 package de.jdungeon.welcome;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,14 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.event.EventManager;
 
-import de.jdungeon.game.AbstractScreen;
+import de.jdungeon.game.*;
 import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
-import de.jdungeon.game.Game;
-import de.jdungeon.game.Music;
-import de.jdungeon.game.ScreenContext;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -63,9 +61,12 @@ public class StartScreen extends AbstractScreen {
 
 	@Override
 	public void init() {
-		bgImageTx = new Texture(Gdx.files.internal("haunted-castle.jpg"));
-		//Gdx.input.setInputProcessor(new DefaultGuiInputController(de.jdungeon.game, this));
 
+		String backgroundFileName = "haunted-castle.jpg";
+		if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+			backgroundFileName = "assets/"+backgroundFileName;
+		}
+		bgImageTx = new Texture(Gdx.files.internal(backgroundFileName));
 	}
 
 	@Override
@@ -97,7 +98,8 @@ public class StartScreen extends AbstractScreen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		rebuildStage();
-		Music music = getGame().getAudio().createMusic("music/" + "Exciting_Trailer.mp3");
+		Audio audio = getGame().getAudio();
+		Music music = audio.createMusic( "Exciting_Trailer.mp3");
 		MusicManager.getInstance().playMusic(music);
 	}
 
@@ -108,7 +110,8 @@ public class StartScreen extends AbstractScreen {
 
 		if(Gdx.input.isTouched()) {
 			EventManager.getInstance().fireEvent(new StartNewGameEvent());
-			//de.jdungeon.game.setScreen(new GameScreen(de.jdungeon.game));
+			// we should stop rendering _this_ screen now
+			return;
 		}
 
 		if(debugEnabled) {

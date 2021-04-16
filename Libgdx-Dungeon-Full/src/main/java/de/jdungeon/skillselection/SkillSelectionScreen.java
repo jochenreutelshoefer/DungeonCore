@@ -16,7 +16,7 @@ import de.jdungeon.util.JDDimension;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.Constants;
 import de.jdungeon.DefaultGuiInputController;
-import de.jdungeonx.LibgdxDungeonFullMain;
+import de.jdungeon.LibgdxDungeonFullMain;
 import de.jdungeon.app.gui.skillselection.SkillSelectionManager;
 import de.jdungeon.game.Input;
 import de.jdungeon.game.ScreenContext;

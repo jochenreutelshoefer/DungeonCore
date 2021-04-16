@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.world.CameraHelper;
-import de.jdungeonx.LibgdxDungeonFullMain;
+import de.jdungeon.LibgdxDungeonFullMain;
 import de.jdungeon.app.gui.dungeonselection.DungeonSelectionScreen;
 import de.jdungeon.app.gui.dungeonselection.LevelIconImageManager;
 import de.jdungeon.game.ScreenContext;
@@ -27,8 +27,11 @@ public class StageSelectionScreen extends AbstractScreen {
 	public StageSelectionScreen(LibgdxDungeonFullMain game) {
 		super(game);
 
-		// TODO: factor out path
-		LevelIconImageManager.getInstance().init(game, "pics/levelIcons");
+		String levelIconsPath = "levelIcons";
+		if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+			levelIconsPath = "assets/" + levelIconsPath;
+		}
+		LevelIconImageManager.getInstance().init(game, levelIconsPath);
 		selectionScreen = new DungeonSelectionScreen(game);
 
 		int camStartPosX = Gdx.app.getGraphics().getWidth()/2;
@@ -109,7 +112,7 @@ public class StageSelectionScreen extends AbstractScreen {
 	public void show() {
 		selectionScreen.resume();
 		//MusicManager.getInstance().stopCurrentMusic();
-		//Music music = getGame().getAudio().createMusic("music/" + "For_the_Fallen.mp3");
+		//Music music = getGame().getAudio().createMusic("assets/music/" + "For_the_Fallen.mp3");
 		//MusicManager.getInstance().playMusic(music);
 	}
 

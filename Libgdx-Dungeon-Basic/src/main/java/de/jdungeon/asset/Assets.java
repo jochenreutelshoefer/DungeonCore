@@ -18,7 +18,6 @@ import de.jdungeon.game.FileIO;
 import de.jdungeon.graphics.ImageManager;
 import de.jdungeon.graphics.JDImageProxy;
 
-import de.jdungeon.Constants;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
 import de.jdungeon.app.audio.DefaultAudioLoader;
 import de.jdungeon.game.Audio;
@@ -56,7 +55,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public static final String FILE_NAME_TEXT_BUNDLE = "i18n/textBundle";
 
-	public static final String PACKS = "packs/";
+	public static final String PACKS_GWT = "packs/";
+	public static final String PACKS = PACKS_GWT;
 
 	public I18NBundle getTextBundle() {
 		return textBundle;
@@ -69,15 +69,13 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public void init(AssetManager assetManager, Audio audio, FileIO fileIO) {
 		this.assetManager = assetManager;
-
 		assetManager.setErrorListener(this);
 
 		assetManager.load(FILE_NAME_TEXT_BUNDLE, I18NBundle.class);
-
-		assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
 		assetManager.finishLoading();
 
 		textBundle = assetManager.get(FILE_NAME_TEXT_BUNDLE, I18NBundle.class);
+
 		I18NBundle.setSimpleFormatter(true); // to be GWT compatible
 		I18NBundle.setExceptionOnMissingKey(false);
 
@@ -85,7 +83,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		String dungeonAtlasPath = PACKS + DUNGEON_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(dungeonAtlasPath, TextureAtlas.class);
 
-		// de.jdungeon.gui images
+		// gui images
 		String guiAtlasPath = PACKS + GUI_ATLAS + ATLAS_FILE_EXTENSION;
 		assetManager.load(guiAtlasPath, TextureAtlas.class);
 
@@ -185,7 +183,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 
 		// not found after extensive search in any atlas
-		Gdx.app.error(TAG, "Couldn't find texture in any atlas: " + filename);
+		//Gdx.app.error(TAG, "Couldn't find texture in any atlas: " + filename);
 		return null;
 	}
 

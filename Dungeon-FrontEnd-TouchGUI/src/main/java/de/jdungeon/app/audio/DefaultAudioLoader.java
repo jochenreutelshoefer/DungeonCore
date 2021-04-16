@@ -23,22 +23,22 @@ public class DefaultAudioLoader implements AudioLoader {
     public AbstractAudioSet createAudioSet(String[] files) {
         Logger logger = GameEnv.getInstance().getGame().getLogger();
         if (files.length == 0) {
-            logger.warning(this.getClass().getSimpleName(), "Empty list of sound files on de.jdungeon.audio set initialization!");
+            logger.warning(this.getClass().getSimpleName(), "Empty list of sound files on audio set initialization!");
         }
         AudioSet set = new AudioSet();
         for (String file : files) {
-            String fullFilename = "sounds/" + file;
-            if (fileExists(fullFilename)) {
-                Sound sound = audio.createSound(fullFilename);
+            //String fullFilename = "assets/sounds/" + file;
+            //if (fileExists(fullFilename)) {
+                Sound sound = audio.createSound(file);
                 if (sound != null) {
                     set.addSound(sound);
                 } else {
                     logger.warning(this.getClass().getSimpleName(), "Sound could not be created: " + file);
                 }
 
-            } else {
-                logger.warning(this.getClass().getSimpleName(), "Sound file not found: " + fullFilename);
-            }
+           // } else {
+           //     logger.warning(this.getClass().getSimpleName(), "Sound file not found: " + fullFilename);
+           // }
         }
         return set;
     }

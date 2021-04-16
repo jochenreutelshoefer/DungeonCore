@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DesktopFilenameLister implements FilenameLister {
+
+    private static final String RESOURCES = "src/main/resources/";
     @Override
     public List<String> listFilenamesOfFolder(String folder) {
         String classPathLocation = null;
@@ -20,7 +22,9 @@ public class DesktopFilenameLister implements FilenameLister {
             classPathLocation = classPathLocation.replaceAll("%20", " ");
         }
 
-        FileHandle fileHandleFolder = Gdx.files.getFileHandle(classPathLocation, Files.FileType.Internal);
+        String path = localStoragePath + RESOURCES + folder;
+        FileHandle fileHandleFolder = Gdx.files.getFileHandle(folder, Files.FileType.Internal);
+        boolean exists = fileHandleFolder.exists();
         FileHandle[] fileHandles = fileHandleFolder.list();
         List<String> filenames = new ArrayList<>();
         for (FileHandle fileHandle : fileHandles) {

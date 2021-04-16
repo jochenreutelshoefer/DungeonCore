@@ -2,6 +2,7 @@ package de.jdungeon.app;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import de.jdungeon.game.RenderLoopWorldUpdateInitializer;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)

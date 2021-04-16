@@ -372,7 +372,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 	private void handleDiePercept(DiePercept p) {
 		FigureInfo deadFigure = p.getFigure();
 		if (deadFigure.equals(this.figure)) {
-			Music music = screen.getGame().getAudio().createMusic("music/" + "Dark_Times.mp3");
+			Music music = screen.getGame().getAudio().createMusic(  "Dark_Times.mp3");
 			MusicManager.getInstance().playMusic(music);
 		}
 		// we reset highlighted entity if a selected de.jdungeon.figure was killed

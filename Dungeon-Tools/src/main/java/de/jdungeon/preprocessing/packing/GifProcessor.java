@@ -1,4 +1,4 @@
-package de.jdungeon.preprocessing;
+package de.jdungeon.preprocessing.packing;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -24,7 +24,7 @@ public class GifProcessor extends FileProcessor {
 	private float maxAnimationDelayError;
 	private ArrayList<File> generatedFiles = new ArrayList<File>();
 
-	public GifProcessor (float maxAnimationDelayError){
+	GifProcessor(float maxAnimationDelayError){
 		this.maxAnimationDelayError = maxAnimationDelayError;
 
 		addInputSuffix(".gif");

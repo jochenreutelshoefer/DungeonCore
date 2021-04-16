@@ -28,9 +28,7 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 
 	@Override
 	public boolean fileExists(String filename) {
-		if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
-			filename = AbstractImageLoader.PREFIX + filename;
-		}
+
 
 		String atlasKeyFileName = filename.substring(filename.lastIndexOf('/') + 1, filename.lastIndexOf("."));
 		TextureAtlas.AtlasRegion texture = Assets.instance.findTexture(atlasKeyFileName, false);
@@ -42,7 +40,12 @@ public class LibgdxImageLoader implements AbstractImageLoader<Image> {
 			Gdx.files.internal(filename).read().close();
 			return true;
 
+
 		} catch (Exception e) {
+			if(! filename.startsWith(AbstractImageLoader.PREFIX)) {
+				String filenameWithPrefix = AbstractImageLoader.PREFIX + filename;
+				return fileExists(filenameWithPrefix);
+			}
 			return false;
 		}
 	}

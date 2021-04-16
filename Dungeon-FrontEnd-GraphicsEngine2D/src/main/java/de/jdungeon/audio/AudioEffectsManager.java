@@ -93,7 +93,8 @@ public class AudioEffectsManager {
 			DOOR_LOCK = create(a, "door-lock.wav");
 			DOOR_SOUND = create(a, "door-front-opening-a.mp3", "door-knock.mp3", "door-violently-closing-wooden.mp3");
 			DOOR_SMASH = create(a, "punch_or_whack_-Vladimir-403040765.mp3", "Sharp Punch-SoundBible.com-1947392621.mp3", "Strong_Punch-Mike_Koenig-574430706.mp3");
-			CHEST_OPEN = create(a, "Opening Casket-SoundBible.mp3", "Cracking Chest Open-SoundBible");
+			CHEST_OPEN = create(a, "Opening-Casket-SoundBible.mp3"/*, "Cracking Chest Open-SoundBible.mp3"*/);
+
 			MONSTER_HURT = create(a, "monster-pain1.wav",
 					"monster-pain5.wav");
 			WOLF_ATTACKS = create(a, "bark1.wav",

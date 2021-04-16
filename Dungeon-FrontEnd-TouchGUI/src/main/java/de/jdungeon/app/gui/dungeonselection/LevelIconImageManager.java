@@ -28,10 +28,10 @@ public class LevelIconImageManager {
 	public void init(Game game, String levelIconsPath) {
 		if(initialized) return;
 		try {
-			if(levelIconsPath == null || levelIconsPath.length() == 0) {
-				levelIconsPath = "pics/levelIcons";
+			//if(levelIconsPath == null || levelIconsPath.length() == 0) {
+			//	levelIconsPath = "assets/levelIcons";
 
-			}
+			//}
 			FileIO fileIO = game.getFileIO();
 
 			List<String> filenames = fileIO.readFileNamesOfFolder(levelIconsPath);
@@ -63,7 +63,7 @@ public class LevelIconImageManager {
 
 	private List<String> filenames;
 
-	public void setFilenames(List<String> names) {
+	private void setFilenames(List<String> names) {
 		Collections.sort(names);
 		this.filenames = Collections.unmodifiableList(names);
 	}

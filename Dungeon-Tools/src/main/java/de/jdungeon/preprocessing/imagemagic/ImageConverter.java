@@ -1,4 +1,4 @@
-package de.jdungeon.graphics;
+package de.jdungeon.preprocessing.imagemagic;
 
 import java.io.BufferedReader;
 import java.io.File;

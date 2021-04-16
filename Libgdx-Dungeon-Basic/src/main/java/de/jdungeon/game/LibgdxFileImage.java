@@ -31,6 +31,9 @@ public class LibgdxFileImage implements Image {
 	private void init() {
 		if(texture == null) {
 			FileHandle handle = Gdx.files.internal(filename);
+			if(!handle.exists()) {
+				handle = Gdx.files.internal("assets/"+filename);
+			}
 			String message = "Creating new File Texture: " + filename;
 			Logger logger = GameEnv.getInstance().getGame().getLogger();
 			logger.warning(this.getClass().getSimpleName(), message);

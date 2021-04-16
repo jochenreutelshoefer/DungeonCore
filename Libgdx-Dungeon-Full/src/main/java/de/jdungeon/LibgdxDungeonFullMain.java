@@ -1,12 +1,17 @@
-package de.jdungeonx;
+package de.jdungeon;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.PrefixFileHandleResolver;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.event.LevelAbortEvent;
@@ -52,6 +57,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
     private final ResourceBundleLoader resourceBundleLoader;
     private FilenameLister filenameLister;
     private DungeonWorldUpdaterInitializer worldUpdaterInitializer;
+    private FileHandleResolver resolver;
 
     private boolean pause;
 
@@ -61,10 +67,11 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
     private Logger gdxLogger;
 
-    public LibgdxDungeonFullMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister, DungeonWorldUpdaterInitializer worldUpdaterInitializer) {
+    public LibgdxDungeonFullMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister, DungeonWorldUpdaterInitializer worldUpdaterInitializer, FileHandleResolver resolver) {
         this.resourceBundleLoader = resourceBundleLoader;
         this.filenameLister = filenameLister;
         this.worldUpdaterInitializer = worldUpdaterInitializer;
+        this.resolver = resolver;
     }
 
     @Override
@@ -76,10 +83,18 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
         gdxLogger = new LibgdxLogger();
 
+        Map<String, String> configValues = new HashMap<>();
+        configValues.put(GameLoopMode.GAME_LOOP_MODE_KEY, worldUpdaterInitializer.getMode().name());
+        adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration(configValues));
 
-        adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration());
-
-        Assets.instance.init(new AssetManager(), getAudio(), getFileIO());
+        AssetManager assetManager = null;
+        if (resolver != null) {
+            // we need to add the assets prefix relative to resource folder
+            assetManager = new AssetManager(resolver);
+        } else {
+            assetManager = new AssetManager();
+        }
+        Assets.instance.init(assetManager, getAudio(), getFileIO());
 
         MyResourceBundle textsBundle = resourceBundleLoader.getBundle(MyResourceBundle.TEXTS_BUNDLE_BASENAME, Locale.GERMAN, this);
         if (textsBundle == null) {

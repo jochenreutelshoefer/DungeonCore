@@ -10,6 +10,7 @@ public class LibgdxMusic implements Music {
 
 	private final com.badlogic.gdx.audio.Music music;
 
+
 	public LibgdxMusic(com.badlogic.gdx.audio.Music music) {
 		this.music = music;
 	}
