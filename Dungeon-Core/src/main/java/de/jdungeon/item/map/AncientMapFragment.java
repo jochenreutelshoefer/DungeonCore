@@ -19,7 +19,7 @@ import de.jdungeon.util.JDColor;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 15.08.16.
  */
-public class AncientMapFragment extends Item implements Usable {
+public class AncientMapFragment extends Item<AncientMapFragment> implements Usable {
 
     public Collection<JDPoint> getRooms() {
         return Collections.unmodifiableCollection(rooms);
@@ -91,6 +91,11 @@ public class AncientMapFragment extends Item implements Usable {
     @Override
     public String toString() {
         return title() + ": " + makeRoomsString();
+    }
+
+    @Override
+    public AncientMapFragment copy() {
+        return new AncientMapFragment(getRooms());
     }
 
     @Override

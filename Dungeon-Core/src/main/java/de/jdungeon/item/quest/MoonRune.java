@@ -11,12 +11,17 @@ import de.jdungeon.item.interfaces.Usable;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 22.01.18.
  */
-public class MoonRune extends Item implements Usable, Locatable {
+public class MoonRune extends Item<MoonRune> implements Usable, Locatable {
 
     public static final int COST = 5;
 
     public MoonRune() {
         super(10, true);
+    }
+
+    @Override
+    public MoonRune copy() {
+        return new MoonRune();
     }
 
     @Override

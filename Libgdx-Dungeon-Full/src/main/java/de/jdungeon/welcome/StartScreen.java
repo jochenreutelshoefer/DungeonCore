@@ -86,7 +86,7 @@ public class StartScreen extends AbstractScreen {
 		stage.clear();
 		Stack stack = new Stack();
 		stage.addActor(stack);
-		stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+		stack.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stack.add(layerBackground);
 	}
 

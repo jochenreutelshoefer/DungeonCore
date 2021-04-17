@@ -140,7 +140,7 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 		drawActivityBackground(batch, posX, posY);
 
 		/*
-		 * draw actual de.jdungeon.item
+		 * draw actual item
 		 */
 		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(im, Assets.instance.getGuiAtlas());
 		batch.draw(atlasRegion,

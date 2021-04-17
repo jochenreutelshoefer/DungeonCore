@@ -3,7 +3,7 @@ package de.jdungeon.item.equipment.weapon;
 import de.jdungeon.game.JDEnv;
 
 import java.util.*;
-public class Sword extends Weapon {
+public class Sword extends Weapon<Sword> {
 
 	private static int BearModifierS = 0;
 	private static int OgreModifierS = 0;
@@ -46,7 +46,7 @@ public class Sword extends Weapon {
 		name = JDEnv.getResourceBundle().getString("sword");
 	}
 
-	public Sword(int worth, LinkedList list) {
+	public Sword(int worth, List list) {
 		super(worth, true, getHitpoints(worth));
 		this.worth = worth;
 		tumbleBasicValue = 15;
@@ -79,4 +79,8 @@ public class Sword extends Weapon {
 
 	}
 
+	@Override
+	public Sword copy() {
+		return new Sword(getWorth(), getModifications());
+	}
 }

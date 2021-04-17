@@ -5,12 +5,17 @@ import de.jdungeon.game.JDEnv;
 import de.jdungeon.gui.Paragraph;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import de.jdungeon.util.JDColor;
 
-public class Helmet extends ArmorItem {
+public class Helmet extends ArmorItem<Helmet> {
 
-	
+
+	@Override
+	public Helmet copy() {
+		return new Helmet(getWorth(), getModifications());
+	}
 
 	public Helmet(int value, boolean magic) {
 
@@ -23,7 +28,7 @@ public class Helmet extends ArmorItem {
 		typeVerbalization = getType(value);
 	}
 
-	public Helmet(int value, LinkedList mods) {
+	public Helmet(int value, List mods) {
 		super(value / 10, value, true, 2 * value / 3);
 		typeVerbalization = getType(value);
 

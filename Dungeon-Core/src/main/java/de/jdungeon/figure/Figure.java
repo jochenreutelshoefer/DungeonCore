@@ -1306,5 +1306,6 @@ public abstract class Figure extends DungeonWorldObject
 
     public void resetCompletedGameRoundNumber() {
         lastTurnCompleted = -1;
+        lastTimeTick = -1;
     }
 }

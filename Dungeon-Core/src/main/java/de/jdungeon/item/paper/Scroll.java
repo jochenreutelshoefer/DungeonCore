@@ -21,7 +21,7 @@ import de.jdungeon.spell.TargetScope;
 import de.jdungeon.spell.TargetSpell;
 import de.jdungeon.util.JDColor;
 
-public class Scroll extends Item implements UsableWithTarget {
+public class Scroll extends Item<Scroll> implements UsableWithTarget {
 
 
     protected final AbstractSpell theSpell;
@@ -99,6 +99,11 @@ public class Scroll extends Item implements UsableWithTarget {
     public String toString() {
         String a = (scroll() + ": " + theSpell.getName() + "(" + theSpell.getLevel() + ")(" + theSpell.getCost() + ")");
         return a;
+    }
+
+    @Override
+    public Scroll copy() {
+        return new Scroll(theSpell, getWorth());
     }
 
     @Override

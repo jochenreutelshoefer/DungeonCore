@@ -4,7 +4,7 @@ package de.jdungeon.item.equipment.weapon;
 import de.jdungeon.game.JDEnv;
 
 import java.util.*;
-public class Wolfknife extends Weapon {
+public class Wolfknife extends Weapon<Wolfknife> {
 	
 	
 	
@@ -31,8 +31,13 @@ public class Wolfknife extends Weapon {
 	name = JDEnv.getResourceBundle().getString("wolfknife");
 
     }
-    
-    @Override
+
+	@Override
+	public Wolfknife copy() {
+		return new Wolfknife(getWorth(), getModifications());
+	}
+
+	@Override
 	public String getName() {
     	return name;
     }
@@ -50,7 +55,7 @@ public class Wolfknife extends Weapon {
 	setModifiers();
     }
 
-	public Wolfknife(int value, LinkedList list) {
+	public Wolfknife(int value, List list) {
     	super(value, true, getHitpoints(value));
     	averageDamage = worth /(4 +(int)(Math.random() * 5));
 		scatter = 2 + (int)(Math.random() * (averageDamage /4));

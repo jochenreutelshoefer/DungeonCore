@@ -23,7 +23,6 @@ import de.jdungeon.item.equipment.weapon.Sword;
 import de.jdungeon.item.equipment.weapon.Wolfknife;
 import de.jdungeon.item.map.AncientMapFragment;
 import de.jdungeon.item.paper.Book;
-import de.jdungeon.item.paper.InfoScroll;
 import de.jdungeon.item.paper.Scroll;
 import de.jdungeon.item.quest.MoonRune;
 import de.jdungeon.item.quest.Thing;
@@ -48,7 +47,7 @@ public class InventoryImageManager {
 		itemClassImageMap.put(AttrPotion.class,  guiImageManager.getJDImageProxy(GUIImageManager.POTION_BLUE));
 		itemClassImageMap.put(Scroll.class,  guiImageManager.getJDImageProxy(GUIImageManager.SCROLL));
 		itemClassImageMap.put(Book.class,  guiImageManager.getJDImageProxy(GUIImageManager.BOOK));
-		itemClassImageMap.put(InfoScroll.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
+		//itemClassImageMap.put(InfoScroll.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
 		itemClassImageMap.put(AncientMapFragment.class,  guiImageManager.getJDImageProxy(GUIImageManager.PARCHMENT));
 		//itemClassImageMap.put(Bunch.class,  guiImageManager.getJDImageProxy(GUIImageManager.BUNCH));
 		itemClassImageMap.put(Thing.class,  guiImageManager.getJDImageProxy(GUIImageManager.MANA_BATTERY));

@@ -11,8 +11,7 @@ import de.jdungeon.item.interfaces.Usable;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class Rune extends Item implements Usable, Locatable {
+public class Rune extends Item<Rune> implements Usable, Locatable {
 
 	
 	private final char c;
@@ -44,6 +43,11 @@ public class Rune extends Item implements Usable, Locatable {
 	@Override
 	public boolean needsTarget() {
 		return false;
+	}
+
+	@Override
+	public Rune copy() {
+		return new Rune(getChar());
 	}
 
 	@Override

@@ -68,4 +68,9 @@ public class APCounter implements Serializable {
 	public boolean canPayActionpoints(int k) {
 		return currentAP >= k;
 	}
+
+	public void reset() {
+		//this.currentAP = 1;
+		//lastSetRound = -1;
+	}
 }

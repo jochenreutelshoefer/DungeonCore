@@ -8,10 +8,10 @@ import java.io.Serializable;
 import java.util.*;
 
 import de.jdungeon.spell.*;
+import de.jdungeon.util.Clonable;
 
 
-
-public class Spellbook implements Serializable {
+public class Spellbook implements Serializable, Clonable<Spellbook> {
 
 	
 	List<Spell> spells = new ArrayList<Spell>();
@@ -51,4 +51,13 @@ public class Spellbook implements Serializable {
 		return null;
 	}
 
+	@Override
+	public Spellbook copy() {
+		Spellbook spellbookCopy = new Spellbook();
+		List<Spell> spells = this.spells;
+		for (Spell spell : spells) {
+			spellbookCopy.addSpell(spell);
+		}
+		return spellbookCopy;
+	}
 }

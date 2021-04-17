@@ -18,6 +18,7 @@ import java.util.List;
 
 import de.jdungeon.location.Location;
 import de.jdungeon.location.LocationInfo;
+import de.jdungeon.util.Clonable;
 import de.jdungeon.util.JDColor;
 import de.jdungeon.dungeon.Chest;
 import de.jdungeon.dungeon.ChestInfo;
@@ -41,7 +42,7 @@ import de.jdungeon.gui.Paragraphable;
  * je nach Nuetzlichkeit, Seltenheit, Eigenschaften etc.
  *
  */
-public abstract class Item implements ModifierI, Paragraphable, InfoProvider, LocatableItem, Serializable, RoomEntity {
+public abstract class Item<ITEM extends Item> implements ModifierI, Paragraphable, InfoProvider, LocatableItem, Serializable, RoomEntity, Clonable<ITEM> {
 
 	public static final int ITEM_KEY_UNDEFINDED = -1;
 	public static final int ITEM_KEY_ATTRPOTION = 1;
@@ -56,6 +57,8 @@ public abstract class Item implements ModifierI, Paragraphable, InfoProvider, Lo
 	protected boolean magic = false;
 
 	protected boolean unique = false;
+
+	public abstract ITEM copy();
 
 	
 	protected List modifications = new LinkedList();

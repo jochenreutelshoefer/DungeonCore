@@ -2,7 +2,7 @@ package de.jdungeon.item.equipment;
 
 import de.jdungeon.game.JDEnv;
 
-public class ArmorItem extends EquipmentItem {
+public abstract class ArmorItem<A extends ArmorItem> extends EquipmentItem<A> {
 
 	public int armorValue;
 	private int damg = 0;

@@ -34,7 +34,7 @@ public class APAgility implements Serializable {
 	}
 
 	public void turn(int round) {
-		// de.jdungeon.figure gets an AP only if there is at least a little amount of oxygen
+		// figure gets an AP only if there is at least a little amount of oxygen
 		if(oxygen.getValue() >= 1) {
 			apCounter.setCurrentAP(1, round);
 		}
@@ -73,5 +73,10 @@ public class APAgility implements Serializable {
 
 	public boolean canPayActionpoints(int k) {
 		return this.apCounter.canPayActionpoints(k);
+	}
+
+	public void reset() {
+		oxygen.setValue(oxygen.getBasic());
+		this.apCounter.reset();
 	}
 }

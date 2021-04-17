@@ -12,13 +12,18 @@ import de.jdungeon.util.JDColor;
 import de.jdungeon.figure.attribute.Attribute;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.gui.Paragraph;
-public class DustItem extends Item {
+public class DustItem extends Item<DustItem> {
 
 	public static final double ratio = 2;
 
 	private double cnt;
 
-	
+
+	@Override
+	public DustItem copy() {
+		return new DustItem(cnt);
+	}
+
 	public DustItem(int value) {
 		super(value,false);
 		cnt = (value/ratio);

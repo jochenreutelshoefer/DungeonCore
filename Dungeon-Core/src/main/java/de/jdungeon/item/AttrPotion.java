@@ -15,7 +15,7 @@ import de.jdungeon.gui.Texts;
 import de.jdungeon.item.interfaces.Usable;
 import de.jdungeon.util.JDColor;
 
-public class AttrPotion extends Item implements Usable {
+public class AttrPotion extends Item<AttrPotion> implements Usable {
 
     private final Attribute.Type a;
     public static final int delay = 30;
@@ -29,6 +29,11 @@ public class AttrPotion extends Item implements Usable {
     @Override
     public boolean needsTarget() {
         return false;
+    }
+
+    @Override
+    public AttrPotion copy() {
+        return new AttrPotion(getAttribute(), getWorth());
     }
 
     @Override

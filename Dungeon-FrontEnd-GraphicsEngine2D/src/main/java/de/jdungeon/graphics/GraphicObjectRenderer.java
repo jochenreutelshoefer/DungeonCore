@@ -47,11 +47,8 @@ import de.jdungeon.item.equipment.weapon.Lance;
 import de.jdungeon.item.equipment.weapon.Sword;
 import de.jdungeon.item.equipment.weapon.Wolfknife;
 import de.jdungeon.item.paper.Book;
-import de.jdungeon.item.paper.InfoScroll;
 import de.jdungeon.item.paper.Scroll;
-import de.jdungeon.item.quest.DarkMasterKey;
 import de.jdungeon.item.quest.Feather;
-import de.jdungeon.item.quest.Incense;
 import de.jdungeon.item.quest.Rune;
 import de.jdungeon.item.quest.Thing;
 import de.jdungeon.location.Corpse;
@@ -459,24 +456,29 @@ public class GraphicObjectRenderer {
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
+				/*
 				else if (itemArray[i].getItemClass().equals(InfoScroll.class)) {
 
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
+				*/
+
 				else if (itemArray[i].getItemClass().equals(Feather.class)) {
 
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
+				/*
 				else if (itemArray[i].getItemClass().equals(Incense.class)) {
 
 					itemObs[i] = new GraphicObject(itemArray[i],
 							new RelativeRectangle(itemPointRelative, roomSize_15_100, roomSize_15_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
+				 */
 				else if (itemArray[i].getItemClass().equals(Key.class)) {
 					int sizeX = 16 * ROOMSIZE_BY_100;
 					int sizeY = 22 * ROOMSIZE_BY_100;
@@ -491,6 +493,7 @@ public class GraphicObjectRenderer {
 							new RelativeRectangle(itemPointRelative, roomSize_12_100, roomSize_12_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
+				/*
 				else if (itemArray[i].getItemClass().equals(
 						DarkMasterKey.class)) {
 
@@ -498,6 +501,8 @@ public class GraphicObjectRenderer {
 							new RelativeRectangle(itemPointRelative, roomSize_12_100, roomSize_12_100),
 							JDColor.YELLOW, ImageManager.getImage(itemArray[i]));
 				}
+
+				 */
 				else if (itemArray[i].getItemClass().equals(Book.class)) {
 
 					itemObs[i] = new GraphicObject(itemArray[i],

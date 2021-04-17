@@ -199,12 +199,12 @@ public class DefaultDungeonSession implements Session, DungeonSession {
         this.currentHero.clearVisibilityMaps();
 
         // fill up bars (health, oxygen, dust)
+        this.currentHero.getAgility().reset();
         Attribute health = this.currentHero.getAttribute(Attribute.Type.Health);
         health.setValue(health.getBasic());
         Attribute dust = this.currentHero.getAttribute(Attribute.Type.Dust);
         dust.setValue(dust.getBasic());
-        Attribute oxygen = this.currentHero.getAgility().getOxygen();
-        oxygen.setValue(oxygen.getBasic());
+
 
         currentHero.resetCompletedGameRoundNumber();
         currentHero.setActualDungeon(derDungeon);
@@ -261,6 +261,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
         f.clearVisibilityMaps();
         f.setRespawnRoom(null);
         f.setControl(null);
-        heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
+        //heroBackup = (Hero) DeepCopyUtil.copy(this.currentHero);
+        heroBackup = Hero.copy(this.currentHero);
     }
 }

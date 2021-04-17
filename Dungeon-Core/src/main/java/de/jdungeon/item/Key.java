@@ -22,7 +22,7 @@ import java.util.List;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class Key extends Item implements Locatable, Usable {
+public class Key extends Item<Key> implements Locatable, Usable {
 
     public static String[] keyStrings = {"Kupfer", "Eisen", "Silber",
             "Gold", "Platin", "Bronze", "Blech", "Stahl", "Piponium"};
@@ -69,6 +69,11 @@ public class Key extends Item implements Locatable, Usable {
     @Override
     public int hashCode() {
         return type.hashCode();
+    }
+
+    @Override
+    public Key copy() {
+        return new Key(this.getType());
     }
 
     @Override

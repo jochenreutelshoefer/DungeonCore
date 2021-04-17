@@ -17,7 +17,7 @@ import de.jdungeon.figure.attribute.Attribute;
  * Window>Preferences>Java>Templates. To enable and disable the creation of type
  * comments go to Window>Preferences>Java>Code Generation.
  */
-public class Thing extends Item implements Usable, LocatableItem {
+public class Thing extends Item<Thing> implements Usable, LocatableItem {
 
     private final Object sup;
 
@@ -46,6 +46,11 @@ public class Thing extends Item implements Usable, LocatableItem {
 
     @Override
     public void getsRemoved() {
+    }
+
+    @Override
+    public Thing copy() {
+        return new Thing(getName(), getSup());
     }
 
     /**

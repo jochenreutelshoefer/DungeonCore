@@ -17,11 +17,10 @@ public class DeepCopyUtil {
 		 * be serialized.
 		 */
 		public static Object copy(Object orig) {
-			return null;
+			//return null;
 			// temporarily switched off for GWT spike
-			/*
-			Object obj = null;
 
+			Object obj = null;
 			try {
 				// Write the object out to a byte array
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -44,7 +43,7 @@ public class DeepCopyUtil {
 			}
 			return obj;
 
-			 */
+
 		}
 
 

@@ -1,13 +1,14 @@
 package de.jdungeon.item.equipment;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import de.jdungeon.figure.attribute.ItemModification;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.util.JDColor;
 
-public class Shield extends EquipmentItem {
+public class Shield extends EquipmentItem<Shield> {
 
 	/**
 	 *
@@ -113,7 +114,7 @@ public class Shield extends EquipmentItem {
 		return typeVerbalization;
 	}
 
-	public Shield(int value, LinkedList mods) {
+	public Shield(int value, List mods) {
 		super(value, true);
 		chanceToBlock = value / 5;
 		typeVerbalization = getType(value);
@@ -160,16 +161,6 @@ public class Shield extends EquipmentItem {
 	public String toString() {
 
 		String s = "";
-		//s+="<html><font color =";
-//		
-//					String color = "\"black\"";
-//					if (hit_points.perCent() <= 50) {
-//							 color = "\"red\"";
-//							} else if (hit_points.perCent() <= 70) {
-//								color = "\"yellow\"";
-//							} 
-//					s += color+">";
-
 		if (unique) {
 			s += name;
 		}
@@ -180,7 +171,6 @@ public class Shield extends EquipmentItem {
 		if (isMagic()) {
 			s += " (m)";
 		}
-//		s += "</font></html>";	
 
 		return s;
 	}
@@ -200,5 +190,10 @@ public class Shield extends EquipmentItem {
 			}
 		}
 		return s;
+	}
+
+	@Override
+	public Shield copy() {
+		return new Shield(getWorth(), getModifications());
 	}
 }

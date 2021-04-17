@@ -3,7 +3,7 @@ package de.jdungeon.item.equipment.weapon;
 import de.jdungeon.game.JDEnv;
 
 import java.util.*;
-public class Lance extends Weapon {
+public class Lance extends Weapon<Lance> {
 
     private static int BearModifierS = 30;
 	private static int OgreModifierS = 60;
@@ -40,7 +40,7 @@ public class Lance extends Weapon {
 		setModifiers();
     }
     
-    public Lance(int value, LinkedList list) {
+    public Lance(int value, List list) {
     	super(value, true, getHitpoints(value));
     	averageDamage = worth /(2 +(int)(Math.random() * 4));
 		scatter = 1 + (int)(Math.random() * (averageDamage /4));
@@ -71,6 +71,10 @@ public class Lance extends Weapon {
 		RANGE_FAR = 180;
 		RANGE_MID = 120;
 	}
-    
 
+
+	@Override
+	public Lance copy() {
+		return new Lance(getWorth(), getModifications());
+	}
 }

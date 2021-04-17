@@ -1,6 +1,6 @@
 package de.jdungeon.item.equipment.weapon;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.figure.attribute.ItemModification;
@@ -16,13 +16,15 @@ import de.jdungeon.util.JDColor;
  * @version 1.0
  */
 
-public abstract class Weapon extends EquipmentItem {
+public abstract class Weapon<T extends Weapon> extends EquipmentItem<T> {
 
 	public final static int AXE = 0;
 	public final static int CLUB = 1;
 	public final static int LANCE = 2;
 	public final static int SWORD = 3;
 	public final static int WOLFKNIFE = 4;
+
+	public abstract T copy();
 
 	//attribute hit_points;
 	private int hitsPerHP = 80;
@@ -34,7 +36,7 @@ public abstract class Weapon extends EquipmentItem {
 		super(value, magic);
 	}
 
-	public Weapon(int value, LinkedList mods, int hitpoints) {
+	public Weapon(int value, List mods, int hitpoints) {
 		super(value, true);
 		modifications = mods;
 	}

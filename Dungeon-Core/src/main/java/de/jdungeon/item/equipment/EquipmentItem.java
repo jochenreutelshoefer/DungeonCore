@@ -7,13 +7,14 @@
 package de.jdungeon.item.equipment;
 
 
+import de.jdungeon.item.Item;
 import de.jdungeon.util.JDColor;
 
 /**
  * Klasse
  *
  */
-public abstract class EquipmentItem extends de.jdungeon.item.Item {
+public abstract class EquipmentItem<T extends EquipmentItem> extends Item<T> {
 	
 
 	public EquipmentItem(int value,boolean m) {
