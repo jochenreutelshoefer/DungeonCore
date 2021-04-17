@@ -32,9 +32,6 @@ public class StartScreen extends AbstractScreen {
 	private Texture bgImageTx;
 	private Texture enterTheTx;
 	private Texture doorDungeonTx;
-
-
-
 	private Stage stage;
 
 	private final float DEBUG_REBUILD_INTERVALL = 5;
@@ -156,7 +153,6 @@ public class StartScreen extends AbstractScreen {
 		batch.draw(enterTheTx, startPosXEnter, startPosYEnter, widthEnter, heightEnter);
 		batch.draw(doorDungeonTx, startPosXDD, startPosYDD, widthDD, heightDD);
 
-		//String gameTitle = Assets.instance.getTextBundle().get("game_title");
 		float fontSizeBig = AssetFonts.FONT_SIZE_BIG;
 		BitmapFont defaultTitleFont = AssetFonts.instance.defaultBig;
 		//defaultTitleFont.draw(batch, gameTitle, width /2 - 100, height *2/3);
@@ -196,6 +192,5 @@ public class StartScreen extends AbstractScreen {
 	public void hide() {
 		super.hide();
 		stage.dispose();
-		//skinCanyonBunny.dispose();
 	}
 }

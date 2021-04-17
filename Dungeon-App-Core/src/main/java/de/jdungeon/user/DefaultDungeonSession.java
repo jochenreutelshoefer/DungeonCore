@@ -206,6 +206,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
         Attribute oxygen = this.currentHero.getAgility().getOxygen();
         oxygen.setValue(oxygen.getBasic());
 
+        currentHero.resetCompletedGameRoundNumber();
         currentHero.setActualDungeon(derDungeon);
         currentHero.setControl(control);
 

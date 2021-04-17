@@ -81,7 +81,7 @@ public class GameScreen extends AbstractScreen {
         ((DungeonSession) game.getSession()).setDungeonWorldUpdater(dungeonWorldUpdater);
         //dungeonWorldUpdater = new DungeonWorldUpdaterRenderLoop(((DefaultDungeonSession) game.getSession()).getCurrentDungeon());
         //} else {
-        // start world de.jdungeon.game loop
+        // start world .game loop
         //	((DefaultDungeonSession)game.getSession()).startGameLoop(playerController);
         //}
 

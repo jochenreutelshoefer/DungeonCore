@@ -1303,4 +1303,8 @@ public abstract class Figure extends DungeonWorldObject
     }
 
     public abstract FigurePresentation getFigurePresentation();
+
+    public void resetCompletedGameRoundNumber() {
+        lastTurnCompleted = -1;
+    }
 }

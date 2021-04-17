@@ -112,10 +112,9 @@ public class HealthFountain extends Location {
 
             double percentageHealed = healingAmount / max;
 
-            // we also fill up de.jdungeon.user's oxygen, relatively in same amount as healing
+            // we also fill up user's oxygen completely
             Attribute oxygenAttribute = f.getAttribute(Attribute.Type.Oxygen);
-            double oxygenMax = oxygenAttribute.getBasic();
-            oxygenAttribute.addToMax(percentageHealed * oxygenMax);
+            oxygenAttribute.setValue(oxygenAttribute.getBasic());
 
             return ActionResult.DONE;
         } else {
