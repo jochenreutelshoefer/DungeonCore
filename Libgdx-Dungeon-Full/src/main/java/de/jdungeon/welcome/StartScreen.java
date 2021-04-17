@@ -28,8 +28,11 @@ public class StartScreen extends AbstractScreen {
 
 	private static final String TAG = StartScreen.class.getName();
 
-	SpriteBatch batch = new SpriteBatch();
-	Texture bgImageTx;
+	private SpriteBatch batch = new SpriteBatch();
+	private Texture bgImageTx;
+	private Texture enterTheTx;
+	private Texture doorDungeonTx;
+
 
 
 	private Stage stage;
@@ -62,11 +65,17 @@ public class StartScreen extends AbstractScreen {
 	@Override
 	public void init() {
 
-		String backgroundFileName = "haunted-castle.jpg";
+		//String backgroundFileName = "haunted-castle.jpg";
+		bgImageTx = createTexture("door of kilpeck.jpg");
+		enterTheTx = createTexture("Enter the.png");
+		doorDungeonTx = createTexture("Door Dungeon.png");
+	}
+
+	private Texture createTexture(String backgroundFileName) {
 		if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
 			backgroundFileName = "assets/"+backgroundFileName;
 		}
-		bgImageTx = new Texture(Gdx.files.internal(backgroundFileName));
+		return new Texture(Gdx.files.internal(backgroundFileName));
 	}
 
 	@Override
@@ -75,8 +84,6 @@ public class StartScreen extends AbstractScreen {
 	}
 
 	private void rebuildStage() {
-		//skinCanyonBunny = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
-
 		Table layerBackground  = buildBackgroundLayer();
 
 		stage.clear();
@@ -129,12 +136,32 @@ public class StartScreen extends AbstractScreen {
 		BitmapFont fpsFont = AssetFonts.instance.defaultNormal;
 		fpsFont.setColor(1,1,1,1); //white
 		batch.begin();
-		String gameTitle = Assets.instance.getTextBundle().get("game_title");
+
+		int width = Gdx.app.getGraphics().getWidth();
+		int height = Gdx.app.getGraphics().getHeight();
+
+
+		float widthDD = width * 0.8f;
+
+		float startPosXDD = 30 + (width - widthDD) / 2;
+
+		float heightDD = ((float)doorDungeonTx.getHeight()) / doorDungeonTx.getWidth() * widthDD;
+		float startPosYDD = height - heightDD - (45);
+
+		float widthEnter = width * 0.15f;
+		float heightEnter = ((float) enterTheTx.getHeight()) / enterTheTx.getWidth() * widthEnter;
+		float startPosXEnter = 180;
+		float startPosYEnter =  height - heightEnter - (20);;
+
+		batch.draw(enterTheTx, startPosXEnter, startPosYEnter, widthEnter, heightEnter);
+		batch.draw(doorDungeonTx, startPosXDD, startPosYDD, widthDD, heightDD);
+
+		//String gameTitle = Assets.instance.getTextBundle().get("game_title");
 		float fontSizeBig = AssetFonts.FONT_SIZE_BIG;
 		BitmapFont defaultTitleFont = AssetFonts.instance.defaultBig;
-		defaultTitleFont.draw(batch, gameTitle, Gdx.app.getGraphics().getWidth()/2 - 100,Gdx.app.getGraphics().getHeight()*2/3);
+		//defaultTitleFont.draw(batch, gameTitle, width /2 - 100, height *2/3);
 
-		fpsFont.draw(batch, "Taste drücken zum Start ", Gdx.app.getGraphics().getWidth()/2 - 100,Gdx.app.getGraphics().getHeight()/2);
+		fpsFont.draw(batch, "Taste drücken zum Start ", width /2 - 100, height /2);
 		batch.end();
 
 	}
