@@ -295,14 +295,22 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 		};
 	}
 
+	// we always have to skip one render cycle because the player didn't yet get
+	// his new APs for the next round (and UI should show Options WITH AP)
+	boolean skipOne = false;
+
 	private void updateAllElementsIfNecessary() {
-		if (worldHasChanged && ! this.figure.isDead()) {
+		if (worldHasChanged && ! skipOne && ! this.figure.isDead()) {
 			updatePositionElements();
 			updateDoorElements();
 			updateMoveElements();
 			updateChestElement();
 			updateShrineElement();
 			worldHasChanged = false;
+		}
+		if(skipOne) {
+			// we have skipped one...
+			skipOne = false;
 		}
 	}
 
@@ -455,8 +463,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 					ActionResult actionResult = figure.checkAction(action);
 					Gdx.app.log(this.getClass().getName(), "Cannot step to neighbour position: "+i+ " action possible: "+ actionResult);
 				}
-				positionElements.add(
-						dotPositionElements[i]);
+				positionElements.add(dotPositionElements[i]);
 			}
 		}
 	}
@@ -507,6 +514,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 	public void notify(Event event) {
 		if (event instanceof WorldChangedEvent) {
 			this.worldHasChanged = true;
+			this.skipOne = true;
 		}
 	}
 }
