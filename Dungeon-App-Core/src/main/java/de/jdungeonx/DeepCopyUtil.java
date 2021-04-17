@@ -1,4 +1,4 @@
-package de.jdungeon.util;
+package de.jdungeonx;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -24,7 +24,6 @@ import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.spell.Spell;
-import de.jdungeon.util.DeepCopyUtil;
 
 /**
  * A Session contains the data of the state of the player,
@@ -224,7 +223,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
     @Override
     public void revertHero() {
-        currentHero = (Hero) DeepCopyUtil.copy(heroBackup);
+        currentHero = Hero.copy(heroBackup);
+       //currentHero = (Hero) DeepCopyUtil.copy(heroBackup);
     }
 
     /**
