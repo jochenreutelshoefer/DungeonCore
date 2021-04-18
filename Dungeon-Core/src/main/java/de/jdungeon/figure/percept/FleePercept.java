@@ -6,51 +6,35 @@
  */
 package de.jdungeon.figure.percept;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.RoomInfo;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
-public class FleePercept extends OpticalPercept {
-	
-	private final Figure f;
-	private final Position from;
-	private final int dir;
-	private final boolean success;
-	
-	public FleePercept(Figure f, Position from, int dir, boolean suc, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
-		this.from = from;
-		this.dir = dir;
-		this.success = suc;
-	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
-	}
-	
-	public RoomInfo getRoom() {
-		return RoomInfo.makeRoomInfo(from.getRoom(), viewer.getRoomVisibility());
-	}
+public class FleePercept extends SimpleActorPercept {
 
-	public boolean isSuccess() {
-		return success;
-	}
+    private final Position from;
+    private final int dir;
+    private final boolean success;
 
-	public int getDir() {
-		return dir;
-	}
-	
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility()));
-		
-		return l;
-	}
+    public FleePercept(Figure f, Position from, int dir, boolean suc, int round) {
+        super(f, f.getRoomNumber(), round);
+        this.from = from;
+        this.dir = dir;
+        this.success = suc;
+    }
+
+    public RoomInfo getRoom(FigureInfo viewer) {
+        return RoomInfo.makeRoomInfo(from.getRoom(), viewer.getVisMap());
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public int getDir() {
+        return dir;
+    }
+
 
 }

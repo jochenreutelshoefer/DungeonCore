@@ -7,7 +7,6 @@ import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.item.quest.MoonRune;
 
 /**
@@ -71,7 +70,7 @@ public class MoonRuneFinderShrine extends Location {
     private void tellDirection(JDPoint location, Figure f, int round) {
         // TODO: factor out de.jdungeon.text
         f.tellPercept(new TextPercept("Die Mondrune befindet sich im Moment bei" + ": " + location, round));
-        f.getRoomVisibility().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
+        f.getViwMap().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
     }
 
     @Override

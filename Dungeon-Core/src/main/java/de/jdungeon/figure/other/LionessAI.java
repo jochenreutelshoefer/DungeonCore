@@ -48,7 +48,7 @@ public class LionessAI extends AbstractAI {
 		if(master.getRoomNumber().equals(info.getRoomNumber())) return new EndRoundAction();
 		
 		if(currentWalkTarget != null) {
-			int dir = new RouteInstruction(currentWalkTarget.getNumber()).getWay(info.getRoomInfo(), this.master.getMap());
+			int dir = new RouteInstruction(currentWalkTarget.getNumber()).getWay(info.getRoomInfo(), this.master.getVisMap());
 			return new MoveAction(this.info, this.info.getRoomNumber(), dir);
 		}
 		return null;
@@ -76,9 +76,9 @@ public class LionessAI extends AbstractAI {
 		if(master.getRoomNumber().equals(info.getRoomNumber())) return;
 		if(p instanceof EntersPercept) {
 			EntersPercept movement = ((EntersPercept)p);
-			FigureInfo figure = movement.getFigure();
+			FigureInfo figure = movement.getFigure(this.info);
 			if(figure.equals(master)) {
-				currentWalkTarget = movement.getTo();
+				currentWalkTarget = movement.getTo(this.info);
 			}
 		}
 

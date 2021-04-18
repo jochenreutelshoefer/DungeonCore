@@ -50,7 +50,7 @@ public class AncientMapFragment extends Item<AncientMapFragment> implements Usab
     @Override
     public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
         if (doIt) {
-            DungeonVisibilityMap roomVisibility = f.getRoomVisibility();
+            DungeonVisibilityMap roomVisibility = f.getViwMap();
             for (JDPoint room : rooms) {
                 int discoveryStatus = roomVisibility.getDiscoveryStatus(room);
                 if (discoveryStatus < RoomObservationStatus.VISIBILITY_SHRINE) {

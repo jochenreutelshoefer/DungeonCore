@@ -27,11 +27,11 @@ public class LocationStateChangePercept extends OpticalPercept {
 	}
 
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
 		return Collections.emptyList();
 	}
 
 	public LocationInfo getLocation(FigureInfo perceiver) {
-		return LocationInfo.makeLocationInfo(this.location, perceiver.getMap());
+		return LocationInfo.makeLocationInfo(this.location, perceiver.getVisMap());
 	}
 }

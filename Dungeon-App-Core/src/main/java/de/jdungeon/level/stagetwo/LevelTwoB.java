@@ -127,7 +127,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			Figure dwarf = new Dwarf();
 			dwarfRoom.figureEntersAtPosition(dwarf, 0, Position.Pos.SE.getValue());
 			MonsterInfo dwarfInfo = (MonsterInfo) FigureInfo.makeFigureInfo(dwarf,
-					dwarf.getRoomVisibility());
+					dwarf.getViwMap());
 
 			AbstractAI ai = new OrcHaterAI();
 			ai.setFigure(dwarfInfo);

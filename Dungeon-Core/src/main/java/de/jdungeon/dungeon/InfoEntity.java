@@ -13,7 +13,7 @@ import de.jdungeon.gui.Paragraphable;
 
 public abstract class InfoEntity implements Paragraphable, MemoryProvider {
 
-	public DungeonVisibilityMap getMap() {
+	public DungeonVisibilityMap getVisMap() {
 		return map;
 	}
 

@@ -14,32 +14,17 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.ItemInfo;
 
-public class TakePercept extends OpticalPercept {
-	
-	private final Item it;
-	private final Figure f;
-	
-	public TakePercept(Figure f, Item it, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
-		this.it = it;
-	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
-	}
-	
-	
-	
-	public ItemInfo getItem() {
-		return ItemInfo.makeItemInfo(it,this.viewer.getRoomVisibility());
-	}
+public class TakePercept extends SimpleActorPercept {
 
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(getFigure());
-		return l;
-	}
-	
+    private final Item it;
+
+    public TakePercept(Figure f, Item it, int round) {
+        super(f, f.getRoomNumber(), round);
+        this.it = it;
+    }
+
+    public ItemInfo getItem(FigureInfo viewer) {
+        return ItemInfo.makeItemInfo(it, viewer.getVisMap());
+    }
+
 }

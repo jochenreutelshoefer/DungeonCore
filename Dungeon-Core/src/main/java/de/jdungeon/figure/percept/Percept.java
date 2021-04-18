@@ -13,26 +13,17 @@ import de.jdungeon.figure.FigureInfo;
 
 public abstract class Percept {
 	
-	protected Figure viewer;
-	protected int round; 
+	protected int round;
 	
 	public Percept(int gameRound) {
 		round = gameRound;
-	}
-	
-	public void perceivedBy(Figure f) {
-		viewer = f;
-	}
-	
-	public void setViewer(Figure f) {
-		perceivedBy(f);
 	}
 
 	public int getRound() {
 		return round;
 	}
 	
-	public abstract List<FigureInfo> getInvolvedFigures();
-	
-	
+	public abstract List<FigureInfo> getInvolvedFigures(FigureInfo viewer);
+
+
 }

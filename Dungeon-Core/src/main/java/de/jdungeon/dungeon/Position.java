@@ -295,7 +295,7 @@ public class Position extends DungeonWorldObject implements RoomEntity {
 
     public void figureLeaves() {
         if (figure != null) {
-            DungeonVisibilityMap roomVisibility = figure.getRoomVisibility();
+            DungeonVisibilityMap roomVisibility = figure.getViwMap();
             if (roomVisibility != null) {
                 roomVisibility.removeScoutedVisibility(this);
             }

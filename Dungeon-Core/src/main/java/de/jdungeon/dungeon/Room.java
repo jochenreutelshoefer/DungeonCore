@@ -81,9 +81,9 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
             ControlUnit currentControl = element.getControl();
             if (currentControl != null) {
                 boolean currentIsHostileToMovedIn = currentControl.isHostileTo(FigureInfo.makeFigureInfo(movedIn, element
-                        .getRoomVisibility()));
+                        .getViwMap()));
                 boolean movedInIsHostileToCurrent = movedInControl.isHostileTo(FigureInfo.makeFigureInfo(element, movedIn
-                        .getRoomVisibility()));
+                        .getViwMap()));
                 if ((currentIsHostileToMovedIn || movedInIsHostileToCurrent)) {
                     // if one of them wants to start a de.jdungeon.fight, we start a de.jdungeon.fight
                     fight = true;
@@ -110,8 +110,8 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
             Figure element = iter.next();
             boolean disappears = element.fightEnded(getRoomFigures(), round);
             if (disappears) {
-                element.getRoomVisibility().getStatusObject(getNumber()).removeVisibilityModifier(element);
-                element.getRoomVisibility().resetVisibilityStatus(this.number);
+                element.getViwMap().getStatusObject(getNumber()).removeVisibilityModifier(element);
+                element.getViwMap().resetVisibilityStatus(this.number);
                 element.getPos().figureLeaves();
             }
         }
@@ -226,7 +226,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
             for (Figure element2 : getRoomFigures()) {
                 if (element != element2) {
                     boolean hostileTo = element.getControl()
-                            .isHostileTo(FigureInfo.makeFigureInfo(element2, element.getRoomVisibility()));
+                            .isHostileTo(FigureInfo.makeFigureInfo(element2, element.getViwMap()));
                     if (hostileTo) {
                         fightOn = true;
                         break;
@@ -933,19 +933,19 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         // we 'discover' also all neighbour rooms of the entered room
         final List<Room> neighboursWithDoor = getNeighboursWithDoor();
         for (Room neighbourRoom : neighboursWithDoor) {
-            figure.getRoomVisibility()
+            figure.getViwMap()
                     .setVisibilityStatus(neighbourRoom.number, RoomObservationStatus.VISIBILITY_SHRINE);
         }
 
         position.figureEntersHere(figure);
         figure.setLocation(this);
 
-        if (figure.getRoomVisibility() == null) {
+        if (figure.getViwMap() == null) {
             figure.createVisibilityMap(dungeon);
         }
-        figure.getRoomVisibility().setVisibilityStatus(getNumber(),
+        figure.getViwMap().setVisibilityStatus(getNumber(),
                 RoomObservationStatus.VISIBILITY_ITEMS);
-        figure.getRoomVisibility().addVisibilityModifier(getNumber(), figure);
+        figure.getViwMap().addVisibilityModifier(getNumber(), figure);
 
         this.checkFight(figure, round);
     }
@@ -1038,7 +1038,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
         if (!getDeadFigures().contains(m)) {
             // dead figures may retain their vis status (for GUI's sake)
-            final DungeonVisibilityMap roomVisibility = m.getRoomVisibility();
+            final DungeonVisibilityMap roomVisibility = m.getViwMap();
             if (roomVisibility != null) {
                 final RoomObservationStatus statusObject = roomVisibility.getStatusObject(getNumber());
                 if (statusObject != null) {

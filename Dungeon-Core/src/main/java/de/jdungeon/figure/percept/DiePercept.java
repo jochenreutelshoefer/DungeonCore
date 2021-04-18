@@ -15,41 +15,41 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
 public class DiePercept extends OpticalPercept {
-	
-	private final Figure f;
-	private final Room from;
-	private int damage = -1;
 
-	public DiePercept(Figure f, Room from, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
-		this.from = from;
-	}
-	
-	public DiePercept(Figure f, Room from, int damage, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
-		this.from = from;
-		this.damage = damage;
-	}
-	
-	public int getDamage() {
-		return damage;
-	}
+    private final Figure f;
+    private final Room from;
+    private int damage = -1;
 
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
-	}
-	
-	public RoomInfo getRoom() {
-		return RoomInfo.makeRoomInfo(from, viewer.getRoomVisibility());
-	}
-	
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<FigureInfo>();
-		l.add(getFigure());
-		return l;
-	}
+    public DiePercept(Figure f, Room from, int round) {
+        super(f.getRoomNumber(), round);
+        this.f = f;
+        this.from = from;
+    }
+
+    public DiePercept(Figure f, Room from, int damage, int round) {
+        super(f.getRoomNumber(), round);
+        this.f = f;
+        this.from = from;
+        this.damage = damage;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public FigureInfo getFigure(FigureInfo viewer) {
+        return FigureInfo.makeFigureInfo(f, viewer.getVisMap());
+    }
+
+    public RoomInfo getRoom(FigureInfo viewer) {
+        return RoomInfo.makeRoomInfo(from, viewer.getVisMap());
+    }
+
+    @Override
+    public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
+        List<FigureInfo> l = new LinkedList<>();
+        l.add(getFigure(viewer));
+        return l;
+    }
 
 }

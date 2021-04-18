@@ -16,7 +16,7 @@ public class Fir extends ConjuredMagicFigure {
 		construcHelp(value);
 		this.setActualDungeon(d);
 		createVisibilityMap(d);
-		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this, this.getRoomVisibility());
+		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this, this.getViwMap());
 		AbstractAI ai = new FirAI(info);
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);

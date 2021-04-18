@@ -36,12 +36,12 @@ public class UseItemAction extends AbstractExecutableAction {
 		it = i;
 		this.target = target;
 		this.meta = meta;
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
+		figure = info.getVisMap().getDungeon().getFigureIndex().get(info.getFigureID());
 	}
 
 	public UseItemAction(FigureInfo info, ItemInfo i) {
 		it = i;
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
+		figure = info.getVisMap().getDungeon().getFigureIndex().get(info.getFigureID());
 	}
 
 	/**

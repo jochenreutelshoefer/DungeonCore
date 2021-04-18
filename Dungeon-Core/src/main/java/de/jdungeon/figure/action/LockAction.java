@@ -18,7 +18,7 @@ public class LockAction extends AbstractExecutableAction {
     private final Figure figure;
 
     public LockAction(FigureInfo info, DoorInfo door) {
-        figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
+        figure = info.getVisMap().getDungeon().getFigureIndex().get(info.getFigureID());
         this.door = door;
     }
 

@@ -14,7 +14,7 @@ public class UseLocationAction extends AbstractExecutableAction {
 	private final Figure figure;
 
 	public UseLocationAction(FigureInfo info, RoomInfoEntity target, boolean meta) {
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
+		figure = info.getVisMap().getDungeon().getFigureIndex().get(info.getFigureID());
 		this.target = target;
 		this.meta = meta;
 	}

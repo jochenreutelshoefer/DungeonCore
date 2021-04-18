@@ -23,7 +23,7 @@ public class ScoutAction extends AbstractExecutableAction{
 	public ScoutAction(FigureInfo figureInfo, int dir) {
 		super();
 		this.dir = dir;
-		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFigureID());
+		figure = figureInfo.getVisMap().getDungeon().getFigureIndex().get(figureInfo.getFigureID());
 
 	}
 	
@@ -46,13 +46,13 @@ public class ScoutAction extends AbstractExecutableAction{
 			return ActionResult.UNKNOWN;
 		}
 		Room scoutTarget = figure.getRoom().getNeighbourRoom(dir);
-		if (figure.getRoomVisibility().getStatusObject(scoutTarget.getNumber()).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
+		if (figure.getViwMap().getStatusObject(scoutTarget.getNumber()).getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return ActionResult.UNKNOWN;
 		}
 		if (doIt) {
 			figure.setLookDir(dir);
 			ScoutResult result = figure.scout(this, round);
-			figure.getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
+			figure.getViwMap().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(figure, figure.getRoom(), dir, round);
 			figure.getRoom().distributePercept(p);
 			figure.payActionPoint(this, round);

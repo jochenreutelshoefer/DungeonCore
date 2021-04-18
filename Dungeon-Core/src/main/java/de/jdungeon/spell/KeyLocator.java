@@ -102,7 +102,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	private static void tellDirection(JDPoint location, Figure f, int round) {
 		f.tellPercept(new TextPercept(JDEnv.getResourceBundle()
 				.getString("spell_keyLocator_cast_found") + ": " + location, round));
-		f.getRoomVisibility().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
+		f.getViwMap().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
 	}
 
 	@Override

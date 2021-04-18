@@ -20,7 +20,6 @@ public class TextPercept extends Percept {
 		text = s;
 	}
 
-
 	/**
 	 * @return Returns the de.jdungeon.text.
 	 */
@@ -29,7 +28,7 @@ public class TextPercept extends Percept {
 	}
 	
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
 		return Collections.emptyList();
 	}
 

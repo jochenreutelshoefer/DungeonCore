@@ -32,8 +32,8 @@ public class CoopSwitchPosBehaviour implements FightIntelligence, MovementIntell
         int distance = requestPos.getDistance(currentPos.getIndex());
         if (distance == 1) {
             return new AcceptSwitchPositionAction(
-                    FigureInfo.makeFigureInfo(switchPosRequest.getRequestingFigure(), info.getMap()),
-                    FigureInfo.makeFigureInfo(switchPosRequest.getRequestedFigure(), info.getMap())
+                    FigureInfo.makeFigureInfo(switchPosRequest.getRequestingFigure(), info.getVisMap()),
+                    FigureInfo.makeFigureInfo(switchPosRequest.getRequestedFigure(), info.getVisMap())
             );
         } else {
             // to far away to switch places!
@@ -49,8 +49,8 @@ public class CoopSwitchPosBehaviour implements FightIntelligence, MovementIntell
         }
         SwitchPositionRequestManager.SwitchPosRequest switchPosRequest = switchPosRequests.iterator().next();
         return new AcceptSwitchPositionAction(
-                FigureInfo.makeFigureInfo(switchPosRequest.getRequestingFigure(), info.getMap()),
-                FigureInfo.makeFigureInfo(switchPosRequest.getRequestedFigure(), info.getMap())
+                FigureInfo.makeFigureInfo(switchPosRequest.getRequestingFigure(), info.getVisMap()),
+                FigureInfo.makeFigureInfo(switchPosRequest.getRequestedFigure(), info.getVisMap())
         );
     }
 }

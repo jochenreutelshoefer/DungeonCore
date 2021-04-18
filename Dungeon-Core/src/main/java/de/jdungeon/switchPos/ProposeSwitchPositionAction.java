@@ -18,8 +18,8 @@ public class ProposeSwitchPositionAction extends AbstractExecutableAction {
         if (requestedFigure.equals(requestingFigure)) {
             throw new IllegalArgumentException("For switching places, figures must not be the same: " + requestedFigure + " - " + requestingFigure);
         }
-        this.requestingFigure = requestingFigure.getMap().getDungeon().getFigureIndex().get(requestingFigure.getFigureID());
-        this.requestedFigure = requestedFigure.getMap().getDungeon().getFigureIndex().get(requestedFigure.getFigureID());
+        this.requestingFigure = requestingFigure.getVisMap().getDungeon().getFigureIndex().get(requestingFigure.getFigureID());
+        this.requestedFigure = requestedFigure.getVisMap().getDungeon().getFigureIndex().get(requestedFigure.getFigureID());
     }
 
     @Override

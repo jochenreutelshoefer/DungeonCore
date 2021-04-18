@@ -13,26 +13,12 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.item.interfaces.Usable;
 
-public class UsePercept extends OpticalPercept {
+public class UsePercept extends SimpleActorPercept {
 	
-	private final Figure actor;
 
 	public UsePercept(Figure actor, Usable o, int round) {
-		super(actor.getRoomNumber(), round);
-		this.actor = actor;
+		super(actor, actor.getRoomNumber(), round);
 	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(actor, viewer.getRoomVisibility());
-	}
-
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(getFigure());
-		return l;
-	}
-	
 	
 
 }

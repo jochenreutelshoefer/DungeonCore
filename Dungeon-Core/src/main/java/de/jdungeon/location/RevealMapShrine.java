@@ -10,7 +10,6 @@ import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -65,9 +64,9 @@ public class RevealMapShrine extends Location {
     public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
         if (doIt) {
             for (Room revealedRoom : revealedRooms) {
-                int discoveryStatus = f.getRoomVisibility().getDiscoveryStatus(revealedRoom.getNumber());
+                int discoveryStatus = f.getViwMap().getDiscoveryStatus(revealedRoom.getNumber());
                 if (discoveryStatus < RoomObservationStatus.VISIBILITY_FIGURES) {
-                    f.getRoomVisibility().setVisibilityStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
+                    f.getViwMap().setVisibilityStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
                     //f.getRoomVisibility().setDiscoveryStatus(revealedRoom.getPoint(), RoomObservationStatus.VISIBILITY_FIGURES);
                 } else {
                     // in this case for the de.jdungeon.user it is helpful to show target room(s)

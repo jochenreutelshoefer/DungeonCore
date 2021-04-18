@@ -254,7 +254,6 @@ public abstract class Figure extends DungeonWorldObject
     }
 
     public void tellPercept(Percept p) {
-        p.perceivedBy(this);
         if (control != null) {
             control.tellPercept(p);
         }
@@ -360,7 +359,7 @@ public abstract class Figure extends DungeonWorldObject
             lastTimeTick = round;
         }
 
-            final DungeonVisibilityMap roomVisibility = getRoomVisibility();
+            final DungeonVisibilityMap roomVisibility = getViwMap();
             if (roomVisibility != null) {
                 roomVisibility.resetTemporalVisibilities();
             }
@@ -588,7 +587,7 @@ public abstract class Figure extends DungeonWorldObject
         List<Item> allItems = this.getAllItems();
         //allItems.forEach(i -> System.out.println(i.isMagic()));
         for (Item it : allItems) {
-            ItemInfo itemInfo = ItemInfo.makeItemInfo(it, getRoomVisibility());
+            ItemInfo itemInfo = ItemInfo.makeItemInfo(it, getViwMap());
             if (itemInfo.equals(item)) {
                 return it;
             }
@@ -613,7 +612,7 @@ public abstract class Figure extends DungeonWorldObject
             return true;
         }
         if (getControl() != null) {
-            tellPercept(new FightEndedPercept(FigureInfo.makeInfos(figures, this), round));
+            tellPercept(new FightEndedPercept(figures, round));
         }
         return false;
     }
@@ -836,7 +835,7 @@ public abstract class Figure extends DungeonWorldObject
             createVisibilityMap(d);
             if (ai != null) {
                 // TODO: this de.jdungeon.ai field should nou be used
-                FigureInfo info = FigureInfo.makeFigureInfo(this, getRoomVisibility());
+                FigureInfo info = FigureInfo.makeFigureInfo(this, getViwMap());
                 ai.setFigure(info);
                 this.control = new FigureControl(info, ai);
             }
@@ -865,7 +864,7 @@ public abstract class Figure extends DungeonWorldObject
     public abstract int getActualRangeCapability(int range);
 
     public RoomObservationStatus getRoomObservationStatus(JDPoint p) {
-        return getRoomVisibility().getStatusObject(p);
+        return getViwMap().getStatusObject(p);
     }
 
     public abstract int getSlapStrength(Figure m);
@@ -1023,7 +1022,7 @@ public abstract class Figure extends DungeonWorldObject
         return status;
     }
 
-    public DungeonVisibilityMap getRoomVisibility() {
+    public DungeonVisibilityMap getViwMap() {
         return visibilities;
     }
 
@@ -1204,13 +1203,13 @@ public abstract class Figure extends DungeonWorldObject
                 goThroughDoor(oldRoom, toGo, round);
                 return true;
             } else {
-                if (standing.getControl().isHostileTo(FigureInfo.makeFigureInfo(this, standing.getRoomVisibility()))
+                if (standing.getControl().isHostileTo(FigureInfo.makeFigureInfo(this, standing.getViwMap()))
                         || this.getControl()
-                        .isHostileTo(FigureInfo.makeFigureInfo(standing, this.getRoomVisibility()))) {
+                        .isHostileTo(FigureInfo.makeFigureInfo(standing, this.getViwMap()))) {
 
                     // some visibility information for non-active de.jdungeon.figure during door smashing
                     ScoutResult scoutThis = new ScoutResult(standing, RoomObservationStatus.VISIBILITY_FIGURES);
-                    standing.getRoomVisibility().addVisibilityModifier(this.getRoomNumber(), scoutThis);
+                    standing.getViwMap().addVisibilityModifier(this.getRoomNumber(), scoutThis);
 
                     boolean raid = this.isRaiding();
                     int thisStr = (int) this.getStrength().getValue();
@@ -1285,7 +1284,7 @@ public abstract class Figure extends DungeonWorldObject
         for (Iterator<Spell> iter = l.iterator(); iter.hasNext(); ) {
             Spell element = iter.next();
             if (element != null
-                    && a.equals(new SpellInfo(element, this.getRoomVisibility()))) {
+                    && a.equals(new SpellInfo(element, this.getViwMap()))) {
                 return element;
             }
         }

@@ -69,7 +69,7 @@ public class Escape extends NoTargetSpell {
 		mage.setEscape(level);
 		//mage.incActionPoints(1, - 1); // Todo: re-implement speed boost
 		FleeSkill skill = mage.getSkill(FleeSkill.class);
-		SimpleSkillAction a = skill.newActionFor(FigureInfo.makeFigureInfo(mage, mage.getRoomVisibility())).get();
+		SimpleSkillAction a = skill.newActionFor(FigureInfo.makeFigureInfo(mage, mage.getViwMap())).get();
 		skill.doExecute(a, true, -1);
 	}
 

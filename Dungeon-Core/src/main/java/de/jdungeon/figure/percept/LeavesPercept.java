@@ -13,42 +13,31 @@ import de.jdungeon.figure.FigureInfo;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.02.20.
  */
-public class LeavesPercept extends OpticalPercept {
+public class LeavesPercept extends SimpleActorPercept {
 
-	private final Room from;
+    private final Room from;
 
-	private final RouteInstruction.Direction direction;
+    private final RouteInstruction.Direction direction;
 
-	private final Figure figure;
-	public RoomInfo getFrom() {
-		return new RoomInfo(from,viewer.getRoomVisibility());
-	}
-
-
-	public RoomInfo getTo() {
-		return new RoomInfo(from.getNeighbourRoom(direction),viewer.getRoomVisibility());
-	}
+    public RoomInfo getFrom(FigureInfo viewer) {
+        return new RoomInfo(from, viewer.getVisMap());
+    }
 
 
-	public LeavesPercept(Figure f, Room r1 , RouteInstruction.Direction direction, int round) {
-		super(r1.getNumber(), round);
-		figure = f;
-		from = r1;
-		this.direction = direction;
-	}
+    public RoomInfo getTo(FigureInfo viewer) {
+        return new RoomInfo(from.getNeighbourRoom(direction), viewer.getVisMap());
+    }
 
 
-	public RouteInstruction.Direction getDirection() {
-		return direction;
-	}
+    public LeavesPercept(Figure f, Room r1, RouteInstruction.Direction direction, int round) {
+        super(f, r1.getNumber(), round);
+        from = r1;
+        this.direction = direction;
+    }
 
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(figure,viewer.getRoomVisibility());
-	}
 
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		return Collections.singletonList(getFigure());
-	}
+    public RouteInstruction.Direction getDirection() {
+        return direction;
+    }
 
 }

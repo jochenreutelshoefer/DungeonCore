@@ -3,7 +3,6 @@ package de.jdungeon.location;
 import de.jdungeon.dungeon.RoomEntity;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.item.AttrPotion;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
@@ -206,7 +205,7 @@ public class SorcerLab extends Location implements VisibilityModifier {
 		for (int i = 0; i < rooms.size(); i++) {
 			Room toView = rooms.get(i);
 			// TODO: maybe better do this scouting as done at scout shrine, via ScoutResult objects?
-			f.getRoomVisibility().addVisibilityModifier(toView.getRoomNumber(), this);
+			f.getViwMap().addVisibilityModifier(toView.getRoomNumber(), this);
 
 		}
 		String s = JDEnv.getResourceBundle().getString("sorcLab_setup");

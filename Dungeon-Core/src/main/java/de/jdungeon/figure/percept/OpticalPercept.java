@@ -15,7 +15,7 @@ import de.jdungeon.dungeon.JDPoint;
 
 public abstract class OpticalPercept extends Percept {
 
-	Set<JDPoint> locations = new HashSet<>();
+	private Set<JDPoint> locations = new HashSet<>();
 
 	public OpticalPercept(JDPoint room, int round) {
 		super(round);

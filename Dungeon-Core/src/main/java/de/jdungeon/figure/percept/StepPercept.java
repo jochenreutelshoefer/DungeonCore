@@ -12,21 +12,15 @@ import java.util.List;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
-public class StepPercept extends OpticalPercept {
+public class StepPercept extends SimpleActorPercept {
 	
-	private Figure f;
 	private int from;
 	private int to;
 	
 	public StepPercept(Figure f, int from, int to, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
+		super(f, f.getRoomNumber(), round);
 		this.from = from;
 		this.to = to;
-	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
 	}
 	
 	public int getFromIndex() {
@@ -34,15 +28,7 @@ public class StepPercept extends OpticalPercept {
 	}
 	
 	public int getToIndex() {
-		
 		return to;
-	}
-
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(getFigure());
-		return l;
 	}
 
 }

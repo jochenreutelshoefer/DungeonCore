@@ -39,7 +39,7 @@ public class ScoutSkill extends TargetSkill<RoomInfo> {
 	}
 
 	private int getDir(RoomInfo target, Figure figure) {
-		RoomInfo currentRoom = FigureInfo.makeFigureInfo(figure, figure.getRoomVisibility()).getRoomInfo();
+		RoomInfo currentRoom = FigureInfo.makeFigureInfo(figure, figure.getViwMap()).getRoomInfo();
 		return currentRoom.getDirectionTo(target);
 	}
 
@@ -70,7 +70,7 @@ public class ScoutSkill extends TargetSkill<RoomInfo> {
 			return ActionResult.UNKNOWN;
 		}
 		Room scoutTarget = figure.getRoom().getNeighbourRoom(dir);
-		if (figure.getRoomVisibility()
+		if (figure.getViwMap()
 				.getStatusObject(scoutTarget.getNumber())
 				.getVisibilityStatus() >= RoomObservationStatus.VISIBILITY_FIGURES) {
 			return ActionResult.UNKNOWN;
@@ -78,7 +78,7 @@ public class ScoutSkill extends TargetSkill<RoomInfo> {
 		if (doIt) {
 			figure.setLookDir(dir);
 			ScoutResult result = scout(action, round);
-			figure.getRoomVisibility().addVisibilityModifier(toScout.getNumber(), result);
+			figure.getViwMap().addVisibilityModifier(toScout.getNumber(), result);
 			Percept p = new ScoutPercept(figure, figure.getRoom(), dir, round);
 			figure.getRoom().distributePercept(p);
 			return ActionResult.DONE;

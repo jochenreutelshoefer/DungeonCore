@@ -136,8 +136,8 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 						fig = l.get((int)(Math.random()*l.size()));
 					}
 					return this.f.getSkill(AttackSkill.class)
-							.newActionFor(FigureInfo.makeFigureInfo(f, f.getRoomVisibility()))
-							.target(FigureInfo.makeFigureInfo(fig, f.getRoomVisibility()))
+							.newActionFor(FigureInfo.makeFigureInfo(f, f.getViwMap()))
+							.target(FigureInfo.makeFigureInfo(fig, f.getViwMap()))
 							.get();
 				} else {
 					Action a = getFleeAction();
@@ -146,8 +146,8 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 					}else {
 						if(f.getRoom().getRoomFigures().contains(this.convincor)) {
 							return this.f.getSkill(AttackSkill.class)
-									.newActionFor(FigureInfo.makeFigureInfo(f, f.getRoomVisibility()))
-									.target(FigureInfo.makeFigureInfo(this.convincor, f.getRoomVisibility()))
+									.newActionFor(FigureInfo.makeFigureInfo(f, f.getViwMap()))
+									.target(FigureInfo.makeFigureInfo(this.convincor, f.getViwMap()))
 									.get();
 						}else {
 							convincedRounds = 0;
@@ -165,7 +165,7 @@ public class DefaultMonsterReflexBehavior extends AbstractReflexBehavior{
 	
 	protected Action getFleeAction() {
 		if(this.actualType == AbstractReflexBehavior.TYPE_FLEE) {
-			Action a = DefaultMonsterIntelligence.getFleeAction((MonsterInfo)(m.makeInfoObject(m.getRoomVisibility())));
+			Action a = DefaultMonsterIntelligence.getFleeAction((MonsterInfo)(m.makeInfoObject(m.getViwMap())));
 			if(a != null) {
 				return a;
 			}

@@ -11,7 +11,6 @@ import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.action.ScoutResult;
 import de.jdungeon.figure.action.result.ActionResult;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -89,7 +88,7 @@ public class ScoutShrine extends Location {
         if (doIt) {
             ScoutResult result = new ScoutResult(f, RoomObservationStatus.VISIBILITY_ITEMS);
             for (Room room : roomsList) {
-                f.getRoomVisibility().addVisibilityModifier(room.getNumber(), result);
+                f.getViwMap().addVisibilityModifier(room.getNumber(), result);
             }
             return ActionResult.DONE;
         } else {

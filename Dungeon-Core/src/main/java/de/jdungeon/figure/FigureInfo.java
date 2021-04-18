@@ -57,10 +57,10 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 		for (Figure figure : figures) {
 			// todo : find better solution using appropriate design pattern
 			if (figure instanceof Hero) {
-				result.add(new HeroInfo((Hero) figure, perceiver.getRoomVisibility()));
+				result.add(new HeroInfo((Hero) figure, perceiver.getViwMap()));
 			}
 			if (figure instanceof Monster) {
-				result.add(new MonsterInfo((Monster) figure, perceiver.getRoomVisibility()));
+				result.add(new MonsterInfo((Monster) figure, perceiver.getViwMap()));
 			}
 		}
 		return result;

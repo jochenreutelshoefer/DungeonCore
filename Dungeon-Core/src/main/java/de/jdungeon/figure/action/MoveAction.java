@@ -30,7 +30,7 @@ public class MoveAction extends AbstractExecutableAction {
 		this.startPoint = startPoint;
 		directionIndex = dir;
 		direction = RouteInstruction.Direction.fromInteger(directionIndex);
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
+		figure = info.getVisMap().getDungeon().getFigureIndex().get(info.getFigureID());
 	}
 
 	public MoveAction(Figure fig, JDPoint startPoint, int dir) {
@@ -45,7 +45,7 @@ public class MoveAction extends AbstractExecutableAction {
 		this.startPoint = startPoint;
 		this.direction = direction;
 		this.directionIndex = direction.getValue();
-		figure = info.getMap().getDungeon().getFigureIndex().get(info.getFigureID());
+		figure = info.getVisMap().getDungeon().getFigureIndex().get(info.getFigureID());
 
 	}
 

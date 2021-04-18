@@ -52,7 +52,7 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		npc.takeItem(new Wolfknife(25, false));
 		// TODO: use setControl!
 		npc.createVisibilityMap(dungeon);
-		FigureInfo npcInfo = FigureInfo.makeFigureInfo(npc, npc.getRoomVisibility());
+		FigureInfo npcInfo = FigureInfo.makeFigureInfo(npc, npc.getViwMap());
 		RescuedNPCAI ai = new RescuedNPCAI();
 		ai.setFigure(npcInfo);
 		npc.setControl(new FigureControl(npcInfo, ai));

@@ -271,8 +271,8 @@ public class PlayerController implements JDGUI {
 			number = ((OpticalPercept) p).getPoint();
 		}
 		if (p instanceof EntersPercept  // someone enters
-				&& (((EntersPercept) p).getTo().equals(this.getFigure().getRoomInfo())) // into the room of this de.jdungeon.figure
-				&& (!((EntersPercept) p).getFigure().equals(this.getFigure()))) { // who is not this de.jdungeon.figure
+				&& (((EntersPercept) p).getTo(this.heroInfo).equals(this.getFigure().getRoomInfo())) // into the room of this de.jdungeon.figure
+				&& (!((EntersPercept) p).getFigure(this.heroInfo).equals(this.getFigure()))) { // who is not this de.jdungeon.figure
 			// we interrupt the current plan to allow the player to react
 			interrupt(p);
 		}

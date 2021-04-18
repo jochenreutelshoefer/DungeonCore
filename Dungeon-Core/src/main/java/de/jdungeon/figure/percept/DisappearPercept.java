@@ -8,30 +8,18 @@ import de.jdungeon.dungeon.RoomInfo;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
-public class DisappearPercept extends OpticalPercept {
+public class DisappearPercept extends SimpleActorPercept {
 
-	private final Figure f;
-	private final Room from;
-	
-	public DisappearPercept(Figure f, Room from, int round) {
-		super(from.getNumber(), round);
-		this.f = f;
-		this.from = from;
-	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
-	}
-	
-	public RoomInfo getRoom() {
-		return RoomInfo.makeRoomInfo(from, viewer.getRoomVisibility());
-	}
-	
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<FigureInfo>();
-		l.add(getFigure());
-		return l;
-	}
+    private final Room from;
+
+    public DisappearPercept(Figure f, Room from, int round) {
+        super(f, from.getNumber(), round);
+        this.from = from;
+    }
+
+    public RoomInfo getRoom(FigureInfo viewer) {
+        return RoomInfo.makeRoomInfo(from, viewer.getVisMap());
+    }
+
 
 }

@@ -209,7 +209,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
         currentHero.setActualDungeon(derDungeon);
         currentHero.setControl(control);
 
-        DungeonVisibilityMap heroVisMap = currentHero.getRoomVisibility();
+        DungeonVisibilityMap heroVisMap = currentHero.getViwMap();
 
         HeroInfo heroInfo = new HeroInfo(currentHero, heroVisMap);
 

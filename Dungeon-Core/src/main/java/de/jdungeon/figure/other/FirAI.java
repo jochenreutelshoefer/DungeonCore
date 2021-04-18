@@ -20,11 +20,10 @@ import de.jdungeon.skill.attack.AttackSkill;
 
 public class FirAI extends AbstractAI {
 
-	FigureInfo info;
-	List<FigureInfo> attackers = new LinkedList<FigureInfo>();
-	boolean fightEnded = false;
+	private FigureInfo info;
+	private List<FigureInfo> attackers = new LinkedList<FigureInfo>();
 
-	public FirAI(FigureInfo firInfo) {
+	FirAI(FigureInfo firInfo) {
 		super(new AttitudeDefaultHero());
 		this.info = firInfo;
 	}
@@ -81,18 +80,10 @@ public class FirAI extends AbstractAI {
 	protected void processPercept(Percept p) {
 		if (p instanceof AttackPercept) {
 			AttackPercept attack = (AttackPercept) p;
-			if (((AttackPercept) p).getVictim().equals(this.info)) {
-				FigureInfo currentAttacker = attack.getAttacker();
+			if (((AttackPercept) p).getVictim(this.info).equals(this.info)) {
+				FigureInfo currentAttacker = attack.getAttacker(info);
 				attackers.add(currentAttacker);
 			}
-		}
-		if (p instanceof FleePercept) {
-			if (((FleePercept) p).getFigure() instanceof HeroInfo) {
-				fightEnded = true;
-			}
-		}
-		if (p instanceof FightEndedPercept) {
-			this.fightEnded = true;
 		}
 	}
 }

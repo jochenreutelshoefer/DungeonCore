@@ -38,7 +38,7 @@ public class VisibilityCheatBall extends Thing implements Usable, VisibilityModi
 				JDPoint point = new JDPoint(x, y);
 				Room toView = dungeon.getRoom(point);
 				if (toView != null) {
-					f.getRoomVisibility().addVisibilityModifier(toView.getRoomNumber(), this);
+					f.getViwMap().addVisibilityModifier(toView.getRoomNumber(), this);
 					// TODO: implement that the vis modifier will be removed if the de.jdungeon.item is dropped
 				}
 			}

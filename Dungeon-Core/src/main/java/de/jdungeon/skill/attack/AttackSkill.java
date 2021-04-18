@@ -174,8 +174,8 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 
 		AttackSkillAction(AttackSkill skill, FigureInfo attackerInfo, int targetID) {
 			super(skill, attackerInfo);
-			attacker = attackerInfo.getMap().getDungeon().getFigureIndex().get(attackerInfo.getFigureID());
-			target = attackerInfo.getMap().getDungeon().getFigureIndex().get(targetID);
+			attacker = attackerInfo.getVisMap().getDungeon().getFigureIndex().get(attackerInfo.getFigureID());
+			target = attackerInfo.getVisMap().getDungeon().getFigureIndex().get(targetID);
 		}
 	}
 }

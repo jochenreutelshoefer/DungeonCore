@@ -17,43 +17,24 @@ import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.item.interfaces.ItemOwner;
 
-public class ItemDroppedPercept extends OpticalPercept {
-	
-	private final List<Item> items;
-	private final ItemOwner f;
-	
-	public ItemDroppedPercept(List<Item> items, ItemOwner f, int round) {
-		super(f.getRoomNumber(), round);
-		this.items = items;
-		this.f = f;
-	}
-	
-	public FigureInfo getFigure() {
-		if(f instanceof Figure) {
-			return FigureInfo.makeFigureInfo((Figure)f,viewer.getRoomVisibility());
-		}
-		return null;
-	}
-	
-	public List<ItemInfo> getItems() {
-		List<ItemInfo> l = new LinkedList<>();
-		for (Iterator iter = items.iterator(); iter.hasNext();) {
-			Item element = (Item) iter.next();
-			ItemInfo info = ItemInfo.makeItemInfo(element,this.viewer.getRoomVisibility());
-			l.add(info);
-		}
-		return l;
-	}
+public class ItemDroppedPercept extends SimpleActorPercept {
 
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		if(f instanceof Figure) {
-			l.add(FigureInfo.makeFigureInfo((Figure)f, viewer.getRoomVisibility()));
-		}
-		return l;
+    private final List<Item> items;
 
-	}
-	
+    public ItemDroppedPercept(List<Item> items, Figure f, int round) {
+        super(f, f.getRoomNumber(), round);
+        this.items = items;
+    }
+
+    public List<ItemInfo> getItems(FigureInfo viewer) {
+        List<ItemInfo> l = new LinkedList<>();
+        for (Iterator iter = items.iterator(); iter.hasNext(); ) {
+            Item element = (Item) iter.next();
+            ItemInfo info = ItemInfo.makeItemInfo(element, viewer.getVisMap());
+            l.add(info);
+        }
+        return l;
+    }
+
 
 }

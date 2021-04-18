@@ -34,11 +34,11 @@ public class HitPercept extends OpticalPercept {
 		this.res = res;
 	}
 	
-	public FigureInfo getAttacker() {
-		return FigureInfo.makeFigureInfo(attacker, viewer.getRoomVisibility());
+	public FigureInfo getAttacker(FigureInfo viewer) {
+		return FigureInfo.makeFigureInfo(attacker, viewer.getVisMap());
 	}
-	public FigureInfo getVictim() {
-		return FigureInfo.makeFigureInfo(victim,viewer.getRoomVisibility());
+	public FigureInfo getVictim(FigureInfo viewer) {
+		return FigureInfo.makeFigureInfo(victim,viewer.getVisMap());
 	}
 	
     public int getDamage() {
@@ -68,10 +68,10 @@ public class HitPercept extends OpticalPercept {
 	}
 
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
 		List<FigureInfo> l = new LinkedList<>();
-		l.add(getAttacker());
-		l.add(getVictim());
+		l.add(getAttacker(viewer));
+		l.add(getVictim(viewer));
 		return l;
 	}
 }

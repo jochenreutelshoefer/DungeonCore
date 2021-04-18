@@ -158,8 +158,8 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		HadrianAI ai = new HadrianAI();
 		Wolf hadrian = new Wolf( 14000, ai, "Hadrian" );
 		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
-		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getRoomVisibility()));
-		filler.setAllFound(hadrian.getRoomVisibility());
+		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
+		filler.setAllFound(hadrian.getViwMap());
 		filler.addAllocatedRoom(wolfRoom);
 
 		return dungeon;

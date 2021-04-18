@@ -64,7 +64,7 @@ public class DungeonUtils {
 	}
 
 	public static Path findShortestPath(FigureInfo figure, JDPoint start, JDPoint goal, boolean crossBlockedDoors) {
-		return findShortestPath(start, goal, figure.getMap(), crossBlockedDoors);
+		return findShortestPath(start, goal, figure.getVisMap(), crossBlockedDoors);
 	}
 
 	public static Path findShortestPath(Room start, Room goal, DungeonVisibilityMap visibilityMap, boolean crossBlockedDoors) {

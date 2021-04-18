@@ -6,50 +6,34 @@
  */
 package de.jdungeon.figure.percept;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import de.jdungeon.spell.AbstractSpell;
 import de.jdungeon.spell.SpellInfo;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
-public class SpellPercept extends OpticalPercept {
-	
-	private Figure f;
-	private AbstractSpell spell;
-	private boolean begins = false;
-	
-	public SpellPercept(Figure f, AbstractSpell s, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
-		this.spell = s;
-	}
-	
-	public SpellPercept(Figure f, AbstractSpell s, boolean begins, int round) {
-		super(f.getRoomNumber(), round);
-		this.f = f;
-		this.spell = s;
-		this.begins = begins;
-	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
-	}
-	
-	public SpellInfo getSpell() {
-		return new SpellInfo(spell,viewer.getRoomVisibility());
-	}
+public class SpellPercept extends SimpleActorPercept {
 
-	public boolean isBegins() {
-		return begins;
-	}
+    private Figure f;
+    private AbstractSpell spell;
+    private boolean begins = false;
 
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(getFigure());
-		return l;
-	}
+    public SpellPercept(Figure f, AbstractSpell s, int round) {
+        super(f, f.getRoomNumber(), round);
+        this.spell = s;
+    }
+
+    public SpellPercept(Figure f, AbstractSpell s, boolean begins, int round) {
+        super(f, f.getRoomNumber(), round);
+        this.spell = s;
+        this.begins = begins;
+    }
+
+    public SpellInfo getSpell(FigureInfo viewer) {
+        return new SpellInfo(spell, viewer.getVisMap());
+    }
+
+    public boolean isBegins() {
+        return begins;
+    }
 
 }

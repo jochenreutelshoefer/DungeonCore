@@ -33,7 +33,7 @@ public class AudioEffectsManager {
 	public static AbstractAudioSet MAGIC_BLING;
 
 	public static AbstractAudioSet TAKE_ITEM;
-
+	public static AbstractAudioSet OWL_HOOT;
 	// unused
 	public static AbstractAudioSet HIT;
 
@@ -111,6 +111,7 @@ public class AudioEffectsManager {
 					"hiss2.wav");
 
 			WOLF_DIES = create(a, "wolf-dies.wav");
+			OWL_HOOT = create(a, "owl.mp3");
 		}
 	}
 

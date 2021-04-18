@@ -109,7 +109,7 @@ public class PositionInRoomInfo extends RoomInfoEntity {
 	public Collection<PositionInRoomInfo> getInteractionPositions() {
 		// we return itself and the two neighbour positions
 		Collection<PositionInRoomInfo> result = new HashSet<>();
-		DungeonVisibilityMap map = this.getMap();
+		DungeonVisibilityMap map = this.getVisMap();
 		Room room = map.getDungeon().getRoom(this.getLocation());
 		result.add(new PositionInRoomInfo(room.getPositions()[this.getPreviousIndex()], map));
 		result.add(new PositionInRoomInfo(room.getPositions()[this.getNextIndex()], map));

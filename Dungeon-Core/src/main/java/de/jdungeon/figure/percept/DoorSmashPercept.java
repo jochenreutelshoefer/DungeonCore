@@ -31,8 +31,8 @@ public class DoorSmashPercept extends OpticalPercept {
 	public int getValue() {
 		return value;
 	}
-	public FigureInfo getVictim() {
-		return FigureInfo.makeFigureInfo(victim,viewer.getRoomVisibility());
+	public FigureInfo getVictim(FigureInfo viewer) {
+		return FigureInfo.makeFigureInfo(victim,viewer.getVisMap());
 	}
 
 	public JDPoint getVictimPosition() {
@@ -43,15 +43,15 @@ public class DoorSmashPercept extends OpticalPercept {
 		return opponentPosition;
 	}
 
-	public FigureInfo getOpponent() {
-		return FigureInfo.makeFigureInfo(opponent, viewer.getRoomVisibility());
+	public FigureInfo getOpponent(FigureInfo viewer) {
+		return FigureInfo.makeFigureInfo(opponent, viewer.getVisMap());
 	}
 
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
 		List<FigureInfo> l = new LinkedList<FigureInfo>();
-		l.add(getVictim());
-		l.add(getOpponent());
+		l.add(getVictim(viewer));
+		l.add(getOpponent(viewer));
 		return l;
 	}
 }

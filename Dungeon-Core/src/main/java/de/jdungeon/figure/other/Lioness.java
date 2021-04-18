@@ -19,7 +19,7 @@ public class Lioness extends ConjuredMagicFigure {
 		this.setActualDungeon(d);
 		createVisibilityMap(d);
 		MonsterInfo info = (MonsterInfo) FigureInfo.makeFigureInfo(this,
-				getRoomVisibility());
+				getViwMap());
 		// todo: create AI which has its leader set on creation
 		ai.setFigure(info);
 		this.control = new FigureControl(info, ai);
@@ -30,7 +30,7 @@ public class Lioness extends ConjuredMagicFigure {
 	public static Lioness createLioness(int value, Dungeon d, FigureInfo master) {
 		AI ai = new RescuedNPCAI();
 		Lioness lioness = new Lioness(value, d, ai);
-		FigureInfo figureInfo = FigureInfo.makeFigureInfo(lioness, lioness.getRoomVisibility());
+		FigureInfo figureInfo = FigureInfo.makeFigureInfo(lioness, lioness.getViwMap());
 		ai.setFigure(figureInfo);
 		d.insertFigure(lioness);
 		return lioness;

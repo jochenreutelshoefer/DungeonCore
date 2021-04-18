@@ -14,7 +14,6 @@ import de.jdungeon.figure.npc.DefaultNPCFactory;
 import de.jdungeon.figure.npc.RescuedNPCAI;
 import de.jdungeon.figure.percept.LocationStateChangePercept;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.location.Location;
 import de.jdungeon.location.LocationState;
 
@@ -55,7 +54,7 @@ public class DefenderLocation extends Location {
         defenderFigure = DefaultNPCFactory.createDefaultNPC("Willibald", Hero.HEROCODE_WARRIOR);
         defenderFigure.createVisibilityMap(room.getDungeon());
         room.getDungeon().insertFigure(defenderFigure);
-        FigureInfo defenderInfo = FigureInfo.makeFigureInfo(defenderFigure, defenderFigure.getRoomVisibility());
+        FigureInfo defenderInfo = FigureInfo.makeFigureInfo(defenderFigure, defenderFigure.getViwMap());
         RescuedNPCAI ai = new RescuedNPCAI();
         ai.setFigure(defenderInfo);
         defenderFigure.setControl(new FigureControl(defenderInfo, ai)); // todo: create DefenderAI
@@ -116,7 +115,7 @@ public class DefenderLocation extends Location {
         boolean activatorThere = roomFigures.contains(activator);
         if (activatorThere) {
             for (Figure otherFigure : roomFigures) {
-                if (otherFigure != activator && activator.getControl().isHostileTo(FigureInfo.makeFigureInfo(otherFigure, defenderFigure.getRoomVisibility()))) {
+                if (otherFigure != activator && activator.getControl().isHostileTo(FigureInfo.makeFigureInfo(otherFigure, defenderFigure.getViwMap()))) {
                     // found at least one hostile de.jdungeon.figure
                     return true;
                 }

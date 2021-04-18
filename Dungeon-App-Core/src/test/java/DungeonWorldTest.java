@@ -54,7 +54,7 @@ public class DungeonWorldTest extends TestCase {
 				SimpleHeroBehavior control = new SimpleHeroBehavior();
 				hero.setControl(control);
 
-				DungeonVisibilityMap heroVisMap = hero.getRoomVisibility();
+				DungeonVisibilityMap heroVisMap = hero.getViwMap();
 				HeroInfo heroInfo = new HeroInfo(hero, heroVisMap);
 				dungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY()).figureEnters(hero, 0, -1);
 				control.setFigure(heroInfo);

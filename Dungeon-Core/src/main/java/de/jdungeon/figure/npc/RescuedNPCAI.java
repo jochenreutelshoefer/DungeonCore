@@ -45,7 +45,7 @@ public class RescuedNPCAI implements AI {
     public void tellPercept(Percept p) {
         if (currentState == State.prisoner) {
             // waiting for a hero to come and rescue
-            List<FigureInfo> involvedFigures = p.getInvolvedFigures();
+            List<FigureInfo> involvedFigures = p.getInvolvedFigures(this.info);
             for (FigureInfo involvedFigure : involvedFigures) {
                 if (involvedFigure instanceof HeroInfo && involvedFigure.getFigureID() != this.info.getFigureID()) {
                     if (involvedFigure.getRoomInfo().getRoomNumber().equals(this.info.getRoomNumber())) {
@@ -59,14 +59,14 @@ public class RescuedNPCAI implements AI {
 
         if (currentState == State.following) {
 
-            if (p.getInvolvedFigures() != null && p.getInvolvedFigures().contains(leader)) {
+            if (p.getInvolvedFigures(this.info) != null && p.getInvolvedFigures(info).contains(leader)) {
                 // we assume that we have visibility of the leader's room as we have perceived the percept...
                 // note: might fail for de.jdungeon.audio perceptions for instance
 
                 if (p instanceof LeavesPercept) {
                     // LeavesPercept needs special treatment as it knows a more specific positon than the place where it occurs..
                     RouteInstruction.Direction direction = ((LeavesPercept) p).getDirection();
-                    RoomInfo from = ((LeavesPercept) p).getFrom();
+                    RoomInfo from = ((LeavesPercept) p).getFrom(this.info);
                     RoomInfo neighbourRoom = from.getNeighbourRoom(direction);
                     this.lastKnownLeaderPosition = neighbourRoom.getNumber();
                 } else {
@@ -82,16 +82,16 @@ public class RescuedNPCAI implements AI {
 
             // if the leader moves out of the room recognize target room
             if (p instanceof EntersPercept) {
-                if (((EntersPercept) p).getFigure().equals(leader)) {
-                    RoomInfo movedTo = ((EntersPercept) p).getTo();
+                if (((EntersPercept) p).getFigure(this.info).equals(leader)) {
+                    RoomInfo movedTo = ((EntersPercept) p).getTo(this.info);
                     lastKnownLeaderPosition = movedTo.getNumber();
                 }
             }
             if (p instanceof FleePercept) {
                 FleePercept fleePercept = (FleePercept) p;
-                if (fleePercept.getFigure().equals(leader) &&
+                if (fleePercept.getFigure(this.info).equals(leader) &&
                         fleePercept.isSuccess()) {
-                    RoomInfo fledTo = fleePercept.getRoom().getNeighbourRoom(fleePercept.getDir());
+                    RoomInfo fledTo = fleePercept.getRoom(this.info).getNeighbourRoom(fleePercept.getDir());
                     lastKnownLeaderPosition = fledTo.getNumber();
                 }
             }

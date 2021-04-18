@@ -14,12 +14,12 @@ import de.jdungeon.figure.percept.OpticalPercept;
  * @created 25.04.20.
  */
 public class InterruptPercept extends OpticalPercept {
-	public InterruptPercept(FigureInfo figure, int round) {
-		super(figure.getRoomInfo().getNumber(), round);
-	}
+    public InterruptPercept(FigureInfo figure, int round) {
+        super(figure.getRoomInfo().getNumber(), round);
+    }
 
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		return Collections.emptyList();
-	}
+    @Override
+    public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
+        return Collections.emptyList();
+    }
 }

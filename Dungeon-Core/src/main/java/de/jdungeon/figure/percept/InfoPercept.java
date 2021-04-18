@@ -9,6 +9,7 @@ package de.jdungeon.figure.percept;
 import java.util.Collections;
 import java.util.List;
 
+import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
 public class InfoPercept extends Percept {
@@ -42,7 +43,7 @@ public class InfoPercept extends Percept {
 	}
 
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
 		return Collections.emptyList();
 	}
 	

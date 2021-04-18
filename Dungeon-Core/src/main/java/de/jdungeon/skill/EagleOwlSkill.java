@@ -25,7 +25,7 @@ public class EagleOwlSkill extends SimpleSkill {
     public ActionResult doExecute(SimpleSkillAction action, boolean doIt, int round) {
         if (doIt) {
             Figure actor = action.getActor();
-            actor.getRoomVisibility().addVisibilityModifier(actor.getRoomNumber(), new EagleOwl());
+            actor.getViwMap().addVisibilityModifier(actor.getRoomNumber(), new EagleOwl());
             return ActionResult.DONE;
         } else {
             return ActionResult.POSSIBLE;

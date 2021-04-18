@@ -32,18 +32,18 @@ public class AttackPercept extends OpticalPercept {
 		return Position.Pos.fromValue(attacker.getPos().getIndex());
 	}
 
-	public FigureInfo getAttacker() {
-		return FigureInfo.makeFigureInfo(attacker,viewer.getRoomVisibility());
+	public FigureInfo getAttacker(FigureInfo viewer) {
+		return FigureInfo.makeFigureInfo(attacker,viewer.getVisMap());
 	}
-	public FigureInfo getVictim() {
-		return FigureInfo.makeFigureInfo(victim, viewer.getRoomVisibility());
+	public FigureInfo getVictim(FigureInfo viewer) {
+		return FigureInfo.makeFigureInfo(victim, viewer.getVisMap());
 	}
 	
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
 		List<FigureInfo> l = new LinkedList<>();
-		l.add(getVictim());
-		l.add(getAttacker());
+		l.add(getVictim(viewer));
+		l.add(getAttacker(viewer));
 		return l;
 	}
 	

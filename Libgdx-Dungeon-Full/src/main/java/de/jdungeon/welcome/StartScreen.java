@@ -63,7 +63,7 @@ public class StartScreen extends AbstractScreen {
 	public void init() {
 
 		//String backgroundFileName = "haunted-castle.jpg";
-		bgImageTx = createTexture("door of kilpeck.jpg");
+		bgImageTx = createTexture("door of kilpeck_dark.jpg");
 		enterTheTx = createTexture("Enter the.png");
 		doorDungeonTx = createTexture("Door Dungeon.png");
 	}
@@ -140,15 +140,16 @@ public class StartScreen extends AbstractScreen {
 
 		float widthDD = width * 0.8f;
 
-		float startPosXDD = 30 + (width - widthDD) / 2;
+		float startPosXDD = (width - widthDD) / 2;
 
-		float heightDD = ((float)doorDungeonTx.getHeight()) / doorDungeonTx.getWidth() * widthDD;
-		float startPosYDD = height - heightDD - (45);
+		float textureRatio = ((float) doorDungeonTx.getHeight()) / doorDungeonTx.getWidth();
+		float heightDD = textureRatio * widthDD;
+		float startPosYDD = height - heightDD - 25;
 
 		float widthEnter = width * 0.15f;
 		float heightEnter = ((float) enterTheTx.getHeight()) / enterTheTx.getWidth() * widthEnter;
-		float startPosXEnter = 180;
-		float startPosYEnter =  height - heightEnter - (20);;
+		float startPosXEnter = 30;
+		float startPosYEnter =  height - heightEnter - (5);;
 
 		batch.draw(enterTheTx, startPosXEnter, startPosYEnter, widthEnter, heightEnter);
 		batch.draw(doorDungeonTx, startPosXDD, startPosYDD, widthDD, heightDD);

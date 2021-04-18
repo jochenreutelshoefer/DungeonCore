@@ -6,21 +6,27 @@
  */
 package de.jdungeon.figure.percept;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
 public class FightEndedPercept extends OpticalPercept {
 
-	private final List<FigureInfo> figures;
+	private final List<Figure> figures;
 
-	public FightEndedPercept(List<FigureInfo> figures, int round) {
+	public FightEndedPercept(List<Figure> figures, int round) {
 		super(figures.iterator().next().getRoomNumber(), round);
 		this.figures = figures;
 	}
 
 	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		return figures;
+	public List<FigureInfo> getInvolvedFigures(FigureInfo viewer) {
+		List<FigureInfo> figureInfos = new ArrayList<>();
+		for (Figure figure : figures) {
+			figureInfos.add(FigureInfo.makeFigureInfo(figure, viewer.getVisMap()));
+		}
+		return figureInfos;
 	}
 }

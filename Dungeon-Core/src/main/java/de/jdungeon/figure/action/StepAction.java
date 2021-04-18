@@ -23,7 +23,7 @@ public class StepAction extends AbstractExecutableAction {
 			throw new IllegalArgumentException("figureInfo may not be null for "+this.getClass().getSimpleName());
 		}
  		targetIndex = index;
-		figure = figureInfo.getMap().getDungeon().getFigureIndex().get(figureInfo.getFigureID());
+		figure = figureInfo.getVisMap().getDungeon().getFigureIndex().get(figureInfo.getFigureID());
 
 	}
 

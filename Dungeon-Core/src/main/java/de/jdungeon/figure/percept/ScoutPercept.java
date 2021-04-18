@@ -6,45 +6,29 @@
  */
 package de.jdungeon.figure.percept;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.RoomInfo;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 
-public class ScoutPercept extends OpticalPercept {
-	
-	private final Figure f;
-	private final Room from;
-	private final int dir;
-	
-	public ScoutPercept(Figure f, Room from, int dir, int round) {
-		super(from.getNumber(), round);
-		this.f = f;
-		this.from = from;
-		this.dir = dir;
-	}
-	
-	public FigureInfo getFigure() {
-		return FigureInfo.makeFigureInfo(f,viewer.getRoomVisibility());
-	}
-	
-	public RoomInfo getRoom() {
-		return RoomInfo.makeRoomInfo(from, viewer.getRoomVisibility());
-	}
+public class ScoutPercept extends SimpleActorPercept {
 
-	public int getDir() {
-		return dir;
-	}
+    private final Room from;
+    private final int dir;
 
-	@Override
-	public List<FigureInfo> getInvolvedFigures() {
-		List<FigureInfo> l = new LinkedList<>();
-		l.add(getFigure());
-		return l;
-	}
+    public ScoutPercept(Figure f, Room from, int dir, int round) {
+        super(f, from.getNumber(), round);
+        this.from = from;
+        this.dir = dir;
+    }
+
+    public RoomInfo getRoom(FigureInfo viewer) {
+        return RoomInfo.makeRoomInfo(from, viewer.getVisMap());
+    }
+
+    public int getDir() {
+        return dir;
+    }
 
 
 }

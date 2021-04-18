@@ -32,8 +32,8 @@ public abstract class AbstractReflexBehavior implements ActionSpecifier, Seriali
 		if (raidAttacking) {
 			raidAttacking = false;
 			AttackSkill.AttackSkillAction a = this.f.getSkill(AttackSkill.class)
-					.newActionFor(FigureInfo.makeFigureInfo(f, f.getRoomVisibility()))
-					.target(FigureInfo.makeFigureInfo(raidTarget, f.getRoomVisibility()))
+					.newActionFor(FigureInfo.makeFigureInfo(f, f.getViwMap()))
+					.target(FigureInfo.makeFigureInfo(raidTarget, f.getViwMap()))
 					.get();
 			raidTarget = null;
 			return a;
