@@ -2,6 +2,7 @@ package de.jdungeon.skill;
 
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.figure.percept.SkillActionPercept;
 
 public class EagleOwlSkill extends SimpleSkill {
 
@@ -26,6 +27,7 @@ public class EagleOwlSkill extends SimpleSkill {
         if (doIt) {
             Figure actor = action.getActor();
             actor.getViwMap().addVisibilityModifier(actor.getRoomNumber(), new EagleOwl());
+            actor.getRoom().distributePercept(new SkillActionPercept(action, round));
             return ActionResult.DONE;
         } else {
             return ActionResult.POSSIBLE;

@@ -11,36 +11,15 @@ import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.RoomInfo;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.HeroInfo;
-import de.jdungeon.figure.percept.AttackPercept;
-import de.jdungeon.figure.percept.BreakSpellPercept;
-import de.jdungeon.figure.percept.DiePercept;
-import de.jdungeon.figure.percept.DisappearPercept;
-import de.jdungeon.figure.percept.DoorSmashPercept;
-import de.jdungeon.figure.percept.FightEndedPercept;
-import de.jdungeon.figure.percept.FleePercept;
-import de.jdungeon.figure.percept.HitPercept;
-import de.jdungeon.figure.percept.InfoPercept;
-import de.jdungeon.figure.percept.ItemDroppedPercept;
-import de.jdungeon.figure.percept.LeavesPercept;
-import de.jdungeon.figure.percept.LocationStateChangePercept;
-import de.jdungeon.figure.percept.MissPercept;
-import de.jdungeon.figure.percept.EntersPercept;
-import de.jdungeon.figure.percept.OpticalPercept;
-import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.figure.percept.ScoutPercept;
-import de.jdungeon.figure.percept.ShieldBlockPercept;
-import de.jdungeon.figure.percept.SpellPercept;
-import de.jdungeon.figure.percept.StepPercept;
-import de.jdungeon.figure.percept.TakePercept;
-import de.jdungeon.figure.percept.TextPercept;
-import de.jdungeon.figure.percept.UsePercept;
-import de.jdungeon.figure.percept.WaitPercept;
+import de.jdungeon.figure.percept.*;
 import de.jdungeon.figure.PerceptHandler;
 import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 import de.jdungeon.graphics.JDGraphicObject;
 import de.jdungeon.graphics.JDImageProxy;
 import de.jdungeon.log.Log;
+import de.jdungeon.skill.EagleOwlSkill;
+import de.jdungeon.skill.Skill;
 import de.jdungeon.text.Statement;
 import de.jdungeon.text.StatementManager;
 
@@ -78,6 +57,10 @@ public class GameScreenPerceptHandler implements PerceptHandler {
             // this is a special case, no world percept, but only communication between PlayerController and PerceptHandler
             // to visualize an interrupt in the players action plan
             handleInterruptPercept((InterruptPercept) p);
+        }
+
+        if (p instanceof SkillActionPercept) {
+            handleSkillActionPercept((SkillActionPercept) p);
         }
 
         if (p instanceof WaitPercept) {
@@ -136,7 +119,6 @@ public class GameScreenPerceptHandler implements PerceptHandler {
             handleFleePercept((FleePercept) p);
         }
         if (p instanceof InfoPercept) {
-
             /*
              * play sounds if applicable
              */
@@ -149,7 +131,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
             }
 
             /*
-             * write de.jdungeon.text messages
+             * write text messages
              */
             String s = StatementManager.getStatement((InfoPercept) p);
             newStatement(new Statement(s, 2, p.getRound()));
@@ -163,6 +145,14 @@ public class GameScreenPerceptHandler implements PerceptHandler {
         }
         if (p instanceof FightEndedPercept) {
             handleFightEndedPercept((FightEndedPercept) p);
+        }
+    }
+
+    private void handleSkillActionPercept(SkillActionPercept percept) {
+        Skill skill = percept.getSkill();
+        if (skill instanceof EagleOwlSkill) {
+            playUseAnimation(percept, percept.getFigure(this.figure));
+            AudioEffectsManager.playSound(AudioEffectsManager.OWL_HOOT);
         }
     }
 
@@ -223,6 +213,10 @@ public class GameScreenPerceptHandler implements PerceptHandler {
 
     private void handleUsePercept(UsePercept p) {
         FigureInfo user = p.getFigure(this.figure);
+        playUseAnimation(p, user);
+    }
+
+    private void playUseAnimation(OpticalPercept p, FigureInfo user) {
         DefaultAnimationSet set = AnimationUtils.getFigure_using(user);
         if (set != null) {
             startAnimation(set, user, p);
@@ -451,7 +445,7 @@ public class GameScreenPerceptHandler implements PerceptHandler {
         }
     }
 
-    public void newStatement(Statement s) {
+    private void newStatement(Statement s) {
         screen.getGuiRenderer().newStatement(s);
     }
 
