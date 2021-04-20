@@ -5,8 +5,9 @@ package de.jdungeon.figure;
  * @created 22.01.18.
  */
 public enum HealthLevel {
-	Strong(4),
-	Good(3),
+	Strong(5),
+	Good(4),
+	Ok(3),
 	Injured(2),
 	Weak(1),
 	Dying(0),
@@ -23,11 +24,14 @@ public enum HealthLevel {
 	}
 
 	public static HealthLevel fromPercent(int percent) {
-		if (percent > 70) {
+		if (percent > 85) {
 			return Strong;
 		}
-		else if (percent > 45) {
+		else if (percent > 65) {
 			return Good;
+		}
+		else if (percent > 40) {
+			return Ok;
 		}
 		else if (percent > 25) {
 			return Injured;

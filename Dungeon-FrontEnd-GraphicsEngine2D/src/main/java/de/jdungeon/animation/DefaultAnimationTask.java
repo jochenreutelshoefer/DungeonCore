@@ -31,10 +31,14 @@ public class DefaultAnimationTask implements AnimationTask {
 	}
 
 	// urgent animations are rendered instantly (not queued up)
-	private boolean urgent;
 
+	private boolean urgent;
 	public JDPoint getRoom() {
 		return percept.getPoint();
+	}
+
+	public OpticalPercept getPercept() {
+		return percept;
 	}
 
 	@Override
@@ -106,7 +110,7 @@ public class DefaultAnimationTask implements AnimationTask {
 		}
 
 		if (text == null || text.length() == 0) {
-			AnimationFrame frame = AnimationManager.getInstance().framePool.obtain();
+			AnimationFrame frame = AnimationObjectPool.framePool.obtain();
 			frame.setImage(currentImage);
 			frame.setCurrentProgress(currentProgress);
 			frame.setFrom(from);
@@ -115,7 +119,7 @@ public class DefaultAnimationTask implements AnimationTask {
 		}
 		else {
 
-			AnimationFrame frame = AnimationManager.getInstance().framePool.obtain();
+			AnimationFrame frame = AnimationObjectPool.framePool.obtain();
 			frame.setImage(currentImage);
 			frame.setText(text);
 			frame.setCurrentProgress(currentProgress);

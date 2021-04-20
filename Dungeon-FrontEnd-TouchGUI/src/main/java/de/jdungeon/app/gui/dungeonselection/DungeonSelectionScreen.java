@@ -38,7 +38,7 @@ import de.jdungeon.game.Image;
 public class DungeonSelectionScreen extends MenuScreen implements EventListener {
 
 	public static final JDDimension HERO_DIMENSION = new JDDimension(110, 110);
-	public static final int X_DISTANCE = 150;
+	public static final int X_DISTANCE = 200;
 
 	private final DungeonSession session;
 	private final DungeonManager dungeonManager;
@@ -105,7 +105,7 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 	}
 
 	private void calcScreenCoordinates() {
-		stageHeightOffset = 180;
+		stageHeightOffset = 220;
 		offset = (int) (game.getScreenHeight() / 1.8 + (stageHeightOffset * session.getCurrentStage()));
 		xCenterValue = game.getScreenWidth() / 2;
 	}
@@ -139,8 +139,8 @@ public class DungeonSelectionScreen extends MenuScreen implements EventListener 
 
 		coordinatesX = new int[][] {
 				{ xCenterValue, -1, -1 },
-				{ xCenterValue - X_DISTANCE / 2, xCenterValue + X_DISTANCE / 2, -1 },
-				{ xCenterValue - X_DISTANCE, xCenterValue, xCenterValue + X_DISTANCE },
+				{ (int) (xCenterValue - X_DISTANCE * 0.8), (int) (xCenterValue + X_DISTANCE * 0.8), -1 },
+				{ (int) (xCenterValue - X_DISTANCE * 1.5), xCenterValue, (int)(xCenterValue + X_DISTANCE * 1.5) },
 		};
 
 		final int y = getY(stage);

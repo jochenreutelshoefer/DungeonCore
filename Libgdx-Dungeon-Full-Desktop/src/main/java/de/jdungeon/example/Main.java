@@ -10,6 +10,8 @@ import de.jdungeon.asset.FilelistFilenameLister;
 import de.jdungeon.game.RenderLoopWorldUpdateInitializer;
 import de.jdungeon.LibgdxDungeonFullMain;
 
+import java.util.UUID;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 14.12.19.
@@ -20,8 +22,8 @@ public class Main {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Libgdx Game";
         cfg.useGL30 = false;
-        cfg.width = 800;
-        cfg.height = 480;
+        cfg.width = 1200;
+        cfg.height = 880;
         cfg.allowSoftwareMode = true;
         cfg.foregroundFPS = 70;
         //new LwjglApplication(new LibgdxDungeonFullMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new DistinctWorldUpdateThreadInitializer()), cfg);
@@ -30,7 +32,8 @@ public class Main {
                         new DesktopResourceBundleLoader(),
                         new FilelistFilenameLister(),
                         new RenderLoopWorldUpdateInitializer(),
-                        new PrefixFileHandleResolver(new InternalFileHandleResolver(), "assets/")
+                        new PrefixFileHandleResolver(new InternalFileHandleResolver(), "assets/"),
+                        () -> UUID.randomUUID().toString()
                 )
                 , cfg);
     }

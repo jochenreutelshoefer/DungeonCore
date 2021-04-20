@@ -7,6 +7,7 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.figure.FigureControl;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.FigurePresentation;
+import de.jdungeon.figure.attribute.Attribute;
 import de.jdungeon.figure.monster.MonsterInfo;
 
 public class Fir extends ConjuredMagicFigure {
@@ -53,6 +54,14 @@ public class Fir extends ConjuredMagicFigure {
 	@Override
 	public int hunting() {
 		return 0;
+	}
+
+	@Override
+	public Attribute getStrength() {
+		if (strength == null) {
+			return new Attribute(Attribute.Type.Strength, 50);
+		}
+		return strength;
 	}
 
 	@Override

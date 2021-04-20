@@ -155,15 +155,15 @@ public abstract class Monster extends Figure implements Paragraphable, InfoProvi
 		return null;
 	}
 
-	protected Stack<RouteInstruction> routing = new Stack<RouteInstruction>();
+	Stack<RouteInstruction> routing = new Stack<RouteInstruction>();
 
-	protected double fireResistRate = 1.0;
+	double fireResistRate = 1.0;
 
-	protected double lightningResistRate = 1.0;
+	private double lightningResistRate = 1.0;
 
-	protected double magicResistRate = 1.0;
+	private double magicResistRate = 1.0;
 
-	protected double poisonResistRate = 1.0;
+	private double poisonResistRate = 1.0;
 
 	protected String name;
 
@@ -171,11 +171,11 @@ public abstract class Monster extends Figure implements Paragraphable, InfoProvi
 
 	protected Attribute psycho;
 
-	protected int minDamage;
+	int minDamage;
 
-	protected int maxDamage;
+	int maxDamage;
 
-	protected Attribute chanceToHit;
+	Attribute chanceToHit;
 
 	protected abstract int getHealthDamageBalance();
 
@@ -379,17 +379,16 @@ public abstract class Monster extends Figure implements Paragraphable, InfoProvi
 	public int getSlapStrength(Figure m) {
 		int k = (int) (1.0 * (minDamage + ((int) (Math.random() * (maxDamage
 				- minDamage + 1)))));
-		int h = this.getHealthLevel().getValue();
-		if (h == 4) {
+		HealthLevel level = this.getHealthLevel();
+		if (level == HealthLevel.Strong || level == HealthLevel.Good) {
 			return k;
 		}
-		if (h == 3) {
+		if (level == HealthLevel.Ok) {
 			return (int) (k * 0.8);
 		}
-		if (h == 2) {
+		if (level == HealthLevel.Injured) {
 			return (int) (k * 0.6);
 		}
-
 		return (int) (k * 0.4);
 	}
 

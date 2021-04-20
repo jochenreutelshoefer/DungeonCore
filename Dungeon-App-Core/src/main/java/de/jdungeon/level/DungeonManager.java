@@ -11,4 +11,6 @@ public interface DungeonManager {
 	List<DungeonFactory> getDungeonOptions(int stage);
 
 	int getNumberOfStages();
+
+	int getStage(DungeonFactory dungeon);
 }

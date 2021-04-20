@@ -27,6 +27,7 @@ import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.user.DungeonSession;
 import de.jdungeon.user.User;
 import de.jdungeon.util.MyResourceBundle;
+import de.jdungeon.util.UUIDGenerator;
 import de.jdungeon.world.GameScreen;
 import de.jdungeon.world.PlayerController;
 
@@ -57,13 +58,19 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
     private DungeonSession dungeonSession;
     private final DungeonWorldUpdaterInitializer worldUpdaterInitializer;
+    private UUIDGenerator uuidGenerator;
 
     private Logger gdxLogger;
 
-    public LibgdxDungeonSimpleMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister, DungeonWorldUpdaterInitializer renderLoopDungeonWorldUpdaterInitializer) {
+    public LibgdxDungeonSimpleMain(ResourceBundleLoader resourceBundleLoader,
+                                   FilenameLister filenameLister,
+                                   DungeonWorldUpdaterInitializer renderLoopDungeonWorldUpdaterInitializer,
+                                   UUIDGenerator uuidGenerator
+    ) {
         this.resourceBundleLoader = resourceBundleLoader;
         this.filenameLister = filenameLister;
         this.worldUpdaterInitializer = renderLoopDungeonWorldUpdaterInitializer;
+        this.uuidGenerator = uuidGenerator;
     }
 
     @Override
@@ -90,7 +97,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
         EventManager.getInstance().registerListener(this);
 
-        dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
+        dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator);
         ((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
         Gdx.app.log(TAG, "App: processing DungeonStartEvent");
         // initialize new dungeon
@@ -186,7 +193,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
     public void notify(Event event) {
         AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
         if (event instanceof StartNewGameEvent) {
-            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
+            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator);
             ((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 
 			/*

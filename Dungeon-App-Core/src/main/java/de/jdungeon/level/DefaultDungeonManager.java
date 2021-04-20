@@ -44,4 +44,14 @@ public class DefaultDungeonManager implements DungeonManager {
 	public int getNumberOfStages() {
 		return stages.size();
 	}
+
+	@Override
+	public int getStage(DungeonFactory dungeon) {
+		for (Integer integer : stages.keySet()) {
+			if(this.stages.get(integer).contains(dungeon)) {
+				return integer;
+			}
+		}
+		return -1;
+	}
 }

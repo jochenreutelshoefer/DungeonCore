@@ -13,6 +13,8 @@ import de.jdungeon.level.DefaultDungeonManager;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 
+import static junit.framework.Assert.*;
+
 /**
  * This tests checks for all listed dungeon factories that the generated dungeon is consistent.
  * That is:
@@ -22,11 +24,21 @@ import de.jdungeon.level.DungeonManager;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.12.19.
  */
-public class LevelGenerationConsistencyTest extends TestCase {
+public class LevelGenerationConsistencyTest {
 
 	public void testLevels() {
 		//JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
-		JDEnv.init(new MyResourceBundle(Collections.emptyMap()));
+		JDEnv.init(new MyResourceBundle() {
+			@Override
+			public String get(String key) {
+				return null;
+			}
+
+			@Override
+			public String format(String key, String... inserts) {
+				return null;
+			}
+		});
 		DungeonManager manager = new DefaultDungeonManager();
 
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {

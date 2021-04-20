@@ -101,7 +101,7 @@ public class HadrianAI extends AbstractAI {
 		}
 
 		if(currentState == patrol) {
-			// if we are in 'patrol' and enter a de.jdungeon.fight, we go directly in 'chase' mode
+			// if we are in 'patrol' and enter a fight, we go directly in 'chase' mode
 			currentState = chase;
 		}
 
@@ -117,7 +117,7 @@ public class HadrianAI extends AbstractAI {
 		heroLog.processPercepts();
 
 		// at first stay alive
-		if(this.info.getHealthLevel().getValue() < HealthLevel.Good.getValue()) {
+		if(this.info.getHealthLevel().getValue() < HealthLevel.Ok.getValue()) {
 			currentState = flee;
 		}
 
@@ -125,8 +125,6 @@ public class HadrianAI extends AbstractAI {
 			// go from patrol mode to chase mode
 			currentState = chase;
 		}
-
-
 
 		// if he is in 'chase' mode
 		if(currentState == chase) {

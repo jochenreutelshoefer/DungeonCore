@@ -1,5 +1,7 @@
 package de.jdungeon.animation;
 
+import de.jdungeon.figure.percept.Percept;
+
 /**
  *
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -14,4 +16,5 @@ public interface AnimationTask {
 
 	AnimationFrame getCurrentAnimationFrame();
 
+	Percept getPercept();
 }

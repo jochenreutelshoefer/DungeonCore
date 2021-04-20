@@ -1,5 +1,6 @@
 package de.jdungeon.user;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
@@ -12,6 +13,10 @@ import de.jdungeon.level.DungeonManager;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.spell.Spell;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 20.03.16.
@@ -23,6 +28,14 @@ public interface DungeonSession {
 	DungeonManager getDungeonManager();
 
 	DungeonFactory getLastCompleted();
+
+	List<DungeonFactory> getCompletedDungeonsList();
+
+	int getNumberOfFails();
+
+	Date getSessionStart();
+
+	Map<DungeonFactory, Integer> getCompletedDungeons();
 
 	Dungeon getCurrentDungeon();
 
@@ -39,6 +52,10 @@ public interface DungeonSession {
 	Hero getCurrentHero();
 
 	DungeonCompletionScore getAchievedScoreFor(DungeonFactory dungeonFactory);
+
+	String getPlayerName();
+
+	String getSessionID();
 
 	int getTotalScore();
 

@@ -2,11 +2,15 @@ package de.jdungeon.welcome;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.net.HttpRequestBuilder;
+import com.badlogic.gdx.net.HttpRequestHeader;
+import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -19,6 +23,7 @@ import de.jdungeon.app.audio.MusicManager;
 import de.jdungeon.app.event.StartNewGameEvent;
 import de.jdungeon.asset.AssetFonts;
 import de.jdungeon.Constants;
+import de.jdungeon.log.Log;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -106,7 +111,43 @@ public class StartScreen extends AbstractScreen {
 		Music music = audio.createMusic( "Exciting_Trailer.mp3");
 		MusicManager.getInstance().playMusic(music);
 	}
+/*
+	synchronized
+	public void sendTextRequest() {
+		Gdx.app.log(TAG, "Requesting new data from remote server.");
+		Gdx.net.sendHttpRequest(new HttpRequestBuilder().newRequest()
+						.method(Net.HttpMethods.GET)
+						.url("http://localhost:8080/")
+						.timeout(10000)
+						.header(HttpRequestHeader.CacheControl, "no-cache")
+						.build(),
+				new Net.HttpResponseListener() {
+					public void handleHttpResponse (Net.HttpResponse httpResponse) {
+						HttpStatus status = httpResponse.getStatus();
+						Log.info("Test request code was: " + status.getStatusCode());
+						String resultAsString = httpResponse.getResultAsString();
+						Log.info("Test request result content was: "+resultAsString);
+						if (status.getStatusCode() >= 200 && status.getStatusCode() < 300) {
+							// it was successful
+						} else {
+							// do something else
 
+						}
+					}
+
+					@Override
+					public void failed(Throwable t) {
+						Log.info("Test request failed: "+ t.getMessage());
+					}
+
+					@Override
+					public void cancelled() {
+						Log.info("Test request canceled");
+					}});
+	}
+
+
+ */
 	@Override
 	public void render(float deltaTime) {
 		Gdx.gl.glClearColor(0.0f,0.0f,0.0f,1.0f);
@@ -114,6 +155,9 @@ public class StartScreen extends AbstractScreen {
 
 		if(Gdx.input.isTouched()) {
 			EventManager.getInstance().fireEvent(new StartNewGameEvent());
+
+			//sendTextRequest();
+
 			// we should stop rendering _this_ screen now
 			return;
 		}

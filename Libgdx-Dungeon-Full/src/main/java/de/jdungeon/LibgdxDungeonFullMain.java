@@ -8,10 +8,15 @@ import java.util.Map;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.PrefixFileHandleResolver;
+import com.badlogic.gdx.net.HttpRequestBuilder;
+import com.badlogic.gdx.net.HttpRequestHeader;
+import com.badlogic.gdx.net.HttpStatus;
+import com.badlogic.gdx.utils.Json;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.event.LevelAbortEvent;
@@ -27,6 +32,8 @@ import de.jdungeon.event.PlayerDiedEvent;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.game.JDEnv;
+import de.jdungeon.log.Log;
+import de.jdungeon.score.SessionScore;
 import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
@@ -43,6 +50,7 @@ import de.jdungeon.asset.Assets;
 import de.jdungeon.io.ResourceBundleLoader;
 import de.jdungeon.stage.StageSelectionScreen;
 import de.jdungeon.user.User;
+import de.jdungeon.util.UUIDGenerator;
 import de.jdungeon.welcome.StartScreen;
 import de.jdungeon.world.GameScreen;
 import de.jdungeon.world.PlayerController;
@@ -58,6 +66,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
     private FilenameLister filenameLister;
     private DungeonWorldUpdaterInitializer worldUpdaterInitializer;
     private FileHandleResolver resolver;
+    private UUIDGenerator uuidGenerator;
 
     private boolean pause;
 
@@ -67,11 +76,17 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
     private Logger gdxLogger;
 
-    public LibgdxDungeonFullMain(ResourceBundleLoader resourceBundleLoader, FilenameLister filenameLister, DungeonWorldUpdaterInitializer worldUpdaterInitializer, FileHandleResolver resolver) {
+    public LibgdxDungeonFullMain(ResourceBundleLoader resourceBundleLoader,
+                                 FilenameLister filenameLister,
+                                 DungeonWorldUpdaterInitializer worldUpdaterInitializer,
+                                 FileHandleResolver resolver,
+                                 UUIDGenerator uuidGenerator
+    ) {
         this.resourceBundleLoader = resourceBundleLoader;
         this.filenameLister = filenameLister;
         this.worldUpdaterInitializer = worldUpdaterInitializer;
         this.resolver = resolver;
+        this.uuidGenerator = uuidGenerator;
     }
 
     @Override
@@ -184,7 +199,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
     public void notify(Event event) {
         AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
         if (event instanceof StartNewGameEvent) {
-            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"));
+            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator);
             ((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 
 			/*
@@ -203,8 +218,11 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
             // pause screen rendering
             this.getScreen().pause();
 
+            sendHighscoreRequest();
+
+
             // change screen to de.jdungeon.skill selection
-            //this.dungeonSession.notifyExit(((ExitUsedEvent)de.jdungeon.event).getExit(), ((ExitUsedEvent)de.jdungeon.event).getFigure());
+            // this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)de.jdungeon.event).getFigure());
 
             de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
             this.setCurrentScreen(screen);
@@ -236,6 +254,8 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
             ((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
 
+            sendHighscoreRequest();
+
             // create and set new GameScreen
             GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize(), worldUpdaterInitializer);
             setCurrentScreen(gameScreen);
@@ -249,5 +269,47 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
             StageSelectionScreen screen = new StageSelectionScreen(this);
             this.setCurrentScreen(screen);
         }
+    }
+
+    synchronized
+    public void sendHighscoreRequest() {
+        SessionScore score = SessionScore.create(getSession());
+        Json json = new Json();
+
+        String jsonStringScore = json.toJson(score);
+        Log.info("Score as json: "+jsonStringScore);
+
+        Gdx.app.log(TAG, "Sending highscore request.....");
+        Gdx.net.sendHttpRequest(new HttpRequestBuilder().newRequest()
+                        .method(Net.HttpMethods.POST)
+                        .url("http://185.143.45.113:8080/Highscore/Highscore")
+                        .jsonContent(score)
+                        .timeout(10000)
+                        .header(HttpRequestHeader.CacheControl, "no-cache")
+                        .build(),
+                new Net.HttpResponseListener() {
+                    public void handleHttpResponse (Net.HttpResponse httpResponse) {
+                        HttpStatus status = httpResponse.getStatus();
+                        Log.info("Test request code was: " + status.getStatusCode());
+                        String resultAsString = httpResponse.getResultAsString();
+                        Log.info("highscore request result content was: "+resultAsString);
+                        if (status.getStatusCode() >= 200 && status.getStatusCode() < 300) {
+                            // it was successful
+                            Log.info("highscore request status code successful");
+                        } else {
+                            // do something else
+
+                        }
+                    }
+
+                    @Override
+                    public void failed(Throwable t) {
+                        Log.info("highscore request failed: "+ t.getMessage());
+                    }
+
+                    @Override
+                    public void cancelled() {
+                        Log.info("highscore request canceled");
+                    }});
     }
 }

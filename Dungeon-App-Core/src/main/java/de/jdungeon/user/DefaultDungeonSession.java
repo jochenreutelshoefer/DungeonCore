@@ -1,9 +1,8 @@
 package de.jdungeon.user;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.event.EventManager;
@@ -24,6 +23,7 @@ import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.spell.Spell;
+import de.jdungeon.util.UUIDGenerator;
 
 /**
  * A Session contains the data of the state of the player,
@@ -47,15 +47,35 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     private Dungeon derDungeon;
 
     private final DungeonManager manager;
-
+    private final String sessionID;
     private JDGUI gui;
     private final Map<DungeonFactory, Integer> completedDungeons = new HashMap<>();
+    private int fails;
+    private final Date startTime;
 
-    public DefaultDungeonSession(User user) {
+    private final List<DungeonFactory> completedDungeonsList = new ArrayList<>();
+
+    public DefaultDungeonSession(User user, UUIDGenerator uuidGenerator) {
         this.user = user;
         manager = new DefaultDungeonManager();
+        sessionID = uuidGenerator.generateUUID();
+        startTime = new Date();
     }
 
+
+    public List<DungeonFactory> getCompletedDungeonsList() {
+        return completedDungeonsList;
+    }
+
+    @Override
+    public int getNumberOfFails() {
+        return fails;
+    }
+
+    @Override
+    public Date getSessionStart() {
+        return startTime;
+    }
 
     @Override
     public void setDungeonWorldUpdater(DungeonWorldUpdater dungeonGameLoop) {
@@ -93,6 +113,11 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     @Override
     public DungeonFactory getLastCompleted() {
         return lastCompletedDungeonFactory;
+    }
+
+    @Override
+    public Map<DungeonFactory, Integer> getCompletedDungeons() {
+        return this.completedDungeons;
     }
 
     @Override
@@ -135,6 +160,16 @@ public class DefaultDungeonSession implements Session, DungeonSession {
             return new DungeonCompletionScore(rounds, calcScore(factory, rounds));
         }
         return null;
+    }
+
+    @Override
+    public String getPlayerName() {
+        return user.getName();
+    }
+
+    @Override
+    public String getSessionID() {
+        return sessionID;
     }
 
     private int calcScore(DungeonFactory dungeonFactory, int rounds) {
@@ -190,6 +225,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		 */
         Hero currentHero = getCurrentHero();
 
+        // make backup just to be on the safe side...we dont know who is playing...
+        makeHeroBackup();
+
         // we need to clear the keys from the last dungeonFactory (as they would work in the new one also)
         currentHero.getInventory().clearKeys();
 
@@ -223,6 +261,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
     @Override
     public void revertHero() {
+        fails++;
         currentHero = Hero.copy(heroBackup);
        //currentHero = (Hero) DeepCopyUtil.copy(heroBackup);
     }
@@ -244,6 +283,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
             Dungeon currentDungeon = getCurrentDungeon();
             if (!completedDungeons.containsKey(lastSelectedDungeonFactory) && currentDungeon != null) {
                 completedDungeons.put(lastSelectedDungeonFactory, dungeonWorldUpdater.getCurrentGameRound());
+                completedDungeonsList.add(lastSelectedDungeonFactory);
                 lastCompletedDungeonFactory = lastSelectedDungeonFactory;
             }
             makeHeroBackup();

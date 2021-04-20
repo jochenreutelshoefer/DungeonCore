@@ -8,15 +8,15 @@ import de.jdungeon.dungeon.generate.DungeonFillUtils;
 import de.jdungeon.dungeon.util.DungeonUtils;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.item.Key;
-import junit.framework.TestCase;
 
 import static de.jdungeon.dungeon.util.RouteInstruction.*;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 01.03.20.
  */
-public class PathSearchTest extends TestCase {
+public class PathSearchTest {
 
 	public static final String PATH_NOT_FOUND = "path not found";
 	public static final String PATH_FOUND = "path found where none should be";

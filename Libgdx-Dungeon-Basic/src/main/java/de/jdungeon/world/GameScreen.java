@@ -120,9 +120,9 @@ public class GameScreen extends AbstractScreen {
 
         Gdx.gl.glClearColor(0, 0, 0, 0xff / 255.0f);
 
-        AnimationManager animationManager = new AnimationManager();
 
         figure = playerController.getFigure();
+        AnimationManager animationManager = new AnimationManager(this.figure);
         perceptHandler = new GameScreenPerceptHandler(this, figure, animationManager);
         ViewModel worldViewModel = new ViewModel(figure, dungeonSizeX, dungeonSizeY);
         playerController.setViewModel(worldViewModel);

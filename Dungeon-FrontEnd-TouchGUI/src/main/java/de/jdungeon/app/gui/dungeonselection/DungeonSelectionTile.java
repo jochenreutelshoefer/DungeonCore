@@ -22,8 +22,8 @@ import de.jdungeon.game.Input;
  */
 public class DungeonSelectionTile extends ImageGUIElement {
 
-	public static final int TILE_WIDTH = 90;
-	public static final int TILE_HEIGHT = 90;
+	public static final int TILE_WIDTH = 130;
+	public static final int TILE_HEIGHT = 130;
 
 	private final DungeonFactory dungeon;
 	private final boolean activeStage;

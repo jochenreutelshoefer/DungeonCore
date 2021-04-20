@@ -21,7 +21,7 @@ import de.jdungeon.skill.attack.AttackSkill;
 public class FirAI extends AbstractAI {
 
 	private FigureInfo info;
-	private List<FigureInfo> attackers = new LinkedList<FigureInfo>();
+	private List<FigureInfo> attackers = new LinkedList<>();
 
 	FirAI(FigureInfo firInfo) {
 		super(new AttitudeDefaultHero());
@@ -53,8 +53,8 @@ public class FirAI extends AbstractAI {
 
 	@Override
 	public Action chooseMovementAction() {
-		// should not happen as Fir disappears at end of de.jdungeon.fight
-		return null;
+		// should not happen as Fir disappears at end of fight
+		return new EndRoundAction();
 	}
 
 	@Override

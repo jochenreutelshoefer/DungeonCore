@@ -1,5 +1,7 @@
 package de.jdungeon.animation;
 
+import de.jdungeon.figure.percept.Percept;
+
 /**
  * An de.jdungeon.animation tasks that does not show any de.jdungeon.animation,
  * but is used as a time blocker to delay subsequent animations.
@@ -8,11 +10,11 @@ package de.jdungeon.animation;
  */
 public class DelayAnimationTask implements AnimationTask {
 
-	protected long startTime;
+	long startTime;
 	protected boolean started = false;
 	private final long duration;
 
-	public DelayAnimationTask(long duration) {
+	DelayAnimationTask(long duration) {
 		this.duration = duration;
 	}
 
@@ -36,6 +38,12 @@ public class DelayAnimationTask implements AnimationTask {
 			startTime = System.currentTimeMillis();
 		}
 		// we always return 'null' as this is no real de.jdungeon.animation, but rather only a time blocker
+		return null;
+	}
+
+	@Override
+	public Percept getPercept() {
+		// we have none
 		return null;
 	}
 }

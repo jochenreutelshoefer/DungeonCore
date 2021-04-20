@@ -668,7 +668,7 @@ public class GraphicObjectRenderer {
 	private JDDimension getMonsterSize(MonsterInfo m) {
 		Class<? extends Monster> mClass = m.getMonsterClass();
 		if (mClass == Wolf.class) {
-			return monsterSizeS;
+			return monsterSizeL;
 		}
 		if (mClass == Orc.class) {
 			return monsterSizeS;
