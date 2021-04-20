@@ -558,6 +558,7 @@ public class ImageManager {
 	public static JDImageProxy<?> runeFinderLocation;
 
 	public static JDImageProxy<?> lebenskugel;
+	public static JDImageProxy<?> highlightBox;
 
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern) {
@@ -928,6 +929,7 @@ public class ImageManager {
 			deathImage = new JDImageProxy<>(a, "tot1.gif");
 
 			lebenskugel = new JDImageProxy<>(a, "lebenskugel.gif");
+			highlightBox = new JDImageProxy<>(a, "highlightbox.png");
 
 			button1 = new JDImageProxy<>(a, "button1.gif");
 

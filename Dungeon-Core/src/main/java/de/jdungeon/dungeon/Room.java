@@ -191,8 +191,8 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
     }
 
     public boolean turn(int round, DungeonWorldUpdater worldUpdater) {
-        for (Figure roomFigure : getRoomFigures()) {
-            if (roomFigure.getLastRoundTurnCompleted() < round) {
+        for (Figure roomFigure : getRoomFiguresArray()) {
+            if (roomFigure != null && roomFigure.getLastRoundTurnCompleted() < round) {
 
                 // figure does its turn
                 roomFigure.turn(round, worldUpdater);
@@ -213,17 +213,18 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
     public boolean checkFightOn() {
 
-        if (getRoomFigures().size() <= 1) {
+        List<Figure> roomFigures = getRoomFigures();
+        if (roomFigures.size() <= 1) {
             return false;
         }
 
         boolean fightOn = false;
-        for (Figure element : getRoomFigures()) {
+        for (Figure element : roomFigures) {
             ControlUnit c = element.getControl();
             if (c == null) {
                 return false;
             }
-            for (Figure element2 : getRoomFigures()) {
+            for (Figure element2 : roomFigures) {
                 if (element != element2) {
                     boolean hostileTo = element.getControl()
                             .isHostileTo(FigureInfo.makeFigureInfo(element2, element.getViwMap()));
@@ -242,7 +243,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 
     public void resetShrine(Location shrine) {
         if (this.s != shrine) {
-            Log.warning("Trying to reset a de.jdungeon.location that was not set in before! Weird!");
+            Log.warning("Trying to reset a location that was not set in before! Weird!");
             return;
         }
         this.getDungeon().removeShrine(s);
@@ -868,15 +869,24 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         return number;
     }
 
-    public List<Figure> getRoomFigures() {
-        List<Figure> result = new ArrayList<>();
+    List<Figure> roomFigures = new ArrayList<>(8);
+    Figure[] roomFiguresArray = new Figure[8];
+    private void updateRoomFiguresList() {
+        roomFigures.clear();
         for (int i = 0; i < positions.length; i++) {
             Figure posFigure = positions[i].getFigure();
             if (posFigure != null) {
-                result.add(posFigure);
+                roomFigures.add(posFigure);
             }
         }
-        return Collections.unmodifiableList(result);
+    }
+
+    public List<Figure> getRoomFigures() {
+        return roomFigures;
+    }
+
+    public Figure[] getRoomFiguresArray() {
+        return roomFigures.toArray(roomFiguresArray);
     }
 
     public int figureEnters(Figure figure, int moveDir, int round) {
@@ -948,6 +958,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         figure.getViwMap().addVisibilityModifier(getNumber(), figure);
 
         this.checkFight(figure, round);
+        updateRoomFiguresList();
     }
 
     public int getDeadFigurePos(Figure figure) {
@@ -961,7 +972,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         return 0;
     }
 
-    public Collection<Figure> getDeadFigures() {
+    Collection<Figure> getDeadFigures() {
         // TODO: refactor data structure for storing dead figures, not efficient for required access
         Collection<Figure> result = new HashSet<>();
         final Collection<Set<Figure>> collection = deadFigures.values();
@@ -1047,7 +1058,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
                 roomVisibility.resetVisibilityStatus(this.number);
             }
         }
-
+        updateRoomFiguresList();
         return true;
     }
 

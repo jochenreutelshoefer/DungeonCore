@@ -30,6 +30,7 @@ import de.jdungeon.util.Pair;
 public class GraphicObjectRenderCollection {
 
 	private boolean initialized = false;
+	private boolean empty = true;
 
 	private final List<GraphicObject> graphicObjects = new CopyOnWriteArrayList<>();
 	//private final Array<GraphicObject> graphicObjects = new Array<GraphicObject>();
@@ -38,19 +39,26 @@ public class GraphicObjectRenderCollection {
 	//private final List<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new CopyOnWriteArrayList<>();
 	private final Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> preparedOjects = new Array<>();
 
-	public List<GraphicObject> getGraphicObjects() {
+	List<GraphicObject> getGraphicObjects() {
 		return graphicObjects;
 	}
+
+	boolean isEmpty() {
+		return empty;
+	}
+
 
 	public void clear() {
 		graphicObjects.clear();
 		preparedOjects.clear();
 		initialized = false;
+		empty = true;
 	}
 
 	public void addObject(GraphicObject object) {
 		if(object != null) {
 			graphicObjects.add(object);
+			empty = false;
 		}
 	}
 

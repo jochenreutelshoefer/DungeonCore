@@ -16,13 +16,13 @@ import de.jdungeon.asset.Assets;
 
 public class AtlasGenerator {
 
-	static final String TARGET_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/packs/";
+	static final String TARGET_DIR = "Libgdx-Dungeon-Basic/src/main/resources/assets/packs/";
 
 	public static void main (String[] args) throws Exception {
 		//String atlasName = FigurePresentation.DarkDwarf.getFilepath();
-		String atlasName = "gui";
-		//String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/de.jdungeon.animation/"+atlasName; //de.jdungeon.animation/
-		String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/"+atlasName; //animation/
+		String atlasName = "dungeon";
+		//String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/animation/"+atlasName; //animation/
+		String SOURCE_DIR = "Libgdx-Dungeon-Basic/src/main/resources/pics/"+atlasName; //animation/
 
 		//Delete old pack
 		File oldPackFile = new File(TARGET_DIR + "/" + atlasName + Assets.ATLAS_FILE_EXTENSION);

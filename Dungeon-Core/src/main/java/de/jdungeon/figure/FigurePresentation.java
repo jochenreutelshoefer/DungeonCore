@@ -20,7 +20,6 @@ public enum FigurePresentation {
 	Warrior("warrior"),
 	WolfGrey("wolf");
 
-
 	private final String filepath;
 
 	FigurePresentation(String filepath) {

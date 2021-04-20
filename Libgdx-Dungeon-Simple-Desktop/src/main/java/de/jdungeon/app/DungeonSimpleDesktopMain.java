@@ -3,6 +3,9 @@ package de.jdungeon.app;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.jdungeon.game.RenderLoopWorldUpdateInitializer;
+import de.jdungeon.util.UUIDGenerator;
+
+import java.util.UUID;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -18,6 +21,6 @@ public class DungeonSimpleDesktopMain {
         cfg.height = 480;
         cfg.allowSoftwareMode = true;
         cfg.foregroundFPS = 70;
-        new LwjglApplication(new LibgdxDungeonSimpleMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new RenderLoopWorldUpdateInitializer()), cfg);
+        new LwjglApplication(new LibgdxDungeonSimpleMain(new DesktopResourceBundleLoader(), new DesktopFilenameLister(), new RenderLoopWorldUpdateInitializer(), () -> UUID.randomUUID().toString()), cfg);
     }
 }

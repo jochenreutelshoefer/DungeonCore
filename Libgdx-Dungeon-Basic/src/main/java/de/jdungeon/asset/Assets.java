@@ -237,7 +237,7 @@ public class Assets implements Disposable, AssetErrorListener {
 				region.flip(false, true);
 				textureCache.put(blankFilename, region);
 				overallRegionCacheMap.put(blankFilename, region);
-				//Gdx.app.de.jdungeon.log(TAG, "added new AtlasRegion to cache: " + blankFilename);
+				//Gdx.app.log(TAG, "added new AtlasRegion to cache: " + blankFilename);
 				return region;
 			}
 			else {

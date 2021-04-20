@@ -708,10 +708,12 @@ public abstract class Figure extends DungeonWorldObject
 
     private ActionResult processAction(Action action, boolean doIt, int round) {
 
+        /*
         if (doIt) {
             Log.info(System.currentTimeMillis() + " " + round + " do: " + round + " " + this.getName() + " [AP: " + this.agility
                     .getCurrentAP() + "] " + action.getClass().getSimpleName() + "(" + action.toString() + ")");
         }
+         */
 
         if (action == null) {
             return null;

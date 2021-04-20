@@ -66,9 +66,13 @@ public class ViewModel {
 	 * @return the numerical value of the visibility state of the room at (x,y)
 	 */
 	public int getVisStatus(int x, int y) {
+		return figure.getVisMap().getVisibilityStatus(x,y);
+		/*
 		RoomInfo roomInfo = figure.getRoomInfo(x, y);
 		if(roomInfo == null) return 0;
 		return roomInfo.getVisibilityStatus();
+
+		 */
 	}
 
 	public void initGraphicObjects(GraphicObjectRenderer renderer) {

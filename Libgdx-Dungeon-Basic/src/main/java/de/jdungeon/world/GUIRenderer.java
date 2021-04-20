@@ -111,7 +111,7 @@ public class GUIRenderer implements Disposable {
 		 * init de.jdungeon.text messages panel
 		 */
 		textView = new LibgdxTextPerceptView();
-		this.libgdxGuiElements.add(textView);
+		//this.libgdxGuiElements.add(textView);
 
 
 		/*
@@ -319,6 +319,7 @@ public class GUIRenderer implements Disposable {
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1); //white
 
+		/*
 		if (glProfiler != null) {
 			int drawCalls = glProfiler.getDrawCalls();
 			fpsFont.draw(batch, "GL draw calls:" + drawCalls, 60, y );
@@ -327,6 +328,8 @@ public class GUIRenderer implements Disposable {
 				Log.info("Max GL draw calls: "+maxGLDrawCalls);
 			}
 		}
+
+		 */
 	}
 
 	private int maxGLDrawCalls = 0;
@@ -337,7 +340,7 @@ public class GUIRenderer implements Disposable {
 		cameraGUI.viewportWidth = width;
 		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
 		cameraGUI.update();
-		//Gdx.app.de.jdungeon.log(TAG, "camerGUI viewport width: "+width +" ; height: "+height);
+		//Gdx.app.log(TAG, "camerGUI viewport width: "+width +" ; height: "+height);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import de.jdungeon.user.DungeonSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public class SessionScore implements Json.Serializable {
             }
             index++;
         }
-        String startTime = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(session.getSessionStart());
+        String startTime = session.getSessionStart().toString();
         return new SessionScore(
                 session.getSessionID(),
                 session.getPlayerName(),

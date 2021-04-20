@@ -48,7 +48,7 @@ public class Dungeon implements Turnable, EventListener {
     @Deprecated
     private JDPoint heroPosition;
 
-    private final Set<Location> shrines = new HashSet<Location>();
+    private final List<Location> shrines = new ArrayList<>();
 
     private boolean gameOver = false;
 

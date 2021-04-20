@@ -31,9 +31,9 @@ public class ViewRoom {
 
 	private final GraphicObjectRenderCollection backGroundObjects = new GraphicObjectRenderCollection();
 
-	public final Map<FigurePresentation, GraphicObjectRenderCollection> figureObjects = new CopyOnWriteMap<>();
+	private final Map<FigurePresentation, GraphicObjectRenderCollection> figureObjects = new CopyOnWriteMap<>();
 
-	public void setRoomInfo(RoomInfo roomInfo) {
+	void setRoomInfo(RoomInfo roomInfo) {
 		this.roomInfo = roomInfo;
 	}
 
@@ -41,7 +41,7 @@ public class ViewRoom {
 		return roomInfo;
 	}
 
-	public void setGraphicObjects(List<GraphicObject> graphicObjectsForRoom) {
+	void setGraphicObjects(List<GraphicObject> graphicObjectsForRoom) {
 		backGroundObjects.clear();
 		figureObjects.clear();
 		for (GraphicObject graphicObject : graphicObjectsForRoom) {
@@ -61,7 +61,7 @@ public class ViewRoom {
 		}
 	}
 
-	public GraphicObject findClickedObjectInRoom(JDPoint inGameLocation, int roomOffsetX, int roomOffsetY) {
+	GraphicObject findClickedObjectInRoom(JDPoint inGameLocation, int roomOffsetX, int roomOffsetY) {
 		List<GraphicObject> allRoomObjects = new ArrayList<>();
 		List<GraphicObject> graphicObjectsBg = backGroundObjects.getGraphicObjects();
 		for (GraphicObject graphicObjectBg : graphicObjectsBg) {
@@ -87,26 +87,23 @@ public class ViewRoom {
 	/**
 	 * RENDER THREAD
 	 *
-	 * @param figureClass particular de.jdungeon.figure class that render information is demanded
+	 * @param figureClass particular figure class that render information is demanded
 	 * @return all render information for all figures of this class
 	 */
-	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(FigurePresentation figureClass) {
+	Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getFigureObjects(FigurePresentation figureClass) {
 		synchronized (figureObjects) {
-			if (!figureObjects.containsKey(figureClass)) {
+			GraphicObjectRenderCollection renderCollection = figureObjects.get(figureClass);
+			if(renderCollection == null || renderCollection.isEmpty()) {
 				return null;
 			}
-			if (figureObjects.get(figureClass).getGraphicObjects().isEmpty()) {
-				return null;
-			}
-			GraphicObjectRenderCollection graphicObjectRenderCollection = figureObjects.get(figureClass);
-			return graphicObjectRenderCollection.getRenderInformation();
+			return renderCollection.getRenderInformation();
 		}
 	}
 
 	/*
 	 *	RENDER THREAD
 	 */
-	public Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getBackgroundObjectsForRoom() {
+	Array<Pair<GraphicObject, TextureAtlas.AtlasRegion>> getBackgroundObjectsForRoom() {
 		return backGroundObjects.getRenderInformation();
 	}
 }
