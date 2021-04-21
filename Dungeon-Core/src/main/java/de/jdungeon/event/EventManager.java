@@ -45,8 +45,7 @@ public final class EventManager {
 	 * We use WeakHashMaps as Set because this way we don't have to unregister
 	 * no longer used EventListener.
 	 */
-	private final Map<Class<? extends Event>, Map<EventListener, Object>> listenerMap =
-			new HashMap<>();
+	private final Map<Class<? extends Event>, Map<EventListener, Object>> listenerMap = new HashMap<>();
 
 	public void clearAllListeners() {
 		listenerMap.clear();
@@ -65,7 +64,7 @@ public final class EventManager {
 		Collection<Class<? extends Event>> eventClasses = listener.getEvents();
 
 		for (Class<? extends Event> eventClass : eventClasses) {
-			// Register the listener for the de.jdungeon.event's class
+			// Register the listener for the event's class
 			Map<EventListener, Object> list = listenerMap.get(eventClass);
 			if (list == null) {
 				list = new HashMap<EventListener, Object>();

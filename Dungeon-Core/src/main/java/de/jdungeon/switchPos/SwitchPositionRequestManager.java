@@ -10,24 +10,15 @@ import de.jdungeon.figure.Figure;
 import java.util.*;
 
 /**
- * Manages the SwitchPosRequests that are done during the de.jdungeon.game.
- * This is, if a de.jdungeon.figure does proposes a SwitchPositionRequest,
+ * Manages the SwitchPosRequests that are done during the game.
+ * This is, if a figure does proposes a SwitchPositionRequest,
  * it is stored here for the case that it will
- * be accepted by the requested de.jdungeon.figure.
- * If the de.jdungeon.fight ends, all requests for that room will be cleared.
+ * be accepted by the requested figure.
+ * If the fight ends, all requests for that room will be cleared.
  */
 public final class SwitchPositionRequestManager implements EventListener {
 
-    private static SwitchPositionRequestManager instance;
-
-    public static SwitchPositionRequestManager getInstance() {
-        if (instance == null) {
-            instance = new SwitchPositionRequestManager();
-        }
-        return instance;
-    }
-
-    private SwitchPositionRequestManager() {
+    public SwitchPositionRequestManager() {
         EventManager.getInstance().registerListener(this);
     }
 

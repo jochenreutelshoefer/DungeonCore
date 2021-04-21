@@ -84,7 +84,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 	public Collection<SwitchPositionRequestManager.SwitchPosRequest> getSwitchPosRequests(FigureInfo requestedFigure) {
 		Figure figure = getRoom().getDungeon().getFigureIndex().get(requestedFigure.getFigureID());
 		if (map.getVisibilityStatus(r.getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FIGURES) {
-			return SwitchPositionRequestManager.getInstance().getSwitchPosRequests(figure);
+			return figure.getDungeon().getSwitchPositionRequestManager().getSwitchPosRequests(figure);
 		}
 		return null;
 	}

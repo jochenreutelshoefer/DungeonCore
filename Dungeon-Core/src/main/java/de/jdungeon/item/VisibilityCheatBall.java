@@ -31,7 +31,7 @@ public class VisibilityCheatBall extends Thing implements Usable, VisibilityModi
 
 	@Override
 	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
-		Dungeon dungeon = f.getActualDungeon();
+		Dungeon dungeon = f.getDungeon();
 		user = f;
 		for (int x = 0; x < dungeon.getSize().getX(); x++) {
 			for (int y = 0; y < dungeon.getSize().getY(); y++) {

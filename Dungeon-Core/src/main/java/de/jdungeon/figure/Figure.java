@@ -269,7 +269,7 @@ public abstract class Figure extends DungeonWorldObject
         Log.info("Figure dies:  " + this);
         dead = true;
         this.getRoom().figureDies(this);
-        getActualDungeon().removeFigureFromIndex(this);
+        getDungeon().removeFigureFromIndex(this);
     }
 
     private boolean payDust(double value) {
@@ -684,7 +684,7 @@ public abstract class Figure extends DungeonWorldObject
 		/*
 		Set change world transaction lock (thread safety for render loop thread)
 		 */
-        this.getActualDungeon().setTransactionLock();
+        this.getDungeon().setTransactionLock();
 
 
 		/*
@@ -696,7 +696,7 @@ public abstract class Figure extends DungeonWorldObject
 		/*
 		Release change world transaction lock
 		 */
-        Dungeon actualDungeon = this.getActualDungeon();
+        Dungeon actualDungeon = this.getDungeon();
         // elvis might have just left the building
         if (actualDungeon != null) {
             actualDungeon.releaseTransactionLock();
@@ -1131,7 +1131,7 @@ public abstract class Figure extends DungeonWorldObject
                 while (a == null) {
                     updater.waitSomeTimeOnGuiAction(150);
                     if (this.getRoom() == null
-                            || this.getActualDungeon() == null
+                            || this.getDungeon() == null
                             || this.getRoom().getDungeon().isGameOver()) {
                         // de.jdungeon.game ended or de.jdungeon.figure has left dungeon
                         break;
@@ -1253,7 +1253,7 @@ public abstract class Figure extends DungeonWorldObject
         move(toGo, round);
     }
 
-    public Dungeon getActualDungeon() {
+    public Dungeon getDungeon() {
         return actualDungeon;
     }
 

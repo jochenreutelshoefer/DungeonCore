@@ -74,7 +74,7 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 	}
 
 
-	// TODO: something wrong here - should not overwrite de.jdungeon.animation render paint call
+	// TODO: something wrong here - should not overwrite animation render paint call
 	@Override
 	public void paint(SpriteBatch batch) {
 		super.paint(batch);

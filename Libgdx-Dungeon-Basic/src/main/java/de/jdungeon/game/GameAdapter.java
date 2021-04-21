@@ -21,7 +21,7 @@ public class GameAdapter implements Game {
     private final LibgdxFileIO fileIO;
     private final Configuration configuration;
 
-    Map<AbstractScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
+    //Map<AbstractScreen, LibgdxGraphics> graphicsMap = new HashMap<>();
 
     public GameAdapter(Game game, FilenameLister filenameLister, Configuration configuration) {
         this.game = game;
@@ -48,10 +48,8 @@ public class GameAdapter implements Game {
     @Override
     public Graphics getGraphics(ScreenContext context) {
         Screen currentScreen = getCurrentScreen();
-        LibgdxGraphics graphics = graphicsMap.get(currentScreen);
         if (graphics == null) {
             graphics = new LibgdxGraphics(((AbstractScreen) currentScreen).getCamera(context), Assets.instance.fonts.defaultSmallFlipped);
-            graphicsMap.put((AbstractScreen) currentScreen, graphics);
         }
         return graphics;
     }

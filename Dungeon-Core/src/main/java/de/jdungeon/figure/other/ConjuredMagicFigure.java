@@ -6,7 +6,6 @@ import de.jdungeon.figure.percept.DisappearPercept;
 import de.jdungeon.figure.percept.ItemDroppedPercept;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
 
 public abstract class ConjuredMagicFigure extends Monster {
 	
@@ -61,7 +60,7 @@ public abstract class ConjuredMagicFigure extends Monster {
 			getRoom().distributePercept(new ItemDroppedPercept(items, this, round));
 		}
 
-		getActualDungeon().removeFigureFromIndex(this);
+		getDungeon().removeFigureFromIndex(this);
 
 
 		// distribute disappear percept

@@ -11,12 +11,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.PrefixFileHandleResolver;
 import com.badlogic.gdx.net.HttpRequestBuilder;
 import com.badlogic.gdx.net.HttpRequestHeader;
 import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.utils.Json;
+import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.event.LevelAbortEvent;
@@ -218,6 +217,10 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
             // pause screen rendering
             this.getScreen().pause();
 
+            // set resources free
+            destroyDungeon();
+
+
             sendHighscoreRequest();
 
 
@@ -256,7 +259,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
             sendHighscoreRequest();
 
-            // create and set new GameScreen
+            // create and set new
             GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon().getSize(), worldUpdaterInitializer);
             setCurrentScreen(gameScreen);
 
@@ -265,10 +268,26 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
         }
         if (event instanceof PlayerDiedEvent) {
-            this.dungeonSession.revertHero();
+            // load hero from backup
+            this.dungeonSession.restoreHero();
+
+            // set resources free
+            destroyDungeon();
+
+            // show stage selection
             StageSelectionScreen screen = new StageSelectionScreen(this);
             this.setCurrentScreen(screen);
         }
+    }
+
+    private void destroyDungeon() {
+        Dungeon currentDungeon = dungeonSession.getCurrentDungeon();
+        if (currentDungeon != null) {
+            currentDungeon.destroy();
+        }
+        dungeonSession.getCurrentHero().setActualDungeon(null);
+        EventManager.getInstance().clearAllListeners();
+        EventManager.getInstance().registerListener(this); // we need this one again
     }
 
     synchronized
@@ -277,7 +296,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
         Json json = new Json();
 
         String jsonStringScore = json.toJson(score);
-        Log.info("Score as json: "+jsonStringScore);
+        Log.info("Score as json: " + jsonStringScore);
 
         Gdx.app.log(TAG, "Sending highscore request.....");
         Gdx.net.sendHttpRequest(new HttpRequestBuilder().newRequest()
@@ -288,11 +307,11 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
                         .header(HttpRequestHeader.CacheControl, "no-cache")
                         .build(),
                 new Net.HttpResponseListener() {
-                    public void handleHttpResponse (Net.HttpResponse httpResponse) {
+                    public void handleHttpResponse(Net.HttpResponse httpResponse) {
                         HttpStatus status = httpResponse.getStatus();
                         Log.info("Test request code was: " + status.getStatusCode());
                         String resultAsString = httpResponse.getResultAsString();
-                        Log.info("highscore request result content was: "+resultAsString);
+                        Log.info("highscore request result content was: " + resultAsString);
                         if (status.getStatusCode() >= 200 && status.getStatusCode() < 300) {
                             // it was successful
                             Log.info("highscore request status code successful");
@@ -304,12 +323,13 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
                     @Override
                     public void failed(Throwable t) {
-                        Log.info("highscore request failed: "+ t.getMessage());
+                        Log.info("highscore request failed: " + t.getMessage());
                     }
 
                     @Override
                     public void cancelled() {
                         Log.info("highscore request canceled");
-                    }});
+                    }
+                });
     }
 }

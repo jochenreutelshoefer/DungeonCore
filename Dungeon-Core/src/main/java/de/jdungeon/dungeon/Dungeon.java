@@ -33,6 +33,7 @@ import de.jdungeon.game.Turnable;
 import de.jdungeon.location.Location;
 import de.jdungeon.spell.AbstractSpell;
 import de.jdungeon.spell.TimedSpellInstance;
+import de.jdungeon.switchPos.SwitchPositionRequestManager;
 
 public class Dungeon implements Turnable, EventListener {
 
@@ -60,6 +61,14 @@ public class Dungeon implements Turnable, EventListener {
 
     Map<Integer, Figure> figureIndex = new HashMap<>();
 
+    DungeonVisibilityMap allVisMap;
+
+    public SwitchPositionRequestManager getSwitchPositionRequestManager() {
+        return switchPositionRequestManager;
+    }
+
+    SwitchPositionRequestManager switchPositionRequestManager =  new SwitchPositionRequestManager();
+
     public Dungeon(int sizeX, int sizeY) {
         EventManager.getInstance().registerListener(this);
         unwrapper = new InfoUnitUnwrapper(this);
@@ -72,6 +81,16 @@ public class Dungeon implements Turnable, EventListener {
                 theDungeon[i][j] = new Room(i, j, this);
             }
         }
+        allVisMap = DungeonVisibilityMap.getAllVisMap(this);
+    }
+
+    /**
+     * Giving a VisMap that sees everything.
+     *
+     * @return all-seeing vismap
+     */
+    public DungeonVisibilityMap getAllVisMap() {
+        return allVisMap;
     }
 
     public void insertFigure(Figure figure) {
@@ -329,6 +348,15 @@ public class Dungeon implements Turnable, EventListener {
 
     public void removeFigureFromIndex(Figure figure) {
         figureIndex.remove(figure.getFigureID());
+    }
+
+
+    public void destroy() {
+        // clean all figures from the static figure index (TODO: refactor - remove figure index!)
+        Collection<Figure> figures = collectAllFigures();
+        for (Figure figure : figures) {
+            figureIndex.remove(figure.getFigureID());
+        }
     }
 
     public Collection<Figure> collectAllFigures() {

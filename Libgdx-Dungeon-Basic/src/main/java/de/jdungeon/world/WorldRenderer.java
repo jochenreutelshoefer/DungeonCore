@@ -121,13 +121,6 @@ public class WorldRenderer implements Disposable {
     /*
      *	RENDER THREAD
      */
-    public void update(float deltaTime) {
-        // nothing yet
-    }
-
-    /*
-     *	RENDER THREAD
-     */
     private void renderDungeon() {
 
         if (USE_OFFSCREEN_FRAMEBUFFER_FOR_BACKGROUND) {

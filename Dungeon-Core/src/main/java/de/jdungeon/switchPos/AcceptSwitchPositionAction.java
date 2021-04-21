@@ -51,7 +51,7 @@ public class AcceptSwitchPositionAction extends AbstractExecutableAction {
                 // distribute percept to trigger de.jdungeon.animation on UI
                 room.distributePercept(new StepPercept(requestingFigure, requestingFigurePosIndex, requestedFigurePosIndex, round));
                 room.distributePercept(new StepPercept(requestedFigure, requestedFigurePosIndex, requestingFigurePosIndex, round));
-                SwitchPositionRequestManager.getInstance().removePosSwitchRequest(new SwitchPositionRequestManager.SwitchPosRequest(requestingFigure, requestedFigure));
+                room.getDungeon().getSwitchPositionRequestManager().removePosSwitchRequest(new SwitchPositionRequestManager.SwitchPosRequest(requestingFigure, requestedFigure));
                 return ActionResult.DONE;
             } else {
                 return ActionResult.POSSIBLE;

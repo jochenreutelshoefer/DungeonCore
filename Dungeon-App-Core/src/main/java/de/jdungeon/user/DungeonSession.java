@@ -47,7 +47,7 @@ public interface DungeonSession {
 
 	HeroInfo initDungeon(DungeonFactory dungeon, ControlUnit controlUnit);
 
-	void revertHero();
+	void restoreHero();
 
 	Hero getCurrentHero();
 

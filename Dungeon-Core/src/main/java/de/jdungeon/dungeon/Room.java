@@ -929,7 +929,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
      */
     public void figureEntersAtPosition(Figure figure, int moveDir, int inRoomIndex, int round) {
         Position position = positions[inRoomIndex];
-        if (!this.getDungeon().equals(figure.getActualDungeon())) {
+        if (!this.getDungeon().equals(figure.getDungeon())) {
             figure.setActualDungeon(this.getDungeon());
         }
 

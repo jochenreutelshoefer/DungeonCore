@@ -33,7 +33,7 @@ public class SpellAction extends AbstractExecutableAction {
 		Spell sp = figure.unWrappSpellInfo(spell);
 		if (sp != null) {
 			if (figure.canPayActionPoints(1)) {
-				return sp.fire(figure, figure.getActualDungeon().getUnwrapper().unwrappObject(target), doIt, round);
+				return sp.fire(figure, figure.getDungeon().getUnwrapper().unwrappObject(target), doIt, round);
 			}
 			return ActionResult.NOAP;
 		}

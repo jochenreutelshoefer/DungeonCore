@@ -27,7 +27,7 @@ public class PathSearchTest {
 
 
 
-		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(1, 8), DungeonVisibilityMap.getAllVisMap(dungeon), false);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(1, 8), dungeon.getAllVisMap(), false);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 8);
 		assertIsConnected(way, false);
@@ -44,7 +44,7 @@ public class PathSearchTest {
 
 	public void testPathStraightDownInverse() {
 		Dungeon dungeon = prepareDungeon();
-		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 8), new JDPoint(1, 1), DungeonVisibilityMap.getAllVisMap(dungeon), false);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 8), new JDPoint(1, 1), dungeon.getAllVisMap(), false);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 8);
 		assertIsConnected(way, false);
@@ -77,7 +77,7 @@ public class PathSearchTest {
 
 		assertTrue("dungeon does not exist", dungeon != null);
 
-		Path way = DungeonUtils.findShortestPath(new JDPoint(0, 8) , new JDPoint(1, 1), DungeonVisibilityMap.getAllVisMap(dungeon), false);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(0, 8) , new JDPoint(1, 1), dungeon.getAllVisMap(), false);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 9);
 		assertIsConnected(way, false);
@@ -95,7 +95,7 @@ public class PathSearchTest {
 		assertTrue("dungeon does not exist", dungeon != null);
 
 		boolean crossBlockedDoors = true;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(5, 3), DungeonVisibilityMap.getAllVisMap(dungeon), crossBlockedDoors);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(5, 3), dungeon.getAllVisMap(), crossBlockedDoors);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 7);
 		assertIsConnected(way, crossBlockedDoors);
@@ -115,7 +115,7 @@ public class PathSearchTest {
 		assertTrue("dungeon does not exist", dungeon != null);
 
 		boolean crossBlockedDoors = true;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(5, 3), new JDPoint(1, 1), DungeonVisibilityMap.getAllVisMap(dungeon), crossBlockedDoors);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(5, 3), new JDPoint(1, 1), dungeon.getAllVisMap(), crossBlockedDoors);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 7);
 		assertIsConnected(way, crossBlockedDoors);
@@ -138,7 +138,7 @@ public class PathSearchTest {
 		assertTrue("dungeon does not exist", dungeon != null);
 
 		boolean crossBlockedDoors = false;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(5, 3), DungeonVisibilityMap.getAllVisMap(dungeon), crossBlockedDoors);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(5, 3), dungeon.getAllVisMap(), crossBlockedDoors);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 9);
 		assertIsConnected(way, crossBlockedDoors);
@@ -155,7 +155,7 @@ public class PathSearchTest {
 		assertTrue("dungeon does not exist", dungeon != null);
 
 		boolean crossBlockedDoors = false;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(5, 3), new JDPoint(1, 1), DungeonVisibilityMap.getAllVisMap(dungeon), crossBlockedDoors);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(5, 3), new JDPoint(1, 1), dungeon.getAllVisMap(), crossBlockedDoors);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 9);
 		assertIsConnected(way, crossBlockedDoors);
@@ -175,7 +175,7 @@ public class PathSearchTest {
 		assertTrue("dungeon does not exist", dungeon != null);
 
 		boolean crossBlockedDoors = false;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(6, 7), new JDPoint(9, 6), DungeonVisibilityMap.getAllVisMap(dungeon), crossBlockedDoors);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(6, 7), new JDPoint(9, 6), dungeon.getAllVisMap(), crossBlockedDoors);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 11);
 		assertIsConnected(way, crossBlockedDoors);
@@ -199,7 +199,7 @@ public class PathSearchTest {
 		assertTrue("dungeon does not exist", dungeon != null);
 
 		boolean crossBlockedDoors = false;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(9, 6), new JDPoint(6, 7), DungeonVisibilityMap.getAllVisMap(dungeon), crossBlockedDoors);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(9, 6), new JDPoint(6, 7), dungeon.getAllVisMap(), crossBlockedDoors);
 		assertTrue(PATH_NOT_FOUND, way != null);
 		assertTrue(PATH_HAS_WRONG_LENGTH, way.size() == 11);
 		assertIsConnected(way, crossBlockedDoors);
@@ -226,7 +226,7 @@ public class PathSearchTest {
 
 		int toX = 12;
 		int toY = 1;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(toX, toY), DungeonVisibilityMap.getAllVisMap(dungeon), false);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(toX, toY), dungeon.getAllVisMap(), false);
 		assertTrue(PATH_FOUND, way == null);
 
 	}
@@ -238,7 +238,7 @@ public class PathSearchTest {
 
 		int toX = 12;
 		int toY = 1;
-		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(toX, toY), DungeonVisibilityMap.getAllVisMap(dungeon), true);
+		Path way = DungeonUtils.findShortestPath(new JDPoint(1, 1), new JDPoint(toX, toY), dungeon.getAllVisMap(), true);
 		assertTrue(PATH_FOUND, way == null);
 
 	}

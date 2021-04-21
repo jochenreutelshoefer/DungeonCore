@@ -92,7 +92,7 @@ public class RoomObservationStatus {
 		 * set new visibility status
 		 */
 		visibilityStatus = max;
-		Room room = figure.getActualDungeon().getRoom(point);
+		Room room = figure.getDungeon().getRoom(point);
 		if(room != null) {
 			room.setObserverStatus(figure, visibilityStatus);
 		} else {
@@ -128,7 +128,7 @@ public class RoomObservationStatus {
 		discoveryStatus = Math.min(VISIBILITY_SHRINE, Math.max(discoveryStatus, newVisbility));
 		if(figure != null) {
 			// if de.jdungeon.game is not yet running de.jdungeon.figure is null
-			final Room room = figure.getActualDungeon().getRoom(point);
+			final Room room = figure.getDungeon().getRoom(point);
 			room.setObserverStatus(figure, newVisbility);
 		}
 
@@ -143,7 +143,7 @@ public class RoomObservationStatus {
 
 	public synchronized boolean removeVisibilityModifier(Object o) {
 		boolean remove = visibilityModifier.remove(o);
-		figure.getActualDungeon().getRoom(point).setObserverStatus(figure, getVisibilityStatus());
+		figure.getDungeon().getRoom(point).setObserverStatus(figure, getVisibilityStatus());
 		return remove;
 	}
 

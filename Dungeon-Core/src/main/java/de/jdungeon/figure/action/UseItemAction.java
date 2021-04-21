@@ -81,7 +81,7 @@ public class UseItemAction extends AbstractExecutableAction {
 				}
 				if (usable.canBeUsedBy(figure)) {
 					if (doIt) {
-						ActionResult result = ((Usable) it).use(figure, figure.getActualDungeon()
+						ActionResult result = ((Usable) it).use(figure, figure.getDungeon()
 								.getUnwrapper()
 								.unwrappObject(target), this.isMeta(), round, doIt);
 						Percept p = new UsePercept(figure, (Usable) it, round);

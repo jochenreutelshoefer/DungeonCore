@@ -1,9 +1,6 @@
 package de.jdungeon.world;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
+import java.util.*;
 
 import de.jdungeon.animation.AnimationManager;
 import com.badlogic.gdx.Application;
@@ -14,6 +11,10 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.event.Event;
+import de.jdungeon.event.EventListener;
+import de.jdungeon.event.EventManager;
+import de.jdungeon.event.WorldChangedEvent;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.percept.Percept;
@@ -42,7 +43,7 @@ import static de.jdungeon.world.WorldRenderer.ROOM_SIZE;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 28.12.19.
  */
-public class GameScreen extends AbstractScreen {
+public class GameScreen extends AbstractScreen implements EventListener {
 
     private final static String TAG = GameScreen.class.getName();
     private static final boolean OPENGL_PROFILING_ON = false;
@@ -68,6 +69,11 @@ public class GameScreen extends AbstractScreen {
     private GLProfiler glProfiler;
     private DungeonWorldUpdater dungeonWorldUpdater;
 
+    /*
+    To trace when we need gui update calls. (not every frame, but only when the world has changed)
+     */
+    private boolean worldHasChanged;
+
     public GameScreen(Game game, PlayerController playerController, JDPoint dungeonSize, DungeonWorldUpdaterInitializer worldUpdaterInitializer) {
         super(game);
         this.playerController = playerController;
@@ -85,6 +91,7 @@ public class GameScreen extends AbstractScreen {
         //	((DefaultDungeonSession)game.getSession()).startGameLoop(playerController);
         //}
 
+        EventManager.getInstance().registerListener(this);
 
         this.dungeonSizeX = dungeonSize.getX();
         this.dungeonSizeY = dungeonSize.getY();
@@ -214,11 +221,11 @@ public class GameScreen extends AbstractScreen {
     public void update(float deltaTime) {
 
         if (!paused) {
-
             movieSequenceManager.update(deltaTime);
             inputController.update(deltaTime);
+
+            // if (worldHasChanged) {
             guiRenderer.update(deltaTime);
-            worldRenderer.update(deltaTime);
 
             Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
             this.showVisibilityIncrease(visibilityIncreasedRooms);
@@ -227,6 +234,8 @@ public class GameScreen extends AbstractScreen {
             for (Percept percept : percepts) {
                 this.perceptHandler.tellPercept(percept);
             }
+            worldHasChanged = false;
+            //}
         }
     }
 
@@ -243,9 +252,9 @@ public class GameScreen extends AbstractScreen {
         }
     }
 
-	/*
-	Creates a movie sequence that zooms in/out
- 	*/
+    /*
+    Creates a movie sequence that zooms in/out
+     */
     private Pair<Float, Float> toPair(Vector2 position) {
         return new Pair<>(position.x, position.y);
     }
@@ -486,7 +495,7 @@ public class GameScreen extends AbstractScreen {
      * Checks whether the current camera position is good, i. e. are all neighbour rooms visible?
      * If not, we scroll the player room to the middle of the screen.
      */
-    public void checkCameraPosition() {
+    void checkCameraPosition() {
         JDPoint number = figure.getRoomInfo().getNumber();
         Pair<Float, Float> playerWorldPosition = floatPairRoomToWorldCoordinates(number);
         Vector3 playerWorldScreenCoord = camera.project(new Vector3(playerWorldPosition.getA(), playerWorldPosition.getB(), 0));
@@ -508,11 +517,23 @@ public class GameScreen extends AbstractScreen {
         return guiRenderer;
     }
 
-    public GraphicObjectRenderer getGraphicObjectRenderer() {
+    GraphicObjectRenderer getGraphicObjectRenderer() {
         return this.graphicObjectRenderer;
     }
 
-    public void invalidateEntityRenderCache(RoomInfoEntity location) {
+    void invalidateEntityRenderCache(RoomInfoEntity location) {
         worldRenderer.invalidateEntityRenderCache(location);
+    }
+
+    @Override
+    public Collection<Class<? extends Event>> getEvents() {
+        return Collections.singletonList(WorldChangedEvent.class);
+    }
+
+    @Override
+    public void notify(Event event) {
+        if (event instanceof WorldChangedEvent) {
+            this.worldHasChanged = true;
+        }
     }
 }

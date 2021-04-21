@@ -103,7 +103,7 @@ public class AncientMapFragmentUtils {
 		Collections.shuffle(roomList);
 		List<Path> distances = new ArrayList<>();
 		for (Room room : roomList) {
-			Path shortestWay = DungeonUtils.findShortestPath(heroEntryPoint, room.getNumber(), DungeonVisibilityMap.getAllVisMap(dungeon), true);
+			Path shortestWay = DungeonUtils.findShortestPath(heroEntryPoint, room.getNumber(), dungeon.getAllVisMap(), true);
 			if(shortestWay != null) {
 				distances.add(shortestWay);
 			}

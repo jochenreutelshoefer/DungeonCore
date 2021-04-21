@@ -31,7 +31,7 @@ public class UseLocationAction extends AbstractExecutableAction {
 			}
 			if (doIt) {
 				if (s.canBeUsedBy(figure)) {
-					s.use(figure, figure.getActualDungeon().getUnwrapper().unwrappObject(target), meta, round, doIt);
+					s.use(figure, figure.getDungeon().getUnwrapper().unwrappObject(target), meta, round, doIt);
 					figure.payDust(s.dustCosts());
 					return ActionResult.DONE;
 				}

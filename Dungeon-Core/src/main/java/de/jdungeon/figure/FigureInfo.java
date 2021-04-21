@@ -258,7 +258,7 @@ public abstract class FigureInfo extends RoomInfoEntity implements ItemInfoOwner
 	}
 
 	public RoomInfo getRoomInfo(int x, int y) {
-		if (f.getRoom() == null || f.getActualDungeon() == null) return null;
+		if (f.getRoom() == null || f.getDungeon() == null) return null;
 		return f.getRoom().getDungeon().getRoomInfoNr(x, y, map);
 	}
 

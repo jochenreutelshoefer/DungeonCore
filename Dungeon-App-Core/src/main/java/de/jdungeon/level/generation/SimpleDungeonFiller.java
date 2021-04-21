@@ -85,7 +85,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 	public void setToWallUnreachableRoom(JDPoint heroEntryPoint) {
 		for (int x = 0; x < dungeon.getSize().getX(); x++) {
 			for (int y = 0; y < dungeon.getSize().getY(); y++) {
-				Path path = DungeonUtils.findShortestPath(heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap.getAllVisMap(dungeon), true);
+				Path path = DungeonUtils.findShortestPath(heroEntryPoint, new JDPoint(x, y), dungeon.getAllVisMap(), true);
 				if (path == null) {
 					dungeon.getRoom(x, y).setIsWall(true);
 				}

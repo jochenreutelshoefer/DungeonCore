@@ -26,7 +26,7 @@ public class ProposeSwitchPositionAction extends AbstractExecutableAction {
     public ActionResult handle(boolean doIt, int round) {
         if (doIt) {
             SwitchPositionRequestManager.SwitchPosRequest request = new SwitchPositionRequestManager.SwitchPosRequest(requestingFigure, requestedFigure);
-            SwitchPositionRequestManager.getInstance().addPosSwitchRequest(request);
+            requestingFigure.getDungeon().getSwitchPositionRequestManager().addPosSwitchRequest(request);
             return ActionResult.DONE;
         } else {
             return ActionResult.POSSIBLE;

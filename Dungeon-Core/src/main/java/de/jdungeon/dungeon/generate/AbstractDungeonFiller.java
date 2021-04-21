@@ -98,7 +98,7 @@ public abstract class AbstractDungeonFiller implements DungeonFiller {
 	public void setToWallUnreachableRoom(JDPoint heroEntryPoint) {
 		for (int x = 0; x < d.getSize().getX(); x++) {
 			for (int y = 0; y < d.getSize().getY(); y++) {
-				Path path = DungeonUtils.findShortestPath(heroEntryPoint, new JDPoint(x, y), DungeonVisibilityMap.getAllVisMap(d), true);
+				Path path = DungeonUtils.findShortestPath(heroEntryPoint, new JDPoint(x, y), d.getAllVisMap(), true);
 				if(path == null) {
 					d.getRoom(x, y).setIsWall(true);
 				}

@@ -260,7 +260,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     }
 
     @Override
-    public void revertHero() {
+    public void restoreHero() {
         fails++;
         currentHero = Hero.copy(heroBackup);
        //currentHero = (Hero) DeepCopyUtil.copy(heroBackup);
@@ -286,7 +286,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
                 completedDungeonsList.add(lastSelectedDungeonFactory);
                 lastCompletedDungeonFactory = lastSelectedDungeonFactory;
             }
+            currentHero.setActualDungeon(null);
             makeHeroBackup();
+            derDungeon.destroy();
             derDungeon = null;
         }
         EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit));
