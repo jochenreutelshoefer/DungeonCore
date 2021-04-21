@@ -252,7 +252,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
         }
         if (event instanceof PlayerDiedEvent) {
-            this.dungeonSession.revertHero();
+            this.dungeonSession.restoreHero();
             //StageSelectionScreen screen = new StageSelectionScreen(this);
             //this.setCurrentScreen(screen);
         }

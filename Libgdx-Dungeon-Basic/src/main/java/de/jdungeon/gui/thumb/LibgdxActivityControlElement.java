@@ -76,8 +76,8 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 
 	// TODO: something wrong here - should not overwrite animation render paint call
 	@Override
-	public void paint(SpriteBatch batch) {
-		super.paint(batch);
+	public void paint(SpriteBatch batch, float deltaTime) {
+		super.paint(batch, deltaTime);
 		int width = (int) (dimension.getWidth() * 0.8);
 		int height = (int)(dimension.getHeight() * 0.8);
 		TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());

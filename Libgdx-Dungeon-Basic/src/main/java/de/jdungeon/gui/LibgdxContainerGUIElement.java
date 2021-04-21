@@ -55,19 +55,19 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 		for (LibgdxGUIElement guiElement : getAllSubElements()) {
 			if (guiElement.isVisible()) {
-				guiElement.paint(batch);
+				guiElement.paint(batch, deltaTime);
 			}
 		}
 	}
 
 
 	@Override
-	public void update(float time) {
+	public void update(float deltaTime, int round) {
 		for (LibgdxGUIElement guiElement : getAllSubElements()) {
-			guiElement.update(time);
+			guiElement.update(deltaTime, round);
 		}
 	}
 

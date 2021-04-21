@@ -76,7 +76,7 @@ public class LibgdxPopup extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 
 		drawBackground(batch, this.position.getX(), this.position.getY());
 

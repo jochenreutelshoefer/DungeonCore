@@ -73,6 +73,7 @@ public class GameScreen extends AbstractScreen implements EventListener {
     To trace when we need gui update calls. (not every frame, but only when the world has changed)
      */
     private boolean worldHasChanged;
+    private boolean skipOne;
 
     public GameScreen(Game game, PlayerController playerController, JDPoint dungeonSize, DungeonWorldUpdaterInitializer worldUpdaterInitializer) {
         super(game);
@@ -190,7 +191,7 @@ public class GameScreen extends AbstractScreen implements EventListener {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             worldRenderer.render();
-            guiRenderer.render();
+            guiRenderer.render(deltaTime);
 
             // for profiling only
             if (OPENGL_PROFILING_ON) {
@@ -224,18 +225,21 @@ public class GameScreen extends AbstractScreen implements EventListener {
             movieSequenceManager.update(deltaTime);
             inputController.update(deltaTime);
 
-            // if (worldHasChanged) {
-            guiRenderer.update(deltaTime);
+            if (worldHasChanged) {
+                if (!skipOne) {
+                    guiRenderer.update(deltaTime, this.playerController.getRound());
 
-            Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
-            this.showVisibilityIncrease(visibilityIncreasedRooms);
-
-            List<Percept> percepts = playerController.getPercepts();
-            for (Percept percept : percepts) {
-                this.perceptHandler.tellPercept(percept);
+                    Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
+                    this.showVisibilityIncrease(visibilityIncreasedRooms);
+                    List<Percept> percepts = playerController.getPercepts();
+                    for (Percept percept : percepts) {
+                        this.perceptHandler.tellPercept(percept);
+                    }
+                    worldHasChanged = false;
+                } else {
+                    skipOne = false;
+                }
             }
-            worldHasChanged = false;
-            //}
         }
     }
 
@@ -534,6 +538,7 @@ public class GameScreen extends AbstractScreen implements EventListener {
     public void notify(Event event) {
         if (event instanceof WorldChangedEvent) {
             this.worldHasChanged = true;
+            this.skipOne = true;
         }
     }
 }

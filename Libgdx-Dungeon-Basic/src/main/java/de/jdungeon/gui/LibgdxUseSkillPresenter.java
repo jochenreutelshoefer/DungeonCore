@@ -52,7 +52,7 @@ public class LibgdxUseSkillPresenter extends LibgdxActivityPresenter implements 
 	}
 
 	@Override
-	public void update(float time) {
+	public void update(float deltaTime, int round) {
 		updateActivities();
 	}
 

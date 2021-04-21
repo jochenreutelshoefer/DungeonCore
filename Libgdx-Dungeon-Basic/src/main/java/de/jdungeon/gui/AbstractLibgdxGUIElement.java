@@ -152,7 +152,7 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 	}
 
 	@Override
-	public void update(float time) {
+	public void update(float time, int round) {
 		// TODO Auto-generated method stub
 	}
 

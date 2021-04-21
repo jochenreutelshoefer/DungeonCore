@@ -44,7 +44,7 @@ public class LibgdxHourGlassTimer extends AbstractLibgdxGUIElement {
 
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 		String image = null;
 		int actionPoints = hero.getActionPoints();
 		if (actionPoints == 0) {

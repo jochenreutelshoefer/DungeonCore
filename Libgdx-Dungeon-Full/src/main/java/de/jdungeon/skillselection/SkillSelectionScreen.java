@@ -136,7 +136,7 @@ public class SkillSelectionScreen extends AbstractScreen {
 		for (LibgdxGUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
 				if (guiElement.needsRepaint()) {
-					guiElement.paint(batch);
+					guiElement.paint(batch, v);
 				}
 			}
 		}

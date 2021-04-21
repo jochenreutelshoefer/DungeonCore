@@ -23,9 +23,9 @@ public interface LibgdxGUIElement {
 
 	void paint(ShapeRenderer shapeRenderer);
 
-	void paint(SpriteBatch batch);
+	void paint(SpriteBatch batch, float deltaTime);
 
-	void update(float time);
+	void update(float deltaTime, int round);
 
 	boolean handleClickEvent(int screenX, int screenY);
 

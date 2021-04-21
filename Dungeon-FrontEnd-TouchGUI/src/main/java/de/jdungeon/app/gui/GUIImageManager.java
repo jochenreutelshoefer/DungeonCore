@@ -45,6 +45,18 @@ public class GUIImageManager {
 	public static final String CHEST_OPEN = "guiItems/brown-trunk-open.png";
 	public static final String FLOOR_BG = "guiItems/dan-rozanski-stone-floor-a1-baking.png";
 
+	public static String SC_MOVE = "gui/move_element2.png";
+	public static String SC_CIRCLE_WHITE = "gui/circle_white.png";
+	public static String SC_RECT = "gui/quadrat.png";
+	public static String SC_DOOR_CLOSED_KEY = "gui/door_element_closed_key.png";
+	public static String SC_DOOR_CLOSED_NOKEY = "gui/door_element_closed_notunlockable.png";
+	public static String SC_DOOR_OPEN_KEY = "gui/door_element_open_lockable.png";
+	public static String SC_DOOR_OPEN_NOKEY = "gui/door_element_open_nokey.png";
+	public static String SC_STEP_ELEMENT_POSSIBLE = "gui/step_element.png";
+	public static String SC_STEP_ELEMENT_ENEMY = "gui/step_element_enemy.png";
+	public static String SC_STEP_ELEMENT_FRIEND = "gui/step_element_friend.png";
+	public static String SC_STEP_ELEMENT_SELF = "gui/step_element_self.png";
+
 	public static final String NO_IMAGE = "guiItems/no_image.gif";
 
 	private final AbstractImageLoader loader;

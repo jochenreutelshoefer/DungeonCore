@@ -331,7 +331,11 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	}
 
 	@Override
-	public void update(float time) {
+	public void update(float deltaTime, int round) {
+
+	}
+
+	private void animationUpdate(float time) {
 		// TODO : refactor to use 'time' give instead of timer mechanism for deceleration
 		timer += time;
 		if (justRotated) {
@@ -400,8 +404,8 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
-
+	public void paint(SpriteBatch batch, float deltaTime) {
+		animationUpdate(deltaTime);
 		for (int i = 0; i < points.length; i++) {
 			int toDraw = (markedPointIndex + i + 1) % points.length;
 			if (toDraw >= 0) {

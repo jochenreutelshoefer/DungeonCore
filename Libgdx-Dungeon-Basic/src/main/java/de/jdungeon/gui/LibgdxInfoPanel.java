@@ -78,11 +78,14 @@ public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
 
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
-		// noting to do here
+		// nothing to do here
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
+
+		// trigger animation update
+		super.paint(batch, deltaTime);
 
 		/*
 		 * draw background

@@ -1,5 +1,6 @@
 package de.jdungeon.gui;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.util.JDDimension;
 
@@ -99,7 +100,16 @@ public abstract class LibgdxSlidingInOutGUIElement extends AbstractLibgdxGUIElem
 	}
 
 	@Override
-	public void update(float time) {
+	public void paint(SpriteBatch batch, float deltaTime) {
+		animationUpdate(deltaTime);
+	}
+
+	@Override
+	public void update(float deltaTime, int round) {
+		//animationUpdate(time);
+	}
+
+	protected void animationUpdate(float time) {
 		timer += time;
 
 		// we're done sliding

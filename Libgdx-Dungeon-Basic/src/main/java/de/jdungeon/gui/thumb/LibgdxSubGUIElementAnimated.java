@@ -80,8 +80,8 @@ public class LibgdxSubGUIElementAnimated extends LibgdxAnimatedSmartControlEleme
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
-		super.paint(batch);
+	public void paint(SpriteBatch batch, float deltaTime) {
+		super.paint(batch, deltaTime);
 		if (image != null) {
 			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(image, Assets.instance.getGuiAtlas());
 			batch.draw(atlasRegion, getX(), getY(), dimension.getWidth(), dimension.getHeight());

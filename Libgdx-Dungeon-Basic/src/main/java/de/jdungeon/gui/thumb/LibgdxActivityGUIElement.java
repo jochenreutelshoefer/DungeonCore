@@ -26,6 +26,8 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 
 	private final Activity activity;
 	private final String bgInactiveImage;
+	private ActionResult possibleState;
+	private ActivityPlan executionPlan;
 
 	public LibgdxActivityGUIElement(JDPoint position, JDDimension dimension, Activity activity, String activityImage, String bgImage, String bgInactiveImage) {
 		super(position, dimension, activityImage, bgImage);
@@ -47,11 +49,16 @@ public class LibgdxActivityGUIElement extends ImageLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
-		super.paint(batch);
-		ActionResult possibleState = activity.possible(null);
-		ActivityPlan executionPlan = activity.createExecutionPlan(false, null);
-		if (executionPlan == null) return; // de.jdungeon.level exit problem
+	public void update(float deltaTime, int round) {
+		possibleState = activity.possible(null);
+		executionPlan = activity.createExecutionPlan(false, null);
+	}
+
+	@Override
+	public void paint(SpriteBatch batch, float deltaTime) {
+		super.paint(batch, deltaTime);
+
+		if (executionPlan == null) return; // level exit problem
 
 		int tileWidth = this.getDimension().getWidth();
 		int tileHeight = this.getDimension().getHeight();

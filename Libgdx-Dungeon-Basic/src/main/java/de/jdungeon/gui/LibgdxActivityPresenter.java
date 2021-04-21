@@ -91,8 +91,9 @@ public abstract class LibgdxActivityPresenter extends LibgdxContainerGUIElement 
 
 	private void drawHighlighting(SpriteBatch batch, int yMinusDefaultHeight, int xMinusDefaultWidth) {
 		if (highlightOn) {
-			TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(GUIImageManager.CIRCLE_HIGHLIGHT, Assets.instance.getGuiAtlas());
-			batch.draw(atlasRegion, xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight);
+			// TODO: !!
+			//TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(GUIImageManager.CIRCLE_HIGHLIGHT, Assets.instance.getGuiAtlas());
+			//batch.draw(atlasRegion, xMinusDefaultWidth, yMinusDefaultHeight, doubleImageWidth, doubleImageHeight);
 		}
 	}
 

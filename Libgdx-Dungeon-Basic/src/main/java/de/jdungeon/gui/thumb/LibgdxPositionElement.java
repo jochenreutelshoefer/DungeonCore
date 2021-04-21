@@ -18,6 +18,7 @@ import de.jdungeon.gui.LibgdxGUIElement;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.02.20.
  */
+@Deprecated
 public class LibgdxPositionElement extends LibgdxAnimatedSmartControlElement {
 
     private final RoomInfoEntity action;
@@ -33,13 +34,13 @@ public class LibgdxPositionElement extends LibgdxAnimatedSmartControlElement {
     private final int x;
     private final int y;
 
-    public LibgdxPositionElement(JDPoint position, JDDimension dimension, final LibgdxGUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, ActionAssembler actionAssembler) {
-        this(position, dimension, parent, action, color, clickableObject, actionAssembler, -1);
+    public LibgdxPositionElement(JDPoint position, JDDimension dimension, final LibgdxGUIElement parent, RoomInfoEntity target, final Color color, RoomInfoEntity clickableObject, ActionAssembler actionAssembler) {
+        this(position, dimension, parent, target, color, clickableObject, actionAssembler, -1);
     }
 
-    public LibgdxPositionElement(JDPoint position, JDDimension dimension, final LibgdxGUIElement parent, RoomInfoEntity action, final Color color, RoomInfoEntity clickableObject, ActionAssembler actionAssembler, int positionIndex) {
+    public LibgdxPositionElement(JDPoint position, JDDimension dimension, final LibgdxGUIElement parent, RoomInfoEntity target, final Color color, RoomInfoEntity clickableObject, ActionAssembler actionAssembler, int positionIndex) {
         super(position, dimension, parent);
-        this.action = action;
+        this.action = target;
         this.color = color;
         this.clickableObject = clickableObject;
         this.actionAssembler = actionAssembler;
@@ -58,8 +59,8 @@ public class LibgdxPositionElement extends LibgdxAnimatedSmartControlElement {
 
         final JDPoint positionOnScreen = getPositionOnScreen();
 
-        // prepare highlight de.jdungeon.animation drawables
-        if (action != null) {
+        // prepare highlight animation drawables
+        if (target != null) {
             for (int i = 0; i < animationShapes.length; i++) {
                 final int finalI = i;
                 animationShapes[i] = new LibgdxDrawable() {
@@ -137,7 +138,7 @@ public class LibgdxPositionElement extends LibgdxAnimatedSmartControlElement {
     }
 
     @Override
-    public void paint(SpriteBatch batch) {
+    public void paint(SpriteBatch batch, float deltaTime) {
 
     }
 }

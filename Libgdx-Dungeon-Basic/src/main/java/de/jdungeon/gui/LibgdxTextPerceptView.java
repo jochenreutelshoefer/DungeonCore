@@ -152,7 +152,7 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 
 		int timeOffset = 0;
 		if (currentInsert != null) {
@@ -183,7 +183,7 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void update(float time) {
+	public void update(float deltaTime, int round) {
 		if (currentInsert == null) {
 			if (!cache.isEmpty()) {
 				animateNextPercept();
@@ -201,7 +201,7 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 				}
 			}
 			else {
-				timer += time * 3;
+				timer += deltaTime * 3;
 			}
 		}
 

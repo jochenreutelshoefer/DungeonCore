@@ -38,7 +38,6 @@ public class ActionAssembler implements EventListener {
 	private final FigureInfo figure;
 
 	private final JDGUI gui;
-	private Action lastAction;
 	private final ActionAssemblerHelper actionAssembler;
 
 	public ActionAssembler(FigureInfo figure, JDGUI gui) {

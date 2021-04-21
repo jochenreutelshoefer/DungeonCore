@@ -51,7 +51,7 @@ public class LibgdxFloorItemPresenter extends LibgdxActivityPresenter implements
 	}
 
 	@Override
-	public void update(float time) {
+	public void update(float deltaTime, int round) {
 		updateActivities();
 	}
 
@@ -71,9 +71,9 @@ public class LibgdxFloorItemPresenter extends LibgdxActivityPresenter implements
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 		for (LibgdxActivityGUIElement activity : activities) {
-			activity.paint(batch);
+			activity.paint(batch, deltaTime);
 		}
 	}
 

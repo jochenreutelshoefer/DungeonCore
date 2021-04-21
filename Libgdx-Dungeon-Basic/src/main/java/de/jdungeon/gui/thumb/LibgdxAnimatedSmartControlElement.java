@@ -13,48 +13,44 @@ import de.jdungeon.gui.LibgdxGUIElement;
  */
 public abstract class LibgdxAnimatedSmartControlElement extends LibgdxSubGUIElement {
 
-	private long buttonAnimationStart;
-	private static final int buttonAnimationStepTime = 80;
+    private long buttonAnimationStart;
+    private static final int buttonAnimationStepTime = 80;
 
-	public static float[] buttonAnimationSizes = new float[] {2, 3, 4};
-	protected LibgdxDrawable[] animationShapes;
+    public static float[] buttonAnimationSizes = new float[]{2, 3, 4};
+    protected LibgdxDrawable[] animationShapes;
 
-	public LibgdxAnimatedSmartControlElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent) {
-		super(position, dimension, parent);
-		animationShapes = new LibgdxDrawable[buttonAnimationSizes.length];
-	}
+    public LibgdxAnimatedSmartControlElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent) {
+        super(position, dimension, parent);
+        animationShapes = new LibgdxDrawable[buttonAnimationSizes.length];
+    }
 
-	@Override
-	public boolean handleClickEvent(int x, int y) {
-		startAnimation();
-		return false;
-	}
+    @Override
+    public boolean handleClickEvent(int x, int y) {
+        startAnimation();
+        return false;
+    }
 
-	public void startAnimation() {
-		buttonAnimationStart = System.currentTimeMillis();
-	}
+    public void startAnimation() {
+        buttonAnimationStart = System.currentTimeMillis();
+    }
 
-	@Override
-	public void paint(ShapeRenderer renderer) {
-		long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
-		if(elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
-			int stage = (int)(elapsedTime / buttonAnimationStepTime);
-			LibgdxDrawable animationShape = animationShapes[stage];
-			if(animationShape != null) {
-				animationShape.paint(renderer);
-			}
-		}
-	}
+    @Override
+    public void paint(ShapeRenderer renderer) {
 
-	@Override
-	public void paint(SpriteBatch batch) {
-		long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
-		if(elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
-			int stage = (int)(elapsedTime / buttonAnimationStepTime);
-			LibgdxDrawable animationShape = animationShapes[stage];
-			if(animationShape != null) {
-				animationShape.paint(batch);
-			}
-		}
-	}
+        long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
+        if (elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
+            int stage = (int) (elapsedTime / buttonAnimationStepTime);
+            LibgdxDrawable animationShape = animationShapes[stage];
+            if (animationShape != null) {
+                animationShape.paint(renderer);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void paint(SpriteBatch batch, float deltaTime) {
+
+    }
 }

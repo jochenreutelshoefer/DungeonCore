@@ -77,7 +77,7 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 
 		this.drawBackground(batch, position.getX(), position.getY());
 

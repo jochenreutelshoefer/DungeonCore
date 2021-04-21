@@ -40,7 +40,7 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(SpriteBatch batch) {
+	public void paint(SpriteBatch batch, float deltaTime) {
 		int x = this.position.getX() + relativeOffsetX;
 		int y = this.position.getY() + relativeOffsetY;
 		int width = this.dimension.getWidth();
