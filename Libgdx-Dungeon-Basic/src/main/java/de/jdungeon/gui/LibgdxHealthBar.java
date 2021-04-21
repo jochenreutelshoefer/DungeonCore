@@ -39,11 +39,6 @@ public class LibgdxHealthBar extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-		// do nothing
-	}
-
-	@Override
 	public void paint(SpriteBatch batch, float deltaTime) {
 
 		double baseValue = 1;

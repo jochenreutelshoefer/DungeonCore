@@ -99,11 +99,6 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 		return true;
 	}
 
-	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-
-	}
-
 	private Texture updateOfflineMessageTexture() {
 
 		// prepare and activate offscreen framebuffer

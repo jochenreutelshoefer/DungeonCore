@@ -1,6 +1,5 @@
 package de.jdungeon.gui.thumb;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,8 +20,8 @@ import de.jdungeon.gui.LibgdxGUIElement;
 public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
 
     private final RouteInstruction.Direction direction;
-    private final FigureInfo figure;
-    private final ActionAssembler guiControl;
+    private FigureInfo figure;
+    private ActionAssembler guiControl;
     private float rotation;
 
     public LibgdxMoveElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent, RouteInstruction.Direction direction, FigureInfo figure, ActionAssembler guiControl) {
@@ -33,30 +32,16 @@ public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
 
         JDDimension iconDimension = new JDDimension((int) (dimension.getWidth() * 0.8), (int) (dimension.getHeight() * 0.8));
         JDPoint[] triangle;
-        if (direction == RouteInstruction.Direction.West) {
-            rotation = 270f;
-            for (int i = 0; i < buttonAnimationSizes.length; i++) {
-                animationShapes[i] = new LibgdxTriangle(getTriangleWest(position, iconDimension, buttonAnimationSizes[i]), parent);
-            }
+        for (int i = 0; i < buttonAnimationSizeFactors.length; i++) {
+            animationShapes[i] = new LibgdxMoveElement(
+                    position,
+                    new JDDimension(
+                            (int)(dimension.getWidth() * buttonAnimationSizeFactors[i]),
+                            (int) (dimension.getWidth() * buttonAnimationSizeFactors[i])),
+                    parent,
+                    direction);
         }
-        if (direction == RouteInstruction.Direction.East) {
-            rotation = 90f;
-            for (int i = 0; i < buttonAnimationSizes.length; i++) {
-                animationShapes[i] = new LibgdxTriangle(getTriangleEast(position, iconDimension, buttonAnimationSizes[i]), parent);
-            }
-        }
-        if (direction == RouteInstruction.Direction.North) {
-            rotation = 0f;
-            for (int i = 0; i < buttonAnimationSizes.length; i++) {
-                animationShapes[i] = new LibgdxTriangle(getTriangleNorth(position, iconDimension, buttonAnimationSizes[i]), parent);
-            }
-        }
-        if (direction == RouteInstruction.Direction.South) {
-            rotation = 180f;
-            for (int i = 0; i < buttonAnimationSizes.length; i++) {
-                animationShapes[i] = new LibgdxTriangle(getTriangleSouth(position, iconDimension, buttonAnimationSizes[i]), parent);
-            }
-        }
+        setRotation(direction);
 
         int parentX = parent.getPositionOnScreen().getX();
         int parentY = parent.getPositionOnScreen().getY();
@@ -71,7 +56,31 @@ public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
          */
     }
 
-    private JDPoint[] getTriangleSouth(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
+    public LibgdxMoveElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent, RouteInstruction.Direction direction) {
+        super(position, dimension, parent);
+        this.direction = direction;
+        setRotation(direction);
+    }
+
+    private void setRotation(RouteInstruction.Direction direction) {
+        if (direction == RouteInstruction.Direction.West) {
+            rotation = 270f;
+        }
+        if (direction == RouteInstruction.Direction.East) {
+            rotation = 90f;
+        }
+        if (direction == RouteInstruction.Direction.North) {
+            rotation = 0f;
+        }
+        if (direction == RouteInstruction.Direction.South) {
+            rotation = 180f;
+        }
+    }
+
+
+
+
+        private JDPoint[] getTriangleSouth(JDPoint position, JDDimension clickAreaDimension, double drawScale) {
         int sizeX = clickAreaDimension.getWidth();
         int sizeY = clickAreaDimension.getHeight();
 
@@ -149,22 +158,8 @@ public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
     }
 
     @Override
-    public void paint(ShapeRenderer renderer) {
-        super.paint(renderer);
-
-        /*
-        renderer.setColor(Color.RED);
-        renderer.set(ShapeRenderer.ShapeType.Line);
-        renderer.rect(this.getX(), this.getY(), this.getDimension().getWidth(), this.getDimension().getHeight());
-        renderer.setColor(Color.ORANGE);
-        renderer.set(ShapeRenderer.ShapeType.Filled);
-        renderer.triangle(x0, y0, x1, y1, x2, y2);
-
-         */
-    }
-
-    @Override
     public void paint(SpriteBatch batch, float deltaTime) {
+        super.paint(batch, deltaTime);
         TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(GUIImageManager.SC_MOVE, Assets.instance.getGuiAtlas());
         //batch.draw(atlasRegion, this.getX(), this.getY(), this.iconDimension.getWidth(), this.iconDimension.getHeight());
         batch.draw(atlasRegion, this.getX(), this.getY(), this.getDimension().getWidth() / 2, this.getDimension().getHeight() / 2,  this.getDimension().getWidth(), this.getDimension().getHeight(), 1.0f, 1.0f, rotation);

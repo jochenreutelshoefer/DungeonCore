@@ -64,12 +64,6 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-		// do nothing
-	}
-
-
-	@Override
 	public boolean handleClickEvent(int screenX, int screenY) {
 		EventManager.getInstance().fireEvent(new SkillSelectedEvent(skill));
 		return true;

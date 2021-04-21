@@ -238,6 +238,7 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
         return new LibgdxActivityControlElement(new JDPoint(x, y), moveEast.getDimension(), moveEast.getParent(), scoutActivity, skillImage);
     }
 
+    /*
     public void animateEnemyBlobs() {
         for (LibgdxGUIElement positionElement : scPositionElements) {
             if (positionElement instanceof LibgdxPositionElement) {
@@ -251,6 +252,8 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
             }
         }
     }
+
+     */
 
     private LibgdxSubGUIElement createRectGUIElement(JDPoint position, JDDimension dimension) {
         return new LibgdxSubGUIElement(position, dimension, this) {
@@ -273,10 +276,6 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
                 height = this.getDimension().getHeight();
             }
 
-            @Override
-            public void paint(ShapeRenderer renderer) {
-                //LibgdxDrawUtils.drawRectangle(renderer, com.badlogic.gdx.graphics.Color.WHITE, absolutePosition, this.getDimension());
-            }
 
             @Override
             public void paint(SpriteBatch batch, float deltaTime) {

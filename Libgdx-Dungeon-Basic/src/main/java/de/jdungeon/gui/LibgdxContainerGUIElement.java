@@ -46,15 +46,6 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 	}
 
 	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-		for (LibgdxGUIElement guiElement : getAllSubElements()) {
-			if (guiElement.isVisible()) {
-				guiElement.paint(shapeRenderer);
-			}
-		}
-	}
-
-	@Override
 	public void paint(SpriteBatch batch, float deltaTime) {
 		for (LibgdxGUIElement guiElement : getAllSubElements()) {
 			if (guiElement.isVisible()) {

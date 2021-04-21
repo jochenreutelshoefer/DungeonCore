@@ -29,10 +29,6 @@ public abstract class ImageLibgdxGUIElement extends AbstractLibgdxGUIElement {
 		this.backGround = bg;
 	}
 
-	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-		// do nothing
-	}
 
 	@Override
 	public boolean isVisible() {

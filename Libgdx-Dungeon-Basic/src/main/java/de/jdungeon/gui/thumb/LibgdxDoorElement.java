@@ -125,19 +125,4 @@ public class LibgdxDoorElement extends LibgdxAnimatedSmartControlElement {
 
     }
 
-    @Override
-    public void paint(ShapeRenderer renderer) {
-        /*
-        super.paint(renderer);
-        JDPoint parentPosition = parent.getPositionOnScreen();
-        JDPoint posRelative = this.getPositionOnScreen();
-        JDPoint absolutePosition = new JDPoint(parentPosition.getX() + posRelative.getX(), parentPosition.getY() + posRelative.getY());
-        JDDimension dimension = this.getDimension();
-        Color borderColor = locked ? Color.RED : Color.GREEN;
-        Color fillColor = hasKey ? Color.GREEN : Color.RED;
-        LibgdxDrawUtils.fillRectangle(renderer, borderColor, absolutePosition, dimension);
-        LibgdxDrawUtils.fillRectangle(renderer, fillColor, new JDPoint(absolutePosition.getX() + 2, absolutePosition.getY() + 2), new JDDimension(dimension.getWidth() - 4, dimension.getHeight() - 4));
-    */
-    }
-
 }

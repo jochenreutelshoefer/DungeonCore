@@ -16,12 +16,12 @@ public abstract class LibgdxAnimatedSmartControlElement extends LibgdxSubGUIElem
     private long buttonAnimationStart;
     private static final int buttonAnimationStepTime = 80;
 
-    public static float[] buttonAnimationSizes = new float[]{2, 3, 4};
+    public static float[] buttonAnimationSizeFactors = new float[]{2, 3, 4};
     protected LibgdxDrawable[] animationShapes;
 
     public LibgdxAnimatedSmartControlElement(JDPoint position, JDDimension dimension, LibgdxGUIElement parent) {
         super(position, dimension, parent);
-        animationShapes = new LibgdxDrawable[buttonAnimationSizes.length];
+        animationShapes = new LibgdxDrawable[buttonAnimationSizeFactors.length];
     }
 
     @Override
@@ -35,22 +35,14 @@ public abstract class LibgdxAnimatedSmartControlElement extends LibgdxSubGUIElem
     }
 
     @Override
-    public void paint(ShapeRenderer renderer) {
-
+    public void paint(SpriteBatch batch, float deltaTime) {
         long elapsedTime = System.currentTimeMillis() - buttonAnimationStart;
-        if (elapsedTime < buttonAnimationSizes.length * buttonAnimationStepTime) {
+        if (elapsedTime < buttonAnimationSizeFactors.length * buttonAnimationStepTime) {
             int stage = (int) (elapsedTime / buttonAnimationStepTime);
             LibgdxDrawable animationShape = animationShapes[stage];
             if (animationShape != null) {
-                animationShape.paint(renderer);
+                animationShape.paint(batch, deltaTime);
             }
         }
-
-
-    }
-
-    @Override
-    public void paint(SpriteBatch batch, float deltaTime) {
-
     }
 }

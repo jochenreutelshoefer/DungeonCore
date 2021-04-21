@@ -9,7 +9,5 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public interface LibgdxDrawable {
 
-	void paint(ShapeRenderer shapeRenderer);
-
-	void paint(SpriteBatch batch);
+	void paint(SpriteBatch batch, float deltaTime);
 }

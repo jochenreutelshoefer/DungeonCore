@@ -3,13 +3,14 @@ package de.jdungeon.gui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.gui.thumb.LibgdxDrawable;
 import de.jdungeon.util.JDDimension;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.02.20.
  */
-public interface LibgdxGUIElement {
+public interface LibgdxGUIElement extends LibgdxDrawable {
 
 	boolean isVisible();
 
@@ -20,8 +21,6 @@ public interface LibgdxGUIElement {
 	JDDimension getDimension();
 
 	boolean hasPoint(JDPoint p);
-
-	void paint(ShapeRenderer shapeRenderer);
 
 	void paint(SpriteBatch batch, float deltaTime);
 

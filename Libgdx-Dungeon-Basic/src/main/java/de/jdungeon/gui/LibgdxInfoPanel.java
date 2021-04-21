@@ -77,11 +77,6 @@ public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
 	}
 
 	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-		// nothing to do here
-	}
-
-	@Override
 	public boolean isAnimated() {
 		return true;
 	}

@@ -62,11 +62,6 @@ public class LibgdxPopup extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public void paint(ShapeRenderer shapeRenderer) {
-		// do nothing
-	}
-
-	@Override
 	public boolean handleClickEvent(int x, int y) {
 		if (event != null) {
 			EventManager.getInstance().fireEvent(event);

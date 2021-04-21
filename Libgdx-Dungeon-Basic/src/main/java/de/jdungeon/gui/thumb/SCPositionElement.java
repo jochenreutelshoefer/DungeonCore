@@ -130,11 +130,6 @@ public class SCPositionElement extends LibgdxSubGUIElement {
     }
 
     @Override
-    public void paint(ShapeRenderer renderer) {
-
-    }
-
-    @Override
     public void paint(SpriteBatch batch, float deltaTime) {
         String image;
         int width = ballWidth;

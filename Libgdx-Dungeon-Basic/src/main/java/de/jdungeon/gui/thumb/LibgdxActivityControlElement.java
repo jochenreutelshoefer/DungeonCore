@@ -27,32 +27,19 @@ public class LibgdxActivityControlElement extends LibgdxAnimatedSmartControlElem
 		this.skillImage = skillImage;
 		this.activity = activity;
 
-		for (int i = 0; i < buttonAnimationSizes.length; i++) {
+		for (int i = 0; i < buttonAnimationSizeFactors.length; i++) {
 			final int finalI = i;
-			animationShapes[i] = new LibgdxDrawable() {
-				@Override
-				public void paint(ShapeRenderer shapeRenderer) {
-					if(skillImage == null) {
-						int sizeX = (int) (dimension.getWidth() * buttonAnimationSizes[finalI]);
-						int sizeY = (int) (dimension.getHeight() * buttonAnimationSizes[finalI]);
-						int diffSizeX = sizeX - getDimension().getWidth();
-						int diffSizeY = sizeY - getDimension().getHeight();
-						shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-						shapeRenderer.setColor(Color.WHITE);
-						shapeRenderer.rect(getX() - diffSizeX / 2, getY() - diffSizeY / 2, sizeX, sizeY);
-					}
-				}
+			animationShapes[i] = (batch, deltaTime) -> {
+				TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());
+				JDPoint parentPosition = parent.getPositionOnScreen();
+				int scaledWidth = (int) (dimension.getWidth() * buttonAnimationSizeFactors[finalI]);
+				int scaledHeight = (int) (dimension.getHeight() * buttonAnimationSizeFactors[finalI]);
 
-				@Override
-				public void paint(SpriteBatch batch) {
-					int sizeX = (int) (dimension.getWidth() * buttonAnimationSizes[finalI]);
-					int sizeY = (int) (dimension.getHeight() * buttonAnimationSizes[finalI]);
-					int diffSizeX = sizeX - getDimension().getWidth();
-					int diffSizeY = sizeY - getDimension().getHeight();
-					TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(skillImage, Assets.instance.getGuiAtlas());
-					batch.draw(atlasRegion, getX() - diffSizeX / 2, getY() - diffSizeY / 2, sizeX, sizeY );
-
-				}
+				batch.draw(atlasRegion,
+						parentPosition.getX() + getPositionOnScreen().getX() - ((scaledWidth - dimension.getWidth()) / 2),
+						parentPosition.getY() + getPositionOnScreen().getY() - ((scaledHeight - dimension.getHeight()) / 2),
+						scaledWidth,
+						scaledHeight);
 
 			};
 		}

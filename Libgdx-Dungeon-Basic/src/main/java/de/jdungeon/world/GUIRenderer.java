@@ -181,7 +181,7 @@ public class GUIRenderer implements Disposable {
          * init smart thumb control
          */
         int itemPresenterHeight = screenHeightBy5;
-        int SMART_CONTROL_SIZE = (int) (/*1.5 **/ (((float)screenWidth) / 3));
+        int SMART_CONTROL_SIZE = (int) (/*1.5 **/ (((float) screenWidth) / 3));
         JDPoint smartControlRoomPanelPosition = new JDPoint(screenWidth - SMART_CONTROL_SIZE, screenHeight - SMART_CONTROL_SIZE - itemPresenterHeight / 2);
         Gdx.app.log(TAG, "Initializing Smart Control Panel at: " + smartControlRoomPanelPosition.getX() + " / " + smartControlRoomPanelPosition
                 .getY());
@@ -247,7 +247,7 @@ public class GUIRenderer implements Disposable {
 
 		/*
 		render shapes  TODO: find solution without using ShapeRenderer (create necessary sprites?)
-		 */
+
         shapeRenderer.setProjectionMatrix(cameraGUI.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
@@ -256,6 +256,8 @@ public class GUIRenderer implements Disposable {
             }
         }
         shapeRenderer.end();
+
+		 */
 
 
 		/*
@@ -266,7 +268,7 @@ public class GUIRenderer implements Disposable {
         renderFPSCounter();
         for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
             if (guiElement.isVisible()) {
-                    guiElement.paint(batch, deltaTime);
+                guiElement.paint(batch, deltaTime);
             }
         }
         batch.end();
