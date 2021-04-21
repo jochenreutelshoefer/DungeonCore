@@ -9,13 +9,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
+import de.jdungeon.app.gui.GUIImageManager;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.log.Log;
 import de.jdungeon.text.Statement;
@@ -43,6 +41,9 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	private final Batch spriteBatch = new SpriteBatch();
 	private final GlyphLayout glyphLayoutRoundNumber = new GlyphLayout();
 	private final GlyphLayout glyphLayoutStatementText = new GlyphLayout();
+
+	private final TextureRegion backgroundTx;
+	private final TextureRegion borderTx;
 
 	private static JDPoint position() {
 		return new JDPoint(Gdx.app.getGraphics()
@@ -72,12 +73,16 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 		frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, framebufferWidth, frameBufferHeight, false);
 		offlineTextTexture = updateOfflineMessageTexture();
 
+		backgroundTx = Assets.instance.getAtlasRegion(GUIImageManager.BLACK_BACKGROUND, Assets.instance.getGuiAtlas());
+		borderTx = Assets.instance.getAtlasRegion(GUIImageManager.SC_RECT, Assets.instance.getGuiAtlas());
+
 		// TODO: fix resize issue!
 	}
 
 	public void addTextPercept(Statement p) {
 		cache.add(p);
 	}
+
 
 	private static int getNumberOfLines(Statement p) {
 		if (p == null) return 0;
@@ -90,24 +95,13 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 	}
 
 	@Override
-	public boolean needsRepaint() {
+	public boolean isAnimated() {
 		return true;
 	}
 
 	@Override
 	public void paint(ShapeRenderer shapeRenderer) {
-		int x = this.position.getX();
-		int y = this.position.getY();
-		int width = this.dimension.getWidth();
-		int height = this.dimension.getHeight();
 
-		shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(Color.BLACK);
-		shapeRenderer.rect(x, y, width, height);
-
-		shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(Color.GRAY);
-		shapeRenderer.rect(x, y, width + 1, height);
 	}
 
 	private Texture updateOfflineMessageTexture() {
@@ -153,6 +147,14 @@ public class LibgdxTextPerceptView extends AbstractLibgdxGUIElement {
 
 	@Override
 	public void paint(SpriteBatch batch, float deltaTime) {
+
+		int x = this.position.getX();
+		int y = this.position.getY();
+		int width = this.dimension.getWidth();
+		int height = this.dimension.getHeight();
+
+		batch.draw(backgroundTx, x, y, width, height);
+		batch.draw(borderTx, x-4, y, width + 6, height);
 
 		int timeOffset = 0;
 		if (currentInsert != null) {

@@ -57,6 +57,7 @@ public class GUIImageManager {
 	public static String SC_STEP_ELEMENT_FRIEND = "gui/step_element_friend.png";
 	public static String SC_STEP_ELEMENT_SELF = "gui/step_element_self.png";
 
+	public static final String BLACK_BACKGROUND = "gui/black.png";
 	public static final String NO_IMAGE = "guiItems/no_image.gif";
 
 	private final AbstractImageLoader loader;

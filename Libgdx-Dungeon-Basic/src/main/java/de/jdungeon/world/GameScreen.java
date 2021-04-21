@@ -222,12 +222,13 @@ public class GameScreen extends AbstractScreen implements EventListener {
     public void update(float deltaTime) {
 
         if (!paused) {
+            int round = this.playerController.getRound();
             movieSequenceManager.update(deltaTime);
             inputController.update(deltaTime);
-
+            guiRenderer.updateAnimations(deltaTime, round);
             if (worldHasChanged) {
                 if (!skipOne) {
-                    guiRenderer.update(deltaTime, this.playerController.getRound());
+                    guiRenderer.updateStatic(deltaTime, round);
 
                     Set<JDPoint> visibilityIncreasedRooms = playerController.getVisibilityIncreasedRooms();
                     this.showVisibilityIncrease(visibilityIncreasedRooms);

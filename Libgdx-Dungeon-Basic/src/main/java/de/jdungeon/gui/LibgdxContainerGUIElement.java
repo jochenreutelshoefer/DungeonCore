@@ -63,6 +63,10 @@ public abstract class LibgdxContainerGUIElement extends AbstractLibgdxGUIElement
 		}
 	}
 
+	@Override
+	public boolean isAnimated() {
+		return true;
+	}
 
 	@Override
 	public void update(float deltaTime, int round) {

@@ -103,7 +103,7 @@ public class GUIRenderer implements Disposable {
          * init text messages panel
          */
         textView = new LibgdxTextPerceptView();
-        //this.libgdxGuiElements.add(textView);
+        this.libgdxGuiElements.add(textView);
 
 
         /*
@@ -252,9 +252,7 @@ public class GUIRenderer implements Disposable {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
             if (guiElement.isVisible()) {
-                if (guiElement.needsRepaint()) {
                     guiElement.paint(shapeRenderer);
-                }
             }
         }
         shapeRenderer.end();
@@ -268,18 +266,24 @@ public class GUIRenderer implements Disposable {
         renderFPSCounter();
         for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
             if (guiElement.isVisible()) {
-                if (guiElement.needsRepaint()) {
                     guiElement.paint(batch, deltaTime);
-                }
             }
         }
         batch.end();
     }
 
-    private void updateGUIElements(float deltaTime, int round) {
+    private void updateGUIElementsStatic(float deltaTime, int round) {
 
         for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
-            if (guiElement.isVisible()) {
+            if (!guiElement.isAnimated()) {
+                guiElement.update(deltaTime, round);
+            }
+        }
+    }
+
+    private void updateGUIElementsAnimations(float deltaTime, int round) {
+        for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
+            if (guiElement.isAnimated()) {
                 guiElement.update(deltaTime, round);
             }
         }
@@ -333,11 +337,15 @@ public class GUIRenderer implements Disposable {
         batch.dispose();
     }
 
-    public void update(float deltaTime, int round) {
+    public void updateAnimations(float deltaTime, int round) {
+        updateGUIElementsAnimations(deltaTime, round);
+    }
+
+    public void updateStatic(float deltaTime, int round) {
         if (!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
             // the transaction lock is not yet optimally timed with respect to AP refill
             // might still happen that lock is release before AP is refilled in Room#tickFigures() -> TODO
-            updateGUIElements(deltaTime, round);
+            updateGUIElementsStatic(deltaTime, round);
         }
     }
 

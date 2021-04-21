@@ -318,8 +318,13 @@ public class LibgdxItemWheel extends LibgdxActivityPresenter {
 		}
 	}
 
-	public int getMarkedPointIndex() {
+	private int getMarkedPointIndex() {
 		return markedPointIndex;
+	}
+
+	@Override
+	public boolean isAnimated() {
+		return true;
 	}
 
 	@Override

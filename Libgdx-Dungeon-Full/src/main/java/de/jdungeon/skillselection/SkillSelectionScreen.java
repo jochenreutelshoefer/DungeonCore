@@ -135,9 +135,7 @@ public class SkillSelectionScreen extends AbstractScreen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		for (LibgdxGUIElement guiElement : this.guiElements) {
 			if (guiElement.isVisible()) {
-				if (guiElement.needsRepaint()) {
 					guiElement.paint(batch, v);
-				}
 			}
 		}
 

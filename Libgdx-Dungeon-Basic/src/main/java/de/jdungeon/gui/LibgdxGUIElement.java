@@ -13,7 +13,7 @@ public interface LibgdxGUIElement {
 
 	boolean isVisible();
 
-	boolean needsRepaint();
+	boolean isAnimated();
 
 	JDPoint getPositionOnScreen();
 

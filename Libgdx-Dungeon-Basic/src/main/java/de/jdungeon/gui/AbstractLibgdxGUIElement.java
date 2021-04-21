@@ -16,7 +16,6 @@ import de.jdungeon.asset.Assets;
 
 public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 
-
 	private static final String WINDOW_BG_LOWER_LEFT = "win-bg-lu";
 	private static final String WINDOW_BG_LEFT = "win-bg-l";
 	private static final String WINDOW_BG_LOWER = "win-bg-u";
@@ -126,9 +125,12 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		return false;
 	}
 
+
+
+
 	@Override
-	public boolean needsRepaint() {
-		return true;
+	public boolean isAnimated() {
+		return false;
 	}
 
 	@Override

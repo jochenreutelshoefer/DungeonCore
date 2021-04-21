@@ -82,6 +82,11 @@ public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
 	}
 
 	@Override
+	public boolean isAnimated() {
+		return true;
+	}
+
+	@Override
 	public void paint(SpriteBatch batch, float deltaTime) {
 
 		// trigger animation update
