@@ -3,7 +3,6 @@ package de.jdungeon.ai;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.percept.Percept;
-import de.jdungeon.game.JDGUI;
 
 public abstract class AbstractAI implements AI {
 
@@ -31,7 +30,6 @@ public abstract class AbstractAI implements AI {
 
 	protected FigureInfo info;
 
-	private JDGUI gui;
 	protected boolean wait = false;
 
 	@Override
@@ -40,9 +38,6 @@ public abstract class AbstractAI implements AI {
 			att.tellPercept(p);
 		}
 
-		if (gui != null) {
-			gui.tellPercept(p);
-		}
 		processPercept(p);
 	}
 

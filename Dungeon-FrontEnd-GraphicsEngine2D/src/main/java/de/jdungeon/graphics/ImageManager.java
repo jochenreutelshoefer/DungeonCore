@@ -446,6 +446,8 @@ public class ImageManager {
 
 	public static JDImageProxy<?> statueImage;
 
+	public static JDImageProxy<?> black;
+
 	public static JDImageProxy<?> swordImage;
 
 	public static AnimationSetDirections thief_been_hit;
@@ -559,6 +561,7 @@ public class ImageManager {
 
 	public static JDImageProxy<?> lebenskugel;
 	public static JDImageProxy<?> highlightBox;
+	public static final String BLACK_BACKGROUND = "black.png";
 
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern) {
@@ -840,6 +843,7 @@ public class ImageManager {
 			fountainImage = new JDImageProxy<>(a, "fountain.gif");
 			saeuleImage = new JDImageProxy<>(a, "sauele.gif");
 			statueImage = new JDImageProxy<>(a, "statue.gif");
+			black = new JDImageProxy<>(a, BLACK_BACKGROUND);
 			chest_lockImage = new JDImageProxy<>(a, "chest_schloss.gif");
 			door_north_lock = new JDImageProxy<>(a, "tuer_nord_schloss.gif");
 			door_north_lock_solo = new JDImageProxy<>(a, "tuer_nord_schloss_solo.gif");

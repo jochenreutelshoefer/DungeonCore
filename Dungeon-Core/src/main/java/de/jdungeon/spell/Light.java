@@ -102,7 +102,7 @@ public class Light extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_light_name");
 	}
 

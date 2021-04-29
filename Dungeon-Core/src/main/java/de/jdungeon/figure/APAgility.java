@@ -35,7 +35,7 @@ public class APAgility implements Serializable {
 
 	public void turn(int round) {
 		// figure gets an AP only if there is at least a little amount of oxygen
-		if(oxygen.getValue() >= 1) {
+		if(oxygen.getValue() >= 2) {
 			apCounter.setCurrentAP(1, round);
 		}
 

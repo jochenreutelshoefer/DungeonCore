@@ -241,7 +241,7 @@ public abstract class Monster extends Figure implements Paragraphable, InfoProvi
 
 	@Override
 	public Attribute getAttribute(Attribute.Type type) {
-		return null;
+		return this.health;
 	}
 
 	@Override

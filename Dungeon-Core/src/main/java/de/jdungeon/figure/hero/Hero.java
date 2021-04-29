@@ -79,6 +79,10 @@ public class Hero extends Figure implements InfoProvider, Serializable {
     @Deprecated
     public final static int HEROCODE_MAGE = 4;
 
+    public void setVisAll() {
+        this.visibilities.setVisCheat();
+    }
+
 
     public enum HeroCategory {
         Warrior(1),

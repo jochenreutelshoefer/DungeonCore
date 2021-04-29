@@ -1,9 +1,6 @@
 import de.jdungeon.dungeon.Dungeon;
-import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.game.DungeonWorldUpdater;
 import de.jdungeon.game.GameLoopMode;
-import de.jdungeon.game.JDGUI;
-import de.jdungeon.log.Log;
 import de.jdungeonx.DungeonGameLoop;
 
 public class DungeonWorldTestUpdater implements DungeonWorldUpdater {

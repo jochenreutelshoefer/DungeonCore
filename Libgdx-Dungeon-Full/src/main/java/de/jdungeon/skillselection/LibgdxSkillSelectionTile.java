@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.event.EventManager;
@@ -91,11 +90,17 @@ public class LibgdxSkillSelectionTile extends AbstractLibgdxGUIElement {
 
 		BitmapFont headerFont = Assets.instance.fonts.defaultBigFlipped;
 		int headerWidth = 130;
-		layout.setText(headerFont, skill.getName(), Color.WHITE, headerWidth, Align.center, true);
+		layout.setText(headerFont, skill.getHeaderName(), Color.WHITE, headerWidth, Align.center, true);
 		int headerStartX = position.getX() + dimension.getWidth() / 2 - headerWidth / 2;
-		headerFont.draw(batch, layout, headerStartX, position.getY() + 50);
+		int badgeMarginX = 15;
+		int badgeMarginY = 10;
+		int fontPosYHeader = position.getY() + 50;
+		float windowBadgeHeight = layout.height + 2 * badgeMarginY;
+		batch.draw(window_badge, headerStartX + (headerWidth/2 - layout.width/2) - badgeMarginX, fontPosYHeader - badgeMarginY, layout.width + 2 * badgeMarginX, windowBadgeHeight);
 
-		BitmapFont descriptionFont = Assets.instance.fonts.defaultSmallFlipped;
+		headerFont.draw(batch, layout, headerStartX, fontPosYHeader);
+
+		BitmapFont descriptionFont = Assets.instance.fonts.defaultNormalFlipped;
 
 		int targetWidth = 130;
 		layout.setText(descriptionFont, skill.getText(), Color.WHITE, targetWidth, Align.center, true);

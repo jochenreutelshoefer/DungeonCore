@@ -32,6 +32,21 @@ public interface ControlUnit extends ActionSpecifier, PerceptHandler {
 	void setFigure(FigureInfo f);
 
 
+	default boolean isUI() {
+		return false;
+	}
+
+	/**
+	 * Tells the ControlUnit that its figure is on turn. Can be used for GUI
+	 * rendering for instance.
+	 */
+	void onTurn();
+
+	/**
+	 * Handles the end of the GUIs for instance can show Game-Over screen.
+	 */
+	void gameOver();
+
 	/**
 	 * Provides feedback about an executed action. In particular, if an invalid
 	 * action had been specified a corresponding ActionResult is provided.

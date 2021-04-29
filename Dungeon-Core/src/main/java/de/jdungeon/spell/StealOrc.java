@@ -129,7 +129,7 @@ public class StealOrc extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 
 		return JDEnv.getString("spell_" + suffix + "_name");
 	}

@@ -449,7 +449,9 @@ public class WorldRenderer implements Disposable {
 
         // we should have/retrieve the highlight box from the dungeon atlas, so we do not need to change texture/atlas
         TextureAtlas.AtlasRegion highlightTexture = Assets.instance.getDungeonTexture(ImageManager.highlightBox);
-        batch.draw(highlightTexture, highlightBoxX, highlightBoxY, width, height);
+        if(highlightTexture != null) {
+            batch.draw(highlightTexture, highlightBoxX, highlightBoxY, width, height);
+        }
     }
 
     private int highlightBoxX;

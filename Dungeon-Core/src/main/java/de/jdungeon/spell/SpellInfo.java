@@ -99,7 +99,7 @@ public class SpellInfo extends InfoEntity {
 	}
 	
 	public String getName(){
-		return spell.getName();
+		return spell.getHeaderName();
 	}
 
 	@Override

@@ -193,15 +193,16 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
     public boolean turn(int round, DungeonWorldUpdater worldUpdater) {
         for (Figure roomFigure : getRoomFiguresArray()) {
             if (roomFigure != null && roomFigure.getLastRoundTurnCompleted() < round) {
+                if(!dungeon.isGameOver()) {
+                    // figure does its turn
+                    roomFigure.turn(round, worldUpdater);
 
-                // figure does its turn
-                roomFigure.turn(round, worldUpdater);
-
-                if (worldUpdater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate) {
-                    // if a figure is current idle, we break and try again on next render loop call
-                    boolean figureCompletedRound = roomFigure.getLastRoundTurnCompleted() == round;
-                    if (!figureCompletedRound) {
-                        return false;
+                    if (worldUpdater.getGameLoopMode() == GameLoopMode.RenderThreadWorldUpdate) {
+                        // if a figure is current idle, we break and try again on next render loop call
+                        boolean figureCompletedRound = roomFigure.getLastRoundTurnCompleted() == round;
+                        if (!figureCompletedRound) {
+                            return false;
+                        }
                     }
                 }
             }
@@ -247,10 +248,10 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
             return;
         }
         this.getDungeon().removeShrine(s);
-        setShrine(null, false);
+        setLocation(null, false);
     }
 
-    public void setShrine(Location newShrine) {
+    public void setLocation(Location newShrine) {
         if (this.s != null) {
             throw new IllegalStateException("check for shrine before setting one!");
         }
@@ -258,10 +259,10 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
             throw new IllegalStateException("de.jdungeon.location room not matching");
         }
         this.getDungeon().addShrine(newShrine);
-        setShrine(newShrine, true);
+        setLocation(newShrine, true);
     }
 
-    public void setShrine(Location s, boolean setShrineLocation) {
+    public void setLocation(Location s, boolean setShrineLocation) {
         this.s = s;
         if (s != null && setShrineLocation) {
             s.setLocation(this);
@@ -384,6 +385,7 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         return true;
     }
 
+    /*
     public String getDirectionString(Room other) {
         JDPoint b = other.getRoomNumber();
         JDPoint a = number;
@@ -420,6 +422,8 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
         }
         return s + " ";
     }
+
+     */
 
     @Override
     public List<Item> getItems() {

@@ -78,7 +78,26 @@ public class RouteInstruction {
 			return null;
 		}
 
-
+		public static Direction fromPoints(JDPoint p1, JDPoint p2) {
+			if(p1.getX() == p2.getX()) {
+				if(p1.getY() == p2.getY() - 1) {
+					return Direction.South;
+				}
+				if(p1.getY() == p2.getY() + 1) {
+					return Direction.North;
+				}
+			}
+			if(p1.getY() == p2.getY()) {
+				if(p1.getX() == p2.getX() + 1) {
+					return Direction.West;
+				}
+				if(p1.getX() == p2.getX() - 1) {
+					return Direction.East;
+				}
+			}
+			// this points are not next to each other
+			return null;
+		}
 
 	};
 	

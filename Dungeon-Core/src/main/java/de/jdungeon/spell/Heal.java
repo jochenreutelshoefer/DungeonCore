@@ -50,7 +50,7 @@ public class Heal extends NoTargetSpell {
 	}
 	
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_heal_name");
 	}
 

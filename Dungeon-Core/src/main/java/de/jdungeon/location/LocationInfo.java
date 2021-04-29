@@ -82,6 +82,21 @@ public class LocationInfo extends RoomInfoEntity {
 	}
 
 	@Override
+	public String getStatus() {
+		return getState().getStateText();
+	}
+
+	@Override
+	public String getRole() {
+		return getText();
+	}
+
+	@Override
+	public String getDescription() {
+		return this.s.getStory();
+	}
+
+	@Override
 	public Paragraph[] getParagraphs() {
 
 		Paragraph[] p = new Paragraph[3];

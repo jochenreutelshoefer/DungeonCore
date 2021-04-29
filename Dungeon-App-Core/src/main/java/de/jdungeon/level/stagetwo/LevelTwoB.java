@@ -99,16 +99,16 @@ public class LevelTwoB extends AbstractDungeonFactory {
 			filler.addAllocatedRoom(entryRoom);
 
 			Room statueRoom = filler.getUnallocatedRandomRoom();
-			statueRoom.setShrine(new Statue());
+			statueRoom.setLocation(new Statue());
 			filler.addAllocatedRoom(statueRoom);
 
 			Room exitRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 3));;
 			if(exitRoom == null) continue;
 			JDPoint exitPoint = exitRoom.getPoint();
 			filler.addAllocatedRoom(exitRoom);
-			exitRoom.setShrine(new LevelExit());
+			exitRoom.setLocation(new LevelExit());
 			exitRoom.removeAllDoors();
-			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+			entryRoom.setLocation(new RevealMapShrine(exitRoom));
 
 			exitRoom.setDoor(new Door(exitRoom, RouteInstruction.Direction.South, exitKey), RouteInstruction.Direction.South, true);
 

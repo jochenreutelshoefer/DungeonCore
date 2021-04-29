@@ -162,6 +162,8 @@ public class LibgdxMoveElement extends LibgdxAnimatedSmartControlElement {
         super.paint(batch, deltaTime);
         TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(GUIImageManager.SC_MOVE, Assets.instance.getGuiAtlas());
         //batch.draw(atlasRegion, this.getX(), this.getY(), this.iconDimension.getWidth(), this.iconDimension.getHeight());
-        batch.draw(atlasRegion, this.getX(), this.getY(), this.getDimension().getWidth() / 2, this.getDimension().getHeight() / 2,  this.getDimension().getWidth(), this.getDimension().getHeight(), 1.0f, 1.0f, rotation);
+        if(atlasRegion != null) {
+            batch.draw(atlasRegion, this.getX(), this.getY(), this.getDimension().getWidth() / 2, this.getDimension().getHeight() / 2,  this.getDimension().getWidth(), this.getDimension().getHeight(), 1.0f, 1.0f, rotation);
+        }
     }
 }

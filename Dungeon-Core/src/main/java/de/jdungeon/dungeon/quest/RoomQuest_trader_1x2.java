@@ -65,7 +65,7 @@ public class RoomQuest_trader_1x2 extends RoomQuest {
 		
 		Trader trader = new Trader(70,df.getDungeon());
 		df.getDungeon().addShrine(trader);
-		rooms[0][1].setShrine(trader,true);
+		rooms[0][1].setLocation(trader,true);
 		
 		
 		return true;

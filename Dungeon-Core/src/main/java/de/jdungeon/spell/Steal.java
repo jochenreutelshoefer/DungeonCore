@@ -97,10 +97,10 @@ public class Steal extends AbstractTargetSpell {
 	}
 
 	/**
-	 * @see AbstractSpell#getName()
+	 * @see AbstractSpell#getHeaderName()
 	 */
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_steal_name");
 	}
 

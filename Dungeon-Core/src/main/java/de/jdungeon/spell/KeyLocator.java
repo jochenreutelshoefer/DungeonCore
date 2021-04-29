@@ -111,7 +111,7 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_keyLocator_name");
 	}
 

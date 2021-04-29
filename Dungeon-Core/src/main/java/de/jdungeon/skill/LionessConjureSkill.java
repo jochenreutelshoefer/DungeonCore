@@ -47,7 +47,7 @@ public class LionessConjureSkill extends SimpleSkill {
 
 		if (doIt) {
 			// insert lioness into room
-			Lioness lioness = Lioness.createLioness(10000, mage.getRoom().getDungeon(),
+			Lioness lioness = Lioness.createLioness(20000, mage.getRoom().getDungeon(),
 					FigureInfo.makeFigureInfo(mage, mage.getViwMap()));
 			mage.getDungeon().insertFigure(lioness);
 			Room room = mage.getRoom();

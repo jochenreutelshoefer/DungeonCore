@@ -40,6 +40,11 @@ public class DefenderLocation extends Location {
         public String toString() {
             return verbalization;
         }
+
+        @Override
+        public String getStateText() {
+            return verbalization;
+        }
     }
 
     private final Room room;
@@ -116,7 +121,7 @@ public class DefenderLocation extends Location {
         if (activatorThere) {
             for (Figure otherFigure : roomFigures) {
                 if (otherFigure != activator && activator.getControl().isHostileTo(FigureInfo.makeFigureInfo(otherFigure, defenderFigure.getViwMap()))) {
-                    // found at least one hostile de.jdungeon.figure
+                    // found at least one hostile figure
                     return true;
                 }
             }

@@ -66,7 +66,7 @@ public class FirConjuration extends AbstractTargetSpell {
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return "Fichte";
 	}
 

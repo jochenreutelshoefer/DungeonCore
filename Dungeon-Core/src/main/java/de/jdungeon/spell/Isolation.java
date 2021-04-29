@@ -50,7 +50,7 @@ public class Isolation extends AbstractSpell {
 	}
 	
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_isolation_name");
 	}
 	

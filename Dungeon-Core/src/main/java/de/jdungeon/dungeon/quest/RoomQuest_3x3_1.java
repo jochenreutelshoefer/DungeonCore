@@ -109,7 +109,7 @@ public class RoomQuest_3x3_1 extends RoomQuest {
 		Chest ch = new Chest(items);
 		rooms[1][1].setChest(ch);
 		if(shrine != null) {
-			rooms[1][1].setShrine(shrine);
+			rooms[1][1].setLocation(shrine);
 		}
 		return true;
 	}

@@ -43,7 +43,7 @@ public class Spellbook implements Serializable, Clonable<Spellbook> {
 	
 	public Spell getSpell(String s) {
 		for(int i = 0; i < spells.size(); i++) {
-			String t = ((Spell)spells.get(i)).getName();
+			String t = ((Spell)spells.get(i)).getHeaderName();
 			if(t.equals(s)){
 				return (Spell)spells.get(i);
 			}

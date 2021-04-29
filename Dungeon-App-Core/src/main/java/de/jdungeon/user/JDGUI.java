@@ -2,13 +2,14 @@
  * Created on 13.11.2005
  *
  */
-package de.jdungeon.game;
+package de.jdungeon.user;
 
 import java.util.List;
 
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
+import de.jdungeon.game.Configuration;
 
 public interface JDGUI extends ControlUnit {
 
@@ -20,25 +21,15 @@ public interface JDGUI extends ControlUnit {
 	void plugAction(Action a);
 
 	void plugActions(List<Action> actions);
-	
 
-	/**
-	 * Handles the end of the de.jdungeon.game. GUIs for instance can show Game-Over screen.
-	 */
-	void gameOver();
-	
-	/**
-	 * Tells the ControlUnit that its de.jdungeon.figure is on turn. Can be used for GUI
-	 * rendering for instance.
-	 */
-	void onTurn();
 
+	@Override
+	default boolean isUI(){
+		return true;
+	}
+
+	Configuration getConfiguration();
 
 	FigureInfo getFigure();
 	
-	/**
-	 * A new de.jdungeon.game round in the de.jdungeon.game world has begun.
-	 */
-	void gameRoundEnded();
-
 }

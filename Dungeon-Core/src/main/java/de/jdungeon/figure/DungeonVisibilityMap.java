@@ -250,4 +250,12 @@ public class DungeonVisibilityMap {
             scoutCache.remove(position);
         }
     }
+
+    public void setVisCheat() {
+        for (RoomObservationStatus[] stat : this.rooms) {
+            for (RoomObservationStatus roomObservationStatus : stat) {
+                roomObservationStatus.setVisibilityStatus(RoomObservationStatus.VISIBILITY_SHRINE);
+            }
+        }
+    }
 }

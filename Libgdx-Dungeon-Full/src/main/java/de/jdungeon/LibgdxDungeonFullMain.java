@@ -249,7 +249,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
             DungeonFactory dungeonFactory = ((DungeonStartEvent) event).getEvent().getDungeon();
 
             // create new controller
-            PlayerController controller = new PlayerController(this.dungeonSession);
+            PlayerController controller = new PlayerController(this.dungeonSession, this.adapter);
 
             HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
 

@@ -2,6 +2,7 @@ package de.jdungeon.gui.thumb;
 
 import java.util.*;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import de.jdungeon.asset.Assets;
 import de.jdungeon.audio.AudioEffectsManager;
 import com.badlogic.gdx.Gdx;
@@ -279,7 +280,10 @@ public class SmartControlPanel extends LibgdxContainerGUIElement implements Even
 
             @Override
             public void paint(SpriteBatch batch, float deltaTime) {
-                batch.draw(Assets.instance.getAtlasRegion(GUIImageManager.SC_RECT, Assets.instance.getGuiAtlas()), absolutePosition.getX(), absolutePosition.getY(), width, height);
+                TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(GUIImageManager.SC_RECT, Assets.instance.getGuiAtlas());
+                if(atlasRegion != null) {
+                    batch.draw(atlasRegion, absolutePosition.getX(), absolutePosition.getY(), width, height);
+                }
             }
 
             @Override

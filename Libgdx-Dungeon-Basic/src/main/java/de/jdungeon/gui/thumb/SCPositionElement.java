@@ -157,6 +157,8 @@ public class SCPositionElement extends LibgdxSubGUIElement {
                 image = GUIImageManager.SC_STEP_ELEMENT_FRIEND;
             }
         TextureAtlas.AtlasRegion atlasRegion = Assets.instance.getAtlasRegion(image, Assets.instance.getGuiAtlas());
-        batch.draw(atlasRegion, posX, posY, width, height);
+        if(atlasRegion != null) {
+            batch.draw(atlasRegion, posX, posY, width, height);
+        }
     }
 }

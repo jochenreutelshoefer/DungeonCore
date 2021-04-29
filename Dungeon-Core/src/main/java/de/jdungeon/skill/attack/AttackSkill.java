@@ -47,7 +47,6 @@ public class AttackSkill extends Skill<AttackSkill.AttackSkillAction> {
 			if (a.attacker.canPayActionPoints(1)) {
 				if (a.attacker.getRoom() == a.target.getRoom()) {
 					if (doIt) {
-						a.attacker.payActionPoint(a, round);
 						attack(a.getActor(), a.target, round);
 						return ActionResult.DONE;
 					}

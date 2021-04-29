@@ -62,7 +62,7 @@ public class LionessConjuration extends AbstractSpell {
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return "Löwin";
 	}
 

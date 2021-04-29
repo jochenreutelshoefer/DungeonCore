@@ -58,6 +58,16 @@ public class FigureControl implements ControlUnit {
 	}
 
 	@Override
+	public void onTurn() {
+
+	}
+
+	@Override
+	public void gameOver() {
+		// nothing to do
+	}
+
+	@Override
 	public void notifyVisibilityStatusDecrease(JDPoint p) {
 		brain.notifyVisibilityStatusDecrease(p);
 	}

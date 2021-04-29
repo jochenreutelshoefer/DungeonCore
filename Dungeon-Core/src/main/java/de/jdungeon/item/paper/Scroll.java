@@ -23,8 +23,7 @@ import de.jdungeon.util.JDColor;
 
 public class Scroll extends Item<Scroll> implements UsableWithTarget {
 
-
-    protected final AbstractSpell theSpell;
+    final AbstractSpell theSpell;
 
     public Scroll(AbstractSpell s, int cost) {
         super(s.getCost(), false);
@@ -77,27 +76,12 @@ public class Scroll extends Item<Scroll> implements UsableWithTarget {
 
     @Override
     public String getText() {
-        String s = new String();
-        int t = theSpell.getLevel();
-        if (t == 1) {
-            s = scroll() + ": (1)\n";
-        } else if (t == 2) {
-            s = scroll() + ": (2)\n";
-        } else if (t == 3) {
-            s = scroll() + ": (3)\n";
-        } else if (t == 4) {
-            s = scroll() + ": (4)\n";
-        } else if (t == 5) {
-            s = scroll() + ": (5)\n";
-        }
-        s += theSpell.getName();
-        s += "\n" + JDEnv.getResourceBundle().getString("cost") + ":" + theSpell.getCost();
-        return s;
+       return this.theSpell.getText();
     }
 
     @Override
     public String toString() {
-        String a = (scroll() + ": " + theSpell.getName() + "(" + theSpell.getLevel() + ")(" + theSpell.getCost() + ")");
+        String a = (scroll() + ": " + theSpell.getHeaderName() + "(" + theSpell.getLevel() + ")(" + theSpell.getCost() + ")");
         return a;
     }
 
@@ -109,7 +93,7 @@ public class Scroll extends Item<Scroll> implements UsableWithTarget {
     @Override
     public Paragraph[] getParagraphs() {
         Paragraph[] p = new Paragraph[3];
-        p[0] = new Paragraph(scroll() + ": " + theSpell.getName());
+        p[0] = new Paragraph(scroll() + ": " + theSpell.getHeaderName());
         p[0].setSize(24);
         p[0].setCentered();
         p[0].setColor(JDColor.blue);

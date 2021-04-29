@@ -20,7 +20,7 @@ public class AtlasGenerator {
 
 	public static void main (String[] args) throws Exception {
 		//String atlasName = FigurePresentation.DarkDwarf.getFilepath();
-		String atlasName = "gui";
+		String atlasName = "dungeon";
 		//String SOURCE_DIR = "Libgdx-Dungeon-Desktop/src/main/resources/pics/animation/"+atlasName; //animation/
 		String SOURCE_DIR = "Libgdx-Dungeon-Basic/src/main/resources/pics/"+atlasName; //animation/
 

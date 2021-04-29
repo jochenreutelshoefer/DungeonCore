@@ -92,9 +92,9 @@ public class StartLevel extends AbstractDungeonFactory {
 			Room exitRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 3));
 			if (exitRoom == null) continue;
 			filler.addAllocatedRoom(exitRoom);
-			exitRoom.setShrine(new LevelExit());
+			exitRoom.setLocation(new LevelExit());
 			exitRoom.removeAllDoors();
-			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+			entryRoom.setLocation(new RevealMapShrine(exitRoom));
 			entryRoom.addItem(new VisibilityCheatBall());
 
 			RouteInstruction.Direction exitNeighbour = filler.getUnallocatedRandomNeighbour(exitRoom);
@@ -110,7 +110,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			filler.addAllocatedRoom(wolfRoom);
 
 			Room statueRoom = filler.getUnallocatedRandomRoom();
-			statueRoom.setShrine(new Statue());
+			statueRoom.setLocation(new Statue());
 			filler.addAllocatedRoom(statueRoom);
 
 
@@ -168,7 +168,7 @@ public class StartLevel extends AbstractDungeonFactory {
 			List<Item> list = new ArrayList<>();
 			list.add(new HealPotion(15));
 			assert corpseRoom != null;
-			corpseRoom.setShrine(new Corpse(list, corpseRoom, 1));
+			corpseRoom.setLocation(new Corpse(list, corpseRoom, 1));
 
 			// set healing fountain
 			Room fountainRoom = null;
@@ -178,12 +178,12 @@ public class StartLevel extends AbstractDungeonFactory {
 			} else {
 				fountainRoom = filler.getUnallocatedRandomRoom();
 			}
-			fountainRoom.setShrine(new HealthFountain(15, 0.1));
+			fountainRoom.setLocation(new HealthFountain(15, 0.1));
 			filler.addAllocatedRoom(fountainRoom);
 
 			// set scout shrine
 			Room scoutShrineRoom = filler.getUnallocatedRoomNearCenter();
-			scoutShrineRoom.setShrine(new ScoutShrine(scoutShrineRoom));
+			scoutShrineRoom.setLocation(new ScoutShrine(scoutShrineRoom));
 			filler.addAllocatedRoom(scoutShrineRoom);
 
 			// for testing only

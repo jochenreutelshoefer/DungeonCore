@@ -57,13 +57,13 @@ public class Encompass_quest extends Quest {
 					String s = "Hier befindet sich die letzte Ruhest�tte des";
 					s += " grossen Merianor, dem einstigen Herrscher des Dungeon.";
 					s += " Seine Rache wird die treffen, die seine Ruhe st�ren.";
-					raum.setShrine((new InfoShrine(s, raum)),true);
+					raum.setLocation((new InfoShrine(s, raum)),true);
 				}
 				if(c == 3) {
 					String s = "Dies ist das Grab des Merianor, und all derer";
 					s += " die es wagen hierher zu kommen und seine Ruhe zu st�ren.";
 					//s += " Seine Rache wird die Treffen, die sein Ruhe st�ren.";
-					raum.setShrine(new InfoShrine(s, raum),true);
+					raum.setLocation(new InfoShrine(s, raum),true);
 					int k = (int)(Math.random()* 4) + 2;
 					for(int o = 0; o < 5; o++) {
 						Item it = ItemPool.getRandomItem((int)(Math.random() * 100), 2.1);

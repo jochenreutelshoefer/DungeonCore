@@ -443,6 +443,10 @@ public class GameScreenPerceptHandler implements PerceptHandler {
         if (set != null) {
             startAnimation(set, fig, p.getFromPos(), Position.Pos.fromValue(fig.getPositionInRoomIndex()), null, false, false, false, p, null);
         }
+
+        if(p.getVictim(this.figure).equals(figure)) {
+            this.screen.getFocusManager().setWorldFocusObject(p.getAttacker(this.figure));
+        }
     }
 
     private void newStatement(Statement s) {

@@ -25,11 +25,10 @@ import de.jdungeon.item.interfaces.Usable;
 public abstract class Location implements Usable, Turnable, InfoProvider, RoomEntity {
 
 
-	public static final LocationState DEFAULT_STATE = new LocationState() {};
+	public static final LocationState DEFAULT_STATE = () -> "";
 
 	protected Room location;
-
-	protected String story;
+	String story;
 	protected String text;
 
 	public Location(Room p) {

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import de.jdungeon.game.Game;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 25.12.19.
@@ -12,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 public class CameraHelper {
 
 	private static final String TAG = CameraHelper.class.getName();
+
+	public static final String INIT_ZOOM_VALUE = "InitZoomValue";
 
 	private final float MAX_ZOOM_IN = 0.25f;
 	private final float MAX_ZOOM_OUT = 8.0f;
@@ -23,12 +27,12 @@ public class CameraHelper {
 	private float userSelectedZoomLevel;
 
 	private Sprite target;
+	private Game game;
 
-
-	public CameraHelper() {
+	public CameraHelper(Game game) {
+		this.game = game;
 		position = new Vector2();
 		init();
-
 	}
 
 	public CameraHelper(int posX, int posY) {
@@ -38,12 +42,20 @@ public class CameraHelper {
 
 	private void init() {
 		currentZoom = 1.0f;
+		/*
+		String value = game.getConfiguration().getValue(INIT_ZOOM_VALUE);
+		if (value != null) {
+			float configuredZoomValue = Float.parseFloat(value);
+			currentZoom = configuredZoomValue;
+		}
+		 */
 		userSelectedZoomLevel = currentZoom;
 	}
 
 	public float getCurrentZoom() {
 		return currentZoom;
 	}
+
 	boolean userZoomLevelCalibrated = false;
 
 	public void calibrateUserZoomLevel() {
@@ -52,7 +64,7 @@ public class CameraHelper {
 	}
 
 	public float getUserSelectedZoomLevel() {
-		if(!userZoomLevelCalibrated) {
+		if (!userZoomLevelCalibrated) {
 			return currentZoom;
 		}
 		return userSelectedZoomLevel;
@@ -71,7 +83,7 @@ public class CameraHelper {
 	}
 
 	public void update(float deltaTime) {
-		if(!hasTarget()) return;
+		if (!hasTarget()) return;
 
 		position.x = target.getX() + target.getOriginX();
 		position.y = target.getY() + target.getOriginY();

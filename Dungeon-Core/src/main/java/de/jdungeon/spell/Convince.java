@@ -129,10 +129,10 @@ public class Convince extends AbstractTargetSpell implements TargetSpell{
 	}
 
 	/**
-	 * @see AbstractSpell#getName()
+	 * @see AbstractSpell#getHeaderName()
 	 */
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_convince_name");
 	}
 

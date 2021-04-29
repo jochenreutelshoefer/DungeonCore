@@ -101,7 +101,7 @@ public class RoomQuest_1x1_1 extends RoomQuest {
 		}
 		Chest ch2 = new Chest(itemsL);
 		if(s != null) {
-			rooms[0][0].setShrine(s,true);	
+			rooms[0][0].setLocation(s,true);
 		}
 		rooms[0][0].setChest(ch2);
 		Monster m = df.getBigMonster(1000);

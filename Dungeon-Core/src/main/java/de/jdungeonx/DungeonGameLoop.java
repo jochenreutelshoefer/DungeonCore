@@ -2,19 +2,15 @@ package de.jdungeonx;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.GameLoopMode;
-import de.jdungeon.game.JDGUI;
-import de.jdungeon.item.ItemPool;
-
 
 public class DungeonGameLoop {
 
@@ -23,7 +19,7 @@ public class DungeonGameLoop {
 	private final Dungeon derDungeon;
 	private DungeonWorldUpdater delegateUpdater;
 
-	private final Map<Figure, JDGUI> guiFigures = new HashMap<>();
+	private final Map<Figure, ControlUnit> guiFigures = new HashMap<>();
 
 	private boolean running = true;
 
@@ -52,15 +48,6 @@ public class DungeonGameLoop {
 		}
 	}
 
-	private void tickGuis(int round) {
-		Collection<Figure> l = guiFigures.keySet();
-
-		for (Figure element : l) {
-			JDGUI gui = guiFigures.get(element);
-			gui.gameRoundEnded();
-		}
-	}
-
 	public void stopRunning() {
 		running = false;
 	}
@@ -74,7 +61,7 @@ public class DungeonGameLoop {
 		loop.start();
 	}
 
-	public void putGuiFigure(Hero held, JDGUI gui) {
+	public void putGuiFigure(Hero held, ControlUnit gui) {
 		guiFigures.put(held, gui);
 	}
 
@@ -89,11 +76,9 @@ public class DungeonGameLoop {
 				}
 				//Log.info(System.currentTimeMillis() + " " + round + " start round");
 				worldTurn(round);
-				tickGuis(round);
 				//Log.info(System.currentTimeMillis() + " " + round + " completed round");
 				round++;
 			}
-
 		}
 	}
 }

@@ -20,7 +20,6 @@ import de.jdungeon.dungeon.generate.DungeonFillUtils;
 import de.jdungeon.dungeon.generate.DungeonFiller;
 import de.jdungeon.dungeon.util.DungeonUtils;
 import de.jdungeon.dungeon.util.RouteInstruction;
-import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.monster.Ghul;
 import de.jdungeon.figure.monster.Monster;
 import de.jdungeon.figure.monster.Ogre;
@@ -279,7 +278,7 @@ public abstract class RoomQuest {
 
 		}
 		Room farest = ways.get(longest);
-		farest.setShrine(s, true);
+		farest.setLocation(s, true);
 
 	}
 

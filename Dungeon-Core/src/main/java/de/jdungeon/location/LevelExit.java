@@ -79,27 +79,25 @@ public class LevelExit extends Location {
 
     @Override
     public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
-        // TODO: factor out de.jdungeon.text
+        // TODO: factor out text
         if (requiredFigureMissing()) {
-            // some de.jdungeon.figure to be escorted to exit is not here -> refuse
+            // some figure to be escorted to exit is not here -> refuse
             f.getRoomInfo()
-                    .distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: " + requiredItems
-                            .toString(), round));
+                    .distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: " + requiredItems, round));
             return ActionResult.OTHER;
         }
 
         if (requiredItemMissing(f)) {
-            // some de.jdungeon.item to be found to exit is not here -> refuse
+            // some item to be found to exit is not here -> refuse
             Room roomInfo = f.getRoomInfo();
             if (roomInfo != null) {
-                roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: " + requiredItems
-                        .toString(), round));
+                roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: " + requiredItems, round));
             }
             return ActionResult.ITEM;
         }
 
         if (doIt) {
-            // de.jdungeon.level completion items are given away when passing the exit
+            // level completion items are given away when passing the exit
             for (Item requiredItem : requiredItems) {
                 f.removeItem(requiredItem);
             }

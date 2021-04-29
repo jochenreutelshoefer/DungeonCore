@@ -32,7 +32,12 @@ public class ItemInfo extends RoomInfoEntity {
 		super(map);
 		it = i;
 	}
-	
+
+	@Override
+	public String getHeaderName() {
+		return it.getName();
+	}
+
 	@Override
 	public MemoryObject getMemoryObject(FigureInfo info) {
 		return it.getMemoryObject(info);
@@ -78,9 +83,6 @@ public class ItemInfo extends RoomInfoEntity {
 	
 	
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	public String toString() {
 		if(it == null) {
 			return "null";
@@ -88,12 +90,6 @@ public class ItemInfo extends RoomInfoEntity {
 		return it.toString();
 	}
 	
-	/**
-	 * Liefert ob der Gegenstand das Usable-Interface implementiert,
-	 * also ob er benutzbar ist.
-	 * 
-	 * @return Usable
-	 */
 	public boolean isUsable() {
 		return it instanceof Usable;
 	}
@@ -117,20 +113,13 @@ public class ItemInfo extends RoomInfoEntity {
 		}
 		return false;
 	}
-	/**
-	 * Liefert den zugeordneten Wert des Gegenstandes
-	 * 
-	 * @return Wert des Gegenstandes
-	 */
+
+
+
 	public int getWorth() {
 		return it.getWorth();
 	}
 	
-	/**
-	 * Liefert die Klasse des Gegenstandes
-	 * 
-	 * @return Klasse des Gegenstandes
-	 */
 	public Class getItemClass() {
 		return it.getClass();
 	}

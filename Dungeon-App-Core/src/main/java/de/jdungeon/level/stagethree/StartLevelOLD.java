@@ -109,12 +109,12 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 			JDPoint exitPoint = getExitPoint();
 			Room exitRoom = dungeon.getRoom(exitPoint);
 			exitRoom.removeAllDoors();
-			exitRoom.setShrine(new LevelExit());
+			exitRoom.setLocation(new LevelExit());
 			filler.addAllocatedRoom(exitRoom);
 
 			// show exit on a map in entry room
 			entryRoom = dungeon.getRoom(this.getHeroEntryPoint());
-			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+			entryRoom.setLocation(new RevealMapShrine(exitRoom));
 			filler.addAllocatedRoom(entryRoom);
 
 			// CHEST TEST
@@ -145,12 +145,12 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		// prevent removal of doors for statue room (make RQ?)
 		// todo: statue should not be with guards
 		final Room statueRoom = filler.getUnallocatedRandomRoom();
-		statueRoom.setShrine(new Statue());
+		statueRoom.setLocation(new Statue());
 		filler.addAllocatedRoom(statueRoom);
 
 		// situate HF more near entrance/exit
 		final Room fountainRoom = filler.getUnallocatedRandomRoom();
-		fountainRoom.setShrine(new HealthFountain(30, 1));
+		fountainRoom.setLocation(new HealthFountain(30, 1));
 		filler.addAllocatedRoom(fountainRoom);
 
 		// flush remaining items
@@ -189,7 +189,7 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 
 		// set scout shrine
 		Room scoutShrineRoom = filler.getUnallocatedRoomNearCenter();
-		scoutShrineRoom.setShrine(new ScoutShrine(scoutShrineRoom));
+		scoutShrineRoom.setLocation(new ScoutShrine(scoutShrineRoom));
 		filler.addAllocatedRoom(scoutShrineRoom);
 
 		return dungeon;

@@ -80,7 +80,7 @@ public class EscapeRoute extends AbstractTargetSpell {
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		
 		return JDEnv.getString("spell_"+suffix+"_name");
 	}

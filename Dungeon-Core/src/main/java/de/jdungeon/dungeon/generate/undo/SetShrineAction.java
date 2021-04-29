@@ -23,7 +23,7 @@ public class SetShrineAction implements DungeonChangeAction {
 		if(room.getLocation() != null) {
 			possible = false;
 		} else {
-			room.setShrine(shrine);
+			room.setLocation(shrine);
 			possible = true;
 		}
 		return possible;

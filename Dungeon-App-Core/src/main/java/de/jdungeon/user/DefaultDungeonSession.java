@@ -2,7 +2,6 @@ package de.jdungeon.user;
 
 import java.util.*;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.event.EventManager;
@@ -17,7 +16,6 @@ import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.JDGUI;
 import de.jdungeon.level.DefaultDungeonManager;
 import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonManager;

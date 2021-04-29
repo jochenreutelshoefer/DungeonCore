@@ -15,4 +15,23 @@ package de.jdungeon.gui;
 public interface Paragraphable {
 
 	Paragraph[] getParagraphs();
+
+	default String getHeaderName() {
+		return getParagraphs()[0].getText();
+	}
+
+	default String getRole() {
+		if(getParagraphs().length > 1) {
+			return getParagraphs()[1].getText();
+		}
+		return null;
+	}
+
+	default String getStatus() {
+		return "";
+	}
+
+	default String getDescription() {
+		return "";
+	}
 }

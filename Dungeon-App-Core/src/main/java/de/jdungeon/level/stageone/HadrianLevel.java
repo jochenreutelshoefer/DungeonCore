@@ -10,7 +10,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.generate.DistanceAtMostConstraint;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.FigureInfo;
-import de.jdungeon.figure.monster.Wolf;
+import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.item.HealPotion;
 import de.jdungeon.item.Item;
 import de.jdungeon.item.Items;
@@ -56,19 +56,19 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		Room exitRoom = dungeon.getRoomNr(4,0);
 		exitRoom.removeAllDoorsExcept(Direction.South);
 		filler.addAllocatedRoom(exitRoom);
-		exitRoom.setShrine(new LevelExit());
+		exitRoom.setLocation(new LevelExit());
 
 		entryPoint = this.getHeroEntryPoint();
 		Room entryRoom = dungeon.getRoom(entryPoint);
 		filler.addAllocatedRoom(entryRoom);
 		entryRoom.removeAllDoorsExcept(Direction.North);
-		entryRoom.setShrine(new RevealMapShrine(exitRoom));
+		entryRoom.setLocation(new RevealMapShrine(exitRoom));
 		//entryRoom.addItem(new VisibilityCheatBall());
 
 
 		Room statueRoom = dungeon.getRoom(4, 7);
 		statueRoom.removeAllDoorsExcept(Direction.North, Direction.South);
-		statueRoom.setShrine(new DefenderLocation(statueRoom));
+		statueRoom.setLocation(new DefenderLocation(statueRoom));
 		//statueRoom.setShrine(new Statue());
 		filler.addAllocatedRoom(statueRoom);
 
@@ -98,12 +98,12 @@ public class HadrianLevel extends AbstractDungeonFactory {
 
 		// we set a spy tower in the middle
 		Room hall45 = dungeon.getRoom(4,5);
-		hall45.setShrine(new ScoutShrine(hall45, 1));
+		hall45.setLocation(new ScoutShrine(hall45, 1));
 		filler.addAllocatedRoom(hall45);
 
 		// we set a health fountain
 		Room fountainRoom = filler.getUnallocatedRandomRoom(new DistanceAtMostConstraint(hall45.getPoint(), 2));
-		fountainRoom.setShrine(new HealthFountain(30, 0.3));
+		fountainRoom.setLocation(new HealthFountain(30, 0.3));
 		filler.isAllocated(fountainRoom);
 
 		Room keyRoom = null;
@@ -156,7 +156,7 @@ public class HadrianLevel extends AbstractDungeonFactory {
 
 		Room wolfRoom = dungeon.getRoom(4 ,5 );
 		HadrianAI ai = new HadrianAI();
-		Wolf hadrian = new Wolf( 14000, ai, "Hadrian" );
+		Spider hadrian = new Spider( 14000, ai, "Hadrian" );
 		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
 		filler.setAllFound(hadrian.getViwMap());

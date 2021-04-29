@@ -44,6 +44,15 @@ public class SimpleHeroBehavior extends AbstractAI implements ControlUnit {
 		actionAssembler = new ActionAssemblerHelper(h);
 	}
 
+	@Override
+	public void onTurn() {
+
+	}
+
+	@Override
+	public void gameOver() {
+		// nothing to do
+	}
 
 	@Override
 	protected void processPercept(Percept p) {

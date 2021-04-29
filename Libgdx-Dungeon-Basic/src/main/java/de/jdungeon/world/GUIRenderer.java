@@ -112,7 +112,7 @@ public class GUIRenderer implements Disposable {
         int infoPanelHeight = (int) (screenHeight * 0.4);
         int infoPanelWidth = (int) (infoPanelHeight * 0.8);
         LibgdxInfoPanel infoPanel = new LibgdxInfoPanel(new JDPoint(10, 40),
-                new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager);
+                new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager, inputController.getPlayerController());
         this.libgdxGuiElements.add(infoPanel);
         focusManager.setInfoPanel(infoPanel);
 

@@ -16,10 +16,7 @@ import de.jdungeon.ai.AbstractAI;
 import de.jdungeon.ai.DefaultMonsterIntelligence;
 import de.jdungeon.dungeon.util.InfoUnitUnwrapper;
 import de.jdungeon.dungeon.util.RouteInstruction;
-import de.jdungeon.event.Event;
-import de.jdungeon.event.EventListener;
-import de.jdungeon.event.EventManager;
-import de.jdungeon.event.PlayerDiedEvent;
+import de.jdungeon.event.*;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureControl;
@@ -67,7 +64,7 @@ public class Dungeon implements Turnable, EventListener {
         return switchPositionRequestManager;
     }
 
-    SwitchPositionRequestManager switchPositionRequestManager =  new SwitchPositionRequestManager();
+    SwitchPositionRequestManager switchPositionRequestManager = new SwitchPositionRequestManager();
 
     public Dungeon(int sizeX, int sizeY) {
         EventManager.getInstance().registerListener(this);
@@ -332,12 +329,18 @@ public class Dungeon implements Turnable, EventListener {
 
     @Override
     public Collection<Class<? extends Event>> getEvents() {
-        return Collections.singletonList(PlayerDiedEvent.class);
+        List<Class<? extends Event>> events = new ArrayList<>();
+        events.add(PlayerDiedEvent.class);
+        events.add(ExitUsedEvent.class);
+        return events;
     }
 
     @Override
     public void notify(Event event) {
         if (event instanceof PlayerDiedEvent) {
+            this.gameOver = true;
+        }
+        if (event instanceof ExitUsedEvent) {
             this.gameOver = true;
         }
     }

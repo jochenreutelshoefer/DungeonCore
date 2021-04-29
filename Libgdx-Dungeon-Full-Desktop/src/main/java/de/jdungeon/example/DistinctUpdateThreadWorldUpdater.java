@@ -1,18 +1,18 @@
 package de.jdungeon.example;
 
 import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.game.GameLoopMode;
 import de.jdungeon.log.Log;
 import de.jdungeonx.DungeonGameLoop;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.game.JDGUI;
 
 public class DistinctUpdateThreadWorldUpdater implements DungeonWorldUpdater {
 
     private final DungeonGameLoop dungeonGameLoop;
 
-    DistinctUpdateThreadWorldUpdater(Dungeon dungeon, Hero hero, JDGUI gui) {
+    DistinctUpdateThreadWorldUpdater(Dungeon dungeon, Hero hero, ControlUnit gui) {
         dungeonGameLoop = new DungeonGameLoop(dungeon, this);
         dungeonGameLoop.putGuiFigure(hero, gui);
         dungeonGameLoop.init();

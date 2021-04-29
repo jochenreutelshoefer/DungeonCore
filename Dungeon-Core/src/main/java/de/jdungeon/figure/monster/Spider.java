@@ -1,5 +1,7 @@
 package de.jdungeon.figure.monster;
 
+import de.jdungeon.ai.AI;
+import de.jdungeon.figure.APAgility;
 import de.jdungeon.figure.FigurePresentation;
 import de.jdungeon.figure.attribute.Attribute;
 import de.jdungeon.gui.Texts;
@@ -7,13 +9,24 @@ import de.jdungeon.spell.Cobweb;
 
 public class Spider extends NatureMonster {
 
-	private static final int CHANCE_TO_HIT = 25;
-	private static final int HEALTH_DAMAGE_BALANCE = 10;
-	private static final int SPIDER_DAMAGE_VARIANCE = 3;
+	public static final int CHANCE_TO_HIT = 50;
+	protected static final int HEALTH_DAMAGE_BALANCE = 8;
+	protected static final int DAMAGE_VARIANCE = 2;
 
 	public Spider(int value) {
 		super(value);
 		construcHelpBear();
+	}
+
+	public Spider(int value, AI ai, String name) {
+		super(value, ai);
+		this.strength = new Attribute(Attribute.Type.Strength, 5);
+		this.dexterity = new Attribute(Attribute.Type.Dexterity, 11);
+		this.name = name;
+	}
+
+	protected APAgility createAgility() {
+		return new APAgility(12, 1.8);
 	}
 
 	@Override
@@ -34,7 +47,7 @@ public class Spider extends NatureMonster {
 
 	@Override
 	protected int getDamageVariance() {
-		return SPIDER_DAMAGE_VARIANCE;
+		return DAMAGE_VARIANCE;
 	}
 
 	@Override

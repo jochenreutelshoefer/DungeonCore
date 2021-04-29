@@ -46,7 +46,7 @@ public class PreliminaryStartLevelFactory extends AbstractDungeonFactory {
 		Dungeon dungeon = new Dungeon(3, 3, 1, 2);
 		createAllDoors(dungeon);
 		Room room = dungeon.getRoom(new JDPoint(1, 0));
-		room.setShrine(new LevelExit());
+		room.setLocation(new LevelExit());
 		return dungeon;
 	}
 

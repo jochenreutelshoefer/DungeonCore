@@ -18,7 +18,10 @@ import de.jdungeon.figure.percept.EntersPercept;
 import de.jdungeon.figure.percept.OpticalPercept;
 import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.TextPercept;
-import de.jdungeon.game.JDGUI;
+import de.jdungeon.game.Configuration;
+import de.jdungeon.game.Game;
+import de.jdungeon.user.JDGUI;
+import de.jdungeon.graphics.GraphicObjectRenderer;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.log.Log;
 import de.jdungeon.text.StatementManager;
@@ -35,7 +38,7 @@ import de.jdungeon.util.CopyOnWriteArrayList;
 
 /**
  * This class basically controls the interaction from the world (world loop)
- * and the de.jdungeon.user interface (de.jdungeon.gui actions).
+ * and the user interface (de.jdungeon.gui actions).
  * <p>
  * It is a thread dashboard, where objects are put by one thread and collected by another.
  * - de.jdungeon.game thread puts percepts, that the player perceives about the world and that need to be visualized in some way on
@@ -50,283 +53,284 @@ import de.jdungeon.util.CopyOnWriteArrayList;
  */
 public class PlayerController implements JDGUI {
 
-	private final DungeonSession dungeonSession;
-	private HeroInfo heroInfo;
+    private final DungeonSession dungeonSession;
+    private Game game;
+    private HeroInfo heroInfo;
 
-	private ActionAssembler actionAssembler;
+    private ActionAssembler actionAssembler;
 
-	private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
-	private final Set<JDPoint> roomRenderUpdateLaundry = new HashSet<>();
-	private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
-	private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
-	private final List<Percept> perceptQueue = new CopyOnWriteArrayList<>();
-	private final List<Percept> perceptQueueTransport = new CopyOnWriteArrayList<>();
-	private final Vector<Action> actionQueue = new Vector<>();
-	private ActivityPlan currentActivityPlan;
+    private final List<JDPoint> visibilityIncreasedRooms = new Vector<>();
+    private final Set<JDPoint> roomRenderUpdateLaundry = new HashSet<>();
+    private final Set<JDPoint> visibilityIncreasedRoomsTransport = new HashSet<>();
+    private final List<JDPoint> visibilityDecreasedRooms = new Vector<>();
+    private final List<Percept> perceptQueue = new CopyOnWriteArrayList<>();
+    private final List<Percept> perceptQueueTransport = new CopyOnWriteArrayList<>();
+    private final Vector<Action> actionQueue = new Vector<>();
+    private ActivityPlan currentActivityPlan;
 
-	private ViewModel viewModel;
+    private ViewModel viewModel;
 
-	private final AttackActivity attackActivity;
-	private final FleeActivity fleeActivity;
-	private final ScoutActivity scoutActivity;
+    private final AttackActivity attackActivity;
+    private final FleeActivity fleeActivity;
+    private final ScoutActivity scoutActivity;
 
-	private GameScreen gameScreen;
+    private GameScreen gameScreen;
 
-	public PlayerController(DungeonSession dungeonSession) {
-		this.dungeonSession = dungeonSession;
-		attackActivity = new AttackActivity(this);
-		fleeActivity = new FleeActivity(this);
-		scoutActivity = new ScoutActivity(this);
-	}
+    public PlayerController(DungeonSession dungeonSession, Game game) {
+        this.dungeonSession = dungeonSession;
+        this.game = game;
+        attackActivity = new AttackActivity(this);
+        fleeActivity = new FleeActivity(this);
+        scoutActivity = new ScoutActivity(this);
+    }
 
-	/**
-	 * The number of rounds played in this dungeon.
-	 *
-	 * @return de.jdungeon.game round
-	 */
-	public int getRound() {
-		return this.dungeonSession.getDungeonRound();
-	}
+    /**
+     * The number of rounds played in this dungeon.
+     *
+     * @return de.jdungeon.game round
+     */
+    public int getRound() {
+        return this.dungeonSession.getDungeonRound();
+    }
 
-	public void plugActivityPlan(ActivityPlan currentActivityPlan) {
-		// todo: is this okay to just silently override any plan if a new one comes along?
-		this.currentActivityPlan = currentActivityPlan;
-	}
+    public void plugActivityPlan(ActivityPlan currentActivityPlan) {
+        // todo: is this okay to just silently override any plan if a new one comes along?
+        this.currentActivityPlan = currentActivityPlan;
+    }
 
-	public ActionResult plugActivity(Activity activity, Object target) {
-		ActionResult result = activity.isCurrentlyPossible(target);
-		if (result.getSituation() == ActionResult.Situation.possible) {
-			plugActivityPlan(activity.createExecutionPlan(true, target));
-		}
-		return result;
-	}
+    public ActionResult plugActivity(Activity activity, Object target) {
+        ActionResult result = activity.isCurrentlyPossible(target);
+        if (result.getSituation() == ActionResult.Situation.possible) {
+            plugActivityPlan(activity.createExecutionPlan(true, target));
+        }
+        return result;
+    }
 
-	public ScoutActivity getScoutActivity() {
-		return scoutActivity;
-	}
+    public ScoutActivity getScoutActivity() {
+        return scoutActivity;
+    }
 
-	public FleeActivity getFleeActivity() {
-		return fleeActivity;
-	}
+    public FleeActivity getFleeActivity() {
+        return fleeActivity;
+    }
 
-	public AttackActivity getAttackActivity() {
-		return attackActivity;
-	}
+    public AttackActivity getAttackActivity() {
+        return attackActivity;
+    }
 
-	@Override
-	public void setFigure(FigureInfo f) {
-		if (f instanceof HeroInfo) {
-			this.heroInfo = (HeroInfo) f;
-		}
-		else {
-			String message = "Figure type not matching in player controller initilaization: " + f;
-			Log.severe(message);
-			throw new IllegalStateException(message);
-		}
-		this.actionAssembler = new ActionAssembler(heroInfo, this);
-	}
+    @Override
+    public void setFigure(FigureInfo f) {
+        if (f instanceof HeroInfo) {
+            this.heroInfo = (HeroInfo) f;
+        } else {
+            String message = "Figure type not matching in player controller initilaization: " + f;
+            Log.severe(message);
+            throw new IllegalStateException(message);
+        }
+        this.actionAssembler = new ActionAssembler(heroInfo, this);
+    }
 
-	public void setGameScreen(GameScreen gameScreen) {
-		this.gameScreen = gameScreen;
-	}
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
 
-	public HeroInfo getHeroInfo() {
-		return heroInfo;
-	}
+    public HeroInfo getHeroInfo() {
+        return heroInfo;
+    }
 
-	public GameScreen getGameScreen() {
-		return gameScreen;
-	}
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
 
-	/**
-	 * Thread-blackboard put method (called by UI-Thread)
-	 * <p>
-	 * The de.jdungeon.gui thread plugs an action to be performed by the UI-controlled de.jdungeon.figure.
-	 * <p>
-	 * Adds a particular Action to the action sequence to be executed
-	 *
-	 * @param action action to be executed
-	 */
-	@Override
-	public void plugAction(Action action) {
-		actionQueue.add(action);
-	}
+    /**
+     * Thread-blackboard put method (called by UI-Thread)
+     * <p>
+     * The de.jdungeon.gui thread plugs an action to be performed by the UI-controlled de.jdungeon.figure.
+     * <p>
+     * Adds a particular Action to the action sequence to be executed
+     *
+     * @param action action to be executed
+     */
+    @Override
+    public void plugAction(Action action) {
+        actionQueue.add(action);
+    }
 
-	/**
-	 * Thread-blackboard put method (called by UI-Thread)
-	 * <p>
-	 * The de.jdungeon.gui thread plugs a sequence of actions to be performed by the UI-controlled de.jdungeon.figure.
-	 * <p>
-	 * Adds a sequences of Actions to the characters' action sequence to be executed
-	 *
-	 * @param actions actions to be executed
-	 */
-	@Override
-	public void plugActions(List<Action> actions) {
-		actionQueue.addAll(actions);
-	}
+    /**
+     * Thread-blackboard put method (called by UI-Thread)
+     * <p>
+     * The de.jdungeon.gui thread plugs a sequence of actions to be performed by the UI-controlled de.jdungeon.figure.
+     * <p>
+     * Adds a sequences of Actions to the characters' action sequence to be executed
+     *
+     * @param actions actions to be executed
+     */
+    @Override
+    public void plugActions(List<Action> actions) {
+        actionQueue.addAll(actions);
+    }
 
-	@Override
-	public void gameOver() {
-		JDPoint roomNumber = this.heroInfo.getRoomNumber();
-		viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
-	}
+    @Override
+    public Configuration getConfiguration() {
+        return game.getConfiguration();
+    }
 
-	public ActionAssembler getActionAssembler() {
-		return actionAssembler;
-	}
+    @Override
+    public void gameOver() {
+        JDPoint roomNumber = this.heroInfo.getRoomNumber();
+        viewModel.updateRoom(roomNumber.getX(), roomNumber.getY());
+    }
 
-	@Override
-	public void onTurn() {
-		if(viewModel == null) return; // can happen during initialisation
-		boolean backgroundDrawingUpdateRequired = !roomRenderUpdateLaundry.isEmpty();
-		for (JDPoint point : roomRenderUpdateLaundry) {
-			viewModel.updateRoom(point.getX(), point.getY());
-		}
-		if(backgroundDrawingUpdateRequired) {
-			viewModel.setBackgroundUpdateRequired();
-		}
-		roomRenderUpdateLaundry.clear();
-	}
+    public ActionAssembler getActionAssembler() {
+        return actionAssembler;
+    }
 
-	@Override
-	public FigureInfo getFigure() {
-		return heroInfo;
-	}
+    @Override
+    public void onTurn() {
+        if (viewModel == null) return; // can happen during initialisation
+        boolean backgroundDrawingUpdateRequired = !roomRenderUpdateLaundry.isEmpty();
+        for (JDPoint point : roomRenderUpdateLaundry) {
+            viewModel.updateRoom(point.getX(), point.getY());
+        }
+        if (backgroundDrawingUpdateRequired) {
+            viewModel.setBackgroundUpdateRequired();
+        }
+        roomRenderUpdateLaundry.clear();
+    }
 
-	@Override
-	public void gameRoundEnded() {
+    @Override
+    public FigureInfo getFigure() {
+        return heroInfo;
+    }
 
-	}
+    @Override
+    public void actionProcessed(Action action, ActionResult res, int round) {
+        if (res.getSituation() == ActionResult.Situation.impossible) {
+            perceptQueue.add(new TextPercept(StatementManager.getStatement(res, round).getText(), round));
+            AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
+        }
+    }
 
-	@Override
-	public void actionProcessed(Action action, ActionResult res, int round) {
-		if (res.getSituation() == ActionResult.Situation.impossible) {
-			perceptQueue.add(new TextPercept(StatementManager.getStatement(res, round).getText(), round));
-			AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.JAM);
-		}
-	}
+    @Override
+    public boolean isHostileTo(FigureInfo otherFigure) {
+        if (otherFigure.equals(heroInfo)) {
+            // hopefully not called, but you never know..
+            return false;
+        }
+        // TODO: how to treat self conjured figures better?
+        if (otherFigure.getFigureClass().equals(Fir.class)
+                || otherFigure.getFigureClass().equals(Lioness.class)) {
+            return false;
+        }
 
-	@Override
-	public boolean isHostileTo(FigureInfo otherFigure) {
-		if (otherFigure.equals(heroInfo)) {
-			// hopefully not called, but you never know..
-			return false;
-		}
-		// TODO: how to treat self conjured figures better?
-		if (otherFigure.getFigureClass().equals(Fir.class)
-				|| otherFigure.getFigureClass().equals(Lioness.class)) {
-			return false;
-		}
+        // player is hostile to those figures which are hostile to play
+        // TODO: find way to prevent infinite loop if other de.jdungeon.figure also plays like this..
+        if (otherFigure.isHostile(heroInfo)) {
+            return true;
+        }
+        return false;
+    }
 
-		// player is hostile to those figures which are hostile to play
-		// TODO: find way to prevent infinite loop if other de.jdungeon.figure also plays like this..
-		if (otherFigure.isHostile(heroInfo)) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public void notifyVisibilityStatusDecrease(JDPoint p) {
+        roomRenderUpdateLaundry.add(p);
+        visibilityDecreasedRooms.add(p);
+    }
 
-	@Override
-	public void notifyVisibilityStatusDecrease(JDPoint p) {
-		roomRenderUpdateLaundry.add(p);
-		visibilityDecreasedRooms.add(p);
-	}
+    @Override
+    public void notifyVisibilityStatusIncrease(JDPoint p) {
+        roomRenderUpdateLaundry.add(p);
+        synchronized (visibilityIncreasedRooms) {
+            visibilityIncreasedRooms.add(p);
+        }
+    }
 
-	@Override
-	public void notifyVisibilityStatusIncrease(JDPoint p) {
-		roomRenderUpdateLaundry.add(p);
-		synchronized (visibilityIncreasedRooms) {
-			visibilityIncreasedRooms.add(p);
-		}
-	}
+    @Override
+    public void exitUsed(LevelExit exit, Figure f) {
+        gameScreen.pause();
+        dungeonSession.notifyExit(exit, f);
+    }
 
-	@Override
-	public void exitUsed(LevelExit exit, Figure f) {
-		gameScreen.pause();
-		dungeonSession.notifyExit(exit, f);
-	}
+    @Override
+    public Action getAction() {
+        synchronized (actionQueue) {
+            if (!actionQueue.isEmpty()) {
+                return actionQueue.remove(0);
+            }
+        }
+        if (currentActivityPlan != null) {
+            synchronized (currentActivityPlan) {  // todo: make thread safe
+                if (currentActivityPlan != null && !currentActivityPlan.isCompleted()) {
+                    return currentActivityPlan.getNextAction();
+                }
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public Action getAction() {
-		synchronized (actionQueue) {
-			if (!actionQueue.isEmpty()) {
-				return actionQueue.remove(0);
-			}
-		}
-		if (currentActivityPlan != null) {
-			synchronized (currentActivityPlan) {  // todo: make thread safe
-				if (currentActivityPlan != null && !currentActivityPlan.isCompleted()) {
-					return currentActivityPlan.getNextAction();
-				}
-			}
-		}
-		return null;
-	}
+    @Override
+    public void tellPercept(Percept p) {
+        JDPoint number = null;
+        if (p instanceof OpticalPercept) {
+            number = ((OpticalPercept) p).getPoint();
+        }
+        if (p instanceof EntersPercept  // someone enters
+                && (((EntersPercept) p).getTo(this.heroInfo).equals(this.getFigure().getRoomInfo())) // into the room of this de.jdungeon.figure
+                && (!((EntersPercept) p).getFigure(this.heroInfo).equals(this.getFigure()))) { // who is not this de.jdungeon.figure
+            // we interrupt the current plan to allow the player to react
+            interrupt(p);
+        }
+        if (number != null) {
+            roomRenderUpdateLaundry.add(number);
+            //updateRoomViewModel(number);
+        }
 
-	@Override
-	public void tellPercept(Percept p) {
-		JDPoint number = null;
-		if (p instanceof OpticalPercept) {
-			number = ((OpticalPercept) p).getPoint();
-		}
-		if (p instanceof EntersPercept  // someone enters
-				&& (((EntersPercept) p).getTo(this.heroInfo).equals(this.getFigure().getRoomInfo())) // into the room of this de.jdungeon.figure
-				&& (!((EntersPercept) p).getFigure(this.heroInfo).equals(this.getFigure()))) { // who is not this de.jdungeon.figure
-			// we interrupt the current plan to allow the player to react
-			interrupt(p);
-		}
-		if (number != null) {
-			roomRenderUpdateLaundry.add(number);
-			//updateRoomViewModel(number);
-		}
+        synchronized (perceptQueue) {
+            if (!perceptQueue.contains(p)) {
+                // we need to be aware of duplicates, if percept is distributed to multiple rooms (with vis state)
+                perceptQueue.add(p);
+            }
+        }
+        if (gameScreen != null) { // initialization issue at de.jdungeon.level start
+            gameScreen.checkCameraPosition();
+        }
+    }
 
-		synchronized (perceptQueue) {
-			if (!perceptQueue.contains(p)) {
-				// we need to be aware of duplicates, if percept is distributed to multiple rooms (with vis state)
-				perceptQueue.add(p);
-			}
-		}
-		if (gameScreen != null) { // initialization issue at de.jdungeon.level start
-			gameScreen.checkCameraPosition();
-		}
-	}
+    private void interrupt(Percept p) {
+        if (!this.actionQueue.isEmpty()) {
+            // we interrupt the current sequence of actions
+            this.actionQueue.clear();
+            this.perceptQueue.add(new InterruptPercept(this.getFigure(), p.getRound()));
+        }
+    }
 
-	private void interrupt(Percept p) {
-		if (!this.actionQueue.isEmpty()) {
-			// we interrupt the current sequence of actions
-			this.actionQueue.clear();
-			this.perceptQueue.add(new InterruptPercept(this.getFigure(), p.getRound()));
-		}
-	}
+    public List<Percept> getPercepts() {
+        perceptQueueTransport.clear();
+        perceptQueueTransport.addAll(perceptQueue);
+        perceptQueue.clear();
+        return perceptQueueTransport;
+    }
 
-	public List<Percept> getPercepts() {
-		perceptQueueTransport.clear();
-		perceptQueueTransport.addAll(perceptQueue);
-		perceptQueue.clear();
-		return perceptQueueTransport;
-	}
+    public List<JDPoint> getVisibilityDecreasedRooms() {
+        List<JDPoint> result = Collections.unmodifiableList(this.visibilityDecreasedRooms);
+        this.visibilityDecreasedRooms.clear();
+        return result;
+    }
 
-	public List<JDPoint> getVisibilityDecreasedRooms() {
-		List<JDPoint> result = Collections.unmodifiableList(this.visibilityDecreasedRooms);
-		this.visibilityDecreasedRooms.clear();
-		return result;
-	}
+    public synchronized Set<JDPoint> getVisibilityIncreasedRooms() {
+        synchronized (visibilityIncreasedRooms) {
+            visibilityIncreasedRoomsTransport.clear();
+            visibilityIncreasedRoomsTransport.addAll(visibilityIncreasedRooms);
+            this.visibilityIncreasedRooms.clear();
+        }
+        return visibilityIncreasedRoomsTransport;
+    }
 
-	public synchronized Set<JDPoint> getVisibilityIncreasedRooms() {
-		synchronized (visibilityIncreasedRooms) {
-			visibilityIncreasedRoomsTransport.clear();
-			visibilityIncreasedRoomsTransport.addAll(visibilityIncreasedRooms);
-			this.visibilityIncreasedRooms.clear();
-		}
-		return visibilityIncreasedRoomsTransport;
-	}
+    public void setViewModel(ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
 
-	public void setViewModel(ViewModel viewModel) {
-		this.viewModel = viewModel;
-	}
-
-	public boolean isDungeonTransactionLocked() {
-		return this.dungeonSession.getCurrentDungeon().isTransactionLocked();
-	}
+    public boolean isDungeonTransactionLocked() {
+        return this.dungeonSession.getCurrentDungeon().isTransactionLocked();
+    }
 }

@@ -161,7 +161,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 
 	@Override
 	public String toString() {
-		return getName() + " " + Integer.toString(level);
+		return getHeaderName() + " " + Integer.toString(level);
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public abstract class AbstractSpell implements Spell, Serializable {
 	@Override
 	public Paragraph[] getParagraphs() {
 		Paragraph[] p = new Paragraph[3];
-		p[0] = new Paragraph(getName());
+		p[0] = new Paragraph(getHeaderName());
 		p[0].setSize(24);
 		p[0].setCentered();
 		p[0].setColor(JDColor.orange);

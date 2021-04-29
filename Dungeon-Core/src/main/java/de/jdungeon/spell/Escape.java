@@ -60,7 +60,7 @@ public class Escape extends NoTargetSpell {
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_escape_name");
 	}
 
@@ -75,6 +75,6 @@ public class Escape extends NoTargetSpell {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getHeaderName();
 	}
 }

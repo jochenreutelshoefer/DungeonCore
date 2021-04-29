@@ -25,5 +25,7 @@ public abstract class InfoEntity implements Paragraphable, MemoryProvider {
 	
 	@Override
 	public abstract Paragraph[] getParagraphs();
+
+
 	
 }

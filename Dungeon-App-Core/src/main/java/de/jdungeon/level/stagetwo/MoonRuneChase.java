@@ -92,16 +92,16 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			Room exitRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(entryPoint, 3));
 			if (exitRoom == null) continue;
 			filler.addAllocatedRoom(exitRoom);
-			exitRoom.setShrine(new LevelExit(rune));
-			entryRoom.setShrine(new RevealMapShrine(exitRoom));
+			exitRoom.setLocation(new LevelExit(rune));
+			entryRoom.setLocation(new RevealMapShrine(exitRoom));
 
 			Room druidRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(exitRoom.getPoint(), 2));
-			druidRoom.setShrine(runeFinder);
+			druidRoom.setLocation(runeFinder);
 			filler.addAllocatedRoom(druidRoom);
 
 			// statue should be placed (and allocated) before monsters
 			Room statueRoom = filler.getUnallocatedRandomRoom();
-			statueRoom.setShrine(new Statue());
+			statueRoom.setLocation(new Statue());
 			filler.addAllocatedRoom(statueRoom);
 
 			Room orcRoom = filler.getUnallocatedRandomRoom(new DistanceAtLeastConstraint(new JDPoint((int)(dungeonSizeX/2), (int)(dungeonSizeY/2)), 2));
@@ -173,7 +173,7 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			List<Item> list = new ArrayList<>();
 			list.add(new HealPotion(15));
 			assert corpseRoom != null;
-			corpseRoom.setShrine(new Corpse(list, corpseRoom, 1));
+			corpseRoom.setLocation(new Corpse(list, corpseRoom, 1));
 
 			// set healing fountain
 			Room fountainRoom = null;
@@ -183,12 +183,12 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			} else {
 				fountainRoom = filler.getUnallocatedRandomRoom();
 			}
-			fountainRoom.setShrine(new HealthFountain(30, 1));
+			fountainRoom.setLocation(new HealthFountain(30, 1));
 			filler.addAllocatedRoom(fountainRoom);
 
 			// set scout shrine
 			Room scoutShrineRoom = filler.getUnallocatedRoomNearCenter();
-			scoutShrineRoom.setShrine(new ScoutShrine(scoutShrineRoom));
+			scoutShrineRoom.setLocation(new ScoutShrine(scoutShrineRoom));
 			filler.addAllocatedRoom(scoutShrineRoom);
 
 

@@ -56,10 +56,6 @@ public class HeroInfo extends FigureInfo {
 	}
 
 
-	public APAgility getAgility() {
-		return h.getAgility();
-	}
-
 	public int getHeroCode() {
 		return h.getHeroCode();
 	}
@@ -70,26 +66,6 @@ public class HeroInfo extends FigureInfo {
 
 
 
-	public double getAttributeValue(Attribute.Type s) {
-		if (map.getFigure().equals(h)) {
-			Attribute attribute = h.getAttribute(s);
-			if (attribute != null) {
-				return attribute.getValue();
-			}
-		}
-		return -1;
-
-	}
-
-	public double getAttributeBasic(Attribute.Type s) {
-		if (map.getFigure().equals(h)) {
-			Attribute attribute = h.getAttribute(s);
-			if (attribute != null) {
-				return attribute.getBasic();
-			}
-		}
-		return -1;
-	}
 
 	public List<SpellInfo> getSpellBuffer() {
 		if (map.getFigure().equals(h)) {

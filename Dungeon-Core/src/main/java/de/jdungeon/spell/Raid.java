@@ -121,7 +121,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 	}
 
 	@Override
-	public String getName() {
+	public String getHeaderName() {
 		return JDEnv.getResourceBundle().getString("spell_raid_name");
 	}
 
@@ -158,7 +158,7 @@ public class Raid extends AbstractTargetSpell implements TargetSpell {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getHeaderName();
 	}
 
 }
