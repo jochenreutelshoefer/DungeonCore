@@ -8,12 +8,12 @@ public class DungeonResultASP implements DungeonResult{
     private Dungeon dungeon;
 
     private JDPoint startPosition;
-    private DungeonConfiguration dungeonConfiguration;
+    private String description;
 
-    DungeonResultASP(Dungeon dungeon, JDPoint startPosition, DungeonConfiguration dungeonConfiguration) {
+    DungeonResultASP(Dungeon dungeon, JDPoint startPosition, String description) {
         this.dungeon = dungeon;
         this.startPosition = startPosition;
-        this.dungeonConfiguration = dungeonConfiguration;
+        this.description = description;
     }
 
     public Dungeon getDungeon() {
@@ -26,6 +26,6 @@ public class DungeonResultASP implements DungeonResult{
 
     @Override
     public String getDescription() {
-        return dungeonConfiguration.toString();
+        return description;
     }
 }

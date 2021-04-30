@@ -4,6 +4,9 @@ import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.asp.Fact;
+import de.jdungeon.dungeon.builder.asp.Result;
+import de.jdungeon.dungeon.builder.asp.ShellASPSolver;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.item.VisibilityCheatBall;
 import de.jdungeon.location.LevelExit;
@@ -43,6 +46,23 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	protected Collection<DoorMarker> predefinedWalls = new HashSet<>();
 
 	@Override
+	public String toString() {
+		return "DungeonBuilderASP{" +
+				"gridWidth=" + gridWidth +
+				", gridHeight=" + gridHeight +
+				", startX=" + startX +
+				", startY=" + startY +
+				", exitX=" + exitX +
+				", exitY=" + exitY +
+				", minExitPathLength=" + minExitPathLength +
+				", totalAmountOfDoorsMin=" + totalAmountOfDoorsMin +
+				", totalAmountOfDoorsMax=" + totalAmountOfDoorsMax +
+				", predefinedDoors=" + predefinedDoors +
+				", predefinedWalls=" + predefinedWalls +
+				'}';
+	}
+
+	@Override
 	public DungeonResultASP build() throws DungeonGenerationException {
 		String aspSource = this.generateASPSource();
 		File aspOutFile = new File("ASP_source.lp");
@@ -67,7 +87,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			throw new DungeonGenerationException("Could not execute level generation with ASP: " + e.getMessage());
 		}
 		if (aspResult != null && aspResult.hasModel()) {
-			return new DungeonResultASP(createDungeon(aspResult), new JDPoint(this.startX - 1, startY - 1), new DungeonConfiguration(this));
+			return new DungeonResultASP(createDungeon(aspResult), new JDPoint(this.startX - 1, startY - 1), this.toString());
 		}
 		if (aspResult != null) {
 			Log.warning(aspResult.getFullOutput());

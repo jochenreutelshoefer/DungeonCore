@@ -2,7 +2,7 @@
  * Copyright (C) 2021 denkbares GmbH. All rights reserved.
  */
 
-package de.jdungeon.dungeon.builder;
+package de.jdungeon.dungeon.builder.asp;
 
 import org.jetbrains.annotations.NotNull;
 
