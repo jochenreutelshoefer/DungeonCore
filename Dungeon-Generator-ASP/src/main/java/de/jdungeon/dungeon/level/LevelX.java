@@ -8,6 +8,8 @@ import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonGeneratorASPUtils;
 import de.jdungeon.dungeon.builder.DungeonResult;
+import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.location.RevealMapShrine;
 
 public class LevelX extends AbstractASPDungeonFactory {
 
@@ -27,15 +29,15 @@ public class LevelX extends AbstractASPDungeonFactory {
 		this.walls.remove(openNorth);
 		DoorMarker openSouth = new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight, hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight - 1);
 		this.walls.remove(openSouth);
+		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class).setRoom(start.getX(), start.getY());
 
 		DungeonBuilder dungeonBuilder = new DungeonBuilderASP();
 		dungeonBuilder.gridSize(gridWidth, getHeight)
-				.setStartingPoint(start.getX(), start.getY())
+				.setStartingPoint(startL)
 				.setMinExitPathLength(minPathLength)
 				.setMaxAmountOfDoors(37)
 				.addPredefinedDoors(doors)
-				.addPredefinedWalls(walls)
-				.setExitPoint(exit.getX(), exit.getY());
+				.addPredefinedWalls(walls);
 
 		DungeonResult build = null;
 		try {

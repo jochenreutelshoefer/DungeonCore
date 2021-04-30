@@ -49,6 +49,8 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	protected Collection<DoorMarker> predefinedWalls = new HashSet<>();
 
 	Collection<LocationBuilder> locations = new HashSet<>();
+	LocationBuilder startLocation;
+	Collection<LocationsLeastDistanceConstraint> locationsLeastDistanceConstraints = new HashSet<>();
 
 	@Override
 	public String toString() {
@@ -104,7 +106,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		final Dungeon dungeon = new Dungeon(this.gridWidth, this.gridHeight);
 
 		// set exit
-		dungeon.getRoom(this.exitX, this.exitY).setLocation(new LevelExit());
+		//dungeon.getRoom(this.exitX, this.exitY).setLocation(new LevelExit());
 
 		Stream<Fact> doorFactStream = aspResult.getFacts()
 				.stream()
@@ -134,19 +136,34 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			int posY = roomPosFact.get(1).asNumber();
 			try {
 				Class<?> locationClazz = Class.forName("de.jdungeon.location." + locationClazzName.asString());
-				Constructor<?> constructor = locationClazz.getDeclaredConstructor(Room.class);
+				Object newLocationInstance = null;
+
+				Constructor<?>[] constructors = locationClazz.getConstructors();
 				Room room = dungeon.getRoom(posX, posY);
-				if (room.getLocation() != null) {
-					Log.severe("Room already has a location! :" + room.toString() + " (" + room.getLocation() + ")");
+
+				for (Constructor<?> constructor : constructors) {
+					if (constructor.getParameterCount() == 0) {
+						newLocationInstance = constructor.newInstance();
+						break;
+					}
+					if (constructor.getParameterCount() == 1) {
+						if (constructor.getParameterTypes()[0].equals(Room.class)) {
+							if (room.getLocation() != null) {
+								Log.severe("Room already has a location! :" + room.toString() + " (" + room.getLocation() + ")");
+							}
+							newLocationInstance = constructor.newInstance(room);
+							break;
+						}
+					}
 				}
-				Object newInstance = constructor.newInstance(room);
-				room.setLocation((Location) newInstance);
+
+				room.setLocation((Location) newLocationInstance);
 			}
 			catch (ClassNotFoundException e) {
 				Log.severe("Could not find location class for name: " + locationClazzName.asString());
 				e.printStackTrace();
 			}
-			catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+			catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 				Log.severe("Could not find/execute constructor for location class: " + locationClazzName);
 				e.printStackTrace();
 			}
@@ -169,9 +186,13 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
-	public DungeonBuilder setStartingPoint(int x, int y) {
-		this.startX = x;
-		this.startY = y;
+	public DungeonBuilder setStartingPoint(LocationBuilder start) {
+		this.startLocation = start;
+		this.locations.add(start);
+		if (start.hasFixedRoomPosition()) {
+			this.startX = start.getRoomPosition().getX();
+			this.startY = start.getRoomPosition().getY();
+		}
 		return this;
 	}
 
@@ -182,9 +203,8 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
-	public DungeonBuilder setExitPoint(int x, int y) {
-		this.exitX = x;
-		this.exitY = y;
+	public DungeonBuilder addLocationsLeastDistanceConstraint(LocationBuilder locationA, LocationBuilder locationB, int distance) {
+		this.locationsLeastDistanceConstraints.add(new LocationsLeastDistanceConstraint(locationA, locationB, distance));
 		return this;
 	}
 
@@ -273,7 +293,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		valueReplacements.put(DOORS_AMOUNT_MAX, "" + doorsMax);
 		valueReplacements.put(PREDEFINED_DOORS, "" + generatePredefinedDoorsASPCode(this.predefinedDoors, false));
 		valueReplacements.put(PREDEFINED_WALLS, "" + generatePredefinedDoorsASPCode(this.predefinedWalls, true));
-		valueReplacements.put(SHORTEST_EXIT_PATH, minExitPathLength > 0 ? "" + generateShortPathRestrictionsASPCode(this.minExitPathLength) : "");
+		//valueReplacements.put(SHORTEST_EXIT_PATH, minExitPathLength > 0 ? "" + generateShortPathRestrictionsASPCode(this.minExitPathLength) : "");
 		StringSubstitutor substitutor = new StringSubstitutor(valueReplacements);
 		String templateString = null;
 		//File templateFile = new File("ASP_dungeon_generation_template2.lp");
@@ -294,8 +314,20 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		StringBuilder aspSourceBuffy = new StringBuilder();
 		aspSourceBuffy.append(substitutor.replace(templateString));
 
-		// insert locations code
+		// setting starting stuff
+		aspSourceBuffy.append("% start is the reachable starting reference point\n");
+		aspSourceBuffy.append("reachable(START, TO) :- door(START, TO), locationPosition(\"" + startLocation
+				.getSimpleName() + "\" ,  START) .\n\n");
+
+		aspSourceBuffy.append("% each location has to be reachable from the start point\n");
+		aspSourceBuffy.append(":- not reachable(START, POS) , locationPosition(LOC, POS), location(LOC), locationPosition(\"" + startLocation
+				.getSimpleName() + "\" ,  START) .\n\n");
+
+		// insert locations code (this will also set the fixed starting point if existing)
 		appendLocationsASPCode(aspSourceBuffy);
+
+		// insert locations distance constraints code
+		appendLocationMinDistanceConstraints(aspSourceBuffy);
 
 		return aspSourceBuffy.toString();
 	}
@@ -316,6 +348,42 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		});
 	}
 
+	private void appendLocationMinDistanceConstraints(StringBuilder buffy) {
+		if (locationsLeastDistanceConstraints.size() > 0) {
+			buffy.append("\n%%Locations Min Distance Constraints\n");
+		}
+		locationsLeastDistanceConstraints.forEach(lldc -> {
+			String locationNameA = lldc.getLocationA().getClazz().getSimpleName();
+			String locationNameB = lldc.getLocationB().getClazz().getSimpleName();
+			int minDistance = lldc.getMinDistance();
+			// we start a distance breadth first spreading dist a location A
+			buffy.append("dist(STARTLOCA, STARTLOCA, 0) :- locationPosition(\"" + locationNameA + "\" ,  STARTLOCA)  .\n");
+			buffy.append(":-not dist(STARTLOCA, STARTLOCB, " + minDistance + "), locationPosition(\"" + locationNameB + "\" ,  STARTLOCB) , locationPosition(\"" + locationNameA + "\" ,  STARTLOCA) .\n");
+			for (int i = 1; i < minDistance; i++) {
+				//buffy.append(":- dist(START, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");
+				buffy.append(":- dist(STARTLOCA, STARTLOCB, " + i + "), locationPosition(\"" + locationNameB + "\" ,  STARTLOCB) , locationPosition(\"" + locationNameA + "\" ,  STARTLOCA) .\n");
+			}
+		});
+
+		/*
+		%:-not dist(START, EXITPOS, 10) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 1) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 2) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 3) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 4) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 5) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 6) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 7) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 8) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+%:- dist(START, EXITPOS, 9) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
+
+
+
+%% Search start distance
+dist(START, START, 0) :- locationPosition(start ,  START)  .
+		 */
+	}
+
 	private String generatePredefinedDoorsASPCode(Collection<DoorMarker> predefinedDoors, boolean isWall) {
 		StringBuilder buffy = new StringBuilder();
 		for (DoorMarker predefinedDoor : predefinedDoors) {
@@ -329,7 +397,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		StringBuilder buffy = new StringBuilder();
 		buffy.append(":-not dist(START, EXIT, " + minExitPathLength + "), locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START).\n");
 		for (int i = 1; i < minExitPathLength; i++) {
-			buffy.append(":- dist(start, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");
+			buffy.append(":- dist(START, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");
 		}
 		return buffy.toString();
 	}

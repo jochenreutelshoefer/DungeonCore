@@ -30,7 +30,7 @@ public interface DungeonBuilder<T extends DungeonResult> {
      * @param y y coordinate of entrance room
      * @return builder
      */
-    DungeonBuilder setStartingPoint(int x, int y);
+    DungeonBuilder setStartingPoint(LocationBuilder startBuilder);
 
     /**
      * Adds a location to the dungeon. I can have a fixed position.
@@ -42,13 +42,13 @@ public interface DungeonBuilder<T extends DungeonResult> {
     DungeonBuilder addLocation(LocationBuilder location);
 
     /**
-     * Sets the point, where the exit is located (i.e. the level goal is reached).
-     *
-     * @param x x coordinate of exit room
-     * @param y y coordinate of exit room
-     * @return builder
+     * Adds a constraint leading
+     * @param locationA
+     * @param locationB
+     * @param distance
+     * @return
      */
-    DungeonBuilder setExitPoint(int x, int y);
+    DungeonBuilder addLocationsLeastDistanceConstraint(LocationBuilder locationA, LocationBuilder locationB, int distance );
 
     /**
      * Sets the length of the shortest path from start to exit.

@@ -9,13 +9,15 @@ import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonGeneratorASPUtils;
 import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.location.LevelExit;
+import de.jdungeon.location.RevealMapShrine;
 import de.jdungeon.location.ScoutShrine;
 
 public class LevelSome extends AbstractASPDungeonFactory {
 
 	public LevelSome() {
 
-		this.start = new JDPoint(4, 9);
+		this.start = new JDPoint(4, 7);
 		this.exit = new JDPoint(4, 1);
 		this.gridWidth = 10;
 		this.getHeight = 10;
@@ -32,13 +34,17 @@ public class LevelSome extends AbstractASPDungeonFactory {
 		this.walls.remove(openSouth);
 
 		DungeonBuilder dungeonBuilder = new DungeonBuilderASP();
+		LocationBuilder exit = new LocationBuilder(LevelExit.class);
+		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class).setRoom(start.getX(), start.getY());
+		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class);
 		dungeonBuilder.gridSize(gridWidth, getHeight)
-				.setStartingPoint(start.getX(), start.getY())
-				.setMinExitPathLength(10)
-				.addPredefinedDoors(doors)
-				.addPredefinedWalls(walls)
-				.addLocation(new LocationBuilder(ScoutShrine.class).setRoom(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + 1))
-				.setExitPoint(exit.getX(), exit.getY());
+				.setStartingPoint(startL)
+				.addLocationsLeastDistanceConstraint(startL, exit, 10)
+				.addLocationsLeastDistanceConstraint(exit, scoutTower, 7)
+				//.addPredefinedDoors(doors)
+				//.addPredefinedWalls(walls)
+				.addLocation(exit)
+				.addLocation(scoutTower.setRoom(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + 1));
 
 		DungeonResult build = null;
 		try {

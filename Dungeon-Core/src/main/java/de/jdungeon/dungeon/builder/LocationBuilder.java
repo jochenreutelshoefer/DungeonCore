@@ -13,6 +13,10 @@ public class LocationBuilder {
 		this.clazz = clazz;
 	}
 
+	public String getSimpleName() {
+		return clazz.getSimpleName();
+	}
+
 	public LocationBuilder setRoom(int x, int y) {
 		this.room = new JDPoint(x, y);
 		return this;

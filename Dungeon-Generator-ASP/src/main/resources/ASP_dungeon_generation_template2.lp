@@ -6,12 +6,12 @@ room(0..${GRID_WIDTH}, 0..${GRID_WIDTH}) .
 ${DOORS_AMOUNT_MIN}{ door(room(X1,Y1), room(X2,Y2)) : room(X1,Y1), room(X2,Y2), X1-X2 <= 1, X2-X1 <= 1, Y1-Y2 <= 1, Y2-Y1 <= 1 }${DOORS_AMOUNT_MAX} .
 
 #const maxDist = 40 .
-#const start = "START" .
-location(start) .
+%#const start = "START" .
+%location(start) .
 
 
-locationPosition(start, room(${START_X}, ${START_Y})) .
-locationPosition("EXIT", room(4, 1)) .
+%locationPosition(start, room(${START_X}, ${START_Y})) .
+%locationPosition("EXIT", room(4, 1)) .
 
 % each location has exactly one position
 1{ locationPosition(LOC, room(X1,Y1)) : room(X1,Y1) }1 :- location(LOC) .
@@ -20,13 +20,14 @@ locationPosition("EXIT", room(4, 1)) .
 %LOC1 = LOC2 :- location(LOC1), location(LOC2), locationPosition(LOC1, room(X1,Y1)), locationPosition(LOC2, room(X1,Y1)) .
 
 % each location has to be reachable from the start point
-:- not reachable(START, POS) , locationPosition(LOC, POS), location(LOC), locationPosition(start ,  START) .
+%:- not reachable(START, POS) , locationPosition(LOC, POS), location(LOC), locationPosition(start ,  START) .
 
 
 % every room is reachable from itself
 reachable(room(X,Y),room(X,Y)) :- room(X, Y) .
+
 % start is the reachable starting reference point
-reachable(START, TO) :- door(START, TO), locationPosition(start ,  START) .
+%reachable(START, TO) :- door(START, TO), locationPosition(start ,  START) .
 
 %% transitive reachability using doors
 % door north
@@ -52,13 +53,13 @@ ${PREDEFINED_WALLS}
 
 %% DEFINITION OF EXIT
 
-location("EXIT") .
+%location("EXIT") .
 
 
 
 
 %% Required minimum distance from start to goal
-${SHORTEST_EXIT_PATH}
+%${SHORTEST_EXIT_PATH}
 
 %:-not dist(START, EXITPOS, 10) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
 %:- dist(START, EXITPOS, 1) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
@@ -74,7 +75,7 @@ ${SHORTEST_EXIT_PATH}
 
 
 %% Search start distance
-dist(START, START, 0) :- locationPosition(start ,  START)  .
+%dist(START, START, 0) :- locationPosition(start ,  START)  .
 
 %% Recursive definition of distance from start point
 % dist via door north
