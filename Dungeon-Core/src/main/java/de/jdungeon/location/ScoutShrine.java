@@ -20,7 +20,7 @@ public class ScoutShrine extends Location {
 
     private List<Room> roomsList;
 
-    private static final int DEFAULT_RANGE = 2;
+    private static final int DEFAULT_RANGE = 1;
 
     public ScoutShrine(Room room, int range) {
         super(room);

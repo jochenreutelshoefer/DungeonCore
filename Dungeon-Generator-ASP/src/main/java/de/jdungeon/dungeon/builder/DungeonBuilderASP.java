@@ -10,6 +10,7 @@ import de.jdungeon.dungeon.builder.asp.ShellASPSolver;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.item.VisibilityCheatBall;
 import de.jdungeon.location.LevelExit;
+import de.jdungeon.location.Location;
 import de.jdungeon.log.Log;
 
 import org.apache.commons.io.FileUtils;
@@ -19,6 +20,8 @@ import org.apache.commons.text.StringSubstitutor;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -45,6 +48,8 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	protected Collection<DoorMarker> predefinedDoors = new HashSet<>();
 	protected Collection<DoorMarker> predefinedWalls = new HashSet<>();
 
+	Collection<LocationBuilder> locations = new HashSet<>();
+
 	@Override
 	public String toString() {
 		return "DungeonBuilderASP{" +
@@ -64,7 +69,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 
 	@Override
 	public DungeonResultASP build() throws DungeonGenerationException {
-		String aspSource = this.generateASPSource();
+		String aspSource = this.generateASPCode();
 		File aspOutFile = new File("ASP_source.lp");
 		try {
 			FileUtils.write(aspOutFile, aspSource, "UTF-8");
@@ -87,7 +92,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			throw new DungeonGenerationException("Could not execute level generation with ASP: " + e.getMessage());
 		}
 		if (aspResult != null && aspResult.hasModel()) {
-			return new DungeonResultASP(createDungeon(aspResult), new JDPoint(this.startX - 1, startY - 1), this.toString());
+			return new DungeonResultASP(createDungeon(aspResult), new JDPoint(this.startX, startY), this.toString());
 		}
 		if (aspResult != null) {
 			Log.warning(aspResult.getFullOutput());
@@ -99,7 +104,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		final Dungeon dungeon = new Dungeon(this.gridWidth, this.gridHeight);
 
 		// set exit
-		dungeon.getRoom(this.exitX - 1, this.exitY - 1).setLocation(new LevelExit());
+		dungeon.getRoom(this.exitX, this.exitY).setLocation(new LevelExit());
 
 		Stream<Fact> doorFactStream = aspResult.getFacts()
 				.stream()
@@ -115,8 +120,37 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			room1.setDoor(new Door(room1, room2), direction, true);
 		});
 
-		Room startRoom = dungeon.getRoom(this.startX - 1, this.startY - 1);
+		Room startRoom = dungeon.getRoom(this.startX, this.startY);
 		startRoom.addItem(new VisibilityCheatBall());
+
+		Stream<Fact> locationFactStream = aspResult.getFacts()
+				.stream()
+				.filter(fact -> fact.getPredicate().equals(LOCATION_PREDICATE));
+
+		locationFactStream.forEach(locationFact -> {
+			Fact.Literal locationClazzName = locationFact.get(0);
+			Fact roomPosFact = locationFact.getFacts()[0];
+			int posX = roomPosFact.get(0).asNumber();
+			int posY = roomPosFact.get(1).asNumber();
+			try {
+				Class<?> locationClazz = Class.forName("de.jdungeon.location." + locationClazzName.asString());
+				Constructor<?> constructor = locationClazz.getDeclaredConstructor(Room.class);
+				Room room = dungeon.getRoom(posX, posY);
+				if (room.getLocation() != null) {
+					Log.severe("Room already has a location! :" + room.toString() + " (" + room.getLocation() + ")");
+				}
+				Object newInstance = constructor.newInstance(room);
+				room.setLocation((Location) newInstance);
+			}
+			catch (ClassNotFoundException e) {
+				Log.severe("Could not find location class for name: " + locationClazzName.asString());
+				e.printStackTrace();
+			}
+			catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+				Log.severe("Could not find/execute constructor for location class: " + locationClazzName);
+				e.printStackTrace();
+			}
+		});
 
 		return dungeon;
 	}
@@ -124,8 +158,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	private JDPoint getPoint(Fact roomFact) {
 		Fact.Literal literalX = roomFact.get(0);
 		Fact.Literal literalY = roomFact.get(1);
-		// we need -1 because ASP starts indexing with 1 while Dungeon starts indexing with zero
-		return new JDPoint(Integer.parseInt(literalX.asString()) - 1, Integer.parseInt(literalY.asString()) - 1);
+		return new JDPoint(Integer.parseInt(literalX.asString()), Integer.parseInt(literalY.asString()));
 	}
 
 	@Override
@@ -139,6 +172,12 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	public DungeonBuilder setStartingPoint(int x, int y) {
 		this.startX = x;
 		this.startY = y;
+		return this;
+	}
+
+	@Override
+	public DungeonBuilder addLocation(LocationBuilder location) {
+		this.locations.add(location);
 		return this;
 	}
 
@@ -209,12 +248,13 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	private static final String PREDEFINED_DOORS = "PREDEFINED_DOORS";
 	private static final String PREDEFINED_WALLS = "PREDEFINED_WALLS";
 	private static final String DOOR_PREDICATE = "printDoor";
+	private static final String LOCATION_PREDICATE = "locationPosition";
 	private static final String ROOM_PREDICATE = "room";
 
-	private String generateASPSource() {
+	private String generateASPCode() {
 		Map<String, String> valueReplacements = new HashMap<>();
-		valueReplacements.put(GRID_WIDTH, "" + this.gridWidth);
-		valueReplacements.put(GRID_HEIGHT, "" + this.gridHeight);
+		valueReplacements.put(GRID_WIDTH, "" + (this.gridWidth - 1));
+		valueReplacements.put(GRID_HEIGHT, "" + (this.gridHeight - 1));
 		valueReplacements.put(START_X, "" + this.startX);
 		valueReplacements.put(START_Y, "" + this.startY);
 		valueReplacements.put(EXIT_X, "" + this.exitX);
@@ -224,34 +264,59 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		if (this.totalAmountOfDoorsMin > 0) {
 			doorsMin = totalAmountOfDoorsMin;
 			doorsMax = 2 * doorsMin;
-		} else if(totalAmountOfDoorsMax > 0) {
+		}
+		else if (totalAmountOfDoorsMax > 0) {
 			doorsMax = totalAmountOfDoorsMax;
 			doorsMin = totalAmountOfDoorsMax / 2;
 		}
 		valueReplacements.put(DOORS_AMOUNT_MIN, "" + doorsMin);
 		valueReplacements.put(DOORS_AMOUNT_MAX, "" + doorsMax);
-		valueReplacements.put(PREDEFINED_DOORS, "" + generatePredefinedDoors(this.predefinedDoors, false));
-		valueReplacements.put(PREDEFINED_WALLS, "" + generatePredefinedDoors(this.predefinedWalls, true));
-		valueReplacements.put(SHORTEST_EXIT_PATH, minExitPathLength > 0 ? "" + generateShortPathRestrictions(this.minExitPathLength) : "");
+		valueReplacements.put(PREDEFINED_DOORS, "" + generatePredefinedDoorsASPCode(this.predefinedDoors, false));
+		valueReplacements.put(PREDEFINED_WALLS, "" + generatePredefinedDoorsASPCode(this.predefinedWalls, true));
+		valueReplacements.put(SHORTEST_EXIT_PATH, minExitPathLength > 0 ? "" + generateShortPathRestrictionsASPCode(this.minExitPathLength) : "");
 		StringSubstitutor substitutor = new StringSubstitutor(valueReplacements);
 		String templateString = null;
-		File templateFile = new File("ASP_dungeon_generation_template.lp");
+		//File templateFile = new File("ASP_dungeon_generation_template2.lp");
+		String templateFilename = "ASP_dungeon_generation_template2.lp";
 		InputStream resourceAsStream = this.getClass()
 				.getClassLoader()
-				.getResourceAsStream("ASP_dungeon_generation_template.lp");
+				.getResourceAsStream(templateFilename);
 		//String content = IOUtils.read(resourceAsStream, "UTF-8");
 		try {
 			templateString = IOUtils.toString(resourceAsStream, "UTF-8");
 			//templateString = FileUtils.readFileToString(templateFile, "UTF-8");
 		}
 		catch (IOException e) {
-			Log.severe("Could not read ASP template file " + templateFile);
+			Log.severe("Could not read ASP template file: " + templateFilename);
 			e.printStackTrace();
 		}
-		return substitutor.replace(templateString);
+
+		StringBuilder aspSourceBuffy = new StringBuilder();
+		aspSourceBuffy.append(substitutor.replace(templateString));
+
+		// insert locations code
+		appendLocationsASPCode(aspSourceBuffy);
+
+		return aspSourceBuffy.toString();
 	}
 
-	private String generatePredefinedDoors(Collection<DoorMarker> predefinedDoors, boolean isWall) {
+	private void appendLocationsASPCode(StringBuilder buffy) {
+		if (locations.size() > 0) {
+			buffy.append("\n%%Additional Locations\n");
+		}
+		locations.forEach(location -> {
+			String locationName = location.getClazz().getSimpleName();
+			buffy.append("location(\"" + locationName + "\") .\n");
+			if (location.hasFixedRoomPosition()) {
+				JDPoint locationPos = location.getRoomPosition();
+				//locationPosition(start, room(4, 9))
+				buffy.append("locationPosition(\"" + locationName + "\", room(" + locationPos.getX() + "," + locationPos
+						.getY() + ")) .\n");
+			}
+		});
+	}
+
+	private String generatePredefinedDoorsASPCode(Collection<DoorMarker> predefinedDoors, boolean isWall) {
 		StringBuilder buffy = new StringBuilder();
 		for (DoorMarker predefinedDoor : predefinedDoors) {
 			if (isWall) buffy.append("not ");
@@ -260,11 +325,11 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		return buffy.toString();
 	}
 
-	private String generateShortPathRestrictions(int minExitPathLength) {
+	private String generateShortPathRestrictionsASPCode(int minExitPathLength) {
 		StringBuilder buffy = new StringBuilder();
-		buffy.append(":-not dist(start, end, " + minExitPathLength + ") .\n");
+		buffy.append(":-not dist(START, EXIT, " + minExitPathLength + "), locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START).\n");
 		for (int i = 1; i < minExitPathLength; i++) {
-			buffy.append(":- dist(start, end, " + i + ") .\n");
+			buffy.append(":- dist(start, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");
 		}
 		return buffy.toString();
 	}

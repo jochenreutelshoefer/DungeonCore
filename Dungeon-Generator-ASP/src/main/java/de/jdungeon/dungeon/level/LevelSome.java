@@ -8,6 +8,8 @@ import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonGeneratorASPUtils;
 import de.jdungeon.dungeon.builder.DungeonResult;
+import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.location.ScoutShrine;
 
 public class LevelSome extends AbstractASPDungeonFactory {
 
@@ -35,6 +37,7 @@ public class LevelSome extends AbstractASPDungeonFactory {
 				.setMinExitPathLength(10)
 				.addPredefinedDoors(doors)
 				.addPredefinedWalls(walls)
+				.addLocation(new LocationBuilder(ScoutShrine.class).setRoom(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + 1))
 				.setExitPoint(exit.getX(), exit.getY());
 
 		DungeonResult build = null;
@@ -44,7 +47,6 @@ public class LevelSome extends AbstractASPDungeonFactory {
 		catch (DungeonGenerationException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

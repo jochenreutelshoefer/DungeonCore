@@ -63,14 +63,12 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		filler.addAllocatedRoom(entryRoom);
 		entryRoom.removeAllDoorsExcept(Direction.North);
 		entryRoom.setLocation(new RevealMapShrine(exitRoom));
-		//entryRoom.addItem(new VisibilityCheatBall());
 
 
-		Room statueRoom = dungeon.getRoom(4, 7);
-		statueRoom.removeAllDoorsExcept(Direction.North, Direction.South);
-		statueRoom.setLocation(new DefenderLocation(statueRoom));
-		//statueRoom.setShrine(new Statue());
-		filler.addAllocatedRoom(statueRoom);
+		Room defenderRoom = dungeon.getRoom(4, 7);
+		defenderRoom.removeAllDoorsExcept(Direction.North, Direction.South);
+		defenderRoom.setLocation(new DefenderLocation(defenderRoom));
+		filler.addAllocatedRoom(defenderRoom);
 
 		Room hall44 = dungeon.getRoomNr(4, 4);
 		hall44.getDoor(Direction.North).setKey(exitKey);

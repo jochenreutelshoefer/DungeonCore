@@ -33,6 +33,15 @@ public interface DungeonBuilder<T extends DungeonResult> {
     DungeonBuilder setStartingPoint(int x, int y);
 
     /**
+     * Adds a location to the dungeon. I can have a fixed position.
+     * If no fixed position is specified, it will be determined by the dungeon generator.
+     *
+     * @param location
+     * @return
+     */
+    DungeonBuilder addLocation(LocationBuilder location);
+
+    /**
      * Sets the point, where the exit is located (i.e. the level goal is reached).
      *
      * @param x x coordinate of exit room
