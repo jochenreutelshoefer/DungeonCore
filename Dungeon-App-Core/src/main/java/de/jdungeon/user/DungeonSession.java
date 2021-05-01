@@ -1,6 +1,7 @@
 package de.jdungeon.user;
 
 import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
@@ -43,7 +44,7 @@ public interface DungeonSession {
 
 	void notifyExit(LevelExit exit, Figure figure);
 
-	HeroInfo initDungeon(DungeonFactory dungeon, ControlUnit controlUnit);
+	HeroInfo initDungeon(DungeonFactory dungeon, ControlUnit controlUnit) throws DungeonGenerationException;
 
 	void restoreHero();
 

@@ -9,7 +9,6 @@ import de.jdungeon.dungeon.builder.asp.Result;
 import de.jdungeon.dungeon.builder.asp.ShellASPSolver;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.item.VisibilityCheatBall;
-import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.Location;
 import de.jdungeon.log.Log;
 
@@ -142,11 +141,13 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 				Room room = dungeon.getRoom(posX, posY);
 
 				for (Constructor<?> constructor : constructors) {
+					// use the standard constructor if available
 					if (constructor.getParameterCount() == 0) {
 						newLocationInstance = constructor.newInstance();
 						break;
 					}
 					if (constructor.getParameterCount() == 1) {
+						// use the room constructor if applicable
 						if (constructor.getParameterTypes()[0].equals(Room.class)) {
 							if (room.getLocation() != null) {
 								Log.severe("Room already has a location! :" + room.toString() + " (" + room.getLocation() + ")");
@@ -214,6 +215,21 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		return this;
 	}
 
+	@Deprecated // use HallBuilder
+	@Override
+	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height, boolean setAllInternalDoors) {
+		DefaultDoorSpecification hall = DungeonGeneratorASPUtils.createHall(upperLeftCornerX, upperLeftCornerY, width, height, setAllInternalDoors);
+		this.addPredefinedWalls(hall.getWalls());
+		this.addPredefinedDoors(hall.getDoors());
+		return this;
+	}
+
+	@Deprecated // use HallBuilder
+	@Override
+	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height) {
+		return addHall(upperLeftCornerX, upperLeftCornerY, width, height, false);
+	}
+
 	@Override
 	public DungeonBuilder setMinAmountOfDoors(int numberOfDoors) {
 		this.totalAmountOfDoorsMin = numberOfDoors;
@@ -253,6 +269,13 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	@Override
 	public boolean hasSolution() {
 		return false;
+	}
+
+	@Override
+	public DungeonBuilder addDoorSpecification(DoorSpecification hall) {
+		this.addPredefinedDoors(hall.getDoors());
+		this.addPredefinedWalls(hall.getWalls());
+		return this;
 	}
 
 	private static final String GRID_WIDTH = "GRID_WIDTH";
@@ -323,6 +346,9 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		aspSourceBuffy.append(":- not reachable(START, POS) , locationPosition(LOC, POS), location(LOC), locationPosition(\"" + startLocation
 				.getSimpleName() + "\" ,  START) .\n\n");
 
+		aspSourceBuffy.append("% every room with a door must be reachable from start\n");
+		aspSourceBuffy.append(":- door(FROM, TO), not reachable(STARTLOCA, TO) , locationPosition(\"" + startLocation.getSimpleName() + "\" ,  STARTLOCA).\n\n");
+
 		// insert locations code (this will also set the fixed starting point if existing)
 		appendLocationsASPCode(aspSourceBuffy);
 
@@ -342,8 +368,9 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			if (location.hasFixedRoomPosition()) {
 				JDPoint locationPos = location.getRoomPosition();
 				//locationPosition(start, room(4, 9))
-				buffy.append("locationPosition(\"" + locationName + "\", room(" + locationPos.getX() + "," + locationPos
-						.getY() + ")) .\n");
+				buffy.append("#const " + locationName.toLowerCase() + "Pos = room(" + locationPos.getX() + "," + locationPos
+						.getY() + ") .\n");
+				buffy.append("locationPosition(\"" + locationName + "\", " + locationName.toLowerCase() + "Pos) .\n");
 			}
 		});
 	}
@@ -354,10 +381,11 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		}
 		locationsLeastDistanceConstraints.forEach(lldc -> {
 			String locationNameA = lldc.getLocationA().getClazz().getSimpleName();
+			String locationNameAConstant = locationNameA.toLowerCase() + "Pos";
 			String locationNameB = lldc.getLocationB().getClazz().getSimpleName();
 			int minDistance = lldc.getMinDistance();
 			// we start a distance breadth first spreading dist a location A
-			buffy.append("dist(STARTLOCA, STARTLOCA, 0) :- locationPosition(\"" + locationNameA + "\" ,  STARTLOCA)  .\n");
+			buffy.append("dist(" + locationNameAConstant + "," + locationNameAConstant + ", 0) .\n");
 			buffy.append(":-not dist(STARTLOCA, STARTLOCB, " + minDistance + "), locationPosition(\"" + locationNameB + "\" ,  STARTLOCB) , locationPosition(\"" + locationNameA + "\" ,  STARTLOCA) .\n");
 			for (int i = 1; i < minDistance; i++) {
 				//buffy.append(":- dist(START, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");

@@ -7,7 +7,7 @@ import de.jdungeon.dungeon.util.RouteInstruction;
 
 public class DungeonGeneratorASPUtils {
 
-	public static DoorSpecification createHall(int upperLeftCornerX, int lowerLeftCornerY, int width, int height, boolean setAllInternalDoors) {
+	public static DefaultDoorSpecification createHall(int upperLeftCornerX, int lowerLeftCornerY, int width, int height, boolean setAllInternalDoors) {
 		Set<DoorMarker> doors = new HashSet<>();
 		Set<DoorMarker> walls = new HashSet<>();
 
@@ -43,6 +43,6 @@ public class DungeonGeneratorASPUtils {
 			}
 		}
 
-		return new DoorSpecification(doors, walls);
+		return new DefaultDoorSpecification(doors, walls);
 	}
 }

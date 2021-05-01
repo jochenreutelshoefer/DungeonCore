@@ -1,5 +1,6 @@
 package de.jdungeon.dungeon.level;
 
+import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.AbstractASPDungeonFactory;
 import de.jdungeon.dungeon.builder.DoorMarker;
@@ -14,6 +15,7 @@ import de.jdungeon.location.RevealMapShrine;
 public class LevelX extends AbstractASPDungeonFactory {
 
 	public LevelX() {
+		/*
 		this.start = new JDPoint(4, 9);
 		this.exit = new JDPoint(4, 1);
 		this.gridWidth = 10;
@@ -46,6 +48,18 @@ public class LevelX extends AbstractASPDungeonFactory {
 		catch (DungeonGenerationException e) {
 			e.printStackTrace();
 		}
+
+		 */
+	}
+
+	@Override
+	public Dungeon createDungeon() throws DungeonGenerationException {
+		return null;
+	}
+
+	@Override
+	public JDPoint getHeroEntryPoint() {
+		return null;
 	}
 
 	@Override

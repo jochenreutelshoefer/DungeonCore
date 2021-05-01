@@ -59,6 +59,30 @@ public interface DungeonBuilder<T extends DungeonResult> {
     DungeonBuilder setMinExitPathLength(int pathLength);
 
     /**
+     * Sets ALL walls for the specified halls.
+     * If the wall is meant to have entries/exits, then walls need
+     * explicitly to be removed afterwards.
+     *
+     *
+     * @param upperLeftCornerX x coordinate of the upper left corner room
+     * @param upperLeftCornderY y coordinate of the upper left corner room
+     * @param width size in number of rooms in x direction
+     * @param height size in number of rooms in y direction
+     * @param setAllInternalDoors whether to set all internal doors as predefined
+     * @return builder
+     */
+    @Deprecated // use HallBuilder
+    DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height, boolean setAllInternalDoors);
+
+    /**
+     * Calls addHall with 'false' as the internal-doors-parameter.
+     *
+     */
+    @Deprecated // use HallBuilder
+    DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height);
+
+
+    /**
      * Specifies the total number of doors expected to be in the dungeon.
      * Note: Doors are always bidirectional, that is, a door goes von A to B and from B to A.
      *
@@ -114,4 +138,6 @@ public interface DungeonBuilder<T extends DungeonResult> {
      * @return true if a solvable level can be generated, false otherwise.
      */
     boolean hasSolution();
+
+    DungeonBuilder addDoorSpecification(DoorSpecification hall);
 }

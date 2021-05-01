@@ -4,6 +4,7 @@ import java.util.*;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.event.ExitUsedEvent;
 import de.jdungeon.figure.DungeonVisibilityMap;
@@ -213,7 +214,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
     }
 
     @Override
-    public HeroInfo initDungeon(DungeonFactory dungeonFactory, ControlUnit control) {
+    public HeroInfo initDungeon(DungeonFactory dungeonFactory, ControlUnit control) throws DungeonGenerationException {
         lastSelectedDungeonFactory = dungeonFactory;
 
         derDungeon = dungeonFactory.createDungeon();
