@@ -7,7 +7,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 
 import de.jdungeon.dungeon.builder.*;
+import de.jdungeon.dungeon.level.LevelSome;
 import de.jdungeon.dungeon.level.LevelX;
+import de.jdungeon.dungeon.level.LevelY;
+import de.jdungeon.dungeon.level.LevelZ;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -27,6 +30,7 @@ import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.game.LibgdxConfiguration;
 import de.jdungeon.game.LibgdxLogger;
+import de.jdungeon.log.Log;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.user.DungeonSession;
@@ -123,25 +127,21 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 		DungeonFactory dungeonFactory = dungeonSession.getDungeonManager()
 				.getDungeonOptions(dungeonSession.getCurrentStage())
 				.get(0);
-		DungeonBuilderASP dungeonBuilderASP = new DungeonBuilderASP();
-		LevelX level = new LevelX();
-		/*
-		DungeonFactory factory = null;
-		try {
-			DungeonResultASP dungeonResult = dungeonBuilderASP.build();
-			factory = new DungeonFactoryASP(dungeonResult);
-		}
-		catch (DungeonGenerationException e) {
-			e.printStackTrace();
-		}
+		DungeonFactory level = new LevelY();
+		//DungeonFactory level = new LevelSome();
 
-		 */
 		if (level != null) {
 
 			// create new controller
 			PlayerController controller = new PlayerController(this.dungeonSession, this.adapter);
 
-			this.dungeonSession.initDungeon(level, controller);
+			try {
+				this.dungeonSession.initDungeon(level, controller);
+			}
+			catch (DungeonGenerationException e) {
+				Log.severe("Could not create level: " + e.getMessage());
+				e.printStackTrace();
+			}
 			dungeonSession.getCurrentHero().setVisAll();
 
 			// start world -> do NOT start the game loop in a distinct thread!
@@ -275,7 +275,13 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 			// create new controller
 			PlayerController controller = new PlayerController(this.dungeonSession, this.adapter);
 
-			HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
+			try {
+				HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
+			}
+			catch (DungeonGenerationException e) {
+				Log.severe("Could not create level: " + e.getMessage());
+				e.printStackTrace();
+			}
 
 			getCurrentScreen().pause();
 

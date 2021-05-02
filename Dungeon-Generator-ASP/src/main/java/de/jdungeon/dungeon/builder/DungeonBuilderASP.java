@@ -337,23 +337,79 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		StringBuilder aspSourceBuffy = new StringBuilder();
 		aspSourceBuffy.append(substitutor.replace(templateString));
 
-		// setting starting stuff
-		aspSourceBuffy.append("% start is the reachable starting reference point\n");
-		aspSourceBuffy.append("reachable(START, TO) :- door(START, TO), locationPosition(\"" + startLocation
-				.getSimpleName() + "\" ,  START) .\n\n");
-
+		// this seems to be faster than constraining each location individually (while grounding is larger)
 		aspSourceBuffy.append("% each location has to be reachable from the start point\n");
 		aspSourceBuffy.append(":- not reachable(START, POS) , locationPosition(LOC, POS), location(LOC), locationPosition(\"" + startLocation
 				.getSimpleName() + "\" ,  START) .\n\n");
 
+		// insert reachability rules
+		String[] doorCoordPairs = { "MID_X=TO_X, MID_Y+1=TO_Y", "MID_X=TO_X, MID_Y-1=TO_Y", "MID_X+1=TO_X, MID_Y=TO_Y", "MID_X-1=TO_X, MID_Y=TO_Y" };
+		aspSourceBuffy.append("%transitive reachability using doors\n");
+		for (String doorCoordPair : doorCoordPairs) {
+			aspSourceBuffy.append("reachable(" + this.startLocation.getSimpleName()
+					.toLowerCase() + "Pos, room(TO_X, TO_Y)) :- reachable(" + this.startLocation
+					.getSimpleName()
+					.toLowerCase() + "Pos, room(MID_X, MID_Y)), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), " + doorCoordPair + " .\n");
+		}
+		aspSourceBuffy.append("\n");
+		/*
+		%%
+% door north
+reachable(room(FROM_X, FROM_Y), room(TO_X, TO_Y)) :- reachable(room(FROM_X, FROM_Y), room(MID_X, MID_Y)), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), MID_X=TO_X, MID_Y+1=TO_Y.
+
+% door south
+reachable(room(FROM_X, FROM_Y), room(TO_X, TO_Y)) :- reachable(room(FROM_X, FROM_Y), room(MID_X, MID_Y)), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), MID_X=TO_X, MID_Y-1=TO_Y.
+
+% door west
+reachable(room(FROM_X, FROM_Y), room(TO_X, TO_Y)) :- reachable(room(FROM_X, FROM_Y), room(MID_X, MID_Y)), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), MID_X+1=TO_X, MID_Y=TO_Y.
+
+% door east
+reachable(room(FROM_X, FROM_Y), room(TO_X, TO_Y)) :- reachable(room(FROM_X, FROM_Y), room(MID_X, MID_Y)), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), MID_X-1=TO_X, MID_Y=TO_Y.
+
+		 */
+
+		// setting starting stuff
+		String startPosName = this.startLocation.getSimpleName().toLowerCase()+"Pos";
+		aspSourceBuffy.append("% start is the reachable starting reference point\n");
+		aspSourceBuffy.append("reachable("+startPosName+", TO) :- door("+startPosName+", TO) .\n\n");
+
+		// all rooms with doors must be reachable
+		aspSourceBuffy.append("% we MUST not have doors to some point that is not reachable from start\n");
+		String[] doorCoordPairs2 = { "FROM_X+1=TO_X, FROM_Y=TO_Y", "FROM_X-1=TO_X, FROM_Y=TO_Y", "FROM_X=TO_X, FROM_Y+1=TO_Y", "FROM_X=TO_X, FROM_Y-1=TO_Y" };
+		for (String doorCoordPair : doorCoordPairs2) {
+			aspSourceBuffy.append(":- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), " + doorCoordPair + ", not reachable(" + this.startLocation
+					.getSimpleName()
+					.toLowerCase() + "Pos, room(TO_X, TO_Y))  .\n");
+		}
+		/*
+
+:- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), 	,			locationPosition(start ,  START), 	not reachable(START, room(TO_X, TO_Y))  .
+:- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), 	,		locationPosition(start ,  START), 	not reachable(START, room(TO_X, TO_Y))  .
+:- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), 	,		locationPosition(start ,  START), 	not reachable(START, room(TO_X, TO_Y))  .
+
+		 */
+
 		aspSourceBuffy.append("% every room with a door must be reachable from start\n");
 		aspSourceBuffy.append(":- door(FROM, TO), not reachable(STARTLOCA, TO) , locationPosition(\"" + startLocation.getSimpleName() + "\" ,  STARTLOCA).\n\n");
 
+		// limit dead ends
+		aspSourceBuffy.append("% limit amount of rooms with one door\n");
+		aspSourceBuffy.append("oneDoors(room(X1,Y1)) :- 1{room(X2,Y2) : door(room(X1,Y1), room(X2,Y2))} 1 , room(X1,Y1) .\n");
+		aspSourceBuffy.append("S < 6 :- S = #sum{1,R : oneDoors(R) } .\n\n");
+
+		// insert paths optimization (to have more of a network)
+		aspSourceBuffy.append("%% minimize adjacent rooms with 2 doors each\n");
+		aspSourceBuffy.append("pathway(room(X1,Y1), room(X2,Y2)) :- door(room(X1,Y1), room(X2,Y2)) , twoDoors(room(X1,Y1)), twoDoors(room(X2,Y2)) .\n");
+		aspSourceBuffy.append("twoDoors(room(X1,Y1)) :- 2{room(X2,Y2) : door(room(X1,Y1), room(X2,Y2))} 2 , room(X1,Y1) .\n");
+		aspSourceBuffy.append("#minimize{1, R1, R2 : pathway(R1, R2) } .\n\n");
+
 		// insert locations code (this will also set the fixed starting point if existing)
 		appendLocationsASPCode(aspSourceBuffy);
+		aspSourceBuffy.append("\n\n");
 
 		// insert locations distance constraints code
 		appendLocationMinDistanceConstraints(aspSourceBuffy);
+		aspSourceBuffy.append("\n\n");
 
 		return aspSourceBuffy.toString();
 	}
@@ -367,10 +423,17 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			buffy.append("location(\"" + locationName + "\") .\n");
 			if (location.hasFixedRoomPosition()) {
 				JDPoint locationPos = location.getRoomPosition();
-				//locationPosition(start, room(4, 9))
-				buffy.append("#const " + locationName.toLowerCase() + "Pos = room(" + locationPos.getX() + "," + locationPos
+				String locationPosName = locationName.toLowerCase() + "Pos";
+				buffy.append("#const " + locationPosName + " = room(" + locationPos.getX() + "," + locationPos
 						.getY() + ") .\n");
 				buffy.append("locationPosition(\"" + locationName + "\", " + locationName.toLowerCase() + "Pos) .\n");
+				if (!location.equals(this.startLocation)) {
+					buffy.append(":- not reachable(" + this.startLocation.getSimpleName()
+							.toLowerCase() + "Pos, " + locationPosName + ") . \n\n ");
+				}
+				else {
+					buffy.append("\n");
+				}
 			}
 		});
 	}
@@ -383,13 +446,13 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			String locationNameA = lldc.getLocationA().getClazz().getSimpleName();
 			String locationNameAConstant = locationNameA.toLowerCase() + "Pos";
 			String locationNameB = lldc.getLocationB().getClazz().getSimpleName();
+			String locationNameBConstant = locationNameB.toLowerCase() + "Pos";
 			int minDistance = lldc.getMinDistance();
 			// we start a distance breadth first spreading dist a location A
 			buffy.append("dist(" + locationNameAConstant + "," + locationNameAConstant + ", 0) .\n");
-			buffy.append(":-not dist(STARTLOCA, STARTLOCB, " + minDistance + "), locationPosition(\"" + locationNameB + "\" ,  STARTLOCB) , locationPosition(\"" + locationNameA + "\" ,  STARTLOCA) .\n");
+			buffy.append(":-not dist(" + locationNameAConstant + ", " + locationNameBConstant + ", " + minDistance + ").\n");
 			for (int i = 1; i < minDistance; i++) {
-				//buffy.append(":- dist(START, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");
-				buffy.append(":- dist(STARTLOCA, STARTLOCB, " + i + "), locationPosition(\"" + locationNameB + "\" ,  STARTLOCB) , locationPosition(\"" + locationNameA + "\" ,  STARTLOCA) .\n");
+				buffy.append(":- dist(" + locationNameAConstant + ", " + locationNameBConstant + ", " + i + ") .\n");
 			}
 		});
 
