@@ -10,6 +10,8 @@ import com.denkbares.strings.Strings;
 import com.denkbares.utils.Exec;
 import com.denkbares.utils.Exec.OutputBuffer;
 import com.denkbares.utils.Log;
+
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -45,12 +47,25 @@ public class ShellASPSolver {
 		Throwable error = null;
 		OutputBuffer out = new OutputBuffer();
 		OutputBuffer err = new OutputBuffer();
-		int exitCode = 0;
+		final int[] exitCode = new int[1];
 		try {
-			exitCode = new Exec("/Users/jochenreutelshoefer/Downloads/clingo-5.4.0-macos-x86_64/clingo")
-					.console(false).input(fullProgram).error(err).output(out).runAndWait();
-			if (!ExitCode.E_SAT.isSet(exitCode)) {
-				return DefaultResult.failed(Collections.emptyList(), out.getConsoleOutput());}
+			Exec execution = new Exec("/Users/jochenreutelshoefer/Downloads/clingo-5.4.0-macos-x86_64/clingo")
+					.console(false).input(fullProgram).error(err).output(out);
+			execution.runAsync();
+
+			// wait some time
+			Thread.sleep(10 * 1000);
+
+			/*
+			execution.exit(integer -> {
+				exitCode[0] = integer.intValue();
+				Log.info("Exit code was: "+integer.intValue());});
+			 */
+			//String consoleOutput = out.getConsoleOutput();
+			//Log.info("Console output: "+consoleOutput);
+			execution.destroy();
+			//if (!ExitCode.E_SAT.isSet(exitCode[0])) {
+			//	return DefaultResult.failed(Collections.emptyList(), out.getConsoleOutput());}
 		}
 		catch (IOException e) {
 			Log.severe("cannot run clingo inference", e);
@@ -58,7 +73,8 @@ public class ShellASPSolver {
 		}
 
 		// if we are only interested in the pure result, terminate here
-		ClingoOutputParser parser = new ClingoOutputParser(out.getConsoleOutput().trim());
+		String consoleOutput = out.getConsoleOutput().trim();
+		ClingoOutputParser parser = new ClingoOutputParser(consoleOutput);
 		if (!parseOutput) {
 			return parser.isSatisfiable()
 					? DefaultResult.satisfiable(Collections.emptyList())
@@ -73,20 +89,25 @@ public class ShellASPSolver {
 
 		private final String fullOutput;
 		private final boolean satisfiable;
-		private final String modelOutput;
+		private String modelOutput = null;
+		private int solutionNumber = -1;
 
 		public ClingoOutputParser(String fullOutput) {
 			this.fullOutput = fullOutput;
 
-			// locate the actual model in the output
-			Pattern pattern = Pattern.compile("" +
-					"^Answer:\\s*\\d+$[\\h\\r\\v]*" +
-					"^(.*)$[\\h\\r\\v]*" +
-					"(^Optimization:\\s*-?\\d+$[\\h\\r\\v]*)?" +
-					"^(SATISFIABLE|OPTIMUM FOUND)$", Pattern.MULTILINE);
-			Matcher matcher = pattern.matcher(fullOutput);
-			this.satisfiable = matcher.find();
-			this.modelOutput = satisfiable ? matcher.group(1) : null;
+			String answerBeginKey = "Answer:";
+			this.satisfiable = fullOutput.contains(answerBeginKey);
+			if(satisfiable) {
+
+				int beginLastModelIndex = fullOutput.lastIndexOf(answerBeginKey);
+				int optimizationKeywordIndex = fullOutput.lastIndexOf("Optimization:");
+				String answerOut = fullOutput.substring(beginLastModelIndex, optimizationKeywordIndex);
+				Matcher matcher = Pattern.compile(answerBeginKey + "\\s*(\\d+)\n").matcher(answerOut);
+				matcher.find();
+				String answerNumberString = matcher.group(1);
+				this.solutionNumber = Integer.parseInt(answerNumberString);
+				this.modelOutput = answerOut.substring(matcher.group().length());
+			}
 		}
 
 		public boolean isSatisfiable() {
