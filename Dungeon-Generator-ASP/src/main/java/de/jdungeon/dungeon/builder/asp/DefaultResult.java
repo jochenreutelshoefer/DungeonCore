@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementation of a clingo reasoning result, that matches the derived facts to the knowledge base.
@@ -21,10 +22,17 @@ public class DefaultResult implements Result {
 	private final Collection<Fact> outputs;
 	private String fullOutput;
 
+	private int solutionNumber = -1;
+
 	DefaultResult(Collection<Fact> inputs, Collection<Fact> outputs, String fullOutput) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.fullOutput = fullOutput;
+	}
+
+	public DefaultResult(List<Fact> inputs, Collection<Fact> model, String fullOutput, int solutionNumber) {
+		this(inputs, model,  fullOutput);
+		this.solutionNumber = solutionNumber;
 	}
 
 	/**
@@ -46,6 +54,10 @@ public class DefaultResult implements Result {
 	 */
 	public static DefaultResult unsatisfiable(Collection<Fact> inputs) {
 		return new DefaultResult(inputs, Collections.emptySet(), null);
+	}
+
+	public int getSolutionNumber() {
+		return solutionNumber;
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class LevelZ extends AbstractASPDungeonFactory {
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(16, 16)
 				.setStartingPoint(startL)
-				.setMinAmountOfDoors(200)
+				.setMinAmountOfDoors(500)
 				.addDoorSpecification(centerHall)
 				.addLocation(exit)
 				//.addLocation(scoutTower)

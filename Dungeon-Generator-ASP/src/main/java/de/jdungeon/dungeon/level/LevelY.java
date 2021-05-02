@@ -9,6 +9,7 @@ import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.HallBuilder;
+import de.jdungeon.dungeon.builder.KeyBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.RevealMapShrine;
@@ -33,19 +34,22 @@ public class LevelY extends AbstractASPDungeonFactory {
 				.removeWall(new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight, hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight - 1))
 				.build();
 
-		LocationBuilder exit = new LocationBuilder(LevelExit.class).setRoom(5,0);
-		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class).setRoom(start.getX(), start.getY());
-		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class).setRoom(7,3);
+		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
+		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
+		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, 7, 3);
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(10, 8)
 				.setStartingPoint(startL)
-				.setMinAmountOfDoors(60)
+				.setMinAmountOfDoors(90)
 				.addDoorSpecification(centerHall)
 				.addLocation(exit)
 				.addLocation(scoutTower)
 				.addLocationsLeastDistanceConstraint(startL, exit, 20)
 				.addLocationsLeastDistanceConstraint(startL, scoutTower, 11)
 				.addLocationsLeastDistanceConstraint(exit, scoutTower, 11)
+				.addKey(new KeyBuilder("Schraubenschluessel")
+						.addNonReachableLocation(exit)
+						.addNonReachableLocation(scoutTower))
 				.build();
 
 		return dungeonBuild.getDungeon();

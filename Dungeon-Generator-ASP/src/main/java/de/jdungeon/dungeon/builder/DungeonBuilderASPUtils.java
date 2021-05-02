@@ -5,7 +5,7 @@ import java.util.Set;
 
 import de.jdungeon.dungeon.util.RouteInstruction;
 
-public class DungeonGeneratorASPUtils {
+public class DungeonBuilderASPUtils {
 
 	public static DefaultDoorSpecification createHall(int upperLeftCornerX, int lowerLeftCornerY, int width, int height, boolean setAllInternalDoors) {
 		Set<DoorMarker> doors = new HashSet<>();

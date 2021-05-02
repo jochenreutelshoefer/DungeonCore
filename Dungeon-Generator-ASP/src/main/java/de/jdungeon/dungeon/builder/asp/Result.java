@@ -35,6 +35,8 @@ public interface Result extends Iterable<Fact> {
 	@NotNull
 	Collection<Fact> getFacts();
 
+	int getSolutionNumber();
+
 	/**
 	 * Returns the facts of the model associated to the specified predicate. If there are no suchs facts, an empty set
 	 * is returned.

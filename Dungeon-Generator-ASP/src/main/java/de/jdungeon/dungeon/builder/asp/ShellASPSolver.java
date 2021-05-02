@@ -43,7 +43,7 @@ public class ShellASPSolver {
 		// start clingo with both, program and facts
 		// TODO: use non-shell api for clingo, this is only for trial purposes
 		// TODO: prepare grounded clingo instance with the program at constructor, and only apply the facts here
-		String fullProgram =  aspProgram;
+		String fullProgram = aspProgram;
 		Throwable error = null;
 		OutputBuffer out = new OutputBuffer();
 		OutputBuffer err = new OutputBuffer();
@@ -54,16 +54,17 @@ public class ShellASPSolver {
 			execution.runAsync();
 
 			// wait some time
-			Thread.sleep(10 * 1000);
-
-			/*
-			execution.exit(integer -> {
-				exitCode[0] = integer.intValue();
-				Log.info("Exit code was: "+integer.intValue());});
-			 */
-			//String consoleOutput = out.getConsoleOutput();
-			//Log.info("Console output: "+consoleOutput);
-			execution.destroy();
+			int maxSolvingTime = 10 * 1000;
+			int timeWaited = 0;
+			while (execution.isAlive() && timeWaited < maxSolvingTime) {
+				int waitStep = 500;
+				Thread.sleep(waitStep);
+				timeWaited += waitStep;
+			}
+			if(execution.isAlive()) {
+				// we stop the solver
+				execution.destroy();
+			}
 			//if (!ExitCode.E_SAT.isSet(exitCode[0])) {
 			//	return DefaultResult.failed(Collections.emptyList(), out.getConsoleOutput());}
 		}
@@ -82,7 +83,7 @@ public class ShellASPSolver {
 		}
 
 		// parse the clingo results and return a result instance here (if satisfiable
-		return new DefaultResult(Collections.emptyList(), parser.getModel(), parser.fullOutput);
+		return new DefaultResult(Collections.emptyList(), parser.getModel(), parser.fullOutput, parser.solutionNumber);
 	}
 
 	private static class ClingoOutputParser {
@@ -97,7 +98,7 @@ public class ShellASPSolver {
 
 			String answerBeginKey = "Answer:";
 			this.satisfiable = fullOutput.contains(answerBeginKey);
-			if(satisfiable) {
+			if (satisfiable) {
 
 				int beginLastModelIndex = fullOutput.lastIndexOf(answerBeginKey);
 				int optimizationKeywordIndex = fullOutput.lastIndexOf("Optimization:");
@@ -144,11 +145,19 @@ public class ShellASPSolver {
 	@NotNull
 	private static Fact createFact(String text, int open, String factContent) {
 		List<StringFragment> literals = Strings.splitUnquoted(factContent, ",", new QuoteSet(
-		'(',')'));
+				'(', ')'));
 
 		// create fact instance
-		Fact.Literal[] factLiterals = literals.stream().filter(s -> ! Strings.containsUnquoted(s.getContent(), "(")).map(StringFragment::getContentTrimmed).map(Fact.Literal::raw).toArray(Fact.Literal[]::new);
-		Fact[] subFacts = literals.stream().filter(s -> Strings.containsUnquoted(s.getContent(), "(")).map(StringFragment::getContentTrimmed).map(s -> createFact(s, s.indexOf('('), s.substring(s.indexOf('(') + 1, s.length() - 1))).toArray(Fact[]::new);
+		Fact.Literal[] factLiterals = literals.stream()
+				.filter(s -> !Strings.containsUnquoted(s.getContent(), "("))
+				.map(StringFragment::getContentTrimmed)
+				.map(Fact.Literal::raw)
+				.toArray(Fact.Literal[]::new);
+		Fact[] subFacts = literals.stream()
+				.filter(s -> Strings.containsUnquoted(s.getContent(), "("))
+				.map(StringFragment::getContentTrimmed)
+				.map(s -> createFact(s, s.indexOf('('), s.substring(s.indexOf('(') + 1, s.length() - 1)))
+				.toArray(Fact[]::new);
 		Fact fact = new Fact(text.substring(0, open), Arrays.asList(subFacts), factLiterals);
 		return fact;
 	}

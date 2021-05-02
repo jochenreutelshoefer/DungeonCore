@@ -41,6 +41,9 @@ public interface DungeonBuilder<T extends DungeonResult> {
      */
     DungeonBuilder addLocation(LocationBuilder location);
 
+
+    DungeonBuilder addKey(KeyBuilder key);
+
     /**
      * Adds a constraint leading
      * @param locationA

@@ -38,7 +38,7 @@ public class HallBuilder {
 	}
 
 	public DoorSpecification build() {
-		DefaultDoorSpecification hall = DungeonGeneratorASPUtils.createHall(upperLeftCornerX, upperLeftCornerY, width, height, this.allInternalDoors);
+		DefaultDoorSpecification hall = DungeonBuilderASPUtils.createHall(upperLeftCornerX, upperLeftCornerY, width, height, this.allInternalDoors);
 		hall.removeDoors(removedDoors);
 		hall.removeWalls(removedWalls);
 		return hall;

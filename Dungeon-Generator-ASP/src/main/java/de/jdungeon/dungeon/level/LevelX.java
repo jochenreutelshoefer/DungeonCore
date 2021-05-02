@@ -3,18 +3,12 @@ package de.jdungeon.dungeon.level;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.AbstractASPDungeonFactory;
-import de.jdungeon.dungeon.builder.DoorMarker;
-import de.jdungeon.dungeon.builder.DoorSpecification;
-import de.jdungeon.dungeon.builder.DungeonBuilder;
 import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
-import de.jdungeon.dungeon.builder.DungeonGeneratorASPUtils;
 import de.jdungeon.dungeon.builder.DungeonResult;
-import de.jdungeon.dungeon.builder.HallBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.RevealMapShrine;
-import de.jdungeon.location.ScoutShrine;
 
 public class LevelX extends AbstractASPDungeonFactory {
 

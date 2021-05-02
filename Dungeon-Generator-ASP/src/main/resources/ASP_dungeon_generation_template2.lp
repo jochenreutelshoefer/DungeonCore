@@ -50,12 +50,30 @@ door(room(X1,Y1), room(X2,Y2)) :- door(room(X2,Y2), room(X1,Y1)), Y1=Y2, X1-1 = 
 printDoor(room(X1, Y1), room(X2, Y2)) :- door(room(X1, Y1), room(X2, Y2)) , X1 = X2 + 1, Y1 = Y2 .
 printDoor(room(X1, Y1), room(X2, Y2)) :- door(room(X1, Y1), room(X2, Y2)) , X1 = X2, Y1 = Y2 + 1 .
 
+%key("Key1") .
+
+%1{lock(door(room(X1, Y1), room(X2, Y2)), K) : key(K), door(room(X1, Y1), room(X2, Y2)), room(X1, Y1), room(X2, Y2) }   1 .
+%locked(door(room(X2, Y2), room(X1, Y1)), K) :- lock(door(room(X1, Y1), room(X2, Y2)), K) .
+%locked(door(room(X2, Y2), room(X1, Y1)), K) :- locked(door(room(X1, Y1), room(X2, Y2)), K) .
+%:- locked(door(room(X2, Y2), room(X1, Y1)), K), not door(room(X2, Y2), room(X1, Y1)) .
 
 
-%#show edge/3.
+%reachableWithoutKey(revealmapshrinePos, TO, KEY) :- door(revealmapshrinePos, TO), not locked(door(revealmapshrinePos, TO), KEY), key(KEY) .
+
+%reachableWithoutKey(revealmapshrinePos, room(TO_X, TO_Y), KEY) :- reachableWithoutKey(revealmapshrinePos, room(MID_X, MID_Y), KEY), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), not locked(door(room(MID_X, MID_Y), room(TO_X, TO_Y)), KEY), key(KEY), MID_X=TO_X, MID_Y+1=TO_Y .
+%reachableWithoutKey(revealmapshrinePos, room(TO_X, TO_Y), KEY) :- reachableWithoutKey(revealmapshrinePos, room(MID_X, MID_Y), KEY), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), not locked(door(room(MID_X, MID_Y), room(TO_X, TO_Y)), KEY), key(KEY), MID_X=TO_X, MID_Y-1=TO_Y .
+%reachableWithoutKey(revealmapshrinePos, room(TO_X, TO_Y), KEY) :- reachableWithoutKey(revealmapshrinePos, room(MID_X, MID_Y), KEY), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), not locked(door(room(MID_X, MID_Y), room(TO_X, TO_Y)), KEY), key(KEY), MID_X+1=TO_X, MID_Y=TO_Y .
+%reachableWithoutKey(revealmapshrinePos, room(TO_X, TO_Y), KEY) :- reachableWithoutKey(revealmapshrinePos, room(MID_X, MID_Y), KEY), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), not locked(door(room(MID_X, MID_Y), room(TO_X, TO_Y)), KEY), key(KEY), MID_X-1=TO_X, MID_Y=TO_Y .
+
+%:- reachableWithoutKey(revealmapshrinePos, levelexitPos, "Key1") .
+%:- reachableWithoutKey(revealmapshrinePos, scoutshrinePos, "Key1") .
+
+
 #show door/2.
-#show locationPosition/2.
-#show path/5.
 #show dist/3.
 #show printDoor/2 .
+#show locked/2.
+#show reachableWithoutKey/3.
+#show reachable/2.
+#show locationPosition/2.
 
