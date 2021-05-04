@@ -33,16 +33,16 @@ public class LevelZ extends AbstractASPDungeonFactory {
 				.removeWall(new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight, hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight - 1))
 				.build();
 
-		LocationBuilder exit = new LocationBuilder(LevelExit.class).setRoom(5,0);
-		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class).setRoom(start.getX(), start.getY());
-		//LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class).setRoom(7,3);
+		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
+		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
+		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, 7, 3);
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(16, 16)
 				.setStartingPoint(startL)
-				.setMinAmountOfDoors(500)
+				.setMinAmountOfDoors(501)
 				.addDoorSpecification(centerHall)
 				.addLocation(exit)
-				//.addLocation(scoutTower)
+				.addLocation(scoutTower)
 				.addLocationsLeastDistanceConstraint(startL, exit, 40)
 				//.addLocationsLeastDistanceConstraint(startL, scoutTower, 11)
 				//.addLocationsLeastDistanceConstraint(exit, scoutTower, 11)

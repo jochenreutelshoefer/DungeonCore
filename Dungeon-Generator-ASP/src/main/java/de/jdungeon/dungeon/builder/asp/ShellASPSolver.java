@@ -54,7 +54,7 @@ public class ShellASPSolver {
 			execution.runAsync();
 
 			// wait some time
-			int maxSolvingTime = 10 * 1000;
+			int maxSolvingTime = 23 * 1000;
 			int timeWaited = 0;
 			while (execution.isAlive() && timeWaited < maxSolvingTime) {
 				int waitStep = 500;

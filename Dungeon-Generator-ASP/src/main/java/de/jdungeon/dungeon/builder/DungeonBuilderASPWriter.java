@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -83,21 +84,21 @@ public class DungeonBuilderASPWriter {
 		// this seems to be faster than constraining each location individually (while grounding is larger)
 		aspSourceBuffy.append("% each location has to be reachable from the start point\n");
 		aspSourceBuffy.append(":- not reachable(START, POS) , locationPosition(LOC, POS), location(LOC), locationPosition(\"" + builder.startLocation
-				.getSimpleName() + "\" ,  START) .\n\n");
+				.getIdentifier() + "\" ,  START) .\n\n");
 
 		// insert reachability rules
 		String[] doorCoordPairs = { "MID_X=TO_X, MID_Y+1=TO_Y", "MID_X=TO_X, MID_Y-1=TO_Y", "MID_X+1=TO_X, MID_Y=TO_Y", "MID_X-1=TO_X, MID_Y=TO_Y" };
 		aspSourceBuffy.append("%transitive reachability using doors\n");
 		for (String doorCoordPair : doorCoordPairs) {
-			aspSourceBuffy.append("reachable(" + builder.startLocation.getSimpleName()
+			aspSourceBuffy.append("reachable(" + builder.startLocation.getIdentifier()
 					.toLowerCase() + "Pos, room(TO_X, TO_Y)) :- reachable(" + builder.startLocation
-					.getSimpleName()
+					.getIdentifier()
 					.toLowerCase() + "Pos, room(MID_X, MID_Y)), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), " + doorCoordPair + " .\n");
 		}
 		aspSourceBuffy.append("\n");
 
 		// setting starting stuff
-		String startPosName = builder.startLocation.getSimpleName().toLowerCase() + "Pos";
+		String startPosName = builder.startLocation.getIdentifier().toLowerCase() + "Pos";
 		aspSourceBuffy.append("% start is the reachable starting reference point\n");
 		aspSourceBuffy.append("reachable(" + startPosName + ", TO) :- door(" + startPosName + ", TO) .\n\n");
 
@@ -106,7 +107,7 @@ public class DungeonBuilderASPWriter {
 		String[] doorCoordPairs2 = { "FROM_X+1=TO_X, FROM_Y=TO_Y", "FROM_X-1=TO_X, FROM_Y=TO_Y", "FROM_X=TO_X, FROM_Y+1=TO_Y", "FROM_X=TO_X, FROM_Y-1=TO_Y" };
 		for (String doorCoordPair : doorCoordPairs2) {
 			aspSourceBuffy.append(":- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), " + doorCoordPair + ", not reachable(" + builder.startLocation
-					.getSimpleName()
+					.getIdentifier()
 					.toLowerCase() + "Pos, room(TO_X, TO_Y))  .\n");
 		}
 		/*
@@ -119,7 +120,7 @@ public class DungeonBuilderASPWriter {
 
 		aspSourceBuffy.append("% every room with a door must be reachable from start\n");
 		aspSourceBuffy.append(":- door(FROM, TO), not reachable(STARTLOCA, TO) , locationPosition(\"" + builder.startLocation
-				.getSimpleName() + "\" ,  STARTLOCA).\n\n");
+				.getIdentifier() + "\" ,  STARTLOCA).\n\n");
 
 		// limit dead ends
 		aspSourceBuffy.append("% limit amount of rooms with one door\n");
@@ -149,7 +150,7 @@ public class DungeonBuilderASPWriter {
 
 	private void appendKeysASPCode(StringBuilder buffy) {
 		if (builder.keys.size() > 0) {
-			String startLocationName = builder.startLocation.getSimpleName().toLowerCase() + "Pos";
+			String startLocationName = builder.startLocation.getIdentifier().toLowerCase() + "Pos";
 			buffy.append("\n%% Keys/Locks in general\n");
 			buffy.append("%% General key related code\n");
 			buffy.append("% For each key there must be exactly one door to hold the lock of this key\n");
@@ -170,7 +171,6 @@ public class DungeonBuilderASPWriter {
 			buffy.append("reachableWithoutKey(" + startLocationName + ", room(TO_X, TO_Y), KEY) :- reachableWithoutKey(" + startLocationName + ", room(MID_X, MID_Y), KEY), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), not locked(door(room(MID_X, MID_Y), room(TO_X, TO_Y)), KEY), key(KEY), MID_X+1=TO_X, MID_Y=TO_Y .");
 			buffy.append("reachableWithoutKey(" + startLocationName + ", room(TO_X, TO_Y), KEY) :- reachableWithoutKey(" + startLocationName + ", room(MID_X, MID_Y), KEY), door(room(MID_X, MID_Y), room(TO_X, TO_Y)), not locked(door(room(MID_X, MID_Y), room(TO_X, TO_Y)), KEY), key(KEY), MID_X-1=TO_X, MID_Y=TO_Y .");
 
-
 			builder.keys.forEach(key -> {
 				buffy.append("\n% Define key\n");
 				buffy.append("key(\"" + key.getKeyString() + "\") . \n");
@@ -178,15 +178,26 @@ public class DungeonBuilderASPWriter {
 				// without-key-non-reachable locations
 				key.getLocationsNotReachableWithoutKey().forEach(locationNotReachable -> {
 					buffy.append("\n% It may not happen that the location is reachable-without-key from start\n");
-					buffy.append(":- reachableWithoutKey(" + startLocationName + "," + locationNotReachable.getSimpleName()
+					buffy.append(":- reachableWithoutKey(" + startLocationName + "," + locationNotReachable.getIdentifier()
 							.toLowerCase() + "Pos" + ", \"" + key.getKeyString() + "\") .\n");
 				});
 
 				// without-key-reachable locations
 				key.getLocationsReachableWithoutKey().forEach(locationReachable -> {
-					buffy.append("% It may not happen that the location _not_ is reachable-without-key from start\n");
-					buffy.append(":- not reachableWithoutKey(" + startLocationName + "," + locationReachable.getSimpleName()
-							.toLowerCase() + "Pos" + ", \"" + key.getKeyString() + "\") .\n");
+
+					if (locationReachable instanceof KeyBuilder && !locationReachable.hasFixedRoomPosition()) {
+						buffy.append("% It may not happen that the key location is _not_ reachable-without-key from start\n");
+
+						//1{ locationPosition("Key", KEYPOS) : KEYPOS != revealmapshrinePos, oneDoors(KEYPOS), reachableWithoutKey(revealmapshrinePos, KEYPOS, "Schraubenschluessel")} 1 .
+						// the key needs to be put at some place that is reachable with out it and that is not equal to the starting point and that only has one door
+						buffy.append("1{ locationPosition(\"" + key.getIdentifier() + "\", KEYPOS) : KEYPOS != " + startLocationName + ", oneDoors(KEYPOS), reachableWithoutKey(" + startLocationName + ", KEYPOS, \"" + key
+								.getKeyString() + "\")} 1 . \n");
+					}
+					else {
+						buffy.append("% It may not happen that the location is _not_ reachable-without-key from start\n");
+						buffy.append(":- not reachableWithoutKey(" + startLocationName + "," + locationReachable.getIdentifier()
+								.toLowerCase() + "Pos" + ", \"" + key.getKeyString() + "\") .\n");
+					}
 				});
 			});
 		}
@@ -196,8 +207,8 @@ public class DungeonBuilderASPWriter {
 		if (builder.locations.size() > 0) {
 			buffy.append("\n%%Additional Locations\n");
 		}
-		builder.locations.forEach(location -> {
-			String locationName = location.getClazz().getSimpleName();
+		builder.locations.values().forEach(location -> {
+			String locationName = location.getIdentifier();
 			buffy.append("location(\"" + locationName + "\") .\n");
 			if (location.hasFixedRoomPosition()) {
 				JDPoint locationPos = location.getRoomPosition();
@@ -206,7 +217,7 @@ public class DungeonBuilderASPWriter {
 						.getY() + ") .\n");
 				buffy.append("locationPosition(\"" + locationName + "\", " + locationName.toLowerCase() + "Pos) .\n");
 				if (!location.equals(builder.startLocation)) {
-					buffy.append(":- not reachable(" + builder.startLocation.getSimpleName()
+					buffy.append(":- not reachable(" + builder.startLocation.getIdentifier()
 							.toLowerCase() + "Pos, " + locationPosName + ") . \n\n ");
 				}
 				else {
@@ -221,9 +232,9 @@ public class DungeonBuilderASPWriter {
 			buffy.append("\n%%Locations Min Distance Constraints\n");
 		}
 		builder.locationsLeastDistanceConstraints.forEach(lldc -> {
-			String locationNameA = lldc.getLocationA().getClazz().getSimpleName();
+			String locationNameA = lldc.getLocationA().getIdentifier();
 			String locationNameAConstant = locationNameA.toLowerCase() + "Pos";
-			String locationNameB = lldc.getLocationB().getClazz().getSimpleName();
+			String locationNameB = lldc.getLocationB().getIdentifier();
 			String locationNameBConstant = locationNameB.toLowerCase() + "Pos";
 			int minDistance = lldc.getMinDistance();
 			// we start a distance breadth first spreading dist a location A

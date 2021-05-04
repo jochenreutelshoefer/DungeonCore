@@ -40,7 +40,7 @@ public class LevelY extends AbstractASPDungeonFactory {
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(10, 8)
 				.setStartingPoint(startL)
-				.setMinAmountOfDoors(90)
+				.setMinAmountOfDoors(100)
 				.addDoorSpecification(centerHall)
 				.addLocation(exit)
 				.addLocation(scoutTower)
@@ -49,7 +49,7 @@ public class LevelY extends AbstractASPDungeonFactory {
 				.addLocationsLeastDistanceConstraint(exit, scoutTower, 11)
 				.addKey(new KeyBuilder("Schraubenschluessel")
 						.addNonReachableLocation(exit)
-						.addNonReachableLocation(scoutTower))
+						.addReachableLocation(scoutTower))
 				.build();
 
 		return dungeonBuild.getDungeon();

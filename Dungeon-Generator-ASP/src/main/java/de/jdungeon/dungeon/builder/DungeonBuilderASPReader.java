@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import com.denkbares.strings.Strings;
 import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
@@ -70,7 +71,6 @@ public class DungeonBuilderASPReader {
 		return dungeon;
 	}
 
-
 	private static Map<Pair<JDPoint, JDPoint>, String> prepareLocks(Stream<Fact> lockedFactStream) {
 		Map<Pair<JDPoint, JDPoint>, String> result = new HashMap<>();
 		lockedFactStream.forEach(lockFact -> {
@@ -85,51 +85,18 @@ public class DungeonBuilderASPReader {
 		return result;
 	}
 
-	private static void createLocations(Result aspResult, Dungeon dungeon) {
+	private void createLocations(Result aspResult, Dungeon dungeon) {
 		Stream<Fact> locationFactStream = aspResult.getFacts()
 				.stream()
 				.filter(fact -> fact.getPredicate().equals(LOCATION_PREDICATE));
 
 		locationFactStream.forEach(locationFact -> {
-			Fact.Literal locationClazzName = locationFact.get(0);
+			Fact.Literal locationIdentifier = locationFact.get(0);
 			Fact roomPosFact = locationFact.getFacts()[0];
 			int posX = roomPosFact.get(0).asNumber();
 			int posY = roomPosFact.get(1).asNumber();
-			try {
-				Class<?> locationClazz = Class.forName("de.jdungeon.location." + locationClazzName.asString());
-				Object newLocationInstance = null;
-
-				Constructor<?>[] constructors = locationClazz.getConstructors();
-				Room room = dungeon.getRoom(posX, posY);
-
-				for (Constructor<?> constructor : constructors) {
-					// use the standard constructor if available
-					if (constructor.getParameterCount() == 0) {
-						newLocationInstance = constructor.newInstance();
-						break;
-					}
-					if (constructor.getParameterCount() == 1) {
-						// use the room constructor if applicable
-						if (constructor.getParameterTypes()[0].equals(Room.class)) {
-							if (room.getLocation() != null) {
-								Log.severe("Room already has a location! :" + room.toString() + " (" + room.getLocation() + ")");
-							}
-							newLocationInstance = constructor.newInstance(room);
-							break;
-						}
-					}
-				}
-
-				room.setLocation((Location) newLocationInstance);
-			}
-			catch (ClassNotFoundException e) {
-				Log.severe("Could not find location class for name: " + locationClazzName.asString());
-				e.printStackTrace();
-			}
-			catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-				Log.severe("Could not find/execute constructor for location class: " + locationClazzName);
-				e.printStackTrace();
-			}
+			LocatedEntityBuilder locationBuilder = builder.locations.get(locationIdentifier.asString());
+			locationBuilder.insert(dungeon, posX, posY);
 		});
 	}
 

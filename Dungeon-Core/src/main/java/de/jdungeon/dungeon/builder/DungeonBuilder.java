@@ -26,8 +26,6 @@ public interface DungeonBuilder<T extends DungeonResult> {
     /**
      * Sets the point, where the player enters the dungeon.
      *
-     * @param x x coordinate of entrance room
-     * @param y y coordinate of entrance room
      * @return builder
      */
     DungeonBuilder setStartingPoint(LocationBuilder startBuilder);
@@ -39,7 +37,7 @@ public interface DungeonBuilder<T extends DungeonResult> {
      * @param location
      * @return
      */
-    DungeonBuilder addLocation(LocationBuilder location);
+    DungeonBuilder addLocation(LocatedEntityBuilder location);
 
 
     DungeonBuilder addKey(KeyBuilder key);
@@ -51,7 +49,7 @@ public interface DungeonBuilder<T extends DungeonResult> {
      * @param distance
      * @return
      */
-    DungeonBuilder addLocationsLeastDistanceConstraint(LocationBuilder locationA, LocationBuilder locationB, int distance );
+    DungeonBuilder addLocationsLeastDistanceConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance );
 
     /**
      * Sets the length of the shortest path from start to exit.
@@ -68,7 +66,7 @@ public interface DungeonBuilder<T extends DungeonResult> {
      *
      *
      * @param upperLeftCornerX x coordinate of the upper left corner room
-     * @param upperLeftCornderY y coordinate of the upper left corner room
+     * @param upperLeftCornerY y coordinate of the upper left corner room
      * @param width size in number of rooms in x direction
      * @param height size in number of rooms in y direction
      * @param setAllInternalDoors whether to set all internal doors as predefined

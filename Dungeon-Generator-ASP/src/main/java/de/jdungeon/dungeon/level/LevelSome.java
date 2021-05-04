@@ -34,17 +34,17 @@ public class LevelSome extends AbstractASPDungeonFactory {
 				.removeWall(new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight, hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight - 1))
 				.build();
 
-		LocationBuilder exit = new LocationBuilder(LevelExit.class).setRoom(5,0);
-		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class).setRoom(start.getX(), start.getY());
-		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class);
+		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5,0);
+		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
+		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, hallUpperLeftCornerX + 1, hallLowerLeftCornerY + 1);
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(10, 10)
 				.setStartingPoint(startL)
 				.addLocation(exit)
+				.addLocation(scoutTower)
 				.addLocationsLeastDistanceConstraint(startL, exit, 10)
 				.addLocationsLeastDistanceConstraint(exit, scoutTower, 5)
 				.addDoorSpecification(centerHall)
-				.addLocation(scoutTower.setRoom(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + 1))
 				.setMaxAmountOfDoors(45)
 				.build();
 

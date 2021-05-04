@@ -3,15 +3,27 @@ package de.jdungeon.dungeon.builder;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class KeyBuilder {
+import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.item.Key;
+
+public class KeyBuilder extends AbstractLocationBuilder {
 
 	private final String keyString;
 
-	private final Collection<LocationBuilder> locationsReachableWithoutKey = new HashSet<>();
-	private final Collection<LocationBuilder> locationsNotReachableWithoutKey = new HashSet<>();
+	private final Collection<AbstractLocationBuilder> locationsReachableWithoutKey = new HashSet<>();
+	private final Collection<AbstractLocationBuilder> locationsNotReachableWithoutKey = new HashSet<>();
+
+	public KeyBuilder(String keyString, int x, int y) {
+		super(new JDPoint(x, y));
+		this.keyString = keyString;
+		locationsReachableWithoutKey.add(this);
+	}
 
 	public KeyBuilder(String keyString) {
+		super();
 		this.keyString = keyString;
+		locationsReachableWithoutKey.add(this);
 	}
 
 	/**
@@ -40,11 +52,21 @@ public class KeyBuilder {
 		return keyString;
 	}
 
-	public Collection<LocationBuilder> getLocationsReachableWithoutKey() {
+	public Collection<AbstractLocationBuilder> getLocationsReachableWithoutKey() {
 		return locationsReachableWithoutKey;
 	}
 
-	public Collection<LocationBuilder> getLocationsNotReachableWithoutKey() {
+	public Collection<AbstractLocationBuilder> getLocationsNotReachableWithoutKey() {
 		return locationsNotReachableWithoutKey;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "KEY_" + getKeyString();
+	}
+
+	@Override
+	public void insert(Dungeon dungeon, int x, int y) {
+		dungeon.getRoom(x, y).addItem(new Key(this.keyString));
 	}
 }

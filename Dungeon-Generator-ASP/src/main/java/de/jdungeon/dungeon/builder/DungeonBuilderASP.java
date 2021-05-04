@@ -3,7 +3,9 @@ package de.jdungeon.dungeon.builder;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
@@ -36,8 +38,9 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	protected Collection<DoorMarker> predefinedDoors = new HashSet<>();
 	protected Collection<DoorMarker> predefinedWalls = new HashSet<>();
 
-	Collection<LocationBuilder> locations = new HashSet<>();
-	LocationBuilder startLocation;
+	//Collection<AbstractLocationBuilder> locations = new HashSet<>();
+	Map<String, LocatedEntityBuilder> locations = new HashMap<>();
+	AbstractLocationBuilder startLocation;
 	Collection<LocationsLeastDistanceConstraint> locationsLeastDistanceConstraints = new HashSet<>();
 	Collection<KeyBuilder> keys = new HashSet<>();
 
@@ -92,9 +95,6 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		throw new DungeonGenerationException("No solvable dungeon found for specification");
 	}
 
-
-
-
 	@Override
 	public DungeonBuilder gridSize(int width, int height) {
 		gridWidth = width;
@@ -105,7 +105,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	@Override
 	public DungeonBuilder setStartingPoint(LocationBuilder start) {
 		this.startLocation = start;
-		this.locations.add(start);
+		this.locations.put(start.getIdentifier(), start);
 		if (start.hasFixedRoomPosition()) {
 			this.startX = start.getRoomPosition().getX();
 			this.startY = start.getRoomPosition().getY();
@@ -114,19 +114,22 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
-	public DungeonBuilder addLocation(LocationBuilder location) {
-		this.locations.add(location);
+	public DungeonBuilder addLocation(LocatedEntityBuilder location) {
+		this.locations.put(location.getIdentifier(), location);
 		return this;
 	}
 
 	@Override
 	public DungeonBuilder addKey(KeyBuilder key) {
+		// add to keys so the ASPs solver can find a suitable door for the lock
 		this.keys.add(key);
+		// KeyBuilder is also a LocationBuilder for the key location
+		this.locations.put(key.getIdentifier(), key);
 		return this;
 	}
 
 	@Override
-	public DungeonBuilder addLocationsLeastDistanceConstraint(LocationBuilder locationA, LocationBuilder locationB, int distance) {
+	public DungeonBuilder addLocationsLeastDistanceConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance) {
 		this.locationsLeastDistanceConstraints.add(new LocationsLeastDistanceConstraint(locationA, locationB, distance));
 		return this;
 	}
@@ -199,6 +202,4 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		this.addPredefinedWalls(hall.getWalls());
 		return this;
 	}
-
-
 }

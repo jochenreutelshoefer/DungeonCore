@@ -2,21 +2,21 @@ package de.jdungeon.dungeon.builder;
 
 public class LocationsLeastDistanceConstraint {
 
-	private final LocationBuilder locationA;
-	private final LocationBuilder locationB;
+	private final LocatedEntityBuilder locationA;
+	private final LocatedEntityBuilder locationB;
 	private final int minDistance;
 
-	public LocationsLeastDistanceConstraint(LocationBuilder locationA, LocationBuilder locationB, int minDistance) {
+	public LocationsLeastDistanceConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int minDistance) {
 		this.locationA = locationA;
 		this.locationB = locationB;
 		this.minDistance = minDistance;
 	}
 
-	public LocationBuilder getLocationA() {
+	public LocatedEntityBuilder getLocationA() {
 		return locationA;
 	}
 
-	public LocationBuilder getLocationB() {
+	public LocatedEntityBuilder getLocationB() {
 		return locationB;
 	}
 
