@@ -37,10 +37,11 @@ public class HallBuilder {
 		return this;
 	}
 
-	public DoorSpecification build() {
+	public DefaultDoorSpecification build() {
 		DefaultDoorSpecification hall = DungeonBuilderASPUtils.createHall(upperLeftCornerX, upperLeftCornerY, width, height, this.allInternalDoors);
 		hall.removeDoors(removedDoors);
 		hall.removeWalls(removedWalls);
 		return hall;
 	}
+
 }

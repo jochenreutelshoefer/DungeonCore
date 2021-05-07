@@ -43,7 +43,7 @@ public class LevelZ extends AbstractASPDungeonFactory {
 				.addDoorSpecification(centerHall)
 				.addLocation(exit)
 				.addLocation(scoutTower)
-				.addLocationsLeastDistanceConstraint(startL, exit, 40)
+				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 40)
 				//.addLocationsLeastDistanceConstraint(startL, scoutTower, 11)
 				//.addLocationsLeastDistanceConstraint(exit, scoutTower, 11)
 				.build();

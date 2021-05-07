@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -23,14 +22,11 @@ public class DungeonBuilderASPWriter {
 	static final String EXIT_Y = "EXIT_Y";
 	static final String DOORS_AMOUNT_MIN = "DOORS_AMOUNT_MIN";
 	static final String DOORS_AMOUNT_MAX = "DOORS_AMOUNT_MAX";
-	static final String SHORTEST_EXIT_PATH = "SHORTEST_EXIT_PATH";
-	static final String SHORTER_EXIT_PATHS_CONSTRAINTS = "SHORTER_EXIT_PATHS_CONSTRAINTS";
 	static final String PREDEFINED_DOORS = "PREDEFINED_DOORS";
 	static final String PREDEFINED_WALLS = "PREDEFINED_WALLS";
 	static final String DOOR_PREDICATE = "printDoor";
 	static final String LOCKED_PREDICATE = "locked";
 	static final String LOCATION_PREDICATE = "locationPosition";
-	static final String ROOM_PREDICATE = "room";
 
 	private DungeonBuilderASP builder;
 
@@ -48,7 +44,11 @@ public class DungeonBuilderASPWriter {
 		valueReplacements.put(EXIT_Y, "" + builder.exitY);
 		int doorsMin = 1;
 		int doorsMax = 100;
-		if (builder.totalAmountOfDoorsMin > 0) {
+		if (builder.totalAmountOfDoorsMin > 0 && builder.totalAmountOfDoorsMax > 0) {
+			doorsMin = builder.totalAmountOfDoorsMin;
+			doorsMax = builder.totalAmountOfDoorsMax;
+		}
+		else if (builder.totalAmountOfDoorsMin > 0) {
 			doorsMin = builder.totalAmountOfDoorsMin;
 			doorsMax = 2 * doorsMin;
 		}
@@ -125,7 +125,7 @@ public class DungeonBuilderASPWriter {
 		// limit dead ends
 		aspSourceBuffy.append("% limit amount of rooms with one door\n");
 		aspSourceBuffy.append("oneDoors(room(X1,Y1)) :- 1{room(X2,Y2) : door(room(X1,Y1), room(X2,Y2))} 1 , room(X1,Y1) .\n");
-		aspSourceBuffy.append("S < 6 :- S = #sum{1,R : oneDoors(R) } .\n\n");
+		aspSourceBuffy.append("S <= " + builder.maxDeadEnds + " :- S = #sum{1,R : oneDoors(R) } .\n\n");
 
 		// insert paths optimization (to have more of a network)
 		aspSourceBuffy.append("%% minimize adjacent rooms with 2 doors each\n");
@@ -137,8 +137,12 @@ public class DungeonBuilderASPWriter {
 		appendLocationsASPCode(aspSourceBuffy);
 		aspSourceBuffy.append("\n\n");
 
-		// insert locations distance constraints code
-		appendLocationMinDistanceConstraints(aspSourceBuffy);
+		// insert locations shortest path exactly constraints code
+		appendLocationShortestPathExactlyConstraints(aspSourceBuffy);
+		aspSourceBuffy.append("\n\n");
+
+		// insert locations shortest path at least constraints code
+		appendLocationShortestPathAtLeastConstraints(aspSourceBuffy);
 		aspSourceBuffy.append("\n\n");
 
 		// insert keys
@@ -185,7 +189,7 @@ public class DungeonBuilderASPWriter {
 				// without-key-reachable locations
 				key.getLocationsReachableWithoutKey().forEach(locationReachable -> {
 
-					if (locationReachable instanceof KeyBuilder && !locationReachable.hasFixedRoomPosition()) {
+					if (locationReachable instanceof KeyBuilder /*&& !locationReachable.hasFixedRoomPosition()*/) {
 						buffy.append("% It may not happen that the key location is _not_ reachable-without-key from start\n");
 
 						//1{ locationPosition("Key", KEYPOS) : KEYPOS != revealmapshrinePos, oneDoors(KEYPOS), reachableWithoutKey(revealmapshrinePos, KEYPOS, "Schraubenschluessel")} 1 .
@@ -227,41 +231,53 @@ public class DungeonBuilderASPWriter {
 		});
 	}
 
-	private void appendLocationMinDistanceConstraints(StringBuilder buffy) {
-		if (builder.locationsLeastDistanceConstraints.size() > 0) {
+	private void appendLocationShortestPathExactlyConstraints(StringBuilder buffy) {
+		if (builder.locationsShortestDistanceExactlyConstraints.size() > 0) {
 			buffy.append("\n%%Locations Min Distance Constraints\n");
 		}
-		builder.locationsLeastDistanceConstraints.forEach(lldc -> {
+		builder.locationsShortestDistanceExactlyConstraints.forEach(lldc -> {
 			String locationNameA = lldc.getLocationA().getIdentifier();
 			String locationNameAConstant = locationNameA.toLowerCase() + "Pos";
 			String locationNameB = lldc.getLocationB().getIdentifier();
 			String locationNameBConstant = locationNameB.toLowerCase() + "Pos";
 			int minDistance = lldc.getMinDistance();
-			// we start a distance breadth first spreading dist a location A
-			buffy.append("dist(" + locationNameAConstant + "," + locationNameAConstant + ", 0) .\n");
+			buffy.append("\n% We need to have a path of exactly that length\n");
 			buffy.append(":-not dist(" + locationNameAConstant + ", " + locationNameBConstant + ", " + minDistance + ").\n");
-			for (int i = 1; i < minDistance; i++) {
+			appendLocationShortestPathAtLeastConstraints(buffy, lldc, minDistance);
+		});
+	}
+
+	private void appendLocationShortestPathAtLeastConstraints(StringBuilder buffy) {
+		if (builder.locationsShortestDistanceAtLeastConstraints.size() > 0) {
+			buffy.append("\n%%Locations shortest distance at least Constraints\n");
+		}
+		builder.locationsShortestDistanceAtLeastConstraints.forEach(lldc -> {
+			appendLocationShortestPathAtLeastConstraints(buffy, lldc, lldc.getMinDistance());
+		});
+	}
+
+	private void appendLocationShortestPathAtLeastConstraints(StringBuilder buffy, LocationsLeastDistanceConstraint lldc, int minDistance) {
+		String locationNameA = lldc.getLocationA().getIdentifier();
+		String locationNameAConstant = locationNameA.toLowerCase() + "Pos";
+		String locationNameB = lldc.getLocationB().getIdentifier();
+		String locationNameBConstant = locationNameB.toLowerCase() + "Pos";
+
+		boolean targetHasFixedDistance = lldc.getLocationB().hasFixedRoomPosition();
+
+		buffy.append("\n% Forbidding shortest paths than min distance\n");
+		// we start a distance breadth first spreading dist a location A
+
+		buffy.append("dist(" + locationNameAConstant + "," + locationNameAConstant + ", 0) .\n");
+
+		for (int i = 1; i < minDistance; i++) {
+			if (targetHasFixedDistance) {
 				buffy.append(":- dist(" + locationNameAConstant + ", " + locationNameBConstant + ", " + i + ") .\n");
 			}
-		});
-
-		/*
-		%:-not dist(START, EXITPOS, 10) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 1) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 2) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 3) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 4) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 5) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 6) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 7) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 8) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-%:- dist(START, EXITPOS, 9) , locationPosition("EXIT" ,  EXITPOS) , locationPosition(start ,  START) .
-
-
-
-%% Search start distance
-dist(START, START, 0) :- locationPosition(start ,  START)  .
-		 */
+			else {
+				// target position is not predefined
+				buffy.append(":- dist(" + locationNameAConstant + ", TARGETPOS, " + i + ") , locationPosition(\"" + locationNameB + "\", TARGETPOS) .\n");
+			}
+		}
 	}
 
 	private static String generatePredefinedDoorsASPCode(Collection<DoorMarker> predefinedDoors, boolean isWall) {
@@ -269,15 +285,6 @@ dist(START, START, 0) :- locationPosition(start ,  START)  .
 		for (DoorMarker predefinedDoor : predefinedDoors) {
 			if (isWall) buffy.append("not ");
 			buffy.append("door(room(" + predefinedDoor.x1 + "," + predefinedDoor.y1 + "), room(" + predefinedDoor.x2 + "," + predefinedDoor.y2 + ")) .\n");
-		}
-		return buffy.toString();
-	}
-
-	private String generateShortPathRestrictionsASPCode(int minExitPathLength) {
-		StringBuilder buffy = new StringBuilder();
-		buffy.append(":-not dist(START, EXIT, " + minExitPathLength + "), locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START).\n");
-		for (int i = 1; i < minExitPathLength; i++) {
-			buffy.append(":- dist(START, EXIT, " + i + ") , locationPosition(\"EXIT\" ,  EXIT) , locationPosition(start ,  START) .\n");
 		}
 		return buffy.toString();
 	}

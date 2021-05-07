@@ -38,10 +38,10 @@ public class DoorMarker {
 			return new DoorMarker(x, y, x - 1, y);
 		}
 		if (dir == RouteInstruction.Direction.South) {
-			return new DoorMarker(x, y, x, y - 1);
+			return new DoorMarker(x, y, x, y + 1);
 		}
 		if (dir == RouteInstruction.Direction.North) {
-			return new DoorMarker(x, y, x, y + 1);
+			return new DoorMarker(x, y, x, y - 1);
 		}
 		throw new IllegalArgumentException("not a vaid direction");
 	}

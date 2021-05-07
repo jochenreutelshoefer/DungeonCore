@@ -30,6 +30,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 
 	// path length from start to exit
 	protected int minExitPathLength = 13;
+	protected int maxDeadEnds = 5;
 
 	// number of doors
 	protected int totalAmountOfDoorsMin = -1;
@@ -41,7 +42,8 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	//Collection<AbstractLocationBuilder> locations = new HashSet<>();
 	Map<String, LocatedEntityBuilder> locations = new HashMap<>();
 	AbstractLocationBuilder startLocation;
-	Collection<LocationsLeastDistanceConstraint> locationsLeastDistanceConstraints = new HashSet<>();
+	Collection<LocationsLeastDistanceConstraint> locationsShortestDistanceExactlyConstraints = new HashSet<>();
+	Collection<LocationsLeastDistanceConstraint> locationsShortestDistanceAtLeastConstraints = new HashSet<>();
 	Collection<KeyBuilder> keys = new HashSet<>();
 
 	@Override
@@ -114,6 +116,12 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
+	public DungeonBuilder setMaxDeadEnds(int maxDeadEnds) {
+		this.maxDeadEnds = maxDeadEnds;
+		return this;
+	}
+
+	@Override
 	public DungeonBuilder addLocation(LocatedEntityBuilder location) {
 		this.locations.put(location.getIdentifier(), location);
 		return this;
@@ -129,8 +137,14 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
-	public DungeonBuilder addLocationsLeastDistanceConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance) {
-		this.locationsLeastDistanceConstraints.add(new LocationsLeastDistanceConstraint(locationA, locationB, distance));
+	public DungeonBuilder addLocationsShortestDistanceExactlyConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance) {
+		this.locationsShortestDistanceExactlyConstraints.add(new LocationsLeastDistanceConstraint(locationA, locationB, distance));
+		return this;
+	}
+
+	@Override
+	public DungeonBuilder addLocationsShortestDistanceAtLeastConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance) {
+		this.locationsShortestDistanceAtLeastConstraints.add(new LocationsLeastDistanceConstraint(locationA, locationB, distance));
 		return this;
 	}
 

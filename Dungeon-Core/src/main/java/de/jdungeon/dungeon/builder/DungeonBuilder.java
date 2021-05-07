@@ -31,6 +31,15 @@ public interface DungeonBuilder<T extends DungeonResult> {
     DungeonBuilder setStartingPoint(LocationBuilder startBuilder);
 
     /**
+     * Sets the maximum number of dead ends allow.
+     * A dead end is a room with only a door in one direction.
+     *
+     * @param maxDeadEnds
+     * @return builder
+     */
+    DungeonBuilder setMaxDeadEnds(int maxDeadEnds);
+
+    /**
      * Adds a location to the dungeon. I can have a fixed position.
      * If no fixed position is specified, it will be determined by the dungeon generator.
      *
@@ -43,13 +52,27 @@ public interface DungeonBuilder<T extends DungeonResult> {
     DungeonBuilder addKey(KeyBuilder key);
 
     /**
-     * Adds a constraint leading
+     * Adds a constraint leading to a dungeon, where the shortest path between the two locations is exactly 'distance'.
+     * (Ignores locks).
+     *
      * @param locationA
      * @param locationB
      * @param distance
      * @return
      */
-    DungeonBuilder addLocationsLeastDistanceConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance );
+    DungeonBuilder addLocationsShortestDistanceExactlyConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance );
+
+    /**
+     * Adds a constraint leading to a dungeon, where the shortest path between the two locations is exactly 'distance'.
+     * (Ignores locks).
+     *
+     * @param locationA
+     * @param locationB
+     * @param distance
+     * @return
+     */
+    DungeonBuilder addLocationsShortestDistanceAtLeastConstraint(LocatedEntityBuilder locationA, LocatedEntityBuilder locationB, int distance );
+
 
     /**
      * Sets the length of the shortest path from start to exit.

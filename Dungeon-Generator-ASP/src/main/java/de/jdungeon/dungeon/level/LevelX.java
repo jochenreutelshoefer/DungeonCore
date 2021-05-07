@@ -18,14 +18,15 @@ public class LevelX extends AbstractASPDungeonFactory {
 	public Dungeon createDungeon() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 5);
 
-		LocationBuilder exit = new LocationBuilder(LevelExit.class,5,0);
+		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
 		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(10, 6)
 				.setStartingPoint(startL)
 				.setMinAmountOfDoors(60)
+				.setMaxDeadEnds(3)
 				.addLocation(exit)
-				.addLocationsLeastDistanceConstraint(startL, exit, 20)
+				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 20)
 				.build();
 
 		return dungeonBuild.getDungeon();

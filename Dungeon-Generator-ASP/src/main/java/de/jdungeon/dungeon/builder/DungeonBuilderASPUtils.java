@@ -7,12 +7,12 @@ import de.jdungeon.dungeon.util.RouteInstruction;
 
 public class DungeonBuilderASPUtils {
 
-	public static DefaultDoorSpecification createHall(int upperLeftCornerX, int lowerLeftCornerY, int width, int height, boolean setAllInternalDoors) {
+	public static DefaultDoorSpecification createHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height, boolean setAllInternalDoors) {
 		Set<DoorMarker> doors = new HashSet<>();
 		Set<DoorMarker> walls = new HashSet<>();
 
 		for (int x = upperLeftCornerX; x < upperLeftCornerX + width; x++) {
-			for (int y = lowerLeftCornerY; y < lowerLeftCornerY + height; y++) {
+			for (int y = upperLeftCornerY; y < upperLeftCornerY + height; y++) {
 				if (setAllInternalDoors) {
 					doors.addAll(DoorMarker.createAllDoorsOfRoom(x, y));
 				}
@@ -28,17 +28,17 @@ public class DungeonBuilderASPUtils {
 					walls.add(wallRight);
 					doors.remove(wallRight);
 				}
-				if (y == lowerLeftCornerY) {
+				if (y == upperLeftCornerY) {
+					// bottom top
+					DoorMarker wallTop = DoorMarker.create(x, y, RouteInstruction.Direction.North);
+					walls.add(wallTop);
+					doors.remove(wallTop);
+				}
+				if (y == upperLeftCornerY + height-1) {
 					// bottom border
 					DoorMarker wallBottom = DoorMarker.create(x, y, RouteInstruction.Direction.South);
 					walls.add(wallBottom);
 					doors.remove(wallBottom);
-				}
-				if (y == lowerLeftCornerY + height-1) {
-					// top border
-					DoorMarker wallTop = DoorMarker.create(x, y, RouteInstruction.Direction.North);
-					walls.add(wallTop);
-					doors.remove(wallTop);
 				}
 			}
 		}

@@ -28,6 +28,14 @@ public class DefaultDoorSpecification implements DoorSpecification {
 		this.walls.remove(door);
 	}
 
+	public void addDoor(DoorMarker door) {
+		this.doors.add(door);
+	}
+
+	public void addWall(DoorMarker door) {
+		this.walls.add(door);
+	}
+
 	public void removeDoors(Collection<DoorMarker> doors) {
 		this.doors.removeAll(doors);
 	}
