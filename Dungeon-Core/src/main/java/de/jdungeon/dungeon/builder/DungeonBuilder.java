@@ -48,6 +48,15 @@ public interface DungeonBuilder<T extends DungeonResult> {
      */
     DungeonBuilder addLocation(LocatedEntityBuilder location);
 
+    /**
+     *
+     * @set DungeonBuilder#addLocation()
+     *
+     * @param location
+     * @return
+     */
+    DungeonBuilder addLocations(Collection<LocatedEntityBuilder> location);
+
 
     DungeonBuilder addKey(KeyBuilder key);
 

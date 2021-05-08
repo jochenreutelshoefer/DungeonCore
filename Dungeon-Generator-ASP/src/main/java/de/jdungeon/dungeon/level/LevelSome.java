@@ -1,10 +1,15 @@
 package de.jdungeon.dungeon.level;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import com.sun.tools.javac.util.List;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.AbstractASPDungeonFactory;
+import de.jdungeon.dungeon.builder.ChestItemBuilder;
 import de.jdungeon.dungeon.builder.DefaultDoorSpecification;
 import de.jdungeon.dungeon.builder.DoorMarker;
 import de.jdungeon.dungeon.builder.DungeonBuilderASP;
@@ -14,9 +19,18 @@ import de.jdungeon.dungeon.builder.HallBuilder;
 import de.jdungeon.dungeon.builder.KeyBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.item.DustItem;
+import de.jdungeon.item.HealPotion;
+import de.jdungeon.item.Item;
+import de.jdungeon.item.Items;
+import de.jdungeon.item.OxygenPotion;
+import de.jdungeon.item.map.AncientMapFragmentUtils;
+import de.jdungeon.item.paper.ScrollMagic;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.RevealMapShrine;
 import de.jdungeon.location.ScoutShrine;
+import de.jdungeon.spell.conjuration.FirConjuration;
+import de.jdungeon.spell.conjuration.LionessConjuration;
 
 public class LevelSome extends AbstractASPDungeonFactory {
 
@@ -30,6 +44,18 @@ public class LevelSome extends AbstractASPDungeonFactory {
 		int hallLowerLeftCornerY = start.getY() - 4;
 		int hallWidth = 3;
 		int hallHeight = 3;
+
+		java.util.List<Item> gimmickPool = new ArrayList<>();
+		gimmickPool.add(new OxygenPotion());
+		gimmickPool.add(new HealPotion(35));
+		gimmickPool.add(new ScrollMagic(new LionessConjuration(1)));
+		gimmickPool.add(new ScrollMagic(new FirConjuration(1)));
+		gimmickPool.add(new DustItem(7));
+
+		Collection<Item> selectedGimmicks = Items.selectRandomN(gimmickPool, 3);
+		Collection<ChestItemBuilder> chestItemBuilders = selectedGimmicks.stream()
+				.map(item -> new ChestItemBuilder(item))
+				.collect(Collectors.toList());
 
 		DoorMarker doorHallNorth = DoorMarker.create(hallUpperLeftCornerX + 1, hallLowerLeftCornerY, RouteInstruction.Direction.North);
 		DoorMarker doorHallSouth = DoorMarker.create(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight - 1, RouteInstruction.Direction.South);
@@ -55,7 +81,7 @@ public class LevelSome extends AbstractASPDungeonFactory {
 		centerHall.removeWall(doorToKey);
 		centerHall.addDoor(doorToKey);
 
-		List<JDPoint> possibleKeyPosition = List.of(
+		Collection<JDPoint> possibleKeyPosition = List.of(
 				new JDPoint(hallUpperLeftCornerX-2, hallLowerLeftCornerY),
 				new JDPoint(hallUpperLeftCornerX-2, hallLowerLeftCornerY-1),
 				new JDPoint(hallUpperLeftCornerX-2, hallLowerLeftCornerY+1),
@@ -65,7 +91,7 @@ public class LevelSome extends AbstractASPDungeonFactory {
 				new JDPoint(hallUpperLeftCornerX, hallLowerLeftCornerY-1)
 		);
 
-		JDPoint keyPosition = possibleKeyPosition.get((int) (Math.random() * possibleKeyPosition.size()));
+		//JDPoint keyPosition = possibleKeyPosition.get((int) (Math.random() * possibleKeyPosition.size()));
 
 		LocationBuilder exit = new LocationBuilder(LevelExit.class, 4, 0);
 		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
@@ -84,6 +110,7 @@ public class LevelSome extends AbstractASPDungeonFactory {
 				.setMaxAmountOfDoors(40)
 				.setMinAmountOfDoors(38)
 				.setMaxDeadEnds(3)
+				.addLocations(chestItemBuilders)
 				.addKey(keyBuilder)
 				.addLocationsShortestDistanceAtLeastConstraint(startL, keyBuilder, 6)
 				.build();

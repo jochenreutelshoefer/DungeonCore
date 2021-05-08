@@ -128,6 +128,14 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
+	public DungeonBuilder addLocations(Collection<LocatedEntityBuilder> locations) {
+		locations.forEach(location -> {
+			this.locations.put(location.getIdentifier(), location);
+		});
+		return this;
+	}
+
+	@Override
 	public DungeonBuilder addKey(KeyBuilder key) {
 		// add to keys so the ASPs solver can find a suitable door for the lock
 		this.keys.add(key);
