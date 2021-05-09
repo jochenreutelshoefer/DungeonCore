@@ -105,7 +105,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
-	public DungeonBuilder setStartingPoint(LocationBuilder start) {
+	public DungeonBuilder setStartingPoint(StartLocationBuilder start) {
 		this.startLocation = start;
 		this.locations.put(start.getIdentifier(), start);
 		if (start.hasFixedRoomPosition()) {

@@ -11,6 +11,22 @@ ${DOORS_AMOUNT_MIN}{ door(room(X1,Y1), room(X2,Y2)) : room(X1,Y1), room(X2,Y2), 
 % every room is reachable from itself
 reachable(room(X,Y),room(X,Y)) :- room(X, Y) .
 
+% each location need to be positioned
+1{locationPosition(LOC, room(X, Y)) : room(X, Y)}1 :- location(LOC) .
+
+% their can only be one location in a room
+:- location(LOCA),  location(LOCB), LOCB != LOCA, locationPosition(LOCA, LOCPOSA), locationPosition(LOCB, LOCPOSB), LOCPOSA = LOCPOSB .
+
+% distribute locations
+adjacentLocation(location(LOCA), location(LOCB)) :- location(LOCA), location(LOCB) , locationPosition(LOCA, room(XA,YA)), locationPosition(LOCB, room(XB,YB)), door(room(XA,YA), room(XB,YB)).
+#minimize{adjacentLocation(location(LOCA), location(LOCB)): location(LOCA), location(LOCB)}.
+
+% maximize locations at dead ends
+#maximize{locationPosition(LOC, POS): oneDoors(POS), location(LOC)} .
+
+% at each dead end we need some location
+1{locationPosition(LOC ,  ROOM) : location(LOC)} 1 :- oneDoors(ROOM) .
+
 %% Predefined doors if desired
 ${PREDEFINED_DOORS}
 

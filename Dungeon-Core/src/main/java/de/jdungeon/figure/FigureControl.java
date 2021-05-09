@@ -108,7 +108,7 @@ public class FigureControl implements ControlUnit {
 	@Override
 	public Action getAction() {
 		Action a = null;
-		// TODO: test that de.jdungeon.fight actions really are de.jdungeon.fight actions etc, to find errors in AIs quicker
+		// TODO: test that fight actions really are de.jdungeon.fight actions etc, to find errors in AIs quicker
 		Boolean fightRunning = f.getRoomInfo().fightRunning();
 		if (fightRunning != null && fightRunning) {
 			a = brain.chooseFightAction();

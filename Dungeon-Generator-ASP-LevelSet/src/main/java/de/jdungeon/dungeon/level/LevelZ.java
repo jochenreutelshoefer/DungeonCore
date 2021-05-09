@@ -9,24 +9,23 @@ import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.HallBuilder;
-import de.jdungeon.dungeon.builder.KeyBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.dungeon.builder.StartLocationBuilder;
 import de.jdungeon.location.LevelExit;
-import de.jdungeon.location.RevealMapShrine;
 import de.jdungeon.location.ScoutShrine;
 
-public class LevelY extends AbstractASPDungeonFactory {
+public class LevelZ extends AbstractASPDungeonFactory {
 
 	private DungeonResult dungeonBuild;
 
 	@Override
 	public Dungeon createDungeon() throws DungeonGenerationException {
-		JDPoint start = new JDPoint(4, 7);
+		JDPoint start = new JDPoint(4, 15);
 
 		int hallUpperLeftCornerX = start.getX() - 1;
 		int hallLowerLeftCornerY = start.getY() - 4;
-		int hallWidth = 3;
-		int hallHeight = 3;
+		int hallWidth = 5;
+		int hallHeight = 5;
 		DoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallLowerLeftCornerY, hallWidth, hallHeight)
 				.createAllInternalDoors()
 				// we need entrance and exit for our hall
@@ -34,22 +33,18 @@ public class LevelY extends AbstractASPDungeonFactory {
 				.removeWall(new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight, hallUpperLeftCornerX + 1, hallLowerLeftCornerY + hallHeight - 1))
 				.build();
 
-		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
-		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
+		JDPoint exitP = new JDPoint(5, 0);
+		LocationBuilder exit = new LocationBuilder(LevelExit.class, exitP);
+		StartLocationBuilder startL = new StartLocationBuilder(start, exitP);
 		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, 7, 3);
 		dungeonBuild = new DungeonBuilderASP()
-				.gridSize(10, 8)
+				.gridSize(16, 16)
 				.setStartingPoint(startL)
-				.setMinAmountOfDoors(100)
+				.setMinAmountOfDoors(501)
 				.addDoorSpecification(centerHall)
 				.addLocation(exit)
 				.addLocation(scoutTower)
-				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 20)
-				.addLocationsShortestDistanceExactlyConstraint(startL, scoutTower, 11)
-				.addLocationsShortestDistanceExactlyConstraint(exit, scoutTower, 11)
-				.addKey(new KeyBuilder("Schraubenschluessel")
-						.addNonReachableLocation(exit)
-						.addReachableLocation(scoutTower))
+				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 40)
 				.build();
 
 		return dungeonBuild.getDungeon();

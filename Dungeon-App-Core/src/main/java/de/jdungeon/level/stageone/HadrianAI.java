@@ -16,6 +16,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.HealthLevel;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.percept.Percept;
+import de.jdungeon.log.Log;
 
 import static de.jdungeon.level.stageone.HadrianAI.State.chase;
 import static de.jdungeon.level.stageone.HadrianAI.State.flee;
@@ -42,18 +43,18 @@ public class HadrianAI extends AbstractAI {
 
 
 
-	public HadrianAI() {
+	public HadrianAI(int upperLeftCornerX, int upperLeftCornerY) {
 		super(new AttitudeMonsterDefault());
 		Map<JDPoint, Double> patrolObjectives = new HashMap<>();
-		patrolObjectives.put(new JDPoint(4,5), 1.0);
-		patrolObjectives.put(new JDPoint(3,5), 1.0);
-		patrolObjectives.put(new JDPoint(5,5), 1.0);
-		patrolObjectives.put(new JDPoint(4,6), 0.5);
-		patrolObjectives.put(new JDPoint(3,6), 0.5);
-		patrolObjectives.put(new JDPoint(5,6), 0.5);
-		patrolObjectives.put(new JDPoint(4,4), 2.0);
-		patrolObjectives.put(new JDPoint(3,4), 0.5);
-		patrolObjectives.put(new JDPoint(5,4), 0.5);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX+1,upperLeftCornerY+1), 1.0);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX,upperLeftCornerY+1), 1.0);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX+2,upperLeftCornerY+1), 1.0);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX+1,upperLeftCornerY+2), 0.5);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX,upperLeftCornerY+2), 0.5);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX+2,upperLeftCornerY+2), 0.5);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX+1,upperLeftCornerY), 2.0); // center north (door)
+		patrolObjectives.put(new JDPoint(upperLeftCornerX,upperLeftCornerY), 0.5);
+		patrolObjectives.put(new JDPoint(upperLeftCornerX+2,upperLeftCornerY), 0.5);
 		patrolAI = new PatrolBehaviour(patrolObjectives);
 
 		List<JDPoint> fleePoints = new ArrayList<>();
@@ -149,7 +150,7 @@ public class HadrianAI extends AbstractAI {
 		if(currentState == patrol) {
 			return patrolAI.chooseMovementAction();
 		}
-
+		Log.severe(this.getClass().getSimpleName()+ ": Returning action null");
 		return null;
 	}
 }

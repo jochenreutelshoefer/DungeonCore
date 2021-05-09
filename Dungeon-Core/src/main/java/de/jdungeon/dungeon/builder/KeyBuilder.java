@@ -11,13 +11,24 @@ public class KeyBuilder extends AbstractLocationBuilder {
 
 	private final String keyString;
 
-	private final Collection<AbstractLocationBuilder> locationsReachableWithoutKey = new HashSet<>();
-	private final Collection<AbstractLocationBuilder> locationsNotReachableWithoutKey = new HashSet<>();
+	private DoorMarker lockDoor;
+
+	private final Collection<LocatedEntityBuilder> locationsReachableWithoutKey = new HashSet<>();
+	private final Collection<LocatedEntityBuilder> locationsNotReachableWithoutKey = new HashSet<>();
 
 	public KeyBuilder(String keyString, int x, int y) {
 		super(new JDPoint(x, y));
 		this.keyString = keyString;
 		locationsReachableWithoutKey.add(this);
+	}
+
+	public DoorMarker getLockDoor() {
+		return lockDoor;
+	}
+
+	public KeyBuilder setLockDoor(DoorMarker lockDoor) {
+		this.lockDoor = lockDoor;
+		return this;
 	}
 
 	public KeyBuilder(String keyString) {
@@ -32,8 +43,13 @@ public class KeyBuilder extends AbstractLocationBuilder {
 	 * @param location position to be/stay reachable
 	 * @return this
 	 */
-	public KeyBuilder addReachableLocation(LocationBuilder location) {
+	public KeyBuilder addReachableLocation(LocatedEntityBuilder location) {
 		this.locationsReachableWithoutKey.add(location);
+		return this;
+	}
+
+	public KeyBuilder addReachableLocations(Collection<? extends LocatedEntityBuilder> locations) {
+		this.locationsReachableWithoutKey.addAll(locations);
 		return this;
 	}
 
@@ -52,11 +68,11 @@ public class KeyBuilder extends AbstractLocationBuilder {
 		return keyString;
 	}
 
-	public Collection<AbstractLocationBuilder> getLocationsReachableWithoutKey() {
+	public Collection<LocatedEntityBuilder> getLocationsReachableWithoutKey() {
 		return locationsReachableWithoutKey;
 	}
 
-	public Collection<AbstractLocationBuilder> getLocationsNotReachableWithoutKey() {
+	public Collection<LocatedEntityBuilder> getLocationsNotReachableWithoutKey() {
 		return locationsNotReachableWithoutKey;
 	}
 

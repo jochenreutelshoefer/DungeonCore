@@ -432,7 +432,7 @@ public class SimpleDungeonFiller implements DungeonFiller {
 		return getDoorList(room, false);
 	}
 
-	public void setAllFound(DungeonVisibilityMap roomVisibility) {
+	public static void setAllFound(DungeonVisibilityMap roomVisibility) {
 		RoomObservationStatus[][] rooms = roomVisibility.getRooms();
 		for (RoomObservationStatus[] room : rooms) {
 			for (RoomObservationStatus roomObservationStatus : room) {

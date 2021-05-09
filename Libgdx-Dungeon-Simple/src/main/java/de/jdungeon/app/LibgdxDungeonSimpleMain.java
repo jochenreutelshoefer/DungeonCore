@@ -97,7 +97,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
 		Map<String, String> configValues = new HashMap<>();
 		configValues.put(GameLoopMode.GAME_LOOP_MODE_KEY, worldUpdaterInitializer.getMode().name());
-		configValues.put(GraphicObjectRenderer.DEBUG_MODE, "ture");
+		configValues.put(GraphicObjectRenderer.DEBUG_MODE, "true");
 		configValues.put(CameraHelper.INIT_ZOOM_VALUE, "1.3f");
 		adapter = new GameAdapter(this, filenameLister, new LibgdxConfiguration(configValues));
 
@@ -127,7 +127,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 		DungeonFactory dungeonFactory = dungeonSession.getDungeonManager()
 				.getDungeonOptions(dungeonSession.getCurrentStage())
 				.get(0);
-		DungeonFactory level = new LevelY();
+		DungeonFactory level = new LevelSome();
 		//DungeonFactory level = new LevelSome();
 
 		if (level != null) {
@@ -142,7 +142,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 				Log.severe("Could not create level: " + e.getMessage());
 				e.printStackTrace();
 			}
-			dungeonSession.getCurrentHero().setVisAll();
+			//dungeonSession.getCurrentHero().setVisAll();
 
 			// start world -> do NOT start the game loop in a distinct thread!
 			((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
@@ -250,8 +250,8 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 			this.getScreen().pause();
 
 			// change screen to de.jdungeon.skill selection
-			//this.dungeonSession.notifyExit(((ExitUsedEvent)de.jdungeon.event).getExit(), ((ExitUsedEvent)de.jdungeon.event).getFigure());
-			// de.jdungeon.skillselection.SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
+			//this.dungeonSession.notifyExit(((ExitUsedEvent)event).getExit(), ((ExitUsedEvent)event).getFigure());
+			// SkillSelectionScreen screen = new de.jdungeon.skillselection.SkillSelectionScreen(this);
 			//this.setCurrentScreen(screen);
 
 			// resume/start rendering of screen

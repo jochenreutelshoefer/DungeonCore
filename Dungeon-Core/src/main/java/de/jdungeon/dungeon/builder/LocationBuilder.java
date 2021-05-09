@@ -23,6 +23,11 @@ public class LocationBuilder extends AbstractLocationBuilder {
 		this.clazz = clazz;
 	}
 
+	public LocationBuilder(Class<? extends Locatable> clazz, JDPoint pos) {
+		super(pos);
+		this.clazz = clazz;
+	}
+
 	@Override
 	public String getIdentifier() {
 		// TODO: improve for case that we have multiple instances of one location clazz in a dungeon
@@ -69,10 +74,6 @@ public class LocationBuilder extends AbstractLocationBuilder {
 	public String getSimpleName() {
 		return clazz.getSimpleName();
 	}
-
-
-
-
 
 	public Class<? extends Locatable> getClazz() {
 		return clazz;

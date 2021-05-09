@@ -7,6 +7,7 @@ import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.dungeon.builder.StartLocationBuilder;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.RevealMapShrine;
 
@@ -17,9 +18,9 @@ public class LevelX extends AbstractASPDungeonFactory {
 	@Override
 	public Dungeon createDungeon() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 5);
-
+		JDPoint exitP = new JDPoint(5, 0);
 		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
-		LocationBuilder startL = new LocationBuilder(RevealMapShrine.class, start.getX(), start.getY());
+		StartLocationBuilder startL = new StartLocationBuilder( start, exitP );
 		dungeonBuild = new DungeonBuilderASP()
 				.gridSize(10, 6)
 				.setStartingPoint(startL)

@@ -153,7 +153,7 @@ public class HadrianLevel extends AbstractDungeonFactory {
 
 
 		Room wolfRoom = dungeon.getRoom(4 ,5 );
-		HadrianAI ai = new HadrianAI();
+		HadrianAI ai = new HadrianAI(3, 5);
 		Spider hadrian = new Spider( 14000, ai, "Hadrian" );
 		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));

@@ -16,6 +16,7 @@ import com.badlogic.gdx.net.HttpRequestHeader;
 import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.utils.Json;
 import de.jdungeon.dungeon.Dungeon;
+import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.event.LevelAbortEvent;
@@ -31,6 +32,7 @@ import de.jdungeon.event.PlayerDiedEvent;
 import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.game.JDEnv;
+import de.jdungeon.level.DungeonManager;
 import de.jdungeon.log.Log;
 import de.jdungeon.score.SessionScore;
 import de.jdungeon.util.MyResourceBundle;
@@ -66,6 +68,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
     private DungeonWorldUpdaterInitializer worldUpdaterInitializer;
     private FileHandleResolver resolver;
     private UUIDGenerator uuidGenerator;
+    private DungeonManager dungeonManager;
 
     private boolean pause;
 
@@ -79,13 +82,15 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
                                  FilenameLister filenameLister,
                                  DungeonWorldUpdaterInitializer worldUpdaterInitializer,
                                  FileHandleResolver resolver,
-                                 UUIDGenerator uuidGenerator
+                                 UUIDGenerator uuidGenerator,
+                                 DungeonManager dungeonManager
     ) {
         this.resourceBundleLoader = resourceBundleLoader;
         this.filenameLister = filenameLister;
         this.worldUpdaterInitializer = worldUpdaterInitializer;
         this.resolver = resolver;
         this.uuidGenerator = uuidGenerator;
+        this.dungeonManager = dungeonManager;
     }
 
     @Override
@@ -198,7 +203,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
     public void notify(Event event) {
         AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
         if (event instanceof StartNewGameEvent) {
-            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator);
+            dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator, dungeonManager);
             ((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 
 			/*
@@ -251,7 +256,13 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
             // create new controller
             PlayerController controller = new PlayerController(this.dungeonSession, this.adapter);
 
-            HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
+            try {
+                HeroInfo heroInfo = this.dungeonSession.initDungeon(dungeonFactory, controller);
+            }
+            catch (DungeonGenerationException e) {
+                Log.severe("Dungeon generation error!");
+                e.printStackTrace();
+            }
 
             getCurrentScreen().pause();
 

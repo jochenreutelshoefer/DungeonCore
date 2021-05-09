@@ -14,25 +14,28 @@ import de.jdungeon.level.stagetwo.MoonRuneChase;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.03.16.
  */
-public class DefaultDungeonManager implements DungeonManager {
+public class DefaultDungeonManager extends AbstractDungeonManager {
 
-	private final Map<Integer, List<DungeonFactory>> stages = new HashMap<>();
+	static final Map<Integer, List<DungeonFactory>> stages = new HashMap<>();
 
-	public DefaultDungeonManager() {
-
+	{
 		List<DungeonFactory> stageZeroList = new ArrayList<>();
 		stageZeroList.add(new HadrianLevel());
-		stages.put(0 , stageZeroList);
+		stages.put(0, stageZeroList);
 
 		List<DungeonFactory> stageOneList = new ArrayList<>();
 		//stageOneList.add(new LevelTwoB());
 		stageOneList.add(new MoonRuneChase());
 		stageOneList.add(new EscortLevel2A());
-		stages.put(1 , stageOneList);
+		stages.put(1, stageOneList);
 
 		List<DungeonFactory> stageTwoList = new ArrayList<>();
 		stageTwoList.add(new StartLevelOLD());
-		stages.put(2 , stageTwoList);
+		stages.put(2, stageTwoList);
+	}
+
+	public DefaultDungeonManager() {
+		super(stages);
 	}
 
 	@Override
@@ -43,15 +46,5 @@ public class DefaultDungeonManager implements DungeonManager {
 	@Override
 	public int getNumberOfStages() {
 		return stages.size();
-	}
-
-	@Override
-	public int getStage(DungeonFactory dungeon) {
-		for (Integer integer : stages.keySet()) {
-			if(this.stages.get(integer).contains(dungeon)) {
-				return integer;
-			}
-		}
-		return -1;
 	}
 }

@@ -7,8 +7,10 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.jdungeon.DesktopResourceBundleLoader;
 import de.jdungeon.asset.FilelistFilenameLister;
+import de.jdungeon.dungeon.ASPLevelSetDungeonManager;
 import de.jdungeon.game.RenderLoopWorldUpdateInitializer;
 import de.jdungeon.LibgdxDungeonFullMain;
+import de.jdungeon.level.DefaultDungeonManager;
 
 import java.util.UUID;
 
@@ -33,7 +35,8 @@ public class Main {
                         new FilelistFilenameLister(),
                         new RenderLoopWorldUpdateInitializer(),
                         new PrefixFileHandleResolver(new InternalFileHandleResolver(), "assets/"),
-                        () -> UUID.randomUUID().toString()
+                        () -> UUID.randomUUID().toString(),
+                        new ASPLevelSetDungeonManager()
                 )
                 , cfg);
     }

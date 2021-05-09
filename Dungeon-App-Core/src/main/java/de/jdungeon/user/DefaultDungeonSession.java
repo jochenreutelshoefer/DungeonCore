@@ -54,9 +54,9 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
     private final List<DungeonFactory> completedDungeonsList = new ArrayList<>();
 
-    public DefaultDungeonSession(User user, UUIDGenerator uuidGenerator) {
+    public DefaultDungeonSession(User user, UUIDGenerator uuidGenerator, DungeonManager dungeonManager) {
         this.user = user;
-        manager = new DefaultDungeonManager();
+        manager = dungeonManager;
         sessionID = uuidGenerator.generateUUID();
         startTime = new Date();
     }

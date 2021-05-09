@@ -8,9 +8,19 @@ import java.util.List;
  */
 public interface DungeonManager {
 
+	/**
+	 * Returns the list of dungeon level that can be selected of at the given stage
+	 *
+	 * @param stage current player stage
+	 * @return list of dungeon factories
+	 */
 	List<DungeonFactory> getDungeonOptions(int stage);
 
+	/**
+	 * Returns the number of stages contained in this DungeonManager
+	 *
+	 * @return number of stages contained in this DungeonManager
+	 */
 	int getNumberOfStages();
 
-	int getStage(DungeonFactory dungeon);
 }

@@ -28,7 +28,7 @@ public interface DungeonBuilder<T extends DungeonResult> {
      *
      * @return builder
      */
-    DungeonBuilder setStartingPoint(LocationBuilder startBuilder);
+    DungeonBuilder setStartingPoint(StartLocationBuilder startBuilder);
 
     /**
      * Sets the maximum number of dead ends allow.

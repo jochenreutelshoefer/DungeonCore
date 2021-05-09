@@ -15,7 +15,13 @@ public class ChestItemBuilder extends AbstractLocationBuilder {
 
 	@Override
 	public String getIdentifier() {
-		return item.toString();
+		return item.toString()
+				.replaceAll(" ", "_")
+				.replaceAll(",", "_")
+				.replaceAll(":", "_")
+				.replaceAll("\\(", "_")
+				.replaceAll("\\)", "_")
+				;
 	}
 
 	@Override

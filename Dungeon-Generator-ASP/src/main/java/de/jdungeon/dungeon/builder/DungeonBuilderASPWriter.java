@@ -110,13 +110,6 @@ public class DungeonBuilderASPWriter {
 					.getIdentifier()
 					.toLowerCase() + "Pos, room(TO_X, TO_Y))  .\n");
 		}
-		/*
-
-:- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), 	,			locationPosition(start ,  START), 	not reachable(START, room(TO_X, TO_Y))  .
-:- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), 	,		locationPosition(start ,  START), 	not reachable(START, room(TO_X, TO_Y))  .
-:- door(room(FROM_X, FROM_Y), room(TO_X, TO_Y)), 	,		locationPosition(start ,  START), 	not reachable(START, room(TO_X, TO_Y))  .
-
-		 */
 
 		aspSourceBuffy.append("% every room with a door must be reachable from start\n");
 		aspSourceBuffy.append(":- door(FROM, TO), not reachable(STARTLOCA, TO) , locationPosition(\"" + builder.startLocation
@@ -196,6 +189,16 @@ public class DungeonBuilderASPWriter {
 						// the key needs to be put at some place that is reachable with out it and that is not equal to the starting point and that only has one door
 						buffy.append("1{ locationPosition(\"" + key.getIdentifier() + "\", KEYPOS) : KEYPOS != " + startLocationName + ", oneDoors(KEYPOS), reachableWithoutKey(" + startLocationName + ", KEYPOS, \"" + key
 								.getKeyString() + "\")} 1 . \n");
+
+						DoorMarker lockDoor = ((KeyBuilder) locationReachable).getLockDoor();
+						if(lockDoor != null){
+
+							// set lock position if predefined
+							buffy.append("% Set predefined lock positions\n");
+							// lock(door(room(X1, Y1), room(X2, Y2)), K)
+							buffy.append("lock(door(room("+lockDoor.x1+", "+lockDoor.y1+"), room("+lockDoor.x2+", "+lockDoor.y2+")), \""+((KeyBuilder) locationReachable).getKeyString()+"\") .");
+						}
+
 					}
 					else {
 						buffy.append("% It may not happen that the location is _not_ reachable-without-key from start\n");

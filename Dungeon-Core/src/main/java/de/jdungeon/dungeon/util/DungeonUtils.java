@@ -83,7 +83,13 @@ public class DungeonUtils {
 				// we found our goal
 				return createPathTo(node);
 			}
-			fringe.addAll(expandNode(node, closed, crossBlockedDoors));
+			Collection<SearchNode> expandedNode = expandNode(node, closed, crossBlockedDoors);
+			for (SearchNode searchNode : expandedNode) {
+				if(!fringe.contains(searchNode)) {
+					fringe.add(searchNode);
+
+				}
+			}
 		}
 		// we have not found a path, so we return null;
 		return null;
@@ -156,6 +162,13 @@ public class DungeonUtils {
 			this.room = room;
 			this.predecessor = predecessor;
 			this.distanceWalked = distanceWalked;
+		}
+
+		@Override
+		public String toString() {
+			return "SearchNode{" +
+					"room=" + room +
+					'}';
 		}
 	}
 }
