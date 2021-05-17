@@ -1,28 +1,17 @@
 package de.jdungeon.score;
 
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
-import com.badlogic.gdx.utils.JsonWriter;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import de.jdungeon.level.DungeonFactory;
-import de.jdungeon.log.Log;
-import de.jdungeon.user.DungeonSession;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.Writer;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+
+import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.user.DungeonSession;
+
 public class SessionScore implements Json.Serializable {
 
-    private static final String SESSION_ID = "sessionID";
-    private static final String PLAYER = "player_name";
-    private static final String HERO = "hero_name";
-    private static final String FAILS = "fails";
-    private static final String TOTAL_SCORE = "total_score";
-    private static final String START_TIME = "start_time";
+
 
     public String getSessionID() {
         return sessionID;
@@ -97,6 +86,14 @@ public class SessionScore implements Json.Serializable {
                 session.getNumberOfFails(),
                 startTime);
     }
+
+
+    private static final String SESSION_ID = "sessionID";
+    private static final String PLAYER = "player_name";
+    private static final String HERO = "hero_name";
+    private static final String FAILS = "fails";
+    private static final String TOTAL_SCORE = "total_score";
+    private static final String START_TIME = "start_time";
 
     @Override
     public void write(Json json) {

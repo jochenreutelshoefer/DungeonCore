@@ -1,9 +1,9 @@
 package de.jdungeon.gui;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.util.JDDimension;
 
@@ -21,6 +21,9 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 	TextureRegion bgTexture;
 	protected TextureAtlas.AtlasRegion window_badge = Assets.instance.getAtlasRegion("window_badge", Assets.instance.getGuiAtlas());
 
+	private static final String DEFAULT_BACKGROUND_NAME = "window_border5";
+	private String backgroundName = DEFAULT_BACKGROUND_NAME;
+
 	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension) {
 		super();
 		this.position = position;
@@ -28,74 +31,16 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		init();
 	}
 
-	public void init() {
-		createBackgroundTexture();
+	public AbstractLibgdxGUIElement(JDPoint position, JDDimension dimension, String backgroundName) {
+		super();
+		this.position = position;
+		this.dimension = dimension;
+		this.backgroundName = backgroundName;
+		init();
 	}
 
-	private void createBackgroundTexture() {
-
-		bgTexture = Assets.instance.getAtlasRegion("window_border5", Assets.instance.getGuiAtlas());
-		/*
-		// init edge
-		edgeLT = Assets.instance.getAtlasRegion(WINDOW_EDGE_LT, Assets.instance.getGuiAtlas());
-		edgeRT = new TextureRegion(edgeLT);
-		edgeRT.flip(true, false);
-
-		edgeRB = new TextureRegion(edgeLT);
-		edgeRB.flip(true, true);
-
-		edgeLB = new TextureRegion(edgeLT);
-		edgeLB.flip(false, true);
-
-		// init border
-		borderLeft = Assets.instance.getAtlasRegion(WINDOW_BORDER_LEFT, Assets.instance.getGuiAtlas());
-		borderRight = new TextureRegion(borderLeft);
-		borderRight.flip(true, false);
-
-		borderTop = Assets.instance.getAtlasRegion(WINDOW_BORDER_TOP, Assets.instance.getGuiAtlas());
-		borderBottom = new TextureRegion(borderTop);
-		borderBottom.flip(true, false);
-
-
-
-		// init corners
-		cornerLB = Assets.instance.getAtlasRegion(WINDOW_BG_LOWER_LEFT, Assets.instance.getGuiAtlas());
-		cornerRB = new TextureRegion(cornerLB);
-		cornerRB.flip(true, false);
-
-		cornerLT = new TextureRegion(cornerLB);
-		cornerLT.flip(false, true);
-
-		cornerRT = new TextureRegion(cornerLB);
-		cornerRT.flip(true, true);
-
-		// init sides
-		sideL = Assets.instance.getAtlasRegion(WINDOW_BG_LEFT, Assets.instance.getGuiAtlas());
-		sideR = new TextureRegion(sideL);
-		sideR.flip(true, false);
-
-		// init bottom/top
-		bottom = Assets.instance.getAtlasRegion(WINDOW_BG_LOWER, Assets.instance.getGuiAtlas());
-		top = new TextureRegion(bottom);
-		top.flip(false, true);
-
-		// init inside
-		inside = Assets.instance.getAtlasRegion(WINDOW_BG_INNER, Assets.instance.getGuiAtlas());
-		insideFlipped = new TextureRegion(inside);
-		insideFlipped.flip(false, true);
-
-		 */
-
-		/*
-		int width = getDimension().getWidth();
-		int height = getDimension().getHeight();
-		Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
-		bgPixmap.setColor(Color.WHITE);
-		bgPixmap.fill();
-		bgPixmap.setColor(com.badlogic.gdx.de.jdungeon.graphics.Color.WHITE);
-		bgPixmap.drawRectangle(0, 0, width, height);
-		this.bgTexture = new Texture(bgPixmap);
-		*/
+	public void init() {
+		bgTexture = Assets.instance.getAtlasRegion(backgroundName, Assets.instance.getGuiAtlas());
 	}
 
 	@Override
@@ -103,9 +48,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		// do nothing usually
 		return false;
 	}
-
-
-
 
 	@Override
 	public boolean isAnimated() {
@@ -120,7 +62,6 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 				&& p.getY() >= position.getY()
 				&& p.getY() <= position.getY() + dimension.getHeight();
 	}
-
 
 	@Override
 	public JDPoint getPositionOnScreen() {
@@ -137,16 +78,10 @@ public abstract class AbstractLibgdxGUIElement implements LibgdxGUIElement {
 		// TODO Auto-generated method stub
 	}
 
-
 	protected void drawBackground(SpriteBatch batch, int currentX, int currentY) {
-		if(bgTexture != null) {
+		if (bgTexture != null) {
 			batch.draw(bgTexture, currentX, currentY, this.getDimension().getWidth(), this.dimension.getHeight());
 		}
 	}
-
-
-
-
-
 }
 

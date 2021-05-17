@@ -9,6 +9,7 @@ import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DeadEndPath;
 import de.jdungeon.dungeon.generate.DistanceAtLeastConstraint;
 import de.jdungeon.dungeon.quest.ReversibleRoomQuest;
@@ -40,12 +41,22 @@ public class StartLevel extends AbstractDungeonFactory {
 	public static final int DUNGEON_SIZE_X = 5;
 	private static final int FLOOR_INDEX_EXIT = 5;
 	private JDPoint entryPoint;
+	private Dungeon dungeon;
 
 	@Override
-	public Dungeon createDungeon() {
-		return createStartDungeon();
+	public void create() {
+		createStartDungeon();
 	}
 
+	@Override
+	public Dungeon getDungeon() {
+		return dungeon;
+	}
+
+	@Override
+	public LevelDTO getDTO() {
+		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
+	}
 
 	@Override
 	public String icon() {
@@ -67,9 +78,9 @@ public class StartLevel extends AbstractDungeonFactory {
 		return 150;
 	}
 
-	private Dungeon createStartDungeon() {
+	private void createStartDungeon() {
 
-		Dungeon dungeon = null;
+		dungeon = null;
 
 		List<Key> allKeys = Key.generateKeylist();
 		Key exitKey = allKeys.get(0);
@@ -195,7 +206,6 @@ public class StartLevel extends AbstractDungeonFactory {
 			accomplished = true;
 		}
 
-		return dungeon;
 	}
 
 }

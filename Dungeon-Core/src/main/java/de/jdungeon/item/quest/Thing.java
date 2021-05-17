@@ -19,87 +19,89 @@ import de.jdungeon.figure.attribute.Attribute;
  */
 public class Thing extends Item<Thing> implements Usable, LocatableItem {
 
-    private final Object sup;
+	private final Object sup;
 
-    private ItemOwner owner;
+	private ItemOwner owner;
 
-    public Thing(String name, Object sup) {
-        super(150, false);
-        typeVerbalization = "Gegenstand";
-        this.name = name;
-        this.sup = sup;
-    }
+	public Thing(String name, Object sup) {
+		super(150, false);
+		this.name = name;
+		this.sup = sup;
+	}
 
-    @Override
-    public void setOwner(ItemOwner o) {
-        owner = o;
-    }
+	@Override
+	public void setOwner(ItemOwner o) {
+		owner = o;
+	}
 
-    @Override
-    public boolean needsTarget() {
-        return false;
-    }
+	@Override
+	public boolean needsTarget() {
+		return false;
+	}
 
-    public Attribute getHitPoints() {
-        return null;
-    }
+	public Attribute getHitPoints() {
+		return null;
+	}
 
-    @Override
-    public void getsRemoved() {
-    }
+	@Override
+	public void getsRemoved() {
+	}
 
-    @Override
-    public Thing copy() {
-        return new Thing(getName(), getSup());
-    }
+	@Override
+	public Thing copy() {
+		return new Thing(getName(), getSup());
+	}
 
-    /**
-     *
-     */
-    @Override
-    public ItemOwner getOwner() {
-        return owner;
-    }
+	@Override
+	protected String getTypeVerbalization() {
+		return "Gegenstand";
+	}
 
-    /**
-     *
-     */
-    public Object getSup() {
-        return sup;
-    }
+	/**
+	 *
+	 */
+	@Override
+	public ItemOwner getOwner() {
+		return owner;
+	}
 
-    @Override
-    public String getText() {
-        return "";
-    }
+	/**
+	 *
+	 */
+	public Object getSup() {
+		return sup;
+	}
 
-    public String toString() {
-        return typeVerbalization + ": " + getName();
-    }
+	@Override
+	public String getText() {
+		return "";
+	}
 
-    @Override
-    public boolean canBeUsedBy(Figure f) {
-        return true;
-    }
+	public String toString() {
+		return getTypeVerbalization() + ": " + getName();
+	}
 
-    @Override
-    public int dustCosts() {
-        return 0;
-    }
+	@Override
+	public boolean canBeUsedBy(Figure f) {
+		return true;
+	}
 
-    @Override
-    public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
-        if (f.getRoom().getLocation() == this.sup) {
-            ((Location) sup).use(f, this, meta, round, doIt);
-            return ActionResult.DONE;
-        }
-        return ActionResult.OTHER;
+	@Override
+	public int dustCosts() {
+		return 0;
+	}
 
-    }
+	@Override
+	public ActionResult use(Figure f, RoomEntity target, boolean meta, int round, boolean doIt) {
+		if (f.getRoom().getLocation() == this.sup) {
+			((Location) sup).use(f, this, meta, round, doIt);
+			return ActionResult.DONE;
+		}
+		return ActionResult.OTHER;
+	}
 
-    @Override
-    public boolean usableOnce() {
-        return false;
-    }
-
+	@Override
+	public boolean usableOnce() {
+		return false;
+	}
 }

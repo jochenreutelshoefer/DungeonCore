@@ -8,6 +8,7 @@ import de.jdungeon.dungeon.Chest;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DeadEndPath;
 import de.jdungeon.dungeon.generate.DistanceAtLeastConstraint;
 import de.jdungeon.dungeon.quest.ReversibleRoomQuest;
@@ -42,6 +43,8 @@ import de.jdungeon.spell.Steal;
  */
 public class MoonRuneChase extends AbstractDungeonFactory {
 
+	private Dungeon dungeon;
+
 	@Override
 	public String icon() {
 		return null;
@@ -63,9 +66,7 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 	}
 
 	@Override
-	public Dungeon createDungeon() {
-
-		Dungeon dungeon = null;
+	public void create() {
 
 		List<Key> allKeys = Key.generateKeylist();
 		Key exitKey = allKeys.get(0);
@@ -197,9 +198,15 @@ public class MoonRuneChase extends AbstractDungeonFactory {
 			accomplished = true;
 		}
 
-		return dungeon;
-
 	}
 
+	@Override
+	public Dungeon getDungeon() {
+		return dungeon;
+	}
 
+	@Override
+	public LevelDTO getDTO() {
+		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
+	}
 }

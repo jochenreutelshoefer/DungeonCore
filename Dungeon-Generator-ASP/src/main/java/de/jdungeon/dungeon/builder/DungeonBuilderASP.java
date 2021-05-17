@@ -13,6 +13,7 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.asp.Result;
 import de.jdungeon.dungeon.builder.asp.ShellASPSolver;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.log.Log;
 
 public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
@@ -88,7 +89,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 			throw new DungeonGenerationException("Could not execute level generation with ASP: " + e.getMessage());
 		}
 		if (aspResult != null && aspResult.hasModel()) {
-			Dungeon dungeon = new DungeonBuilderASPReader(this).createDungeon(aspResult);
+			LevelDTO dungeon = new DungeonBuilderASPReader(this).createDungeon(aspResult);
 			return new DungeonResultASP(dungeon, new JDPoint(this.startX, startY), this.toString());
 		}
 		if (aspResult != null) {

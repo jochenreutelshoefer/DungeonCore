@@ -68,7 +68,7 @@ public class MoonRuneFinderShrine extends Location {
     }
 
     private void tellDirection(JDPoint location, Figure f, int round) {
-        // TODO: factor out de.jdungeon.text
+        // TODO: factor out text
         f.tellPercept(new TextPercept("Die Mondrune befindet sich im Moment bei" + ": " + location, round));
         f.getViwMap().setVisibilityStatus(location, RoomObservationStatus.VISIBILITY_ITEMS);
     }

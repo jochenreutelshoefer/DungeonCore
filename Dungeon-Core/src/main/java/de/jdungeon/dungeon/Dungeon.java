@@ -159,6 +159,7 @@ public class Dungeon implements Turnable, EventListener {
         heroPosition = new JDPoint(xh, yh);
     }
 
+    @Deprecated
     public JDPoint getPoint(int x, int y) {
         if (x >= 0 && y >= 0 && x < points.length && y < points[0].length) {
             return points[x][y];

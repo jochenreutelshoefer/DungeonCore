@@ -16,7 +16,6 @@ public class Armor extends ArmorItem<Armor> {
 
     public Armor(int value, boolean magic) {
         super(value / 10, value, magic, value);
-        typeVerbalization = this.getType(value);
 
     }
 
@@ -41,12 +40,13 @@ public class Armor extends ArmorItem<Armor> {
         return new Armor(this.getWorth(), this.getModifications());
     }
 
+    @Override
+    protected String getTypeVerbalization() {
+        return getType(getWorth());
+    }
+
     public Armor(int value, List mods) {
         super(value / 10, value, true, value);
-
-
-        typeVerbalization = this.getType(value);
-
         modifications = mods;
     }
 
@@ -85,7 +85,7 @@ public class Armor extends ArmorItem<Armor> {
         if (unique) {
             return name;
         }
-        return typeVerbalization;
+        return getType(getWorth());
 
     }
 
@@ -95,7 +95,7 @@ public class Armor extends ArmorItem<Armor> {
         if (unique) {
             return name;
         }
-        s += (typeVerbalization + ": " + this.armorValue);
+        s += (getType(getWorth()) + ": " + this.armorValue);
         if (isMagic()) {
             s += "(m)";
         }

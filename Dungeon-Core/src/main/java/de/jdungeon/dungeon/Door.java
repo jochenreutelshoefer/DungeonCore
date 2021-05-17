@@ -14,6 +14,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+
 import de.jdungeon.item.interfaces.Locatable;
 import de.jdungeon.location.Statue;
 import de.jdungeon.dungeon.util.DungeonUtils;
@@ -25,9 +28,8 @@ import de.jdungeon.log.Log;
  * werden. Tueren koennen versteckt sein und verhalten sich dann wie eine Mauer
  * und koennen durch Zufall oder durch den Entdecken-Zauberspruch enttarnt
  * werden. Tueren koennen durch Zaubersprueche eine zeitlang blockiert werden.
- * 
  */
-public class Door implements InfoProvider, Locatable, RoomEntity {
+public class Door implements Lockable, InfoProvider, Locatable, RoomEntity, Json.Serializable {
 
 	public static final int NO_DOOR = 0;
 
@@ -39,62 +41,29 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 
 	private final Room[] rooms = new Room[2];
 
-	private final boolean passable = true;
-
-	private final List<DoorBlock> blockings = new ArrayList<>();
-
-	private final List<Figure> escapeRoutes = new ArrayList<>();
-	
 	private Lock lock = null;
 
 	private boolean locked = false;
 
 	private boolean hallDoor = false;
 
-	private boolean isHidden = false;
-
-
-
-	private int difficultyToFind = 0;
-
-	public int getDifficultyToFind() {
-		return difficultyToFind;
-	}
-
-	public boolean hasEscapeRoute(Figure f) {
-		return escapeRoutes.contains(f);
-	}
-	public void setEscapeRoute(Figure f){
-		escapeRoutes.add(f);
-	}
-	
 	public DoorMemory getMemoryObject(FigureInfo info) {
-		return new  DoorMemory(this);
+		return new DoorMemory(this);
 	}
-	
-	public boolean unsetEscapeRoute(Figure f) {
-		return escapeRoutes.remove(f);
-	}
-	
+
 	public int getDir(JDPoint p) {
 		int dir = rooms[0].getConnectionDirectionTo(rooms[1]);
 		if (rooms[0].getRoomNumber().equals(p)) {
 			return dir;
-		} else {
+		}
+		else {
 			if (rooms[1].getRoomNumber().equals(p)) {
 				return Dir.getOppositDir(dir);
-			} else {
+			}
+			else {
 				return -1;
 			}
 		}
-	}
-
-	public void setDifficultyToFind(int difficultyToFind) {
-		this.difficultyToFind = difficultyToFind;
-	}
-
-	public boolean isHidden() {
-		return isHidden;
 	}
 
 	@Override
@@ -102,16 +71,10 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		return rooms[0].getRoomNumber();
 	}
 
-	public void setHidden(boolean isHidden) {
-		difficultyToFind = 150;
-		this.isHidden = isHidden;
-	}
-
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
 		return new DoorInfo(this, map);
 	}
-
 
 	private boolean statueBlocks;
 
@@ -131,10 +94,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		setKey(key);
 	}
 
-	public void setHallDoor(boolean b) {
-		hallDoor = b;
-	}
-
 	public boolean isHallDoor() {
 		return hallDoor;
 	}
@@ -151,14 +110,14 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		Room otherRoom = rooms[roomTo];
 		int dir = DungeonUtils.getNeighbourDirectionFromTo(room, otherRoom)
 				.getValue();
-		if(other) {
+		if (other) {
 			return otherRoom.getPositions()[getPosIndexForDirection(dir)];
-		} else {
-			return room.getPositions()[getPosIndexForDirection(RouteInstruction.Direction.opposite(RouteInstruction.Direction.fromInteger(dir)).getValue())];
+		}
+		else {
+			return room.getPositions()[getPosIndexForDirection(RouteInstruction.Direction.opposite(RouteInstruction.Direction
+					.fromInteger(dir)).getValue())];
 		}
 	}
-
-
 
 	private int getPosIndexForDirection(int dir) {
 		int index = -1;
@@ -180,7 +139,7 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 	public Door(Room r1, Room r2, Key k) {
 		rooms[0] = r1;
 		rooms[1] = r2;
-		if(k != null) {
+		if (k != null) {
 			setKey(k);
 		}
 	}
@@ -193,32 +152,13 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		return lock;
 	}
 
-	public Door(Door d, Key k) {
-		rooms[0] = d.getRooms()[0];
-		rooms[1] = d.getRooms()[1];
-		if(k != null) {
-			setKey(k);
-		}
+	public void setLock(Lock l) {
+		this.lock = l;
 	}
 
 	public void setKey(Key k) {
 		this.lock = new Lock(k, this);
 		locked = true;
-	}
-
-	public void addBlocking(DoorBlock b) {
-		blockings.add(b);
-	}
-
-	public boolean removeBlocking(Object s) {
-		for (int i = 0; i < blockings.size(); i++) {
-			DoorBlock b = ((DoorBlock) blockings.get(i));
-			if (b.getSource() == s) {
-				blockings.remove(b);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public boolean getLocked() {
@@ -227,17 +167,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 
 	public void setLocked(boolean b) {
 		locked = b;
-	}
-
-	public boolean found(int psycho) {
-		int k = (int) (Math.random() * difficultyToFind);
-		if (k < psycho - 2) {
-			isHidden = false;
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 	public boolean hasLock() {
@@ -250,11 +179,24 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 
 	public void toggleLock(Key k) {
 		if (lockMatches(k)) {
-				locked = !locked;
-		} else {
+			locked = !locked;
+		}
+		else {
 			Log.severe("Should not happen, as Lock matching was already to be checked before..");
 		}
 	}
+
+
+	public Door(Door d, Key k) {
+		rooms[0] = d.getRooms()[0];
+		rooms[1] = d.getRooms()[1];
+		if (k != null) {
+			setKey(k);
+		}
+	}
+
+
+
 
 	public Room[] getRooms() {
 		return rooms;
@@ -262,29 +204,23 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 
 	@Override
 	public String toString() {
-		return "Tür von: " + rooms[0].toString() + " nach: "
-				+ rooms[1].toString();
+		return "Tür von: " + rooms[0] + " nach: "
+				+ rooms[1];
 	}
 
 	public boolean isPassable(Figure f) {
 		statueBlocks = false;
-			for (int i = 0; i < 2; i++) {
-				if (rooms[i].getLocation() != null
-						&& rooms[i].getLocation() instanceof Statue & f instanceof Monster) {
-					statueBlocks = true;
-				}
+		for (int i = 0; i < 2; i++) {
+			if (rooms[i].getLocation() != null
+					&& rooms[i].getLocation() instanceof Statue & f instanceof Monster) {
+				statueBlocks = true;
 			}
-		return !locked & !statueBlocks & blockings.isEmpty();
-	}
-
-	public boolean partOfRoomQuest() {
-		return (rooms[0].getRoomQuest() != null)
-				|| (rooms[1].getRoomQuest() != null);
-
+		}
+		return !locked & !statueBlocks;
 	}
 
 	public Room getOtherRoom(Room r) {
-		if(r == null) return r;
+		if (r == null) return r;
 		if (r.equals(rooms[0])) {
 			return rooms[1];
 		}
@@ -304,21 +240,6 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		return null;
 	}
 
-	public boolean hasRoom(Room r) {
-		if (rooms[0] == r) {
-			return true;
-		}
-		if (rooms[1] == r) {
-			return true;
-		}
-		return false;
-
-	}
-
-	public List getBlockings() {
-		return blockings;
-	}
-
 	@Override
 	public Collection<Position> getInteractionPositions() {
 		Collection<Position> result = new HashSet<>();
@@ -327,5 +248,15 @@ public class Door implements InfoProvider, Locatable, RoomEntity {
 		return result;
 	}
 
+	private static final String START_TIME = "start_time";
 
+	@Override
+	public void write(Json json) {
+		json.writeFields(this);
+	}
+
+	@Override
+	public void read(Json json, JsonValue jsonData) {
+		json.readFields(this, jsonData);
+	}
 }

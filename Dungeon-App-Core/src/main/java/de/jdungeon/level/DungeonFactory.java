@@ -3,6 +3,7 @@ package de.jdungeon.level;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -10,7 +11,11 @@ import de.jdungeon.dungeon.builder.DungeonGenerationException;
  */
 public interface DungeonFactory {
 
-	Dungeon createDungeon() throws DungeonGenerationException;
+	void create() throws DungeonGenerationException;
+
+	Dungeon getDungeon();
+
+	LevelDTO getDTO();
 
 	JDPoint getHeroEntryPoint();
 

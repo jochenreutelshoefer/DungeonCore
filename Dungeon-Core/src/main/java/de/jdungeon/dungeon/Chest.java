@@ -19,6 +19,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
 import de.jdungeon.util.JDColor;
 
@@ -30,7 +34,7 @@ import de.jdungeon.util.JDColor;
  * 
  */
 
-public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity {
+public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, RoomEntity {
 
 	private final List<Item> items;
 
@@ -60,6 +64,9 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 	public void setLock(Key k) {
 		this.lock = new Lock(k, this);
 	}
+	public void setLock(Lock l) {
+		this.lock = l;
+	}
 
 	public Chest(List<Item> list) {
 		items = new LinkedList<>();
@@ -68,7 +75,19 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 		}
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Chest chest = (Chest) o;
+		return locked == chest.locked && items.equals(chest.items) && Objects.equals(lock, chest.lock) && location
+				.equals(chest.location) && Objects.equals(r, chest.r);
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(items, lock, locked, location, r);
+	}
 
 	@Override
 	public InfoEntity makeInfoObject(DungeonVisibilityMap map) {
@@ -131,6 +150,16 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 		return lock != null;
 	}
 
+	@Override
+	public boolean lockMatches(Key k) {
+		return false;
+	}
+
+	@Override
+	public void toggleLock(Key k) {
+
+	}
+
 	public boolean lock(Key k) {
 		if (lock != null && k.equals(lock.getKey())) {
 			locked = !locked;
@@ -151,6 +180,22 @@ public class Chest implements ItemOwner, Paragraphable, InfoProvider, RoomEntity
 
 	public Lock getLock() {
 		return lock;
+	}
+
+	@Override
+	public void setKey(Key k) {
+		this.lock = new Lock(k, this);
+		locked = true;
+	}
+
+	@Override
+	public boolean getLocked() {
+		return locked;
+	}
+
+	@Override
+	public void setLocked(boolean b) {
+		this.locked = b;
 	}
 
 	@Override

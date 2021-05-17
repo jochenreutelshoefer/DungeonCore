@@ -16,6 +16,10 @@ public class LionessConjuration extends AbstractSpell {
 		this.level = lvl;
 	}
 
+	public LionessConjuration() {
+		this(1);
+	}
+
 	@Override
 	public int getType() {
 		return SPELL_LIONESS;

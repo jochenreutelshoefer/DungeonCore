@@ -12,11 +12,15 @@ import de.jdungeon.figure.other.Fir;
 public class FirConjuration extends AbstractTargetSpell {
 
 	private final int level;
-	
+
 	public FirConjuration(int lvl) {
 		this.level = lvl;
 	}
-	
+
+	public FirConjuration() {
+		this(1);
+	}
+
 	@Override
 	public boolean distanceOkay(Figure mage, RoomEntity target) {
 		return true;
@@ -34,8 +38,8 @@ public class FirConjuration extends AbstractTargetSpell {
 
 	@Override
 	public boolean isApplicable(Figure mage, RoomEntity target) {
-		if(target instanceof Position) {
-			if(((Position)target).getFigure() == null) {
+		if (target instanceof Position) {
+			if (((Position) target).getFigure() == null) {
 				return true;
 			}
 		}
@@ -54,10 +58,10 @@ public class FirConjuration extends AbstractTargetSpell {
 
 	@Override
 	public void sorcer(Figure mage, RoomEntity target, int round) {
-				Fir fir = new Fir(500 * level, mage.getRoom().getDungeon());
-				Room room = mage.getRoom();
-				int pos = ((Position)target).getIndex();
-				room.figureEntersAtPosition(fir, pos, round);
+		Fir fir = new Fir(500 * level, mage.getRoom().getDungeon());
+		Room room = mage.getRoom();
+		int pos = ((Position) target).getIndex();
+		room.figureEntersAtPosition(fir, pos, round);
 	}
 
 	@Override
@@ -69,5 +73,4 @@ public class FirConjuration extends AbstractTargetSpell {
 	public String getHeaderName() {
 		return "Fichte";
 	}
-
 }

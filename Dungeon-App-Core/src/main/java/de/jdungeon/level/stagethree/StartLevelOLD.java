@@ -14,6 +14,7 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DungeonFiller;
 import de.jdungeon.dungeon.quest.ReversibleRoomQuest;
 import de.jdungeon.dungeon.quest.RoomQuest1x1;
@@ -49,10 +50,21 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 	public static final int DUNGEON_SIZE_Y = 6;
 	public static final int DUNGEON_SIZE_X = 6;
 	private static final int FLOOR_INDEX_EXIT = 5;
+	private Dungeon dungeon;
 
 	@Override
-	public Dungeon createDungeon() {
-		return createStartDungeon();
+	public void create() {
+		createStartDungeon();
+	}
+
+	@Override
+	public Dungeon getDungeon() {
+		return dungeon;
+	}
+
+	@Override
+	public LevelDTO getDTO() {
+		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
 	}
 
 	@Override
@@ -80,9 +92,9 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		return 400;
 	}
 
-	private Dungeon createStartDungeon() {
+	private void createStartDungeon() {
 
-		Dungeon dungeon = null;
+		dungeon = null;
 
 		List<Key> allKeys = Key.generateKeylist();
 		Key exitKey = allKeys.remove(0);
@@ -192,7 +204,6 @@ public class StartLevelOLD extends AbstractDungeonFactory {
 		scoutShrineRoom.setLocation(new ScoutShrine(scoutShrineRoom));
 		filler.addAllocatedRoom(scoutShrineRoom);
 
-		return dungeon;
 	}
 
 

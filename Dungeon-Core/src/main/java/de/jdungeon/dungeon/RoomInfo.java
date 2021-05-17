@@ -369,7 +369,7 @@ public class RoomInfo extends RoomInfoEntity implements ItemInfoOwner {
 		Door[] doors = r.getDoors();
 		DoorInfo[] infos = new DoorInfo[4];
 		for (int i = 0; i < doors.length; i++) {
-			if (doors[i] != null && !doors[i].isHidden()) {
+			if (doors[i] != null) {
 				infos[i] = new DoorInfo(doors[i], map);
 			}
 		}

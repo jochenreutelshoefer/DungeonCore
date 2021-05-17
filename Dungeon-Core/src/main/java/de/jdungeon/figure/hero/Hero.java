@@ -728,10 +728,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
             int fleeV = 0;
 
             fleeV = calcFleeResult((int) diff); // 2 kommt nicht
-            if (getRoom().getDoor(fleeDirection).hasEscapeRoute(this)) {
-                fleeV = 1;
-            }
-
             if (fleeV < 3) {
                 if (fleeV == 1) {
                     // de.jdungeon.game.getFight().MonstersFight();

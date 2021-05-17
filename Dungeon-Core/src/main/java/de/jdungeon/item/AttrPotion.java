@@ -23,7 +23,6 @@ public class AttrPotion extends Item<AttrPotion> implements Usable {
     public AttrPotion(Attribute.Type attribute, int value) {
         super(value, false);
         a = attribute;
-        typeVerbalization = setType();
     }
 
     @Override
@@ -34,6 +33,11 @@ public class AttrPotion extends Item<AttrPotion> implements Usable {
     @Override
     public AttrPotion copy() {
         return new AttrPotion(getAttribute(), getWorth());
+    }
+
+    @Override
+    protected String getTypeVerbalization() {
+        return getType();
     }
 
     @Override
@@ -81,7 +85,7 @@ public class AttrPotion extends Item<AttrPotion> implements Usable {
 
     @Override
     public String toString() {
-        return typeVerbalization;
+        return getTypeVerbalization();
     }
 
     @Override
@@ -171,7 +175,7 @@ public class AttrPotion extends Item<AttrPotion> implements Usable {
         return mods;
     }
 
-    private String setType() {
+    private String getType() {
 
         if (a == Attribute.Type.Health) {
 

@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Disposable;
+
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.game.Game;
 import de.jdungeon.graphics.ImageManager;
+import de.jdungeon.gui.MissionStatePanel;
 import de.jdungeon.text.Statement;
 import de.jdungeon.util.JDDimension;
 
@@ -43,206 +45,215 @@ import de.jdungeon.gui.thumb.SmartControlPanel;
  */
 public class GUIRenderer implements Disposable {
 
-    private final static String TAG = GUIRenderer.class.getName();
+	private final static String TAG = GUIRenderer.class.getName();
 
-    private final GameScreenInputProcessor inputController;
-    private final OrthographicCamera cameraGUI;
-    private final HeroInfo figure;
-    private final Game game;
-    private SpriteBatch batch;
-    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private LibgdxTextPerceptView textView;
+	private final GameScreenInputProcessor inputController;
+	private final OrthographicCamera cameraGUI;
+	private final HeroInfo figure;
+	private final Game game;
+	private SpriteBatch batch;
+	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private LibgdxTextPerceptView textView;
 
-    private final LibgdxFocusManager focusManager;
+	private final LibgdxFocusManager focusManager;
 
-    final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
+	final List<LibgdxGUIElement> libgdxGuiElements = new ArrayList<>();
 
-    private LibgdxGameOverView gameOverView;
-    private GLProfiler glProfiler;
-    private LibgdxItemWheel itemWheelHeroItems;
-    private String message;
+	private LibgdxGameOverView gameOverView;
+	private GLProfiler glProfiler;
+	private LibgdxItemWheel itemWheelHeroItems;
+	private String message;
+	private LibgdxHourGlassTimer hourglass;
 
-    public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, Game game, HeroInfo figure, LibgdxFocusManager focusManager) {
-        this.inputController = inputController;
-        this.cameraGUI = cameraGUI;
-        cameraGUI.update();
-        this.game = game;
-        this.figure = figure;
-        this.focusManager = focusManager;
-        init();
-    }
+	public GUIRenderer(GameScreenInputProcessor inputController, OrthographicCamera cameraGUI, Game game, HeroInfo figure, LibgdxFocusManager focusManager) {
+		this.inputController = inputController;
+		this.cameraGUI = cameraGUI;
+		cameraGUI.update();
+		this.game = game;
+		this.figure = figure;
+		this.focusManager = focusManager;
+		init();
+	}
 
-    private void reinit() {
-        libgdxGuiElements.clear();
-        init();
-    }
+	private void reinit() {
+		libgdxGuiElements.clear();
+		init();
+	}
 
-    private void init() {
-        GUIImageManager guiImageManager = new GUIImageManager(game.getFileIO().getImageLoader());
-        InventoryImageManager inventoryImageManager = new InventoryImageManager(guiImageManager);
+	private void init() {
+		GUIImageManager guiImageManager = new GUIImageManager(game.getFileIO().getImageLoader());
+		InventoryImageManager inventoryImageManager = new InventoryImageManager(guiImageManager);
 
-        batch = new SpriteBatch();
-        shapeRenderer.setAutoShapeType(true); // TODO: research and refactor w.r.t. ShapeTypes
+		batch = new SpriteBatch();
+		shapeRenderer.setAutoShapeType(true); // TODO: research and refactor w.r.t. ShapeTypes
 
-        int screenWidth = Gdx.app.getGraphics().getWidth();
-        int screenHeight = Gdx.app.getGraphics().getHeight();
+		int screenWidth = Gdx.app.getGraphics().getWidth();
+		int screenHeight = Gdx.app.getGraphics().getHeight();
 
-        int screenHeightBy2 = screenHeight / 2;
-        int screenHeightBy3 = screenHeight / 3;
-        int screenHeightBy4 = screenHeight / 4;
-        int screenHeightBy5 = screenHeight / 5;
-        int screenHeightBy6 = screenHeight / 6;
-        int screenHeightBy8 = screenHeight / 8;
-        int screenHeightBy10 = screenHeight / 10;
-        int screenHeightBy20 = screenHeight / 20;
-        int screenHeightBy25 = screenHeight / 25;
+		int screenHeightBy2 = screenHeight / 2;
+		int screenHeightBy3 = screenHeight / 3;
+		int screenHeightBy4 = screenHeight / 4;
+		int screenHeightBy5 = screenHeight / 5;
+		int screenHeightBy6 = screenHeight / 6;
+		int screenHeightBy8 = screenHeight / 8;
+		int screenHeightBy10 = screenHeight / 10;
+		int screenHeightBy20 = screenHeight / 20;
+		int screenHeightBy25 = screenHeight / 25;
 
-        Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: " + screenWidth + " x " + screenHeight);
+		Gdx.app.log(TAG, "Initializing GUIRenderer with screen width: " + screenWidth + " x " + screenHeight);
 
-        /*
-         * init text messages panel
-         */
-        textView = new LibgdxTextPerceptView();
-        this.libgdxGuiElements.add(textView);
-
-
-        /*
-         * init info panel
-         */
-        int infoPanelHeight = (int) (screenHeight * 0.4);
-        int infoPanelWidth = (int) (infoPanelHeight * 0.8);
-        LibgdxInfoPanel infoPanel = new LibgdxInfoPanel(new JDPoint(10, 40),
-                new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager, inputController.getPlayerController());
-        this.libgdxGuiElements.add(infoPanel);
-        focusManager.setInfoPanel(infoPanel);
+		/*
+		 * init text messages panel
+		 */
+		textView = new LibgdxTextPerceptView();
+		this.libgdxGuiElements.add(textView);
 
 
-        /*
-         * init health bars
-         */
-        int barHeight = screenHeight / 42;
-        int barWidth = barHeight * 12;
-        int posX = screenWidth - barWidth - 10;
-        JDPoint healthBarPosition = new JDPoint(posX, 5);
-        LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.health);
-        this.libgdxGuiElements.add(healthView);
+		/*
+		 * init info panel
+		 */
+		int infoPanelHeight = (int) (screenHeight * 0.4);
+		int infoPanelWidth = (int) (infoPanelHeight * 0.8);
+		LibgdxInfoPanel infoPanel = new LibgdxInfoPanel(new JDPoint(10, 80),
+				new JDDimension(infoPanelWidth, infoPanelHeight), guiImageManager, inputController.getPlayerController());
+		this.libgdxGuiElements.add(infoPanel);
+		focusManager.setInfoPanel(infoPanel);
 
-        JDPoint secondBarPosition = new JDPoint(posX, barHeight + 8);
-        LibgdxHealthBar oxygenView = new LibgdxHealthBar(secondBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.oxygen);
-        this.libgdxGuiElements.add(oxygenView);
+		/*
+		 * add mission state panel
+		 */
+		int missionStateWidth = 150;
+		int missionStateHeight = 200;
+		int missionStateX = screenWidth - missionStateWidth / 2;
+		int missionStateY = screenHeight / 5;
+		MissionStatePanel missionStatePanel = new MissionStatePanel(new JDPoint(missionStateX, missionStateY), new JDDimension(missionStateWidth, missionStateHeight));
+		this.libgdxGuiElements.add(missionStatePanel);
 
-        JDPoint thirdBarPosition = new JDPoint(posX, 2 * barHeight + 11);
-        LibgdxHealthBar dustView = new LibgdxHealthBar(thirdBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
-        this.libgdxGuiElements.add(dustView);
+		/*
+		 * init health bars
+		 */
+		int barHeight = screenHeight / 42;
+		int barWidth = barHeight * 12;
+		int posX = 10;
+		JDPoint healthBarPosition = new JDPoint(posX, 5);
+		LibgdxHealthBar healthView = new LibgdxHealthBar(healthBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.health);
+		this.libgdxGuiElements.add(healthView);
+
+		JDPoint secondBarPosition = new JDPoint(posX, barHeight + 8);
+		LibgdxHealthBar oxygenView = new LibgdxHealthBar(secondBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.oxygen);
+		this.libgdxGuiElements.add(oxygenView);
+
+		JDPoint thirdBarPosition = new JDPoint(posX, 2 * barHeight + 11);
+		LibgdxHealthBar dustView = new LibgdxHealthBar(thirdBarPosition, new JDDimension(barWidth, barHeight), figure, LibgdxHealthBar.Kind.dust);
+		this.libgdxGuiElements.add(dustView);
 
 
-        /*
-         * init hour glass
-         */
-        int hourGlassWidth = screenWidth / 25;
-        int offsetFromRightBorder = screenWidth / 100;
-        int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromRightBorder;
-        int hourGlassHeight = (int) (hourGlassWidth * 1.6);
-        int hourglassYPos = thirdBarPosition.getY() + screenHeightBy25;
-        LibgdxHourGlassTimer hourglass = new LibgdxHourGlassTimer(
-                new JDPoint(hourGlassPosX, hourglassYPos),
-                new JDDimension(hourGlassWidth, hourGlassHeight),
-                figure,
-                guiImageManager
-                , game
-                .getSession());
-        this.libgdxGuiElements.add(hourglass);
+		/*
+		 * init hour glass
+		 */
+		int hourGlassWidth = screenWidth / 25;
+		int offsetFromBorder = screenWidth / 100;
+		int hourGlassPosX = screenWidth - hourGlassWidth - offsetFromBorder;
+		int hourGlassHeight = (int) (hourGlassWidth * 1.6);
+		int hourglassYPos = 5;
+		hourglass = new LibgdxHourGlassTimer(
+				new JDPoint(hourGlassPosX, hourglassYPos),
+				new JDDimension(hourGlassWidth, hourGlassHeight),
+				figure,
+				guiImageManager
+				, game.getSession());
+		this.libgdxGuiElements.add(hourglass);
 
 
 		/*
 		add +/- magnifier
 		 */
-        int plusYPos = hourglassYPos + hourGlassHeight + screenHeightBy25;
-        int zoombuttonSize = screenWidth / 25;
-        int magnifierWidth = screenWidth / 20;
-        int zoomButtonPosX = screenWidth - magnifierWidth + ((magnifierWidth - zoombuttonSize) / 2) - offsetFromRightBorder;
-        this.libgdxGuiElements.add(new ZoomButton(new JDPoint(zoomButtonPosX, plusYPos), new JDDimension(zoombuttonSize, zoombuttonSize), inputController, GUIImageManager.PLUS, true));
-        int magnifierHeight = screenWidth / 12;
-        int yPaddingZoomButtons = 0; //screenHeight / 50;
-        int magnifierY = plusYPos + zoombuttonSize + yPaddingZoomButtons;
-        ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(screenWidth - magnifierWidth - offsetFromRightBorder, magnifierY), new JDDimension(magnifierHeight * 44 / 70, magnifierHeight), GUIImageManager.LUPE2) {
+		int zoombuttonSize = screenWidth / 25;
+		int magnifierWidth = screenWidth / 20;
+		int zoomButtonPosY = infoPanel.getPositionOnScreen().getY() + infoPanelHeight + screenHeightBy25;
+		int zoomButtonPosX = offsetFromBorder;
+		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(zoomButtonPosX, zoomButtonPosY), new JDDimension(zoombuttonSize, zoombuttonSize), inputController, GUIImageManager.PLUS, true));
+		int magnifierHeight = screenWidth / 12;
+		int yPaddingZoomButtons = 0; //screenHeight / 50;
+		int magnifierY = zoomButtonPosY + zoombuttonSize + yPaddingZoomButtons;
+		ImageLibgdxGUIElement magnifier = new ImageLibgdxGUIElement(new JDPoint(offsetFromBorder, magnifierY), new JDDimension(magnifierHeight * 44 / 70, magnifierHeight), GUIImageManager.LUPE2) {
 
-            @Override
-            public boolean handleClickEvent(int x, int y) {
-                inputController.scrollToPlayer();
-                return true;
-            }
-        };
-        this.libgdxGuiElements.add(new ZoomButton(new JDPoint(zoomButtonPosX, magnifierY + magnifierHeight + yPaddingZoomButtons), new JDDimension(zoombuttonSize, zoombuttonSize), inputController, GUIImageManager.MINUS, false));
-        this.libgdxGuiElements.add(magnifier);
-
-
-        /*
-         * init smart thumb control
-         */
-        int itemPresenterHeight = screenHeightBy5;
-        int SMART_CONTROL_SIZE = (int) (/*1.5 **/ (((float) screenWidth) / 3));
-        JDPoint smartControlRoomPanelPosition = new JDPoint(screenWidth - SMART_CONTROL_SIZE, screenHeight - SMART_CONTROL_SIZE - itemPresenterHeight / 2);
-        Gdx.app.log(TAG, "Initializing Smart Control Panel at: " + smartControlRoomPanelPosition.getX() + " / " + smartControlRoomPanelPosition
-                .getY());
-        JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
-        SmartControlPanel smartControl = new SmartControlPanel(smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController
-                .getPlayerController());
-        this.libgdxGuiElements.add(smartControl);
-
-        /*
-         * init hero item wheel
-         */
-        int selectedIndexItem = 17;
-        int wheelSize = screenWidth / 2;
-        JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
-        double wheelCenterY = screenHeight * 5 / 4 + wheelSize / 2;
-        LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController
-                .getPlayerController(), focusManager);
-        itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(screenWidth / 10, wheelCenterY),
-                itemWheelSize,
-                figure,
-                useItemActivityProvider,
-                selectedIndexItem,
-                ImageManager.inventory_box_normal.getFilenameBlank(),
-                0.1f
-        );
-        this.libgdxGuiElements.add(itemWheelHeroItems);
+			@Override
+			public boolean handleClickEvent(int x, int y) {
+				inputController.scrollToPlayer();
+				return true;
+			}
+		};
+		this.libgdxGuiElements.add(new ZoomButton(new JDPoint(zoomButtonPosX, magnifierY + magnifierHeight + yPaddingZoomButtons), new JDDimension(zoombuttonSize, zoombuttonSize), inputController, GUIImageManager.MINUS, false));
+		this.libgdxGuiElements.add(magnifier);
 
 
-        /*
-         * Init use skill panel below smart control
-         */
+		/*
+		 * init smart thumb control
+		 */
+		int itemPresenterHeight = screenHeightBy5;
+		int SMART_CONTROL_SIZE = (int) (/*1.5 **/ (((float) screenWidth) / 3));
+		JDPoint smartControlRoomPanelPosition = new JDPoint(screenWidth - SMART_CONTROL_SIZE, screenHeight - SMART_CONTROL_SIZE - itemPresenterHeight / 2);
+		Gdx.app.log(TAG, "Initializing Smart Control Panel at: " + smartControlRoomPanelPosition.getX() + " / " + smartControlRoomPanelPosition
+				.getY());
+		JDDimension smartControlRoomPanelSize = new JDDimension(SMART_CONTROL_SIZE, SMART_CONTROL_SIZE);
+		SmartControlPanel smartControl = new SmartControlPanel(smartControlRoomPanelPosition, smartControlRoomPanelSize, guiImageManager, figure, inputController
+				.getPlayerController());
+		this.libgdxGuiElements.add(smartControl);
 
-        int screenWidthBy2 = (int) (screenWidth / 2.07);
+		/*
+		 * init hero item wheel
+		 */
+		int selectedIndexItem = 17;
+		int wheelSize = screenWidth / 2;
+		JDDimension itemWheelSize = new JDDimension(wheelSize, wheelSize);
+		double wheelCenterY = screenHeight * 5 / 4 + wheelSize / 2;
+		LibgdxUseItemActivityProvider useItemActivityProvider = new LibgdxUseItemActivityProvider(figure, inventoryImageManager, inputController
+				.getPlayerController(), focusManager);
+		itemWheelHeroItems = new LibgdxItemWheel(new JDPoint(screenWidth / 10, wheelCenterY),
+				itemWheelSize,
+				figure,
+				useItemActivityProvider,
+				selectedIndexItem,
+				ImageManager.inventory_box_normal.getFilenameBlank(),
+				0.1f
+		);
+		this.libgdxGuiElements.add(itemWheelHeroItems);
 
-        LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(inputController.getPlayerController());
-        int skillPresenterWidth = itemPresenterHeight * 5;
-        LibgdxUseSkillPresenter skillPresenter = new LibgdxUseSkillPresenter(
-                new JDPoint(screenWidth - skillPresenterWidth, screenHeight - itemPresenterHeight - screenHeightBy20),
-                new JDDimension(skillPresenterWidth, itemPresenterHeight),
-                skillActivityProvider,
-                ImageManager.inventory_box_normal.getFilenameBlank(),
-                ImageManager.inventory_box_normalInactive.getFilenameBlank()
-        );
-        this.libgdxGuiElements.add(skillPresenter);
+
+		/*
+		 * Init use skill panel below smart control
+		 */
+
+		int screenWidthBy2 = (int) (screenWidth / 2.07);
+
+		LibgdxSkillActivityProvider skillActivityProvider = new LibgdxSkillActivityProvider(inputController.getPlayerController());
+		int skillPresenterWidth = itemPresenterHeight * 5;
+		LibgdxUseSkillPresenter skillPresenter = new LibgdxUseSkillPresenter(
+				new JDPoint(screenWidth - skillPresenterWidth, screenHeight - itemPresenterHeight - screenHeightBy20),
+				new JDDimension(skillPresenterWidth, itemPresenterHeight),
+				skillActivityProvider,
+				ImageManager.inventory_box_normal.getFilenameBlank(),
+				ImageManager.inventory_box_normalInactive.getFilenameBlank()
+		);
+		this.libgdxGuiElements.add(skillPresenter);
 
 
-        /*
-         * init de.jdungeon.game over view
-         */
-        int width = Gdx.graphics.getWidth();
-        int height = Gdx.graphics.getHeight();
-        int widthFifth = (width / 5);
-        int heightFifth = (height / 4);
+		/*
+		 * init game over view
+		 */
+		int width = Gdx.graphics.getWidth();
+		int height = Gdx.graphics.getHeight();
+		int widthFifth = (width / 5);
+		int heightFifth = (height / 4);
 
-        gameOverView = new LibgdxGameOverView(new JDPoint((width / 2) - widthFifth,
-                (height / 2) - heightFifth), new JDDimension(2 * widthFifth,
-                2 * heightFifth));
-        this.libgdxGuiElements.add(gameOverView);
-    }
+		gameOverView = new LibgdxGameOverView(new JDPoint((width / 2) - widthFifth,
+				(height / 2) - heightFifth), new JDDimension(2 * widthFifth,
+				2 * heightFifth));
+		this.libgdxGuiElements.add(gameOverView);
+	}
 
-    public void render(float deltaTime) {
+	public void render(float deltaTime) {
 
 
 		/*
@@ -263,52 +274,54 @@ public class GUIRenderer implements Disposable {
 		/*
 		render sprites
 		 */
-        batch.setProjectionMatrix(cameraGUI.combined);
-        batch.begin();
-        renderFPSCounter();
-        for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
-            if (guiElement.isVisible()) {
-                guiElement.paint(batch, deltaTime);
-            }
-        }
-        batch.end();
-    }
+		batch.setProjectionMatrix(cameraGUI.combined);
+		batch.begin();
+		renderFPSCounter();
+		for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
+			if (guiElement.isVisible()) {
+				guiElement.paint(batch, deltaTime);
+			}
+		}
+		batch.end();
+	}
 
-    private void updateGUIElementsStatic(float deltaTime, int round) {
+	private void updateGUIElementsStatic(float deltaTime, int round) {
 
-        for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
-            if (!guiElement.isAnimated()) {
-                guiElement.update(deltaTime, round);
-            }
-        }
-    }
+		for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
+			if (!guiElement.isAnimated()) {
+				guiElement.update(deltaTime, round);
+			}
+		}
+	}
 
-    private void updateGUIElementsAnimations(float deltaTime, int round) {
-        for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
-            if (guiElement.isAnimated()) {
-                guiElement.update(deltaTime, round);
-            }
-        }
-    }
+	private void updateGUIElementsAnimations(float deltaTime, int round) {
+		for (LibgdxGUIElement guiElement : this.libgdxGuiElements) {
+			if (guiElement.isAnimated()) {
+				guiElement.update(deltaTime, round);
+			}
+		}
+	}
 
-    LibgdxGameOverView getGameOverView() {
-        return gameOverView;
-    }
+	LibgdxGameOverView getGameOverView() {
+		return gameOverView;
+	}
 
-    private void renderFPSCounter() {
-        float x = 1;
-        float y = 1;
-        int fps = Gdx.graphics.getFramesPerSecond();
-        BitmapFont fpsFont = AssetFonts.instance.defaultNormalFlipped;
-        if (fps >= 45) {
-            fpsFont.setColor(0, 1, 0, 1);
-        } else if (fps >= 30) {
-            fpsFont.setColor(1, 1, 0, 1);
-        } else {
-            fpsFont.setColor(1, 0, 0, 1);
-        }
-        fpsFont.draw(batch, "FPS: " + fps, x, y);
-        fpsFont.setColor(1, 1, 1, 1); //white
+	private void renderFPSCounter() {
+		float x = Gdx.graphics.getWidth() - this.hourglass.getDimension().getWidth() - 80;
+		float y = 1;
+		int fps = Gdx.graphics.getFramesPerSecond();
+		BitmapFont fpsFont = AssetFonts.instance.defaultNormalFlipped;
+		if (fps >= 45) {
+			fpsFont.setColor(0, 1, 0, 1);
+		}
+		else if (fps >= 30) {
+			fpsFont.setColor(1, 1, 0, 1);
+		}
+		else {
+			fpsFont.setColor(1, 0, 0, 1);
+		}
+		fpsFont.draw(batch, "FPS: " + fps, x, y);
+		fpsFont.setColor(1, 1, 1, 1); //white
 
 		/*
 		if (glProfiler != null) {
@@ -321,60 +334,60 @@ public class GUIRenderer implements Disposable {
 		}
 
 		 */
-    }
+	}
 
-    private int maxGLDrawCalls = 0;
+	private int maxGLDrawCalls = 0;
 
-    public void resize(int width, int height) {
-        reinit();
-        cameraGUI.viewportHeight = height;
-        cameraGUI.viewportWidth = width;
-        cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
-        cameraGUI.update();
-        //Gdx.app.log(TAG, "cameraGUI viewport width: "+width +" ; height: "+height);
-    }
+	public void resize(int width, int height) {
+		reinit();
+		cameraGUI.viewportHeight = height;
+		cameraGUI.viewportWidth = width;
+		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
+		cameraGUI.update();
+		//Gdx.app.log(TAG, "cameraGUI viewport width: "+width +" ; height: "+height);
+	}
 
-    @Override
-    public void dispose() {
-        batch.dispose();
-    }
+	@Override
+	public void dispose() {
+		batch.dispose();
+	}
 
-    public void updateAnimations(float deltaTime, int round) {
-        updateGUIElementsAnimations(deltaTime, round);
-    }
+	public void updateAnimations(float deltaTime, int round) {
+		updateGUIElementsAnimations(deltaTime, round);
+	}
 
-    public void updateStatic(float deltaTime, int round) {
-        if (!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
-            // the transaction lock is not yet optimally timed with respect to AP refill
-            // might still happen that lock is release before AP is refilled in Room#tickFigures() -> TODO
-            updateGUIElementsStatic(deltaTime, round);
-        }
-    }
+	public void updateStatic(float deltaTime, int round) {
+		if (!this.inputController.getPlayerController().isDungeonTransactionLocked()) {
+			// the transaction lock is not yet optimally timed with respect to AP refill
+			// might still happen that lock is release before AP is refilled in Room#tickFigures() -> TODO
+			updateGUIElementsStatic(deltaTime, round);
+		}
+	}
 
-    @Deprecated
-    public String getMessage() {
-        return message;
-    }
+	@Deprecated
+	public String getMessage() {
+		return message;
+	}
 
-    @Deprecated
-    private void clearMessage() {
-        message = null;
-    }
+	@Deprecated
+	private void clearMessage() {
+		message = null;
+	}
 
-    @Deprecated
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	@Deprecated
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    void newStatement(Statement s) {
-        this.textView.addTextPercept(s);
-    }
+	void newStatement(Statement s) {
+		this.textView.addTextPercept(s);
+	}
 
-    void setGLProfiler(GLProfiler glProfiler) {
-        this.glProfiler = glProfiler;
-    }
+	void setGLProfiler(GLProfiler glProfiler) {
+		this.glProfiler = glProfiler;
+	}
 
-    LibgdxItemWheel getItemWheel() {
-        return this.itemWheelHeroItems;
-    }
+	LibgdxItemWheel getItemWheel() {
+		return this.itemWheelHeroItems;
+	}
 }

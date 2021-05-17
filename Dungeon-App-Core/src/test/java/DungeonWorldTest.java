@@ -4,6 +4,7 @@ import de.jdungeon.ai.SimpleHeroBehavior;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.Position;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.figure.DungeonVisibilityMap;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.hero.Hero;
@@ -25,7 +26,7 @@ import de.jdungeon.level.DungeonManager;
  */
 public class DungeonWorldTest extends TestCase {
 
-	public void testDungeonWorld() {
+	public void testDungeonWorld() throws DungeonGenerationException {
 		JDEnv.init(new MyResourceBundle() {
 			@Override
 			public String get(String key) {
@@ -41,7 +42,8 @@ public class DungeonWorldTest extends TestCase {
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
 			for (DungeonFactory dungeonFactory : dungeonFactories) {
-				Dungeon dungeon = dungeonFactory.createDungeon();
+				dungeonFactory.create();
+				Dungeon dungeon = dungeonFactory.getDungeon();
 				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert2", Zodiac.Aquarius,
 						Profession.Lumberjack);
 

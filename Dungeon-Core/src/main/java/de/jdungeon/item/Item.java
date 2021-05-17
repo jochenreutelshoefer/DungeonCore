@@ -36,12 +36,6 @@ import de.jdungeon.dungeon.InfoProvider;
 import de.jdungeon.gui.Paragraph;
 import de.jdungeon.gui.Paragraphable;
 
-/**
- * Superklasse aller Gegenstaende. 
- * Jedem Gegenstand wird ein Wert zugeordnet,
- * je nach Nuetzlichkeit, Seltenheit, Eigenschaften etc.
- *
- */
 public abstract class Item<ITEM extends Item> implements ModifierI, Paragraphable, InfoProvider, LocatableItem, Serializable, RoomEntity, Clonable<ITEM> {
 
 	public static final int ITEM_KEY_UNDEFINDED = -1;
@@ -49,8 +43,6 @@ public abstract class Item<ITEM extends Item> implements ModifierI, Paragraphabl
 	public static final int ITEM_KEY_HEALPOTION = 2;
 	
 	protected int worth;
-
-	protected String typeVerbalization;
 
 	protected ItemOwner owner;
 	
@@ -66,6 +58,9 @@ public abstract class Item<ITEM extends Item> implements ModifierI, Paragraphabl
 	
 	protected String name = "";
 
+	protected String getTypeVerbalization() {
+		return getText();
+	}
 
 
 	@Override

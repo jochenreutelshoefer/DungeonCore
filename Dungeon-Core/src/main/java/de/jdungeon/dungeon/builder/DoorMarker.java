@@ -5,9 +5,13 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+
+import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.util.RouteInstruction;
 
-public class DoorMarker {
+public class DoorMarker implements Json.Serializable {
 
 	int x1;
 	int y1;
@@ -19,6 +23,19 @@ public class DoorMarker {
 		this.y1 = y1;
 		this.x2 = x2;
 		this.y2 = y2;
+	}
+
+	public DoorMarker(JDPoint p1, JDPoint p2) {
+		this.x1 = p1.getX();
+		this.y1 = p1.getY();
+		this.x2 = p2.getX();
+		this.y2 = p2.getY();
+	}
+
+	/**
+	 * Required for JSON serialization
+	 */
+	public DoorMarker() {
 	}
 
 	public static Collection<DoorMarker> createAllDoorsOfRoom(int x, int y) {
@@ -67,5 +84,15 @@ public class DoorMarker {
 	@Override
 	public int hashCode() {
 		return Objects.hash(x1, y1, x2, y2) + Objects.hash(x2, y2, x1, y1);
+	}
+
+	@Override
+	public void write(Json json) {
+		json.writeFields(this);
+	}
+
+	@Override
+	public void read(Json json, JsonValue jsonData) {
+		json.readFields(this, jsonData);
 	}
 }

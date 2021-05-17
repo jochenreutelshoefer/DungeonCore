@@ -7,6 +7,7 @@ import de.jdungeon.dungeon.Chest;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DistanceAtMostConstraint;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.FigureInfo;
@@ -38,6 +39,7 @@ public class HadrianLevel extends AbstractDungeonFactory {
 
 	public static final int DUNGEON_SIZE_Y = 9;
 	public static final int DUNGEON_SIZE_X = 9;
+	private Dungeon dungeon;
 
 	@Override
 	public JDPoint getHeroEntryPoint() {
@@ -45,15 +47,15 @@ public class HadrianLevel extends AbstractDungeonFactory {
 	}
 
 	@Override
-	public Dungeon createDungeon() {
+	public void create() {
 
 		List<Key> allKeys = Key.generateKeylist();
 		Key exitKey = allKeys.get(0);
 
-		Dungeon dungeon = new Dungeon(DUNGEON_SIZE_X, DUNGEON_SIZE_Y);
+		dungeon = new Dungeon(DUNGEON_SIZE_X, DUNGEON_SIZE_Y);
 		createAllDoors(dungeon);
 		filler = new SimpleDungeonFiller(dungeon, new ArrayList<>());
-		Room exitRoom = dungeon.getRoomNr(4,0);
+		Room exitRoom = dungeon.getRoomNr(4, 0);
 		exitRoom.removeAllDoorsExcept(Direction.South);
 		filler.addAllocatedRoom(exitRoom);
 		exitRoom.setLocation(new LevelExit());
@@ -63,7 +65,6 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		filler.addAllocatedRoom(entryRoom);
 		entryRoom.removeAllDoorsExcept(Direction.North);
 		entryRoom.setLocation(new RevealMapShrine(exitRoom));
-
 
 		Room defenderRoom = dungeon.getRoom(4, 7);
 		defenderRoom.removeAllDoorsExcept(Direction.North, Direction.South);
@@ -85,17 +86,17 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		Room hall54 = dungeon.getRoom(5, 4);
 		hall54.removeDoors(Direction.North, Direction.East);
 
-		Room exitPath43 = dungeon.getRoomNr(4,3);
+		Room exitPath43 = dungeon.getRoomNr(4, 3);
 		exitPath43.removeAllDoorsExcept(Direction.North, Direction.South);
 
-		Room exitPath42 = dungeon.getRoomNr(4,2);
+		Room exitPath42 = dungeon.getRoomNr(4, 2);
 		exitPath42.removeAllDoorsExcept(Direction.North, Direction.South);
 
-		Room exitPath41 = dungeon.getRoomNr(4,1);
+		Room exitPath41 = dungeon.getRoomNr(4, 1);
 		exitPath41.removeAllDoorsExcept(Direction.North, Direction.South);
 
 		// we set a spy tower in the middle
-		Room hall45 = dungeon.getRoom(4,5);
+		Room hall45 = dungeon.getRoom(4, 5);
 		hall45.setLocation(new ScoutShrine(hall45, 1));
 		filler.addAllocatedRoom(hall45);
 
@@ -105,12 +106,12 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		filler.isAllocated(fountainRoom);
 
 		Room keyRoom = null;
-		if(Math.random() > 0.5) {
+		if (Math.random() > 0.5) {
 			// key to be found on the right
-			dungeon.getRoomNr(3,5).removeDoors(Direction.West); // on the left goes nothing...
+			dungeon.getRoomNr(3, 5).removeDoors(Direction.West); // on the left goes nothing...
 
-			dungeon.getRoom(6,5).removeAllDoorsExcept(Direction.West, Direction.East);
-			dungeon.getRoom(7,5).removeAllDoorsExcept(Direction.West, Direction.East);
+			dungeon.getRoom(6, 5).removeAllDoorsExcept(Direction.West, Direction.East);
+			dungeon.getRoom(7, 5).removeAllDoorsExcept(Direction.West, Direction.East);
 
 			keyRoom = dungeon.getRoom(8, 5);
 			keyRoom.removeAllDoorsExcept(Direction.West);
@@ -119,17 +120,16 @@ public class HadrianLevel extends AbstractDungeonFactory {
 		}
 		else {
 			// key to be found on the left
-			dungeon.getRoomNr(5,5).removeDoors(Direction.East); // on the right goes nothing...
+			dungeon.getRoomNr(5, 5).removeDoors(Direction.East); // on the right goes nothing...
 
-			dungeon.getRoom(2,5).removeAllDoorsExcept(Direction.West, Direction.East);
-			dungeon.getRoom(1,5).removeAllDoorsExcept(Direction.West, Direction.East);
+			dungeon.getRoom(2, 5).removeAllDoorsExcept(Direction.West, Direction.East);
+			dungeon.getRoom(1, 5).removeAllDoorsExcept(Direction.West, Direction.East);
 
 			keyRoom = dungeon.getRoom(0, 5);
 			keyRoom.removeAllDoorsExcept(Direction.East);
 			Chest keyChest = new Chest(exitKey);
 			keyRoom.setChest(keyChest);
 		}
-
 
 		List<Item> gimmickPool = new ArrayList<>();
 		gimmickPool.add(new OxygenPotion());
@@ -147,20 +147,25 @@ public class HadrianLevel extends AbstractDungeonFactory {
 			filler.isAllocated(gimmickRoom);
 		}
 
-
-
 		filler.setToWallUnreachableRoom(getHeroEntryPoint());
 
-
-		Room wolfRoom = dungeon.getRoom(4 ,5 );
+		Room wolfRoom = dungeon.getRoom(4, 5);
 		HadrianAI ai = new HadrianAI(3, 5);
-		Spider hadrian = new Spider( 14000, ai, "Hadrian" );
-		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(),-1);
+		Spider hadrian = new Spider(14000, ai, "Hadrian");
+		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(), -1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
 		filler.setAllFound(hadrian.getViwMap());
 		filler.addAllocatedRoom(wolfRoom);
+	}
 
+	@Override
+	public Dungeon getDungeon() {
 		return dungeon;
+	}
+
+	@Override
+	public LevelDTO getDTO() {
+		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
 	}
 
 	@Override

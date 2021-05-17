@@ -11,15 +11,16 @@ import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.HallBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.dungeon.builder.StartLocationBuilder;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.ScoutShrine;
 
-public class LevelZ extends AbstractASPDungeonFactory {
+public class Level16x16 extends AbstractASPDungeonFactory {
 
 	private DungeonResult dungeonBuild;
 
 	@Override
-	public Dungeon createDungeon() throws DungeonGenerationException {
+	public void create() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 15);
 
 		int hallUpperLeftCornerX = start.getX() - 1;
@@ -47,7 +48,17 @@ public class LevelZ extends AbstractASPDungeonFactory {
 				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 40)
 				.build();
 
+
+	}
+
+	@Override
+	public Dungeon getDungeon() {
 		return dungeonBuild.getDungeon();
+	}
+
+	@Override
+	public LevelDTO getDTO() {
+		return null;
 	}
 
 	@Override

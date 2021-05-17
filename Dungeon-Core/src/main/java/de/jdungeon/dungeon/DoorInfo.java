@@ -74,10 +74,6 @@ public class DoorInfo extends RoomInfoEntity {
     }
 
 
-    public Boolean isKeylocatable(Figure f) {
-        return door.getLock().isKeyLocatable(f);
-    }
-
     public LockInfo getLock() {
         if (getFoundDiscovery()) {
             return new LockInfo(door.getLock(), map);
@@ -168,27 +164,8 @@ public class DoorInfo extends RoomInfoEntity {
         p[2].setCentered();
         p[2].setBold();
 
-        String s3 = new String();
-        if (!door.getBlockings().isEmpty()) {
-            s3 += JDEnv.getString("door_blocked") + ": ";
-            // for(int i = 0; i < blockings)
-        }
-        if (door.hasEscapeRoute(this.map.getFigure())) {
-            s3 += " - " + JDEnv.getString("spell_escape_route_name");
-        }
-        p[3] = new Paragraph(s3);
-        p[3].setSize(14);
-        p[3].setCentered();
-        p[3].setBold();
         return p;
 
-    }
-
-    public Boolean isBlocked() {
-        if (getShrineVisibility()) {
-            return !door.getBlockings().isEmpty();
-        }
-        return null;
     }
 
     public Boolean hasLock() {

@@ -13,8 +13,6 @@ public class JDEnv {
 
 	protected static MyResourceBundle res;
 
-
-
 	/**
 	 * Initializes the texts and labels by loading the corresponding resource
 	 * bundles
@@ -31,9 +29,6 @@ public class JDEnv {
 		return res;
 	}
 
-	public static void setRes(MyResourceBundle res) {
-		JDEnv.res = res;
-	}
 
 	public static String getString(String key) {
 		return res.get(key);

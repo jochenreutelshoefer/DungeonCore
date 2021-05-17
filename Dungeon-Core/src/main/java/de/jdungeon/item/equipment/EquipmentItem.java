@@ -14,6 +14,7 @@ import de.jdungeon.util.JDColor;
  * Klasse
  *
  */
+@Deprecated
 public abstract class EquipmentItem<T extends EquipmentItem> extends Item<T> {
 	
 

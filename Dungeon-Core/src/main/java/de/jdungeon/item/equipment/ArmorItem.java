@@ -5,8 +5,6 @@ import de.jdungeon.game.JDEnv;
 public abstract class ArmorItem<A extends ArmorItem> extends EquipmentItem<A> {
 
 	public int armorValue;
-	private int damg = 0;
-	int dmgPerHP = 35;
 
 	public ArmorItem(int armor, int value, boolean m, int hitPoints) {
 

@@ -8,15 +8,16 @@ import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.dungeon.builder.StartLocationBuilder;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.RevealMapShrine;
 
 public class LevelX extends AbstractASPDungeonFactory {
 
-	private DungeonResult dungeonBuild;
+
 
 	@Override
-	public Dungeon createDungeon() throws DungeonGenerationException {
+	public void create() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 5);
 		JDPoint exitP = new JDPoint(5, 0);
 		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
@@ -30,7 +31,14 @@ public class LevelX extends AbstractASPDungeonFactory {
 				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 20)
 				.build();
 
-		return dungeonBuild.getDungeon();
+
+	}
+
+
+
+	@Override
+	public LevelDTO getDTO() {
+		return null;
 	}
 
 	@Override

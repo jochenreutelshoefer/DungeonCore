@@ -18,10 +18,8 @@ import de.jdungeon.location.ScoutShrine;
 
 public class LevelY extends AbstractASPDungeonFactory {
 
-	private DungeonResult dungeonBuild;
-
 	@Override
-	public Dungeon createDungeon() throws DungeonGenerationException {
+	public void create() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 7);
 
 		int hallUpperLeftCornerX = start.getX() - 1;
@@ -54,7 +52,6 @@ public class LevelY extends AbstractASPDungeonFactory {
 						.addReachableLocation(scoutTower))
 				.build();
 
-		return dungeonBuild.getDungeon();
 	}
 
 	@Override

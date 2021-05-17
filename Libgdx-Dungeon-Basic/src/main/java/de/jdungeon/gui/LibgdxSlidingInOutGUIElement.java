@@ -1,6 +1,7 @@
 package de.jdungeon.gui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.util.JDDimension;
 
@@ -23,20 +24,30 @@ public abstract class LibgdxSlidingInOutGUIElement extends AbstractLibgdxGUIElem
 	private static final float SLIDE_OUT_DURATION = 0.5f;
 	private float timer = 0;
 
-	protected final JDPoint targetOutPos;
-	protected final JDPoint targetInPos;
+	private JDPoint targetOutPos;
+	private JDPoint targetInPos;
 
 	private SlideState currentState;
 
 	public LibgdxSlidingInOutGUIElement(JDPoint position, JDDimension dimension,
 										JDPoint targetPos) {
 		super(position, dimension);
+		init(position, targetPos);
+	}
+
+	private void init(JDPoint position, JDPoint targetPos) {
 		this.targetOutPos = targetPos;
 		this.targetInPos = position;
 		totalSlidingRange = targetInPos.getX() - targetOutPos.getX();
 
 		currentState = SlideState.IN_POSITION;
 		this.slideOut();
+	}
+
+	public LibgdxSlidingInOutGUIElement(JDPoint position, JDDimension dimension,
+										JDPoint targetPos, String backgroundName) {
+		super(position, dimension, backgroundName);
+		init(position, targetPos);
 	}
 
 	@Override

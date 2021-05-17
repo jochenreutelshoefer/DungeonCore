@@ -16,7 +16,7 @@ test {
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/main/java/" ]
+sourceSets.main.java.srcDirs = ["src/main/java/"]
 
 eclipse.project.name = appName + "-Dungeon-Generator-ASP"
 
@@ -24,6 +24,7 @@ eclipse.project.name = appName + "-Dungeon-Generator-ASP"
 dependencies {
     api project(":Dungeon-Core")
     api project(":Dungeon-App-Core")
+    api project(":Dungeon-Generator-Serialization")
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     api group: 'org.jetbrains', name: 'annotations', version: '16.0.1'

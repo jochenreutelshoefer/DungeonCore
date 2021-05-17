@@ -11,54 +11,65 @@ import de.jdungeon.util.JDColor;
 
 public class Helmet extends ArmorItem<Helmet> {
 
-
 	@Override
 	public Helmet copy() {
 		return new Helmet(getWorth(), getModifications());
 	}
 
+	@Override
+	protected String getTypeVerbalization() {
+		return getType(getWorth());
+	}
+
 	public Helmet(int value, boolean magic) {
 
 		super(value / 10, value, magic, 2 * value / 3);
-		typeVerbalization = getType(value);
 	}
 
 	public Helmet(int value) {
 		super(value / 10, value, false, 2 * value / 3);
-		typeVerbalization = getType(value);
 	}
 
 	public Helmet(int value, List mods) {
 		super(value / 10, value, true, 2 * value / 3);
-		typeVerbalization = getType(value);
-
 		modifications = mods;
 	}
 
 	private String getType(int value) {
 		String Type = "helmet type";
-		if (value <= 10)
+		if (value <= 10) {
 			Type = JDEnv.getResourceBundle().getString("helmet1");
-		else if (value <= 20)
+		}
+		else if (value <= 20) {
 			Type = JDEnv.getResourceBundle().getString("helmet2");
-		else if (value <= 40)
+		}
+		else if (value <= 40) {
 			Type = JDEnv.getResourceBundle().getString("helmet3");
-		else if (value <= 60)
+		}
+		else if (value <= 60) {
 			Type = JDEnv.getResourceBundle().getString("helmet4");
-		else if (value <= 80)
+		}
+		else if (value <= 80) {
 			Type = JDEnv.getResourceBundle().getString("helmet5");
-		else if (value <= 100)
+		}
+		else if (value <= 100) {
 			Type = JDEnv.getResourceBundle().getString("helmet6");
-		else if (value <= 120)
+		}
+		else if (value <= 120) {
 			Type = JDEnv.getResourceBundle().getString("helmet7");
-		else if (value <= 140)
+		}
+		else if (value <= 140) {
 			Type = JDEnv.getResourceBundle().getString("helmet8");
-		else if (value <= 160)
+		}
+		else if (value <= 160) {
 			Type = JDEnv.getResourceBundle().getString("helmet9");
-		else if (value <= 180)
+		}
+		else if (value <= 180) {
 			Type = JDEnv.getResourceBundle().getString("helmet10");
-		else
+		}
+		else {
 			Type = JDEnv.getResourceBundle().getString("helmet11");
+		}
 		return Type;
 	}
 
@@ -92,8 +103,7 @@ public class Helmet extends ArmorItem<Helmet> {
 		if (unique) {
 			return name;
 		}
-		return typeVerbalization;
-
+		return getType(this.getWorth());
 	}
 
 	// public Color getStatusColor() {
@@ -124,7 +134,7 @@ public class Helmet extends ArmorItem<Helmet> {
 		if (unique) {
 			return name;
 		}
-		s += (typeVerbalization + ": " + Integer.toString(this.armorValue));
+		s += (getTypeVerbalization() + ": " + Integer.toString(this.armorValue));
 		if (isMagic()) {
 			s += "(m)";
 		}
@@ -138,8 +148,8 @@ public class Helmet extends ArmorItem<Helmet> {
 
 	@Override
 	public String getText() {
-		String s = super.getText(); 
-		
+		String s = super.getText();
+
 		if (magic) {
 			for (int i = 0; i < modifications.size(); i++) {
 				ItemModification m = (ItemModification) modifications.get(i);
@@ -148,7 +158,5 @@ public class Helmet extends ArmorItem<Helmet> {
 		}
 
 		return s;
-
 	}
-
 }

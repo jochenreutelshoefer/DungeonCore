@@ -49,19 +49,23 @@ public class ShellASPSolver {
 		OutputBuffer err = new OutputBuffer();
 		final int[] exitCode = new int[1];
 		try {
-			Exec execution = new Exec("/Users/jochenreutelshoefer/Downloads/clingo-5.4.0-macos-x86_64/clingo")
+			String clingoPath = "/Users/jochenreutelshoefer/Downloads/clingo-5.4.0-macos-x86_64/clingo";
+			String randParameter = "--rand-freq=0.05";
+			String randProb = "--rand-prob=50,20";
+			String randSeed = "--seed=" + Integer.toString((int) (Math.random() * 100000));
+			Exec execution = new Exec(clingoPath, randSeed, randParameter)
 					.console(false).input(fullProgram).error(err).output(out);
 			execution.runAsync();
 
 			// wait some time
-			int maxSolvingTime = 23 * 1000;
+			int maxSolvingTime = 30 * 1000;
 			int timeWaited = 0;
 			while (execution.isAlive() && timeWaited < maxSolvingTime) {
 				int waitStep = 500;
 				Thread.sleep(waitStep);
 				timeWaited += waitStep;
 			}
-			if(execution.isAlive()) {
+			if (execution.isAlive()) {
 				// we stop the solver
 				execution.destroy();
 			}

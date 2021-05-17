@@ -1,9 +1,11 @@
 package de.jdungeon.dungeon.builder;
 
+import com.badlogic.gdx.utils.Json;
+
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 
-public interface LocatedEntityBuilder {
+public interface LocatedEntityBuilder extends Json.Serializable {
 
 	/**
 	 * Return a unique (for the current level) identifier for this entity.

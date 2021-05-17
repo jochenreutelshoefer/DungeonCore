@@ -7,10 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 
 import de.jdungeon.dungeon.builder.*;
-import de.jdungeon.dungeon.level.LevelSome;
+import de.jdungeon.dungeon.level.Level16x16;
 import de.jdungeon.dungeon.level.LevelX;
-import de.jdungeon.dungeon.level.LevelY;
-import de.jdungeon.dungeon.level.LevelZ;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -30,6 +28,7 @@ import de.jdungeon.level.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.game.LibgdxConfiguration;
 import de.jdungeon.game.LibgdxLogger;
+import de.jdungeon.level.SingleDungeonManager;
 import de.jdungeon.log.Log;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
@@ -72,6 +71,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 	private UUIDGenerator uuidGenerator;
 
 	private Logger gdxLogger;
+	private SingleDungeonManager simpleDungeonManager;
 
 	public LibgdxDungeonSimpleMain(ResourceBundleLoader resourceBundleLoader,
 								   FilenameLister filenameLister,
@@ -119,7 +119,9 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 
 		EventManager.getInstance().registerListener(this);
 
-		dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator);
+		//simpleDungeonManager = SingleDungeonManager.create(new Level16x16());
+		simpleDungeonManager = SingleDungeonManager.create(new LevelX());
+		dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator, simpleDungeonManager);
 		((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 		Gdx.app.log(TAG, "App: processing DungeonStartEvent");
 
@@ -127,16 +129,14 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 		DungeonFactory dungeonFactory = dungeonSession.getDungeonManager()
 				.getDungeonOptions(dungeonSession.getCurrentStage())
 				.get(0);
-		DungeonFactory level = new LevelSome();
-		//DungeonFactory level = new LevelSome();
 
-		if (level != null) {
+		if (dungeonFactory != null) {
 
 			// create new controller
 			PlayerController controller = new PlayerController(this.dungeonSession, this.adapter);
 
 			try {
-				this.dungeonSession.initDungeon(level, controller);
+				this.dungeonSession.initDungeon(dungeonFactory, controller);
 			}
 			catch (DungeonGenerationException e) {
 				Log.severe("Could not create level: " + e.getMessage());
@@ -230,7 +230,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 	public void notify(Event event) {
 		AudioManagerTouchGUI.playSound(AudioManagerTouchGUI.TOUCH1);
 		if (event instanceof StartNewGameEvent) {
-			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator);
+			dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator, simpleDungeonManager);
 			((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 
 			/*

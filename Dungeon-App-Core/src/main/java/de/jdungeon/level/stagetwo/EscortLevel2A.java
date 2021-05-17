@@ -6,6 +6,7 @@ import java.util.List;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DungeonFiller;
 import de.jdungeon.dungeon.generate.RoomPositionConstraint;
 import de.jdungeon.figure.FigureControl;
@@ -29,11 +30,10 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 	public static final int DUNGEON_SIZE_Y = 3;
 	public static final int DUNGEON_SIZE_X = 3;
 	private static final int FLOOR_INDEX_EXIT = 5;
+	private Dungeon dungeon;
 
 	@Override
-	public Dungeon createDungeon() {
-		Dungeon dungeon = null;
-
+	public void create() {
 		List<Key> remainingKeys = new ArrayList<>();
 
 		DungeonFiller filler = null;
@@ -71,8 +71,16 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(8000),0, -1);
 		filler.getUnallocatedRandomRoom().figureEnters(filler.getSmallMonster(8000),0, -1);
 
+	}
 
+	@Override
+	public Dungeon getDungeon() {
 		return dungeon;
+	}
+
+	@Override
+	public LevelDTO getDTO() {
+		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
 	}
 
 	@Override

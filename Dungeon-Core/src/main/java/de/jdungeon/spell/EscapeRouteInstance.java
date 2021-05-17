@@ -3,6 +3,7 @@ package de.jdungeon.spell;
 import de.jdungeon.dungeon.Door;
 import de.jdungeon.figure.Figure;
 
+@Deprecated
 public class EscapeRouteInstance extends TimedSpellInstance {
 
 	private final Door d;
@@ -12,12 +13,12 @@ public class EscapeRouteInstance extends TimedSpellInstance {
 		this.mage = mage;
 		this.d = d;
 		this.duration = time;
-		d.setEscapeRoute(mage);
+		//d.setEscapeRoute(mage);
 	}
 	
 	@Override
 	public void stopEffect() {
-		d.unsetEscapeRoute(mage);
+		//d.unsetEscapeRoute(mage);
 
 	}
 

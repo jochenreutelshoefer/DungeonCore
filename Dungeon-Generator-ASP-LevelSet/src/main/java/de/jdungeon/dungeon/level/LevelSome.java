@@ -20,6 +20,9 @@ import de.jdungeon.dungeon.builder.HallBuilder;
 import de.jdungeon.dungeon.builder.KeyBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.dungeon.builder.StartLocationBuilder;
+import de.jdungeon.dungeon.builder.serialization.ItemDTO;
+import de.jdungeon.dungeon.builder.serialization.LevelDTO;
+import de.jdungeon.dungeon.builder.serialization.ScrollItemDTO;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.monster.Spider;
@@ -42,24 +45,25 @@ import de.jdungeon.spell.conjuration.LionessConjuration;
 
 public class LevelSome extends AbstractASPDungeonFactory {
 
-	private DungeonResult dungeonBuild;
+	private int hallUpperLeftCornerX;
+	private int hallLowerLeftCornerY;
 
 	@Override
-	public Dungeon createDungeon() throws DungeonGenerationException {
+	public void create() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 7);
-		int hallUpperLeftCornerX = start.getX() - 1;
-		int hallLowerLeftCornerY = start.getY() - 4;
+		hallUpperLeftCornerX = start.getX() - 1;
+		hallLowerLeftCornerY = start.getY() - 4;
 		int hallWidth = 3;
 		int hallHeight = 3;
 
-		java.util.List<Item> gimmickPool = new ArrayList<>();
-		gimmickPool.add(new OxygenPotion());
-		gimmickPool.add(new HealPotion(35));
-		gimmickPool.add(new ScrollMagic(new LionessConjuration(1)));
-		gimmickPool.add(new ScrollMagic(new FirConjuration(1)));
-		gimmickPool.add(new DustItem(7));
+		java.util.List<ItemDTO> gimmickPool = new ArrayList<>();
+		gimmickPool.add(new ItemDTO(OxygenPotion.class));
+		gimmickPool.add(new ItemDTO(HealPotion.class, 35));
+		gimmickPool.add(new ScrollItemDTO(LionessConjuration.class));
+		gimmickPool.add(new ScrollItemDTO(FirConjuration.class));
+		gimmickPool.add(new ItemDTO(DustItem.class, 7));
 
-		Collection<Item> selectedGimmicks = Items.selectRandomN(gimmickPool, 3);
+		Collection<ItemDTO> selectedGimmicks = Items.selectRandomN(gimmickPool, 3);
 		Collection<ChestItemBuilder> chestItemBuilders = selectedGimmicks.stream()
 				.map(item -> new ChestItemBuilder(item))
 				.collect(Collectors.toList());
@@ -133,7 +137,10 @@ public class LevelSome extends AbstractASPDungeonFactory {
 				.addKey(keyBuilder)
 				.addLocationsShortestDistanceAtLeastConstraint(startL, keyBuilder, 6)
 				.build();
+	}
 
+	@Override
+	public Dungeon getDungeon() {
 		Dungeon dungeon = dungeonBuild.getDungeon();
 		Room wolfRoom = dungeon.getRoom(hallUpperLeftCornerX + 1, hallLowerLeftCornerY);
 		HadrianAI ai = new HadrianAI(hallUpperLeftCornerX, hallLowerLeftCornerY);
@@ -141,7 +148,6 @@ public class LevelSome extends AbstractASPDungeonFactory {
 		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(), -1);
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
 		SimpleDungeonFiller.setAllFound(hadrian.getViwMap());
-
 		return dungeon;
 	}
 

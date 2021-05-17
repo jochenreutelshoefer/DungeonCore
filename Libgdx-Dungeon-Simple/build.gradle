@@ -22,7 +22,7 @@ eclipse.project.name = appName + "-Libgdx-Dungeon-Simple"
 
 dependencies {
     api project(":Libgdx-Dungeon-Basic")
-    api project(":Dungeon-Generator-ASP")
+    api project(":Dungeon-Generator-ASP-LevelSet")
     //api project(":Dungeon-FrontEnd-TouchGUI")
     //api project(":Game-Libgdx")
     //api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"

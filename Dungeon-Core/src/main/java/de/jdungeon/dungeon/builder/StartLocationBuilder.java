@@ -1,5 +1,7 @@
 package de.jdungeon.dungeon.builder;
 
+import java.util.Objects;
+
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
@@ -8,14 +10,31 @@ import de.jdungeon.log.Log;
 
 public class StartLocationBuilder extends AbstractLocationBuilder {
 
-	private JDPoint exitPosition;
+	public JDPoint exitPosition;
 
 	public StartLocationBuilder(JDPoint startPosition, JDPoint exitPosition) {
 		super(startPosition);
 		this.exitPosition = exitPosition;
 	}
 
+	/**
+	 * Required for JSON serialization
+	 */
+	public StartLocationBuilder() {
+	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		StartLocationBuilder that = (StartLocationBuilder) o;
+		return exitPosition.equals(that.exitPosition);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(exitPosition);
+	}
 
 	@Override
 	public String getIdentifier() {

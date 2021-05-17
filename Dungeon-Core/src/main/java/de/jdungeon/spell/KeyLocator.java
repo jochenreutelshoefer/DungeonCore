@@ -20,6 +20,7 @@ import de.jdungeon.item.interfaces.ItemOwner;
  *         To enable and disable the creation of type comments go to
  *         Window>Preferences>Java>Code Generation.
  */
+@Deprecated
 public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 
 	public static int[][] values = {
@@ -80,12 +81,12 @@ public class KeyLocator extends AbstractTargetSpell implements TargetSpell {
 		if (target instanceof Door) {
 			Door d = ((Door) target);
 			if (d.hasLock()) {
-				d.getLock().setKeyLocatable(mage);
+				//d.getLock().setKeyLocatable(mage);
 				tellKeyLocation(mage, d, round);
 			}
 		}
 		else if (target instanceof Lock) {
-			((Lock) target).setKeyLocatable(mage);
+			//((Lock) target).setKeyLocatable(mage);
 			tellDirection(((Lock) target).getKey().getOwner().getRoomNumber(), mage, round);
 		}
 		else {
