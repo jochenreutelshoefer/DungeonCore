@@ -10,7 +10,5 @@ public interface DungeonResult {
 
     LevelDTO getDungeonDTO();
 
-    JDPoint getStartPosition();
-
     String getDescription();
 }

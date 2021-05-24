@@ -17,10 +17,8 @@ import de.jdungeon.location.ScoutShrine;
 
 public class Level16x16 extends AbstractASPDungeonFactory {
 
-	private DungeonResult dungeonBuild;
-
 	@Override
-	public void create() throws DungeonGenerationException {
+	protected void doGenerate() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 15);
 
 		int hallUpperLeftCornerX = start.getX() - 1;
@@ -47,8 +45,6 @@ public class Level16x16 extends AbstractASPDungeonFactory {
 				.addLocation(scoutTower)
 				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 40)
 				.build();
-
-
 	}
 
 	@Override
@@ -56,15 +52,7 @@ public class Level16x16 extends AbstractASPDungeonFactory {
 		return dungeonBuild.getDungeon();
 	}
 
-	@Override
-	public LevelDTO getDTO() {
-		return null;
-	}
 
-	@Override
-	public JDPoint getHeroEntryPoint() {
-		return dungeonBuild.getStartPosition();
-	}
 
 	@Override
 	public String icon() {

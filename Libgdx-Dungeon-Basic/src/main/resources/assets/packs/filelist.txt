@@ -1,5 +1,4 @@
 mage.atlas
-gui2.png
 spider.png
 ogre.png
 dungeon.atlas
@@ -31,4 +30,5 @@ skel.atlas
 dungeon.png
 wolf.atlas
 gui.atlas
+ui.atlas
 filelist.txt

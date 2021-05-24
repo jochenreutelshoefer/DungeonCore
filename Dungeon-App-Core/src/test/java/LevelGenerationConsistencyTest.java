@@ -4,6 +4,7 @@ import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.generate.ReachabilityChecker;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.game.JDEnv;
@@ -26,7 +27,7 @@ import static junit.framework.Assert.*;
  */
 public class LevelGenerationConsistencyTest {
 
-	public void testLevels() {
+	public void testLevels() throws DungeonGenerationException {
 		//JDEnv.init(ResourceBundle.getBundle("texts", Locale.GERMAN));
 		JDEnv.init(new MyResourceBundle() {
 			@Override
@@ -44,7 +45,8 @@ public class LevelGenerationConsistencyTest {
 		for (int i = 0; i < manager.getNumberOfStages(); i++) {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
 			for (DungeonFactory dungeonFactory : dungeonFactories) {
-				Dungeon dungeon = dungeonFactory.createDungeon();
+				dungeonFactory.create();
+				Dungeon dungeon = dungeonFactory.getDungeon();
 				dungeon.prepare();
 				assertNotNull(dungeon);
 

@@ -1,0 +1,398 @@
+
+gui.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Eule
+  rotate: false
+  xy: 2, 543
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+ManaBattery
+  rotate: false
+  xy: 404, 255
+  size: 286, 286
+  orig: 286, 286
+  offset: 0, 0
+  index: -1
+Papagei
+  rotate: false
+  xy: 1068, 1645
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+Parchment
+  rotate: false
+  xy: 996, 117
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Potion
+  rotate: false
+  xy: 1839, 757
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Scroll
+  rotate: false
+  xy: 806, 687
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+Treasure-valuable-wealth-asset_3-512
+  rotate: false
+  xy: 1470, 1764
+  size: 472, 281
+  orig: 472, 281
+  offset: 0, 0
+  index: -1
+Vogel
+  rotate: false
+  xy: 2, 141
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+Zauberstaub
+  rotate: false
+  xy: 1068, 985
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+ZauberstaubSW
+  rotate: false
+  xy: 1470, 1506
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+black
+  rotate: false
+  xy: 1451, 907
+  size: 35, 35
+  orig: 35, 35
+  offset: 0, 0
+  index: -1
+boxHover
+  rotate: false
+  xy: 1123, 311
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+boxNormal
+  rotate: false
+  xy: 1123, 181
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+boxNormalBW
+  rotate: false
+  xy: 1907, 1618
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+boxSelect
+  rotate: false
+  xy: 1907, 1488
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+circle_white
+  rotate: false
+  xy: 1123, 573
+  size: 136, 136
+  orig: 136, 136
+  offset: 0, 0
+  index: -1
+door_element_closed_key
+  rotate: false
+  xy: 656, 30
+  size: 199, 73
+  orig: 199, 73
+  offset: 0, 0
+  index: -1
+door_element_closed_notunlockable
+  rotate: false
+  xy: 795, 108
+  size: 199, 73
+  orig: 199, 73
+  offset: 0, 0
+  index: -1
+door_element_open_lockable
+  rotate: false
+  xy: 857, 33
+  size: 199, 73
+  orig: 199, 73
+  offset: 0, 0
+  index: -1
+door_element_open_nokey
+  rotate: false
+  xy: 1763, 919
+  size: 199, 73
+  orig: 199, 73
+  offset: 0, 0
+  index: -1
+eye130x130
+  rotate: false
+  xy: 1123, 441
+  size: 130, 130
+  orig: 130, 130
+  offset: 0, 0
+  index: -1
+foot_icon
+  rotate: false
+  xy: 404, 3
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: -1
+health_bar_bare_blue
+  rotate: false
+  xy: 656, 8
+  size: 202, 20
+  orig: 202, 20
+  offset: 0, 0
+  index: -1
+health_bar_bare_red
+  rotate: false
+  xy: 1757, 845
+  size: 202, 20
+  orig: 202, 20
+  offset: 0, 0
+  index: -1
+health_bar_bare_yellow
+  rotate: false
+  xy: 1757, 867
+  size: 206, 20
+  orig: 206, 20
+  offset: 0, 0
+  index: -1
+health_bar_blue
+  rotate: false
+  xy: 1064, 711
+  size: 206, 28
+  orig: 206, 28
+  offset: 0, 0
+  index: -1
+health_bar_empty
+  rotate: false
+  xy: 1757, 823
+  size: 202, 20
+  orig: 202, 20
+  offset: 0, 0
+  index: -1
+health_bar_red
+  rotate: false
+  xy: 860, 3
+  size: 206, 28
+  orig: 206, 28
+  offset: 0, 0
+  index: -1
+health_bar_yellow
+  rotate: false
+  xy: 1757, 889
+  size: 206, 28
+  orig: 206, 28
+  offset: 0, 0
+  index: -1
+heart_icon
+  rotate: false
+  xy: 871, 435
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: -1
+highlightbox
+  rotate: false
+  xy: 1757, 741
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+hour-glass-empty
+  rotate: false
+  xy: 1728, 1465
+  size: 177, 297
+  orig: 177, 297
+  offset: 0, 0
+  index: -1
+hour-glass-full
+  rotate: false
+  xy: 692, 244
+  size: 177, 297
+  orig: 177, 297
+  offset: 0, 0
+  index: -1
+hour-glass-half
+  rotate: false
+  xy: 1326, 944
+  size: 177, 297
+  orig: 177, 297
+  offset: 0, 0
+  index: -1
+hour-glass-third
+  rotate: false
+  xy: 1763, 994
+  size: 177, 297
+  orig: 177, 297
+  offset: 0, 0
+  index: -1
+key
+  rotate: false
+  xy: 795, 202
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+lion_icon
+  rotate: false
+  xy: 404, 543
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+lion_icon_old
+  rotate: false
+  xy: 1068, 1243
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+lupe2
+  rotate: false
+  xy: 1944, 1748
+  size: 100, 146
+  orig: 100, 146
+  offset: 0, 0
+  index: -1
+mana-potion
+  rotate: false
+  xy: 1470, 1248
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+minus
+  rotate: false
+  xy: 837, 210
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+mondrune
+  rotate: false
+  xy: 1944, 1896
+  size: 100, 149
+  orig: 100, 149
+  offset: 0, 0
+  index: -1
+move_element2
+  rotate: false
+  xy: 1728, 1293
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1
+no_image
+  rotate: false
+  xy: 806, 636
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+plus
+  rotate: false
+  xy: 1728, 1259
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+quadrat
+  rotate: false
+  xy: 1068, 741
+  size: 242, 242
+  orig: 242, 242
+  offset: 0, 0
+  index: -1
+step_element
+  rotate: false
+  xy: 2, 2
+  size: 137, 137
+  orig: 137, 137
+  offset: 0, 0
+  index: -1
+step_element_enemy
+  rotate: false
+  xy: 141, 2
+  size: 137, 137
+  orig: 137, 137
+  offset: 0, 0
+  index: -1
+step_element_friend
+  rotate: false
+  xy: 1312, 805
+  size: 137, 137
+  orig: 137, 137
+  offset: 0, 0
+  index: -1
+step_element_self
+  rotate: false
+  xy: 656, 105
+  size: 137, 137
+  orig: 137, 137
+  offset: 0, 0
+  index: -1
+sword_icon
+  rotate: false
+  xy: 871, 183
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: -1
+target_icon
+  rotate: false
+  xy: 1505, 738
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: -1
+temple
+  rotate: false
+  xy: 1505, 990
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+win-bubble
+  rotate: false
+  xy: 280, 30
+  size: 117, 109
+  orig: 117, 109
+  offset: 0, 0
+  index: -1
+window_badge
+  rotate: false
+  xy: 1312, 746
+  size: 180, 57
+  orig: 180, 57
+  offset: 0, 0
+  index: -1
+window_border5
+  rotate: false
+  xy: 2, 945
+  size: 1064, 1100
+  orig: 1064, 1100
+  offset: 0, 0
+  index: -1

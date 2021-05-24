@@ -1,20 +1,13 @@
 package de.jdungeon.generation.test;
 
-import java.util.Locale;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import org.junit.jupiter.api.Test;
 
-import de.jdungeon.dungeon.Chest;
-import de.jdungeon.dungeon.Lock;
+import de.jdungeon.dungeon.builder.AbstractASPDungeonFactory;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.level.LevelSome;
-import de.jdungeon.game.JDEnv;
-import de.jdungeon.item.Key;
-import de.jdungeon.util.MyResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,7 +16,7 @@ public class GenerationAndSerializationRoundTripTest {
 	@Test
 	public void testRoundTrip() throws DungeonGenerationException {
 
-		LevelSome level = new LevelSome();
+		LevelSome level = new LevelSome(AbstractASPDungeonFactory.Mode.Generate);
 		level.create();
 		LevelDTO object1 = level.getDTO();
 

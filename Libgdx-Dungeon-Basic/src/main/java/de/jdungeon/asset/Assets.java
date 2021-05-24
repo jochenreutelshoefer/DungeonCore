@@ -1,10 +1,13 @@
 package de.jdungeon.asset;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.utils.I18NBundle;
+
 import de.jdungeon.audio.AudioEffectsManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -13,8 +16,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+
 import de.jdungeon.figure.FigurePresentation;
 import de.jdungeon.game.FileIO;
+import de.jdungeon.game.JDEnv;
 import de.jdungeon.graphics.ImageManager;
 import de.jdungeon.graphics.JDImageProxy;
 
@@ -28,6 +33,7 @@ import de.jdungeon.game.AudioLoader;
  * @created 26.12.19.
  */
 public class Assets implements Disposable, AssetErrorListener {
+
 
 	private static final String TAG = Assets.class.getName();
 	/*
@@ -57,6 +63,18 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public static final String PACKS_GWT = "packs/";
 	public static final String PACKS = PACKS_GWT;
+
+	public static final String ASSET_FOLDER = "Libgdx-Dungeon-Basic/src/main/resources/assets/";
+
+	public static File getLevelFolderAbsolute(String levelName) {
+		String subFolders = getLevelFolderRelative(levelName);
+		return new File(ASSET_FOLDER, subFolders);
+	}
+
+	public static String getLevelFolderRelative(String levelName) {
+		return JDEnv.getLevelFolderRelative(levelName);
+	}
+
 
 	public I18NBundle getTextBundle() {
 		return textBundle;
@@ -89,14 +107,14 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		FigurePresentation[] figurePresentations = FigurePresentation.values();
 		for (FigurePresentation figurePresentation : figurePresentations) {
-			if(figurePresentation == FigurePresentation.Fir) continue; // exception as Fir does not have animations
+			if (figurePresentation == FigurePresentation.Fir) continue; // exception as Fir does not have animations
 			String figureAtlasPath = PACKS + figurePresentation.getFilepath() + ATLAS_FILE_EXTENSION;
 			assetManager.load(figureAtlasPath, TextureAtlas.class);
 		}
 		assetManager.finishLoading();
 
 		for (FigurePresentation figurePresentation : figurePresentations) {
-			if(figurePresentation == FigurePresentation.Fir) continue; // exception as Fir does not have animations
+			if (figurePresentation == FigurePresentation.Fir) continue; // exception as Fir does not have animations
 			String figureAtlasPath = PACKS + figurePresentation.getFilepath() + ATLAS_FILE_EXTENSION;
 			TextureAtlas figureAtlas = null;
 			try {
@@ -157,6 +175,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	 */
 
 	private final Map<String, TextureAtlas.AtlasRegion> overallRegionCacheMap = new HashMap<>();
+
 	/**
 	 * Should only be used if absolutely necessary, that is if the caller code
 	 * has no chance to know in which atlas the texture is in.
@@ -172,7 +191,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			TextureAtlas.AtlasRegion region = textureAtlas.findRegion(filename);
 			if (region != null) {
 
-				if(insertInFigureCache) {
+				if (insertInFigureCache) {
 					// for some weird reason, if this method is called from the wrong situation
 					// then the image will we upside down if put into this cache now.... !?!?
 					figuresCacheMap.get(textureAtlas).put(filename, region);

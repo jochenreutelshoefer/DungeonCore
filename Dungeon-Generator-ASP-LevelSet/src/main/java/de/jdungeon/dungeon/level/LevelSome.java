@@ -48,8 +48,12 @@ public class LevelSome extends AbstractASPDungeonFactory {
 	private int hallUpperLeftCornerX;
 	private int hallLowerLeftCornerY;
 
+	public LevelSome(AbstractASPDungeonFactory.Mode mode) {
+		super(mode);
+	}
+
 	@Override
-	public void create() throws DungeonGenerationException {
+	protected void doGenerate() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 7);
 		hallUpperLeftCornerX = start.getX() - 1;
 		hallLowerLeftCornerY = start.getY() - 4;
@@ -149,11 +153,6 @@ public class LevelSome extends AbstractASPDungeonFactory {
 		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
 		SimpleDungeonFiller.setAllFound(hadrian.getViwMap());
 		return dungeon;
-	}
-
-	@Override
-	public JDPoint getHeroEntryPoint() {
-		return dungeonBuild.getStartPosition();
 	}
 
 	@Override

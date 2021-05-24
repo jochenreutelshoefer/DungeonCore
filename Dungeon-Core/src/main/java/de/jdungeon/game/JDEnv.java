@@ -1,5 +1,7 @@
 package de.jdungeon.game;
 
+import java.io.File;
+
 import de.jdungeon.gui.Texts;
 import de.jdungeon.log.Log;
 import de.jdungeon.util.MyResourceBundle;
@@ -10,6 +12,8 @@ import de.jdungeon.util.MyResourceBundle;
  * anderen Klassen erben dies von dieser Klasse.
  */
 public class JDEnv {
+
+
 
 	protected static MyResourceBundle res;
 
@@ -34,4 +38,8 @@ public class JDEnv {
 		return res.get(key);
 	}
 
+	public static String getLevelFolderRelative(String levelName) {
+		String subFolders = "levels/" +levelName;
+		return subFolders;
+	}
 }

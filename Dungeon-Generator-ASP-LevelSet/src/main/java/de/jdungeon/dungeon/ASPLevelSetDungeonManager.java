@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.jdungeon.dungeon.builder.AbstractASPDungeonFactory;
 import de.jdungeon.dungeon.level.LevelSome;
 import de.jdungeon.dungeon.level.LevelX;
 import de.jdungeon.dungeon.level.LevelY;
@@ -18,7 +19,7 @@ public class ASPLevelSetDungeonManager extends AbstractDungeonManager {
 
 	static {
 		List<DungeonFactory> stageZeroList = new ArrayList<>();
-		stageZeroList.add(new LevelSome());
+		stageZeroList.add(new LevelSome(AbstractASPDungeonFactory.Mode.Read));
 		stages.put(0, stageZeroList);
 
 		List<DungeonFactory> stageOneList = new ArrayList<>();

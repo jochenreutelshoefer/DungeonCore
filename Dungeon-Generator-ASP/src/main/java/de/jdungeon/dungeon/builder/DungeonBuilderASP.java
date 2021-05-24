@@ -9,14 +9,13 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.asp.Result;
 import de.jdungeon.dungeon.builder.asp.ShellASPSolver;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.log.Log;
 
-public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
+public class DungeonBuilderASP implements DungeonBuilder<DTODungeonResult> {
 
 	protected int gridWidth = 7;
 	protected int gridHeight = 7;
@@ -65,7 +64,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 	}
 
 	@Override
-	public DungeonResultASP build() throws DungeonGenerationException {
+	public DTODungeonResult build() throws DungeonGenerationException {
 		String aspSource = new DungeonBuilderASPWriter(this).generateASPCode();
 		File aspOutFile = new File("ASP_source.lp");
 		try {
@@ -90,7 +89,8 @@ public class DungeonBuilderASP implements DungeonBuilder<DungeonResultASP> {
 		}
 		if (aspResult != null && aspResult.hasModel()) {
 			LevelDTO dungeon = new DungeonBuilderASPReader(this).createDungeon(aspResult);
-			return new DungeonResultASP(dungeon, new JDPoint(this.startX, startY), this.toString());
+			dungeon.setStartPosition(new JDPoint(this.startX, startY));
+			return new DTODungeonResult(dungeon, this.toString());
 		}
 		if (aspResult != null) {
 			Log.warning(aspResult.getFullOutput());

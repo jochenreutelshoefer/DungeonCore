@@ -14,10 +14,8 @@ import de.jdungeon.location.RevealMapShrine;
 
 public class LevelX extends AbstractASPDungeonFactory {
 
-
-
 	@Override
-	public void create() throws DungeonGenerationException {
+	protected void doGenerate() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 5);
 		JDPoint exitP = new JDPoint(5, 0);
 		LocationBuilder exit = new LocationBuilder(LevelExit.class, 5, 0);
@@ -30,21 +28,8 @@ public class LevelX extends AbstractASPDungeonFactory {
 				.addLocation(exit)
 				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 20)
 				.build();
-
-
 	}
 
-
-
-	@Override
-	public LevelDTO getDTO() {
-		return null;
-	}
-
-	@Override
-	public JDPoint getHeroEntryPoint() {
-		return dungeonBuild.getStartPosition();
-	}
 
 	@Override
 	public String icon() {

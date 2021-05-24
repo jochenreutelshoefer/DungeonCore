@@ -23,6 +23,7 @@ eclipse.project.name = appName + "-Dungeon-Tools"
 dependencies {
     api project(":Dungeon-Core")
     api project(":Libgdx-Dungeon-Basic")
+    api project(":Dungeon-Generator-ASP-LevelSet")
     implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }

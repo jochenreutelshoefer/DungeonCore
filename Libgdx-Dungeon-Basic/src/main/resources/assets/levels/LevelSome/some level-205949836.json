@@ -1,0 +1,760 @@
+{
+"dungeonDTO": {
+	"rooms": [
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		],
+		[
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			},
+			{
+				"location": null,
+				"chest": null,
+				"item": null
+			}
+		]
+	],
+	"doors": {
+		"exoticTypeName": "java.util.HashSet",
+		"items": [
+			{
+				"x1": 5,
+				"y1": 5,
+				"x2": 5,
+				"y2": 4
+			},
+			{
+				"x1": 5,
+				"y1": 4,
+				"x2": 4,
+				"y2": 4
+			},
+			{
+				"x1": 4,
+				"y1": 3,
+				"x2": 4,
+				"y2": 2
+			},
+			{
+				"x1": 5,
+				"y1": 5,
+				"x2": 4,
+				"y2": 5
+			},
+			{
+				"x1": 4,
+				"y1": 2,
+				"x2": 4,
+				"y2": 1
+			},
+			{
+				"x1": 4,
+				"y1": 1,
+				"x2": 4,
+				"y2": 0
+			},
+			{
+				"x1": 4,
+				"y1": 7,
+				"x2": 4,
+				"y2": 6
+			},
+			{
+				"x1": 6,
+				"y1": 3,
+				"x2": 6,
+				"y2": 2
+			},
+			{
+				"x1": 3,
+				"y1": 5,
+				"x2": 3,
+				"y2": 4
+			},
+			{
+				"x1": 4,
+				"y1": 5,
+				"x2": 3,
+				"y2": 5
+			},
+			{
+				"x1": 4,
+				"y1": 6,
+				"x2": 4,
+				"y2": 5
+			},
+			{
+				"x1": 6,
+				"y1": 3,
+				"x2": 5,
+				"y2": 3
+			},
+			{
+				"x1": 6,
+				"y1": 4,
+				"x2": 6,
+				"y2": 3
+			},
+			{
+				"x1": 3,
+				"y1": 4,
+				"x2": 3,
+				"y2": 3
+			},
+			{
+				"x1": 4,
+				"y1": 5,
+				"x2": 4,
+				"y2": 4
+			},
+			{
+				"x1": 4,
+				"y1": 4,
+				"x2": 3,
+				"y2": 4
+			},
+			{
+				"x1": 5,
+				"y1": 4,
+				"x2": 5,
+				"y2": 3
+			},
+			{
+				"x1": 5,
+				"y1": 3,
+				"x2": 4,
+				"y2": 3
+			},
+			{
+				"x1": 6,
+				"y1": 4,
+				"x2": 5,
+				"y2": 4
+			},
+			{
+				"x1": 4,
+				"y1": 4,
+				"x2": 4,
+				"y2": 3
+			},
+			{
+				"x1": 4,
+				"y1": 3,
+				"x2": 3,
+				"y2": 3
+			}
+		]
+	},
+	"locks": {
+		"exoticTypeName": "java.util.HashSet",
+		"items": [
+			{
+				"key": "Messing",
+				"door": {
+					"x1": 4,
+					"y1": 3,
+					"x2": 4,
+					"y2": 2
+				}
+			}
+		]
+	},
+	"locations": {
+		"exoticTypeName": "java.util.HashMap",
+		" 4 - 6": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.LocationBuilder",
+			"room": {
+				"x": 4,
+				"y": 6
+			},
+			"clazz": "de.jdungeon.location.defender.DefenderLocation"
+		},
+		" 5 - 5": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.ChestItemBuilder",
+			"room": null,
+			"item": {
+				"clazzName": "de.jdungeon.item.HealPotion",
+				"name": null,
+				"amount": 35
+			}
+		},
+		" 4 - 4": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.LocationBuilder",
+			"room": {
+				"x": 4,
+				"y": 4
+			},
+			"clazz": "de.jdungeon.location.ScoutShrine"
+		},
+		" 6 - 4": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.LocationBuilder",
+			"room": null,
+			"clazz": "de.jdungeon.location.HealthFountain"
+		},
+		" 6 - 2": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.KeyBuilder",
+			"door_marker": {
+				"x1": 4,
+				"y1": 3,
+				"x2": 4,
+				"y2": 2
+			},
+			"key_string": "Messing"
+		},
+		" 4 - 0": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.LocationBuilder",
+			"room": {
+				"x": 4,
+				"y": 0
+			},
+			"clazz": "de.jdungeon.location.LevelExit"
+		},
+		" 3 - 3": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.ChestItemBuilder",
+			"room": null,
+			"item": {
+				"clazzName": "de.jdungeon.item.OxygenPotion",
+				"name": null,
+				"amount": 0
+			}
+		},
+		" 3 - 5": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.ChestItemBuilder",
+			"room": null,
+			"item": {
+				"exoticTypeName": "de.jdungeon.dungeon.builder.serialization.ScrollItemDTO",
+				"clazzName": "de.jdungeon.spell.conjuration.LionessConjuration",
+				"name": null,
+				"amount": 0,
+				"spellClazzName": "de.jdungeon.spell.conjuration.LionessConjuration"
+			}
+		},
+		" 4 - 7": {
+			"exoticTypeName": "de.jdungeon.dungeon.builder.StartLocationBuilder",
+			"room": {
+				"x": 4,
+				"y": 7
+			},
+			"exitPosition": {
+				"x": 4,
+				"y": 0
+			}
+		}
+	},
+	"width": 10,
+	"height": 10
+},
+"name": null,
+"startPosition": {
+	"x": 4,
+	"y": 7
+}
+}

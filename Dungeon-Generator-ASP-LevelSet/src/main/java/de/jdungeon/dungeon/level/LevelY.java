@@ -1,25 +1,22 @@
 package de.jdungeon.dungeon.level;
 
-import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.AbstractASPDungeonFactory;
 import de.jdungeon.dungeon.builder.DoorMarker;
 import de.jdungeon.dungeon.builder.DoorSpecification;
 import de.jdungeon.dungeon.builder.DungeonBuilderASP;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
-import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.HallBuilder;
 import de.jdungeon.dungeon.builder.KeyBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.dungeon.builder.StartLocationBuilder;
 import de.jdungeon.location.LevelExit;
-import de.jdungeon.location.RevealMapShrine;
 import de.jdungeon.location.ScoutShrine;
 
 public class LevelY extends AbstractASPDungeonFactory {
 
 	@Override
-	public void create() throws DungeonGenerationException {
+	protected void doGenerate() throws DungeonGenerationException {
 		JDPoint start = new JDPoint(4, 7);
 
 		int hallUpperLeftCornerX = start.getX() - 1;
@@ -51,12 +48,6 @@ public class LevelY extends AbstractASPDungeonFactory {
 						.addNonReachableLocation(exit)
 						.addReachableLocation(scoutTower))
 				.build();
-
-	}
-
-	@Override
-	public JDPoint getHeroEntryPoint() {
-		return dungeonBuild.getStartPosition();
 	}
 
 	@Override
