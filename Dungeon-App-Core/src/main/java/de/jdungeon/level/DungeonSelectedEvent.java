@@ -1,5 +1,7 @@
 package de.jdungeon.level;
 
+import de.jdungeon.dungeon.builder.DungeonFactory;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 01.04.16.

@@ -7,7 +7,7 @@ import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.spell.Spell;

@@ -1,7 +1,10 @@
 package de.jdungeon.dungeon.builder.serialization;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.jdungeon.item.paper.ScrollMagic;
 import de.jdungeon.log.Log;
@@ -27,26 +30,20 @@ public class ScrollItemDTO extends ItemDTO {
 	public ScrollMagic create() {
 		AbstractSpell spell = null;
 		try {
-			Class<?> itemClass = Class.forName(spellClazzName);
+			Class<?> itemClass = ClassReflection.forName(spellClazzName);
 			Object newItemInstance = null;
-
-			Constructor<?>[] constructors = itemClass.getConstructors();
-
-			for (Constructor<?> constructor : constructors) {
+			Constructor[] constructors = ClassReflection.getConstructors(itemClass);
+			for (Constructor constructor : constructors) {
 				// use the standard constructor if available
-				if (constructor.getParameterCount() == 0) {
+				if (constructor.getParameterTypes().length == 0) {
 					newItemInstance = constructor.newInstance();
 					break;
 				}
 			}
 			spell = (AbstractSpell) newItemInstance;
 		}
-		catch (ClassNotFoundException e) {
+		catch (ReflectionException e) {
 			Log.severe("Could not find location class for name: " + spellClazzName);
-			e.printStackTrace();
-		}
-		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			Log.severe("Could not find/execute constructor for location class: " + spellClazzName);
 			e.printStackTrace();
 		}
 		return new ScrollMagic(spell);

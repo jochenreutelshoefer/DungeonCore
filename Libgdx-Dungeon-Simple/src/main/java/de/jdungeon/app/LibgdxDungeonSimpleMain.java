@@ -7,7 +7,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 
 import de.jdungeon.dungeon.builder.*;
-import de.jdungeon.dungeon.level.Level16x16;
 import de.jdungeon.dungeon.level.LevelX;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
@@ -24,7 +23,7 @@ import de.jdungeon.game.*;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 import de.jdungeon.io.FilenameLister;
 import de.jdungeon.io.ResourceBundleLoader;
-import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.game.LibgdxConfiguration;
 import de.jdungeon.game.LibgdxLogger;
@@ -120,7 +119,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 		EventManager.getInstance().registerListener(this);
 
 		//simpleDungeonManager = SingleDungeonManager.create(new Level16x16());
-		simpleDungeonManager = SingleDungeonManager.create(new LevelX());
+		simpleDungeonManager = SingleDungeonManager.create(new LevelX(new ReadDTODungeonBuilderFactory()));
 		dungeonSession = new DefaultDungeonSession(new User("Hans Meiser"), uuidGenerator, simpleDungeonManager);
 		((DefaultDungeonSession) dungeonSession).setSelectedHeroType(Hero.HeroCategory.Druid.getCode());
 		Gdx.app.log(TAG, "App: processing DungeonStartEvent");

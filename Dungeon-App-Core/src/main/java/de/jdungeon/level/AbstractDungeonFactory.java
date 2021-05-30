@@ -7,6 +7,7 @@ import java.util.List;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
+import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.dungeon.generate.DungeonFillUtils;
 import de.jdungeon.dungeon.generate.DungeonFiller;
 import de.jdungeon.dungeon.generate.ReachabilityChecker;

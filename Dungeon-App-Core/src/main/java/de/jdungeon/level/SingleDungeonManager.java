@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.jdungeon.dungeon.builder.DungeonFactory;
+
 public class SingleDungeonManager extends AbstractDungeonManager {
 
 	public SingleDungeonManager(Map<Integer, List<DungeonFactory>> stages) {

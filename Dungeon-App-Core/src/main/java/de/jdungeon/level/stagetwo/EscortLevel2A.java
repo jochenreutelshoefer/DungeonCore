@@ -6,7 +6,6 @@ import java.util.List;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
-import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DungeonFiller;
 import de.jdungeon.dungeon.generate.RoomPositionConstraint;
 import de.jdungeon.figure.FigureControl;
@@ -76,11 +75,6 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 	@Override
 	public Dungeon getDungeon() {
 		return dungeon;
-	}
-
-	@Override
-	public LevelDTO getDTO() {
-		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
 	}
 
 	@Override

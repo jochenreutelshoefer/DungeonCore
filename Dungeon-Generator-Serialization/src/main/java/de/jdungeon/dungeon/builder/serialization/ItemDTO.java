@@ -1,8 +1,11 @@
 package de.jdungeon.dungeon.builder.serialization;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.jdungeon.item.Item;
 import de.jdungeon.log.Log;
@@ -36,20 +39,20 @@ public class ItemDTO<T extends Item> extends AbstractDTO {
 
 	public T create() {
 		try {
-			Class<?> itemClass = Class.forName(clazzName);
+			Class<?> itemClass = ClassReflection.forName(clazzName);
 			Object newItemInstance = null;
 
-			Constructor<?>[] constructors = itemClass.getConstructors();
-
-			for (Constructor<?> constructor : constructors) {
+			com.badlogic.gdx.utils.reflect.Constructor[] constructors = ClassReflection.getConstructors(itemClass);
+			for (Constructor constructor : constructors) {
 				// use the standard constructor if available
-				if (constructor.getParameterCount() == 0) {
+				int parameterCount = constructor.getParameterTypes().length;
+				if (parameterCount == 0) {
 					if (name == null && amount == 0) {
 						newItemInstance = constructor.newInstance();
 						break;
 					}
 				}
-				if (constructor.getParameterCount() == 1) {
+				if (parameterCount == 1) {
 					// use the room constructor if applicable
 					if (constructor.getParameterTypes()[0].equals(String.class) && name != null) {
 						newItemInstance = constructor.newInstance(name);
@@ -60,7 +63,7 @@ public class ItemDTO<T extends Item> extends AbstractDTO {
 						break;
 					}
 				}
-				if (constructor.getParameterCount() == 2 && name != null) {
+				if (parameterCount == 2 && name != null) {
 					if (constructor.getParameterTypes()[0].equals(String.class) &&
 							constructor.getParameterTypes()[1].equals(Integer.class)) {
 						newItemInstance = constructor.newInstance(name, amount);
@@ -75,12 +78,8 @@ public class ItemDTO<T extends Item> extends AbstractDTO {
 			}
 			return (T) newItemInstance;
 		}
-		catch (ClassNotFoundException e) {
+		catch (ReflectionException e) {
 			Log.severe("Could not find location class for name: " + clazzName);
-			e.printStackTrace();
-		}
-		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			Log.severe("Could not find/execute constructor for location class: " + clazzName);
 			e.printStackTrace();
 		}
 

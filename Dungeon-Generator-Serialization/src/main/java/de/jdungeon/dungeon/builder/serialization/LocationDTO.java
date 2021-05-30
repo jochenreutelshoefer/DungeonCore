@@ -1,8 +1,10 @@
 package de.jdungeon.dungeon.builder.serialization;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.location.Location;
@@ -14,18 +16,19 @@ public class LocationDTO<T extends Location>  extends AbstractDTO{
 
 	public T insertInto(Room room) {
 		try {
-			Class<?> locationClazz = Class.forName(clazz.getName());
+			Class<?> locationClazz = ClassReflection.forName(clazz.getName());
 			Object newLocationInstance = null;
 
-			Constructor<?>[] constructors = locationClazz.getConstructors();
+			com.badlogic.gdx.utils.reflect.Constructor[] constructors = ClassReflection.getConstructors(locationClazz);
 
-			for (Constructor<?> constructor : constructors) {
+			for (Constructor constructor : constructors) {
 				// use the standard constructor if available
-				if (constructor.getParameterCount() == 0) {
+				int parameterCount = constructor.getParameterTypes().length;
+				if (parameterCount == 0) {
 					newLocationInstance = constructor.newInstance();
 					break;
 				}
-				if (constructor.getParameterCount() == 1) {
+				if (parameterCount == 1) {
 					// use the room constructor if applicable
 					if (constructor.getParameterTypes()[0].equals(Room.class)) {
 						if (room.getLocation() != null) {
@@ -39,12 +42,8 @@ public class LocationDTO<T extends Location>  extends AbstractDTO{
 			room.setLocation((Location) newLocationInstance);
 			return (T) newLocationInstance;
 		}
-		catch (ClassNotFoundException e) {
+		catch (ReflectionException e) {
 			Log.severe("Could not find location class for name: " + clazz);
-			e.printStackTrace();
-		}
-		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			Log.severe("Could not find/execute constructor for location class: " + clazz);
 			e.printStackTrace();
 		}
 

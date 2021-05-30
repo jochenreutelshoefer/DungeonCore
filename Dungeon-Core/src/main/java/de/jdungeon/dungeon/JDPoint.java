@@ -13,8 +13,8 @@ import de.jdungeon.dungeon.util.RouteInstruction;
  */
 public class JDPoint implements Serializable, Json.Serializable {
 
-	private int x;
-	private int y;
+	int x;
+	int y;
 
 	public JDPoint(int x, int y) {
 		this.x = x;

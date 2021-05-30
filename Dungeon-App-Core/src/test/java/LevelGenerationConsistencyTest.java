@@ -9,9 +9,8 @@ import de.jdungeon.dungeon.generate.ReachabilityChecker;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
-import junit.framework.TestCase;
 import de.jdungeon.level.DefaultDungeonManager;
-import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 
 import static junit.framework.Assert.*;

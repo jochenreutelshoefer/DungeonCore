@@ -36,7 +36,7 @@ import de.jdungeon.level.DungeonManager;
 import de.jdungeon.log.Log;
 import de.jdungeon.score.SessionScore;
 import de.jdungeon.util.MyResourceBundle;
-import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;

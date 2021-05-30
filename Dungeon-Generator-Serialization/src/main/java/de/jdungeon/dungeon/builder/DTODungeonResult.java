@@ -10,7 +10,7 @@ public class DTODungeonResult implements DungeonResult {
 
     private String description;
 
-    DTODungeonResult(LevelDTO dungeon, String description) {
+    public DTODungeonResult(LevelDTO dungeon, String description) {
         this.dungeon = dungeon;
         this.description = description;
     }

@@ -17,11 +17,11 @@ import de.jdungeon.dungeon.builder.LocatedEntityBuilder;
 
 public class DungeonDTO extends AbstractDTO {
 
-	private RoomDTO[][] rooms;
+	//private RoomDTO[][] rooms;
 
-	private Set<DoorMarker> doors = new HashSet<>();
+	private HashSet<DoorMarker> doors = new HashSet<>();
 
-	private Set<LockDTO> locks = new HashSet<>();
+	private HashSet<LockDTO> locks = new HashSet<>();
 
 	private Map<String, LocatedEntityBuilder> locations = new HashMap<>();
 
@@ -32,7 +32,7 @@ public class DungeonDTO extends AbstractDTO {
 	public DungeonDTO(JDPoint start, int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.rooms = new RoomDTO[width][height];
+		//this.rooms = new RoomDTO[width][height];
 	}
 
 	public Set<LockDTO> getLocks() {
@@ -42,11 +42,11 @@ public class DungeonDTO extends AbstractDTO {
 	public DungeonDTO(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.rooms = new RoomDTO[width][height];
+		//this.rooms = new RoomDTO[width][height];
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				rooms[i][j] = new RoomDTO();
+				//rooms[i][j] = new RoomDTO();
 			}
 		}
 	}
@@ -61,9 +61,12 @@ public class DungeonDTO extends AbstractDTO {
 		return result;
 	}
 
+	/*
 	public RoomDTO[][] getRooms() {
 		return rooms;
 	}
+
+	 */
 
 	public DungeonDTO() {
 	}
@@ -102,7 +105,7 @@ public class DungeonDTO extends AbstractDTO {
 		boolean locksAreEqual = Objects
 				.equals(locks, that.locks);
 		boolean locationsAreEqual = Objects.equals(locations, that.locations);
-		return arrays2Dequals(rooms, that.rooms) && Objects.equals(doors, that.doors) && locksAreEqual && locationsAreEqual ;
+		return /*arrays2Dequals(rooms, that.rooms) &&*/ Objects.equals(doors, that.doors) && locksAreEqual && locationsAreEqual ;
 	}
 
 	static boolean arrays2Dequals(RoomDTO[][] grid1, RoomDTO[][] grid2) {
@@ -122,7 +125,7 @@ public class DungeonDTO extends AbstractDTO {
 	@Override
 	public int hashCode() {
 		int result = Objects.hash(doors, locks, locations);
-		result = 31 * result + Arrays.hashCode(rooms);
+		result = 31 * result /*+ Arrays.hashCode(rooms)*/;
 		return result;
 	}
 }

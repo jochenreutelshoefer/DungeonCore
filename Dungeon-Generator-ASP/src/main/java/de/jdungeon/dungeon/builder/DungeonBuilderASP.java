@@ -166,7 +166,7 @@ public class DungeonBuilderASP implements DungeonBuilder<DTODungeonResult> {
 	@Deprecated // use HallBuilder
 	@Override
 	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height, boolean setAllInternalDoors) {
-		DefaultDoorSpecification hall = DungeonBuilderASPUtils.createHall(upperLeftCornerX, upperLeftCornerY, width, height, setAllInternalDoors);
+		DefaultDoorSpecification hall = HallBuilder.createHall(upperLeftCornerX, upperLeftCornerY, width, height, setAllInternalDoors);
 		this.addPredefinedWalls(hall.getWalls());
 		this.addPredefinedDoors(hall.getDoors());
 		return this;

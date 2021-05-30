@@ -8,7 +8,6 @@ repositories {
     mavenCentral()
 }
 
-
 test {
     useJUnitPlatform()
 }
@@ -25,6 +24,7 @@ dependencies {
     api project(":Dungeon-Core")
     api project(":Dungeon-App-Core")
     api project(":Dungeon-Generator-Serialization")
+    api project(":Dungeon-Generator-LevelSet")
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     api group: 'org.jetbrains', name: 'annotations', version: '16.0.1'

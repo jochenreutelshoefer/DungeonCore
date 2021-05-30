@@ -2,6 +2,8 @@ package de.jdungeon.level;
 
 import java.util.List;
 
+import de.jdungeon.dungeon.builder.DungeonFactory;
+
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 07.03.16.

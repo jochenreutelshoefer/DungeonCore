@@ -9,7 +9,6 @@ import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
-import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.generate.DeadEndPath;
 import de.jdungeon.dungeon.generate.DistanceAtLeastConstraint;
 import de.jdungeon.dungeon.quest.ReversibleRoomQuest;
@@ -51,11 +50,6 @@ public class StartLevel extends AbstractDungeonFactory {
 	@Override
 	public Dungeon getDungeon() {
 		return dungeon;
-	}
-
-	@Override
-	public LevelDTO getDTO() {
-		throw new IllegalStateException("This DungeonFactory does not provide a DTO");
 	}
 
 	@Override

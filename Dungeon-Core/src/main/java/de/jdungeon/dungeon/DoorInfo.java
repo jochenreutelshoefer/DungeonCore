@@ -11,7 +11,6 @@ import java.util.Collection;
 
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.DungeonVisibilityMap;
-import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.RoomObservationStatus;
 import de.jdungeon.figure.memory.DoorMemory;
@@ -31,9 +30,14 @@ public class DoorInfo extends RoomInfoEntity {
         door = d;
     }
 
-    private boolean getShrineVisibility() {
+    private boolean hasShrineVisibilityLevel() {
         return map.getVisibilityStatus(getRooms()[0].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_SHRINE
                 || map.getVisibilityStatus(getRooms()[1].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_SHRINE;
+    }
+
+    private boolean isDiscovered() {
+        return map.getDiscoveryStatus(getRooms()[0].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FOUND
+                || map.getDiscoveryStatus(getRooms()[1].getRoomNumber()) >= RoomObservationStatus.VISIBILITY_FOUND;
     }
 
 
@@ -67,7 +71,7 @@ public class DoorInfo extends RoomInfoEntity {
     }
 
     public Boolean isLocked() {
-        if (getShrineVisibility()) {
+        if (hasShrineVisibilityLevel()) {
             return door.getLocked();
         }
         return null;
@@ -107,7 +111,7 @@ public class DoorInfo extends RoomInfoEntity {
     }
 
     public Boolean isPassable() {
-        if (getShrineVisibility()) {
+        if (isDiscovered()) {
             return door.isPassable(map.getFigure());
         }
         return null;

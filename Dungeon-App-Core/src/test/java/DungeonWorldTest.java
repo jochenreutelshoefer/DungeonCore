@@ -15,12 +15,11 @@ import de.jdungeon.figure.hero.Zodiac;
 import de.jdungeonx.DungeonGameLoop;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
-import junit.framework.TestCase;
-import org.junit.Ignore;
+
 import org.junit.Test;
 
 import de.jdungeon.level.DefaultDungeonManager;
-import de.jdungeon.level.DungeonFactory;
+import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 
 import static junit.framework.Assert.assertEquals;
@@ -33,7 +32,6 @@ import static junit.framework.Assert.assertFalse;
 public class DungeonWorldTest  {
 
 
-	@Test
 	public void testDungeonWorld() throws DungeonGenerationException {
 		JDEnv.init(new MyResourceBundle() {
 			@Override

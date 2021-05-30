@@ -3,6 +3,8 @@ package de.jdungeon.level;
 import java.util.List;
 import java.util.Map;
 
+import de.jdungeon.dungeon.builder.DungeonFactory;
+
 public abstract class AbstractDungeonManager implements DungeonManager{
 
 	private final Map<Integer, List<DungeonFactory>> stages;

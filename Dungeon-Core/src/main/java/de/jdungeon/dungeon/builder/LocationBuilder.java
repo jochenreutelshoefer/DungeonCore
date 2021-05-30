@@ -1,8 +1,10 @@
 package de.jdungeon.dungeon.builder;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
@@ -13,7 +15,9 @@ import de.jdungeon.log.Log;
 
 public class LocationBuilder extends AbstractLocationBuilder {
 
-	//private Class<? extends Locatable> clazz;
+	/**
+	 * We use a String here to allow for easier serialization
+	 */
 	public String clazz;
 
 	public LocationBuilder(Class<? extends Locatable> clazz) {
@@ -44,9 +48,9 @@ public class LocationBuilder extends AbstractLocationBuilder {
 
 	public Class<? extends Locatable> getClazz() {
 		try {
-			return (Class<? extends Locatable>) Class.forName(clazz);
+			return (Class<? extends Locatable>) ClassReflection.forName(clazz);
 		}
-		catch (ClassNotFoundException e) {
+		catch (ReflectionException e) {
 			Log.severe("Could not find location class for name: " + clazz);
 			e.printStackTrace();
 		}
@@ -60,16 +64,16 @@ public class LocationBuilder extends AbstractLocationBuilder {
 			Class<?> locationClazz = getClazz();
 			Object newLocationInstance = null;
 
-			Constructor<?>[] constructors = locationClazz.getConstructors();
 			Room room = dungeon.getRoom(x, y);
-
-			for (Constructor<?> constructor : constructors) {
+			com.badlogic.gdx.utils.reflect.Constructor[] constructors = ClassReflection.getConstructors(locationClazz);
+			for (Constructor constructor : constructors) {
 				// use the standard constructor if available
-				if (constructor.getParameterCount() == 0) {
+				int parameterCount = constructor.getParameterTypes().length;
+				if (parameterCount == 0) {
 					newLocationInstance = constructor.newInstance();
 					break;
 				}
-				if (constructor.getParameterCount() == 1) {
+				if (parameterCount == 1) {
 					// use the room constructor if applicable
 					if (constructor.getParameterTypes()[0].equals(Room.class)) {
 						if (room.getLocation() != null) {
@@ -82,7 +86,7 @@ public class LocationBuilder extends AbstractLocationBuilder {
 			}
 			room.setLocation((Location) newLocationInstance);
 		}
-		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+		catch (ReflectionException e) {
 			Log.severe("Could not find/execute constructor for location class: " + clazz);
 			e.printStackTrace();
 		}

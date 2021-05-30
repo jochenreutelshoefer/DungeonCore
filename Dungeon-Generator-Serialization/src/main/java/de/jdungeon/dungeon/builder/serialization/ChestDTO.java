@@ -1,11 +1,10 @@
 package de.jdungeon.dungeon.builder.serialization;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.jdungeon.dungeon.Chest;
 import de.jdungeon.dungeon.Room;
@@ -24,15 +23,16 @@ public class ChestDTO extends AbstractDTO{
 			Class<?> locationClazz = Chest.class;
 			Object newChestInstance = null;
 
-			Constructor<?>[] constructors = locationClazz.getConstructors();
+			Constructor[] constructors = ClassReflection.getConstructors(locationClazz);
 
-			for (Constructor<?> constructor : constructors) {
+			for (Constructor constructor : constructors) {
 				// use the standard constructor if available
-				if (constructor.getParameterCount() == 0) {
+				int parameterCount = constructor.getParameterTypes().length;
+				if (parameterCount == 0) {
 					newChestInstance = constructor.newInstance();
 					break;
 				}
-				if (constructor.getParameterCount() == 1) {
+				if (parameterCount == 1) {
 					// use the room constructor if applicable
 					if (constructor.getParameterTypes()[0].equals(Room.class)) {
 						if (room.getChest() != null) {
@@ -49,7 +49,7 @@ public class ChestDTO extends AbstractDTO{
 			room.setChest(chestInstance);
 			return chestInstance;
 		}
-		catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+		catch ( ReflectionException e) {
 			Log.severe("Could not find/execute constructor for location class: " + Chest.class);
 			e.printStackTrace();
 		}
