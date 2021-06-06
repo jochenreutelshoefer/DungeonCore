@@ -1,5 +1,6 @@
 package de.jdungeon.dungeon.builder;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,10 +46,19 @@ public class DTODungeonFactory {
 
 		// insert locations
 		Map<JDPoint, LocatedEntityBuilder> locations = dungeonDTO.getLocations();
+		locations.entrySet().stream().sorted(Comparator.comparingInt(entryA -> entryA.getValue().getBuildPriority()))
+				.forEach(entry -> {
+					JDPoint point = entry.getKey();
+					LocatedEntityBuilder locatedEntityBuilder = entry.getValue();
+					locatedEntityBuilder.insert(dungeon, point.getX(), point.getY());
+				});
+		/*
 		locations.keySet().stream().forEach(point -> {
 			LocatedEntityBuilder locatedEntityBuilder = locations.get(point);
 			locatedEntityBuilder.insert(dungeon, point.getX(), point.getY());
 		});
+
+		 */
 
 		return dungeon;
 	}

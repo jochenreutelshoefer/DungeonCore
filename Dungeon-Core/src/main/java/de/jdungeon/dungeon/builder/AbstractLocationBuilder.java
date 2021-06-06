@@ -16,6 +16,11 @@ public abstract class AbstractLocationBuilder implements LocatedEntityBuilder {
 	public AbstractLocationBuilder() {
 	}
 
+	@Override
+	public int getBuildPriority() {
+		return 0;
+	}
+
 	public AbstractLocationBuilder(JDPoint room) {
 		this.room = room;
 	}

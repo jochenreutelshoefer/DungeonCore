@@ -28,6 +28,10 @@ public class LevelExit extends Location {
 
     }
 
+    public void setRequiredFigure(Figure figure) {
+        requiredFigures.add(figure);
+    }
+
     /**
      * Constructor to create exits that required some special de.jdungeon.item(s) to access the exit
      *
@@ -54,7 +58,7 @@ public class LevelExit extends Location {
     @Override
     public String getStory() {
         String basicStory = JDEnv.getResourceBundle().getString("shrine_exit_text");
-        return (!this.requiredFigures.isEmpty() || !this.requiredItems.isEmpty()) ? basicStory + "Unter bestimmten Bedigungen..." : "";
+        return (!this.requiredFigures.isEmpty() || !this.requiredItems.isEmpty()) ? basicStory + " Unter bestimmten Bedingungen..." : "";
     }
 
     @Override
@@ -83,7 +87,7 @@ public class LevelExit extends Location {
         if (requiredFigureMissing()) {
             // some figure to be escorted to exit is not here -> refuse
             f.getRoomInfo()
-                    .distributePercept(new TextPercept("Folgende Charaktere benötigt, um Dungeon zu verlassen: " + requiredItems, round));
+                    .distributePercept(new TextPercept("Folgende Charaktere werden benötigt, um Dungeon zu verlassen: " + requiredFigures, round));
             return ActionResult.OTHER;
         }
 
@@ -91,7 +95,7 @@ public class LevelExit extends Location {
             // some item to be found to exit is not here -> refuse
             Room roomInfo = f.getRoomInfo();
             if (roomInfo != null) {
-                roomInfo.distributePercept(new TextPercept("Folgende Gegenstände benötigt, um Dungeon zu verlassen: " + requiredItems, round));
+                roomInfo.distributePercept(new TextPercept("Folgende Gegenstände werden benötigt, um Dungeon zu verlassen: " + requiredItems, round));
             }
             return ActionResult.ITEM;
         }

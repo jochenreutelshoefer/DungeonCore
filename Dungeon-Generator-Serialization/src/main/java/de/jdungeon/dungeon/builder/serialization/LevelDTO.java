@@ -1,8 +1,13 @@
 package de.jdungeon.dungeon.builder.serialization;
 
+import java.util.Map;
 import java.util.Objects;
 
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.builder.LocatedEntityBuilder;
+import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.location.LevelExit;
+import de.jdungeon.log.Log;
 
 public class LevelDTO extends AbstractDTO {
 
@@ -53,5 +58,19 @@ public class LevelDTO extends AbstractDTO {
 	@Override
 	public int hashCode() {
 		return Objects.hash(dungeonDTO, startPosition);
+	}
+
+	public JDPoint getExitPosition() {
+		Map<JDPoint, LocatedEntityBuilder> locations = this.dungeonDTO.getLocations();
+		for (JDPoint point : locations.keySet()) {
+			LocatedEntityBuilder locatedEntityBuilder = locations.get(point);
+			if(locatedEntityBuilder instanceof LocationBuilder) {
+				if(((LocationBuilder)locatedEntityBuilder).getClazz().equals(LevelExit.class)) {
+					return point;
+				}
+			}
+		}
+		Log.severe("No exit found in LevelDTO: "+this.name );
+		return null;
 	}
 }

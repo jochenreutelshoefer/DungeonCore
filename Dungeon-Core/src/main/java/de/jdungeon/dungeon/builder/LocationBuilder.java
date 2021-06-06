@@ -19,9 +19,15 @@ public class LocationBuilder extends AbstractLocationBuilder {
 	 * We use a String here to allow for easier serialization
 	 */
 	public String clazz;
+	public int index;
 
 	public LocationBuilder(Class<? extends Locatable> clazz) {
+		this(clazz, 0);
+	}
+
+	public LocationBuilder(Class<? extends Locatable> clazz, int number) {
 		this.clazz = clazz.getName();
+		this.index = number;
 	}
 
 	public LocationBuilder(Class<? extends Locatable> clazz, int x, int y) {
@@ -42,7 +48,7 @@ public class LocationBuilder extends AbstractLocationBuilder {
 
 	@Override
 	public String getIdentifier() {
-		String s = clazz + this.hashCode();
+		String s = clazz + this.hashCode()+"_"+index;
 		return s.replace(".", "_").replace("-", "_");
 	}
 

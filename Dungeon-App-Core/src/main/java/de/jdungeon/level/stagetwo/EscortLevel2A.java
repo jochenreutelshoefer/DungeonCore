@@ -49,7 +49,6 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 		Room hostageRoom = filler.getUnallocatedRandomRoom();
 		Hero npc = DefaultNPCFactory.createDefaultNPC("Willi", Hero.HEROCODE_DRUID);
 		npc.takeItem(new Wolfknife(25, false));
-		// TODO: use setControl!
 		npc.createVisibilityMap(dungeon);
 		FigureInfo npcInfo = FigureInfo.makeFigureInfo(npc, npc.getViwMap());
 		RescuedNPCAI ai = new RescuedNPCAI();

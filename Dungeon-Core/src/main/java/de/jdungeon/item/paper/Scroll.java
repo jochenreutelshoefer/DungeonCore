@@ -92,24 +92,12 @@ public class Scroll extends Item<Scroll> implements UsableWithTarget {
 
     @Override
     public Paragraph[] getParagraphs() {
-        Paragraph[] p = new Paragraph[3];
+        Paragraph[] p = new Paragraph[1];
         p[0] = new Paragraph(scroll() + ": " + theSpell.getHeaderName());
         p[0].setSize(24);
         p[0].setCentered();
         p[0].setColor(JDColor.blue);
         p[0].setBold();
-
-        p[1] = new Paragraph(JDEnv.getResourceBundle().getString("de/jdungeon/spell") + JDEnv.getResourceBundle().getString("level") + ": " + theSpell.getLevel());
-        p[1].setSize(16);
-        p[1].setCentered();
-        p[1].setColor(JDColor.black);
-        p[1].setBold();
-
-        p[2] = new Paragraph((JDEnv.getResourceBundle().getString("cost") + ": " + theSpell.getCost()));
-        p[2].setSize(14);
-        p[2].setCentered();
-        p[2].setColor(JDColor.black);
-
 
         return p;
     }

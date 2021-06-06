@@ -35,7 +35,7 @@ public class ItemInfo extends RoomInfoEntity {
 
 	@Override
 	public String getHeaderName() {
-		return it.getName();
+		return it.getHeaderName();
 	}
 
 	@Override

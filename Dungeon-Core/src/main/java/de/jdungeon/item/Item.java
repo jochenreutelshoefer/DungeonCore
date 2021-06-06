@@ -186,8 +186,7 @@ public abstract class Item<ITEM extends Item> implements ModifierI, Paragraphabl
 
 	
 	public String getName() {
-		return name;
-
+		return name!=null?name:getText();
 	}
 	
 	public int getWorth() {

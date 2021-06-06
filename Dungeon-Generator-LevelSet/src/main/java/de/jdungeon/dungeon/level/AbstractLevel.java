@@ -1,5 +1,9 @@
 package de.jdungeon.dungeon.level;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -9,15 +13,24 @@ import com.badlogic.gdx.utils.JsonWriter;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.builder.ChestItemBuilder;
 import de.jdungeon.dungeon.builder.DTODungeonResult;
 import de.jdungeon.dungeon.builder.DungeonBuilder;
 import de.jdungeon.dungeon.builder.DungeonBuilderFactory;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.DungeonResult;
+import de.jdungeon.dungeon.builder.serialization.ItemDTO;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
+import de.jdungeon.dungeon.builder.serialization.ScrollItemDTO;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.item.DustItem;
+import de.jdungeon.item.HealPotion;
+import de.jdungeon.item.Items;
+import de.jdungeon.item.OxygenPotion;
 import de.jdungeon.log.Log;
+import de.jdungeon.spell.conjuration.FirConjuration;
+import de.jdungeon.spell.conjuration.LionessConjuration;
 
 public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 
@@ -39,17 +52,30 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 	}
 
 	public LevelDTO getDTO() {
-		if(this.dungeonBuild == null) {
+		if (this.dungeonBuild == null) {
 			throw new IllegalStateException("May not be called before 'create()' method!");
 		}
 		return this.dungeonBuild.getDungeonDTO();
 	}
 
+	protected Collection<ChestItemBuilder> createChestBuilders(int amount, ItemDTO... items) {
+		java.util.List<ItemDTO> gimmickPool = new ArrayList<>();
+		for (ItemDTO item : items) {
+			gimmickPool.add(item);
+		}
+		Collection<ItemDTO> selectedGimmicks = Items.selectRandomN(gimmickPool, amount);
+		Collection<ChestItemBuilder> chestItemBuilders = selectedGimmicks.stream()
+				.map(item -> new ChestItemBuilder(item))
+				.collect(Collectors.toList());
+		return chestItemBuilders;
+	}
+
 	@Override
 	public void create() throws DungeonGenerationException {
-		if(this.mode == Mode.Generate) {
+		if (this.mode == Mode.Generate) {
 			this.doGenerate();
-		} else if(this.mode == Mode.Read) {
+		}
+		else if (this.mode == Mode.Read) {
 			String levelFolder = JDEnv.getLevelFolderRelative(this.getClass().getSimpleName());
 			if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
 				levelFolder = "assets/" + levelFolder;
@@ -91,11 +117,14 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 		return dungeonBuild.getDungeonDTO().getStartPosition();
 	}
 
+	public JDPoint getExitPosition() {
+		return dungeonBuild.getDungeonDTO().getExitPosition();
+	}
+
 	protected abstract void doGenerate() throws DungeonGenerationException;
 
 	@Override
 	public Dungeon getDungeon() {
 		return dungeonBuild.getDungeon();
 	}
-
 }

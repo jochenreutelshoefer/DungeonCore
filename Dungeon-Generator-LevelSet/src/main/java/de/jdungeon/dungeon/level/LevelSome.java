@@ -58,17 +58,13 @@ public class LevelSome extends AbstractLevel {
 		int hallUpperLeftCornerX = getHallUpperLeftCorner().getX();
 		int hallUpperLeftCornerY = getHallUpperLeftCorner().getY();
 
-		java.util.List<ItemDTO> gimmickPool = new ArrayList<>();
-		gimmickPool.add(new ItemDTO(OxygenPotion.class));
-		gimmickPool.add(new ItemDTO(HealPotion.class, 35));
-		gimmickPool.add(new ScrollItemDTO(LionessConjuration.class));
-		gimmickPool.add(new ScrollItemDTO(FirConjuration.class));
-		gimmickPool.add(new ItemDTO(DustItem.class, 7));
-
-		Collection<ItemDTO> selectedGimmicks = Items.selectRandomN(gimmickPool, 3);
-		Collection<ChestItemBuilder> chestItemBuilders = selectedGimmicks.stream()
-				.map(item -> new ChestItemBuilder(item))
-				.collect(Collectors.toList());
+		Collection<ChestItemBuilder> chestItemBuilders = createChestBuilders(3,
+				new ItemDTO(OxygenPotion.class),
+				new ItemDTO(HealPotion.class, 35),
+				new ScrollItemDTO(LionessConjuration.class),
+				new ScrollItemDTO(FirConjuration.class),
+				new ItemDTO(DustItem.class, 7)
+		);
 
 		DoorMarker doorHallNorth = DoorMarker.create(hallUpperLeftCornerX + 1, hallUpperLeftCornerY, RouteInstruction.Direction.North);
 		DoorMarker doorHallSouth = DoorMarker.create(hallUpperLeftCornerX + 1, hallUpperLeftCornerY + hallHeight - 1, RouteInstruction.Direction.South);

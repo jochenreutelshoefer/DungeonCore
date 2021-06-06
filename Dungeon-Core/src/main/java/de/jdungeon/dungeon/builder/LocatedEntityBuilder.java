@@ -15,6 +15,13 @@ public interface LocatedEntityBuilder extends Json.Serializable {
 	String getIdentifier();
 
 	/**
+	 * Returns the order priority of building/instantiation
+	 *
+	 * @return priority value
+	 */
+	int getBuildPriority();
+
+	/**
 	 * Says whether this LocatedEntity has a fixed position predefined before the dungeon generation process.
 	 * That is, the position will be an input to the dungeon generation process.
 	 *

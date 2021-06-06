@@ -173,7 +173,7 @@ public class LibgdxInfoPanel extends LibgdxSlidingInOutGUIElement {
                 posCounterY += windowBadgeHeight;
 
                 String roleLineText = content.getRole();
-                if (roleLineText != headerText) {
+                if (roleLineText !=null && roleLineText != headerText) {
                     if (content instanceof FigureInfo) {
                         boolean hostile = ((FigureInfo) content).isHostile(this.player.getFigure());
                         if (hostile) {
