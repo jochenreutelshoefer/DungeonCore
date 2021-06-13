@@ -11,7 +11,7 @@ import de.jdungeon.dungeon.level.LevelX;
 import de.jdungeon.dungeon.level.LevelY;
 import de.jdungeon.dungeon.level.Level16x16;
 import de.jdungeon.level.AbstractDungeonManager;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 
 public class LevelSetDTOReadDungeonManager extends AbstractDungeonManager {
 

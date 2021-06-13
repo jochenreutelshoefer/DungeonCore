@@ -28,7 +28,7 @@ import de.jdungeon.figure.monster.Skeleton;
 import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.figure.monster.Wolf;
 import de.jdungeon.figure.other.Lioness;
-import de.jdungeon.user.JDGUI;
+import de.jdungeon.user.PlayerControllerI;
 import de.jdungeon.dungeon.RoomInfoEntity;
 import de.jdungeon.graphics.util.DrawingRectangle;
 import de.jdungeon.graphics.util.RelativeRectangle;
@@ -96,7 +96,7 @@ public class GraphicObjectRenderer {
 
 	public static final double HERO_SIZE_QUOTIENT_Y = 2;
 
-	private JDGUI gui;
+	private PlayerControllerI gui;
 	private JDPoint[] itemPointsRelative;
 	private int ROOMSIZE_BY_100;
 	private JDDimension spotDimension;
@@ -151,7 +151,7 @@ public class GraphicObjectRenderer {
 		init(roomSize);
 	}
 
-	public GraphicObjectRenderer(int roomSize, JDGUI gui) {
+	public GraphicObjectRenderer(int roomSize, PlayerControllerI gui) {
 		this.gui = gui;
 		if (gui == null) {
 			throw new NullPointerException();

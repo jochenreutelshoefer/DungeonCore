@@ -37,6 +37,7 @@ import de.jdungeon.gui.LibgdxFocusManager;
 import de.jdungeon.gui.LibgdxGUIElement;
 import de.jdungeon.user.DefaultDungeonSession;
 import de.jdungeon.user.DungeonSession;
+import de.jdungeon.user.LossCriterion;
 import de.jdungeon.util.Pair;
 
 import static de.jdungeon.world.CameraHelper.INIT_ZOOM_VALUE;
@@ -446,10 +447,11 @@ public class GameScreen extends AbstractScreen implements EventListener {
 		}
 
 		/*
-		If the player has died, after the next click we show the game over popup
+		Check whether the game has been lost and in case show game over dialog
 		 */
-		Boolean dead = figure.isDead();
-		if (dead != null && dead) {
+		LossCriterion lossCriterion = playerController.gameOverCriterionMet();
+		if (lossCriterion != null) {
+			guiRenderer.getGameOverView().setText(lossCriterion.getMessage());
 			guiRenderer.getGameOverView().setShow(true);
 		}
 

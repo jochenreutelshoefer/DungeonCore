@@ -2,12 +2,13 @@ package de.jdungeon.dungeon.level;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.ChestItemBuilder;
-import de.jdungeon.dungeon.builder.DefaultDoorSpecification;
 import de.jdungeon.dungeon.builder.DungeonBuilderFactory;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.Hall;
@@ -20,6 +21,7 @@ import de.jdungeon.dungeon.builder.serialization.ItemDTO;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.builder.serialization.ScrollItemDTO;
 import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.Figure;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
 import de.jdungeon.item.OxygenPotion;
@@ -30,8 +32,14 @@ import de.jdungeon.location.ScoutShrine;
 import de.jdungeon.log.Log;
 import de.jdungeon.spell.conjuration.FirConjuration;
 import de.jdungeon.spell.conjuration.LionessConjuration;
+import de.jdungeon.user.FigureDeadLossCriterion;
+import de.jdungeon.user.LossCriterion;
 
 public class LevelRescue extends AbstractLevel {
+
+	private RescueCharacterLocationBuilder rescueChar;
+
+	private Dungeon assembledDungeon = null;
 
 	public LevelRescue(DungeonBuilderFactory builderFactory) {
 		super(builderFactory, 11, 11);
@@ -60,7 +68,7 @@ public class LevelRescue extends AbstractLevel {
 
 
 		LocationBuilder exit = new LocationBuilder(LevelExit.class);
-		RescueCharacterLocationBuilder rescueChar = new RescueCharacterLocationBuilder(exit);
+		rescueChar = new RescueCharacterLocationBuilder(exit);
 		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, 1);
 
 
@@ -106,6 +114,13 @@ public class LevelRescue extends AbstractLevel {
 				//.addKey(keyBuilder)
 				//.addLocationsShortestDistanceAtLeastConstraint(startL, keyBuilder, 6)
 				.build();
+
+	}
+
+
+	public Set<LossCriterion> getLossCriteria() {
+		Figure rescueFigure = assembledDungeon.getFigureIndex().get(this.rescueChar.getFigureIndex());
+		return Collections.singleton(new FigureDeadLossCriterion(rescueFigure));
 	}
 
 	private Hall createExitHall(JDPoint exitHallPoint, LocationBuilder exitLocation) {
@@ -168,16 +183,16 @@ public class LevelRescue extends AbstractLevel {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
-		Dungeon dungeon = dungeonBuild.getDungeon();
+	public Dungeon assembleDungeon() {
+		assembledDungeon = dungeonBuild.getDungeon();
 		LevelDTO level = dungeonBuild.getDungeonDTO();
 		DungeonDTO dungeonDTO = level.getDungeonDTO();
 		JDPoint locationPosition = dungeonDTO.getLocationPosition(RescueCharacterLocationBuilder.class);
-		addPatrolSpider(locationPosition.getX()-1, locationPosition.getY() -1, dungeon.getRoom(new JDPoint(locationPosition.getX(), locationPosition.getY()-1)));
+		addPatrolSpider(locationPosition.getX()-1, locationPosition.getY() -1, assembledDungeon.getRoom(new JDPoint(locationPosition.getX(), locationPosition.getY()-1)));
 		JDPoint exitPosition = getExitPosition();
-		addPatrolSpider(exitPosition.getX()-1, exitPosition.getY() -1, dungeon.getRoom(new JDPoint(exitPosition.getX(), exitPosition.getY()-1)));
-		dungeon.getRoom(this.getHeroEntryPoint()).addItem(new VisibilityCheatBall());
-		return dungeon;
+		addPatrolSpider(exitPosition.getX()-1, exitPosition.getY() -1, assembledDungeon.getRoom(new JDPoint(exitPosition.getX(), exitPosition.getY()-1)));
+		assembledDungeon.getRoom(this.getHeroEntryPoint()).addItem(new VisibilityCheatBall());
+		return assembledDungeon;
 	}
 
 	@Override

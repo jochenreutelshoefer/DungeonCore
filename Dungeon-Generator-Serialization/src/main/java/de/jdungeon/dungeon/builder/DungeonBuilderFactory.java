@@ -18,6 +18,6 @@ public interface DungeonBuilderFactory {
 	 *
 	 * @return dungeon generation mode
 	 */
-	DungeonFactory.Mode getMode();
+	DungeonGenerationMode getMode();
 
 }

@@ -140,7 +140,7 @@ public class LevelSome extends AbstractLevel {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		Dungeon dungeon = dungeonBuild.getDungeon();
 		int hallUpperLeftCornerX = getHallUpperLeftCorner().getX();
 		int hallUpperLeftCornerY = getHallUpperLeftCorner().getY();

@@ -7,7 +7,7 @@ public class DungeonBuilderFactoryASPGenerate implements DungeonBuilderFactory {
 	}
 
 	@Override
-	public DungeonFactory.Mode getMode() {
-		return DungeonFactory.Mode.Generate;
+	public DungeonGenerationMode getMode() {
+		return DungeonGenerationMode.Generate;
 	}
 }

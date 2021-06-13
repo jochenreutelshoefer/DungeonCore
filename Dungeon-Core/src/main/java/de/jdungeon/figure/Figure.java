@@ -81,8 +81,6 @@ public abstract class Figure extends DungeonWorldObject
 
 	protected int blinded = 0;
 
-	protected int cobwebbed = 0;
-
 	protected ControlUnit control;
 	private AI ai;
 	protected AbstractReflexBehavior reflexReactionUnit;

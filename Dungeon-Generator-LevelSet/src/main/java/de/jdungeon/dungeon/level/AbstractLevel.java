@@ -2,6 +2,8 @@ package de.jdungeon.dungeon.level;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Application;
@@ -19,35 +21,31 @@ import de.jdungeon.dungeon.builder.DTODungeonResult;
 import de.jdungeon.dungeon.builder.DungeonBuilder;
 import de.jdungeon.dungeon.builder.DungeonBuilderFactory;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
+import de.jdungeon.dungeon.builder.DungeonGenerationMode;
 import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.serialization.ItemDTO;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
-import de.jdungeon.dungeon.builder.serialization.ScrollItemDTO;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.game.JDEnv;
-import de.jdungeon.dungeon.builder.DungeonFactory;
-import de.jdungeon.item.DustItem;
-import de.jdungeon.item.HealPotion;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.item.Items;
-import de.jdungeon.item.OxygenPotion;
 import de.jdungeon.level.generation.SimpleDungeonFiller;
 import de.jdungeon.level.stageone.HadrianAI;
 import de.jdungeon.log.Log;
-import de.jdungeon.spell.conjuration.FirConjuration;
-import de.jdungeon.spell.conjuration.LionessConjuration;
+import de.jdungeon.user.LossCriterion;
 
 public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 
 	protected DungeonResult dungeonBuild;
-	private Mode mode;
+	private DungeonGenerationMode mode;
 
 	private int width;
 
 	private int height;
 	private DungeonBuilderFactory builderFactory;
-	public AbstractLevel(Mode mode) {
+	public AbstractLevel(DungeonGenerationMode mode) {
 		this.mode = mode;
 	}
 
@@ -61,6 +59,10 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 		this.mode = builderFactory.getMode();
 		this.width = width;
 		this.height = height;
+	}
+
+	public Set<LossCriterion> getLossCriteria() {
+		return Collections.emptySet();
 	}
 
 	protected DungeonBuilder createBuilder() {
@@ -101,10 +103,10 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 
 	@Override
 	public void create() throws DungeonGenerationException {
-		if (this.mode == Mode.Generate) {
+		if (this.mode == DungeonGenerationMode.Generate) {
 			this.doGenerate();
 		}
-		else if (this.mode == Mode.Read) {
+		else if (this.mode == DungeonGenerationMode.Read) {
 			String levelFolder = JDEnv.getLevelFolderRelative(this.getClass().getSimpleName());
 			if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
 				levelFolder = "assets/" + levelFolder;
@@ -153,7 +155,7 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 	protected abstract void doGenerate() throws DungeonGenerationException;
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		return dungeonBuild.getDungeon();
 	}
 

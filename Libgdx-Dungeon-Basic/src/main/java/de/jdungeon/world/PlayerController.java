@@ -20,8 +20,8 @@ import de.jdungeon.figure.percept.Percept;
 import de.jdungeon.figure.percept.TextPercept;
 import de.jdungeon.game.Configuration;
 import de.jdungeon.game.Game;
-import de.jdungeon.user.JDGUI;
-import de.jdungeon.graphics.GraphicObjectRenderer;
+import de.jdungeon.user.LossCriterion;
+import de.jdungeon.user.PlayerControllerI;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.log.Log;
 import de.jdungeon.text.StatementManager;
@@ -51,7 +51,7 @@ import de.jdungeon.util.CopyOnWriteArrayList;
  * @author Jochen Reutelshoefer (denkbares GmbH)
  * @created 03.01.20.
  */
-public class PlayerController implements JDGUI {
+public class PlayerController implements PlayerControllerI {
 
     private final DungeonSession dungeonSession;
     private Game game;
@@ -201,6 +201,11 @@ public class PlayerController implements JDGUI {
     @Override
     public FigureInfo getFigure() {
         return heroInfo;
+    }
+
+    @Override
+    public LossCriterion gameOverCriterionMet() {
+        return this.dungeonSession.lossCriterionMet();
     }
 
     @Override

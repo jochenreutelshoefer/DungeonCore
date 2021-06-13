@@ -49,7 +49,7 @@ public class Level16x16 extends AbstractLevel {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		return dungeonBuild.getDungeon();
 	}
 

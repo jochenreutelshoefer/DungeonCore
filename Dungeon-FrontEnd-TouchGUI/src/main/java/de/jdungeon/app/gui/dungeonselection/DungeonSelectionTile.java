@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.event.EventManager;
 import de.jdungeon.graphics.ImageManager;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.level.DungeonSelectedEvent;
 import de.jdungeon.util.JDDimension;
 

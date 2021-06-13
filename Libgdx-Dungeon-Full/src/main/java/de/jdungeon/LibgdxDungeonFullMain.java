@@ -36,7 +36,7 @@ import de.jdungeon.level.DungeonManager;
 import de.jdungeon.log.Log;
 import de.jdungeon.score.SessionScore;
 import de.jdungeon.util.MyResourceBundle;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.spell.Spell;
 import de.jdungeon.user.DefaultDungeonSession;
@@ -266,7 +266,7 @@ public class LibgdxDungeonFullMain extends Game implements de.jdungeon.game.Game
 
             getCurrentScreen().pause();
 
-            ((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
+          //  ((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
 
             sendHighscoreRequest();
 

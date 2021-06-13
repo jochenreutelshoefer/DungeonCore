@@ -17,6 +17,8 @@ public class RescueCharacterLocationBuilder extends AbstractLocationBuilder{
 
 	private LocationBuilder exit;
 
+	private int figureIndex;
+
 	public RescueCharacterLocationBuilder(LocationBuilder exit) {
 		this.exit = exit;
 	}
@@ -32,6 +34,10 @@ public class RescueCharacterLocationBuilder extends AbstractLocationBuilder{
 		return 1;
 	}
 
+	public int getFigureIndex() {
+		return figureIndex;
+	}
+
 	@Override
 	public void insert(Dungeon dungeon, int x, int y) {
 		Hero npc = DefaultNPCFactory.createDefaultNPC("Willi", Hero.HEROCODE_MAGE);
@@ -41,10 +47,11 @@ public class RescueCharacterLocationBuilder extends AbstractLocationBuilder{
 		RescuedNPCAI ai = new RescuedNPCAI();
 		ai.setFigure(npcInfo);
 		npc.setControl(new FigureControl(npcInfo, ai));
-		dungeon.getRoom(x,y).figureEnters(npc, 0, -1);
+		dungeon.getRoom(x,y).figureEntersDungeonHere(npc, 0, -1);
 		JDPoint exitPosition = exit.getRoomPosition();
 		Room exitRoom = dungeon.getRoom(exitPosition);
 		Location location = exitRoom.getLocation();
+		this.figureIndex = npc.getFigureID();
 		if(! (location instanceof LevelExit)) {
 			Log.severe("No level exit here!");
 		} else {

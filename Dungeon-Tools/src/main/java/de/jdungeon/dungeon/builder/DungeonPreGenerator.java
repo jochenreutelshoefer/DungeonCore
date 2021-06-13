@@ -13,6 +13,7 @@ import de.jdungeon.asset.Assets;
 import de.jdungeon.dungeon.LevelSetDTOReadDungeonManager;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.level.DTOLevel;
+import de.jdungeon.user.DungeonFactory;
 
 public class DungeonPreGenerator {
 

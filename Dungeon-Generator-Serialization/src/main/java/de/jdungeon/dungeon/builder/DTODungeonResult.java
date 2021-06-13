@@ -6,29 +6,34 @@ import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 
 public class DTODungeonResult implements DungeonResult {
 
-    private LevelDTO dungeon;
+	private LevelDTO dungeon;
 
-    private String description;
+	private String description;
 
-    public DTODungeonResult(LevelDTO dungeon, String description) {
-        this.dungeon = dungeon;
-        this.description = description;
-    }
+	private Dungeon createdDungeon = null;
 
-    public LevelDTO getDungeonDTO() {
-        return dungeon;
-    }
+	public DTODungeonResult(LevelDTO dungeon, String description) {
+		this.dungeon = dungeon;
+		this.description = description;
+	}
 
-    public Dungeon getDungeon() {
-        return new DTODungeonFactory(dungeon).create();
-    }
+	public LevelDTO getDungeonDTO() {
+		return dungeon;
+	}
 
-    public JDPoint getStartPosition() {
-        return dungeon.getStartPosition();
-    }
+	public Dungeon getDungeon() {
+		if (createdDungeon == null) {
+			createdDungeon = new DTODungeonFactory(dungeon).create();
+		}
+		return createdDungeon;
+	}
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
+	public JDPoint getStartPosition() {
+		return dungeon.getStartPosition();
+	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
 }

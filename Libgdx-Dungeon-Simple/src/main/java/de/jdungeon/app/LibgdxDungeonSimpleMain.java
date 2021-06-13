@@ -8,7 +8,6 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 
 import de.jdungeon.dungeon.builder.*;
 import de.jdungeon.dungeon.level.LevelRescue;
-import de.jdungeon.dungeon.level.LevelX;
 import de.jdungeon.game.AbstractScreen;
 import de.jdungeon.game.GameAdapter;
 import de.jdungeon.app.audio.AudioManagerTouchGUI;
@@ -24,7 +23,7 @@ import de.jdungeon.game.*;
 import de.jdungeon.graphics.GraphicObjectRenderer;
 import de.jdungeon.io.FilenameLister;
 import de.jdungeon.io.ResourceBundleLoader;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.level.DungeonStartEvent;
 import de.jdungeon.game.LibgdxConfiguration;
 import de.jdungeon.game.LibgdxLogger;
@@ -146,7 +145,7 @@ public class LibgdxDungeonSimpleMain extends Game implements de.jdungeon.game.Ga
 			//dungeonSession.getCurrentHero().setVisAll();
 
 			// start world -> do NOT start the game loop in a distinct thread!
-			((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
+			//((DefaultDungeonSession) this.dungeonSession).setGUIController(controller);
 
 			// create and set new GameScreen
 			GameScreen gameScreen = new GameScreen(this, controller, dungeonSession.getCurrentDungeon()

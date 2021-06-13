@@ -9,7 +9,7 @@ public class ReadDTODungeonBuilderFactory implements DungeonBuilderFactory {
 	}
 
 	@Override
-	public DungeonFactory.Mode getMode() {
-		return DungeonFactory.Mode.Read;
+	public DungeonGenerationMode getMode() {
+		return DungeonGenerationMode.Read;
 	}
 }

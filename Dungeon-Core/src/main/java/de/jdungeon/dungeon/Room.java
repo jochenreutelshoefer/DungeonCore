@@ -915,6 +915,11 @@ public class Room extends DungeonWorldObject implements ItemOwner, RoomEntity {
 		return roomFigures.toArray(roomFiguresArray);
 	}
 
+	public int figureEntersDungeonHere(Figure figure, int moveDir, int round) {
+		this.getDungeon().insertFigure(figure);
+		return figureEnters(figure, moveDir, round);
+	}
+
 	public int figureEnters(Figure figure, int moveDir, int round) {
 
 		int inRoomIndex = -1;

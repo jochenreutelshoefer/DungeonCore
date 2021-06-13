@@ -24,11 +24,10 @@ public interface Game {
 
 	Configuration getConfiguration();
 
-
 	/**
 	 * Returns the current session of the player.
 	 *
-	 * @return the de.jdungeon.user representing the current player
+	 * @return the user representing the current player
 	 */
 	Session getSession();
 

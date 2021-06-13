@@ -16,7 +16,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.figure.action.EndRoundAction;
 import de.jdungeon.figure.hero.HeroInfo;
-import de.jdungeon.user.JDGUI;
+import de.jdungeon.user.PlayerControllerI;
 import de.jdungeon.item.ItemInfo;
 import de.jdungeon.item.equipment.EquipmentItemInfo;
 import de.jdungeon.location.LocationInfo;
@@ -37,10 +37,10 @@ public class ActionAssembler implements EventListener {
 
 	private final FigureInfo figure;
 
-	private final JDGUI gui;
+	private final PlayerControllerI gui;
 	private final ActionAssemblerHelper actionAssembler;
 
-	public ActionAssembler(FigureInfo figure, JDGUI gui) {
+	public ActionAssembler(FigureInfo figure, PlayerControllerI gui) {
 		this.figure = figure;
 		this.gui = gui;
 		actionAssembler = new ActionAssemblerHelper(figure);
