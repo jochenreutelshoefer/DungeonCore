@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -163,21 +164,6 @@ public class DungeonBuilderASP implements DungeonBuilder<DTODungeonResult> {
 		return this;
 	}
 
-	@Deprecated // use HallBuilder
-	@Override
-	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height, boolean setAllInternalDoors) {
-		DefaultDoorSpecification hall = HallBuilder.createHall(upperLeftCornerX, upperLeftCornerY, width, height, setAllInternalDoors);
-		this.addPredefinedWalls(hall.getWalls());
-		this.addPredefinedDoors(hall.getDoors());
-		return this;
-	}
-
-	@Deprecated // use HallBuilder
-	@Override
-	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height) {
-		return addHall(upperLeftCornerX, upperLeftCornerY, width, height, false);
-	}
-
 	@Override
 	public DungeonBuilder setMinAmountOfDoors(int numberOfDoors) {
 		this.totalAmountOfDoorsMin = numberOfDoors;
@@ -221,8 +207,25 @@ public class DungeonBuilderASP implements DungeonBuilder<DTODungeonResult> {
 
 	@Override
 	public DungeonBuilder addDoorSpecification(DoorSpecification hall) {
+		if (hall instanceof Hall) {
+			throw new IllegalArgumentException("Plz use addHall to add a hall (for applying locations as well)");
+		}
+		addSpecification(hall);
+		return this;
+	}
+
+	private void addSpecification(DoorSpecification hall) {
 		this.addPredefinedDoors(hall.getDoors());
 		this.addPredefinedWalls(hall.getWalls());
+	}
+
+	@Override
+	public DungeonBuilder addHall(Hall hall) {
+		addSpecification(hall);
+		Set<AbstractLocationBuilder> positionedLocations = hall.getLocations();
+		for (AbstractLocationBuilder location : positionedLocations) {
+			this.addLocation(location);
+		}
 		return this;
 	}
 }

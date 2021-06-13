@@ -30,8 +30,6 @@ import de.jdungeon.util.JDColor;
  * Eine Truhe steht immer fest in einem Raum. Truhen koennen Gegenstaende
  * enthalten die herausgenommen ein hineingelegt werden koennen. Truhen koennen
  * verschlossen sein.
- * 
- * 
  */
 
 public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, RoomEntity {
@@ -64,6 +62,7 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 	public void setLock(Key k) {
 		this.lock = new Lock(k, this);
 	}
+
 	public void setLock(Lock l) {
 		this.lock = l;
 	}
@@ -71,7 +70,10 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 	public Chest(List<Item> list) {
 		items = new LinkedList<>();
 		for (int i = 0; i < list.size(); i++) {
-			this.takeItem(list.get(i));
+			Item it = list.get(i);
+			if (it != null) {
+				this.takeItem(it);
+			}
 		}
 	}
 
@@ -101,12 +103,11 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 
 	@Override
 	public Item unwrapItem(ItemInfo it) {
-		for (Iterator<Item> iter = items.iterator(); iter.hasNext();) {
+		for (Iterator<Item> iter = items.iterator(); iter.hasNext(); ) {
 			Item element = iter.next();
 			if (ItemInfo.makeItemInfo(element, null).equals(it)) {
 				return element;
 			}
-
 		}
 		return null;
 	}
@@ -129,7 +130,9 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 	public boolean addItems(List<Item> l, ItemOwner o) {
 		for (int i = 0; i < l.size(); i++) {
 			Item it = (l.get(i));
-			this.takeItem(it);
+			if (it != null) {
+				this.takeItem(it);
+			}
 		}
 		return true;
 	}
@@ -137,7 +140,10 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 	public Chest(List<Item> list, Key k) {
 		items = new ArrayList<Item>();
 		for (int i = 0; i < list.size(); i++) {
-			this.takeItem(list.get(i));
+			Item it = list.get(i);
+			if (it != null) {
+				this.takeItem(it);
+			}
 		}
 		this.lock = new Lock(k, this);
 	}
@@ -177,7 +183,6 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 		}
 	}
 
-
 	public Lock getLock() {
 		return lock;
 	}
@@ -213,10 +218,12 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 					+ JDEnv.getString("state") + ": ";
 			if (locked) {
 				s2 += JDEnv.getString("door_locked");
-			} else {
+			}
+			else {
 				s2 += JDEnv.getString("door_open");
 			}
-		} else {
+		}
+		else {
 			s2 = new String("Unverschlossen");
 		}
 		p[1] = new Paragraph(s2);
@@ -246,7 +253,6 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 		p[3].setSize(14);
 
 		return p;
-
 	}
 
 	@Override
@@ -275,5 +281,4 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 	public Collection<Position> getInteractionPositions() {
 		return Collections.singletonList(this.getRoom().getPositions()[0]);
 	}
-
 }

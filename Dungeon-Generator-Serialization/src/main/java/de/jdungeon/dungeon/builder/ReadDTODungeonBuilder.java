@@ -60,16 +60,6 @@ public class ReadDTODungeonBuilder implements DungeonBuilder {
 	}
 
 	@Override
-	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height, boolean setAllInternalDoors) {
-		return error();
-	}
-
-	@Override
-	public DungeonBuilder addHall(int upperLeftCornerX, int upperLeftCornerY, int width, int height) {
-		return error();
-	}
-
-	@Override
 	public DungeonBuilder setMinAmountOfDoors(int numberOfDoors) {
 		return error();
 	}
@@ -102,6 +92,11 @@ public class ReadDTODungeonBuilder implements DungeonBuilder {
 
 	@Override
 	public DungeonBuilder addDoorSpecification(DoorSpecification hall) {
+		return error();
+	}
+
+	@Override
+	public DungeonBuilder addHall(Hall hall) {
 		return error();
 	}
 

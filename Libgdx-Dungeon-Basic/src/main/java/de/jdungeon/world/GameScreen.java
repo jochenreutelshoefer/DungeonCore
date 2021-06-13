@@ -446,7 +446,7 @@ public class GameScreen extends AbstractScreen implements EventListener {
 		}
 
 		/*
-		If the player has died, after the next click we show the de.jdungeon.game over popup
+		If the player has died, after the next click we show the game over popup
 		 */
 		Boolean dead = figure.isDead();
 		if (dead != null && dead) {

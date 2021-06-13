@@ -15,7 +15,7 @@ import de.jdungeon.location.ScoutShrine;
 public class LevelY extends AbstractLevel {
 
 	public LevelY(DungeonBuilderFactory builderFactory) {
-		super(builderFactory);
+		super(builderFactory, 10, 8);
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class LevelY extends AbstractLevel {
 		int hallLowerLeftCornerY = start.getY() - 4;
 		int hallWidth = 3;
 		int hallHeight = 3;
-		DoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallLowerLeftCornerY, hallWidth, hallHeight)
+		DoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallLowerLeftCornerY, hallWidth, hallHeight, getWidth(), getHeight())
 				.createAllInternalDoors()
 				// we need entrance and exit for our hall
 				.removeWall(new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY, hallUpperLeftCornerX + 1, hallLowerLeftCornerY - 1))
@@ -38,7 +38,6 @@ public class LevelY extends AbstractLevel {
 		StartLocationBuilder startL = new StartLocationBuilder(start, exitP);
 		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, 7, 3);
 		dungeonBuild = createBuilder()
-				.gridSize(10, 8)
 				.setStartingPoint(startL)
 				.setMinAmountOfDoors(100)
 				.addDoorSpecification(centerHall)

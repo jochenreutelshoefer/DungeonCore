@@ -68,7 +68,7 @@ public class LevelSome extends AbstractLevel {
 
 		DoorMarker doorHallNorth = DoorMarker.create(hallUpperLeftCornerX + 1, hallUpperLeftCornerY, RouteInstruction.Direction.North);
 		DoorMarker doorHallSouth = DoorMarker.create(hallUpperLeftCornerX + 1, hallUpperLeftCornerY + hallHeight - 1, RouteInstruction.Direction.South);
-		DefaultDoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallUpperLeftCornerY, hallWidth, hallHeight)
+		DefaultDoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallUpperLeftCornerY, hallWidth, hallHeight, getWidth(), getHeight())
 				.createAllInternalDoors()
 				// we need entrance and exit for our hall
 				.removeWall(doorHallNorth)
@@ -144,14 +144,15 @@ public class LevelSome extends AbstractLevel {
 		Dungeon dungeon = dungeonBuild.getDungeon();
 		int hallUpperLeftCornerX = getHallUpperLeftCorner().getX();
 		int hallUpperLeftCornerY = getHallUpperLeftCorner().getY();
-		Room wolfRoom = dungeon.getRoom(hallUpperLeftCornerX + 1, hallUpperLeftCornerY);
-		HadrianAI ai = new HadrianAI(hallUpperLeftCornerX, hallUpperLeftCornerY);
-		Spider hadrian = new Spider(14000, ai, "Hadrian");
-		wolfRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(), -1);
-		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
-		SimpleDungeonFiller.setAllFound(hadrian.getViwMap());
+
+		Room monsterRoom = dungeon.getRoom(hallUpperLeftCornerX + 1, hallUpperLeftCornerY);
+
+		addPatrolSpider(hallUpperLeftCornerX, hallUpperLeftCornerY, monsterRoom);
+
 		return dungeon;
 	}
+
+
 
 	@Override
 	public String icon() {

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.builder.ChestItemBuilder;
 import de.jdungeon.dungeon.builder.DTODungeonResult;
 import de.jdungeon.dungeon.builder.DungeonBuilder;
@@ -22,12 +23,17 @@ import de.jdungeon.dungeon.builder.DungeonResult;
 import de.jdungeon.dungeon.builder.serialization.ItemDTO;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.builder.serialization.ScrollItemDTO;
+import de.jdungeon.dungeon.util.RouteInstruction;
+import de.jdungeon.figure.FigureInfo;
+import de.jdungeon.figure.monster.Spider;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
 import de.jdungeon.item.Items;
 import de.jdungeon.item.OxygenPotion;
+import de.jdungeon.level.generation.SimpleDungeonFiller;
+import de.jdungeon.level.stageone.HadrianAI;
 import de.jdungeon.log.Log;
 import de.jdungeon.spell.conjuration.FirConjuration;
 import de.jdungeon.spell.conjuration.LionessConjuration;
@@ -35,9 +41,12 @@ import de.jdungeon.spell.conjuration.LionessConjuration;
 public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 
 	protected DungeonResult dungeonBuild;
-	private Mode mode = Mode.Generate;
-	private DungeonBuilderFactory builderFactory;
+	private Mode mode;
 
+	private int width;
+
+	private int height;
+	private DungeonBuilderFactory builderFactory;
 	public AbstractLevel(Mode mode) {
 		this.mode = mode;
 	}
@@ -47,8 +56,28 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 		this.mode = builderFactory.getMode();
 	}
 
+	public AbstractLevel(DungeonBuilderFactory builderFactory, int width, int height) {
+		this.builderFactory = builderFactory;
+		this.mode = builderFactory.getMode();
+		this.width = width;
+		this.height = height;
+	}
+
 	protected DungeonBuilder createBuilder() {
-		return builderFactory.create();
+		DungeonBuilder dungeonBuilder = builderFactory.create();
+		if(width != 0 && height != 0) {
+			// we already set the size if specified
+			dungeonBuilder.gridSize(width, height);
+		}
+		return dungeonBuilder;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	public LevelDTO getDTO() {
@@ -126,5 +155,23 @@ public abstract class AbstractLevel implements DungeonFactory, DTOLevel {
 	@Override
 	public Dungeon getDungeon() {
 		return dungeonBuild.getDungeon();
+	}
+
+	protected JDPoint getRandomPointIn(JDPoint leftUpperCorner, int rectWidth, int rectHeight) {
+		return new JDPoint(leftUpperCorner.getX() + ((int)(Math.random()*rectWidth)), leftUpperCorner.getY()+((int)(Math.random()*rectHeight)));
+	}
+
+	protected JDPoint getRandomPointWestBorderNonCorner(int cornerDistance) {
+		if(height == 0 || width == 0) return null;
+		int random = (int) (Math.random() * (height-2*cornerDistance));
+		return new JDPoint(0, random+cornerDistance);
+	}
+
+	protected void addPatrolSpider(int hallUpperLeftCornerX, int hallUpperLeftCornerY, Room monsterRoom) {
+		HadrianAI ai = new HadrianAI(hallUpperLeftCornerX, hallUpperLeftCornerY);
+		Spider hadrian = new Spider(14000, ai, "Hadrian");
+		monsterRoom.figureEnters(hadrian, RouteInstruction.Direction.North.getValue(), -1);
+		ai.setFigure(FigureInfo.makeFigureInfo(hadrian, hadrian.getViwMap()));
+		SimpleDungeonFiller.setAllFound(hadrian.getViwMap());
 	}
 }

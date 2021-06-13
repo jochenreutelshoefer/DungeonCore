@@ -1,5 +1,7 @@
 package de.jdungeon.dungeon.builder;
 
+import java.util.Set;
+
 import com.badlogic.gdx.utils.Json;
 
 import de.jdungeon.dungeon.Dungeon;
@@ -35,6 +37,14 @@ public interface LocatedEntityBuilder extends Json.Serializable {
 	 * @return final position
 	 */
 	JDPoint getRoomPosition();
+
+	/**
+	 * Returns a set of possible positions. This is only relevant if the location does not have a fixed position.
+	 * If the returned set is null or empty, then an arbitrary position is choosen by the generator.
+	 *
+	 * @return set of possible positions for this location
+	 */
+	Set<JDPoint> getPossiblePositions();
 
 	/**
 	 * Actually inserts the location into the newly created Dungeon

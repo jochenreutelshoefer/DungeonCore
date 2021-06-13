@@ -35,6 +35,8 @@ public class DungeonDTO extends AbstractDTO {
 		//this.rooms = new RoomDTO[width][height];
 	}
 
+
+
 	public Set<LockDTO> getLocks() {
 		return locks;
 	}
@@ -95,6 +97,21 @@ public class DungeonDTO extends AbstractDTO {
 		JDPoint point = new JDPoint(posX, posY);
 		// we use Strings as key as otherwise JSON serialization does not work for HashMaps
 		locations.put(point.toString(), locationBuilder);
+	}
+
+	/**
+	 * Returns the position of the first to be found location that matches the given clazz.
+	 *
+	 * @param locationClazz location clazz
+	 * @return position point
+	 */
+	public JDPoint getLocationPosition(Class<?> locationClazz) {
+		for (Map.Entry<String, LocatedEntityBuilder> locationEntry : locations.entrySet()) {
+			if(locationEntry.getValue().getClass().equals(locationClazz)) {
+				return JDPoint.fromString(locationEntry.getKey());
+			}
+		}
+		return null;
 	}
 
 	@Override

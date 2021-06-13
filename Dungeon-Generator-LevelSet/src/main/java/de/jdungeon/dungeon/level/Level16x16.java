@@ -16,7 +16,7 @@ public class Level16x16 extends AbstractLevel {
 
 
 	public Level16x16(DungeonBuilderFactory builderFactory) {
-		super(builderFactory);
+		super(builderFactory, 16, 16);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class Level16x16 extends AbstractLevel {
 		int hallLowerLeftCornerY = start.getY() - 4;
 		int hallWidth = 5;
 		int hallHeight = 5;
-		DoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallLowerLeftCornerY, hallWidth, hallHeight)
+		DoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallLowerLeftCornerY, hallWidth, hallHeight, this.getWidth(), this.getHeight())
 				.createAllInternalDoors()
 				// we need entrance and exit for our hall
 				.removeWall(new DoorMarker(hallUpperLeftCornerX + 1, hallLowerLeftCornerY, hallUpperLeftCornerX + 1, hallLowerLeftCornerY - 1))
@@ -39,7 +39,6 @@ public class Level16x16 extends AbstractLevel {
 		StartLocationBuilder startL = new StartLocationBuilder(start, exitP);
 		LocationBuilder scoutTower = new LocationBuilder(ScoutShrine.class, 7, 3);
 		dungeonBuild = createBuilder()
-				.gridSize(16, 16)
 				.setStartingPoint(startL)
 				.setMinAmountOfDoors(501)
 				.addDoorSpecification(centerHall)

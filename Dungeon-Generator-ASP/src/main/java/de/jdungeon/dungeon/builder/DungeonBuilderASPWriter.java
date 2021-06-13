@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.text.StringSubstitutor;
@@ -191,14 +193,14 @@ public class DungeonBuilderASPWriter {
 								.getKeyString() + "\")} 1 . \n");
 
 						DoorMarker lockDoor = ((KeyBuilder) locationReachable).getLockDoor();
-						if(lockDoor != null){
+						if (lockDoor != null) {
 
 							// set lock position if predefined
 							buffy.append("% Set predefined lock positions\n");
 							// lock(door(room(X1, Y1), room(X2, Y2)), K)
-							buffy.append("lock(door(room("+lockDoor.x1+", "+lockDoor.y1+"), room("+lockDoor.x2+", "+lockDoor.y2+")), \""+((KeyBuilder) locationReachable).getKeyString()+"\") .");
+							buffy.append("lock(door(room(" + lockDoor.x1 + ", " + lockDoor.y1 + "), room(" + lockDoor.x2 + ", " + lockDoor.y2 + ")), \"" + ((KeyBuilder) locationReachable)
+									.getKeyString() + "\") .");
 						}
-
 					}
 					else {
 						buffy.append("% It may not happen that the location is _not_ reachable-without-key from start\n");
@@ -229,6 +231,22 @@ public class DungeonBuilderASPWriter {
 				}
 				else {
 					buffy.append("\n");
+				}
+			}
+			else {
+				// we do not have a fixed position location so we consider potential positions if existing
+				Set<JDPoint> possiblePositions = location.getPossiblePositions();
+				if (possiblePositions != null && !possiblePositions.isEmpty()) {
+					// ROOM = room(1,3) ; ROOM = room(5,5) :- locationPosition("de_jdungeon_location_ScoutShrine_87059112_1", ROOM) .
+					Iterator<JDPoint> iterator = possiblePositions.iterator();
+					while (iterator.hasNext()) {
+						JDPoint possiblePosition = iterator.next();
+						buffy.append("ROOM = room(" + possiblePosition.getX() + "," + possiblePosition.getY() + ")");
+						if (iterator.hasNext()) {
+							buffy.append(" ; ");
+						}
+					}
+					buffy.append(" :- locationPosition(\"" + locationName + "\", ROOM) .\n");
 				}
 			}
 		});
@@ -286,6 +304,7 @@ public class DungeonBuilderASPWriter {
 	private static String generatePredefinedDoorsASPCode(Collection<DoorMarker> predefinedDoors, boolean isWall) {
 		StringBuilder buffy = new StringBuilder();
 		for (DoorMarker predefinedDoor : predefinedDoors) {
+			if (predefinedDoor == null) continue;
 			if (isWall) buffy.append("not ");
 			buffy.append("door(room(" + predefinedDoor.x1 + "," + predefinedDoor.y1 + "), room(" + predefinedDoor.x2 + "," + predefinedDoor.y2 + ")) .\n");
 		}

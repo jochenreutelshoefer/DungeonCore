@@ -19,6 +19,9 @@ public class DoorMarker implements Json.Serializable {
 	int y2;
 
 	public DoorMarker(int x1, int y1, int x2, int y2) {
+		if(x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) {
+			throw new IllegalArgumentException("Invalid DoorMarker coordinates: "+x1 +" - " + y1+ "; " + x2+" - "+ y2);
+		}
 		this.x1 = x1;
 		this.y1 = y1;
 		this.x2 = x2;
@@ -47,6 +50,16 @@ public class DoorMarker implements Json.Serializable {
 		return result;
 	}
 
+	public static Collection<DoorMarker> createAllDoorsOfRoomIfInRange(int x, int y, int dungeonWidth, int dungeonHeight) {
+		Set<DoorMarker> result = new HashSet<>();
+		result.add(createIfInRange(x, y, RouteInstruction.Direction.West, dungeonWidth, dungeonHeight));
+		result.add(createIfInRange(x, y, RouteInstruction.Direction.East, dungeonWidth, dungeonHeight));
+		result.add(createIfInRange(x, y, RouteInstruction.Direction.North, dungeonWidth, dungeonHeight));
+		result.add(createIfInRange(x, y, RouteInstruction.Direction.East, dungeonWidth, dungeonHeight));
+		result.remove(null);
+		return result;
+	}
+
 	public static DoorMarker create(int x, int y, RouteInstruction.Direction dir) {
 		if (dir == RouteInstruction.Direction.East) {
 			return new DoorMarker(x, y, x + 1, y);
@@ -60,7 +73,35 @@ public class DoorMarker implements Json.Serializable {
 		if (dir == RouteInstruction.Direction.North) {
 			return new DoorMarker(x, y, x, y - 1);
 		}
-		throw new IllegalArgumentException("not a vaid direction");
+		throw new IllegalArgumentException("not a valid direction");
+	}
+
+	public static DoorMarker createIfInRange(int x, int y, RouteInstruction.Direction dir, int dungeonWidth, int dungeonHeight) {
+		if (dir == RouteInstruction.Direction.East) {
+			int xCoord = x + 1;
+			if(xCoord < dungeonWidth-1) {
+				return new DoorMarker(x, y, xCoord, y);
+			}
+		}
+		if (dir == RouteInstruction.Direction.West) {
+			int xCoord = x - 1;
+			if(xCoord >= 0) {
+				return new DoorMarker(x, y, xCoord, y);
+			}
+		}
+		if (dir == RouteInstruction.Direction.South) {
+			int yCoord = y + 1;
+			if(yCoord < dungeonHeight-1) {
+				return new DoorMarker(x, y, x, yCoord);
+			}
+		}
+		if (dir == RouteInstruction.Direction.North) {
+			int yCoord = y - 1;
+			if(yCoord >= 0) {
+				return new DoorMarker(x, y, x, yCoord);
+			}
+		}
+		return null;
 	}
 
 	@Override
