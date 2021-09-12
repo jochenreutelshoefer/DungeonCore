@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 
 public class SingleDungeonManager extends AbstractDungeonManager {
 

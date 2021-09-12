@@ -158,7 +158,7 @@ public class HadrianLevel extends AbstractDungeonFactory {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		return dungeon;
 	}
 

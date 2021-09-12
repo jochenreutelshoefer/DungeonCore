@@ -148,18 +148,19 @@ public class DungeonBuilderASPWriter {
 	}
 
 	private void appendKeysASPCode(StringBuilder buffy) {
+		buffy.append("\n%% Keys/Locks in general\n");
+		buffy.append("%% General key related code\n");
+		buffy.append("% For each key there must be exactly one door to hold the lock of this key\n");
+		buffy.append("1{lock(door(room(X1, Y1), room(X2, Y2)), K) : key(K), door(room(X1, Y1), room(X2, Y2)), room(X1, Y1), room(X2, Y2) }   1 .\n");
+		buffy.append("% The door holding the lock is locked\n");
+		buffy.append("locked(door(room(X2, Y2), room(X1, Y1)), K) :- lock(door(room(X1, Y1), room(X2, Y2)), K) .\n");
+		buffy.append("% The inverse door is also locked (we modelled both directions separately here in ASP)\n");
+		buffy.append("locked(door(room(X2, Y2), room(X1, Y1)), K) :- locked(door(room(X1, Y1), room(X2, Y2)), K) .\n");
+		buffy.append("% The lock can not be where no door exists\n");
+		buffy.append(":- locked(door(room(X2, Y2), room(X1, Y1)), K), not door(room(X2, Y2), room(X1, Y1)) .\n\n");
+
 		if (builder.keys.size() > 0) {
 			String startLocationName = builder.startLocation.getIdentifier().toLowerCase() + "Pos";
-			buffy.append("\n%% Keys/Locks in general\n");
-			buffy.append("%% General key related code\n");
-			buffy.append("% For each key there must be exactly one door to hold the lock of this key\n");
-			buffy.append("1{lock(door(room(X1, Y1), room(X2, Y2)), K) : key(K), door(room(X1, Y1), room(X2, Y2)), room(X1, Y1), room(X2, Y2) }   1 .\n");
-			buffy.append("% The door holding the lock is locked\n");
-			buffy.append("locked(door(room(X2, Y2), room(X1, Y1)), K) :- lock(door(room(X1, Y1), room(X2, Y2)), K) .\n");
-			buffy.append("% The inverse door is also locked (we modelled both directions separately here in ASP)\n");
-			buffy.append("locked(door(room(X2, Y2), room(X1, Y1)), K) :- locked(door(room(X1, Y1), room(X2, Y2)), K) .\n");
-			buffy.append("% The lock can not be where no door exists\n");
-			buffy.append(":- locked(door(room(X2, Y2), room(X1, Y1)), K), not door(room(X2, Y2), room(X1, Y1)) .\n\n");
 
 			buffy.append("%% Reachability from starting point\n");
 			buffy.append("%% Initiate reachability tracing with keys/locks\n");
@@ -307,6 +308,11 @@ public class DungeonBuilderASPWriter {
 			if (predefinedDoor == null) continue;
 			if (isWall) buffy.append("not ");
 			buffy.append("door(room(" + predefinedDoor.x1 + "," + predefinedDoor.y1 + "), room(" + predefinedDoor.x2 + "," + predefinedDoor.y2 + ")) .\n");
+			if (predefinedDoor.getKeyString() != null) {
+				// lock(door(room(X1, Y1), room(X2, Y2)), K)
+				buffy.append("lock(door(room(" + predefinedDoor.x1 + "," + predefinedDoor.y1 + "), room(" + predefinedDoor.x2 + "," + predefinedDoor.y2 + ")), \"" + predefinedDoor.getKeyString() + "\") .\n");
+				buffy.append("key(\"" + predefinedDoor.getKeyString() + "\").\n");
+			}
 		}
 		return buffy.toString();
 	}

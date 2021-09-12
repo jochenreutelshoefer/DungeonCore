@@ -447,6 +447,10 @@ public class ImageManager {
 	public static JDImageProxy<?> statueImage;
 
 	public static JDImageProxy<?> black;
+	public static JDImageProxy<?> start;
+	public static JDImageProxy<?> goal;
+	public static JDImageProxy<?> key_icon;
+	public static JDImageProxy<?> lock;
 
 	public static JDImageProxy<?> swordImage;
 
@@ -562,6 +566,10 @@ public class ImageManager {
 	public static JDImageProxy<?> lebenskugel;
 	public static JDImageProxy<?> highlightBox;
 	public static final String BLACK_BACKGROUND = "black.png";
+	public static final String LOCK = "lock.png";
+	public static final String START = "startFlag.png";
+	public static final String GOAL = "goalFlag.png";
+	public static final String KEY_ICON = "key_icon.png";
 
 	private static AnimationSetDirections load4Animations(
 			AbstractImageLoader<?> a, String path, String pattern) {
@@ -844,6 +852,10 @@ public class ImageManager {
 			saeuleImage = new JDImageProxy<>(a, "sauele.gif");
 			statueImage = new JDImageProxy<>(a, "statue.gif");
 			black = new JDImageProxy<>(a, BLACK_BACKGROUND);
+			start = new JDImageProxy<>(a, START);
+			goal = new JDImageProxy<>(a, GOAL);
+			key_icon = new JDImageProxy<>(a, KEY_ICON);
+			lock = new JDImageProxy<>(a, LOCK);
 			chest_lockImage = new JDImageProxy<>(a, "chest_schloss.gif");
 			door_north_lock = new JDImageProxy<>(a, "tuer_nord_schloss.gif");
 			door_north_lock_solo = new JDImageProxy<>(a, "tuer_nord_schloss_solo.gif");

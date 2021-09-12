@@ -37,7 +37,7 @@ public class ChestItemBuilder extends AbstractLocationBuilder {
 
 	@Override
 	public String getIdentifier() {
-		return item.getClass() + ("" + item.hashCode())
+		return item.getClass() + ("" + System.identityHashCode(item))
 				.replaceAll(" ", "_")
 				.replaceAll(",", "_")
 				.replaceAll(":", "_")

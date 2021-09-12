@@ -1,6 +1,7 @@
 package de.jdungeon.dungeon.level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Set;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.builder.ChestItemBuilder;
+import de.jdungeon.dungeon.builder.DoorMarker;
 import de.jdungeon.dungeon.builder.DungeonBuilderFactory;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
 import de.jdungeon.dungeon.builder.Hall;
@@ -24,6 +26,7 @@ import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.item.DustItem;
 import de.jdungeon.item.HealPotion;
+import de.jdungeon.item.Key;
 import de.jdungeon.item.OxygenPotion;
 import de.jdungeon.item.VisibilityCheatBall;
 import de.jdungeon.location.HealthFountain;
@@ -40,6 +43,7 @@ public class LevelRescue extends AbstractLevel {
 	private RescueCharacterLocationBuilder rescueChar;
 
 	private Dungeon assembledDungeon = null;
+	public static final String KEY_STRING = "Red key card";
 
 	public LevelRescue(DungeonBuilderFactory builderFactory) {
 		super(builderFactory, 11, 11);
@@ -87,11 +91,15 @@ public class LevelRescue extends AbstractLevel {
 
 		StartLocationBuilder startL = new StartLocationBuilder(start, exit.getRoomPosition());
 
-		Collection<ChestItemBuilder> chestItemBuilders = createChestBuilders(3,
+		Collection<ChestItemBuilder> chestItemBuilders = createChestBuilders(7,
 				new ItemDTO(OxygenPotion.class),
+				new ItemDTO(OxygenPotion.class),
+				new ItemDTO(HealPotion.class, 35),
 				new ItemDTO(HealPotion.class, 35),
 				new ScrollItemDTO(LionessConjuration.class),
 				new ScrollItemDTO(FirConjuration.class),
+				new ItemDTO(DustItem.class, 7),
+				new ItemDTO(DustItem.class, 7),
 				new ItemDTO(DustItem.class, 7)
 		);
 
@@ -105,11 +113,13 @@ public class LevelRescue extends AbstractLevel {
 				.addLocation(scoutTower)
 				//.addLocation(scoutTower2)
 				.addLocation(new LocationBuilder(HealthFountain.class))
+				.addLocation(new LocationBuilder(HealthFountain.class))
+				.addLocation(new LocationBuilder(HealthFountain.class))
 				//.addLocationsShortestDistanceAtLeastConstraint(startL, exit, 16)
 				.addLocationsShortestDistanceAtLeastConstraint(startL, rescueChar, 9)
 				.addHall(centerHall.build())
 				.setMinAmountOfDoors(140)
-				.setMaxDeadEnds(4)
+				.setMaxDeadEnds(6)
 				.addLocations(chestItemBuilders)
 				//.addKey(keyBuilder)
 				//.addLocationsShortestDistanceAtLeastConstraint(startL, keyBuilder, 6)
@@ -149,13 +159,28 @@ public class LevelRescue extends AbstractLevel {
 		int centerHallUpperLeftCornerX = point.getX();
 		int centerHallUpperLeftCornerY = point.getY();
 
-		HallBuilder rescue = getHallDoorSpecification3x3(centerHallUpperLeftCornerX, centerHallUpperLeftCornerY);
+		HallBuilder rescueHallBuilder = getHallDoorSpecification3x3(centerHallUpperLeftCornerX, centerHallUpperLeftCornerY);
 		JDPoint rescueCharPoint = new JDPoint(centerHallUpperLeftCornerX + 1, centerHallUpperLeftCornerY + 1);
 		rescueCharacterLocationBuilder.setPosition(rescueCharPoint);
 		LocationBuilder scoutTower2 = new LocationBuilder(ScoutShrine.class, 2);
-		rescue.addNonPositionedLocation(scoutTower2);
-		rescue.addLocation(rescueCharacterLocationBuilder, rescueCharPoint);
-		return rescue.build();
+		rescueHallBuilder.addNonPositionedLocation(scoutTower2);
+		rescueHallBuilder.addLocation(rescueCharacterLocationBuilder, rescueCharPoint);
+		Hall hall = rescueHallBuilder.build();
+		RouteInstruction.Direction doorDir = RouteInstruction.Direction.random();
+		// we set walls for the other three directions
+		Arrays.stream(RouteInstruction.Direction.values()).filter(dir -> !(dir == doorDir)).forEach(direction -> {
+			hall.removeDoor(DoorMarker.create(rescueCharPoint.getX(), rescueCharPoint.getY(), direction));
+			hall.addWall(DoorMarker.create(rescueCharPoint.getX(), rescueCharPoint.getY(), direction));
+		});
+
+		// and a door finally
+		DoorMarker rescueDoorMarker = DoorMarker.create(rescueCharPoint.getX(), rescueCharPoint.getY(), doorDir);
+		rescueDoorMarker.setKey(KEY_STRING);
+		Key key = new Key();
+		ChestItemBuilder keyChest = new ChestItemBuilder(new ItemDTO(Key.class, KEY_STRING, 0));
+		hall.addDoor(rescueDoorMarker);
+
+		return hall;
 	}
 
 	private JDPoint getRandomHallStartPoint(RouteInstruction.Direction dir) {
@@ -191,6 +216,9 @@ public class LevelRescue extends AbstractLevel {
 		addPatrolSpider(locationPosition.getX()-1, locationPosition.getY() -1, assembledDungeon.getRoom(new JDPoint(locationPosition.getX(), locationPosition.getY()-1)));
 		JDPoint exitPosition = getExitPosition();
 		addPatrolSpider(exitPosition.getX()-1, exitPosition.getY() -1, assembledDungeon.getRoom(new JDPoint(exitPosition.getX(), exitPosition.getY()-1)));
+		JDPoint fountainPos = dungeonDTO.getLocationPosition(HealthFountain.class);
+		Key key = new Key(KEY_STRING);
+		assembledDungeon.getRoom(fountainPos).addItem(key);
 		assembledDungeon.getRoom(this.getHeroEntryPoint()).addItem(new VisibilityCheatBall());
 		return assembledDungeon;
 	}

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.level.stageone.HadrianLevel;
 import de.jdungeon.level.stagethree.StartLevelOLD;
 import de.jdungeon.level.stagetwo.EscortLevel2A;

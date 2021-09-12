@@ -11,9 +11,10 @@ public class RelativeRectangle implements DrawingRectangle {
 
 	private final int width;
 	private final int height;
-	private final int offsetInRoomX;
-	private final int offsetInRoomY;
 
+	private final int offsetInRoomX;
+
+	private final int offsetInRoomY;
 	public RelativeRectangle(int offsetInRoomX, int offsetInRoomY, int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -26,6 +27,14 @@ public class RelativeRectangle implements DrawingRectangle {
 		this.offsetInRoomY = pointRelativeInRoom.getY();
 		this.width = width;
 		this.height = height;
+	}
+
+	public int getOffsetInRoomY() {
+		return offsetInRoomY;
+	}
+
+	public int getOffsetInRoomX() {
+		return offsetInRoomX;
 	}
 
 	public RelativeRectangle(JDPoint pointRelativeInRoom, JDDimension dimension) {

@@ -51,7 +51,7 @@ public class LevelTwoB extends AbstractDungeonFactory {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		return dungeon;
 	}
 

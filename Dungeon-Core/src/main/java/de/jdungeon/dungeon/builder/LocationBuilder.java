@@ -19,20 +19,34 @@ public class LocationBuilder extends AbstractLocationBuilder {
 	 * We use a String here to allow for easier serialization
 	 */
 	public String clazz;
-	public int index;
+	private String identifier;
 
 	public LocationBuilder(Class<? extends Locatable> clazz) {
 		this(clazz, 0);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		LocationBuilder that = (LocationBuilder) o;
+		return clazz.equals(that.clazz) && identifier.equals(that.identifier);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(clazz, identifier);
+	}
+
 	public LocationBuilder(Class<? extends Locatable> clazz, int number) {
 		this.clazz = clazz.getName();
-		this.index = number;
+		this.identifier = createIdentifier();
 	}
 
 	public LocationBuilder(Class<? extends Locatable> clazz, int x, int y) {
 		super(new JDPoint(x, y));
 		this.clazz = clazz.getName();
+		this.identifier = createIdentifier();
 	}
 
 	/**
@@ -48,9 +62,16 @@ public class LocationBuilder extends AbstractLocationBuilder {
 
 	@Override
 	public String getIdentifier() {
-		String s = clazz + this.hashCode()+"_"+index;
+		return identifier;
+	}
+
+	private String createIdentifier() {
+		String string = Integer.toString(System.identityHashCode(this));
+		String s = clazz + string.substring(string.lastIndexOf('@')+1);
 		return s.replace(".", "_").replace("-", "_");
 	}
+
+
 
 	public Class<? extends Locatable> getClazz() {
 		try {
@@ -102,16 +123,6 @@ public class LocationBuilder extends AbstractLocationBuilder {
 		return getClazz().getSimpleName();
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		LocationBuilder that = (LocationBuilder) o;
-		return clazz.equals(that.clazz);
-	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(clazz);
-	}
+
 }

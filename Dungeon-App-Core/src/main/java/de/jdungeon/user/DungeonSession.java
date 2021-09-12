@@ -7,7 +7,6 @@ import de.jdungeon.figure.hero.Hero;
 import de.jdungeon.figure.hero.HeroInfo;
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.spell.Spell;
@@ -22,11 +21,18 @@ import java.util.Map;
  */
 public interface DungeonSession {
 
-	JDGUI getGUI();
-
 	DungeonManager getDungeonManager();
 
 	DungeonFactory getLastCompleted();
+
+	/**
+	 * Checks whether some loss criterion is met in the current game state.
+	 * If one is met, it is returned.
+	 * If none is met, null is returned.
+	 *
+	 * @return a met loss criteria or null
+	 */
+	LossCriterion lossCriterionMet();
 
 	List<DungeonFactory> getCompletedDungeonsList();
 

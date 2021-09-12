@@ -48,7 +48,7 @@ public class StartLevel extends AbstractDungeonFactory {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		return dungeon;
 	}
 

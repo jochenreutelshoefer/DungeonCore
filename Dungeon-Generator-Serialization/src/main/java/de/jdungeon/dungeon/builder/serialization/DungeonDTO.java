@@ -14,6 +14,8 @@ import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.builder.DoorMarker;
 import de.jdungeon.dungeon.builder.LocatedEntityBuilder;
+import de.jdungeon.dungeon.builder.LocationBuilder;
+import de.jdungeon.item.interfaces.Locatable;
 
 public class DungeonDTO extends AbstractDTO {
 
@@ -109,6 +111,12 @@ public class DungeonDTO extends AbstractDTO {
 		for (Map.Entry<String, LocatedEntityBuilder> locationEntry : locations.entrySet()) {
 			if(locationEntry.getValue().getClass().equals(locationClazz)) {
 				return JDPoint.fromString(locationEntry.getKey());
+			}
+			if(locationEntry.getValue() instanceof LocationBuilder) {
+				Class<? extends Locatable> locationBuilderClass = ((LocationBuilder) locationEntry.getValue()).getClazz();
+				if(locationBuilderClass.equals(locationClazz)) {
+					return JDPoint.fromString(locationEntry.getKey());
+				}
 			}
 		}
 		return null;

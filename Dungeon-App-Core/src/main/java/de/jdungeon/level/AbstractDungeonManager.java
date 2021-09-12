@@ -3,7 +3,7 @@ package de.jdungeon.level;
 import java.util.List;
 import java.util.Map;
 
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 
 public abstract class AbstractDungeonManager implements DungeonManager{
 

@@ -1,7 +1,5 @@
 package de.jdungeon.level;
 
-import java.util.Collections;
-
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
@@ -32,7 +30,7 @@ public class LevelTester {
 		for(int i = 0; i < RUNS; i++) {
 			System.out.println("Run "+i);
 			startLevelFactory.create();
-			Dungeon dungeon = startLevelFactory.getDungeon();
+			Dungeon dungeon = startLevelFactory.assembleDungeon();
 			dungeon.prepare();
 
 		}

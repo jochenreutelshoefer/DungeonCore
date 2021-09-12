@@ -11,7 +11,7 @@ import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.Action;
 import de.jdungeon.game.Configuration;
 
-public interface JDGUI extends ControlUnit {
+public interface PlayerControllerI extends ControlUnit {
 
 	/**
 	 * Sets the de.jdungeon.figure's action which will be processed next by the de.jdungeon.game.
@@ -31,5 +31,6 @@ public interface JDGUI extends ControlUnit {
 	Configuration getConfiguration();
 
 	FigureInfo getFigure();
-	
+
+	LossCriterion gameOverCriterionMet();
 }

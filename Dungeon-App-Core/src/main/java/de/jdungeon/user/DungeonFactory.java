@@ -1,7 +1,10 @@
-package de.jdungeon.dungeon.builder;
+package de.jdungeon.user;
+
+import java.util.Set;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.builder.DungeonGenerationException;
 
 /**
  * @author Jochen Reutelshoefer (denkbares GmbH)
@@ -9,20 +12,9 @@ import de.jdungeon.dungeon.JDPoint;
  */
 public interface DungeonFactory {
 
-	enum Mode {
-		/**
-		Generate new level on the fly
-		 */
-		Generate,
-		/**
-		Read pre-generated level from file system
-		 */
-		Read;
-	}
-
 	void create() throws DungeonGenerationException;
 
-	Dungeon getDungeon();
+	Dungeon assembleDungeon();
 
 	JDPoint getHeroEntryPoint();
 
@@ -33,4 +25,6 @@ public interface DungeonFactory {
 	String getDescription();
 
 	int getRoundScoringBaseValue();
+
+	Set<LossCriterion> getLossCriteria();
 }

@@ -55,6 +55,9 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 	}
 
 	public Chest(Item i) {
+		if(i == null) {
+			throw new IllegalArgumentException("Passed item must not be null!");
+		}
 		items = new LinkedList<>();
 		this.takeItem(i);
 	}
@@ -235,7 +238,7 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 		// System.out.println("in Kiste; "+items.size());
 		for (int i = 0; i < items.size(); i++) {
 			Item it = (items.get(i));
-			// System.out.println(it.toString());
+			if(it == null) continue; // damn it, wtf !
 			itemS += it.toString() + ",  ";
 		}
 		p[2] = new Paragraph(itemS);
@@ -262,9 +265,13 @@ public class Chest implements Lockable, ItemOwner, Paragraphable, InfoProvider, 
 
 	@Override
 	public boolean takeItem(Item i) {
-		items.add(i);
-		Item.notifyItem(i, (this));
-		return true;
+		if(i != null) {
+
+			items.add(i);
+			Item.notifyItem(i, (this));
+			return true;
+		}
+		return false;
 	}
 
 	@Override

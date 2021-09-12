@@ -17,7 +17,6 @@ import de.jdungeon.figure.hero.Profession;
 import de.jdungeon.figure.hero.Zodiac;
 import de.jdungeon.figure.ControlUnit;
 import de.jdungeon.game.DungeonWorldUpdater;
-import de.jdungeon.dungeon.builder.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 import de.jdungeon.location.LevelExit;
 import de.jdungeon.spell.Spell;
@@ -41,16 +40,16 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	private DungeonWorldUpdater dungeonWorldUpdater;
 	private DungeonFactory lastCompletedDungeonFactory;
 	private DungeonFactory lastSelectedDungeonFactory;
-	private Dungeon derDungeon;
+	private Dungeon currentDungeon;
 
 	private final DungeonManager manager;
 	private final String sessionID;
-	private JDGUI gui;
 	private final Map<DungeonFactory, Integer> completedDungeons = new HashMap<>();
 	private int fails;
 	private final Date startTime;
 
 	private final List<DungeonFactory> completedDungeonsList = new ArrayList<>();
+	private Set<LossCriterion> lossCriteria = new HashSet<>();
 
 	public DefaultDungeonSession(User user, UUIDGenerator uuidGenerator, DungeonManager dungeonManager) {
 		this.user = user;
@@ -76,11 +75,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public void setDungeonWorldUpdater(DungeonWorldUpdater dungeonGameLoop) {
 		this.dungeonWorldUpdater = dungeonGameLoop;
-	}
-
-	@Override
-	public JDGUI getGUI() {
-		return this.gui;
 	}
 
 	@Override
@@ -112,6 +106,19 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	}
 
 	@Override
+	public LossCriterion lossCriterionMet() {
+		Optional<LossCriterion> metLossCriteria = this.lossCriteria.stream()
+				.filter(lossCriterion -> lossCriterion.isMet(this))
+				.findFirst();
+		if (metLossCriteria.isPresent()) {
+			return metLossCriteria.get();
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
 	public Map<DungeonFactory, Integer> getCompletedDungeons() {
 		return this.completedDungeons;
 	}
@@ -124,10 +131,6 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	@Override
 	public int getGameRound() {
 		return getDungeonRound();
-	}
-
-	public void setGUIController(JDGUI gui) {
-		this.gui = gui;
 	}
 
 	/**
@@ -214,7 +217,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		lastSelectedDungeonFactory = dungeonFactory;
 
 		dungeonFactory.create();
-		derDungeon = dungeonFactory.getDungeon();
+		currentDungeon = dungeonFactory.assembleDungeon();
 
 		/*
 		 Prepare hero for new dungeon
@@ -238,7 +241,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 		dust.setValue(dust.getBasic());
 
 		currentHero.resetCompletedGameRoundNumber();
-		currentHero.setActualDungeon(derDungeon);
+		currentHero.setActualDungeon(currentDungeon);
 		currentHero.setControl(control);
 
 		DungeonVisibilityMap heroVisMap = currentHero.getViwMap();
@@ -247,9 +250,18 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 
 		control.setFigure(heroInfo);
 
-		derDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY())
+		currentDungeon.getRoomNr(dungeonFactory.getHeroEntryPoint().getX(), dungeonFactory.getHeroEntryPoint().getY())
 				.figureEnters(currentHero, 0, -1);
-		derDungeon.prepare();
+		currentDungeon.prepare();
+
+		/**
+		 setup win/loss criteria
+		 */
+		// obtain level specific loss criteria
+		lossCriteria.addAll(dungeonFactory.getLossCriteria());
+		// further, it is always bad if the player figure is dead
+		this.lossCriteria.add(new PlayerDeadLossCriterion());
+
 		return heroInfo;
 	}
 
@@ -267,7 +279,7 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 	 */
 	@Override
 	public Dungeon getCurrentDungeon() {
-		return derDungeon;
+		return currentDungeon;
 	}
 
 	@Override
@@ -282,8 +294,8 @@ public class DefaultDungeonSession implements Session, DungeonSession {
 			}
 			currentHero.setActualDungeon(null);
 			makeHeroBackup();
-			derDungeon.destroy();
-			derDungeon = null;
+			this.currentDungeon.destroy();
+			this.currentDungeon = null;
 		}
 		EventManager.getInstance().fireEvent(new ExitUsedEvent(figure, exit));
 	}

@@ -1,5 +1,9 @@
 package de.jdungeon.dungeon.util;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import de.jdungeon.figure.DungeonVisibilityMap;
 //import dungeon.*;
 import de.jdungeon.dungeon.JDPoint;
@@ -41,6 +45,28 @@ public class RouteInstruction {
 		
 		private final int val;
 		Direction(int val) {this.val = val;}
+
+		/**
+		 * Returns a random direction
+		 *
+		 * @return random direction
+		 */
+		public static Direction random() {
+			int randomDirNumber = 1 + ((int)(Math.random() * 4));
+			return fromInteger(randomDirNumber);
+		}
+
+		/**
+		 * Returns a set of all 3 direction excluding the given one
+		 *
+		 * @param direction direction to be excluded
+		 * @return other three direction
+		 */
+		public Set<Direction> others(Direction direction) {
+			Set<Direction> result = new HashSet<>();
+			Arrays.stream(Direction.values()).sequential().filter(dir -> !(dir == direction)).forEach(result::add);
+			return result;
+		}
 
 		public int getValue() {
 			return val;

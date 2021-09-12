@@ -72,7 +72,7 @@ public class EscortLevel2A extends AbstractDungeonFactory {
 	}
 
 	@Override
-	public Dungeon getDungeon() {
+	public Dungeon assembleDungeon() {
 		return dungeon;
 	}
 

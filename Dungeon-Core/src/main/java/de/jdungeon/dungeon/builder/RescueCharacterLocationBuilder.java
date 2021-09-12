@@ -40,6 +40,23 @@ public class RescueCharacterLocationBuilder extends AbstractLocationBuilder{
 
 	@Override
 	public void insert(Dungeon dungeon, int x, int y) {
+		Hero npc = getRescueFigure(dungeon);
+		Room rescueFigureRoom = dungeon.getRoom(x, y);
+		rescueFigureRoom.figureEntersDungeonHere(npc, 0, -1);
+		this.figureIndex = npc.getFigureID();
+
+		JDPoint exitPosition = exit.getRoomPosition();
+		Room exitRoom = dungeon.getRoom(exitPosition);
+		Location location = exitRoom.getLocation();
+		
+		if(! (location instanceof LevelExit)) {
+			Log.severe("No level exit here!");
+		} else {
+			((LevelExit)location).setRequiredFigure(npc);
+		}
+	}
+
+	private Hero getRescueFigure(Dungeon dungeon) {
 		Hero npc = DefaultNPCFactory.createDefaultNPC("Willi", Hero.HEROCODE_MAGE);
 		npc.takeItem(new Wolfknife(25, false));
 		npc.createVisibilityMap(dungeon);
@@ -47,15 +64,6 @@ public class RescueCharacterLocationBuilder extends AbstractLocationBuilder{
 		RescuedNPCAI ai = new RescuedNPCAI();
 		ai.setFigure(npcInfo);
 		npc.setControl(new FigureControl(npcInfo, ai));
-		dungeon.getRoom(x,y).figureEntersDungeonHere(npc, 0, -1);
-		JDPoint exitPosition = exit.getRoomPosition();
-		Room exitRoom = dungeon.getRoom(exitPosition);
-		Location location = exitRoom.getLocation();
-		this.figureIndex = npc.getFigureID();
-		if(! (location instanceof LevelExit)) {
-			Log.severe("No level exit here!");
-		} else {
-			((LevelExit)location).setRequiredFigure(npc);
-		}
+		return npc;
 	}
 }

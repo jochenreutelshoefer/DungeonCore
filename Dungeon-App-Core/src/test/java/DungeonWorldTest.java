@@ -16,10 +16,8 @@ import de.jdungeonx.DungeonGameLoop;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
 
-import org.junit.Test;
-
 import de.jdungeon.level.DefaultDungeonManager;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 
 import static junit.framework.Assert.assertEquals;
@@ -49,7 +47,7 @@ public class DungeonWorldTest  {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
 			for (DungeonFactory dungeonFactory : dungeonFactories) {
 				dungeonFactory.create();
-				Dungeon dungeon = dungeonFactory.getDungeon();
+				Dungeon dungeon = dungeonFactory.assembleDungeon();
 				Hero hero = HeroUtil.getBasicHero(Hero.HeroCategory.Warrior.getCode(), "Gisbert2", Zodiac.Aquarius,
 						Profession.Lumberjack);
 

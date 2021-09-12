@@ -6,7 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.user.DungeonSession;
 
 public class SessionScore implements Json.Serializable {

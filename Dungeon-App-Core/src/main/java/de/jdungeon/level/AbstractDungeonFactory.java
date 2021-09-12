@@ -2,12 +2,14 @@ package de.jdungeon.level;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.dungeon.generate.DungeonFillUtils;
 import de.jdungeon.dungeon.generate.DungeonFiller;
 import de.jdungeon.dungeon.generate.ReachabilityChecker;
@@ -15,6 +17,7 @@ import de.jdungeon.dungeon.generate.RectArea;
 import de.jdungeon.dungeon.quest.ReversibleRoomQuest;
 import de.jdungeon.dungeon.quest.RoomQuestWall;
 import de.jdungeon.level.generation.SimpleDungeonFiller;
+import de.jdungeon.user.LossCriterion;
 //import org.apache.log4j.Logger;
 
 /**
@@ -38,6 +41,10 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 			}
 		}
 		return entryPoint;
+	}
+
+	public Set<LossCriterion> getLossCriteria() {
+		return Collections.emptySet();
 	}
 
 	protected void createAllDoors(Dungeon dungeon) {
@@ -65,9 +72,9 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 				if (unallocatedSpace != null) {
 					roomQuest.setLocation(unallocatedSpace.getPosition());
 					boolean possible = roomQuest.setUp();
-					if(possible) {
+					if (possible) {
 						boolean valid = reachabilityChecker.check();
-						if(roomQuest instanceof RoomQuestWall) {
+						if (roomQuest instanceof RoomQuestWall) {
 							// the rooms of a RoomQuestWall should not be reachable, that is ok
 							valid = reachabilityChecker.checkIgnoreRooms(toList(roomQuest.getRooms()));
 						}
@@ -77,16 +84,17 @@ public abstract class AbstractDungeonFactory implements DungeonFactory {
 							// successful so break iteration loop
 							success = true;
 							break;
-						} else {
+						}
+						else {
 							roomQuest.undo();
 						}
 					}
 					iteration++;
 				}
 			}
-			if(!success) {
+			if (!success) {
 				// TODO: find proper way of logging to android logger in non-android projects
-				System.out.println("Could not create RoomQuest: "+roomQuest.toString());
+				System.out.println("Could not create RoomQuest: " + roomQuest.toString());
 			}
 		}
 	}

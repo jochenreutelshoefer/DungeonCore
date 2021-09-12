@@ -10,7 +10,7 @@ import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.game.JDEnv;
 import de.jdungeon.util.MyResourceBundle;
 import de.jdungeon.level.DefaultDungeonManager;
-import de.jdungeon.dungeon.builder.DungeonFactory;
+import de.jdungeon.user.DungeonFactory;
 import de.jdungeon.level.DungeonManager;
 
 import static junit.framework.Assert.*;
@@ -45,7 +45,7 @@ public class LevelGenerationConsistencyTest {
 			List<DungeonFactory> dungeonFactories = manager.getDungeonOptions(i);
 			for (DungeonFactory dungeonFactory : dungeonFactories) {
 				dungeonFactory.create();
-				Dungeon dungeon = dungeonFactory.getDungeon();
+				Dungeon dungeon = dungeonFactory.assembleDungeon();
 				dungeon.prepare();
 				assertNotNull(dungeon);
 

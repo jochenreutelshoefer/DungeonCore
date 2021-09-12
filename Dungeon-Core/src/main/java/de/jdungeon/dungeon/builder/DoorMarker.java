@@ -18,6 +18,12 @@ public class DoorMarker implements Json.Serializable {
 	int x2;
 	int y2;
 
+	/**
+	 * Optionally we can have key string indicating that the door will have a lock
+	 * with the given key string.
+	 */
+	private String keyString;
+
 	public DoorMarker(int x1, int y1, int x2, int y2) {
 		if(x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) {
 			throw new IllegalArgumentException("Invalid DoorMarker coordinates: "+x1 +" - " + y1+ "; " + x2+" - "+ y2);
@@ -135,5 +141,13 @@ public class DoorMarker implements Json.Serializable {
 	@Override
 	public void read(Json json, JsonValue jsonData) {
 		json.readFields(this, jsonData);
+	}
+
+	public void setKey(String keyString) {
+		this.keyString = keyString;
+	}
+
+	public String getKeyString() {
+		return keyString;
 	}
 }

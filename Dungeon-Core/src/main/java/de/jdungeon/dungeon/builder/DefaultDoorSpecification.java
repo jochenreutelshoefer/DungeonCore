@@ -29,10 +29,18 @@ public class DefaultDoorSpecification implements DoorSpecification {
 	}
 
 	public void addDoor(DoorMarker door) {
+		if(walls.contains(door)) {
+			throw new IllegalStateException("Cannot add door as there is a wall already specified.");
+		}
+		// hotfix: see hashcode/equal because of door with/without keyString
+		this.removeDoor(door);
 		this.doors.add(door);
 	}
 
 	public void addWall(DoorMarker door) {
+		if(doors.contains(door)) {
+			throw new IllegalStateException("Cannot add wall as there is a door already specified.");
+		}
 		this.walls.add(door);
 	}
 

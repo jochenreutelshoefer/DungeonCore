@@ -7,10 +7,12 @@ import java.util.Set;
 import de.jdungeon.dungeon.Door;
 import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
+import de.jdungeon.dungeon.Lock;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.builder.serialization.DungeonDTO;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.builder.serialization.LockDTO;
+import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.item.Key;
 
 public class DTODungeonFactory {
@@ -31,6 +33,10 @@ public class DTODungeonFactory {
 			Room room1 = dungeon.getRoom(doorDTO.x1, doorDTO.y1);
 			Room room2 = dungeon.getRoom(doorDTO.x2, doorDTO.y2);
 			room1.setDoorTo(room2);
+			if(doorDTO.getKeyString() != null) {
+				Door door = room1.getDoor(RouteInstruction.Direction.fromPoints(room1.getPoint(), room2.getPoint()));
+				door.setLock(new Lock(new Key(doorDTO.getKeyString()), door));
+			}
 		});
 
 		// create locks
