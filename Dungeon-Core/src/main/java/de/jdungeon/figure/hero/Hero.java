@@ -810,19 +810,6 @@ public class Hero extends Figure implements InfoProvider, Serializable {
                 } else {
                     s += ("Wenn da jemand gewesen wäre hättest Du es rausgekriegt.");
                 }
-                visStatusResult = RoomObservationStatus.VISIBILITY_FIGURES;
-
-            } else if (scoutlevel >= 8) {
-                if (!toScout.getRoomFigures().isEmpty()) {
-                    s += ("Gegner lokalisiert!\n");
-                } else {
-                    s += "Der Raum ist frei\n";
-                }
-                if (!toScout.getItems().isEmpty()) {
-                    s += "...und sieh mal was da rumliegt!\n";
-                } else {
-                    s += "keine Gegenstände dort\n";
-                }
                 visStatusResult = RoomObservationStatus.VISIBILITY_ITEMS;
 
             } else {

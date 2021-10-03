@@ -73,7 +73,8 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 			return EndRoundAction.instance;
 		}
 
-		if (currentTarget == null) {
+		if (currentTarget == null || DungeonUtils.findShortestPath(this.monster, this.monster.getRoomInfo()
+				.getNumber(), currentTarget, false) == null) {
 			selectNewTarget();
 		}
 
@@ -106,7 +107,7 @@ public class PatrolBehaviour extends DefaultMonsterIntelligence {
 			if (dice < sum) {
 				// we have a new target
 				currentTarget = jdPoint;
-				if(currentTarget == this.monster.getRoomNumber()) {
+				if (currentTarget == this.monster.getRoomNumber()) {
 					// we need a different goal
 					selectNewTarget();
 				}

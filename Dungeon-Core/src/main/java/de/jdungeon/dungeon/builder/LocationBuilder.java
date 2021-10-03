@@ -10,6 +10,7 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.item.interfaces.Locatable;
+import de.jdungeon.location.LevelExit;
 import de.jdungeon.location.Location;
 import de.jdungeon.log.Log;
 
@@ -66,6 +67,9 @@ public class LocationBuilder extends AbstractLocationBuilder {
 	}
 
 	private String createIdentifier() {
+		if(clazz.equals(LevelExit.class)) {
+			return "ExitLocation";
+		}
 		String string = Integer.toString(System.identityHashCode(this));
 		String s = clazz + string.substring(string.lastIndexOf('@')+1);
 		return s.replace(".", "_").replace("-", "_");

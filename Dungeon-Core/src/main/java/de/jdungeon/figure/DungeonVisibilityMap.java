@@ -164,7 +164,12 @@ public class DungeonVisibilityMap {
             return -1;
         }
         if (rooms[x][y] != null) {
-            return rooms[x][y].getVisibilityStatus();
+           //return RoomObservationStatus.VISIBILITY_SHRINE;
+            int visibilityStatus = rooms[x][y].getVisibilityStatus();
+            if(this.f.getRoom().getPoint().equals(new JDPoint(x,y)) && visibilityStatus < RoomObservationStatus.VISIBILITY_FIGURES) {
+                Log.severe("Vis status of current figure room is lower than figure level ");
+            }
+            return visibilityStatus;
         } else {
             return RoomObservationStatus.VISIBILITY_UNDISCOVERED;
         }

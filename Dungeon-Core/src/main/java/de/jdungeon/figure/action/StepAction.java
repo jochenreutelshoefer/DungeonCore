@@ -11,6 +11,7 @@ import de.jdungeon.dungeon.Room;
 import de.jdungeon.figure.Figure;
 import de.jdungeon.figure.FigureInfo;
 import de.jdungeon.figure.action.result.ActionResult;
+import de.jdungeon.log.Log;
 
 public class StepAction extends AbstractExecutableAction {
 
@@ -72,6 +73,9 @@ public class StepAction extends AbstractExecutableAction {
 			}
 			Position newPos = figure.getRoom().getPositions()[targetIndex];
 			if (newPos.getFigure() != null) {
+				if(doIt && this.figure.equals(newPos.getFigure())) {
+					Log.severe("Figure wants to step where it is already standing!");
+				}
 				return ActionResult.WRONG_TARGET;
 			}
 			if (doIt) {
