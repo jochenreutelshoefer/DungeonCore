@@ -53,7 +53,7 @@ public class ShellASPSolver {
 			String randParameter = "--rand-freq=0.05";
 			String randProb = "--rand-prob=50,20";
 			String randSeed = "--seed=" + Integer.toString((int) (Math.random() * 100000));
-			Exec execution = new Exec(clingoPath, randSeed, randParameter)
+			Exec execution = new Exec(clingoPath/*, randSeed, randParameter*/)
 					.console(false).input(fullProgram).error(err).output(out);
 			execution.runAsync();
 
@@ -106,7 +106,15 @@ public class ShellASPSolver {
 
 				int beginLastModelIndex = fullOutput.lastIndexOf(answerBeginKey);
 				int optimizationKeywordIndex = fullOutput.lastIndexOf("Optimization:");
-				String answerOut = fullOutput.substring(beginLastModelIndex, optimizationKeywordIndex);
+				int satisfiableKeywordIndex = fullOutput.lastIndexOf("SATISFIABLE");
+				int endIndex = -1;
+				if (optimizationKeywordIndex != -1) {
+					endIndex = optimizationKeywordIndex;
+				}
+				else {
+					endIndex = satisfiableKeywordIndex;
+				}
+				String answerOut = fullOutput.substring(beginLastModelIndex, endIndex);
 				Matcher matcher = Pattern.compile(answerBeginKey + "\\s*(\\d+)\n").matcher(answerOut);
 				matcher.find();
 				String answerNumberString = matcher.group(1);
