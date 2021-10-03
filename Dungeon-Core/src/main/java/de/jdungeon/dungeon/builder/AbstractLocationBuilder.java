@@ -82,7 +82,17 @@ public abstract class AbstractLocationBuilder implements LocatedEntityBuilder {
 				fieldValue = json.readValue(declaredField.getType(), jsonData.get(fieldName));
 			}
 			if (declaredField.getType().equals(String.class)) {
-				fieldValue = jsonData.getString(fieldName);
+				try {
+					fieldValue = jsonData.getString(fieldName);
+
+				} catch (IllegalArgumentException e) {
+					if(e.getMessage().contains("Named value not found")) {
+						// we have nothing in the json for the current field, hence leave field empty and jump over and
+						continue;
+					} else {
+						throw e;
+					}
+				}
 			}
 			try {
 				declaredField.set(this, fieldValue);
