@@ -14,6 +14,7 @@ import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.builder.serialization.LockDTO;
 import de.jdungeon.dungeon.util.RouteInstruction;
 import de.jdungeon.item.Key;
+import de.jdungeon.log.Log;
 
 public class DTODungeonFactory {
 
@@ -52,11 +53,23 @@ public class DTODungeonFactory {
 
 		// insert locations
 		Map<JDPoint, LocatedEntityBuilder> locations = dungeonDTO.getLocations();
-		locations.entrySet().stream().sorted(Comparator.comparingInt(entryA -> entryA.getValue().getBuildPriority()))
+		locations.entrySet().stream().sorted(Comparator.comparingInt(entryA -> {
+			LocatedEntityBuilder value = entryA.getValue();
+			if(value != null) {
+				return value.getBuildPriority();
+			} else {
+				Log.severe("Builder value was null!");
+				return 0;
+			}
+		}))
 				.forEach(entry -> {
 					JDPoint point = entry.getKey();
-					LocatedEntityBuilder locatedEntityBuilder = entry.getValue();
-					locatedEntityBuilder.insert(dungeon, point.getX(), point.getY());
+					if(point != null) {
+						LocatedEntityBuilder locatedEntityBuilder = entry.getValue();
+						if(locatedEntityBuilder != null) {
+							locatedEntityBuilder.insert(dungeon, point.getX(), point.getY());
+						}
+					}
 				});
 		/*
 		locations.keySet().stream().forEach(point -> {

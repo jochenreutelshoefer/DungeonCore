@@ -16,6 +16,7 @@ import de.jdungeon.dungeon.builder.DoorMarker;
 import de.jdungeon.dungeon.builder.LocatedEntityBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
 import de.jdungeon.item.interfaces.Locatable;
+import de.jdungeon.log.Log;
 
 public class DungeonDTO extends AbstractDTO {
 
@@ -60,7 +61,12 @@ public class DungeonDTO extends AbstractDTO {
 		Map<JDPoint, LocatedEntityBuilder> result = new HashMap<>();
 		Set<String> points = this.locations.keySet();
 		for (String pointString : points) {
-			result.put(JDPoint.fromString(pointString), locations.get(pointString));
+			LocatedEntityBuilder locatedEntityBuilder = locations.get(pointString);
+			if(locatedEntityBuilder != null) {
+				result.put(JDPoint.fromString(pointString), locatedEntityBuilder);
+			} else {
+				Log.severe("LocationEntityBuilder for point not found: "+pointString);
+			}
 		}
 		return result;
 	}
@@ -96,9 +102,13 @@ public class DungeonDTO extends AbstractDTO {
 	}
 
 	public void addLocation(LocatedEntityBuilder locationBuilder, int posX, int posY) {
-		JDPoint point = new JDPoint(posX, posY);
-		// we use Strings as key as otherwise JSON serialization does not work for HashMaps
-		locations.put(point.toString(), locationBuilder);
+		if(locationBuilder == null) {
+			Log.severe("LocationEntityBuilder added is null in DungeonDTO");
+		} else {
+			JDPoint point = new JDPoint(posX, posY);
+			// we use Strings as key as otherwise JSON serialization does not work for HashMaps
+			locations.put(point.toString(), locationBuilder);
+		}
 	}
 
 	/**

@@ -7,6 +7,7 @@ import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.builder.serialization.ItemDTO;
 import de.jdungeon.item.Item;
+import de.jdungeon.log.Log;
 
 public class ChestItemBuilder extends AbstractLocationBuilder {
 
@@ -55,6 +56,10 @@ public class ChestItemBuilder extends AbstractLocationBuilder {
 			room.setChest(chest);
 		}
 		Item itemInstance = this.item.create();
-		chest.takeItem(itemInstance);
+		if(itemInstance != null) {
+			chest.takeItem(itemInstance);
+		} else {
+			Log.severe("Item could not be instantiated: "+this.item);
+		}
 	}
 }
