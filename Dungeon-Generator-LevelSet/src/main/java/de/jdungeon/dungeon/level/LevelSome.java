@@ -15,6 +15,7 @@ import de.jdungeon.dungeon.builder.DefaultDoorSpecification;
 import de.jdungeon.dungeon.builder.DoorMarker;
 import de.jdungeon.dungeon.builder.DungeonBuilderFactory;
 import de.jdungeon.dungeon.builder.DungeonGenerationException;
+import de.jdungeon.dungeon.builder.Hall;
 import de.jdungeon.dungeon.builder.HallBuilder;
 import de.jdungeon.dungeon.builder.KeyBuilder;
 import de.jdungeon.dungeon.builder.LocationBuilder;
@@ -68,7 +69,7 @@ public class LevelSome extends AbstractLevel {
 
 		DoorMarker doorHallNorth = DoorMarker.create(hallUpperLeftCornerX + 1, hallUpperLeftCornerY, RouteInstruction.Direction.North);
 		DoorMarker doorHallSouth = DoorMarker.create(hallUpperLeftCornerX + 1, hallUpperLeftCornerY + hallHeight - 1, RouteInstruction.Direction.South);
-		DefaultDoorSpecification centerHall = new HallBuilder(hallUpperLeftCornerX, hallUpperLeftCornerY, hallWidth, hallHeight, getWidth(), getHeight())
+		Hall centerHall = new HallBuilder(hallUpperLeftCornerX, hallUpperLeftCornerY, hallWidth, hallHeight, getWidth(), getHeight())
 				.createAllInternalDoors()
 				// we need entrance and exit for our hall
 				.removeWall(doorHallNorth)
@@ -129,7 +130,7 @@ public class LevelSome extends AbstractLevel {
 				.addLocation(new LocationBuilder(HealthFountain.class))
 				.addLocationsShortestDistanceExactlyConstraint(startL, exit, 7)
 				.addLocationsShortestDistanceExactlyConstraint(exit, scoutTower, 4)
-				.addDoorSpecification(centerHall)
+				.addHall(centerHall)
 				.setMaxAmountOfDoors(42)
 				.setMinAmountOfDoors(38)
 				.setMaxDeadEnds(4)
