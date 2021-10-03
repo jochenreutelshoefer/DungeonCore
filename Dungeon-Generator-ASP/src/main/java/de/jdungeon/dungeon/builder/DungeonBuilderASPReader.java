@@ -1,25 +1,15 @@
 package de.jdungeon.dungeon.builder;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import com.denkbares.strings.Strings;
-import de.jdungeon.dungeon.Door;
-import de.jdungeon.dungeon.Dungeon;
 import de.jdungeon.dungeon.JDPoint;
-import de.jdungeon.dungeon.Room;
 import de.jdungeon.dungeon.builder.asp.Fact;
 import de.jdungeon.dungeon.builder.asp.Result;
 import de.jdungeon.dungeon.builder.serialization.DungeonDTO;
 import de.jdungeon.dungeon.builder.serialization.LevelDTO;
 import de.jdungeon.dungeon.builder.serialization.LockDTO;
-import de.jdungeon.dungeon.util.RouteInstruction;
-import de.jdungeon.item.Key;
-import de.jdungeon.item.VisibilityCheatBall;
-import de.jdungeon.location.Location;
 import de.jdungeon.log.Log;
 import de.jdungeon.util.Pair;
 
@@ -103,7 +93,11 @@ public class DungeonBuilderASPReader {
 			int posX = roomPosFact.get(0).asNumber();
 			int posY = roomPosFact.get(1).asNumber();
 			LocatedEntityBuilder locationBuilder = builder.locations.get(locationIdentifier.asString());
-			dungeon.addLocation(locationBuilder, posX, posY);
+			if(locationBuilder != null) {
+				dungeon.addLocation(locationBuilder, posX, posY);
+			} else {
+				Log.severe("LocationEntityBuilder for fact is null: "+locationIdentifier.asString());
+			}
 			//locationBuilder.insert(dungeon, posX, posY);
 		});
 	}
