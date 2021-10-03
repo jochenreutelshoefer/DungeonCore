@@ -151,7 +151,7 @@ public class DungeonBuilderASPWriter {
 		buffy.append("\n%% Keys/Locks in general\n");
 		buffy.append("%% General key related code\n");
 		buffy.append("% For each key there must be exactly one door to hold the lock of this key\n");
-		buffy.append("1{lock(door(room(X1, Y1), room(X2, Y2)), K) : key(K), door(room(X1, Y1), room(X2, Y2)), room(X1, Y1), room(X2, Y2) }   1 .\n");
+		buffy.append("1{lock(door(room(X1, Y1), room(X2, Y2)), K) : key(K), door(room(X1, Y1), room(X2, Y2)), room(X1, Y1), room(X2, Y2) }   1 :- key(K) .\n");
 		buffy.append("% The door holding the lock is locked\n");
 		buffy.append("locked(door(room(X2, Y2), room(X1, Y1)), K) :- lock(door(room(X1, Y1), room(X2, Y2)), K) .\n");
 		buffy.append("% The inverse door is also locked (we modelled both directions separately here in ASP)\n");
